@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="EntryPointsManager">
+    <entry_points version="2.0" />
+  </component>
+  <component name="FrameworkDetectionExcludesConfiguration">
+    <file type="ejb" url="file://$PROJECT_DIR$" />
+    <file type="ejb" url="file://$PROJECT_DIR$/SemantikosAdminEJB" />
+    <file type="ejb" url="file://$PROJECT_DIR$/SemantikosDesignerEJB" />
+    <file type="javaeeApplication" url="file://$PROJECT_DIR$/SemantikosCentralEAR" />
+    <file type="javaeeApplication" url="file://$PROJECT_DIR$/SemantikosDesignerEARApplication" />
+    <file type="web" url="file://$PROJECT_DIR$/SemantikosWeb" />
+    <file type="web" url="file://$PROJECT_DIR$/SemantikosWS" />
+  </component>
+  <component name="MavenProjectsManager">
+    <option name="originalFiles">
+      <list>
+        <option value="$PROJECT_DIR$/pom.xml" />
+        <option value="$PROJECT_DIR$/SemantikosDesignerWeb/pom.xml" />
+        <option value="$PROJECT_DIR$/SemantikosKernelEJB/pom.xml" />
+        <option value="$PROJECT_DIR$/SemantikosDesignerApplication/pom.xml" />
+        <option value="$PROJECT_DIR$/SemantikosDesignerEAR/pom.xml" />
+        <option value="$PROJECT_DIR$/SemantikosWSEJB/pom.xml" />
+        <option value="$PROJECT_DIR$/SemantikosCentralEAR/pom.xml" />
+        <option value="$PROJECT_DIR$/SemantikosWeb/pom.xml" />
+        <option value="$PROJECT_DIR$/SemantikosWS/pom.xml" />
+      </list>
+    </option>
+    <option name="ignoredFiles">
+      <set>
+        <option value="$PROJECT_DIR$/SemantikosDesignerEARApplication/pom.xml" />
+      </set>
+    </option>
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="false">
+    <OptionsSetting value="true" id="Add" />
+    <OptionsSetting value="true" id="Remove" />
+    <OptionsSetting value="true" id="Checkout" />
+    <OptionsSetting value="true" id="Update" />
+    <OptionsSetting value="true" id="Status" />
+    <OptionsSetting value="true" id="Edit" />
+    <ConfirmationsSetting value="0" id="Add" />
+    <ConfirmationsSetting value="0" id="Remove" />
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_6" default="true" assert-keyword="true" jdk-15="true" project-jdk-name="1.6" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/out" />
+  </component>
+</project>

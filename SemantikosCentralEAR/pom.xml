@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+
+    <groupId>cl.minsal.semantikos</groupId>
+    <artifactId>SemantikosCentralEAR</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>ear</packaging>
+
+    <name>SemantikosCentralEAR</name>
+
+    <parent>
+        <groupId>cl.minsal.semantikos</groupId>
+        <artifactId>Semantikos</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+
+
+    <dependencies>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>1.7.21</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>cl.minsal.semantikos</groupId>
+            <artifactId>SemantikosWeb</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <type>war</type>
+        </dependency>
+
+
+        <dependency>
+            <groupId>cl.minsal.semantikos</groupId>
+            <artifactId>SemantikosKernelEJB</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <type>ejb</type>
+        </dependency>
+
+
+    </dependencies>
+
+
+
+    <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.6</source>
+                    <target>1.6</target>
+
+                </configuration>
+                <version>2.3.2</version>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-ear-plugin</artifactId>
+                <version>2.6</version>
+                <configuration>
+                    <resourcesDir>src/main/resources</resourcesDir>
+                    <filtering>true</filtering>
+                    <defaultLibBundleDir>lib</defaultLibBundleDir>
+                    <earSourceDirectory>src/main/java</earSourceDirectory>
+                    <modules>
+                        <webModule>
+                            <groupId>cl.minsal.semantikos</groupId>
+                            <artifactId>SemantikosWeb</artifactId>
+                            <contextRoot>designer</contextRoot>
+                        </webModule>
+                    </modules>
+                </configuration>
+            </plugin>
+
+        </plugins>
+
+
+    </build>
+
+
+</project>
