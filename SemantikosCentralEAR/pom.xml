@@ -78,7 +78,7 @@
                     <earSourceDirectory>src/main/java</earSourceDirectory>
                     <modules>
                         <webModule>
-                            <groupId>cl.minsal.semantikos</groupId>
+                            <groupId>cl.minsal.semantikos.kernel.semantikos</groupId>
                             <artifactId>SemantikosWeb</artifactId>
                             <contextRoot>designer</contextRoot>
                         </webModule>
