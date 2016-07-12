@@ -1,9 +1,9 @@
 package cl.minsal.semantikos.designmodelweb.auth;
 
 import cl.minsal.semantikos.designmodelweb.Constants;
-import cl.minsal.semantikos.kernel.semantikos.kernel.auth.AuthenticationManagerBean;
-import cl.minsal.semantikos.kernel.semantikos.kernel.auth.User;
-import cl.minsal.semantikos.kernel.semantikos.kernel.config.ConfigurationBean;
+import cl.minsal.semantikos.kernel.auth.AuthenticationManagerBean;
+import cl.minsal.semantikos.kernel.auth.User;
+import cl.minsal.semantikos.kernel.config.ConfigurationBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

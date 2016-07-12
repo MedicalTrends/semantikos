@@ -1,9 +1,8 @@
-package cl.minsal.semantikos.kernel.semantikos.kernel;
+package cl.minsal.semantikos.kernel;
 
 import cl.minsal.semantikos.model.Description;
 
 import javax.ejb.Stateless;
-import java.sql.*;
 import java.util.ArrayList;
 
 /**
