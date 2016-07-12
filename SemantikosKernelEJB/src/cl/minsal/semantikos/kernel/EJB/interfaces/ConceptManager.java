@@ -1,6 +1,6 @@
 package cl.minsal.semantikos.kernel.EJB.interfaces;
 
-import cl.minsal.semantikos.kernel.domain.ConceptSMTK;
+import cl.minsal.semantikos.model.ConceptSMTK;
 
 import javax.ejb.Local;
 

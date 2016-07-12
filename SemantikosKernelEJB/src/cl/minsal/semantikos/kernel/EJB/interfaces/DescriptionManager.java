@@ -1,7 +1,6 @@
 package cl.minsal.semantikos.kernel.EJB.interfaces;
 
-import cl.minsal.semantikos.kernel.domain.DescriptionType;
-import cl.minsal.semantikos.kernel.domain.DescriptionType;
+import cl.minsal.semantikos.model.DescriptionType;
 
 import javax.ejb.Local;
 import java.util.List;
