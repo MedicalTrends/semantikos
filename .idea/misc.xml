@@ -9,6 +9,7 @@
     <file type="ejb" url="file://$PROJECT_DIR$/SemantikosDesignerEJB" />
     <file type="javaeeApplication" url="file://$PROJECT_DIR$/SemantikosCentralEAR" />
     <file type="javaeeApplication" url="file://$PROJECT_DIR$/SemantikosDesignerEARApplication" />
+    <file type="web" url="file://$PROJECT_DIR$/SemantikosBrowser" />
     <file type="web" url="file://$PROJECT_DIR$/SemantikosWeb" />
     <file type="web" url="file://$PROJECT_DIR$/SemantikosWS" />
   </component>
@@ -18,13 +19,9 @@
       <list>
         <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/SemantikosDesignerWeb/pom.xml" />
-        <option value="$PROJECT_DIR$/SemantikosKernelEJB/pom.xml" />
         <option value="$PROJECT_DIR$/SemantikosDesignerApplication/pom.xml" />
         <option value="$PROJECT_DIR$/SemantikosDesignerEAR/pom.xml" />
-        <option value="$PROJECT_DIR$/SemantikosWSEJB/pom.xml" />
-        <option value="$PROJECT_DIR$/SemantikosCentralEAR/pom.xml" />
-        <option value="$PROJECT_DIR$/SemantikosWeb/pom.xml" />
-        <option value="$PROJECT_DIR$/SemantikosWS/pom.xml" />
+        <option value="$PROJECT_DIR$/SemantikosBrowser/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">
@@ -43,7 +40,7 @@
     <ConfirmationsSetting value="0" id="Add" />
     <ConfirmationsSetting value="0" id="Remove" />
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_7" assert-keyword="true" jdk-15="true" project-jdk-name="1.7" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_7" default="false" assert-keyword="true" jdk-15="true" project-jdk-name="1.7" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />
   </component>
 </project>

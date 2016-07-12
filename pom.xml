@@ -15,6 +15,7 @@
         <module>SemantikosCentralEAR</module>
         <module>SemantikosWS</module>
         <module>SemantikosWSEJB</module>
+        <module>SemantikosBrowser</module>
     </modules>
 
 
