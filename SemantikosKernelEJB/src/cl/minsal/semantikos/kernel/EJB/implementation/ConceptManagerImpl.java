@@ -15,8 +15,8 @@ public class ConceptManagerImpl implements ConceptManager {
     @Override
     public ConceptSMTK newConcept(int idCategory, String termino) {
 
-        ConceptSMTK conceptSMTK = new ConceptSMTK(idCategory, termino);
-        return conceptSMTK;
+        //ConceptSMTK conceptSMTK = new ConceptSMTK(idCategory, termino);
+        return null;
     }
 
 }
