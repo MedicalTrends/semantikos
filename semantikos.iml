@@ -15,6 +15,5 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" scope="PROVIDED" name="WebSphere 8.0" level="application_server_libraries" />
   </component>
 </module>
