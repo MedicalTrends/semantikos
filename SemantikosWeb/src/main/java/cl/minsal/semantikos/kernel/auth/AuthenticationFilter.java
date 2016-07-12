@@ -1,4 +1,4 @@
-package cl.minsal.semantikos.auth;
+package cl.minsal.semantikos.kernel.auth;
 
 import cl.minsal.semantikos.Constants;
 import org.slf4j.Logger;

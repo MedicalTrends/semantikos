@@ -1,7 +1,7 @@
-package cl.minsal.semantikos.auth;
+package cl.minsal.semantikos.kernel.auth;
 
 import cl.minsal.semantikos.Constants;
-import cl.minsal.semantikos.config.ConfigurationBean;
+import cl.minsal.semantikos.kernel.config.ConfigurationBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

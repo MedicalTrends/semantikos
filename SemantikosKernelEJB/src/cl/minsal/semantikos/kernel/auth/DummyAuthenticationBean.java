@@ -1,12 +1,9 @@
-package cl.minsal.semantikos.auth;
+package cl.minsal.semantikos.kernel.auth;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.w3c.dom.Document;
 
-import javax.ejb.EJB;
 import javax.ejb.Stateless;
-import java.rmi.RemoteException;
 import java.util.List;
 
 /**
