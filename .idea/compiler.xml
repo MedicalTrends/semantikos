@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="CompilerConfiguration">
+    <option name="DEFAULT_COMPILER" value="Javac" />
     <resourceExtensions />
     <wildcardResourcePatterns>
       <entry name="!?*.java" />
@@ -39,8 +40,8 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="Semantikos" target="1.6" />
       <module name="semantikos" target="1.6" />
+      <module name="Semantikos" target="1.6" />
       <module name="SemantikosAdminEJB" target="1.6" />
       <module name="SemantikosCentralEAR" target="1.6" />
       <module name="SemantikosDesignerApplication" target="1.6" />

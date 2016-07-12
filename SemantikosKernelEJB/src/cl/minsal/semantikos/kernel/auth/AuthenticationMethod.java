@@ -1,4 +1,4 @@
-package cl.minsal.semantikos.auth;
+package cl.minsal.semantikos.kernel.auth;
 
 import java.util.List;
 
