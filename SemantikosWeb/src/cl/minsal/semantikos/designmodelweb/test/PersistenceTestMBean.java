@@ -1,5 +1,8 @@
 package cl.minsal.semantikos.designmodelweb.test;
 
+import cl.minsal.semantikos.kernel.TestEJB;
+
+import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 
@@ -11,6 +14,13 @@ import javax.faces.bean.ViewScoped;
 @ViewScoped
 public class PersistenceTestMBean {
 
+@EJB
+    TestEJB test;
 
+    public String getTest(){
+
+
+        return test.getTest();
+    }
 
 }

@@ -64,6 +64,7 @@
 
     <!-- para poner automaticamente estampa de version en footer -->
     <build>
+        <sourceDirectory>src</sourceDirectory>
         <resources>
             <resource>
                 <directory>src/main/resources</directory>

@@ -9,7 +9,7 @@ import javax.ejb.Stateless;
  * Created by des01c7 on 29-06-16.
  */
 
-@Stateless
+//@Stateless
 public class ConceptManagerImpl implements ConceptManager {
 
     @Override

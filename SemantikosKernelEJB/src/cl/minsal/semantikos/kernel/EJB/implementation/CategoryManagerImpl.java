@@ -11,7 +11,7 @@ import java.util.List;
  * Created by des01c7 on 29-06-16.
  */
 
-@Stateless
+//@Stateless
 public class CategoryManagerImpl implements CategoryManager {
 
     @Override

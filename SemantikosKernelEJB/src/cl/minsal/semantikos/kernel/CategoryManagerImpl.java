@@ -28,7 +28,7 @@ public class CategoryManagerImpl implements CategoryManagerInterface {
 
         ArrayList<AttributeCategory> Attributes = new ArrayList<AttributeCategory>();
 
-        entityManager.createNamedQuery();
+        //entityManager.createNamedQuery();
 
 /*
         try {
