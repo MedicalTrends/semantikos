@@ -1,4 +1,4 @@
-package cl.minsal.semantikos.kernel.config;
+package cl.minsal.semantikos.kernel.semantikos.kernel.config;
 
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
