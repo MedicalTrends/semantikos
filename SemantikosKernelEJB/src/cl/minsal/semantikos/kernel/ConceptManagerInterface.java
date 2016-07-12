@@ -1,6 +1,6 @@
-package cl.minsal.semantikos.kernel.semantikos.kernel;
+package cl.minsal.semantikos.kernel;
 
-import smtk.classes.Description;
+import cl.minsal.semantikos.model.Description;
 
 import javax.ejb.Local;
 import java.util.ArrayList;
