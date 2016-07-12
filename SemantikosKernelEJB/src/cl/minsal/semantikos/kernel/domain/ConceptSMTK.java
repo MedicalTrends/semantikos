@@ -7,11 +7,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by root on 08-07-16.
+ * @author Diego Soto.
  */
-public class Concept {
+public class ConceptSMTK {
+
+    /** El famoso ConceptID */
     private long idConcept;
-    private Long idConceptSct;
+
     private Long idTipoConcepto;
     private Long idCategoria;
     private boolean revisar;
@@ -25,12 +27,12 @@ public class Concept {
 
     private Category category;
 
-    public Concept() {
+    public ConceptSMTK() {
     }
 
-    public Concept(int idCategory, String termino) {
+    public ConceptSMTK(int idCategory, String termino) {
 
-        Concept concept = new Concept();
+        ConceptSMTK conceptSMTK = new ConceptSMTK();
 
         DescriptionDAOImpl descriptionDAO = new DescriptionDAOImpl();
 
@@ -41,8 +43,8 @@ public class Concept {
 
         descriptionTypes = descriptionDAO.getAllTypes();
 
-        concept.setConsultar(false);
-        concept.setRevisar(false);
+        conceptSMTK.setConsultar(false);
+        conceptSMTK.setRevisar(false);
 
         Description FSN = new Description();
 
@@ -54,7 +56,7 @@ public class Concept {
         FSN.setIdDescriptionType(descriptionTypes.get(0).getIdDescriptionType());
         FSN.setTermino(termino+" ("+category.getNombre()+")");
 
-        concept.addDescription(FSN);
+        conceptSMTK.addDescription(FSN);
 
         Description preferido = new Description();
 
@@ -66,8 +68,8 @@ public class Concept {
         preferido.setIdDescriptionType(descriptionTypes.get(1).getIdDescriptionType());
         preferido.setTermino(termino);
 
-        concept.setIdCategoria((long) idCategory);
-        concept.setCategory(category);
+        conceptSMTK.setIdCategoria((long) idCategory);
+        conceptSMTK.setCategory(category);
 
     }
 
@@ -77,14 +79,6 @@ public class Concept {
 
     public void setIdConcept(long idConcept) {
         this.idConcept = idConcept;
-    }
-
-    public Long getIdConceptSct() {
-        return idConceptSct;
-    }
-
-    public void setIdConceptoSct(Long idConceptoSct) {
-        this.idConceptSct = idConceptoSct;
     }
 
     public Long getIdTipoConcepto() {
@@ -176,15 +170,14 @@ public class Concept {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Concept that = (Concept) o;
+        ConceptSMTK that = (ConceptSMTK) o;
 
         if (idConcept != that.idConcept) return false;
         if (revisar != that.revisar) return false;
         if (consultar != that.consultar) return false;
         if (esCompletamenteDefinido != that.esCompletamenteDefinido) return false;
         if (estaPublicado != that.estaPublicado) return false;
-        if (idConceptSct != null ? !idConceptSct.equals(that.idConceptSct) : that.idConceptSct != null)
-            return false;
+
         if (idTipoConcepto != null ? !idTipoConcepto.equals(that.idTipoConcepto) : that.idTipoConcepto != null)
             return false;
         if (idCategoria != null ? !idCategoria.equals(that.idCategoria) : that.idCategoria != null) return false;
@@ -198,7 +191,7 @@ public class Concept {
     @Override
     public int hashCode() {
         int result = (int) (idConcept ^ (idConcept >>> 32));
-        result = 31 * result + (idConceptSct != null ? idConceptSct.hashCode() : 0);
+
         result = 31 * result + (idTipoConcepto != null ? idTipoConcepto.hashCode() : 0);
         result = 31 * result + (idCategoria != null ? idCategoria.hashCode() : 0);
         result = 31 * result + (revisar ? 1 : 0);

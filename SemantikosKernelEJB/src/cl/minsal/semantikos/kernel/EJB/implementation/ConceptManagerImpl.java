@@ -1,6 +1,6 @@
 package cl.minsal.semantikos.kernel.EJB.implementation;
 
-import cl.minsal.semantikos.kernel.domain.Concept;
+import cl.minsal.semantikos.kernel.domain.ConceptSMTK;
 import cl.minsal.semantikos.kernel.EJB.interfaces.ConceptManager;
 
 import javax.ejb.Stateless;
@@ -13,10 +13,10 @@ import javax.ejb.Stateless;
 public class ConceptManagerImpl implements ConceptManager {
 
     @Override
-    public Concept newConcept(int idCategory, String termino) {
+    public ConceptSMTK newConcept(int idCategory, String termino) {
 
-        Concept concept = new Concept(idCategory, termino);
-        return concept;
+        ConceptSMTK conceptSMTK = new ConceptSMTK(idCategory, termino);
+        return conceptSMTK;
     }
 
 }

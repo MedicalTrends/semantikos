@@ -4,6 +4,8 @@ import cl.minsal.semantikos.model.AttributeCategory;
 import cl.minsal.semantikos.model.Category;
 
 import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.ArrayList;
 
 /**
@@ -12,6 +14,8 @@ import java.util.ArrayList;
 @Stateless
 public class CategoryManagerImpl implements CategoryManagerInterface {
 
+    @PersistenceContext(unitName = "SEMANTIKOS_PU")
+    private EntityManager entityManager;
 
     String driver = "org.postgresql.Driver";
     String ruta = "jdbc:postgresql://192.168.0.221:5432/postgres";
@@ -24,6 +28,7 @@ public class CategoryManagerImpl implements CategoryManagerInterface {
 
         ArrayList<AttributeCategory> Attributes = new ArrayList<AttributeCategory>();
 
+        entityManager.createNamedQuery();
 
 /*
         try {

@@ -1,7 +1,6 @@
 package cl.minsal.semantikos.kernel.EJB.interfaces;
 
-import cl.minsal.semantikos.kernel.domain.Concept;
-import cl.minsal.semantikos.kernel.domain.Concept;
+import cl.minsal.semantikos.kernel.domain.ConceptSMTK;
 
 import javax.ejb.Local;
 
@@ -13,6 +12,6 @@ import javax.ejb.Local;
 public interface ConceptManager {
 
 
-    public Concept newConcept(int idCategory, String termino);
+    public ConceptSMTK newConcept(int idCategory, String termino);
 
 }
