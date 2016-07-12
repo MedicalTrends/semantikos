@@ -1,6 +1,6 @@
 package cl.minsal.semantikos.kernel.DAO.interfaces;
 
-import cl.minsal.semantikos.kernel.domain.Category;
+import cl.minsal.semantikos.model.Category;
 
 
 /**

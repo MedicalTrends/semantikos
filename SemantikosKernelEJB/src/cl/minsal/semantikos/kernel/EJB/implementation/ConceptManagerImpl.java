@@ -1,6 +1,6 @@
 package cl.minsal.semantikos.kernel.EJB.implementation;
 
-import cl.minsal.semantikos.kernel.domain.ConceptSMTK;
+import cl.minsal.semantikos.model.ConceptSMTK;
 import cl.minsal.semantikos.kernel.EJB.interfaces.ConceptManager;
 
 import javax.ejb.Stateless;

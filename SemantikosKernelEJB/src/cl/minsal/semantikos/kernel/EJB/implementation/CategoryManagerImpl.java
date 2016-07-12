@@ -1,6 +1,6 @@
 package cl.minsal.semantikos.kernel.EJB.implementation;
 
-import cl.minsal.semantikos.kernel.domain.Category;
+import cl.minsal.semantikos.model.Category;
 import cl.minsal.semantikos.kernel.DAO.implementation.CategoryDAOImpl;
 import cl.minsal.semantikos.kernel.EJB.interfaces.CategoryManager;
 

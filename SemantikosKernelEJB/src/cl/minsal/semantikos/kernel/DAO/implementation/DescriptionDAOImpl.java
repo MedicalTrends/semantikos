@@ -1,7 +1,7 @@
 package cl.minsal.semantikos.kernel.DAO.implementation;
 
 import cl.minsal.semantikos.kernel.DAO.interfaces.DescriptionDAO;
-import cl.minsal.semantikos.kernel.domain.DescriptionType;
+import cl.minsal.semantikos.model.DescriptionType;
 import cl.minsal.semantikos.kernel.util.ConnectionBD;
 import cl.minsal.semantikos.kernel.util.StringUtils;
 import com.fasterxml.jackson.core.JsonParseException;

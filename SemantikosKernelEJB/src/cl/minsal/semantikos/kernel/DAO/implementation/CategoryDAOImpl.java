@@ -1,7 +1,7 @@
 package cl.minsal.semantikos.kernel.DAO.implementation;
 
 import cl.minsal.semantikos.kernel.DAO.interfaces.CategoryDAO;
-import cl.minsal.semantikos.kernel.domain.Category;
+import cl.minsal.semantikos.model.Category;
 import cl.minsal.semantikos.kernel.util.ConnectionBD;
 import cl.minsal.semantikos.kernel.util.StringUtils;
 import com.fasterxml.jackson.core.JsonParseException;
