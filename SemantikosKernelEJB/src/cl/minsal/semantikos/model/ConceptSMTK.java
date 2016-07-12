@@ -1,23 +1,23 @@
 package cl.minsal.semantikos.model;
 
-import cl.minsal.semantikos.kernel.DAO.implementation.CategoryDAOImpl;
-import cl.minsal.semantikos.kernel.DAO.implementation.DescriptionDAOImpl;
-import cl.minsal.semantikos.kernel.domain.Category;
-
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Esta clase representa al Concepto Semantikos.
+ *
  * @author Diego Soto.
  */
 public class ConceptSMTK {
+
+    /** El valor que posee un CONCEPT_ID que no ha sido definido */
+    public static final long CONCEPT_ID_UNDEFINED = -1;
 
     /** El famoso ConceptID */
     private long id;
 
     /** El valor de negocio del concept_id */
-    private long conceptID;
+    private long conceptID = CONCEPT_ID_UNDEFINED;
 
     /** La categoría del concepto */
     private Category category;
@@ -28,7 +28,8 @@ public class ConceptSMTK {
     /** Si debe ser consultado? */
     private boolean isToBeConsultated;
 
-    private Long idEstadoConcepto;
+    /** El estado en que se encuentra el objeto */
+    private State state;
 
     /** Este campo establece si el concepto está completamente definido */
     private boolean isFullyDefined;
@@ -37,11 +38,24 @@ public class ConceptSMTK {
     private boolean isPublished;
 
     /** Las descripciones asociadas al concepto */
-    private List<Description> descriptions = new ArrayList<Description>();;
+    private List<Description> descriptions;
 
-    public ConceptSMTK() {
-        this.setToBeConsultated(false);
-        this.setToBeReviewed(false);
+
+    /**
+     * El constructor privado con las inicializaciones de los campos por defecto.
+     * TODO: Crear el test unitario para validar los estados iniciales por defecto.
+     */
+    private ConceptSMTK() {
+
+        /* El concepto parte con su estado inicial */
+        this.state = ConceptStateMachine.getInstance().getInitialState();
+
+        this.descriptions = new ArrayList<Description>();
+
+        this.isFullyDefined = false;
+        this.isPublished = false;
+        this.isToBeConsultated = false;
+        this.isToBeReviewed = false;
     }
 
     public ConceptSMTK(Category category, Description fsn) {
@@ -59,7 +73,11 @@ public class ConceptSMTK {
         this.id = id;
     }
 
-    public void setCategory(Category category){
+    public State getState() {
+        return state;
+    }
+
+    public void setCategory(Category category) {
         this.category = category;
     }
 
@@ -81,14 +99,6 @@ public class ConceptSMTK {
 
     public void setToBeConsultated(boolean toBeConsultated) {
         this.isToBeConsultated = toBeConsultated;
-    }
-
-    public Long getIdEstadoConcepto() {
-        return idEstadoConcepto;
-    }
-
-    public void setIdEstadoConcepto(Long idEstadoConcepto) {
-        this.idEstadoConcepto = idEstadoConcepto;
     }
 
     public boolean isFullyDefined() {
@@ -120,15 +130,15 @@ public class ConceptSMTK {
 
         ConceptSMTK that = (ConceptSMTK) o;
 
+        if (conceptID != that.conceptID) return false;
         if (id != that.id) return false;
         if (isFullyDefined != that.isFullyDefined) return false;
         if (isPublished != that.isPublished) return false;
         if (isToBeConsultated != that.isToBeConsultated) return false;
         if (isToBeReviewed != that.isToBeReviewed) return false;
-        if (descriptions != null ? !descriptions.equals(that.descriptions) : that.descriptions != null) return false;
         if (category != null ? !category.equals(that.category) : that.category != null) return false;
-        if (idEstadoConcepto != null ? !idEstadoConcepto.equals(that.idEstadoConcepto) : that.idEstadoConcepto != null)
-            return false;
+        if (!descriptions.equals(that.descriptions)) return false;
+        if (!state.equals(that.state)) return false;
 
         return true;
     }
@@ -136,13 +146,14 @@ public class ConceptSMTK {
     @Override
     public int hashCode() {
         int result = (int) (id ^ (id >>> 32));
+        result = 31 * result + (int) (conceptID ^ (conceptID >>> 32));
         result = 31 * result + (category != null ? category.hashCode() : 0);
         result = 31 * result + (isToBeReviewed ? 1 : 0);
         result = 31 * result + (isToBeConsultated ? 1 : 0);
-        result = 31 * result + (idEstadoConcepto != null ? idEstadoConcepto.hashCode() : 0);
+        result = 31 * result + state.hashCode();
         result = 31 * result + (isFullyDefined ? 1 : 0);
         result = 31 * result + (isPublished ? 1 : 0);
-        result = 31 * result + (descriptions != null ? descriptions.hashCode() : 0);
+        result = 31 * result + descriptions.hashCode();
         return result;
     }
 }

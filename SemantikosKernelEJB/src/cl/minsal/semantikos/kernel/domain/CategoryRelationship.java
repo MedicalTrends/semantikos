@@ -1,5 +1,7 @@
 package cl.minsal.semantikos.kernel.domain;
 
+import cl.minsal.semantikos.model.Category;
+
 /**
  * Created by root on 08-07-16.
  */
