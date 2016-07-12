@@ -3,13 +3,17 @@ package cl.minsal.semantikos.model;
 import java.util.ArrayList;
 
 /**
- * Created by stk-des01 on 02-06-16.
+ * This class represents the business object Categoria.
+ *
+ * @author Francisco Mendez
  */
 public class Category {
 
     private int id;
     private String name;
     private boolean isValid;
+
+    /** All the non basic attributes of the Category */
     private ArrayList<AttributeCategory> attributeCategories;
 
     public Category(int id, String name, boolean isValid, ArrayList<AttributeCategory> attributeCategories) {
@@ -20,12 +24,7 @@ public class Category {
     }
 
     public Category(int id, String name, boolean isValid) {
-        this.id = id;
-        this.name = name;
-        this.isValid = isValid;
-    }
-    public Category() {
-
+        this(id, name, isValid, new ArrayList<AttributeCategory>());
     }
 
     public ArrayList<AttributeCategory> getAttributeCategories() {
