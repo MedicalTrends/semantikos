@@ -10,7 +10,7 @@
       <schema id="2" parent="1" name="semantikos">
         <object-id>16385</object-id>
         <introspection-state-number>6461</introspection-state-number>
-        <introspection-timestamp>2016-07-12.12:36:45.518</introspection-timestamp>
+        <introspection-timestamp>2016-07-12.15:16:19.113</introspection-timestamp>
       </schema>
       <sequence id="3" parent="2" name="smtk_descripciones_concepto_id_descripcion_concepto_seq">
         <object-id>25939</object-id>

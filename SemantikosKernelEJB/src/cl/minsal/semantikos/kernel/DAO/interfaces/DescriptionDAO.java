@@ -1,6 +1,6 @@
 package cl.minsal.semantikos.kernel.DAO.interfaces;
 
-import cl.minsal.semantikos.kernel.domain.DescriptionType;
+import cl.minsal.semantikos.model.DescriptionType;
 
 import java.util.List;
 

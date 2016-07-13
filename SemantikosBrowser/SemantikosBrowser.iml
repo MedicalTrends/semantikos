@@ -33,6 +33,9 @@
     <orderEntry type="library" scope="PROVIDED" name="Maven: javax.faces:javax.faces-api:2.2" level="project" />
     <orderEntry type="module" module-name="SemantikosKernelEJB" scope="PROVIDED" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.apache.axis:axis:1.4" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: com.fasterxml.jackson.core:jackson-core:2.8.0" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.8.0" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.8.0" level="project" />
     <orderEntry type="library" name="Maven: net.bull.javamelody:javamelody-core:1.59.0" level="project" />
     <orderEntry type="library" name="Maven: org.jrobin:jrobin:1.5.9" level="project" />
     <orderEntry type="library" name="Maven: org.primefaces:primefaces:6.0" level="project" />

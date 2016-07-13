@@ -71,6 +71,7 @@
 </dependencies>
 
 <build>
+    <sourceDirectory>src</sourceDirectory>
     <plugins>
         <plugin>
             <groupId>org.apache.maven.plugins</groupId>
@@ -96,6 +97,7 @@
             </configuration>
 
             <executions>
+
                 <execution>
                     <id>default-ejb</id>
                     <phase>package</phase>

@@ -41,8 +41,8 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="semantikos" target="1.6" />
       <module name="Semantikos" target="1.6" />
+      <module name="semantikos" target="1.6" />
       <module name="SemantikosAdminEJB" target="1.6" />
       <module name="SemantikosBrowser" target="1.6" />
       <module name="SemantikosCentralEAR" target="1.6" />
@@ -54,7 +54,7 @@
       <module name="SemantikosKernelEJB" target="1.7" />
       <module name="SemantikosWeb" target="1.6" />
       <module name="SemantikosWS" target="1.6" />
-      <module name="SemantikosWSEJB" target="1.6" />
+      <module name="SemantikosWSEJB" target="1.7" />
     </bytecodeTargetLevel>
   </component>
 </project>

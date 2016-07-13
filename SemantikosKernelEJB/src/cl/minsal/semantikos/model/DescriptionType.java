@@ -1,4 +1,4 @@
-package cl.minsal.semantikos.kernel.domain;
+package cl.minsal.semantikos.model;
 
 /**
  * Created by root on 08-07-16.
