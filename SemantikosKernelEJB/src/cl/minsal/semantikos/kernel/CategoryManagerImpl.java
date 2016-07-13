@@ -1,7 +1,6 @@
 package cl.minsal.semantikos.kernel;
 
-import cl.minsal.semantikos.kernel.DAO.implementation.CategoryDAOImpl;
-import cl.minsal.semantikos.model.AttributeCategory;
+import cl.minsal.semantikos.model.RelationShipDefinition;
 import cl.minsal.semantikos.model.Category;
 
 import javax.ejb.Stateless;
@@ -25,10 +24,10 @@ public class CategoryManagerImpl implements CategoryManagerInterface {
     String password = "1q2w3e";
 
     @Override
-    public ArrayList<AttributeCategory> findDescriptionByIDConcept(int id) {
+    public ArrayList<RelationShipDefinition> getCategoryMetaData(int id) {
 
 
-        ArrayList<AttributeCategory> Attributes = new ArrayList<AttributeCategory>();
+        ArrayList<RelationShipDefinition> Attributes = new ArrayList<RelationShipDefinition>();
 
         //entityManager.createNamedQuery();
 
@@ -70,10 +69,10 @@ public class CategoryManagerImpl implements CategoryManagerInterface {
     }
 
     @Override
-    public ArrayList<AttributeCategory> getAllDescription() {
+    public ArrayList<RelationShipDefinition> getAllDescription() {
 
 
-        ArrayList<AttributeCategory> Attributes = new ArrayList<AttributeCategory>();
+        ArrayList<RelationShipDefinition> Attributes = new ArrayList<RelationShipDefinition>();
 
 
 /*
@@ -144,7 +143,7 @@ public class CategoryManagerImpl implements CategoryManagerInterface {
     }
 
     @Override
-    public void addAttribute(AttributeCategory attributeCategory, int idCategory) {
+    public void addAttribute(RelationShipDefinition attributeCategory, int idCategory) {
 /*
         try {
 
