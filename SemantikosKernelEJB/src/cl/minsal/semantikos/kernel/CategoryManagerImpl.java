@@ -1,5 +1,6 @@
 package cl.minsal.semantikos.kernel;
 
+import cl.minsal.semantikos.kernel.DAO.implementation.CategoryDAOImpl;
 import cl.minsal.semantikos.model.AttributeCategory;
 import cl.minsal.semantikos.model.Category;
 
@@ -7,6 +8,7 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by stk-des01 on 27-05-16.
@@ -107,40 +109,6 @@ public class CategoryManagerImpl implements CategoryManagerInterface {
         return Attributes;
     }
 
-    @Override
-    public ArrayList<Category> getAllCategory() {
-
-        ArrayList<Category> categories = new ArrayList<Category>();
-
-
-/*
-        try {
-            Class.forName(driver);
-            Connection conne = (Connection) DriverManager.getConnection(ruta, user, password);
-            CallableStatement call = conne.prepareCall("{call get_categories_all()}");
-            call.execute();
-
-            ResultSet rs = call.getResultSet();
-
-            int idA;
-            String name;
-            Boolean isValid;
-
-
-            while (rs.next()) {
-                idA = Integer.parseInt(rs.getString("idcategoria"));
-                name = rs.getString("namecategoria");
-                isValid = rs.getString("isvalid").equalsIgnoreCase("true")? true: false;
-                categories.add(new Category(idA, name, isValid));
-            }
-            conne.close();
-        } catch (SQLException | ClassNotFoundException e) {
-            System.out.println(e.toString());
-        }
-*/
-
-        return categories;
-    }
 
     @Override
     public int addCategory(Category category) {
@@ -238,6 +206,26 @@ public class CategoryManagerImpl implements CategoryManagerInterface {
 
         return idTypeRelationShip;
     }
+
+    @Override
+    public Category getCategoryById(int id) {
+        /*
+        CategoryDAOImpl categoryDAO= new CategoryDAOImpl();
+        return categoryDAO.getCategoryById(id);
+        */
+        return null;
+    }
+
+    @Override
+    public List<Category> getCategories() {
+        /*
+        DAOCategoryImpl category= new DAOCategoryImpl();
+        return category.getAllCategories();
+        * */
+        return null;
+    }
+
+
 
 
 }

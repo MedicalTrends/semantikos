@@ -1,5 +1,6 @@
 package cl.minsal.semantikos.kernel.DAO.interfaces;
 
+import cl.minsal.semantikos.model.Description;
 import cl.minsal.semantikos.model.DescriptionType;
 
 import java.util.List;
@@ -11,4 +12,6 @@ import java.util.List;
 public interface DescriptionDAO {
 
     public List<DescriptionType> getAllTypes();
+
+    public List<Description> getDescriptionBy(int id);
 }

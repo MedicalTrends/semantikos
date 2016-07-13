@@ -1,9 +1,12 @@
 package cl.minsal.semantikos.kernel;
 
+import cl.minsal.semantikos.model.ConceptSMTK;
 import cl.minsal.semantikos.model.Description;
 
 import javax.ejb.Stateless;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.StringTokenizer;
 
 /**
  * Created by stk-des01 on 01-06-16.
@@ -110,5 +113,73 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
 */
 
         return idDes;
+    }
+
+    @Override
+    public ConceptSMTK newConcept(int idCategory, String termino) {
+
+        //ConceptSMTK conceptSMTK = new ConceptSMTK(idCategory, termino);
+        return null;
+    }
+
+    @Override
+    public List<ConceptSMTK> findConceptByPatternCategoryPageNumber(String Pattern, String[] category, int pageNumber, int pageSize) {
+
+        /*
+        DAOConceptImpl concept = new DAOConceptImpl();
+
+        if (category != null) {
+            if (category.length == 0) category = null;
+        }
+
+        if (Pattern != null) {
+            List<String> listPattern;
+            listPattern=patternToList(Pattern);
+            String[] arrPattern = listPattern.toArray(new String[listPattern.size()]);
+
+            return concept.getConceptBy(arrPattern, category,pageNumber,pageSize);
+
+        }
+        return concept.getConceptBy(null,category,pageNumber,pageSize);
+        */
+        return null;
+
+    }
+
+
+    @Override
+    public int getAllConceptCount(String Pattern, String[] category) {
+
+        /*
+        DAOConceptImpl concept= new DAOConceptImpl();
+
+        if (category != null) {
+            if (category.length == 0) category = null;
+        }
+        if (Pattern != null) {
+            List<String> listPattern;
+            listPattern=patternToList(Pattern);
+            String[] arrPattern = listPattern.toArray(new String[listPattern.size()]);
+            return concept.getAllConceptCount(arrPattern, category);
+
+        }
+        return concept.getAllConceptCount(null,category);
+        */
+
+        return 0;
+    }
+
+
+    private List<String> patternToList(String pattern){
+        StringTokenizer st;
+        String token;
+        st = new StringTokenizer(pattern, " ");
+        ArrayList<String> listPattern = new ArrayList<String>();
+
+        while (st.hasMoreTokens()) {
+            token = st.nextToken();
+            listPattern.add(token);
+        }
+        return listPattern;
     }
 }
