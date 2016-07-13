@@ -4,6 +4,7 @@ package cl.minsal.semantikos.kernel.domain;
  * Created by root on 08-07-16.
  */
 public class RelationshipAttributeDefinition {
+
     private long idRelationAttributeDefinition;
     private Long idRelationshipDefinition;
     private Long idTargetDefinition;
