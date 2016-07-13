@@ -19,9 +19,7 @@ public class TestEJB {
 
     public String getTest(){
 
-        Query q = em.createNativeQuery("select semantikos.get_concept_count()");
-
-
+        Query q = em.createNativeQuery("call semantikos.get_concept_count()");
 
         return ""+q.getFirstResult();
 
