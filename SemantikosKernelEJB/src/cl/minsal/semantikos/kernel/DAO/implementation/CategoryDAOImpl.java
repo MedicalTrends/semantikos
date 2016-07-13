@@ -7,17 +7,31 @@ import cl.minsal.semantikos.kernel.util.StringUtils;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.axis.session.Session;
 
+
+import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import java.io.IOException;
+import java.math.BigInteger;
 import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by des01c7 on 01-07-16.
  */
+
+@Stateless
 public class CategoryDAOImpl implements CategoryDAO {
+
+
+    @PersistenceContext(unitName = "SEMANTIKOS_PU")
+    EntityManager em;
 
     @Override
     public Category getCategoryById(int id) {
@@ -72,6 +86,37 @@ public class CategoryDAOImpl implements CategoryDAO {
     @Override
     public List<Category> getAllCategories() {
 
+        Query q = em.createNativeQuery("select * from semantikos.get_all_categories()");
+        List<Object[]> resultList = q.getResultList();
+
+
+        List<Category> respuesta = new ArrayList<Category>();
+
+        for (Object[] result:resultList) {
+
+            Category category = new Category();
+
+            category.setIdCategory( ((BigInteger)result[0]).longValue());
+            category.setNombre((String) result[1]);
+
+            for(int i = 0; i < result.length;i++)
+                 System.out.print( result[i]+",");
+
+
+            respuesta.add(category);
+
+
+            System.out.println("");
+        }
+
+        /*for (int i = 0; i <  q.getResultList().size(); i++) {
+        }*/
+
+
+
+        //session.
+        //Query q = em.createNativeQuery("select semantikos.get_concept_count()");
+
         /*
         *
         * List<Category> categories= new ArrayList<>();
@@ -112,7 +157,7 @@ public class CategoryDAOImpl implements CategoryDAO {
         *
         * */
 
-        return null;
+        return respuesta;
     }
 
 }

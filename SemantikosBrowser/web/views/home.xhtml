@@ -8,12 +8,85 @@
     <ui:define name="content">
         <div class="Container100">
             <div class="ContainerIndent">
-                <div class="Card ShadowEffect TexAlCenter">
-                    <br/>
-                    <h2>Pagina de inicio</h2>
-                    <br/>
-                    <span class="gray">Hola, te logueaste :D</span>
-                    <br/><br/>
+                <div style="margin-top: 65px"  class="Card ShadowEffect TexAlCenter">
+                    <h:form>
+                        <div class="ui-grid-responsive">
+                            <div class="ui-grid-col-5">
+                                <p:inputText  value="#{navBrowser.pattern}"  style="width: 90%; margin: 10px;" placeholder="Buscar...">
+                                    <p:ajax event="keyup" update="conceptTable" />
+                                </p:inputText>
+                            </div>
+
+                            <div class="ui-grid-col-4">
+                                <p:selectCheckboxMenu style="width: 100%; margin: 10px;" id="menu"
+                                                      value="#{navBrowser.selectedCategories}" label="Categorías"
+                                                      filter="true" filterMatchMode="startsWith">
+                                    <f:selectItems  value="#{navBrowser.categories}" var="category" itemLabel="#{category.nombre}" itemValue="#{category.idCategory}" />
+
+                                    <p:ajax event="toggleSelect" update="conceptTable" />
+                                    <p:ajax update="conceptTable" />
+                                </p:selectCheckboxMenu>
+                            </div>
+                        </div>
+                        <div class="ui-grid-responsive">
+                            <div class="ui-grid-col-12">
+
+                                <p:dataTable id="conceptTable" rows="15" paginator="true" lazy="true" dynamic="true">
+
+
+                                    <p:column style="width:16px">
+                                        <p:rowToggler/>
+                                    </p:column>
+
+                                    <p:column headerText="Concept ID">
+                                        <h:outputText />
+                                    </p:column>
+
+                                    <p:column headerText="Termino">
+                                        <h:outputText />
+                                    </p:column>
+
+                                    <p:column headerText="Categoría">
+                                        <h:outputText />
+                                    </p:column>
+
+                                    <p:rowExpansion id="tbl">
+
+                                        <h:outputText value="&lt;br/&gt;" escape="false"/>
+                                        <p:panelGrid columns="2" columnClasses="label,value">
+                                            <f:facet name="header">
+                                                Información del concepto:
+                                            </f:facet>
+                                            <h:outputText value="Categoría:"/>
+                                            <h:outputText />
+
+                                            <h:outputText value="Id:"/>
+                                            <h:outputText />
+
+                                            <h:outputText value="Completamente definido:"/>
+                                            <h:outputText />
+
+                                            <h:outputText value="Estado:"/>
+                                            <h:outputText />
+
+                                        </p:panelGrid>
+                                        <h:outputText value="&lt;br/&gt;" escape="false"/>
+                                        <p:dataList type="ordered">
+                                            <f:facet name="header">
+                                                Descripciones:
+                                            </f:facet>
+
+                                        </p:dataList>
+
+                                    </p:rowExpansion>
+
+                                </p:dataTable>
+                            </div>
+
+
+                        </div>
+
+                    </h:form>
                 </div>
             </div>
         </div>

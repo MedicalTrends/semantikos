@@ -23,6 +23,7 @@ public class TestEJB {
 
 
 
+
         return ""+q.getFirstResult();
 
     }

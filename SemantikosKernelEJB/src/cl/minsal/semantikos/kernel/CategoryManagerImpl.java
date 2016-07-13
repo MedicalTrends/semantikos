@@ -1,9 +1,11 @@
 package cl.minsal.semantikos.kernel;
 
 import cl.minsal.semantikos.kernel.DAO.implementation.CategoryDAOImpl;
+import cl.minsal.semantikos.kernel.DAO.interfaces.CategoryDAO;
 import cl.minsal.semantikos.model.AttributeCategory;
 import cl.minsal.semantikos.model.Category;
 
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -18,6 +20,9 @@ public class CategoryManagerImpl implements CategoryManagerInterface {
 
     @PersistenceContext(unitName = "SEMANTIKOS_PU")
     private EntityManager entityManager;
+
+    @EJB
+    private CategoryDAO categoryDAO;
 
     String driver = "org.postgresql.Driver";
     String ruta = "jdbc:postgresql://192.168.0.221:5432/postgres";
@@ -222,7 +227,9 @@ public class CategoryManagerImpl implements CategoryManagerInterface {
         DAOCategoryImpl category= new DAOCategoryImpl();
         return category.getAllCategories();
         * */
-        return null;
+
+        return categoryDAO.getAllCategories();
+
     }
 
 
