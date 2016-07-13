@@ -19,6 +19,9 @@
       <element id="archive" name="SemantikosWeb-1.0-SNAPSHOT.war">
         <element id="artifact" artifact-name="SemantikosWeb:war exploded" />
       </element>
+      <element id="archive" name="SemantikosBrowser-1.0-SNAPSHOT.war">
+        <element id="artifact" artifact-name="SemantikosBrowser:war exploded" />
+      </element>
       <element id="archive" name="SemantikosKernelEJB-1.0-SNAPSHOT.jar">
         <element id="artifact" artifact-name="SemantikosKernelEJB:ejb exploded" />
       </element>
