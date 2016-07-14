@@ -1,6 +1,5 @@
 package cl.minsal.semantikos.kernel;
 
-import cl.minsal.semantikos.kernel.DAO.implementation.CategoryDAOImpl;
 import cl.minsal.semantikos.model.AttributeCategory;
 import cl.minsal.semantikos.model.Category;
 
