@@ -1,9 +1,9 @@
 
 
-import cl.minsal.semantikos.kernel.CategoryManagerImpl;
-import cl.minsal.semantikos.kernel.CategoryManagerInterface;
-import cl.minsal.semantikos.kernel.ConceptManagerImpl;
-import cl.minsal.semantikos.kernel.ConceptManagerInterface;
+import cl.minsal.semantikos.kernel.components.CategoryManagerImpl;
+import cl.minsal.semantikos.kernel.components.CategoryManagerInterface;
+import cl.minsal.semantikos.kernel.components.ConceptManagerImpl;
+import cl.minsal.semantikos.kernel.components.ConceptManagerInterface;
 import cl.minsal.semantikos.model.Category;
 import cl.minsal.semantikos.model.ConceptSMTK;
 import org.primefaces.model.LazyDataModel;
