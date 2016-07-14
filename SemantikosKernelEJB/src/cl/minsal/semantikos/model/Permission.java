@@ -1,0 +1,33 @@
+package cl.minsal.semantikos.model;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Created by BluePrints Developer on 19-05-2016.
+ */
+public class Permission {
+
+    String name;
+    String description;
+
+
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+
+}

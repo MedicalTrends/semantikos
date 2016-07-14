@@ -1,5 +1,7 @@
 package cl.minsal.semantikos.kernel.auth;
 
+import cl.minsal.semantikos.model.User;
+
 import java.util.List;
 
 /**
