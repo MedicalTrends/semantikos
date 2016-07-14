@@ -1,6 +1,6 @@
 package cl.minsal.semantikos.kernel.components;
 
-import cl.minsal.semantikos.kernel.DAO.interfaces.ConceptDAO;
+import cl.minsal.semantikos.kernel.daos.ConceptDAO;
 import cl.minsal.semantikos.model.ConceptSMTK;
 import cl.minsal.semantikos.model.Description;
 
