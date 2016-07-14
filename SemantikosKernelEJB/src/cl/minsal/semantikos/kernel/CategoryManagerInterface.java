@@ -1,33 +1,40 @@
 package cl.minsal.semantikos.kernel;
 
-import cl.minsal.semantikos.model.AttributeCategory;
 import cl.minsal.semantikos.model.Category;
+import cl.minsal.semantikos.model.RelationShipDefinition;
 
 import javax.ejb.Local;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by stk-des01 on 27-05-16.
+ * Esta interfaz tiene como propósito definir el comportamiento del componente de gestión de categorías.
+ *
+ * @author Andrés Farías
  */
 @Local
 public interface CategoryManagerInterface {
 
-    public List<AttributeCategory> findDescriptionByIDConcept(int id);
+    /**
+     * Este método responsable de recuperar toda la meta-data que consituye la definición de una categoría, en
+     * particular todos los atributos que define.
+     *
+     * @param id Identificador único de la categoría.
+     *
+     * @return La lista de definiciones de atributos de la categoría.
+     */
+    public List<RelationShipDefinition> getCategoryMetaData(int id);
 
-    public List<AttributeCategory> getAllDescription();
+    public List<RelationShipDefinition> getAllDescription();
 
     public List<Category> getCategories();
 
     public int addCategory(Category category);
 
-    public void addAttribute(AttributeCategory attributeCategory, int idCategory);
+    public void addAttribute(RelationShipDefinition attributeCategory, int idCategory);
 
     public int addTypeRelationship(String name, int typeRelation, int idCategoryDes, int multiplicity);
 
     public Category getCategoryById(int id);
-
-
 
 
 }

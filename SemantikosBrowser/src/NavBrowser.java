@@ -1,8 +1,22 @@
-package smtk.primefaces.beans;
 
-/**
- * Created by des01c7 on 29-06-16.
- */
+
+import cl.minsal.semantikos.kernel.CategoryManagerImpl;
+import cl.minsal.semantikos.kernel.CategoryManagerInterface;
+import cl.minsal.semantikos.kernel.ConceptManagerImpl;
+import cl.minsal.semantikos.kernel.ConceptManagerInterface;
+import cl.minsal.semantikos.model.Category;
+import cl.minsal.semantikos.model.ConceptSMTK;
+import org.primefaces.model.LazyDataModel;
+import org.primefaces.model.SortOrder;
+
+import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
+import java.util.List;
+import java.util.Map;
+
+
 /*
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
@@ -16,42 +30,26 @@ import javax.faces.bean.ViewScoped;
 @ManagedBean
 @ViewScoped
 */
+
+@ManagedBean
+@ViewScoped
 public class NavBrowser  {
 
-    /*
-    private String[]selectedCategories;
-    private String pattern;
 
-    private List<Category> categories;
-    private List<Concept> concepts;
+    public List<Category> getCategories() {
+        return categories;
+    }
 
-    private CategoryManager categoryManager;
-    private ConceptManager conceptManager;
+    public void setCategories(List<Category> categories) {
+        this.categories = categories;
+    }
 
-    private Category category;
-    private Concept concept;
+    public LazyDataModel<ConceptSMTK> getConcepts() {
+        return concepts;
+    }
 
-    private LazyDataModel<Concept> conceptLazyDataModel;
-
-
-    @PostConstruct
-    public void init() {
-        /*
-        categoryManager= new CategoryManagerImpl();
-        categories= categoryManager.getCategories();
-        conceptManager= new ConceptManagerImpl();
-
-        conceptLazyDataModel = new LazyDataModel<Concept>() {
-            @Override
-            public List<Concept> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
-
-                concepts= conceptManager.findConceptByPatternCategoryPageNumber(pattern,selectedCategories,first,pageSize);
-                this.setRowCount(conceptManager.getAllConceptCount(pattern,selectedCategories));
-                return concepts;
-            }
-        };
-
-
+    public void setConcepts(LazyDataModel<ConceptSMTK> concepts) {
+        this.concepts = concepts;
     }
 
     public String[] getSelectedCategories() {
@@ -62,8 +60,20 @@ public class NavBrowser  {
         this.selectedCategories = selectedCategories;
     }
 
-    public List<Category> getCategories() {
-        return categories;
+    public CategoryManagerInterface getCategoryManager() {
+        return categoryManager;
+    }
+
+    public void setCategoryManager(CategoryManagerInterface categoryManager) {
+        this.categoryManager = categoryManager;
+    }
+
+    public ConceptManagerInterface getConceptManager() {
+        return conceptManager;
+    }
+
+    public void setConceptManager(ConceptManagerInterface conceptManager) {
+        this.conceptManager = conceptManager;
     }
 
     public Category getCategory() {
@@ -74,6 +84,20 @@ public class NavBrowser  {
         this.category = category;
     }
 
+    public ConceptSMTK getConcept() {
+        return concept;
+    }
+
+    public void setConcept(ConceptSMTK concept) {
+        this.concept = concept;
+    }
+
+    private List<Category> categories;
+    private LazyDataModel<ConceptSMTK> concepts;
+
+    private String[]selectedCategories;
+    private String pattern;
+
     public String getPattern() {
         return pattern;
     }
@@ -82,30 +106,39 @@ public class NavBrowser  {
         this.pattern = pattern;
     }
 
-    public Concept getConcept() {
-        return concept;
-    }
+    @EJB
+    private CategoryManagerInterface categoryManager;
 
-    public void setConcept(Concept concept) {
-        this.concept = concept;
-    }
+    @EJB
+    private ConceptManagerInterface conceptManager;
 
-    public List<Concept> getConcepts() {
-        return concepts;
-    }
-
-    public void setConcepts(List<Concept> concepts) {
-        this.concepts = concepts;
-    }
+    private Category category;
+    private ConceptSMTK concept;
 
 
-    public LazyDataModel<Concept> getConceptLazyDataModel() {
-        return conceptLazyDataModel;
+
+    @PostConstruct
+    public void init() {
+
+
+        categories=categoryManager.getCategories();
+
+        System.out.println("inicio");
+        /*
+        concepts = new LazyDataModel<ConceptSMTK>() {
+            @Override
+            public List<ConceptSMTK> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
+
+                List <ConceptSMTK> conceptSMTKs= conceptManager.findConceptByPatternCategoryPageNumber(pattern,selectedCategories,first,pageSize);
+                this.setRowCount(conceptManager.getAllConceptCount(pattern,selectedCategories));
+                return conceptSMTKs;
+            }
+        };*/
+
+
     }
 
-    public void setConceptLazyDataModel(LazyDataModel<Concept> conceptLazyDataModel) {
-        this.conceptLazyDataModel = conceptLazyDataModel;
-    }
-    */
+
+
 
 }
