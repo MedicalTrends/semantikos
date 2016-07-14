@@ -1,13 +1,11 @@
-package cl.minsal.semantikos.kernel.DAO.implementation;
+package cl.minsal.semantikos.kernel.daos;
 
-import cl.minsal.semantikos.kernel.DAO.interfaces.CategoryDAO;
 import cl.minsal.semantikos.model.Category;
 import cl.minsal.semantikos.kernel.util.ConnectionBD;
 import cl.minsal.semantikos.kernel.util.StringUtils;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.axis.session.Session;
 
 
 import javax.ejb.Stateless;

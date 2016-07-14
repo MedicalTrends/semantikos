@@ -1,13 +1,7 @@
-package cl.minsal.semantikos.kernel.DAO.implementation;
+package cl.minsal.semantikos.kernel.daos;
 
-import cl.minsal.semantikos.kernel.DAO.interfaces.ConceptDAO;
 import cl.minsal.semantikos.model.ConceptSMTK;
 
-import java.sql.Array;
-import java.sql.CallableStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 /**

@@ -1,4 +1,4 @@
-package cl.minsal.semantikos.kernel;
+package cl.minsal.semantikos.kernel.components;
 
 
 import cl.minsal.semantikos.model.Description;

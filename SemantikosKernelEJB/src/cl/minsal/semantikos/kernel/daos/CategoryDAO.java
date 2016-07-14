@@ -1,4 +1,4 @@
-package cl.minsal.semantikos.kernel.DAO.interfaces;
+package cl.minsal.semantikos.kernel.daos;
 
 import cl.minsal.semantikos.model.Category;
 

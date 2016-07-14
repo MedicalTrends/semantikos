@@ -1,4 +1,4 @@
-package cl.minsal.semantikos.kernel.domain;
+package cl.minsal.semantikos.model;
 
 import cl.minsal.semantikos.model.Category;
 

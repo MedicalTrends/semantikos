@@ -1,6 +1,5 @@
-package cl.minsal.semantikos.kernel.DAO.implementation;
+package cl.minsal.semantikos.kernel.daos;
 
-import cl.minsal.semantikos.kernel.DAO.interfaces.DescriptionDAO;
 import cl.minsal.semantikos.model.Description;
 import cl.minsal.semantikos.model.DescriptionType;
 import cl.minsal.semantikos.kernel.util.ConnectionBD;
