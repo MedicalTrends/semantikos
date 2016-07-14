@@ -135,4 +135,11 @@ public class AuthenticationBean {
 
 
 
+
+    public void createUser(User u){
+
+    }
+
+
+
 }

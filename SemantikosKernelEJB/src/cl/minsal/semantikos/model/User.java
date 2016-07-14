@@ -10,6 +10,8 @@ public class User {
 
     String username;
     String name;
+    String lastName;
+    String secondLastName;
     String email;
 
     List<Profile> profiles;
@@ -70,5 +72,21 @@ public class User {
 
     public void setPermissions(List<Permission> permissions) {
         this.permissions = permissions;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getSecondLastName() {
+        return secondLastName;
+    }
+
+    public void setSecondLastName(String secondLastName) {
+        this.secondLastName = secondLastName;
     }
 }

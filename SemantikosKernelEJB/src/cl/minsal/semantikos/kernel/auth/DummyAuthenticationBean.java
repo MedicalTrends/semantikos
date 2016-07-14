@@ -37,8 +37,8 @@ public class DummyAuthenticationBean extends AuthenticationMethod{
         user.setUsername("bpadmin");
         user.setEmail("admin@blueprintsit.cl");
         user.setName("Usuario Dummy Admin");
-        user.getRoles().add("admins");
-        user.getGroups().add("admins");
+        //user.getRoles().add("admins");
+        //user.getGroups().add("admins");
 
         return user;
     }
