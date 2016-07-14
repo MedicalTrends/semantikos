@@ -34,7 +34,33 @@ public class CategoryDAOImpl implements CategoryDAO {
     EntityManager em;
 
     @Override
-    public Category getCategoryById(int id) {
+    public Category getCategoryById(long id) {
+
+
+        ObjectMapper mapper = new ObjectMapper();
+        Query q = em.createNativeQuery("select * from semantikos.get_category_by_id(?)");
+        q.setParameter(1,id);
+
+
+        List<Object[]> resultList = q.getResultList();
+        Category category=null;
+
+        for (Object[] result:resultList) {
+            category = new Category();
+
+
+            category.setIdCategory( ((BigInteger)result[0]).longValue());
+            category.setNombre((String) result[1]);
+            category.setNombreAbreviado((String) result[2]);
+            category.setRestriccion((boolean) result[3]);
+            category.setVigente((boolean) result[4]);
+
+        }
+
+
+        return category;
+
+        /*
 
         ConnectionBD connect = new ConnectionBD();
 
@@ -45,7 +71,7 @@ public class CategoryDAOImpl implements CategoryDAO {
         try {
 
             CallableStatement call = connect.getConnection().prepareCall("{call semantikos.get_category_by_id(?)}");
-            call.setInt(1,id);
+            //call.setInt(1,id);
 
             call.execute();
 
@@ -81,6 +107,7 @@ public class CategoryDAOImpl implements CategoryDAO {
         connect.closeConnection();
 
         return category;
+        */
     }
 
     @Override
@@ -89,75 +116,23 @@ public class CategoryDAOImpl implements CategoryDAO {
         Query q = em.createNativeQuery("select * from semantikos.get_all_categories()");
         List<Object[]> resultList = q.getResultList();
 
-
         List<Category> respuesta = new ArrayList<Category>();
 
         for (Object[] result:resultList) {
 
             Category category = new Category();
 
+
             category.setIdCategory( ((BigInteger)result[0]).longValue());
             category.setNombre((String) result[1]);
-
-            for(int i = 0; i < result.length;i++)
-                 System.out.print( result[i]+",");
-
-
+            category.setNombreAbreviado((String) result[2]);
+            category.setRestriccion((boolean) result[3]);
+            category.setVigente((boolean) result[4]);
             respuesta.add(category);
-
-
-            System.out.println("");
         }
-
-        /*for (int i = 0; i <  q.getResultList().size(); i++) {
-        }*/
-
-
-
-        //session.
-        //Query q = em.createNativeQuery("select semantikos.get_concept_count()");
-
-        /*
-        *
-        * List<Category> categories= new ArrayList<>();
-        conectionBD connect = new conectionBD();
-
-
-        try {
-
-            CallableStatement call = connect.getConnection().prepareCall("{call semantikos.get_all_categories()}");
-            call.execute();
-
-            ResultSet rs = call.getResultSet();
-
-            int id;
-            String name,nameA;
-            Boolean restriction,valid;
-
-
-            while (rs.next()) {
-                id = Integer.parseInt(rs.getString("idcategory"));
-                name = rs.getString("namecategory");
-                nameA= rs.getString("nameabbreviated");
-                restriction = rs.getString("restriction").equalsIgnoreCase("true")? true: false;
-                valid=rs.getString("active").equalsIgnoreCase("true")? true: false;
-
-                categories.add(new Category(id,name,nameA,restriction,valid));
-            }
-
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-
-        connect.closeConnection();
-
-        return categories;
-        *
-        * */
 
         return respuesta;
     }
 
 }
+
