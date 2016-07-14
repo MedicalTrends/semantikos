@@ -168,7 +168,7 @@
 
                         <p:panel header="#{car.id}" style="text-align:center">
                             <h:panelGrid columns="1" style="width:100%">
-                                <p:graphicImage name="demo/images/car/#{car.brand}.gif"/> 
+                                <p:graphicImage name="examples/demo/images/car/#{car.brand}.gif"/>
 
                                 <h:outputText value="#{car.brand} - #{car.year}" />
                             </h:panelGrid>
@@ -224,7 +224,7 @@
                     <p:carousel value="#{carouselView.cars}" headerText="Carousel" var="car" itemStyle="text-align:center" responsive="true" style="margin-top:20px">
                         <p:panelGrid columns="2" style="width:100%;margin:10px 0px" columnClasses="label,value" layout="grid" styleClass="ui-panelgrid-blank">
                             <f:facet name="header">
-                                <p:graphicImage name="demo/images/car/#{car.brand}.gif"/> 
+                                <p:graphicImage name="examples/demo/images/car/#{car.brand}.gif"/>
                             </f:facet>
 
                             <h:outputText value="Id:" />

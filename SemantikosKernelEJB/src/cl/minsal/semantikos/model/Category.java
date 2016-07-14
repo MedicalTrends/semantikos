@@ -1,6 +1,6 @@
 package cl.minsal.semantikos.model;
 
-import cl.minsal.semantikos.kernel.domain.CategoryRelationship;
+import cl.minsal.semantikos.model.CategoryRelationship;
 
 import java.util.List;
 
