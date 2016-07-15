@@ -5,12 +5,14 @@ import cl.minsal.semantikos.model.Description;
 import cl.minsal.semantikos.model.DescriptionType;
 import cl.minsal.semantikos.model.TypeDescription;
 
+import javax.ejb.Local;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by stk-des01 on 07-06-16.
  */
+@Local
 public interface DescriptionManagerInterface {
 
     public void addDescriptionToConcept(String idConcept, String description, String type);

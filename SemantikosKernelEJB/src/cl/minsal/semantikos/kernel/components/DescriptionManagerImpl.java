@@ -5,12 +5,14 @@ import cl.minsal.semantikos.model.Description;
 import cl.minsal.semantikos.model.DescriptionType;
 import cl.minsal.semantikos.model.TypeDescription;
 
+import javax.ejb.Stateless;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by stk-des01 on 07-06-16.
  */
+@Stateless
 public class DescriptionManagerImpl implements DescriptionManagerInterface {
 
     String driver = "org.postgresql.Driver";

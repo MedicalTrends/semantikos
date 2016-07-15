@@ -31,7 +31,7 @@
                         <div class="ui-grid-responsive">
                             <div class="ui-grid-col-12">
 
-                                <p:dataTable id="conceptTable" rows="15" paginator="true" lazy="true" dynamic="true">
+                                <p:dataTable id="conceptTable" value="#{navBrowser.concepts}" var="conceptSMTK" rows="15" paginator="true" lazy="true" dynamic="true">
 
 
                                     <p:column style="width:16px">
@@ -39,7 +39,7 @@
                                     </p:column>
 
                                     <p:column headerText="Concept ID">
-                                        <h:outputText />
+                                        <h:outputText value="#{conceptSMTK.id}"/>
                                     </p:column>
 
                                     <p:column headerText="Termino">
@@ -47,10 +47,13 @@
                                     </p:column>
 
                                     <p:column headerText="Categoría">
-                                        <h:outputText />
+                                        <h:outputText value="#{conceptSMTK.category.nombre}"/>
                                     </p:column>
 
                                     <p:rowExpansion id="tbl">
+
+                                        <div class="ui-grid-responsive">
+                                        <div class="ui-grid-col-4">
 
                                         <h:outputText value="&lt;br/&gt;" escape="false"/>
                                         <p:panelGrid columns="2" columnClasses="label,value">
@@ -58,25 +61,32 @@
                                                 Información del concepto:
                                             </f:facet>
                                             <h:outputText value="Categoría:"/>
-                                            <h:outputText />
+                                            <h:outputText value="#{conceptSMTK.category.nombre}"/>
 
                                             <h:outputText value="Id:"/>
-                                            <h:outputText />
+                                            <h:outputText value="#{conceptSMTK.id}" />
 
                                             <h:outputText value="Completamente definido:"/>
-                                            <h:outputText />
+                                            <h:outputText value="#{navBrowser.conceptSMTK.fullyDefined}"/>
 
                                             <h:outputText value="Estado:"/>
                                             <h:outputText />
 
                                         </p:panelGrid>
+                                        </div>
+                                        <div class="ui-grid-col-1">
+                                            <br></br>
+                                        </div>
+                                        <div class="ui-grid-col-7">
                                         <h:outputText value="&lt;br/&gt;" escape="false"/>
-                                        <p:dataList type="ordered">
+                                        <p:dataList  value="#{conceptSMTK.descriptions}"  var="description" type="ordered">
                                             <f:facet name="header">
                                                 Descripciones:
                                             </f:facet>
-
+                                            #{description.term}, #{description.descriptionType.glosa}
                                         </p:dataList>
+                                        </div>
+                                        </div>
 
                                     </p:rowExpansion>
 

@@ -40,6 +40,17 @@ public class ConceptSMTK {
     /** Las descripciones asociadas al concepto */
     private List<Description> descriptions;
 
+    public ConceptSMTK(long id, long conceptID, Category category, boolean isToBeReviewed, boolean isToBeConsultated, State state, boolean isFullyDefined, boolean isPublished, List<Description> descriptions) {
+        this.id = id;
+        this.conceptID = conceptID;
+        this.category = category;
+        this.isToBeReviewed = isToBeReviewed;
+        this.isToBeConsultated = isToBeConsultated;
+        this.state = state;
+        this.isFullyDefined = isFullyDefined;
+        this.isPublished = isPublished;
+        this.descriptions = descriptions;
+    }
 
     /**
      * El constructor privado con las inicializaciones de los campos por defecto.
@@ -63,6 +74,14 @@ public class ConceptSMTK {
 
         this.addDescription(fsn);
         this.setCategory(category);
+    }
+
+    public List<Description> getDescriptions() {
+        return descriptions;
+    }
+
+    public void setDescriptions(List<Description> descriptions) {
+        this.descriptions = descriptions;
     }
 
     public long getId() {

@@ -1,8 +1,11 @@
 package cl.minsal.semantikos.kernel.components;
 
-import cl.minsal.semantikos.model.AttributeCategory;
-import cl.minsal.semantikos.model.Category;
 
+import cl.minsal.semantikos.kernel.daos.CategoryDAO;
+import cl.minsal.semantikos.model.Category;
+import cl.minsal.semantikos.model.RelationShipDefinition;
+
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -23,56 +26,20 @@ public class CategoryManagerImpl implements CategoryManagerInterface {
     String user = "postgres";
     String password = "1q2w3e";
 
+    @EJB
+    private CategoryDAO categoryDAO;
+
     @Override
-    public ArrayList<AttributeCategory> findDescriptionByIDConcept(int id) {
-
-
-        ArrayList<AttributeCategory> Attributes = new ArrayList<AttributeCategory>();
-
-        //entityManager.createNamedQuery();
-
-/*
-        try {
-            Class.forName(driver);
-            Connection conne = (Connection) DriverManager.getConnection(ruta, user, password);
-            CallableStatement call = conne.prepareCall("{call get_conf_rel(?)}");
-
-            call.setInt(1, id);
-            call.execute();
-
-            ResultSet rs = call.getResultSet();
-
-            String idA;
-            String name;
-            int multiplicity;
-            String description;
-            boolean required;
-
-
-            while (rs.next()) {
-                idA = rs.getString("reltype");
-                name = rs.getString("name");
-                multiplicity = Integer.parseInt(rs.getString("multiplicidad"));
-                description = rs.getString("idLugar");
-                required = false;
-                Attributes.add(new AttributeCategory(idA, name, multiplicity, description, required));
-
-            }
-            conne.close();
-
-        } catch (SQLException | ClassNotFoundException e) {
-            System.out.println(e.toString());
-        }
-*/
-
-        return Attributes;
+    public List<RelationShipDefinition> getCategoryMetaData(int id) {
+        return null;
     }
 
+
     @Override
-    public ArrayList<AttributeCategory> getAllDescription() {
+    public ArrayList<RelationShipDefinition> getAllDescription() {
 
 
-        ArrayList<AttributeCategory> Attributes = new ArrayList<AttributeCategory>();
+        ArrayList<RelationShipDefinition> Attributes = new ArrayList<RelationShipDefinition>();
 
 
 /*
@@ -143,31 +110,37 @@ public class CategoryManagerImpl implements CategoryManagerInterface {
     }
 
     @Override
-    public void addAttribute(AttributeCategory attributeCategory, int idCategory) {
-/*
-        try {
+    public void addAttribute(RelationShipDefinition attributeCategory, int idCategory) {
 
-            Class.forName(driver);
-            Connection conne = (Connection) DriverManager.getConnection(ruta, user, password);
-
-            if(attributeCategory.getId()==null){
-                attributeCategory.setId(addTypeRelationship(attributeCategory.getName(),Integer.parseInt(attributeCategory.getType()),attributeCategory.getIdCategoryDes(),attributeCategory.getMultiplicity())+"");
-            }
-
-            CallableStatement call = conne.prepareCall("{call crea_attribute(?,?,?)}");
-
-            call.setInt(1,idCategory);
-            call.setInt(2,Integer.parseInt(attributeCategory.getId()));
-            call.setInt(3,Integer.parseInt(attributeCategory.isOrder()));
-
-            call.execute();
-
-        } catch (SQLException | ClassNotFoundException e) {
-            System.out.println(e.toString());
-        }
-*/
     }
 
+    /*
+        @Override
+        public void addAttribute(AttributeCategory attributeCategory, int idCategory) {
+
+            try {
+
+                Class.forName(driver);
+                Connection conne = (Connection) DriverManager.getConnection(ruta, user, password);
+
+                if(attributeCategory.getId()==null){
+                    attributeCategory.setId(addTypeRelationship(attributeCategory.getName(),Integer.parseInt(attributeCategory.getType()),attributeCategory.getIdCategoryDes(),attributeCategory.getMultiplicity())+"");
+                }
+
+                CallableStatement call = conne.prepareCall("{call crea_attribute(?,?,?)}");
+
+                call.setInt(1,idCategory);
+                call.setInt(2,Integer.parseInt(attributeCategory.getId()));
+                call.setInt(3,Integer.parseInt(attributeCategory.isOrder()));
+
+                call.execute();
+
+            } catch (SQLException | ClassNotFoundException e) {
+                System.out.println(e.toString());
+            }
+
+        }
+    */
     @Override
     public int addTypeRelationship(String name, int typeRelation, int idCategoryDes, int multiplicity) {
 
@@ -217,14 +190,55 @@ public class CategoryManagerImpl implements CategoryManagerInterface {
 
     @Override
     public List<Category> getCategories() {
-        /*
-        DAOCategoryImpl category= new DAOCategoryImpl();
-        return category.getAllCategories();
-        * */
-        return null;
+        return categoryDAO.getAllCategories();
     }
 
 
+    /*
+        @Override
+        public ArrayList<RelationShipDefinition> findDescriptionByIDConcept(int id) {
 
+
+            ArrayList<RelationShipDefinition> Attributes = new ArrayList<RelationShipDefinition>();
+
+            //entityManager.createNamedQuery();
+
+
+            try {
+                Class.forName(driver);
+                Connection conne = (Connection) DriverManager.getConnection(ruta, user, password);
+                CallableStatement call = conne.prepareCall("{call get_conf_rel(?)}");
+
+                call.setInt(1, id);
+                call.execute();
+
+                ResultSet rs = call.getResultSet();
+
+                String idA;
+                String name;
+                int multiplicity;
+                String description;
+                boolean required;
+
+
+                while (rs.next()) {
+                    idA = rs.getString("reltype");
+                    name = rs.getString("name");
+                    multiplicity = Integer.parseInt(rs.getString("multiplicidad"));
+                    description = rs.getString("idLugar");
+                    required = false;
+                    Attributes.add(new AttributeCategory(idA, name, multiplicity, description, required));
+
+                }
+                conne.close();
+
+            } catch (SQLException | ClassNotFoundException e) {
+                System.out.println(e.toString());
+            }
+
+
+            return Attributes;
+        }
+    */
 
 }

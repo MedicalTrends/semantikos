@@ -1,9 +1,14 @@
 package cl.minsal.semantikos.kernel.components;
 
+import cl.minsal.semantikos.kernel.daos.ConceptDAO;
 import cl.minsal.semantikos.model.ConceptSMTK;
 import cl.minsal.semantikos.model.Description;
 
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -14,15 +19,14 @@ import java.util.StringTokenizer;
 @Stateless
 public class ConceptManagerImpl implements ConceptManagerInterface {
 
-    String driver = "org.postgresql.Driver";
-    String ruta = "jdbc:postgresql://192.168.0.221:5432/postgres";
-    String user = "postgres";
-    String password = "1q2w3e";
+
+    @EJB
+    ConceptDAO concept;
+
+
 
     @Override
     public ArrayList<Description> findDescriptionForPattern(String pattern) {
-
-        ArrayList<Description> descriptions = new ArrayList<Description>();
 
 
 /*
@@ -52,7 +56,7 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
         }
 */
 
-        return descriptions;
+        return null;
     }
 
     @Override
@@ -125,24 +129,21 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
     @Override
     public List<ConceptSMTK> findConceptByPatternCategoryPageNumber(String Pattern, String[] category, int pageNumber, int pageSize) {
 
-        /*
-        DAOConceptImpl concept = new DAOConceptImpl();
 
         if (category != null) {
             if (category.length == 0) category = null;
         }
 
         if (Pattern != null) {
-            List<String> listPattern;
-            listPattern=patternToList(Pattern);
-            String[] arrPattern = listPattern.toArray(new String[listPattern.size()]);
+            if(Pattern.length()>=3){
+                List<String> listPattern;
+                listPattern=patternToList(Pattern);
+                String[] arrPattern = listPattern.toArray(new String[listPattern.size()]);
 
-            return concept.getConceptBy(arrPattern, category,pageNumber,pageSize);
-
+                return concept.getConceptBy(arrPattern, category,pageNumber,pageSize);
+            }
         }
         return concept.getConceptBy(null,category,pageNumber,pageSize);
-        */
-        return null;
 
     }
 
