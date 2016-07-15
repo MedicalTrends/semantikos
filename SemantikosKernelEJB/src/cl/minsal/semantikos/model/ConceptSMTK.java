@@ -140,13 +140,6 @@ public class ConceptSMTK {
         this.isPublished = published;
     }
 
-    public List<Description> getDescriptions() {
-        return descriptions;
-    }
-
-    public void setDescriptions(List<Description> descriptions) {
-        this.descriptions = descriptions;
-    }
 
     public void addDescription(Description description) {
         this.descriptions.add(description);
