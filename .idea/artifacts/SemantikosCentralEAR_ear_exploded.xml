@@ -15,6 +15,7 @@
         <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-core:2.8.0" />
         <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.8.0" />
         <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.8.0" />
+        <element id="library" level="project" name="Maven: postgresql:postgresql:9.1-901-1.jdbc4" />
       </element>
       <element id="archive" name="SemantikosWeb-1.0-SNAPSHOT.war">
         <element id="artifact" artifact-name="SemantikosWeb:war exploded" />
