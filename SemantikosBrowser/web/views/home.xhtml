@@ -34,7 +34,7 @@
                                 <p:dataTable id="conceptTable" value="#{navBrowser.concepts}" var="conceptSMTK" rows="15" paginator="true" lazy="true" dynamic="true">
 
 
-                                    <p:column style="width:16px">
+                                    <p:column style="width:16px" exportable="false">
                                         <p:rowToggler/>
                                     </p:column>
 
@@ -43,7 +43,7 @@
                                     </p:column>
 
                                     <p:column headerText="Termino">
-                                        <h:outputText />
+                                        <h:outputText value="#{conceptSMTK.descriptionFavorite.term}"/>
                                     </p:column>
 
                                     <p:column headerText="Categoría">
@@ -56,7 +56,7 @@
                                         <div class="ui-grid-col-4">
 
                                         <h:outputText value="&lt;br/&gt;" escape="false"/>
-                                        <p:panelGrid columns="2" columnClasses="label,value">
+                                        <p:panelGrid id="tbl2" columns="2" columnClasses="label,value">
                                             <f:facet name="header">
                                                 Información del concepto:
                                             </f:facet>
@@ -95,6 +95,11 @@
 
 
                         </div>
+                        <h:commandButton value="Excel de los conceptos">
+                            <p:dataExporter type="xls" target="conceptTable" fileName="conceptos" />
+                        </h:commandButton>
+
+
 
                     </h:form>
                 </div>

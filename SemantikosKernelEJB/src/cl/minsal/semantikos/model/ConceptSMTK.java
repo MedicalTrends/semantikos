@@ -175,4 +175,14 @@ public class ConceptSMTK {
         result = 31 * result + descriptions.hashCode();
         return result;
     }
+
+
+    public Description getDescriptionFavorite(){
+        for (int i = 0; i < descriptions.size(); i++) {
+            if(descriptions.get(i).getDescriptionType().getIdDescriptionType()==2){
+                return descriptions.get(i);
+            }
+        }
+        return null;
+    }
 }

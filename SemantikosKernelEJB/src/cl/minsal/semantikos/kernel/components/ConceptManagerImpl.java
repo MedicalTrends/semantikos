@@ -151,8 +151,8 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
     @Override
     public int getAllConceptCount(String Pattern, String[] category) {
 
-        /*
-        DAOConceptImpl concept= new DAOConceptImpl();
+
+
 
         if (category != null) {
             if (category.length == 0) category = null;
@@ -165,9 +165,7 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
 
         }
         return concept.getAllConceptCount(null,category);
-        */
 
-        return 0;
     }
 
 
