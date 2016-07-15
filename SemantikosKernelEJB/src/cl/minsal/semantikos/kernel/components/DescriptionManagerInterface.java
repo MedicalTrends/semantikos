@@ -3,6 +3,7 @@ package cl.minsal.semantikos.kernel.components;
 
 import cl.minsal.semantikos.model.Description;
 import cl.minsal.semantikos.model.DescriptionType;
+import cl.minsal.semantikos.model.State;
 import cl.minsal.semantikos.model.TypeDescription;
 
 import javax.ejb.Local;
@@ -24,6 +25,8 @@ public interface DescriptionManagerInterface {
     public List<DescriptionType> getAllTypes();
 
     public List<Description> findDescriptionsByConcept(int idConcept);
+
+    public List<State> getAllStates();
 
 
 }

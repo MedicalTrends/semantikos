@@ -25,11 +25,14 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
 
 
 
+    @EJB
+    ConceptDAO conceptDAO;
+
     @Override
     public ArrayList<Description> findDescriptionForPattern(String pattern) {
 
 
-/*
+        /*
         try {
             Class.forName(driver);
             Connection conne = (Connection) DriverManager.getConnection(ruta, user, password);

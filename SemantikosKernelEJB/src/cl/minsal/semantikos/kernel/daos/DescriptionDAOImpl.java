@@ -4,20 +4,16 @@ import cl.minsal.semantikos.model.Description;
 import cl.minsal.semantikos.model.DescriptionType;
 import cl.minsal.semantikos.kernel.util.ConnectionBD;
 import cl.minsal.semantikos.kernel.util.StringUtils;
+import cl.minsal.semantikos.model.State;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import javax.ejb.Stateless;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 import java.io.IOException;
-import java.math.BigInteger;
 import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -26,11 +22,6 @@ import java.util.List;
  */
 @Stateless
 public class DescriptionDAOImpl implements DescriptionDAO {
-
-
-    @PersistenceContext(unitName = "SEMANTIKOS_PU")
-    EntityManager em;
-
 
     @Override
     public List<DescriptionType> getAllTypes() {
@@ -73,34 +64,7 @@ public class DescriptionDAOImpl implements DescriptionDAO {
     }
 
     @Override
-    public List<Description> getDescriptionByConceptID(long id) {
-
-
-        Query q = em.createNativeQuery("select * from semantikos.get_descriptions_by_idconcept(?)");
-        q.setParameter(1,id);
-        List<Object[]> resultList = q.getResultList();
-
-        List<Description> respuesta = new ArrayList<Description>();
-
-        for (Object[] result:resultList) {
-
-
-
-            DescriptionType descriptionType= new DescriptionType();
-            descriptionType.setIdDescriptionType(((BigInteger)result[1]).longValue());
-            descriptionType.setGlosa(((String)result[2]));
-
-            Description description = new Description(((String)result[3]),descriptionType);
-            description.setIdConcept(((BigInteger)result[0]).longValue());
-            description.setCaseSensitive((boolean)result[4]);
-            description.setCaseSensitive((boolean)result[5]);
-            description.setActive((boolean)result[6]);
-            description.setPublished((boolean)result[7]);
-
-            respuesta.add(description);
-        }
-
-        return respuesta;
+    public List<Description> getDescriptionBy(int id) {
 
         /*
         * List<Description> descriptions= new ArrayList<>();
@@ -145,6 +109,47 @@ public class DescriptionDAOImpl implements DescriptionDAO {
         * */
 
 
+        return null;
+    }
+
+    @Override
+    public List<State> getAllStates() {
+
+        ConnectionBD connect = new ConnectionBD();
+
+        ObjectMapper mapper = new ObjectMapper();
+
+        State[] states= new State[0];
+
+        try {
+
+            CallableStatement call = connect.getConnection().prepareCall("{call semantikos.get_all_states()}");
+
+            call.execute();
+
+            ResultSet rs = call.getResultSet();
+
+
+            while (rs.next()) {
+                String resultJSON = rs.getString(1);
+
+                states = mapper.readValue(StringUtils.lowerCaseToCamelCaseJSON(resultJSON), State[].class);
+            }
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (JsonParseException e) {
+            e.printStackTrace();
+        } catch (JsonMappingException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        connect.closeConnection();
+
+        return Arrays.asList(states);
     }
 
 }

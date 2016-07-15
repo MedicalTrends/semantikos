@@ -73,6 +73,8 @@ public class ConceptSMTK {
         this();
 
         this.addDescription(fsn);
+        fsn.setTerm(fsn.getTerm()+"("+category.getNombre()+")");
+        this.addDescription(fsn);
         this.setCategory(category);
     }
 
@@ -138,9 +140,19 @@ public class ConceptSMTK {
         this.isPublished = published;
     }
 
+    public List<Description> getDescriptions() {
+        return descriptions;
+    }
+
+    public void setDescriptions(List<Description> descriptions) {
+        this.descriptions = descriptions;
+    }
+
     public void addDescription(Description description) {
         this.descriptions.add(description);
     }
+
+    public void removeDescription(Description description) { this.descriptions.remove(description); }
 
     @Override
     public boolean equals(Object o) {

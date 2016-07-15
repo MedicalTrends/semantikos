@@ -1,5 +1,7 @@
 package cl.minsal.semantikos.model;
 
+import java.util.Date;
+
 /**
  * Created by root on 08-07-16.
  */
@@ -22,6 +24,18 @@ public class Description {
     private Long idEstadoConcepto;
     private Long usos;
 
+    // El usuario que realizó la última acción sobre el descriptor
+    private User user;
+
+    // El instante en que se realizó la última acción sobre el descriptor
+    private Date creationDate;
+
+    // El tipo de descriptor
+    private DescriptionType descriptionType;
+
+    // El estado del descriptor
+    private State state;
+
     public Description(String theTerm, DescriptionType descriptionType) {
 
         this.term = theTerm;
@@ -35,8 +49,6 @@ public class Description {
         this.isActive = false;
         this.descriptionType = descriptionType;
     }
-
-    private DescriptionType descriptionType;
 
     public long getIdDescripcionConcepto() {
         return descriptionID;
@@ -53,7 +65,6 @@ public class Description {
     public void setIdConcept(long idConcept) {
         this.idConcept = idConcept;
     }
-
 
     public String getTerm() {
         return term;
@@ -117,6 +128,30 @@ public class Description {
 
     public void setDescriptionType(DescriptionType descriptionType) {
         this.descriptionType = descriptionType;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Date getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(Date creationDate) {
+        this.creationDate = creationDate;
+    }
+
+    public State getState() {
+        return state;
+    }
+
+    public void setState(State state) {
+        this.state = state;
     }
 
 }
