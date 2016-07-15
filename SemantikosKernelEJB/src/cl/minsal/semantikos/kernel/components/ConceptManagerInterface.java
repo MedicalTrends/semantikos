@@ -25,4 +25,5 @@ public interface ConceptManagerInterface {
 
     public int getAllConceptCount(String Pattern, String[] category);
 
+
 }

@@ -1,5 +1,7 @@
 package cl.minsal.semantikos.model;
 
+import java.util.List;
+
 /**
  * Created by andres on 7/12/16.
  */
@@ -7,6 +9,8 @@ public class State {
 
     private String name;
     private StateMachine stateMachine;
+
+    private List<Transition> transitions;
 
     public String getName() {
         return name;
@@ -22,5 +26,13 @@ public class State {
 
     public void setStateMachine(StateMachine stateMachine) {
         this.stateMachine = stateMachine;
+    }
+
+    public List<Transition> getTransitions() {
+        return transitions;
+    }
+
+    public void setTransitions(List<Transition> transitions) {
+        this.transitions = transitions;
     }
 }

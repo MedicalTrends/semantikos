@@ -1,10 +1,13 @@
 package cl.minsal.semantikos.kernel.components;
 
 
+import cl.minsal.semantikos.kernel.daos.DescriptionDAO;
 import cl.minsal.semantikos.model.Description;
 import cl.minsal.semantikos.model.DescriptionType;
+import cl.minsal.semantikos.model.State;
 import cl.minsal.semantikos.model.TypeDescription;
 
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +22,9 @@ public class DescriptionManagerImpl implements DescriptionManagerInterface {
     String ruta = "jdbc:postgresql://192.168.0.221:5432/postgres";
     String user = "postgres";
     String password = "1q2w3e";
+
+    @EJB
+    DescriptionDAO descriptionDAO;
 
     @Override
     public void addDescriptionToConcept(String idConcept, String description, String type) {
@@ -96,5 +102,10 @@ public class DescriptionManagerImpl implements DescriptionManagerInterface {
 
 
         return null;
+    }
+
+    @Override
+    public List<State> getAllStates() {
+        return descriptionDAO.getAllStates();
     }
 }

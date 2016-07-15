@@ -73,6 +73,8 @@ public class ConceptSMTK {
         this();
 
         this.addDescription(fsn);
+        fsn.setTerm(fsn.getTerm()+"("+category.getNombre()+")");
+        this.addDescription(fsn);
         this.setCategory(category);
     }
 
@@ -138,9 +140,12 @@ public class ConceptSMTK {
         this.isPublished = published;
     }
 
+
     public void addDescription(Description description) {
         this.descriptions.add(description);
     }
+
+    public void removeDescription(Description description) { this.descriptions.remove(description); }
 
     @Override
     public boolean equals(Object o) {
@@ -174,5 +179,15 @@ public class ConceptSMTK {
         result = 31 * result + (isPublished ? 1 : 0);
         result = 31 * result + descriptions.hashCode();
         return result;
+    }
+
+
+    public Description getDescriptionFavorite(){
+        for (int i = 0; i < descriptions.size(); i++) {
+            if(descriptions.get(i).getDescriptionType().getIdDescriptionType()==2){
+                return descriptions.get(i);
+            }
+        }
+        return null;
     }
 }
