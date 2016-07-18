@@ -21,7 +21,7 @@
                                 <p:selectCheckboxMenu style="width: 100%; margin: 10px;" id="menu"
                                                       value="#{navBrowser.selectedCategories}" label="Categorías"
                                                       filter="true" filterMatchMode="startsWith">
-                                    <f:selectItems  value="#{navBrowser.categories}" var="category" itemLabel="#{category.name}" itemValue="#{category.idCategory}" />
+                                    <f:selectItems  value="#{navBrowser.categories}" var="category" itemLabel="#{category.nombre}" itemValue="#{category.idCategory}" />
 
                                     <p:ajax event="toggleSelect" update="conceptTable" />
                                     <p:ajax update="conceptTable" />
@@ -31,7 +31,7 @@
                         <div class="ui-grid-responsive">
                             <div class="ui-grid-col-12">
 
-                                <p:dataTable id="conceptTable" value="#{navBrowser.concepts}" var="conceptSMTK" rows="15" paginator="true" lazy="true" dynamic="true" emptyMessage="No se han encontrado conceptos con los criterios utilizados">
+                                <p:dataTable id="conceptTable" value="#{navBrowser.concepts}" var="conceptSMTK" rows="15" paginator="true" lazy="true" dynamic="true">
 
 
                                     <p:column style="width:16px" exportable="false">
@@ -47,7 +47,7 @@
                                     </p:column>
 
                                     <p:column headerText="Categoría">
-                                        <h:outputText value="#{conceptSMTK.category.name}"/>
+                                        <h:outputText value="#{conceptSMTK.category.nombre}"/>
                                     </p:column>
 
                                     <p:rowExpansion id="tbl">
@@ -61,7 +61,7 @@
                                                 Información del concepto:
                                             </f:facet>
                                             <h:outputText value="Categoría:"/>
-                                            <h:outputText value="#{conceptSMTK.category.name}"/>
+                                            <h:outputText value="#{conceptSMTK.category.nombre}"/>
 
                                             <h:outputText value="Id:"/>
                                             <h:outputText value="#{conceptSMTK.id}" />

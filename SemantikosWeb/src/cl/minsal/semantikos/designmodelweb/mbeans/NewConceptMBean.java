@@ -60,10 +60,10 @@ public class NewConceptMBean implements Serializable {
 
         // TODO: Manejar el usuario desde la sesión
         user = new User();
-
+/*
         user.setIdUser(1);
         user.setNameUser("amauro");
-        user.setToken("amauro");
+        user.setToken("amauro");*/
         /////////////////////////////////////////////
 
         category = categoryManager.getFullCategoryById(1);

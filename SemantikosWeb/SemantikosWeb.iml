@@ -22,6 +22,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="Maven: org.omnifaces:omnifaces:2.2" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: javax:javaee-web-api:7.0" level="project" />
     <orderEntry type="library" name="Maven: javax.faces:javax.faces-api:2.2" level="project" />
     <orderEntry type="module" module-name="SemantikosKernelEJB" scope="PROVIDED" />
