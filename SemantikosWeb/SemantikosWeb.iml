@@ -23,7 +23,7 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: javax:javaee-web-api:7.0" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Maven: javax.faces:javax.faces-api:2.2" level="project" />
+    <orderEntry type="library" name="Maven: javax.faces:javax.faces-api:2.2" level="project" />
     <orderEntry type="module" module-name="SemantikosKernelEJB" scope="PROVIDED" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.apache.axis:axis:1.4" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: com.fasterxml.jackson.core:jackson-core:2.8.0" level="project" />
@@ -37,5 +37,6 @@
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.slf4j:slf4j-api:1.7.21" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: log4j:log4j:1.2.17" level="project" />
     <orderEntry type="library" name="Maven: org.primefaces:rio:3.1.1" level="project" />
+    <orderEntry type="library" name="Maven: org.omnifaces:omnifaces:2.2" level="project" />
   </component>
 </module>

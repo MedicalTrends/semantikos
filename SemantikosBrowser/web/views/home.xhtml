@@ -21,7 +21,7 @@
                                 <p:selectCheckboxMenu style="width: 100%; margin: 10px;" id="menu"
                                                       value="#{navBrowser.selectedCategories}" label="Categorías"
                                                       filter="true" filterMatchMode="startsWith">
-                                    <f:selectItems  value="#{navBrowser.categories}" var="category" itemLabel="#{category.nombre}" itemValue="#{category.idCategory}" />
+                                    <f:selectItems  value="#{navBrowser.categories}" var="category" itemLabel="#{category.name}" itemValue="#{category.idCategory}" />
 
                                     <p:ajax event="toggleSelect" update="conceptTable" />
                                     <p:ajax update="conceptTable" />

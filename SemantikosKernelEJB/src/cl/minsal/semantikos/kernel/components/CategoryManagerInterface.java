@@ -36,5 +36,7 @@ public interface CategoryManagerInterface {
 
     public Category getCategoryById(int id);
 
+    public Category getFullCategoryById(int id);
+
 
 }

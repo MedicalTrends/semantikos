@@ -1,7 +1,5 @@
 package cl.minsal.semantikos.model;
 
-import cl.minsal.semantikos.model.CategoryRelationship;
-
 import java.util.List;
 
 /**
@@ -10,14 +8,14 @@ import java.util.List;
 
 public class Category {
     private long idCategory;
-    private String nombre;
-    private String nombreAbreviado;
-    private boolean restriccion;
+    private String name;
+    private String nameAbreviated;
+    private boolean restriction;
     private Long tagSemantikos;
-    private boolean vigente;
+    private boolean isValid;
     private Integer color;
 
-    private List<CategoryRelationship> categoryRelationships;
+    private List<RelationShipDefinition> relationshipDefinitions;
 
     public long getIdCategory() {
         return idCategory;
@@ -27,28 +25,28 @@ public class Category {
         this.idCategory = idCategory;
     }
 
-    public String getNombre() {
-        return nombre;
+    public String getName() {
+        return name;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getNombreAbreviado() {
-        return nombreAbreviado;
+    public String getNameAbreviated() {
+        return nameAbreviated;
     }
 
-    public void setNombreAbreviado(String nombreAbreviado) {
-        this.nombreAbreviado = nombreAbreviado;
+    public void setNameAbreviated(String nameAbreviated) {
+        this.nameAbreviated = nameAbreviated;
     }
 
-    public boolean isRestriccion() {
-        return restriccion;
+    public boolean isRestriction() {
+        return restriction;
     }
 
-    public void setRestriccion(boolean restriccion) {
-        this.restriccion = restriccion;
+    public void setRestriction(boolean restriction) {
+        this.restriction = restriction;
     }
 
     public Long getTagSemantikos() {
@@ -59,12 +57,12 @@ public class Category {
         this.tagSemantikos = tagSemantikos;
     }
 
-    public boolean isVigente() {
-        return vigente;
+    public boolean isValid() {
+        return isValid;
     }
 
-    public void setVigente(boolean vigente) {
-        this.vigente = vigente;
+    public void setValid(boolean valid) {
+        this.isValid = valid;
     }
 
     public Integer getColor() {
@@ -75,12 +73,12 @@ public class Category {
         this.color = color;
     }
 
-    public List<CategoryRelationship> getCategoryRelationships() {
-        return categoryRelationships;
+    public List<RelationShipDefinition> getRelationshipDefinitions() {
+        return relationshipDefinitions;
     }
 
-    public void setCategoryRelationships(List<CategoryRelationship> categoryRelationships) {
-        this.categoryRelationships = categoryRelationships;
+    public void setRelationshipDefinitions(List<RelationShipDefinition> relationshipDefinitions) {
+        this.relationshipDefinitions = relationshipDefinitions;
     }
 
 
@@ -92,10 +90,10 @@ public class Category {
         Category that = (Category) o;
 
         if (idCategory != that.idCategory) return false;
-        if (restriccion != that.restriccion) return false;
-        if (vigente != that.vigente) return false;
-        if (nombre != null ? !nombre.equals(that.nombre) : that.nombre != null) return false;
-        if (nombreAbreviado != null ? !nombreAbreviado.equals(that.nombreAbreviado) : that.nombreAbreviado != null)
+        if (restriction != that.restriction) return false;
+        if (isValid != that.isValid) return false;
+        if (name != null ? !name.equals(that.name) : that.name != null) return false;
+        if (nameAbreviated != null ? !nameAbreviated.equals(that.nameAbreviated) : that.nameAbreviated != null)
             return false;
         if (tagSemantikos != null ? !tagSemantikos.equals(that.tagSemantikos) : that.tagSemantikos != null)
             return false;
@@ -107,11 +105,11 @@ public class Category {
     @Override
     public int hashCode() {
         int result = (int) (idCategory ^ (idCategory >>> 32));
-        result = 31 * result + (nombre != null ? nombre.hashCode() : 0);
-        result = 31 * result + (nombreAbreviado != null ? nombreAbreviado.hashCode() : 0);
-        result = 31 * result + (restriccion ? 1 : 0);
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (nameAbreviated != null ? nameAbreviated.hashCode() : 0);
+        result = 31 * result + (restriction ? 1 : 0);
         result = 31 * result + (tagSemantikos != null ? tagSemantikos.hashCode() : 0);
-        result = 31 * result + (vigente ? 1 : 0);
+        result = 31 * result + (isValid ? 1 : 0);
         result = 31 * result + (color != null ? color.hashCode() : 0);
         return result;
     }

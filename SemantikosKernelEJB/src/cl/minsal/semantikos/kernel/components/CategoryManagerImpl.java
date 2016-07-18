@@ -185,7 +185,16 @@ public class CategoryManagerImpl implements CategoryManagerInterface {
         CategoryDAOImpl categoryDAO= new CategoryDAOImpl();
         return categoryDAO.getCategoryById(id);
         */
-        return null;
+        //return categoryDAO.getCategoryById(id);
+        return new Category();
+    }
+
+    @Override
+    public Category getFullCategoryById(int id) {
+
+        return categoryDAO.getFullCategoryById(id);
+        //return new Category();
+        //return null;
     }
 
     @Override

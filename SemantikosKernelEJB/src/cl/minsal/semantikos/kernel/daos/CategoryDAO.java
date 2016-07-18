@@ -15,5 +15,7 @@ public interface CategoryDAO {
 
     public Category getCategoryById(long id);
 
+    public Category getFullCategoryById(long id);
+
     public List<Category> getAllCategories();
 }

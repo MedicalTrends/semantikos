@@ -38,7 +38,7 @@ public class ConceptSMTK {
     private boolean isPublished;
 
     /** Las descripciones asociadas al concepto */
-    private List<Description> descriptions;
+    private List<Description> descriptions = new ArrayList<Description>();;
 
     public ConceptSMTK(long id, long conceptID, Category category, boolean isToBeReviewed, boolean isToBeConsultated, State state, boolean isFullyDefined, boolean isPublished, List<Description> descriptions) {
         this.id = id;
@@ -73,7 +73,7 @@ public class ConceptSMTK {
         this();
 
         this.addDescription(fsn);
-        fsn.setTerm(fsn.getTerm()+"("+category.getNombre()+")");
+        fsn.setTerm(fsn.getTerm()+"("+category.getName()+")");
         this.addDescription(fsn);
         this.setCategory(category);
     }

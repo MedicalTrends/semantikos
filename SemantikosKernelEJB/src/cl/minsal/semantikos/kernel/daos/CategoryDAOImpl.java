@@ -35,7 +35,6 @@ public class CategoryDAOImpl implements CategoryDAO {
     public Category getCategoryById(long id) {
 
 
-        ObjectMapper mapper = new ObjectMapper();
         Query q = em.createNativeQuery("select * from semantikos.get_category_by_id(?)");
         q.setParameter(1,id);
 
@@ -48,17 +47,19 @@ public class CategoryDAOImpl implements CategoryDAO {
 
 
             category.setIdCategory( ((BigInteger)result[0]).longValue());
-            category.setNombre((String) result[1]);
-            category.setNombreAbreviado((String) result[2]);
-            category.setRestriccion((boolean) result[3]);
-            category.setVigente((boolean) result[4]);
+            category.setName((String) result[1]);
+            category.setNameAbreviated((String) result[2]);
+            category.setRestriction((boolean) result[3]);
+            category.setValid((boolean) result[4]);
 
         }
 
 
         return category;
+    }
 
-        /*
+    @Override
+    public Category getFullCategoryById(long id) {
 
         ConnectionBD connect = new ConnectionBD();
 
@@ -68,8 +69,10 @@ public class CategoryDAOImpl implements CategoryDAO {
 
         try {
 
-            CallableStatement call = connect.getConnection().prepareCall("{call semantikos.get_category_by_id(?)}");
-            //call.setInt(1,id);
+            CallableStatement call = connect.getConnection().prepareCall("{call semantikos.get_full_category_by_id(?)}");
+            call.setInt(1,(int)id);
+
+            System.out.println("PASE");
 
             call.execute();
 
@@ -105,7 +108,6 @@ public class CategoryDAOImpl implements CategoryDAO {
         connect.closeConnection();
 
         return category;
-        */
     }
 
     @Override
@@ -122,10 +124,10 @@ public class CategoryDAOImpl implements CategoryDAO {
 
 
             category.setIdCategory( ((BigInteger)result[0]).longValue());
-            category.setNombre((String) result[1]);
-            category.setNombreAbreviado((String) result[2]);
-            category.setRestriccion((boolean) result[3]);
-            category.setVigente((boolean) result[4]);
+            category.setName((String) result[1]);
+            category.setNameAbreviated((String) result[2]);
+            category.setRestriction((boolean) result[3]);
+            category.setValid((boolean) result[4]);
             respuesta.add(category);
         }
 

@@ -66,10 +66,10 @@ public class NewConceptMBean implements Serializable {
         user.setToken("amauro");
         /////////////////////////////////////////////
 
-        category = categoryManager.getCategoryById(1);
-        concept = new ConceptSMTK(category, new Description("electrocardiograma de urgencia", descriptionTypes.get(0)));
+        category = categoryManager.getFullCategoryById(1);
         descriptionTypes = descriptionManager.getAllTypes();
         descriptionStates = descriptionManager.getAllStates();
+        concept = new ConceptSMTK(category, new Description("electrocardiograma de urgencia", descriptionTypes.get(0)));
     }
 
     public String getMyFormattedDate(Date date) {

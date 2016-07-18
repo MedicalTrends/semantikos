@@ -175,6 +175,8 @@ public class DescriptionDAOImpl implements DescriptionDAO {
             while (rs.next()) {
                 String resultJSON = rs.getString(1);
 
+                System.out.println("resultJSON="+resultJSON);
+
                 states = mapper.readValue(StringUtils.lowerCaseToCamelCaseJSON(resultJSON), State[].class);
             }
 
