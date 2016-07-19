@@ -2,15 +2,17 @@ package cl.minsal.semantikos.kernel.daos;
 
 
 import cl.minsal.semantikos.kernel.util.ConnectionBD;
-import cl.minsal.semantikos.model.Category;
-import cl.minsal.semantikos.model.ConceptSMTK;
-import cl.minsal.semantikos.model.Description;
-import cl.minsal.semantikos.model.State;
+import cl.minsal.semantikos.kernel.util.StringUtils;
+import cl.minsal.semantikos.model.*;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.io.IOException;
 import java.sql.Array;
 import java.sql.CallableStatement;
 import java.sql.ResultSet;
@@ -288,7 +290,53 @@ public class ConceptDAOImpl implements ConceptDAO {
     }
 
     @Override
-    public ConceptSMTK newConcept(int idCategory, String termino) {
-        return null;
+    public ConceptStateMachine getConceptStateMachine() {
+
+        ConnectionBD connect = new ConnectionBD();
+
+        ObjectMapper mapper = new ObjectMapper();
+
+        Category category= new Category();
+
+        try {
+
+            CallableStatement call = connect.getConnection().prepareCall("{call semantikos.get_concept_state_machine()}");
+
+            call.execute();
+
+            //ResultSetMetaData metaData = call.getMetaData();
+            ResultSet rs = call.getResultSet();
+
+            //System.out.println(metaData.toString());
+
+            while (rs.next()) {
+                String resultJSON = rs.getString(1);
+
+                //mapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
+
+                category = mapper.readValue(StringUtils.underScoreToCamelCaseJSON(resultJSON) , Category.class);
+            }
+
+
+            //String result = call.getString(0);
+
+            //System.out.println(result);
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (JsonParseException e) {
+            e.printStackTrace();
+        } catch (JsonMappingException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        connect.closeConnection();
+
+        return category;
     }
+
+
 }

@@ -42,8 +42,8 @@ public class StateMachine {
      */
     public boolean transit(State sourceState, State targetState) throws IllegalStateException {
 
-        /*
-        for (Transition transition : sourceState.getTransitions()) {
+
+        for (Transition transition : getTransitions(sourceState)) {
 
             if(transition.getTargetState().equals(targetState))
                 return true;
@@ -51,7 +51,7 @@ public class StateMachine {
                 return false;
 
         }
-        */
+
         return false;
 
     }

@@ -55,7 +55,7 @@ public class DescriptionDAOImpl implements DescriptionDAO {
             while (rs.next()) {
                 String resultJSON = rs.getString(1);
 
-                descriptionTypes = mapper.readValue(StringUtils.lowerCaseToCamelCaseJSON(resultJSON) , DescriptionType[].class);
+                descriptionTypes = mapper.readValue(StringUtils.underScoreToCamelCaseJSON(resultJSON) , DescriptionType[].class);
             }
 
 
@@ -177,7 +177,7 @@ public class DescriptionDAOImpl implements DescriptionDAO {
 
                 System.out.println("resultJSON="+resultJSON);
 
-                states = mapper.readValue(StringUtils.lowerCaseToCamelCaseJSON(resultJSON), State[].class);
+                states = mapper.readValue(StringUtils.underScoreToCamelCaseJSON(resultJSON), State[].class);
             }
 
 

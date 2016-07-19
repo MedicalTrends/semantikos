@@ -86,7 +86,7 @@ public class CategoryDAOImpl implements CategoryDAO {
 
                 //mapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
 
-                category = mapper.readValue(StringUtils.lowerCaseToCamelCaseJSON(resultJSON) , Category.class);
+                category = mapper.readValue(StringUtils.underScoreToCamelCaseJSON(resultJSON) , Category.class);
             }
 
 
