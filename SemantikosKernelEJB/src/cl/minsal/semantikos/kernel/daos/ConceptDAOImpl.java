@@ -2,15 +2,17 @@ package cl.minsal.semantikos.kernel.daos;
 
 
 import cl.minsal.semantikos.kernel.util.ConnectionBD;
-import cl.minsal.semantikos.model.Category;
-import cl.minsal.semantikos.model.ConceptSMTK;
-import cl.minsal.semantikos.model.Description;
-import cl.minsal.semantikos.model.State;
+import cl.minsal.semantikos.kernel.util.StringUtils;
+import cl.minsal.semantikos.model.*;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.io.IOException;
 import java.sql.Array;
 import java.sql.CallableStatement;
 import java.sql.ResultSet;
@@ -60,7 +62,7 @@ public class ConceptDAOImpl implements ConceptDAO {
                 Array ArrayPattern = connect.getConnection().createArrayOf("text", Pattern);
 
                 if (Category != null) {
-                    call = connect.getConnection().prepareCall("{call semantikos.find_concept_by(?,?,?,?)}");
+                    call = connect.getConnection().prepareCall("{call semantikos.find_concept_by_pattern_and_categories(?,?,?,?)}");
                     Array ArrayCategories = connect.getConnection().createArrayOf("integer", Category);
 
                     call.setArray(1, ArrayCategories);
@@ -86,7 +88,7 @@ public class ConceptDAOImpl implements ConceptDAO {
                     call.setInt(3,pageSize);
 
                 } else {
-                    call = connect.getConnection().prepareCall("{call semantikos.get_concept_by_page_size(?,?)}");
+                    call = connect.getConnection().prepareCall("{call semantikos.find_concept_by_page_size(?,?)}");
                     call.setInt(1,pageNumber);
                     call.setInt(2,pageSize);
                 }
@@ -102,7 +104,7 @@ public class ConceptDAOImpl implements ConceptDAO {
 
             while (rs.next()) {
                 id = Long.valueOf(rs.getString("id"));
-                idCategory = Long.valueOf(rs.getString("idcategoria"));
+                idCategory = Long.valueOf(rs.getString("id_category"));
 
                 if (objectCategory != null) {
                     if (objectCategory.getIdCategory() != idCategory) {
@@ -112,11 +114,11 @@ public class ConceptDAOImpl implements ConceptDAO {
                     objectCategory = categoryDAO.getCategoryById(idCategory);
                 }
 
-                check = Boolean.parseBoolean(rs.getString("revisar"));
-                consult =  Boolean.parseBoolean(rs.getString("consultar"));
-                state = Long.valueOf(rs.getString("idestadoconcepto"));
-                completelyDefined =  Boolean.parseBoolean(rs.getString("completamentedefinido"));
-                published =  Boolean.parseBoolean(rs.getString("publicado"));
+                check = Boolean.parseBoolean(rs.getString("is_to_be_reviewed"));
+                consult =  Boolean.parseBoolean(rs.getString("is_to_be_consultated"));
+                state = Long.valueOf(rs.getString("id_state_concept"));
+                completelyDefined =  Boolean.parseBoolean(rs.getString("is_fully_defined"));
+                published =  Boolean.parseBoolean(rs.getString("is_published"));
                 State st = new State();
                 st.setName(String.valueOf(state));
                 List<Description> descriptions= descriptionDAO.getDescriptionByConceptID(id);
@@ -248,26 +250,26 @@ public class ConceptDAOImpl implements ConceptDAO {
                 Array ArrayPattern = connect.getConnection().createArrayOf("text", Pattern);
 
                 if (category != null) {
-                    call = connect.getConnection().prepareCall("{call semantikos.find_concept_count_by(?,?)}");
+                    call = connect.getConnection().prepareCall("{call semantikos.count_concept_by_pattern_and_categories(?,?)}");
                     Array ArrayCategories = connect.getConnection().createArrayOf("integer", category);
 
                     call.setArray(1, ArrayCategories);
                     call.setArray(2, ArrayPattern);
 
                 } else {
-                    call = connect.getConnection().prepareCall("{call semantikos.find_concept_count_by_pattern(?)}");
+                    call = connect.getConnection().prepareCall("{call semantikos.count_concept_by_pattern(?)}");
                     call.setArray(1, ArrayPattern);
                 }
 
             } else {
 
                 if (category != null) {
-                    call = connect.getConnection().prepareCall("{call semantikos.find_concept_count_by_categories(?)}");
+                    call = connect.getConnection().prepareCall("{call semantikos.count_concept_count_by_categories(?)}");
                     Array ArrayCategories = connect.getConnection().createArrayOf("integer", category);
                     call.setArray(1, ArrayCategories);
 
                 } else {
-                    call = connect.getConnection().prepareCall("{call semantikos.get_concept_count()}");
+                    call = connect.getConnection().prepareCall("{call semantikos.count_concept_by_page_size()}");
                 }
             }
 
@@ -286,4 +288,55 @@ public class ConceptDAOImpl implements ConceptDAO {
 
         return count;
     }
+
+    @Override
+    public ConceptStateMachine getConceptStateMachine() {
+
+        ConnectionBD connect = new ConnectionBD();
+
+        ObjectMapper mapper = new ObjectMapper();
+
+        Category category= new Category();
+
+        try {
+
+            CallableStatement call = connect.getConnection().prepareCall("{call semantikos.get_concept_state_machine()}");
+
+            call.execute();
+
+            //ResultSetMetaData metaData = call.getMetaData();
+            ResultSet rs = call.getResultSet();
+
+            //System.out.println(metaData.toString());
+
+            while (rs.next()) {
+                String resultJSON = rs.getString(1);
+
+                //mapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
+
+                category = mapper.readValue(StringUtils.underScoreToCamelCaseJSON(resultJSON) , Category.class);
+            }
+
+
+            //String result = call.getString(0);
+
+            //System.out.println(result);
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (JsonParseException e) {
+            e.printStackTrace();
+        } catch (JsonMappingException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        connect.closeConnection();
+
+        return category;
+    }
+
+
 }

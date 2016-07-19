@@ -1,5 +1,6 @@
 package cl.minsal.semantikos.kernel.components;
 
+import cl.minsal.semantikos.model.Category;
 import cl.minsal.semantikos.model.ConceptSMTK;
 import cl.minsal.semantikos.model.Description;
 
@@ -19,11 +20,12 @@ public interface ConceptManagerInterface {
 
     public int getIDConceptBy(int idDescription);
 
-    public ConceptSMTK newConcept(int idCategory, String termino);
+    public ConceptSMTK newConcept(Category category, String termino);
 
     public List<ConceptSMTK> findConceptByPatternCategoryPageNumber(String Pattern, String[] category, int pageNumber, int pageSize);
 
     public int getAllConceptCount(String Pattern, String[] category);
+
 
 
 }

@@ -12,7 +12,8 @@ import java.util.List;
  * Created by des01c7 on 01-07-16.
  */
 @Local
-public interface DescriptionDAO {
+public interface
+DescriptionDAO {
 
     public List<DescriptionType> getAllTypes();
 
@@ -21,4 +22,9 @@ public interface DescriptionDAO {
     public List<State> getAllStates();
 
     public List<Description> getDescriptionByConceptID(long id);
+
+    public DescriptionType getTypeFSN();
+
+    public DescriptionType getTypePreferido();
+
 }

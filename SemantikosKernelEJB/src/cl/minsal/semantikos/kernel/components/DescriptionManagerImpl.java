@@ -87,7 +87,7 @@ public class DescriptionManagerImpl implements DescriptionManagerInterface {
         System.out.println("descriptionDAO.getAllTypes().size()="+descriptionDAO.getAllTypes().size());
         return descriptionDAO.getAllTypes();
         * */
-        return null;
+        return descriptionDAO.getAllTypes();
     }
 
     @Override
@@ -106,6 +106,13 @@ public class DescriptionManagerImpl implements DescriptionManagerInterface {
 
     @Override
     public List<State> getAllStates() {
-        return descriptionDAO.getAllStates();
+        return null;
     }
+
+
+    @Override
+    public DescriptionType getTypeFSN() { return descriptionDAO.getTypeFSN(); }
+
+    @Override
+    public DescriptionType getTypePreferido() { return descriptionDAO.getTypePreferido(); }
 }

@@ -1,8 +1,6 @@
 package cl.minsal.semantikos.designmodelweb.mbeans;
 
-import cl.minsal.semantikos.kernel.components.ConceptManagerInterface;
-import cl.minsal.semantikos.kernel.components.DescriptionManagerInterface;
-import cl.minsal.semantikos.kernel.components.CategoryManagerInterface;
+import cl.minsal.semantikos.kernel.components.*;
 import cl.minsal.semantikos.kernel.components.ConceptManagerInterface;
 import cl.minsal.semantikos.kernel.components.DescriptionManagerInterface;
 import cl.minsal.semantikos.model.*;
@@ -12,6 +10,7 @@ import org.primefaces.event.RowEditEvent;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
+import javax.faces.application.StateManager;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
@@ -25,7 +24,7 @@ import java.util.List;
 /**
  * Created by diego on 26/06/2016.
  */
-@ManagedBean
+@ManagedBean(name="newConceptMBean")
 @ViewScoped
 public class NewConceptMBean implements Serializable {
 
@@ -37,6 +36,11 @@ public class NewConceptMBean implements Serializable {
 
     @EJB
     CategoryManagerInterface categoryManager;
+
+    /*
+    @EJB
+    StateManagerInterface stateManager;
+    */
 
     public User user;
 
@@ -68,8 +72,8 @@ public class NewConceptMBean implements Serializable {
 
         category = categoryManager.getFullCategoryById(1);
         descriptionTypes = descriptionManager.getAllTypes();
-        descriptionStates = descriptionManager.getAllStates();
-        concept = new ConceptSMTK(category, new Description("electrocardiograma de urgencia", descriptionTypes.get(0)));
+        //concept = new ConceptSMTK(category, new Description("electrocardiograma de urgencia", descriptionTypes.get(0)));
+        concept = conceptManager.newConcept(category, "electrocardiograma de urgencia");
     }
 
     public String getMyFormattedDate(Date date) {
@@ -158,10 +162,12 @@ public class NewConceptMBean implements Serializable {
     }
 
     public void addItem() {
+        System.out.println("addItem");
         Description description = new Description(otherTermino, descriptionTypes.get(0));
-        //description.setTerm(otherTermino);
+        description.setTerm(otherTermino);
         description.setCaseSensitive(otherSensibilidad);
         description.setState(descriptionStates.get(0));
+        description.setState(stateManager.getStatePropuesto());
         //description.setDescriptionType(descriptionTypes.get(0));
         description.setCreationDate(Calendar.getInstance().getTime());
         description.setUser(user);

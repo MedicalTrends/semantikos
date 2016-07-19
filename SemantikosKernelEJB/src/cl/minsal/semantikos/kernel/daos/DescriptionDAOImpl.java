@@ -55,7 +55,7 @@ public class DescriptionDAOImpl implements DescriptionDAO {
             while (rs.next()) {
                 String resultJSON = rs.getString(1);
 
-                descriptionTypes = mapper.readValue(StringUtils.lowerCaseToCamelCaseJSON(resultJSON) , DescriptionType[].class);
+                descriptionTypes = mapper.readValue(StringUtils.underScoreToCamelCaseJSON(resultJSON) , DescriptionType[].class);
             }
 
 
@@ -177,7 +177,7 @@ public class DescriptionDAOImpl implements DescriptionDAO {
 
                 System.out.println("resultJSON="+resultJSON);
 
-                states = mapper.readValue(StringUtils.lowerCaseToCamelCaseJSON(resultJSON), State[].class);
+                states = mapper.readValue(StringUtils.underScoreToCamelCaseJSON(resultJSON), State[].class);
             }
 
 
@@ -194,6 +194,91 @@ public class DescriptionDAOImpl implements DescriptionDAO {
         connect.closeConnection();
 
         return Arrays.asList(states);
+    }
+
+    @Override
+    public DescriptionType getTypeFSN() {
+
+        ConnectionBD connect = new ConnectionBD();
+
+        ObjectMapper mapper = new ObjectMapper();
+
+        DescriptionType fsn= new DescriptionType();
+
+        try {
+
+            CallableStatement call = connect.getConnection().prepareCall("{call semantikos.get_type_fsn()}");
+
+            call.execute();
+
+            ResultSet rs = call.getResultSet();
+
+
+            while (rs.next()) {
+
+                String resultJSON = rs.getString(1);
+
+                fsn = mapper.readValue(StringUtils.underScoreToCamelCaseJSON(resultJSON) , DescriptionType.class);
+
+            }
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (JsonParseException e) {
+            e.printStackTrace();
+        } catch (JsonMappingException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        connect.closeConnection();
+
+        return fsn;
+    }
+
+    @Override
+    public DescriptionType getTypePreferido() {
+
+        ConnectionBD connect = new ConnectionBD();
+
+        ObjectMapper mapper = new ObjectMapper();
+
+        DescriptionType preferido= new DescriptionType();
+
+        try {
+
+            CallableStatement call = connect.getConnection().prepareCall("{call semantikos.get_type_preferido()}");
+
+            call.execute();
+
+            ResultSet rs = call.getResultSet();
+
+
+            while (rs.next()) {
+
+                String resultJSON = rs.getString(1);
+
+                preferido = mapper.readValue(StringUtils.underScoreToCamelCaseJSON(resultJSON) , DescriptionType.class);
+
+            }
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (JsonParseException e) {
+            e.printStackTrace();
+        } catch (JsonMappingException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        connect.closeConnection();
+
+        return preferido;
+
     }
 
 }

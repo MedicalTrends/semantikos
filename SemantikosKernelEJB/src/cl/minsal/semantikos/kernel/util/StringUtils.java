@@ -8,7 +8,7 @@ import java.util.regex.Pattern;
  */
 public class StringUtils {
 
-    public static String lowerCaseToCamelCaseJSON(String json){
+    public static String underScoreToCamelCaseJSON(String json){
 
         Pattern p = Pattern.compile( "_([a-zA-Z])" );
         Matcher m = p.matcher( json );
