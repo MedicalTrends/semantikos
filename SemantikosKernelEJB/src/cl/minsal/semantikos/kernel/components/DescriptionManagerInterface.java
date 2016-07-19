@@ -28,5 +28,9 @@ public interface DescriptionManagerInterface {
 
     public List<State> getAllStates();
 
+    public DescriptionType getTypeFSN();
+
+    public DescriptionType getTypePreferido();
+
 
 }

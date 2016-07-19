@@ -1,6 +1,7 @@
 package cl.minsal.semantikos.model;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -59,7 +60,7 @@ public class ConceptSMTK {
     private ConceptSMTK() {
 
         /* El concepto parte con su estado inicial */
-        this.state = ConceptStateMachine.getInstance().getInitialState();
+        //this.state = ConceptStateMachine.getInstance().getInitialState();
 
         this.descriptions = new ArrayList<Description>();
 
@@ -75,6 +76,14 @@ public class ConceptSMTK {
         this.addDescription(fsn);
         fsn.setTerm(fsn.getTerm()+"("+category.getName()+")");
         this.addDescription(fsn);
+        this.setCategory(category);
+    }
+
+    public ConceptSMTK(Category category, Description fsn, Description preferido) {
+        this();
+
+        this.addDescription(fsn);
+        this.addDescription(preferido);
         this.setCategory(category);
     }
 

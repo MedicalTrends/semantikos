@@ -23,4 +23,8 @@ DescriptionDAO {
 
     public List<Description> getDescriptionByConceptID(long id);
 
+    public DescriptionType getTypeFSN();
+
+    public DescriptionType getTypePreferido();
+
 }

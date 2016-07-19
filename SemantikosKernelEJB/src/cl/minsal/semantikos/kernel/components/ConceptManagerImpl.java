@@ -1,6 +1,7 @@
 package cl.minsal.semantikos.kernel.components;
 
 import cl.minsal.semantikos.kernel.daos.ConceptDAO;
+import cl.minsal.semantikos.model.Category;
 import cl.minsal.semantikos.model.ConceptSMTK;
 import cl.minsal.semantikos.model.Description;
 
@@ -10,6 +11,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.StringTokenizer;
 
@@ -23,10 +25,16 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
     @EJB
     ConceptDAO concept;
 
-
-
     @EJB
     ConceptDAO conceptDAO;
+
+    @EJB
+    DescriptionManagerInterface descriptionManager;
+
+    /*
+    @EJB
+    StateManagerInterface stateManager;
+    */
 
     @Override
     public ArrayList<Description> findDescriptionForPattern(String pattern) {
@@ -123,10 +131,16 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
     }
 
     @Override
-    public ConceptSMTK newConcept(int idCategory, String termino) {
-
-        //ConceptSMTK conceptSMTK = new ConceptSMTK(idCategory, termino);
-        return null;
+    public ConceptSMTK newConcept(Category category, String term) {
+        // Crear descriptor FSN
+        Description fsn = new Description(term+" ("+category.getName()+")", descriptionManager.getTypeFSN());
+        fsn.setCreationDate(Calendar.getInstance().getTime());
+        // Crear descriptor preferido
+        Description preferido = new Description(term, descriptionManager.getTypePreferido());
+        preferido.setCreationDate(Calendar.getInstance().getTime());
+        // Crear estado propuesto
+        State propuesto = stateManager.getStatePropuesto();
+        return new ConceptSMTK(category,fsn,preferido);
     }
 
     @Override

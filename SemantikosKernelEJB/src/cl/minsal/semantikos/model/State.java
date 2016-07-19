@@ -10,7 +10,7 @@ public class State {
     private String name;
     private StateMachine stateMachine;
 
-    private List<Transition> transitions;
+    //private List<Transition> transitions;
 
     public String getName() {
         return name;
@@ -28,11 +28,4 @@ public class State {
         this.stateMachine = stateMachine;
     }
 
-    public List<Transition> getTransitions() {
-        return transitions;
-    }
-
-    public void setTransitions(List<Transition> transitions) {
-        this.transitions = transitions;
-    }
 }

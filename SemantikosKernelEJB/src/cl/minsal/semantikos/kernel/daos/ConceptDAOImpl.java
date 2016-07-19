@@ -286,4 +286,9 @@ public class ConceptDAOImpl implements ConceptDAO {
 
         return count;
     }
+
+    @Override
+    public ConceptSMTK newConcept(int idCategory, String termino) {
+        return null;
+    }
 }
