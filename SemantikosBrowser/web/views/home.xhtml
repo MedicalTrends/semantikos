@@ -36,7 +36,13 @@
                                 <p:dataTable id="conceptTable" value="#{navBrowser.concepts}" var="conceptSMTK"
                                              rows="15"
                                              paginator="true" lazy="true" dynamic="true"
+                                             paginatorTemplate=" {CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
                                              emptyMessage="No se han encontrado conceptos con los criterios utilizados">
+                                    <f:facet name="{Exporters}">
+                                        <h:commandButton value="Exportar a Excel" styleClass="ui-priority-primary">
+                                            <p:dataExporter type="xls" target=":form2:conceptTable" fileName="conceptos"/>
+                                        </h:commandButton>
+                                    </f:facet>
 
 
                                     <p:column headerText="Concept ID">
@@ -86,10 +92,11 @@
 
                             <p:dataTable id="detailConcept" var="description"
                                          value="#{navBrowser.conceptSelected.descriptions}"
-                                         style="margin-top:40px">
+                                         style="margin-top:40px" >
                                 <f:facet name="header">
                                     Detalle del concepto
                                 </f:facet>
+
 
                                 <p:columnGroup type="header">
 
@@ -130,7 +137,7 @@
                                 </p:column>
                                 <p:column>
                                     <f:facet name="header">
-                                        <h:outputText value="Description Typehome.xhtml"/>
+                                        <h:outputText value="Description Type"/>
                                     </f:facet>
                                     <h:outputText value="#{description.descriptionType.glosa}"></h:outputText>
                                 </p:column>
