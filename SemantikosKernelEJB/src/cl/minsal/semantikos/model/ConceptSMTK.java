@@ -87,6 +87,15 @@ public class ConceptSMTK {
         this.setCategory(category);
     }
 
+    public ConceptSMTK(Category category, Description fsn, Description preferido, State state) {
+        this();
+
+        this.addDescription(fsn);
+        this.addDescription(preferido);
+        this.setCategory(category);
+        this.setState(state);
+    }
+
     public List<Description> getDescriptions() {
         return descriptions;
     }
@@ -105,6 +114,10 @@ public class ConceptSMTK {
 
     public State getState() {
         return state;
+    }
+
+    public void setState(State state) {
+        this.state = state;
     }
 
     public void setCategory(Category category) {

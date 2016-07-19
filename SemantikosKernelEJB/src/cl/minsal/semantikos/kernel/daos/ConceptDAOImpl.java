@@ -296,7 +296,8 @@ public class ConceptDAOImpl implements ConceptDAO {
 
         ObjectMapper mapper = new ObjectMapper();
 
-        Category category= new Category();
+        ConceptStateMachine conceptStateMachine= ConceptStateMachine.getInstance();
+
 
         try {
 
@@ -304,24 +305,14 @@ public class ConceptDAOImpl implements ConceptDAO {
 
             call.execute();
 
-            //ResultSetMetaData metaData = call.getMetaData();
             ResultSet rs = call.getResultSet();
-
-            //System.out.println(metaData.toString());
 
             while (rs.next()) {
                 String resultJSON = rs.getString(1);
 
-                //mapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
+                conceptStateMachine = mapper.readValue(StringUtils.underScoreToCamelCaseJSON(resultJSON), ConceptStateMachine.class);
 
-                category = mapper.readValue(StringUtils.underScoreToCamelCaseJSON(resultJSON) , Category.class);
             }
-
-
-            //String result = call.getString(0);
-
-            //System.out.println(result);
-
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -335,8 +326,7 @@ public class ConceptDAOImpl implements ConceptDAO {
 
         connect.closeConnection();
 
-        return null;
+        return conceptStateMachine;
     }
-
 
 }

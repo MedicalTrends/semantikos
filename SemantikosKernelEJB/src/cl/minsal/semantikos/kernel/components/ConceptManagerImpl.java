@@ -1,9 +1,7 @@
 package cl.minsal.semantikos.kernel.components;
 
 import cl.minsal.semantikos.kernel.daos.ConceptDAO;
-import cl.minsal.semantikos.model.Category;
-import cl.minsal.semantikos.model.ConceptSMTK;
-import cl.minsal.semantikos.model.Description;
+import cl.minsal.semantikos.model.*;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -132,15 +130,19 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
 
     @Override
     public ConceptSMTK newConcept(Category category, String term) {
+        // Crear estado propuesto
+        ConceptStateMachine conceptStateMachine = conceptDAO.getConceptStateMachine();
+        State propuesto = conceptStateMachine.getInitialState();
+        propuesto.setStateMachine(conceptStateMachine);
         // Crear descriptor FSN
         Description fsn = new Description(term+" ("+category.getName()+")", descriptionManager.getTypeFSN());
         fsn.setCreationDate(Calendar.getInstance().getTime());
+        fsn.setState(propuesto);
         // Crear descriptor preferido
         Description preferido = new Description(term, descriptionManager.getTypePreferido());
         preferido.setCreationDate(Calendar.getInstance().getTime());
-        // Crear estado propuesto
-        //State propuesto = stateManager.getStatePropuesto();
-        return new ConceptSMTK(category,fsn,preferido);
+        preferido.setState(propuesto);
+        return new ConceptSMTK(category,fsn,preferido,propuesto);
     }
 
     @Override

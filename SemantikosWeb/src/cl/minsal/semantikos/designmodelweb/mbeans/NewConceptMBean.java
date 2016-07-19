@@ -166,7 +166,7 @@ public class NewConceptMBean implements Serializable {
         Description description = new Description(otherTermino, descriptionTypes.get(0));
         description.setTerm(otherTermino);
         description.setCaseSensitive(otherSensibilidad);
-        description.setState(descriptionStates.get(0));
+        description.setState(concept.getState());
         //description.setState(stateManager.getStatePropuesto());
         //description.setDescriptionType(descriptionTypes.get(0));
         description.setCreationDate(Calendar.getInstance().getTime());
