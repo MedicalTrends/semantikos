@@ -12,94 +12,66 @@
 
 </h:head>
 <h:body>
-   <!--
-   <h:form>
-      <div class="ui-grid-responsive">
+   <p:growl id="growl" showDetail="true" autoUpdate="true"/>
+   <p:dataTable id="vehiclesTable" var="conceptSMTK" value="#{navBrowser.concepts}">
+      <f:facet name="header">
+         Expand rows to see detailed information
+      </f:facet>
 
-         <div class="ui-grid-col-5">
-            <p:inputText value="#{navBrowser.pattern}" style="width: 90%; margin: 10px;" placeholder="Buscar...">
-               <p:ajax event="keyup" update="conceptTable" />
-            </p:inputText>
+      <p:column style="width:2%" exportable="false">
+         <p:rowToggler />
+      </p:column>
 
-         </div>
-         <div class="ui-grid-col-4">
+      <p:column style="width:49%">
+         <f:facet name="header">
+            Manufacturer
+         </f:facet>
+         <h:outputText value="#{conceptSMTK.id}" />
+      </p:column>
 
-            <p:selectCheckboxMenu style="width: 100%; margin: 10px;" id="menu"
-                                  value="#{navBrowser.selectedCategories}" label="Categorías"
-                                  filter="true" filterMatchMode="startsWith">
-
-               <f:selectItems value="#{navBrowser.categories}" var="category" itemLabel="#{category.name}"
-                              itemValue="#{category.id}"/>
-
-               <p:ajax event="toggleSelect" update="conceptTable" />
-               <p:ajax update="conceptTable" />
-            </p:selectCheckboxMenu>
-
-         </div>
-
-      </div>
-      <div class="ui-grid-responsive">
-         <div class="ui-grid-col-12">
-
-            <p:dataTable id="conceptTable" value="#{navBrowser.conceptLazyDataModel}" var="concept" rows="15" paginator="true" lazy="true" dynamic="true">
+      <p:column style="width:49%">
+         <f:facet name="header">
+            Color
+         </f:facet>
+         <h:outputText value="#{conceptSMTK.category.name}" />
+      </p:column>
 
 
-               <p:column style="width:16px">
-                  <p:rowToggler/>
-               </p:column>
+      <p:rowExpansion>
+         <p:dataTable lazy="true" id="display" var="description" value="#{conceptSMTK.descriptions}" style="width:300px;" >
 
-               <p:column headerText="Concept ID">
-                  <h:outputText value="#{concept.id}"/>
-               </p:column>
+            <f:facet name="header">
+               <h:outputText value="Customer Details"></h:outputText>
+            </f:facet>
+            <p:column>
+               <f:facet name="header">
+                  <h:outputText value="Customer Name"></h:outputText>
+               </f:facet>
+               <h:outputText  value="#{description.idDescripcionConcepto}" />
+            </p:column>
+            <p:column>
+               <f:facet name="header">
+                  <h:outputText value="Country"></h:outputText>
+               </f:facet>
+               <h:outputText  value="#{description.term}" />
+            </p:column>
+         </p:dataTable>
 
-               <p:column headerText="Termino">
-                  <h:outputText value="#{concept.favoriteDescription}"/>
-               </p:column>
+      </p:rowExpansion>
+   </p:dataTable>
 
-               <p:column headerText="Categoría">
-                  <h:outputText value="#{concept.category.name}"/>
-               </p:column>
-
-               <p:rowExpansion id="tbl">
-
-                  <h:outputText value="&lt;br/&gt;" escape="false"/>
-                  <p:panelGrid columns="2" columnClasses="label,value">
-                     <f:facet name="header">
-                        Información del concepto:
-                     </f:facet>
-                     <h:outputText value="Categoría:"/>
-                     <h:outputText value="#{concept.category.name}"/>
-
-                     <h:outputText value="Id:"/>
-                     <h:outputText value="#{concept.id}"/>
-
-                     <h:outputText value="Completamente definido:"/>
-                     <h:outputText value="#{concept.completelyDefined}"/>
-
-                     <h:outputText value="Estado:"/>
-                     <h:outputText value="#{concept.state}"/>
-
-                  </p:panelGrid>
-                  <h:outputText value="&lt;br/&gt;" escape="false"/>
-                  <p:dataList value="#{concept.descriptionList}" var="description" type="ordered">
-                     <f:facet name="header">
-                        Descripciones:
-                     </f:facet>
-                     #{description.description}, #{description.descriptionType}
-                  </p:dataList>
+   <p:spacer height="30"/>
 
 
-               </p:rowExpansion>
+   <p:panel header="Export PDF and Excel">
 
 
+      <p:commandButton value="Excel">
 
-            </p:dataTable>
-         </div>
+         <f:setPropertyActionListener value="false" target="#{exporterController.customExporter}" />
 
+      </p:commandButton>
 
-      </div>
-
-   </h:form>
-   -->
+   </p:panel>
 </h:body>
 </html>

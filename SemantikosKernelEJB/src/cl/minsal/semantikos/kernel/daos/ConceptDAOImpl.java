@@ -335,7 +335,7 @@ public class ConceptDAOImpl implements ConceptDAO {
 
         connect.closeConnection();
 
-        return category;
+        return null;
     }
 
 

@@ -199,4 +199,8 @@ public class ConceptSMTK {
         }
         return null;
     }
+
+    public int countDescription(){
+        return descriptions.size();
+    }
 }
