@@ -139,7 +139,7 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
         Description preferido = new Description(term, descriptionManager.getTypePreferido());
         preferido.setCreationDate(Calendar.getInstance().getTime());
         // Crear estado propuesto
-        State propuesto = stateManager.getStatePropuesto();
+        //State propuesto = stateManager.getStatePropuesto();
         return new ConceptSMTK(category,fsn,preferido);
     }
 

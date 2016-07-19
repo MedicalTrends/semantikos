@@ -4,6 +4,7 @@ import cl.minsal.semantikos.kernel.components.CategoryManagerInterface;
 import cl.minsal.semantikos.kernel.components.ConceptManagerInterface;
 import cl.minsal.semantikos.model.Category;
 import cl.minsal.semantikos.model.ConceptSMTK;
+import cl.minsal.semantikos.model.Description;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
 
@@ -37,6 +38,8 @@ public class NavBrowser  {
 
     private Category category;
     private ConceptSMTK conceptSMTK;
+    private Description description;
+    private ConceptSMTK conceptSelected;
 
 
     @EJB
@@ -50,9 +53,7 @@ public class NavBrowser  {
     @PostConstruct
     public void init() {
 
-
         categories=categoryManager.getCategories();
-
 
         concepts = new LazyDataModel<ConceptSMTK>() {
             @Override
@@ -65,7 +66,6 @@ public class NavBrowser  {
                 return conceptSMTKs;
             }
         };
-
 
     }
 
@@ -124,5 +124,21 @@ public class NavBrowser  {
 
     public void setConceptSMTK(ConceptSMTK conceptSMTK) {
         this.conceptSMTK = conceptSMTK;
+    }
+
+    public Description getDescription() {
+        return description;
+    }
+
+    public void setDescription(Description description) {
+        this.description = description;
+    }
+
+    public ConceptSMTK getConceptSelected() {
+        return conceptSelected;
+    }
+
+    public void setConceptSelected(ConceptSMTK conceptSelected) {
+        this.conceptSelected = conceptSelected;
     }
 }
