@@ -8,16 +8,28 @@ import java.util.List;
  */
 public class User {
 
+    long idUser;
     String username;
     String name;
     String lastName;
     String secondLastName;
     String email;
 
+    String password;
+    String passwordHash;
+
     List<Profile> profiles;
     List<Permission> permissions;
     List<Group> groups;
 
+
+    public long getIdUser() {
+        return idUser;
+    }
+
+    public void setIdUser(long idUser) {
+        this.idUser = idUser;
+    }
 
     public String getUsername() {
         return username;
@@ -88,5 +100,21 @@ public class User {
 
     public void setSecondLastName(String secondLastName) {
         this.secondLastName = secondLastName;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getPasswordHash() {
+        return passwordHash;
+    }
+
+    public void setPasswordHash(String passwordHash) {
+        this.passwordHash = passwordHash;
     }
 }

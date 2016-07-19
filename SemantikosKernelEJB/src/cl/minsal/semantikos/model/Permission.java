@@ -8,6 +8,7 @@ import java.util.List;
  */
 public class Permission {
 
+    Long idPermission;
     String name;
     String description;
 
@@ -29,5 +30,11 @@ public class Permission {
         this.description = description;
     }
 
+    public Long getIdPermission() {
+        return idPermission;
+    }
 
+    public void setIdPermission(Long idPermission) {
+        this.idPermission = idPermission;
+    }
 }

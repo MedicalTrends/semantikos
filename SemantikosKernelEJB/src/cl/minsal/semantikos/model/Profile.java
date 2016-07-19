@@ -8,11 +8,19 @@ import java.util.List;
  */
 public class Profile {
 
+    long idProfile;
     String name;
     String description;
 
     List<Permission> permissions;
 
+    public long getIdProfile() {
+        return idProfile;
+    }
+
+    public void setIdProfile(long idProfile) {
+        this.idProfile = idProfile;
+    }
 
     public String getName() {
         return name;

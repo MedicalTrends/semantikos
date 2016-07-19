@@ -66,7 +66,7 @@ public class AuthDAO {
 
         ArrayList<User> users = new ArrayList<>();
 
-        Query q = em.createNativeQuery("Select * from semantikos.user");
+        Query q = em.createNativeQuery("Select * from semantikos.smtk_user");
 
         for (Object row : q.getResultList()) {
             User user = makeUserFromResult((Object[]) row);

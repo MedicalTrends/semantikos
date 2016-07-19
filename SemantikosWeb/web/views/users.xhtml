@@ -15,24 +15,24 @@
                             <h2 class="TexAlCenter BigTopic">Administracion de Usuarios</h2>
 
                             <h:form id="form">
-                                <p:dataTable id="singleDT" var="user" value="#{users.allUsers}" selectionMode="single"  rowKey="#{user.id_user}"
+                                <p:dataTable id="singleDT" var="user" value="#{users.allUsers}" selectionMode="single"  rowKey="#{user.idUser}"
                                              rows="10" paginator="true" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                              rowsPerPageTemplate="5,10,15" emptyMessage="No hay usuarios en la Base de Datos" reflow="true">
 
 
                                     <p:ajax event="rowSelect" update=":form:userDetail" oncomplete="PF('userDialog').show()" />
 
-                                    <p:column headerText="Id" sortBy="#{user.username}" footerText="Id">
-                                        <h:outputText value="#{user.id}" />
+                                    <p:column headerText="Id" sortBy="#{user.idUser}" footerText="Id">
+                                        <h:outputText value="#{user.idUser}" />
                                     </p:column>
-                                    <p:column headerText="Year" sortBy="#{user.year}" footerText="Year">
-                                        <h:outputText value="#{user.year}" />
+                                    <p:column headerText="Nombre de Usuario" sortBy="#{user.username}" footerText="Nombre de Usuario">
+                                        <h:outputText value="#{user.username}" />
                                     </p:column>
-                                    <p:column headerText="Brand" sortBy="#{user.brand}" footerText="Brand">
-                                        <h:outputText value="#{user.brand}" />
+                                    <p:column headerText="Nombre" sortBy="#{user.lastName}" footerText="Nombre">
+                                        <h:outputText value="#{user.name} #{user.lastName} #{user.secondLastName}" />
                                     </p:column>
-                                    <p:column headerText="Color" sortBy="#{user.color}" footerText="Color">
-                                        <h:outputText value="#{user.color}" />
+                                    <p:column headerText="Email" sortBy="#{user.email}" footerText="Email">
+                                        <h:outputText value="#{user.email}" />
                                     </p:column>
                                 </p:dataTable>
 
@@ -41,7 +41,7 @@
                                         <p:panelGrid  columns="2" layout="grid" styleClass="ui-panelgrid-blank">
 
                                             <h:outputText value="Id:" style="font-weight: bold"/>
-                                            <h:outputText value="#{users.selectedUser.id_user}" />
+                                            <h:outputText value="#{users.selectedUser.idUser}" />
 
                                             <h:outputText value="Username" style="font-weight: bold"/>
                                             <h:outputText value="#{users.selectedUser.username}" />
@@ -57,6 +57,8 @@
 
                                             <h:outputText value="Email" style="font-weight: bold"/>
                                             <h:outputText value="$#{users.selectedUser.email}" />
+
+
                                         </p:panelGrid>
                                     </p:outputPanel>
                                 </p:dialog>

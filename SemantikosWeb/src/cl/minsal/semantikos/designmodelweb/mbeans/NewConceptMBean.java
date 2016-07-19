@@ -62,8 +62,8 @@ public class NewConceptMBean implements Serializable {
         user = new User();
 
         user.setIdUser(1);
-        user.setNameUser("amauro");
-        user.setToken("amauro");
+        user.setUsername("amauro");
+        user.setPassword("amauro");
         /////////////////////////////////////////////
 
         category = categoryManager.getFullCategoryById(1);

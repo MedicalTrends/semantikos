@@ -8,12 +8,20 @@ import java.util.List;
  */
 public class Group {
 
+    String idGroup;
     String name;
     String description;
 
     List<Profile> profiles;
     List<Permission> permissions;
 
+    public String getIdGroup() {
+        return idGroup;
+    }
+
+    public void setIdGroup(String idGroup) {
+        this.idGroup = idGroup;
+    }
 
     public String getName() {
         return name;
