@@ -28,4 +28,24 @@ public class State {
         this.stateMachine = stateMachine;
     }
 
+    @Override
+    public boolean equals(Object other) {
+        return (other instanceof State) && ( String.valueOf(name) != null )
+                ? String.valueOf(name).equals(String.valueOf(((State) other).name))
+                : (other == this);
+    }
+
+    @Override
+    public int hashCode() {
+        return (String.valueOf(name) != null)
+                ? (this.getClass().hashCode() + String.valueOf(name).hashCode())
+                : super.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        //return String.format("ExampleEntity[%d, %s]", idDescriptionType, glosa);
+        return getName();
+    }
+
 }

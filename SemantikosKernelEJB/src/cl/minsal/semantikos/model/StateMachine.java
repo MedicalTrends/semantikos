@@ -31,6 +31,17 @@ public class StateMachine {
         return results;
     }
 
+    public List<State> getTargetStates(State aSourceState){
+
+        List<State> results = new ArrayList<State>();
+        for (Transition transition : transitions) {
+            if (transition.getSourceState().equals(aSourceState))
+                results.add(transition.getTargetState());
+        }
+
+        return results;
+    }
+
     /**
      * Este metodo es responsable de realizar la transición entre un estado y otro.
      *
