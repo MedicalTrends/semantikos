@@ -14,6 +14,10 @@ public class ConceptStateMachine extends StateMachine {
      * @return The singleton object.
      */
     public static ConceptStateMachine getInstance() {
+
+        if(singletonInstance == null)
+            singletonInstance = new ConceptStateMachine();
+
         return ConceptStateMachine.singletonInstance;
     }
 
