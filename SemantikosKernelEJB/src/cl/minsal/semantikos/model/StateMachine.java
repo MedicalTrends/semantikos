@@ -9,6 +9,15 @@ import java.util.List;
 public class StateMachine {
 
     private State initialState;
+
+    public List<Transition> getTransitions() {
+        return transitions;
+    }
+
+    public void setTransitions(List<Transition> transitions) {
+        this.transitions = transitions;
+    }
+
     private List<Transition> transitions;
 
     public State getInitialState() {
@@ -32,6 +41,8 @@ public class StateMachine {
     }
 
     public List<State> getTargetStates(State aSourceState){
+
+        System.out.println("aSourceState.getName()="+aSourceState.getName());
 
         List<State> results = new ArrayList<State>();
         for (Transition transition : transitions) {

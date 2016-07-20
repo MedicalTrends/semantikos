@@ -37,6 +37,17 @@ public class NewConceptMBean implements Serializable {
     @EJB
     CategoryManagerInterface categoryManager;
 
+    public StateMachineManagerInterface getStateMachineManager() {
+        return stateMachineManager;
+    }
+
+    public void setStateMachineManager(StateMachineManagerInterface stateMachineManager) {
+        this.stateMachineManager = stateMachineManager;
+    }
+
+    @EJB
+    StateMachineManagerInterface stateMachineManager;
+
     /*
     @EJB
     StateManagerInterface stateManager;
@@ -158,15 +169,15 @@ public class NewConceptMBean implements Serializable {
     }
 
     public void removeItem(Description item) {
-        concept.getDescriptions().remove(item);
+        concept.getOtherDescriptions().remove(item);
     }
 
     public void addItem() {
         System.out.println("addItem");
-        Description description = new Description(otherTermino, descriptionTypes.get(0));
+        Description description = new Description(otherTermino, otherDescriptionType);
         description.setTerm(otherTermino);
         description.setCaseSensitive(otherSensibilidad);
-        description.setState(descriptionStates.get(0));
+        description.setState(concept.getState());
         //description.setState(stateManager.getStatePropuesto());
         //description.setDescriptionType(descriptionTypes.get(0));
         description.setCreationDate(Calendar.getInstance().getTime());

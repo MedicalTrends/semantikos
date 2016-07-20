@@ -19,8 +19,6 @@ DescriptionDAO {
 
     public List<Description> getDescriptionBy(int id);
 
-    public List<State> getAllStates();
-
     public List<Description> getDescriptionByConceptID(long id);
 
     public DescriptionType getTypeFSN();

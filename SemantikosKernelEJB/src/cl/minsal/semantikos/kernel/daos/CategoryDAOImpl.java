@@ -72,8 +72,6 @@ public class CategoryDAOImpl implements CategoryDAO {
             CallableStatement call = connect.getConnection().prepareCall("{call semantikos.get_full_category_by_id(?)}");
             call.setInt(1,(int)id);
 
-            System.out.println("PASE");
-
             call.execute();
 
             //ResultSetMetaData metaData = call.getMetaData();

@@ -8,7 +8,7 @@
     <ui:define name="content">
         <div class="Container100">
             <div class="ContainerIndent">
-                <h:form id="form2">
+                <h:form id="form2" onsubmit="return false;">
                     <div style="margin-top: 65px" class="Card ShadowEffect TexAlCenter">
                         <div class="ui-grid-responsive">
                             <div class="ui-grid-col-5">
@@ -36,7 +36,13 @@
                                 <p:dataTable id="conceptTable" value="#{navBrowser.concepts}" var="conceptSMTK"
                                              rows="15"
                                              paginator="true" lazy="true" dynamic="true"
+                                             paginatorTemplate=" {CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
                                              emptyMessage="No se han encontrado conceptos con los criterios utilizados">
+                                    <f:facet name="{Exporters}">
+                                        <h:commandButton value="Exportar a Excel" styleClass="ui-priority-primary">
+                                            <p:dataExporter type="xls" target=":form2:conceptTable" fileName="conceptos"/>
+                                        </h:commandButton>
+                                    </f:facet>
 
 
                                     <p:column headerText="Concept ID">
@@ -78,18 +84,19 @@
 
                 </h:form>
 
-                <h:form id="form">
-                    <p:dialog header="Detalle del concepto" widgetVar="carDialog" modal="true" showEffect="fade"
+                <h:form id="form" onsubmit="return false;">
+                    <p:dialog  widgetVar="carDialog" modal="true" showEffect="fade"
                               hideEffect="fade" resizable="false">
                         <p:outputPanel id="carDetail" style="text-align:center;">
 
 
                             <p:dataTable id="detailConcept" var="description"
-                                         value="#{navBrowser.conceptSelected.descriptions}"
-                                         style="margin-top:40px">
+                                         value="#{navBrowser.conceptSelected.otherDescriptions}"
+                                         style="margin-top:40px" >
                                 <f:facet name="header">
                                     Detalle del concepto
                                 </f:facet>
+
 
                                 <p:columnGroup type="header">
 
@@ -111,9 +118,15 @@
                                 </p:columnGroup>
                                 <p:column visible="hidden">
                                     <f:facet name="header">
-                                        <h:outputText value="Concept ID"/>
+                                        <h:outputText value="ID"/>
                                     </f:facet>
                                     <h:outputText value="#{navBrowser.conceptSelected.id}"></h:outputText>
+                                </p:column>
+                                <p:column visible="hidden">
+                                    <f:facet name="header">
+                                        <h:outputText value="Concept ID"/>
+                                    </f:facet>
+                                    <h:outputText value="#{navBrowser.conceptSelected.conceptID}"></h:outputText>
                                 </p:column>
                                 <p:column visible="hidden">
                                     <f:facet name="header">
@@ -130,13 +143,13 @@
                                 </p:column>
                                 <p:column>
                                     <f:facet name="header">
-                                        <h:outputText value="Description Typehome.xhtml"/>
+                                        <h:outputText value="Description Type"/>
                                     </f:facet>
-                                    <h:outputText value="#{description.descriptionType.glosa}"></h:outputText>
+                                    <h:outputText value="#{description.descriptionType.gloss}"></h:outputText>
                                 </p:column>
                             </p:dataTable>
 
-
+                            <br/>
 
                             <h:commandButton ajax="false" value="Exportar a Excel">
                                 <p:dataExporter type="xls" target="detailConcept" fileName="detalle_concepto"/>

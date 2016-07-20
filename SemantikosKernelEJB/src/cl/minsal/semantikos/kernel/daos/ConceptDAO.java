@@ -13,7 +13,8 @@ import java.util.List;
 public interface ConceptDAO {
 
 
-    public List<ConceptSMTK> getConceptBy(String[] Pattern, String[] Category, int pageNumber, int pageSize);
+    public List<ConceptSMTK> getConceptByPatternCategory(String[] Pattern, String[] Category, int pageNumber, int pageSize);
+    public List<ConceptSMTK> getConceptByPatternOrConceptIDAndCategory(String PatternOrID, String[] Category, int pageNumber, int pageSize);
     public int getAllConceptCount(String[] Pattern, String[] category);
-    public ConceptStateMachine getConceptStateMachine();
+    public int getCountFindConceptID(String Pattern, String[] category);
 }

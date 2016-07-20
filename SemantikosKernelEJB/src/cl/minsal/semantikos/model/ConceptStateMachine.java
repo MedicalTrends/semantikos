@@ -15,13 +15,16 @@ public class ConceptStateMachine extends StateMachine {
      */
     public static ConceptStateMachine getInstance() {
 
+
         if(singletonInstance == null)
             singletonInstance = new ConceptStateMachine();
 
         return ConceptStateMachine.singletonInstance;
     }
 
+    /*
     private ConceptStateMachine() {
         this.singletonInstance = new ConceptStateMachine();
     }
+    */
 }

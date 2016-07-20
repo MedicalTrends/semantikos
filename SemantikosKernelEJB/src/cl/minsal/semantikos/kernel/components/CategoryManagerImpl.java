@@ -3,12 +3,14 @@ package cl.minsal.semantikos.kernel.components;
 
 import cl.minsal.semantikos.kernel.daos.CategoryDAO;
 import cl.minsal.semantikos.model.Category;
-import cl.minsal.semantikos.model.RelationShipDefinition;
+import cl.minsal.semantikos.model.RelationshipDefinition;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,8 +23,6 @@ public class CategoryManagerImpl implements CategoryManagerInterface {
     @PersistenceContext(unitName = "SEMANTIKOS_PU")
     private EntityManager entityManager;
 
-    String driver = "org.postgresql.Driver";
-    String ruta = "jdbc:postgresql://192.168.0.221:5432/postgres";
     String user = "postgres";
     String password = "1q2w3e";
 
@@ -30,47 +30,34 @@ public class CategoryManagerImpl implements CategoryManagerInterface {
     private CategoryDAO categoryDAO;
 
     @Override
-    public List<RelationShipDefinition> getCategoryMetaData(int id) {
+    public List<RelationshipDefinition> getCategoryMetaData(int id) {
         return null;
     }
 
 
     @Override
-    public ArrayList<RelationShipDefinition> getAllDescription() {
+    public ArrayList<RelationshipDefinition> getAllDescription() {
 
 
-        ArrayList<RelationShipDefinition> Attributes = new ArrayList<RelationShipDefinition>();
+        ArrayList<RelationshipDefinition> Attributes = new ArrayList<RelationshipDefinition>();
 
+        Query nativeQuery = this.entityManager.createNativeQuery("SELECT get_conf_rel_all()");
+        List<Object[]> relationships = nativeQuery.getResultList();
 
-/*
-        try {
-            Class.forName(driver);
-            Connection conne = (Connection) DriverManager.getConnection(ruta, user, password);
-            CallableStatement call = conne.prepareCall("{call get_conf_rel_all()}");
-            call.execute();
+        long idRelationship;
+        String name;
+        int multiplicity;
+        String description;
+        boolean required;
 
-            ResultSet rs = call.getResultSet();
+        for (Object[] relationship : relationships) {
+            idRelationship = ((BigInteger) relationship[0]).longValue();
+            name = (String) relationship[1];
+            multiplicity = Integer.parseInt((String)relationship[2]);
 
-            String idA;
-            String name;
-            int multiplicity;
-            String description;
-            boolean required;
-
-
-            while (rs.next()) {
-                idA = rs.getString("reltype");
-                name = rs.getString("name");
-                multiplicity = Integer.parseInt(rs.getString("multiplicidad"));
-                description = rs.getString("idLugar");
-                required = false;
-                Attributes.add(new AttributeCategory(idA, name, multiplicity, description, required));
-            }
-            conne.close();
-        } catch (SQLException | ClassNotFoundException e) {
-            System.out.println(e.toString());
+            /* Se crea el objeto */
+            //Attributes.add(new AttributeCategory(idRelationship, name, multiplicity, description, required));
         }
-*/
 
         return Attributes;
     }
@@ -110,7 +97,7 @@ public class CategoryManagerImpl implements CategoryManagerInterface {
     }
 
     @Override
-    public void addAttribute(RelationShipDefinition attributeCategory, int idCategory) {
+    public void addAttribute(RelationshipDefinition attributeCategory, int idCategory) {
 
     }
 

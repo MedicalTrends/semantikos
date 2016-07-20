@@ -1,9 +1,7 @@
 package cl.minsal.semantikos.kernel.components;
 
 import cl.minsal.semantikos.kernel.daos.ConceptDAO;
-import cl.minsal.semantikos.model.Category;
-import cl.minsal.semantikos.model.ConceptSMTK;
-import cl.minsal.semantikos.model.Description;
+import cl.minsal.semantikos.model.*;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -23,13 +21,13 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
 
 
     @EJB
-    ConceptDAO concept;
-
-    @EJB
     ConceptDAO conceptDAO;
 
     @EJB
     DescriptionManagerInterface descriptionManager;
+
+    @EJB
+    StateMachineManagerInterface stateMachineManager;
 
     /*
     @EJB
@@ -132,15 +130,19 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
 
     @Override
     public ConceptSMTK newConcept(Category category, String term) {
+        // Crear estado propuesto
+        //ConceptStateMachine conceptStateMachine = conceptDAO.getConceptStateMachine();
+        State propuesto = stateMachineManager.getConceptStateMachine().getInitialState();
+        //propuesto.setStateMachine(conceptStateMachine);
         // Crear descriptor FSN
         Description fsn = new Description(term+" ("+category.getName()+")", descriptionManager.getTypeFSN());
         fsn.setCreationDate(Calendar.getInstance().getTime());
+        fsn.setState(propuesto);
         // Crear descriptor preferido
         Description preferido = new Description(term, descriptionManager.getTypePreferido());
         preferido.setCreationDate(Calendar.getInstance().getTime());
-        // Crear estado propuesto
-        //State propuesto = stateManager.getStatePropuesto();
-        return new ConceptSMTK(category,fsn,preferido);
+        preferido.setState(propuesto);
+        return new ConceptSMTK(category,fsn,preferido,propuesto);
     }
 
     @Override
@@ -153,21 +155,53 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
 
         if (Pattern != null) {
             if(Pattern.length()>=3){
+
                 List<String> listPattern;
                 listPattern=patternToList(Pattern);
                 String[] arrPattern = listPattern.toArray(new String[listPattern.size()]);
 
-                return concept.getConceptBy(arrPattern, category,pageNumber,pageSize);
+                return conceptDAO.getConceptByPatternCategory(arrPattern, category,pageNumber,pageSize);
+            }
+
+        }
+        return conceptDAO.getConceptByPatternCategory(null,category,pageNumber,pageSize);
+
+    }
+
+    @Override
+    public List<ConceptSMTK> findConceptByConceptIDOrDescriptionCategoryPageNumber(String patter, String[] categories, int pageNumber, int pageSize) {
+        if (categories != null) {
+            if (categories.length == 0) categories = null;
+        }
+
+        if (patter != null) {
+            if(patter.length()>=3){
+
+                List<String> listPattern;
+                listPattern=patternToList(patter);
+                if(listPattern.size()==1){
+                    return conceptDAO.getConceptByPatternOrConceptIDAndCategory(patter.trim(),categories,pageNumber,pageSize);
+                }
+                String[] arrPattern = listPattern.toArray(new String[listPattern.size()]);
+
+                return conceptDAO.getConceptByPatternCategory(arrPattern, categories,pageNumber,pageSize);
+            }else{
+                if(patter.length()>0){
+                    List<String> listPattern;
+                    listPattern=patternToList(patter);
+                    if(listPattern.size()==1){
+                        return conceptDAO.getConceptByPatternOrConceptIDAndCategory(patter.trim(),categories,pageNumber,pageSize);
+                    }
+                }
+
             }
         }
-        return concept.getConceptBy(null,category,pageNumber,pageSize);
-
+        return conceptDAO.getConceptByPatternCategory(null,categories,pageNumber,pageSize);
     }
 
 
     @Override
     public int getAllConceptCount(String Pattern, String[] category) {
-
 
 
 
@@ -177,11 +211,14 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
         if (Pattern != null) {
             List<String> listPattern;
             listPattern=patternToList(Pattern);
+            if(listPattern.size()==1){
+                return conceptDAO.getCountFindConceptID(Pattern.trim(),category);
+            }
             String[] arrPattern = listPattern.toArray(new String[listPattern.size()]);
-            return concept.getAllConceptCount(arrPattern, category);
 
+            return conceptDAO.getAllConceptCount(arrPattern, category);
         }
-        return concept.getAllConceptCount(null,category);
+        return conceptDAO.getAllConceptCount(null,category);
 
     }
 
