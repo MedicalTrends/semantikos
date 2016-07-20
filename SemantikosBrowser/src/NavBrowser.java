@@ -59,7 +59,7 @@ public class NavBrowser  {
             @Override
             public List<ConceptSMTK> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
 
-                List <ConceptSMTK> conceptSMTKs= conceptManager.findConceptByPatternCategoryPageNumber(pattern,selectedCategories,first,pageSize);
+                List <ConceptSMTK> conceptSMTKs= conceptManager.findConceptByConceptIDOrDescriptionCategoryPageNumber(pattern,selectedCategories,first,pageSize);
                 this.setRowCount(conceptManager.getAllConceptCount(pattern,selectedCategories));
 
 
