@@ -37,6 +37,17 @@ public class NewConceptMBean implements Serializable {
     @EJB
     CategoryManagerInterface categoryManager;
 
+    public StateMachineManagerInterface getStateMachineManager() {
+        return stateMachineManager;
+    }
+
+    public void setStateMachineManager(StateMachineManagerInterface stateMachineManager) {
+        this.stateMachineManager = stateMachineManager;
+    }
+
+    @EJB
+    StateMachineManagerInterface stateMachineManager;
+
     /*
     @EJB
     StateManagerInterface stateManager;

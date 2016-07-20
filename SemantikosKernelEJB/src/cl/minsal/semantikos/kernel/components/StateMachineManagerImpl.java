@@ -4,7 +4,9 @@ import cl.minsal.semantikos.kernel.daos.ConceptDAO;
 import cl.minsal.semantikos.kernel.daos.StateMachineDAO;
 import cl.minsal.semantikos.model.*;
 
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.ejb.Singleton;
 import javax.ejb.Stateful;
 import javax.ejb.Stateless;
 import java.util.ArrayList;
@@ -23,12 +25,13 @@ public class StateMachineManagerImpl implements StateMachineManagerInterface {
 
     public ConceptStateMachine conceptStateMachine = ConceptStateMachine.getInstance();
 
-
-    public StateMachineManagerImpl() {
-        if(conceptStateMachine == null)
+    @PostConstruct
+    public void init() {
+        if(stateMachineDAO == null)
             System.out.println("ES NULL");
-        stateMachineDAO.initConceptStateMachine(conceptStateMachine);
+        conceptStateMachine = stateMachineDAO.initConceptStateMachine();
     }
+
 
     public ConceptStateMachine getConceptStateMachine() {
         return conceptStateMachine;

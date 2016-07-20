@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import javax.ejb.EJB;
+import javax.ejb.Stateful;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -33,13 +34,13 @@ public class StateMachineDAOImpl implements StateMachineDAO {
 
 
     @Override
-    public void initConceptStateMachine(ConceptStateMachine conceptStateMachine) {
+    public ConceptStateMachine initConceptStateMachine() {
 
         ConnectionBD connect = new ConnectionBD();
 
         ObjectMapper mapper = new ObjectMapper();
 
-        //ConceptStateMachine conceptStateMachine= ConceptStateMachine.getInstance();
+        ConceptStateMachine conceptStateMachine= ConceptStateMachine.getInstance();
 
         try {
 
@@ -69,6 +70,6 @@ public class StateMachineDAOImpl implements StateMachineDAO {
 
         connect.closeConnection();
 
-        //return conceptStateMachine;
+        return conceptStateMachine;
     }
 }

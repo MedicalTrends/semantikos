@@ -13,5 +13,5 @@ import java.util.List;
 public interface StateMachineDAO {
 
 
-    public void initConceptStateMachine(ConceptStateMachine conceptStateMachine);
+    public ConceptStateMachine initConceptStateMachine();
 }
