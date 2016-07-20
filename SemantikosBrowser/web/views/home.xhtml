@@ -85,7 +85,7 @@
                 </h:form>
 
                 <h:form id="form">
-                    <p:dialog header="Detalle del concepto" widgetVar="carDialog" modal="true" showEffect="fade"
+                    <p:dialog  widgetVar="carDialog" modal="true" showEffect="fade"
                               hideEffect="fade" resizable="false">
                         <p:outputPanel id="carDetail" style="text-align:center;">
 
@@ -139,11 +139,11 @@
                                     <f:facet name="header">
                                         <h:outputText value="Description Type"/>
                                     </f:facet>
-                                    <h:outputText value="#{description.descriptionType.glosa}"></h:outputText>
+                                    <h:outputText value="#{description.descriptionType.gloss}"></h:outputText>
                                 </p:column>
                             </p:dataTable>
 
-
+                            <br/>
 
                             <h:commandButton ajax="false" value="Exportar a Excel">
                                 <p:dataExporter type="xls" target="detailConcept" fileName="detalle_concepto"/>
