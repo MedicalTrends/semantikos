@@ -1,35 +1,62 @@
 package cl.minsal.semantikos.model;
 
+import java.util.List;
+
 /**
  * Created by stk-des01 on 27-05-16.
  */
 public class RelationshipDefinition {
 
+    /** ID en la base de datos */
+    private long id;
 
-    private String id;
+    /** Nombre de la relación */
     private String name;
-    private String type;
-    private int multiplicity;
+
+    /** Descripción */
     private String description;
-    private boolean required;
 
-    public RelationshipDefinition(String id, String name, String type, int multiplicity, String description, boolean required, int idCategoryDes, String order) {
-        this.id = id;
+    /** El tipo del objeto destino de la relación */
+    private TargetDefinition targetDefinition;
+
+    /** Multiplicidad de la relación */
+    private Multiplicity multiplicity;
+
+    /** Los atributos de esta relación: orden, color, vigencia... */
+    private List<RelationshipAttributeDefinition> attributes;
+
+    /** Relaciones que excluye esta Relación */
+    private RelationshipDefinition excludes;
+
+
+    /**
+     * Este es el constructor mínimo con el cual se crean las RelacionesDefinitions.
+     *
+     * @param name             Nombre de la relacion.
+     * @param description      Su descripcion.
+     * @param multiplicity     La multiplicidad.
+     * @param targetDefinition El tipo de target.
+     */
+    public RelationshipDefinition(String name, String description, Multiplicity multiplicity, TargetDefinition targetDefinition) {
         this.name = name;
-        this.type = type;
-        this.multiplicity = multiplicity;
         this.description = description;
-        this.required = required;
-        this.idCategoryDes = idCategoryDes;
-        this.order = order;
+        this.multiplicity = multiplicity;
+        this.targetDefinition = targetDefinition;
+        this.id = -1;
     }
 
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
+    /**
+     * Igual al constructor mínimo, pero permite inicializar con el ID.
+     *
+     * @param id               El identificador único.
+     * @param name             El nombre de la relación.
+     * @param description      Su descripcion.
+     * @param multiplicity     La multiplicidad.
+     * @param targetDefinition El tipo de target.
+     */
+    public RelationshipDefinition(long id, String name, String description, TargetDefinition targetDefinition, Multiplicity multiplicity) {
+        this(name, description, multiplicity, targetDefinition);
+        this.id = id;
     }
 
     public int getIdCategoryDes() {
@@ -49,33 +76,15 @@ public class RelationshipDefinition {
     }
 
     private int idCategoryDes;
+
+
     private String order;
 
-
-    public RelationshipDefinition(String id, String name, int multiplicity, String description, boolean required) {
-        this.id = id;
-        this.name = name;
-        this.multiplicity = multiplicity;
-        this.description = description;
-        this.required = required;
-    }
-
-    @Override
-    public String toString() {
-        return "AttributeCategory { " +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", multiplicity=" + multiplicity +
-                ", description='" + description + '\'' +
-                ", required=" + required +
-                '}';
-    }
-
-    public String getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -87,14 +96,6 @@ public class RelationshipDefinition {
         this.name = name;
     }
 
-    public int getMultiplicity() {
-        return multiplicity;
-    }
-
-    public void setMultiplicity(int multiplicity) {
-        this.multiplicity = multiplicity;
-    }
-
     public String getDescription() {
         return description;
     }
@@ -103,11 +104,20 @@ public class RelationshipDefinition {
         this.description = description;
     }
 
-    public boolean isRequired() {
-        return required;
+    /**
+     * Este método es responsable de determinar si la relación será opcional u obligatoria.
+     *
+     * @return Retorna <code>true</code> si el límite inferior de la multiplicidad es cero y <code>false</code> sino.
+     */
+    public boolean isOptional() {
+        return (multiplicity.getLowerBoundary() == 0);
     }
 
-    public void setRequired(boolean required) {
-        this.required = required;
+    public RelationshipDefinition getExcludes() {
+        return excludes;
+    }
+
+    public void setExcludes(RelationshipDefinition excludes) {
+        this.excludes = excludes;
     }
 }
