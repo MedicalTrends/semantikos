@@ -155,48 +155,6 @@ public class DescriptionDAOImpl implements DescriptionDAO {
     }
 
     @Override
-    public List<State> getAllStates() {
-
-        ConnectionBD connect = new ConnectionBD();
-
-        ObjectMapper mapper = new ObjectMapper();
-
-        State[] states= new State[0];
-
-        try {
-
-            CallableStatement call = connect.getConnection().prepareCall("{call semantikos.get_all_states()}");
-
-            call.execute();
-
-            ResultSet rs = call.getResultSet();
-
-
-            while (rs.next()) {
-                String resultJSON = rs.getString(1);
-
-                System.out.println("resultJSON="+resultJSON);
-
-                states = mapper.readValue(StringUtils.underScoreToCamelCaseJSON(resultJSON), State[].class);
-            }
-
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (JsonParseException e) {
-            e.printStackTrace();
-        } catch (JsonMappingException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        connect.closeConnection();
-
-        return Arrays.asList(states);
-    }
-
-    @Override
     public DescriptionType getTypeFSN() {
 
         ConnectionBD connect = new ConnectionBD();

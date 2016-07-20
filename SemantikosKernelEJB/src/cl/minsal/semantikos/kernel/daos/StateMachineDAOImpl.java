@@ -55,7 +55,7 @@ public class StateMachineDAOImpl implements StateMachineDAO {
 
                 conceptStateMachine = mapper.readValue(StringUtils.underScoreToCamelCaseJSON(resultJSON), ConceptStateMachine.class);
 
-                System.out.println("conceptStateMachine.getTransitions().get(0).getTargetState()="+conceptStateMachine.getTransitions().get(0).getTargetState());
+                //System.out.println("conceptStateMachine.getTransitions().get(0).getTargetState()="+conceptStateMachine.getTransitions().get(0).getTargetState());
             }
 
         } catch (SQLException e) {

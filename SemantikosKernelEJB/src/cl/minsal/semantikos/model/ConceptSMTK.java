@@ -1,8 +1,11 @@
 package cl.minsal.semantikos.model;
 
+import sun.security.krb5.internal.crypto.Des;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.ListIterator;
 
 /**
  * Esta clase representa al Concepto Semantikos.
@@ -38,10 +41,16 @@ public class ConceptSMTK {
     /** Determina si el concepto está publicado o no */
     private boolean isPublished;
 
-    /** Las descripciones asociadas al concepto */
-    private List<Description> descriptions = new ArrayList<Description>();;
+    /** Descriptor fsn **/
+    private Description fsn;
 
-    public ConceptSMTK(long id, long conceptID, Category category, boolean isToBeReviewed, boolean isToBeConsultated, State state, boolean isFullyDefined, boolean isPublished, List<Description> descriptions) {
+    /** Descriptor preferido **/
+    private Description preferido;
+
+    /** Otros descriptores */
+    private List<Description> otherDescriptions = new ArrayList<Description>();
+
+    public ConceptSMTK(long id, long conceptID, Category category, boolean isToBeReviewed, boolean isToBeConsultated, State state, boolean isFullyDefined, boolean isPublished, List<Description> otherDescriptions) {
         this.id = id;
         this.conceptID = conceptID;
         this.category = category;
@@ -50,7 +59,7 @@ public class ConceptSMTK {
         this.state = state;
         this.isFullyDefined = isFullyDefined;
         this.isPublished = isPublished;
-        this.descriptions = descriptions;
+        this.otherDescriptions = otherDescriptions;
     }
 
     /**
@@ -60,9 +69,9 @@ public class ConceptSMTK {
     private ConceptSMTK() {
 
         /* El concepto parte con su estado inicial */
-        //this.state = ConceptStateMachine.getInstance().getInitialState();
+        this.state = ConceptStateMachine.getInstance().getInitialState();
 
-        this.descriptions = new ArrayList<Description>();
+        this.otherDescriptions = new ArrayList<Description>();
 
         this.isFullyDefined = false;
         this.isPublished = false;
@@ -73,36 +82,53 @@ public class ConceptSMTK {
     public ConceptSMTK(Category category, Description fsn) {
         this();
 
-        this.addDescription(fsn);
+        this.setFsn(fsn);
         fsn.setTerm(fsn.getTerm()+"("+category.getName()+")");
-        this.addDescription(fsn);
+        this.setPreferido(fsn);
         this.setCategory(category);
     }
 
     public ConceptSMTK(Category category, Description fsn, Description preferido) {
         this();
 
-        this.addDescription(fsn);
-        this.addDescription(preferido);
+        this.setFsn(fsn);
+        this.setPreferido(preferido);
         this.setCategory(category);
     }
 
     public ConceptSMTK(Category category, Description fsn, Description preferido, State state) {
         this();
 
-        this.addDescription(fsn);
-        this.addDescription(preferido);
+        this.setFsn(fsn);
+        this.setPreferido(preferido);
         this.setCategory(category);
         this.setState(state);
     }
 
-    public List<Description> getDescriptions() {
-        return descriptions;
+    public Description getFsn() {
+        return fsn;
     }
 
-    public void setDescriptions(List<Description> descriptions) {
-        this.descriptions = descriptions;
+    public void setFsn(Description fsn) {
+        this.fsn = fsn;
     }
+
+    public Description getPreferido() {
+        return preferido;
+    }
+
+    public void setPreferido(Description preferido) {
+        this.preferido = preferido;
+    }
+
+    public List<Description> getOtherDescriptions() {
+        return otherDescriptions;
+    }
+
+    public void setOtherDescriptions(List<Description> otherDescriptions) {
+        this.otherDescriptions = otherDescriptions;
+    }
+
 
     public long getId() {
         return id;
@@ -164,10 +190,10 @@ public class ConceptSMTK {
 
 
     public void addDescription(Description description) {
-        this.descriptions.add(description);
+        this.otherDescriptions.add(description);
     }
 
-    public void removeDescription(Description description) { this.descriptions.remove(description); }
+    public void removeDescription(Description description) { this.otherDescriptions.remove(description); }
 
     @Override
     public boolean equals(Object o) {
@@ -183,7 +209,7 @@ public class ConceptSMTK {
         if (isToBeConsultated != that.isToBeConsultated) return false;
         if (isToBeReviewed != that.isToBeReviewed) return false;
         if (category != null ? !category.equals(that.category) : that.category != null) return false;
-        if (!descriptions.equals(that.descriptions)) return false;
+        if (!otherDescriptions.equals(that.otherDescriptions)) return false;
         if (!state.equals(that.state)) return false;
 
         return true;
@@ -199,21 +225,21 @@ public class ConceptSMTK {
         result = 31 * result + state.hashCode();
         result = 31 * result + (isFullyDefined ? 1 : 0);
         result = 31 * result + (isPublished ? 1 : 0);
-        result = 31 * result + descriptions.hashCode();
+        result = 31 * result + otherDescriptions.hashCode();
         return result;
     }
 
 
     public Description getDescriptionFavorite(){
-        for (int i = 0; i < descriptions.size(); i++) {
-            if(descriptions.get(i).getDescriptionType().getIdDescriptionType()==2){
-                return descriptions.get(i);
+        for (int i = 0; i < otherDescriptions.size(); i++) {
+            if(otherDescriptions.get(i).getDescriptionType().getIdDescriptionType()==2){
+                return otherDescriptions.get(i);
             }
         }
         return null;
     }
 
     public int countDescription(){
-        return descriptions.size();
+        return otherDescriptions.size();
     }
 }

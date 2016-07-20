@@ -169,12 +169,12 @@ public class NewConceptMBean implements Serializable {
     }
 
     public void removeItem(Description item) {
-        concept.getDescriptions().remove(item);
+        concept.getOtherDescriptions().remove(item);
     }
 
     public void addItem() {
         System.out.println("addItem");
-        Description description = new Description(otherTermino, descriptionTypes.get(0));
+        Description description = new Description(otherTermino, otherDescriptionType);
         description.setTerm(otherTermino);
         description.setCaseSensitive(otherSensibilidad);
         description.setState(concept.getState());
