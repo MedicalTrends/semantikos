@@ -8,7 +8,7 @@
     <ui:define name="content">
         <div class="Container100">
             <div class="ContainerIndent">
-                <h:form id="form2" onsubmit="return false;">
+                <h:form id="form2" >
                     <div style="margin-top: 65px" class="Card ShadowEffect TexAlCenter">
                         <div class="ui-grid-responsive">
                             <div class="ui-grid-col-5">
@@ -39,9 +39,9 @@
                                              paginatorTemplate=" {CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
                                              emptyMessage="No se han encontrado conceptos con los criterios utilizados">
                                     <f:facet name="{Exporters}">
-                                        <h:commandButton value="Exportar a Excel" styleClass="ui-priority-primary">
+                                        <p:commandButton ajax="false" value="Exportar a Excel" icon="fa fa-file-excel-o">
                                             <p:dataExporter type="xls" target=":form2:conceptTable" fileName="conceptos"/>
-                                        </h:commandButton>
+                                        </p:commandButton>
                                     </f:facet>
 
 
@@ -59,8 +59,8 @@
                                     </p:column>
 
                                     <p:column exportable="false" style="width:32px;text-align: center">
-                                        <p:commandButton update=":form:carDetail" oncomplete="PF('carDialog').show()"
-                                                         icon="ui-icon-search" title="View">
+                                        <p:commandButton update=":form:conceptDetail" oncomplete="PF('conceptDialog').show()"
+                                                         icon="fa fa-bars" title="View">
                                             <f:setPropertyActionListener value="#{conceptSMTK}"
                                                                          target="#{navBrowser.conceptSelected}"/>
                                         </p:commandButton>
@@ -68,9 +68,7 @@
 
 
                                 </p:dataTable>
-                                <h:commandButton value="Exportar a Excel">
-                                    <p:dataExporter type="xls" target=":form2:conceptTable" fileName="conceptos"/>
-                                </h:commandButton>
+
 
 
                             </div>
@@ -84,10 +82,10 @@
 
                 </h:form>
 
-                <h:form id="form" onsubmit="return false;">
-                    <p:dialog  widgetVar="carDialog" modal="true" showEffect="fade"
+                <h:form id="form" >
+                    <p:dialog  widgetVar="conceptDialog" modal="true" showEffect="fade"
                               hideEffect="fade" resizable="false">
-                        <p:outputPanel id="carDetail" style="text-align:center;">
+                        <p:outputPanel id="conceptDetail" style="text-align:center;">
 
 
                             <p:dataTable id="detailConcept" var="description"
@@ -151,9 +149,10 @@
 
                             <br/>
 
-                            <h:commandButton ajax="false" value="Exportar a Excel">
+                            <p:commandButton ajax="false" value="Exportar a Excel" icon="fa fa-file-excel-o">
                                 <p:dataExporter type="xls" target="detailConcept" fileName="detalle_concepto"/>
-                            </h:commandButton>
+                            </p:commandButton>
+
                         </p:outputPanel>
                     </p:dialog>
 
