@@ -289,44 +289,5 @@ public class ConceptDAOImpl implements ConceptDAO {
         return count;
     }
 
-    @Override
-    public ConceptStateMachine getConceptStateMachine() {
-
-        ConnectionBD connect = new ConnectionBD();
-
-        ObjectMapper mapper = new ObjectMapper();
-
-        ConceptStateMachine conceptStateMachine= ConceptStateMachine.getInstance();
-
-
-        try {
-
-            CallableStatement call = connect.getConnection().prepareCall("{call semantikos.get_concept_state_machine()}");
-
-            call.execute();
-
-            ResultSet rs = call.getResultSet();
-
-            while (rs.next()) {
-                String resultJSON = rs.getString(1);
-
-                conceptStateMachine = mapper.readValue(StringUtils.underScoreToCamelCaseJSON(resultJSON), ConceptStateMachine.class);
-
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (JsonParseException e) {
-            e.printStackTrace();
-        } catch (JsonMappingException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        connect.closeConnection();
-
-        return conceptStateMachine;
-    }
 
 }

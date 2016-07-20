@@ -21,13 +21,13 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
 
 
     @EJB
-    ConceptDAO concept;
-
-    @EJB
     ConceptDAO conceptDAO;
 
     @EJB
     DescriptionManagerInterface descriptionManager;
+
+    @EJB
+    StateMachineManagerInterface stateMachineManager;
 
     /*
     @EJB
@@ -131,9 +131,9 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
     @Override
     public ConceptSMTK newConcept(Category category, String term) {
         // Crear estado propuesto
-        ConceptStateMachine conceptStateMachine = conceptDAO.getConceptStateMachine();
-        State propuesto = conceptStateMachine.getInitialState();
-        propuesto.setStateMachine(conceptStateMachine);
+        //ConceptStateMachine conceptStateMachine = conceptDAO.getConceptStateMachine();
+        State propuesto = stateMachineManager.getConceptStateMachine().getInitialState();
+        //propuesto.setStateMachine(conceptStateMachine);
         // Crear descriptor FSN
         Description fsn = new Description(term+" ("+category.getName()+")", descriptionManager.getTypeFSN());
         fsn.setCreationDate(Calendar.getInstance().getTime());
@@ -159,10 +159,10 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
                 listPattern=patternToList(Pattern);
                 String[] arrPattern = listPattern.toArray(new String[listPattern.size()]);
 
-                return concept.getConceptBy(arrPattern, category,pageNumber,pageSize);
+                return conceptDAO.getConceptBy(arrPattern, category,pageNumber,pageSize);
             }
         }
-        return concept.getConceptBy(null,category,pageNumber,pageSize);
+        return conceptDAO.getConceptBy(null,category,pageNumber,pageSize);
 
     }
 
@@ -180,10 +180,10 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
             List<String> listPattern;
             listPattern=patternToList(Pattern);
             String[] arrPattern = listPattern.toArray(new String[listPattern.size()]);
-            return concept.getAllConceptCount(arrPattern, category);
+            return conceptDAO.getAllConceptCount(arrPattern, category);
 
         }
-        return concept.getAllConceptCount(null,category);
+        return conceptDAO.getAllConceptCount(null,category);
 
     }
 

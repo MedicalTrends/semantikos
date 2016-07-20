@@ -13,7 +13,5 @@ import java.util.List;
 public interface StateMachineDAO {
 
 
-    public List<ConceptSMTK> getConceptBy(String[] Pattern, String[] Category, int pageNumber, int pageSize);
-    public int getAllConceptCount(String[] Pattern, String[] category);
-    public ConceptStateMachine getConceptStateMachine();
+    public void initConceptStateMachine(ConceptStateMachine conceptStateMachine);
 }

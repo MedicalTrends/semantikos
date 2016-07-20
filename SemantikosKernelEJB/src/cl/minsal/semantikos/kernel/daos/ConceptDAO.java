@@ -15,5 +15,4 @@ public interface ConceptDAO {
 
     public List<ConceptSMTK> getConceptBy(String[] Pattern, String[] Category, int pageNumber, int pageSize);
     public int getAllConceptCount(String[] Pattern, String[] category);
-    public ConceptStateMachine getConceptStateMachine();
 }
