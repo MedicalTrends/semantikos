@@ -15,7 +15,7 @@ public class Category {
     private boolean isValid;
     private Integer color;
 
-    private List<RelationshipDefinitions> relationshipDefinitions;
+    private List<RelationshipDefinition> relationshipDefinitions;
 
     public long getIdCategory() {
         return idCategory;
@@ -73,11 +73,11 @@ public class Category {
         this.color = color;
     }
 
-    public List<RelationshipDefinitions> getRelationshipDefinitions() {
+    public List<RelationshipDefinition> getRelationshipDefinitions() {
         return relationshipDefinitions;
     }
 
-    public void setRelationshipDefinitions(List<RelationshipDefinitions> relationshipDefinitions) {
+    public void setRelationshipDefinitions(List<RelationshipDefinition> relationshipDefinitions) {
         this.relationshipDefinitions = relationshipDefinitions;
     }
 
