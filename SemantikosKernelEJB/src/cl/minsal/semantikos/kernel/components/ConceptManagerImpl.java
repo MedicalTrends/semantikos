@@ -199,11 +199,6 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
         return conceptDAO.getConceptByPatternCategory(null,categories,pageNumber,pageSize);
     }
 
-    @Override
-    public List<ConceptSMTK> findConceptByConceptIDOrDescriptionCategoryPageNumber(String patter, String[] categories, int pageNumber, int pageSize) {
-        return null;
-    }
-
 
     @Override
     public int getAllConceptCount(String Pattern, String[] category) {
