@@ -138,6 +138,14 @@ public class ConceptSMTK {
         this.id = id;
     }
 
+    public long getConceptID() {
+        return conceptID;
+    }
+
+    public void setConceptID(long conceptID) {
+        this.conceptID = conceptID;
+    }
+
     public State getState() {
         return state;
     }
