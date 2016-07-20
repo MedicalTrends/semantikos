@@ -3,7 +3,7 @@ package cl.minsal.semantikos.kernel.components;
 
 import cl.minsal.semantikos.kernel.daos.CategoryDAO;
 import cl.minsal.semantikos.model.Category;
-import cl.minsal.semantikos.model.RelationShipDefinition;
+import cl.minsal.semantikos.model.RelationshipDefinition;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -30,16 +30,16 @@ public class CategoryManagerImpl implements CategoryManagerInterface {
     private CategoryDAO categoryDAO;
 
     @Override
-    public List<RelationShipDefinition> getCategoryMetaData(int id) {
+    public List<RelationshipDefinition> getCategoryMetaData(int id) {
         return null;
     }
 
 
     @Override
-    public ArrayList<RelationShipDefinition> getAllDescription() {
+    public ArrayList<RelationshipDefinition> getAllDescription() {
 
 
-        ArrayList<RelationShipDefinition> Attributes = new ArrayList<RelationShipDefinition>();
+        ArrayList<RelationshipDefinition> Attributes = new ArrayList<RelationshipDefinition>();
 
         Query nativeQuery = this.entityManager.createNativeQuery("SELECT get_conf_rel_all()");
         List<Object[]> relationships = nativeQuery.getResultList();
@@ -97,7 +97,7 @@ public class CategoryManagerImpl implements CategoryManagerInterface {
     }
 
     @Override
-    public void addAttribute(RelationShipDefinition attributeCategory, int idCategory) {
+    public void addAttribute(RelationshipDefinition attributeCategory, int idCategory) {
 
     }
 
