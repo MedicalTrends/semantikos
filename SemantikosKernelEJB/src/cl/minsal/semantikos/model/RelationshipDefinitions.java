@@ -3,7 +3,7 @@ package cl.minsal.semantikos.model;
 /**
  * Created by stk-des01 on 27-05-16.
  */
-public class RelationShipDefinition {
+public class RelationshipDefinitions {
 
 
     private String id;
@@ -13,7 +13,7 @@ public class RelationShipDefinition {
     private String description;
     private boolean required;
 
-    public RelationShipDefinition(String id, String name, String type, int multiplicity, String description, boolean required, int idCategoryDes, String order) {
+    public RelationshipDefinitions(String id, String name, String type, int multiplicity, String description, boolean required, int idCategoryDes, String order) {
         this.id = id;
         this.name = name;
         this.type = type;
@@ -52,7 +52,7 @@ public class RelationShipDefinition {
     private String order;
 
 
-    public RelationShipDefinition(String id, String name, int multiplicity, String description, boolean required) {
+    public RelationshipDefinitions(String id, String name, int multiplicity, String description, boolean required) {
         this.id = id;
         this.name = name;
         this.multiplicity = multiplicity;

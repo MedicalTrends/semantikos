@@ -1,7 +1,7 @@
 package cl.minsal.semantikos.kernel.components;
 
 import cl.minsal.semantikos.model.Category;
-import cl.minsal.semantikos.model.RelationShipDefinition;
+import cl.minsal.semantikos.model.RelationshipDefinitions;
 
 import javax.ejb.Local;
 import java.util.List;
@@ -22,15 +22,15 @@ public interface CategoryManagerInterface {
      *
      * @return La lista de definiciones de atributos de la categoría.
      */
-    public List<RelationShipDefinition> getCategoryMetaData(int id);
+    public List<RelationshipDefinitions> getCategoryMetaData(int id);
 
-    public List<RelationShipDefinition> getAllDescription();
+    public List<RelationshipDefinitions> getAllDescription();
 
     public List<Category> getCategories();
 
     public int addCategory(Category category);
 
-    public void addAttribute(RelationShipDefinition attributeCategory, int idCategory);
+    public void addAttribute(RelationshipDefinitions attributeCategory, int idCategory);
 
     public int addTypeRelationship(String name, int typeRelation, int idCategoryDes, int multiplicity);
 
