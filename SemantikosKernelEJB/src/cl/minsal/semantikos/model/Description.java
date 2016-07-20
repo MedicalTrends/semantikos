@@ -50,11 +50,19 @@ public class Description {
         this.descriptionType = descriptionType;
     }
 
-    public long getIdDescripcionConcepto() {
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public long getDescriptionId() {
         return descriptionID;
     }
 
-    public void setIdDescripcionConcepto(long idDescription) {
+    public void setDescriptionId(long idDescription) {
         this.descriptionID = idDescription;
     }
 

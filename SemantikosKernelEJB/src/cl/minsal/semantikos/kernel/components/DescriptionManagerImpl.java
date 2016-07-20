@@ -91,6 +91,11 @@ public class DescriptionManagerImpl implements DescriptionManagerInterface {
     }
 
     @Override
+    public List<DescriptionType> getOtherTypes() {
+        return  descriptionDAO.getOtherTypes();
+    }
+
+    @Override
     public List<Description> findDescriptionsByConcept(int idConcept) {
 
         /*
@@ -101,11 +106,6 @@ public class DescriptionManagerImpl implements DescriptionManagerInterface {
         */
 
 
-        return null;
-    }
-
-    @Override
-    public List<State> getAllStates() {
         return null;
     }
 

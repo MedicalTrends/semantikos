@@ -82,7 +82,7 @@ public class NewConceptMBean implements Serializable {
         /////////////////////////////////////////////
 
         category = categoryManager.getFullCategoryById(1);
-        descriptionTypes = descriptionManager.getAllTypes();
+        descriptionTypes = descriptionManager.getOtherTypes();
         //concept = new ConceptSMTK(category, new Description("electrocardiograma de urgencia", descriptionTypes.get(0)));
         concept = conceptManager.newConcept(category, "electrocardiograma de urgencia");
     }
@@ -183,6 +183,7 @@ public class NewConceptMBean implements Serializable {
         description.setCreationDate(Calendar.getInstance().getTime());
         description.setUser(user);
         concept.addDescription(description);
+        //description.getIdDescripcionConcepto()
     }
 }
 
