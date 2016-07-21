@@ -1,5 +1,7 @@
 package cl.minsal.semantikos.model.basictypes;
 
+import cl.minsal.semantikos.model.TargetDefinition;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,7 +9,7 @@ import java.util.List;
  * Esta clase representa un dominio de valores básicos.
  * La única restricción, por ahora para el tipo básica
  */
-public class BasicTypeDefinition<T extends Comparable> {
+public class BasicTypeDefinition<T extends Comparable> implements TargetDefinition {
 
     /** Identificador de la BD */
     private long id;
