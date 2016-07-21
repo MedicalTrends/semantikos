@@ -31,14 +31,6 @@ public class CategoryManagerImpl implements CategoryManagerInterface {
 
     @Override
     public List<RelationshipDefinition> getCategoryMetaData(int id) {
-        return null;
-    }
-
-
-    @Override
-    public ArrayList<RelationshipDefinition> getAllDescription() {
-
-
         ArrayList<RelationshipDefinition> Attributes = new ArrayList<RelationshipDefinition>();
 
         Query nativeQuery = this.entityManager.createNativeQuery("SELECT get_conf_rel_all()");
@@ -53,13 +45,19 @@ public class CategoryManagerImpl implements CategoryManagerInterface {
         for (Object[] relationship : relationships) {
             idRelationship = ((BigInteger) relationship[0]).longValue();
             name = (String) relationship[1];
-            multiplicity = Integer.parseInt((String)relationship[2]);
+            multiplicity = Integer.parseInt((String) relationship[2]);
 
             /* Se crea el objeto */
             //Attributes.add(new AttributeCategory(idRelationship, name, multiplicity, description, required));
         }
 
         return Attributes;
+    }
+
+
+    @Override
+    public ArrayList<RelationshipDefinition> getAllDescription() {
+        return null;
     }
 
 
