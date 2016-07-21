@@ -8,7 +8,7 @@
     <ui:define name="content">
         <div class="Container100">
             <div class="ContainerIndent">
-                <h:form id="form2" >
+                <h:form id="form2">
                     <div style="margin-top: 65px" class="Card ShadowEffect TexAlCenter">
                         <div class="ui-grid-responsive">
                             <div class="ui-grid-col-5">
@@ -39,8 +39,10 @@
                                              paginatorTemplate=" {CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
                                              emptyMessage="No se han encontrado conceptos con los criterios utilizados">
                                     <f:facet name="{Exporters}">
-                                        <p:commandButton ajax="false" value="Exportar a Excel" icon="fa fa-file-excel-o">
-                                            <p:dataExporter type="xls" target=":form2:conceptTable" fileName="conceptos"/>
+                                        <p:commandButton ajax="false" value="Exportar a Excel"
+                                                         icon="fa fa-file-excel-o">
+                                            <p:dataExporter type="xls" target=":form2:conceptTable"
+                                                            fileName="conceptos"/>
                                         </p:commandButton>
                                     </f:facet>
 
@@ -59,42 +61,36 @@
                                     </p:column>
 
                                     <p:column exportable="false" style="width:32px;text-align: center">
-                                        <p:commandButton update=":form:conceptDetail" oncomplete="PF('conceptDialog').show()"
+                                        <p:commandButton update=":form:conceptDetail"
+                                                         oncomplete="PF('conceptDialog').show()"
                                                          icon="fa fa-bars" title="View">
                                             <f:setPropertyActionListener value="#{conceptSMTK}"
                                                                          target="#{navBrowser.conceptSelected}"/>
                                         </p:commandButton>
                                     </p:column>
 
-
                                 </p:dataTable>
-
-
 
                             </div>
 
-
                         </div>
-
 
                     </div>
 
-
                 </h:form>
 
-                <h:form id="form" >
-                    <p:dialog  widgetVar="conceptDialog" modal="true" showEffect="fade"
+                <h:form id="form">
+                    <p:dialog widgetVar="conceptDialog" modal="true" showEffect="fade"
                               hideEffect="fade" resizable="false">
                         <p:outputPanel id="conceptDetail" style="text-align:center;">
 
 
                             <p:dataTable id="detailConcept" var="description"
                                          value="#{navBrowser.conceptSelected.otherDescriptions}"
-                                         style="margin-top:40px" >
+                                         style="margin-top:40px">
                                 <f:facet name="header">
                                     Detalle del concepto
                                 </f:facet>
-
 
                                 <p:columnGroup type="header">
 
@@ -158,10 +154,10 @@
 
                 </h:form>
 
-
             </div>
         </div>
 
     </ui:define>
 
 </ui:composition>
+

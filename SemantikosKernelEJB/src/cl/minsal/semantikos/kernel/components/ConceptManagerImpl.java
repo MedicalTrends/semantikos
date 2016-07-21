@@ -148,6 +148,7 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
     @Override
     public List<ConceptSMTK> findConceptByPatternCategoryPageNumber(String Pattern, String[] category, int pageNumber, int pageSize) {
 
+        Long[] states = {(long) 3,(long) 4};
 
         if (category != null) {
             if (category.length == 0) category = null;
@@ -160,16 +161,21 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
                 listPattern=patternToList(Pattern);
                 String[] arrPattern = listPattern.toArray(new String[listPattern.size()]);
 
-                return conceptDAO.getConceptByPatternCategory(arrPattern, category,pageNumber,pageSize);
+                return conceptDAO.getConceptByPatternCategory(arrPattern, category,pageNumber,pageSize,states);
             }
 
         }
-        return conceptDAO.getConceptByPatternCategory(null,category,pageNumber,pageSize);
+        return conceptDAO.getConceptByPatternCategory(null,category,pageNumber,pageSize, states);
 
     }
 
     @Override
     public List<ConceptSMTK> findConceptByConceptIDOrDescriptionCategoryPageNumber(String patter, String[] categories, int pageNumber, int pageSize) {
+
+
+        Long[] states = {(long) 3,(long) 4};
+
+
         if (categories != null) {
             if (categories.length == 0) categories = null;
         }
@@ -180,29 +186,30 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
                 List<String> listPattern;
                 listPattern=patternToList(patter);
                 if(listPattern.size()==1){
-                    return conceptDAO.getConceptByPatternOrConceptIDAndCategory(patter.trim(),categories,pageNumber,pageSize);
+                    return conceptDAO.getConceptByPatternOrConceptIDAndCategory(patter.trim(),categories,pageNumber,pageSize,states);
                 }
                 String[] arrPattern = listPattern.toArray(new String[listPattern.size()]);
 
-                return conceptDAO.getConceptByPatternCategory(arrPattern, categories,pageNumber,pageSize);
+                return conceptDAO.getConceptByPatternCategory(arrPattern, categories,pageNumber,pageSize,states);
             }else{
                 if(patter.length()>0){
                     List<String> listPattern;
                     listPattern=patternToList(patter);
                     if(listPattern.size()==1){
-                        return conceptDAO.getConceptByPatternOrConceptIDAndCategory(patter.trim(),categories,pageNumber,pageSize);
+                        return conceptDAO.getConceptByPatternOrConceptIDAndCategory(patter.trim(),categories,pageNumber,pageSize,states);
                     }
                 }
 
             }
         }
-        return conceptDAO.getConceptByPatternCategory(null,categories,pageNumber,pageSize);
+        return conceptDAO.getConceptByPatternCategory(null,categories,pageNumber,pageSize, states);
     }
 
 
     @Override
     public int getAllConceptCount(String Pattern, String[] category) {
 
+        Long[] states = {(long) 3,(long) 4};
 
 
         if (category != null) {
@@ -212,13 +219,13 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
             List<String> listPattern;
             listPattern=patternToList(Pattern);
             if(listPattern.size()==1){
-                return conceptDAO.getCountFindConceptID(Pattern.trim(),category);
+                return conceptDAO.getCountFindConceptID(Pattern.trim(),category,states);
             }
             String[] arrPattern = listPattern.toArray(new String[listPattern.size()]);
 
-            return conceptDAO.getAllConceptCount(arrPattern, category);
+            return conceptDAO.getAllConceptCount(arrPattern, category, states);
         }
-        return conceptDAO.getAllConceptCount(null,category);
+        return conceptDAO.getAllConceptCount(null,category, states);
 
     }
 
