@@ -36,7 +36,12 @@ public interface CategoryManagerInterface {
 
     public Category getCategoryById(int id);
 
-    public Category getFullCategoryById(int id);
+    /**
+     * Este metodo es responsable de recuperar una Categoría completa, con sus propiedades básicas y todos sus meta-atributos
+     * @param idCategory Identificador Unico de la categoría.
+     * @return La categoría buscada.
+     */
+    public Category getFullCategoryById(int idCategory);
 
 
 }

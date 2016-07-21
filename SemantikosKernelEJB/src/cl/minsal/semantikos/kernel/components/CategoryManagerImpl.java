@@ -23,9 +23,6 @@ public class CategoryManagerImpl implements CategoryManagerInterface {
     @PersistenceContext(unitName = "SEMANTIKOS_PU")
     private EntityManager entityManager;
 
-    String user = "postgres";
-    String password = "1q2w3e";
-
     @EJB
     private CategoryDAO categoryDAO;
 
@@ -175,11 +172,8 @@ public class CategoryManagerImpl implements CategoryManagerInterface {
     }
 
     @Override
-    public Category getFullCategoryById(int id) {
-
-        return categoryDAO.getFullCategoryById(id);
-        //return new Category();
-        //return null;
+    public Category getFullCategoryById(int idCategory) {
+        return categoryDAO.getFullCategoryById(idCategory);
     }
 
     @Override
