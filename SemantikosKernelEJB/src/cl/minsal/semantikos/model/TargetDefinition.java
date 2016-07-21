@@ -18,7 +18,7 @@ public class TargetDefinition {
 
     private TargetType targetType;
 
-    private BasicType basicType;
+    private BasicTypeDefinition basicTypeDefinition;
 
     public long getIdTargetDefinition() {
         return idTargetDefinition;
@@ -92,12 +92,12 @@ public class TargetDefinition {
         this.targetType = targetType;
     }
 
-    public BasicType getBasicType() {
-        return basicType;
+    public BasicTypeDefinition getBasicTypeDefinition() {
+        return basicTypeDefinition;
     }
 
-    public void setBasicType(BasicType basicType) {
-        this.basicType = basicType;
+    public void setBasicTypeDefinition(BasicTypeDefinition basicTypeDefinition) {
+        this.basicTypeDefinition = basicTypeDefinition;
     }
 
     @Override
