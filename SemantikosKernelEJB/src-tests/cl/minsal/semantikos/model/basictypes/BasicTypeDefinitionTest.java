@@ -2,6 +2,7 @@ package cl.minsal.semantikos.model.basictypes;
 
 import org.junit.Test;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 public class BasicTypeDefinitionTest {
@@ -17,6 +18,22 @@ public class BasicTypeDefinitionTest {
 
         assertTrue(teratogenicoBT.contains("A"));
         assertTrue(teratogenicoBT.contains("A/X"));
+    }
+
+    @Test
+    public void testContains02() throws Exception {
+        BasicTypeDefinition<String> teratogenicoBT = createTeratogenicoBT();
+
+        assertFalse(teratogenicoBT.contains("F"));
+        assertFalse(teratogenicoBT.contains("F/X"));
+    }
+
+    @Test
+    public void testContains03() throws Exception {
+        BasicTypeDefinition<String> openTypeString = new BasicTypeDefinition<String>("open", "It contains all the strings.");
+
+        assertTrue(openTypeString.contains("F"));
+        assertTrue(openTypeString.contains("F/X"));
     }
 
     private BasicTypeDefinition<String> createTeratogenicoBT() {

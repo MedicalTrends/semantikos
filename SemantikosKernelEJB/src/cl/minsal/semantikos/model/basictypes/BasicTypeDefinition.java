@@ -39,7 +39,7 @@ public class BasicTypeDefinition<T extends Comparable> {
         this.name = name;
         this.description = description;
         this.domain = new ArrayList<T>();
-        this.interval = new OpenInterval<T>();
+        this.interval = new EmptyInterval<>();
     }
 
     public long getId() {
@@ -78,6 +78,13 @@ public class BasicTypeDefinition<T extends Comparable> {
      * @return <code>true</code> if it belongs to the interval and <code>false</code> otherwise.
      */
     public boolean contains(T anElement) {
-        return this.interval.contains(anElement);
+
+        /* Primero se busca en el intervalo */
+        if (this.interval.contains(anElement))
+            return true;
+
+
+        /* Luego en el conjunto de valores discretos */
+        return this.domain.contains(anElement);
     }
 }
