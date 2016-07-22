@@ -32,8 +32,8 @@ public class BasicTypeDefinitionTest {
     public void testContains03() throws Exception {
         BasicTypeDefinition<String> openTypeString = new BasicTypeDefinition<String>("open", "It contains all the strings.");
 
-        assertTrue(openTypeString.contains("F"));
-        assertTrue(openTypeString.contains("F/X"));
+        assertFalse(openTypeString.contains("F"));
+        assertFalse(openTypeString.contains("F/X"));
     }
 
     private BasicTypeDefinition<String> createTeratogenicoBT() {

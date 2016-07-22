@@ -11,6 +11,17 @@ public class Multiplicity {
     /** Limite superior */
     private int upperBoundary;
 
+    /**
+     * Constructor por defecto.
+     *
+     * @param lowerBoundary Límite inferior
+     * @param upperBoundary Límite superior
+     */
+    public Multiplicity(int lowerBoundary, int upperBoundary) {
+        this.lowerBoundary = lowerBoundary;
+        this.upperBoundary = upperBoundary;
+    }
+
     public int getUpperBoundary() {
         return upperBoundary;
     }

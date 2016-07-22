@@ -7,7 +7,10 @@ import cl.minsal.semantikos.model.RelationshipDefinition;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sun.istack.internal.NotNull;
+import org.hibernate.persister.internal.PersisterClassResolverInitiator;
 
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -32,6 +35,10 @@ public class CategoryDAOImpl implements CategoryDAO {
 
     @PersistenceContext(unitName = "SEMANTIKOS_PU")
     EntityManager em;
+
+    /** El DAO para recuperar atributos de la categoría */
+    @EJB
+    private RelationshipDefinitionDAO relationshipDefinitionDAO;
 
     @Override
     public Category getCategoryById(long id) {
@@ -124,28 +131,8 @@ public class CategoryDAOImpl implements CategoryDAO {
     }
 
     @Override
-    public List<RelationshipDefinition> getCategoryMetaData(int idCategory) {
-        ArrayList<RelationshipDefinition> Attributes = new ArrayList<RelationshipDefinition>();
-
-        Query nativeQuery = this.em.createNativeQuery("SELECT get_conf_rel_all()");
-        List<Object[]> relationships = nativeQuery.getResultList();
-
-        long idRelationship;
-        String name;
-        int multiplicity;
-        String description;
-        boolean required;
-
-        for (Object[] relationship : relationships) {
-            idRelationship = ((BigInteger) relationship[0]).longValue();
-            name = (String) relationship[1];
-            multiplicity = Integer.parseInt((String) relationship[2]);
-
-            /* Se crea el objeto */
-            //Attributes.add(new AttributeCategory(idRelationship, name, multiplicity, description, required));
-        }
-
-        return Attributes;
+    public List<RelationshipDefinition> getCategoryMetaData(@NotNull int idCategory) {
+        return relationshipDefinitionDAO.getRelationshipDefinitionsByCategory(idCategory);
     }
 
 }

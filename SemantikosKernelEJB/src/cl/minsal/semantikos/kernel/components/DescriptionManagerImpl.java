@@ -4,7 +4,6 @@ package cl.minsal.semantikos.kernel.components;
 import cl.minsal.semantikos.kernel.daos.DescriptionDAO;
 import cl.minsal.semantikos.model.Description;
 import cl.minsal.semantikos.model.DescriptionType;
-import cl.minsal.semantikos.model.State;
 import cl.minsal.semantikos.model.TypeDescription;
 
 import javax.ejb.EJB;

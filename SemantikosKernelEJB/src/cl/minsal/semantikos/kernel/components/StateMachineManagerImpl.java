@@ -6,13 +6,7 @@ import cl.minsal.semantikos.model.*;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.ejb.Singleton;
 import javax.ejb.Stateful;
-import javax.ejb.Stateless;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-import java.util.StringTokenizer;
 
 /**
  * Created by stk-des01 on 01-06-16.

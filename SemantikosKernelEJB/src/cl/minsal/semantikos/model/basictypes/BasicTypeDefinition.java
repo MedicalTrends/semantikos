@@ -23,7 +23,7 @@ public class BasicTypeDefinition<T extends Comparable> implements TargetDefiniti
     /** El dominio de valores posibles */
     private List<T> domain;
 
-    private IInterval<T> interval;
+    private Interval<T> interval;
 
     public BasicTypeDefinition(String name, String description) {
         this(-1, name, description);

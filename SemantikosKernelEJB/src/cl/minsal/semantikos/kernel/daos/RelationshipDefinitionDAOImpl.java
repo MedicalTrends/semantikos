@@ -4,6 +4,7 @@ package cl.minsal.semantikos.kernel.daos;
 import cl.minsal.semantikos.kernel.util.ConnectionBD;
 import cl.minsal.semantikos.kernel.util.StringUtils;
 import cl.minsal.semantikos.model.*;
+import cl.minsal.semantikos.model.basictypes.BasicTypeDefinition;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -12,7 +13,9 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import java.io.IOException;
+import java.math.BigInteger;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,57 +34,56 @@ public class RelationshipDefinitionDAOImpl implements RelationshipDefinitionDAO 
 
     @EJB
     CategoryDAO categoryDAO;
+
     @EJB
     DescriptionDAO descriptionDAO;
+
+    @EJB
+    private TargetTypeDAO targetTypeDAO;
 
     @Override
     public List<RelationshipDefinition> getRelationshipDefinitionsByCategory(int idCategory) {
 
-        ConnectionBD connect = new ConnectionBD();
+        ArrayList<RelationshipDefinition> attributes = new ArrayList<RelationshipDefinition>();
 
-        ObjectMapper mapper = new ObjectMapper();
+        /* Se invoca la consulta para recuperar las relaciones */
+        Query nativeQuery = this.em.createNativeQuery("SELECT get_conf_rel_all()");
+        List<Object[]> relationships = nativeQuery.getResultList();
 
-        Category category = new Category();
+        //TODO: finish this.
+        for (Object[] relationship : relationships) {
 
+            long idRelationship = ((BigInteger) relationship[0]).longValue();
+            String name = (String) relationship[1];
+            String description = (String) relationship[2];
 
-        try (Connection connection = connect.getConnection();
-             CallableStatement call = connection.prepareCall(SQL_GET_RELATIONSHIP_DEFINITIONS)) {
+            /* Limites de la multiplicidad */
+            int lowerBoundary = Integer.parseInt((String) relationship[3]);
+            int upperBoundary = Integer.parseInt((String) relationship[4]);
+            Multiplicity multiplicity = new Multiplicity(lowerBoundary, upperBoundary);
 
-            call.setInt(1, idCategory);
-            call.execute();
-            ResultSet rs = call.getResultSet();
+            /* Se recupera el target definition */
+            TargetDefinition targetDefinition = getTargetDefinition((String)relationship[6], (String)relationship[7], (String)relationship[8], (String)relationship[9], (String)relationship[10]);
 
-            while (rs.next()) {
-
-                long id = Long.valueOf(rs.getString("id"));
-                String name= String.valueOf(rs.getString("name"));
-                String description = String.valueOf(rs.getString("name"));
-
-
-
-                switch ()
-
-
-
-                String resultJSON = rs.getString(1);
-                category = mapper.readValue(StringUtils.underScoreToCamelCaseJSON(resultJSON), Category.class);
-
-                RelationshipDefinition relationshipDefinition = new RelationshipDefinition(id, name, description, targetDefinition, Multiplicity multiplicity)
-            }
-
-            rs.close();
-
-        } catch (SQLException e) {
-            // TODO: Llevar a un log.
-            e.printStackTrace();
-        } catch (JsonParseException e) {
-            e.printStackTrace();
-        } catch (JsonMappingException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+            /* Se crea el objeto */
+            RelationshipDefinition relationshipDefinition = new RelationshipDefinition(idRelationship, name, description, targetDefinition, multiplicity);
+            //Attributes.add(new AttributeCategory(idRelationship, name, multiplicity, description, required));
         }
 
-        return category;
+        return attributes;
+
+    }
+
+    private TargetDefinition getTargetDefinition(String idCategory, String idAccesoryTable, String idExternTable, String idBasicType, String isSCTType) {
+
+        /* Se testea si es un tipo básico */
+        BasicTypeDefinition basicTypeDefinition = null;
+        if (idBasicType != null) {
+            long id = new BigInteger(idBasicType).longValue();
+            basicTypeDefinition = targetTypeDAO.findByID(id);
+        }
+
+
+        return basicTypeDefinition;
     }
 }

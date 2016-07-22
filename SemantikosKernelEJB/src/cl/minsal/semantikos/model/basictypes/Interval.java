@@ -1,17 +1,20 @@
 package cl.minsal.semantikos.model.basictypes;
 
 /**
- * Esta clase representa un intervalo. El intervalo se define como un límite inferior y uno superior.
+ * Esta clase representa un intervalo de elementos ordenables (comparables).
  */
-public class Interval<T extends Comparable> implements IInterval<T> {
+public abstract class Interval<T extends Comparable> {
 
     /** Limite inferior del intervalo */
-    private T bottomBoundary;
+    protected T bottomBoundary;
 
     /** Límite superior del intervalo */
-    private T upperBoundary;
+    protected T upperBoundary;
 
-    public Interval(T bottomBoundary, T upperBoundary) {
+    protected Interval() {
+    }
+
+    protected Interval(T bottomBoundary, T upperBoundary) {
         this.bottomBoundary = bottomBoundary;
         this.upperBoundary = upperBoundary;
     }
@@ -32,9 +35,12 @@ public class Interval<T extends Comparable> implements IInterval<T> {
         this.upperBoundary = upperBoundary;
     }
 
-    @Override
-    public boolean contains(T anElement) {
-        return ((anElement.compareTo(this.upperBoundary) <= 0) &&
-                (anElement.compareTo(this.bottomBoundary) >= 0));
-    }
+    /**
+     * This is responsible for determining if an element belongs to this interval.
+     *
+     * @param anElement The element to be checked to belong in the interval.
+     *
+     * @return <code>true</code> if it belongs to the interval and <code>false</code> otherwise.
+     */
+    public abstract boolean contains(T anElement);
 }
