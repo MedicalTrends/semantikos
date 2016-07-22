@@ -37,14 +37,6 @@ public class NewConceptMBean implements Serializable {
     @EJB
     CategoryManagerInterface categoryManager;
 
-    public StateMachineManagerInterface getStateMachineManager() {
-        return stateMachineManager;
-    }
-
-    public void setStateMachineManager(StateMachineManagerInterface stateMachineManager) {
-        this.stateMachineManager = stateMachineManager;
-    }
-
     @EJB
     StateMachineManagerInterface stateMachineManager;
 
@@ -63,10 +55,8 @@ public class NewConceptMBean implements Serializable {
 
     private String otherTermino;
 
-    //private SelectItem otherSensibilidad;
     private boolean otherSensibilidad;
 
-    //private SelectItem otherDescriptionType;
     private DescriptionType otherDescriptionType;
 
 
@@ -81,7 +71,7 @@ public class NewConceptMBean implements Serializable {
         user.setPassword("amauro");
         /////////////////////////////////////////////
 
-        category = categoryManager.getFullCategoryById(1);
+        category = categoryManager.getFullCategoryById(105590001);
         descriptionTypes = descriptionManager.getOtherTypes();
         //concept = new ConceptSMTK(category, new Description("electrocardiograma de urgencia", descriptionTypes.get(0)));
         concept = conceptManager.newConcept(category, "electrocardiograma de urgencia");
@@ -158,6 +148,14 @@ public class NewConceptMBean implements Serializable {
         this.selectedDescriptions = selectedDescriptions;
     }
 
+    public StateMachineManagerInterface getStateMachineManager() {
+        return stateMachineManager;
+    }
+
+    public void setStateMachineManager(StateMachineManagerInterface stateMachineManager) {
+        this.stateMachineManager = stateMachineManager;
+    }
+
     public void onCellEdit(CellEditEvent event) {
         Object oldValue = event.getOldValue();
         Object newValue = event.getNewValue();
@@ -178,12 +176,9 @@ public class NewConceptMBean implements Serializable {
         description.setTerm(otherTermino);
         description.setCaseSensitive(otherSensibilidad);
         description.setState(concept.getState());
-        //description.setState(stateManager.getStatePropuesto());
-        //description.setDescriptionType(descriptionTypes.get(0));
         description.setCreationDate(Calendar.getInstance().getTime());
         description.setUser(user);
         concept.addDescription(description);
-        //description.getIdDescripcionConcepto()
     }
 }
 
