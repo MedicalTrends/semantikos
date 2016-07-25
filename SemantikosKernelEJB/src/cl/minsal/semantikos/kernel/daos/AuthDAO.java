@@ -46,8 +46,14 @@ public class AuthDAO {
 
         User u = new User();
 
-        u.setEmail((String) row[3]);
-
+        u.setIdUser(((BigInteger)row[0]).longValue() );
+        u.setUsername((String)row[1]);
+        u.setPasswordHash((String)row[2]);
+        u.setPasswordSalt((String)row[3]);
+        u.setName((String)row[4]);
+        u.setLastName((String)row[5]);
+        u.setSecondLastName((String)row[6]);
+        u.setEmail((String)row[7]);
 
 
         return u;
