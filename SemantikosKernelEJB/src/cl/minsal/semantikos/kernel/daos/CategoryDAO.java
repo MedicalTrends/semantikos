@@ -1,13 +1,14 @@
 package cl.minsal.semantikos.kernel.daos;
 
 import cl.minsal.semantikos.model.Category;
+import cl.minsal.semantikos.model.RelationshipDefinition;
 
 import javax.ejb.Local;
 import java.util.List;
 
 
 /**
- * Created by des01c7 on 01-07-16.
+ * Este DAO es responsable de recuperar información relativa a las categorías desde la BD.
  */
 
 @Local
@@ -15,7 +16,23 @@ public interface CategoryDAO {
 
     public Category getCategoryById(long id);
 
+    /**
+     * Este método es responsable de recuperar toda la información de una categoría desde la BD y retornarla bien
+     * organizada en un objeto de negocio.
+     *
+     * @return La categoría requerida por su ID.
+     */
     public Category getFullCategoryById(long id);
 
     public List<Category> getAllCategories();
+
+    /**
+     * Este método responsable de recuperar toda la meta-data que consituye la definición de una categoría, en
+     * particular todos los atributos que define.
+     *
+     * @param idCategory Identificador único de la categoría.
+     *
+     * @return La lista de definiciones de atributos de la categoría.
+     */
+    public List<RelationshipDefinition> getCategoryMetaData(int idCategory);
 }

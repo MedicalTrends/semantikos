@@ -4,7 +4,6 @@ package cl.minsal.semantikos.kernel.components;
 import cl.minsal.semantikos.kernel.daos.DescriptionDAO;
 import cl.minsal.semantikos.model.Description;
 import cl.minsal.semantikos.model.DescriptionType;
-import cl.minsal.semantikos.model.State;
 import cl.minsal.semantikos.model.TypeDescription;
 
 import javax.ejb.EJB;
@@ -91,6 +90,11 @@ public class DescriptionManagerImpl implements DescriptionManagerInterface {
     }
 
     @Override
+    public List<DescriptionType> getOtherTypes() {
+        return  descriptionDAO.getOtherTypes();
+    }
+
+    @Override
     public List<Description> findDescriptionsByConcept(int idConcept) {
 
         /*
@@ -101,11 +105,6 @@ public class DescriptionManagerImpl implements DescriptionManagerInterface {
         */
 
 
-        return null;
-    }
-
-    @Override
-    public List<State> getAllStates() {
         return null;
     }
 

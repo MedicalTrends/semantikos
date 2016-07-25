@@ -126,4 +126,24 @@ public class User {
     public void setPasswordSalt(String passwordSalt) {
         this.passwordSalt = passwordSalt;
     }
+
+    @Override
+    public boolean equals(Object other) {
+        return (other instanceof User) && ( String.valueOf(idUser) != null )
+                ? String.valueOf(idUser).equals(String.valueOf(((User) other).idUser))
+                : (other == this);
+    }
+
+    @Override
+    public int hashCode() {
+        return (String.valueOf(idUser) != null)
+                ? (this.getClass().hashCode() + String.valueOf(idUser).hashCode())
+                : super.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        //return String.format("ExampleEntity[%d, %s]", idDescriptionType, glosa);
+        return getUsername();
+    }
 }

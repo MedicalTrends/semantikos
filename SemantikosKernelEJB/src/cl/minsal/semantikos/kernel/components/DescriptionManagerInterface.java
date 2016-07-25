@@ -24,9 +24,9 @@ public interface DescriptionManagerInterface {
 
     public List<DescriptionType> getAllTypes();
 
-    public List<Description> findDescriptionsByConcept(int idConcept);
+    public List<DescriptionType> getOtherTypes();
 
-    public List<State> getAllStates();
+    public List<Description> findDescriptionsByConcept(int idConcept);
 
     public DescriptionType getTypeFSN();
 

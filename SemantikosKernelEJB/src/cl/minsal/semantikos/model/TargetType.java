@@ -1,5 +1,7 @@
 package cl.minsal.semantikos.model;
 
+import cl.minsal.semantikos.model.basictypes.BasicTypeDefinition;
+
 import java.util.List;
 
 /**
@@ -12,7 +14,7 @@ public class TargetType {
 
     private List<TargetDefinition> targetDefinitions;
 
-    private List<BasicType> basicTypes;
+    private List<BasicTypeDefinition> basicTypeDefinitions;
 
     public long getIdTargetType() {
         return idTargetType;
@@ -46,12 +48,12 @@ public class TargetType {
         this.targetDefinitions = targetDefinitions;
     }
 
-    public List<BasicType> getBasicTypes() {
-        return basicTypes;
+    public List<BasicTypeDefinition> getBasicTypeDefinitions() {
+        return basicTypeDefinitions;
     }
 
-    public void setBasicTypes(List<BasicType> basicTypes) {
-        this.basicTypes = basicTypes;
+    public void setBasicTypeDefinitions(List<BasicTypeDefinition> basicTypeDefinitions) {
+        this.basicTypeDefinitions = basicTypeDefinitions;
     }
 
     @Override

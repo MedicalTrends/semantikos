@@ -17,6 +17,8 @@ DescriptionDAO {
 
     public List<DescriptionType> getAllTypes();
 
+    public List<DescriptionType> getOtherTypes();
+
     public List<Description> getDescriptionBy(int id);
 
     public List<Description> getDescriptionByConceptID(long id);

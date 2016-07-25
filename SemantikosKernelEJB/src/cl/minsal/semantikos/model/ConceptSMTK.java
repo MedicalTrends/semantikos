@@ -82,8 +82,10 @@ public class ConceptSMTK {
     public ConceptSMTK(Category category, Description fsn) {
         this();
 
+        fsn.setId(1);
         this.setFsn(fsn);
         fsn.setTerm(fsn.getTerm()+"("+category.getName()+")");
+        fsn.setId(2);
         this.setPreferido(fsn);
         this.setCategory(category);
     }
@@ -198,7 +200,10 @@ public class ConceptSMTK {
 
 
     public void addDescription(Description description) {
+
+        description.setId(otherDescriptions.size()+1);
         this.otherDescriptions.add(description);
+
     }
 
     public void removeDescription(Description description) { this.otherDescriptions.remove(description); }
