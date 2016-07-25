@@ -58,16 +58,15 @@ public class NavBrowser  {
         concepts = new LazyDataModel<ConceptSMTK>() {
             @Override
             public List<ConceptSMTK> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
-
                 List <ConceptSMTK> conceptSMTKs= conceptManager.findConceptByConceptIDOrDescriptionCategoryPageNumber(pattern,selectedCategories,first,pageSize);
                 this.setRowCount(conceptManager.getAllConceptCount(pattern,selectedCategories));
-
-
                 return conceptSMTKs;
             }
         };
 
     }
+
+
 
 
     public List<Category> getCategories() {

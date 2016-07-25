@@ -7,8 +7,7 @@ import cl.minsal.semantikos.model.RelationshipDefinition;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sun.istack.internal.NotNull;
-import org.hibernate.persister.internal.PersisterClassResolverInitiator;
+//import org.hibernate.persister.internal.PersisterClassResolverInitiator;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -108,6 +107,7 @@ public class CategoryDAOImpl implements CategoryDAO {
 
     @Override
     public List<Category> getAllCategories() {
+        /*
 
         Query q = em.createNativeQuery("select * from semantikos.get_all_categories()");
         List<Object[]> resultList = q.getResultList();
@@ -128,10 +128,11 @@ public class CategoryDAOImpl implements CategoryDAO {
         }
 
         return respuesta;
+        */ return null;
     }
 
     @Override
-    public List<RelationshipDefinition> getCategoryMetaData(@NotNull int idCategory) {
+    public List<RelationshipDefinition> getCategoryMetaData(int idCategory) {
         return relationshipDefinitionDAO.getRelationshipDefinitionsByCategory(idCategory);
     }
 

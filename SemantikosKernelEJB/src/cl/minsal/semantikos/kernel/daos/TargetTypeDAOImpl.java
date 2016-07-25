@@ -2,6 +2,7 @@ package cl.minsal.semantikos.kernel.daos;
 
 import cl.minsal.semantikos.model.basictypes.BasicTypeDefinition;
 
+import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
@@ -11,6 +12,7 @@ import java.util.List;
 /**
  * Created by andres on 7/22/16.
  */
+@Stateless
 public class TargetTypeDAOImpl implements TargetTypeDAO {
 
     @PersistenceContext(unitName = "SEMANTIKOS_PU")
