@@ -17,6 +17,7 @@ import javax.persistence.Query;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.sql.*;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,8 +27,6 @@ import java.util.List;
 
 @Stateless
 public class RelationshipDefinitionDAOImpl implements RelationshipDefinitionDAO {
-
-    private static final String SQL_GET_RELATIONSHIP_DEFINITIONS = "{call semantikos.get_full_category_by_id(?)}";
 
     @PersistenceContext(unitName = "SEMANTIKOS_PU")
     EntityManager em;
@@ -42,12 +41,15 @@ public class RelationshipDefinitionDAOImpl implements RelationshipDefinitionDAO 
     private TargetTypeDAO targetTypeDAO;
 
     @Override
-    public List<RelationshipDefinition> getRelationshipDefinitionsByCategory(int idCategory) {
+    public List<RelationshipDefinition> getRelationshipDefinitionsByCategory(int idCategory) throws ParseException {
 
         ArrayList<RelationshipDefinition> attributes = new ArrayList<RelationshipDefinition>();
 
         /* Se invoca la consulta para recuperar las relaciones */
-        Query nativeQuery = this.em.createNativeQuery("SELECT get_conf_rel_all()");
+        Query nativeQuery = this.em.createNativeQuery("SELECT semantikos.get_relationship_definitions_by_category(?)");
+
+        nativeQuery.setParameter(1,idCategory);
+
         List<Object[]> relationships = nativeQuery.getResultList();
 
         //TODO: finish this.
@@ -67,17 +69,19 @@ public class RelationshipDefinitionDAOImpl implements RelationshipDefinitionDAO 
 
             /* Se crea el objeto */
             RelationshipDefinition relationshipDefinition = new RelationshipDefinition(idRelationship, name, description, targetDefinition, multiplicity);
-            //Attributes.add(new AttributeCategory(idRelationship, name, multiplicity, description, required));
+
+            attributes.add(relationshipDefinition);
         }
 
         return attributes;
 
     }
 
-    private TargetDefinition getTargetDefinition(String idCategory, String idAccesoryTable, String idExternTable, String idBasicType, String isSCTType) {
+    private TargetDefinition getTargetDefinition(String idCategory, String idAccesoryTable, String idExternTable, String idBasicType, String isSCTType) throws ParseException {
 
         /* Se testea si es un tipo básico */
         BasicTypeDefinition basicTypeDefinition = null;
+
         if (idBasicType != null) {
             long id = new BigInteger(idBasicType).longValue();
             basicTypeDefinition = targetTypeDAO.findByID(id);

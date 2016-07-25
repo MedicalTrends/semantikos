@@ -4,6 +4,7 @@ import cl.minsal.semantikos.model.Category;
 import cl.minsal.semantikos.model.RelationshipDefinition;
 
 import javax.ejb.Local;
+import java.text.ParseException;
 import java.util.List;
 
 /**
@@ -34,7 +35,7 @@ public interface CategoryManagerInterface {
 
     public int addTypeRelationship(String name, int typeRelation, int idCategoryDes, int multiplicity);
 
-    public Category getCategoryById(int id);
+    public Category getCategoryById(int id) throws ParseException;
 
     /**
      * Este metodo es responsable de recuperar una Categoría completa, con sus propiedades básicas y todos sus meta-atributos

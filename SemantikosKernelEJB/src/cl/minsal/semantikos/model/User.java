@@ -17,6 +17,7 @@ public class User {
 
     String password;
     String passwordHash;
+    String passwordSalt;
 
     List<Profile> profiles;
     List<Permission> permissions;
@@ -116,6 +117,14 @@ public class User {
 
     public void setPasswordHash(String passwordHash) {
         this.passwordHash = passwordHash;
+    }
+
+    public String getPasswordSalt() {
+        return passwordSalt;
+    }
+
+    public void setPasswordSalt(String passwordSalt) {
+        this.passwordSalt = passwordSalt;
     }
 
     @Override

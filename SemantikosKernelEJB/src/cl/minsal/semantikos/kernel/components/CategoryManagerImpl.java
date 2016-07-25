@@ -11,6 +11,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.math.BigInteger;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -162,13 +163,13 @@ public class CategoryManagerImpl implements CategoryManagerInterface {
     }
 
     @Override
-    public Category getCategoryById(int id) {
+    public Category getCategoryById(int id) throws ParseException {
         /*
         CategoryDAOImpl categoryDAO= new CategoryDAOImpl();
         return categoryDAO.getCategoryById(id);
         */
-        //return categoryDAO.getCategoryById(id);
-        return new Category();
+        return categoryDAO.getCategoryById(id);
+        //return new Category();
     }
 
     @Override

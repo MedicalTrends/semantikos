@@ -3,6 +3,7 @@ package cl.minsal.semantikos.kernel.daos;
 import cl.minsal.semantikos.model.basictypes.BasicTypeDefinition;
 
 import javax.ejb.Local;
+import java.text.ParseException;
 
 /**
  * Esta clase es responsable de recuperar los TargetTypeDefinition desde la BD.
@@ -17,5 +18,5 @@ public interface TargetTypeDAO {
      *
      * @return El objecto fresco creado desde la BD.
      */
-    public BasicTypeDefinition findByID(long id);
+    public BasicTypeDefinition findByID(long id) throws ParseException;
 }

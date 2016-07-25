@@ -17,6 +17,7 @@ import java.sql.Array;
 import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.ArrayList;
 
 import java.util.List;
@@ -138,6 +139,8 @@ public class ConceptDAOImpl implements ConceptDAO {
 
         } catch (SQLException e) {
             e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
         }
 
         connect.closeConnection();
@@ -217,6 +220,8 @@ public class ConceptDAOImpl implements ConceptDAO {
 
 
         } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
             e.printStackTrace();
         }
 

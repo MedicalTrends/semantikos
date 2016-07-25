@@ -15,6 +15,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import java.io.Serializable;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -48,6 +49,7 @@ public class NewConceptMBean implements Serializable {
     public User user;
 
     private ConceptSMTK concept;
+
     private Category category;
     private List<DescriptionType> descriptionTypes = new ArrayList<DescriptionType>();
     private List<State> descriptionStates = new ArrayList<State>();
@@ -61,7 +63,7 @@ public class NewConceptMBean implements Serializable {
 
 
     @PostConstruct
-    protected void initialize() {
+    protected void initialize() throws ParseException {
 
         // TODO: Manejar el usuario desde la sesión
         user = new User();
@@ -71,7 +73,8 @@ public class NewConceptMBean implements Serializable {
         user.setPassword("amauro");
         /////////////////////////////////////////////
 
-        category = categoryManager.getFullCategoryById(105590001);
+        //category = categoryManager.getFullCategoryById(105590001);
+        category = categoryManager.getCategoryById(105590001);
         descriptionTypes = descriptionManager.getOtherTypes();
         //concept = new ConceptSMTK(category, new Description("electrocardiograma de urgencia", descriptionTypes.get(0)));
         concept = conceptManager.newConcept(category, "electrocardiograma de urgencia");
@@ -98,6 +101,14 @@ public class NewConceptMBean implements Serializable {
 
     public void setConcept(ConceptSMTK concept) {
         this.concept = concept;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
     public String getOtherTermino() {
