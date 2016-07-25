@@ -9,66 +9,64 @@
       <database id="1" name="semantikos"/>
       <schema id="2" parent="1" name="semantikos">
         <object-id>33063</object-id>
-        <introspection-state-number>286792</introspection-state-number>
-        <introspection-timestamp>2016-07-19.15:23:42.452</introspection-timestamp>
+        <introspection-state-number>287044</introspection-state-number>
+        <introspection-timestamp>2016-07-25.12:17:55.372</introspection-timestamp>
       </schema>
-      <schema id="3" parent="1" name="public">
-        <object-id>2200</object-id>
-        <comment>standard public schema</comment>
-        <introspection-state-number>6739</introspection-state-number>
-        <introspection-timestamp>2016-07-19.14:48:11.507</introspection-timestamp>
-      </schema>
-      <sequence id="4" parent="2" name="smtk_seq_description_type">
+      <sequence id="3" parent="2" name="smtk_seq_description_type">
         <object-id>33678</object-id>
         <state-number>6725</state-number>
         <max-value>2147483648</max-value>
         <next-value>500001</next-value>
       </sequence>
-      <sequence id="5" parent="2" name="smtk_seq_state">
+      <sequence id="4" parent="2" name="smtk_seq_state">
         <object-id>33686</object-id>
         <state-number>6734</state-number>
         <max-value>2147483648</max-value>
         <next-value>500001</next-value>
       </sequence>
-      <sequence id="6" parent="2" name="smtk_seq_state_machine">
+      <sequence id="5" parent="2" name="smtk_seq_state_machine">
         <object-id>33683</object-id>
         <state-number>6732</state-number>
         <max-value>2147483648</max-value>
         <next-value>500001</next-value>
       </sequence>
-      <sequence id="7" parent="2" name="smtk_seq_transition">
+      <sequence id="6" parent="2" name="smtk_seq_transition">
         <object-id>33689</object-id>
         <state-number>6737</state-number>
         <max-value>2147483648</max-value>
         <next-value>500001</next-value>
       </sequence>
-      <table id="8" parent="2" name="indic_generales">
+      <table id="7" parent="2" name="indic_generales">
         <object-id>33136</object-id>
         <state-number>6704</state-number>
       </table>
-      <table id="9" parent="2" name="indic_interconsulta">
+      <table id="8" parent="2" name="indic_interconsulta">
         <object-id>33133</object-id>
         <state-number>6704</state-number>
       </table>
-      <table id="10" parent="2" name="indic_laboratorio">
+      <table id="9" parent="2" name="indic_laboratorio">
         <object-id>33139</object-id>
         <state-number>6704</state-number>
       </table>
-      <table id="11" parent="2" name="smtk_accesory_table_names">
+      <table id="10" parent="2" name="smtk_accesory_table_names">
         <object-id>33238</object-id>
         <state-number>6704</state-number>
       </table>
-      <table id="12" parent="2" name="smtk_audit">
+      <table id="11" parent="2" name="smtk_audit">
         <object-id>33064</object-id>
         <state-number>6704</state-number>
       </table>
-      <table id="13" parent="2" name="smtk_auxiliary">
+      <table id="12" parent="2" name="smtk_auxiliary">
         <object-id>33247</object-id>
         <state-number>6704</state-number>
       </table>
-      <table id="14" parent="2" name="smtk_basic_type">
+      <table id="13" parent="2" name="smtk_basic_type_definition">
         <object-id>33070</object-id>
-        <state-number>6704</state-number>
+        <state-number>286904</state-number>
+      </table>
+      <table id="14" parent="2" name="smtk_basic_type_definition_domain">
+        <object-id>33834</object-id>
+        <state-number>286907</state-number>
       </table>
       <table id="15" parent="2" name="smtk_category">
         <object-id>33220</object-id>
@@ -176,7 +174,7 @@
       </table>
       <table id="41" parent="2" name="smtk_relationship_definition">
         <object-id>33201</object-id>
-        <state-number>6704</state-number>
+        <state-number>286902</state-number>
       </table>
       <table id="42" parent="2" name="smtk_sct_concept">
         <object-id>33103</object-id>
@@ -212,7 +210,7 @@
       </table>
       <table id="50" parent="2" name="smtk_target_definition">
         <object-id>33204</object-id>
-        <state-number>6704</state-number>
+        <state-number>286898</state-number>
       </table>
       <table id="51" parent="2" name="smtk_target_type">
         <object-id>33076</object-id>
@@ -224,2539 +222,2892 @@
       </table>
       <table id="53" parent="2" name="smtk_user">
         <object-id>33121</object-id>
-        <state-number>286778</state-number>
+        <state-number>287044</state-number>
       </table>
       <table id="54" parent="2" name="smtk_user_profile">
         <object-id>33115</object-id>
         <state-number>6704</state-number>
       </table>
-      <routine id="55" parent="2" name="count_concept_by_page_size">
-        <object-id>33724</object-id>
-        <state-number>286592</state-number>
+      <routine id="55" parent="2" name="count_concept_by_concept_id">
+        <object-id>33881</object-id>
+        <state-number>287016</state-number>
         <routine-kind>FUNCTION</routine-kind>
         <returns-set>1</returns-set>
       </routine>
-      <routine id="56" parent="2" name="count_concept_by_pattern_and_categories">
-        <object-id>33737</object-id>
-        <state-number>286613</state-number>
+      <routine id="56" parent="2" name="count_concept_by_conceptid_categories">
+        <object-id>33790</object-id>
+        <state-number>286829</state-number>
         <routine-kind>FUNCTION</routine-kind>
         <returns-set>1</returns-set>
       </routine>
-      <routine id="57" parent="2" name="count_concept_by_pattern">
-        <object-id>33736</object-id>
-        <state-number>286611</state-number>
+      <routine id="57" parent="2" name="count_concept_by_page_size">
+        <object-id>33796</object-id>
+        <state-number>286835</state-number>
         <routine-kind>FUNCTION</routine-kind>
         <returns-set>1</returns-set>
       </routine>
-      <routine id="58" parent="2" name="count_concept_count_by_categories">
-        <object-id>33732</object-id>
-        <state-number>286603</state-number>
+      <routine id="58" parent="2" name="count_concept_by_pattern_and_categories">
+        <object-id>33883</object-id>
+        <state-number>287019</state-number>
         <routine-kind>FUNCTION</routine-kind>
         <returns-set>1</returns-set>
       </routine>
-      <routine id="59" parent="2" name="find_concept_by_categories">
-        <object-id>33731</object-id>
-        <state-number>286602</state-number>
+      <routine id="59" parent="2" name="count_concept_by_pattern">
+        <object-id>33882</object-id>
+        <state-number>287018</state-number>
         <routine-kind>FUNCTION</routine-kind>
         <returns-set>1</returns-set>
       </routine>
-      <routine id="60" parent="2" name="find_concept_by_concept_id">
-        <object-id>33760</object-id>
-        <state-number>286726</state-number>
+      <routine id="60" parent="2" name="count_concept_count_by_categories">
+        <object-id>33795</object-id>
+        <state-number>286834</state-number>
         <routine-kind>FUNCTION</routine-kind>
         <returns-set>1</returns-set>
       </routine>
-      <routine id="61" parent="2" name="find_concept_by_page_size">
-        <object-id>33721</object-id>
-        <state-number>286589</state-number>
+      <routine id="61" parent="2" name="find_concept_by_categories">
+        <object-id>33801</object-id>
+        <state-number>286840</state-number>
         <routine-kind>FUNCTION</routine-kind>
         <returns-set>1</returns-set>
       </routine>
-      <routine id="62" parent="2" name="find_concept_by_pattern_and_categories">
-        <object-id>33738</object-id>
-        <state-number>286614</state-number>
+      <routine id="62" parent="2" name="find_concept_by_concept_id">
+        <object-id>33885</object-id>
+        <state-number>287021</state-number>
         <routine-kind>FUNCTION</routine-kind>
         <returns-set>1</returns-set>
       </routine>
-      <routine id="63" parent="2" name="find_concept_by_pattern">
-        <object-id>33734</object-id>
-        <state-number>286609</state-number>
+      <routine id="63" parent="2" name="find_concept_by_conceptid_categories">
+        <object-id>33886</object-id>
+        <state-number>287023</state-number>
         <routine-kind>FUNCTION</routine-kind>
         <returns-set>1</returns-set>
       </routine>
-      <routine id="64" parent="2" name="get_all_categories">
+      <routine id="64" parent="2" name="find_concept_by_page_size">
+        <object-id>33802</object-id>
+        <state-number>286841</state-number>
+        <routine-kind>FUNCTION</routine-kind>
+        <returns-set>1</returns-set>
+      </routine>
+      <routine id="65" parent="2" name="find_concept_by_pattern_and_categories">
+        <object-id>33891</object-id>
+        <state-number>287029</state-number>
+        <routine-kind>FUNCTION</routine-kind>
+        <returns-set>1</returns-set>
+      </routine>
+      <routine id="66" parent="2" name="find_concept_by_pattern">
+        <object-id>33888</object-id>
+        <state-number>287025</state-number>
+        <routine-kind>FUNCTION</routine-kind>
+        <returns-set>1</returns-set>
+      </routine>
+      <routine id="67" parent="2" name="get_accesory_table_name_type_by_id">
+        <object-id>33863</object-id>
+        <state-number>286959</state-number>
+        <routine-kind>FUNCTION</routine-kind>
+      </routine>
+      <routine id="68" parent="2" name="get_all_categories">
         <object-id>33725</object-id>
         <state-number>286593</state-number>
         <routine-kind>FUNCTION</routine-kind>
         <returns-set>1</returns-set>
       </routine>
-      <routine id="65" parent="2" name="get_all_description_types">
+      <routine id="69" parent="2" name="get_all_description_types">
         <object-id>33665</object-id>
         <state-number>6716</state-number>
         <routine-kind>FUNCTION</routine-kind>
       </routine>
-      <routine id="66" parent="2" name="get_all_states">
+      <routine id="70" parent="2" name="get_all_states">
         <object-id>33664</object-id>
         <state-number>286612</state-number>
         <routine-kind>FUNCTION</routine-kind>
       </routine>
-      <routine id="67" parent="2" name="get_category_by_id">
+      <routine id="71" parent="2" name="get_basic_type_def_by_id">
+        <object-id>33861</object-id>
+        <state-number>287030</state-number>
+        <routine-kind>FUNCTION</routine-kind>
+      </routine>
+      <routine id="72" parent="2" name="get_basic_type_definition_by_id">
+        <object-id>33857</object-id>
+        <state-number>286920</state-number>
+        <routine-kind>FUNCTION</routine-kind>
+        <returns-set>1</returns-set>
+      </routine>
+      <routine id="73" parent="2" name="get_basic_type_definition_domain_by_id">
+        <object-id>33858</object-id>
+        <state-number>286923</state-number>
+        <routine-kind>FUNCTION</routine-kind>
+        <returns-set>1</returns-set>
+      </routine>
+      <routine id="74" parent="2" name="get_basic_type_domain_by_id">
+        <object-id>33880</object-id>
+        <state-number>287034</state-number>
+        <routine-kind>FUNCTION</routine-kind>
+      </routine>
+      <routine id="75" parent="2" name="get_category_by_id">
         <object-id>33727</object-id>
         <state-number>286595</state-number>
         <routine-kind>FUNCTION</routine-kind>
         <returns-set>1</returns-set>
       </routine>
-      <routine id="68" parent="2" name="get_concept_state_machine">
-        <object-id>33757</object-id>
-        <state-number>286789</state-number>
+      <routine id="76" parent="2" name="get_category_type_by_id">
+        <object-id>33862</object-id>
+        <state-number>286957</state-number>
         <routine-kind>FUNCTION</routine-kind>
       </routine>
-      <routine id="69" parent="2" name="get_descriptions_by_idconcept">
+      <routine id="77" parent="2" name="get_concept_state_machine">
+        <object-id>33757</object-id>
+        <state-number>286799</state-number>
+        <routine-kind>FUNCTION</routine-kind>
+      </routine>
+      <routine id="78" parent="2" name="get_descriptions_by_idconcept">
         <object-id>33729</object-id>
         <state-number>286599</state-number>
         <routine-kind>FUNCTION</routine-kind>
         <returns-set>1</returns-set>
       </routine>
-      <routine id="70" parent="2" name="get_full_category_by_id">
+      <routine id="79" parent="2" name="get_full_category_by_id">
         <object-id>33663</object-id>
         <state-number>85503</state-number>
         <routine-kind>FUNCTION</routine-kind>
       </routine>
-      <routine id="71" parent="2" name="get_initial_state">
+      <routine id="80" parent="2" name="get_initial_state">
         <object-id>33740</object-id>
         <state-number>286771</state-number>
         <routine-kind>FUNCTION</routine-kind>
       </routine>
-      <routine id="72" parent="2" name="get_relattdef_by_reldef">
-        <object-id>33661</object-id>
-        <state-number>85505</state-number>
+      <routine id="81" parent="2" name="get_multiplicity_by_reldef">
+        <object-id>33864</object-id>
+        <state-number>286966</state-number>
         <routine-kind>FUNCTION</routine-kind>
       </routine>
-      <routine id="73" parent="2" name="get_reldef_by_category">
-        <object-id>33662</object-id>
-        <state-number>85508</state-number>
+      <routine id="82" parent="2" name="get_other_description_types">
+        <object-id>33773</object-id>
+        <state-number>286810</state-number>
         <routine-kind>FUNCTION</routine-kind>
       </routine>
-      <routine id="74" parent="2" name="get_state_propuesto">
+      <routine id="83" parent="2" name="get_relationship_definitions_by_category">
+        <object-id>33850</object-id>
+        <state-number>286909</state-number>
+        <routine-kind>FUNCTION</routine-kind>
+        <returns-set>1</returns-set>
+      </routine>
+      <routine id="84" parent="2" name="get_relattdef_by_reldef">
+        <object-id>33860</object-id>
+        <state-number>286949</state-number>
+        <routine-kind>FUNCTION</routine-kind>
+      </routine>
+      <routine id="85" parent="2" name="get_reldef_by_category">
+        <object-id>33859</object-id>
+        <state-number>286970</state-number>
+        <routine-kind>FUNCTION</routine-kind>
+      </routine>
+      <routine id="86" parent="2" name="get_state_propuesto">
         <object-id>33733</object-id>
         <state-number>286683</state-number>
         <routine-kind>FUNCTION</routine-kind>
       </routine>
-      <routine id="75" parent="2" name="get_state">
+      <routine id="87" parent="2" name="get_state">
         <object-id>33749</object-id>
         <state-number>286684</state-number>
         <routine-kind>FUNCTION</routine-kind>
       </routine>
-      <routine id="76" parent="2" name="get_transitions">
+      <routine id="88" parent="2" name="get_transitions">
         <object-id>33762</object-id>
-        <state-number>286770</state-number>
+        <state-number>286801</state-number>
         <routine-kind>FUNCTION</routine-kind>
       </routine>
-      <routine id="77" parent="2" name="get_transitions">
+      <routine id="89" parent="2" name="get_transitions">
         <object-id>33750</object-id>
         <state-number>286680</state-number>
         <routine-kind>FUNCTION</routine-kind>
       </routine>
-      <routine id="78" parent="2" name="get_type_fsn">
+      <routine id="90" parent="2" name="get_type_fsn">
         <object-id>33728</object-id>
         <state-number>286598</state-number>
         <routine-kind>FUNCTION</routine-kind>
       </routine>
-      <routine id="79" parent="2" name="get_type_preferido">
+      <routine id="91" parent="2" name="get_type_preferido">
         <object-id>33730</object-id>
         <state-number>286600</state-number>
         <routine-kind>FUNCTION</routine-kind>
       </routine>
-      <routine id="80" parent="2" name="load_master_tables">
+      <routine id="92" parent="2" name="load_master_tables">
         <object-id>33692</object-id>
         <state-number>6741</state-number>
         <routine-kind>FUNCTION</routine-kind>
       </routine>
-      <routine id="81" parent="3" name="load_master_tables">
-        <object-id>33682</object-id>
-        <state-number>6739</state-number>
+      <routine id="93" parent="2" name="test">
+        <object-id>33787</object-id>
+        <state-number>286826</state-number>
         <routine-kind>FUNCTION</routine-kind>
+        <returns-set>1</returns-set>
       </routine>
-      <column id="82" parent="8" name="id_indic_general">
+      <column id="94" parent="7" name="id_indic_general">
         <state-number>6704</state-number>
         <mandatory>1</mandatory>
         <data-type>bigint</data-type>
       </column>
-      <column id="83" parent="8" name="pedible">
+      <column id="95" parent="7" name="pedible">
         <state-number>6704</state-number>
         <data-type>boolean</data-type>
       </column>
-      <column id="84" parent="8" name="estado">
+      <column id="96" parent="7" name="estado">
         <state-number>6704</state-number>
         <data-type>boolean</data-type>
       </column>
-      <column id="85" parent="8" name="date_register">
+      <column id="97" parent="7" name="date_register">
         <state-number>6704</state-number>
         <data-type>timestamp</data-type>
       </column>
-      <column id="86" parent="8" name="user_register">
+      <column id="98" parent="7" name="user_register">
         <state-number>6704</state-number>
         <data-type>bigint</data-type>
       </column>
-      <index id="87" parent="8" name="pk_indic_general">
+      <index id="99" parent="7" name="pk_indic_general">
         <object-id>33312</object-id>
         <columns>id_indic_general</columns>
         <desc-columns></desc-columns>
         <unique>1</unique>
       </index>
-      <key id="88" parent="8" name="pk_indic_general">
+      <key id="100" parent="7" name="pk_indic_general">
         <columns>id_indic_general</columns>
         <underlying-index>pk_indic_general</underlying-index>
         <primary>1</primary>
       </key>
-      <column id="89" parent="9" name="id_indic_interconsulta">
+      <column id="101" parent="8" name="id_indic_interconsulta">
         <state-number>6704</state-number>
         <mandatory>1</mandatory>
         <data-type>bigint</data-type>
       </column>
-      <column id="90" parent="9" name="pedible">
+      <column id="102" parent="8" name="pedible">
         <state-number>6704</state-number>
         <data-type>boolean</data-type>
       </column>
-      <column id="91" parent="9" name="state">
+      <column id="103" parent="8" name="state">
         <state-number>6704</state-number>
         <data-type>boolean</data-type>
       </column>
-      <column id="92" parent="9" name="date_register">
+      <column id="104" parent="8" name="date_register">
         <state-number>6704</state-number>
         <data-type>timestamp</data-type>
       </column>
-      <column id="93" parent="9" name="user_register">
+      <column id="105" parent="8" name="user_register">
         <state-number>6704</state-number>
         <data-type>bigint</data-type>
       </column>
-      <index id="94" parent="9" name="pk_indic_interconsulta">
+      <index id="106" parent="8" name="pk_indic_interconsulta">
         <object-id>33310</object-id>
         <columns>id_indic_interconsulta</columns>
         <desc-columns></desc-columns>
         <unique>1</unique>
       </index>
-      <key id="95" parent="9" name="pk_indic_interconsulta">
+      <key id="107" parent="8" name="pk_indic_interconsulta">
         <columns>id_indic_interconsulta</columns>
         <underlying-index>pk_indic_interconsulta</underlying-index>
         <primary>1</primary>
       </key>
-      <column id="96" parent="10" name="id_indic_laboratorio">
+      <column id="108" parent="9" name="id_indic_laboratorio">
         <state-number>6704</state-number>
         <mandatory>1</mandatory>
         <data-type>bigint</data-type>
       </column>
-      <column id="97" parent="10" name="pedible">
+      <column id="109" parent="9" name="pedible">
         <state-number>6704</state-number>
         <data-type>boolean</data-type>
       </column>
-      <column id="98" parent="10" name="resultado">
+      <column id="110" parent="9" name="resultado">
         <state-number>6704</state-number>
         <data-type>boolean</data-type>
       </column>
-      <column id="99" parent="10" name="estado">
+      <column id="111" parent="9" name="estado">
         <state-number>6704</state-number>
         <data-type>boolean</data-type>
       </column>
-      <column id="100" parent="10" name="fecha_registro">
+      <column id="112" parent="9" name="fecha_registro">
         <state-number>6704</state-number>
         <data-type>timestamp</data-type>
       </column>
-      <column id="101" parent="10" name="usuario_registro">
+      <column id="113" parent="9" name="usuario_registro">
         <state-number>6704</state-number>
         <data-type>bigint</data-type>
       </column>
-      <index id="102" parent="10" name="pk_indic_laboratorio">
+      <index id="114" parent="9" name="pk_indic_laboratorio">
         <object-id>33314</object-id>
         <columns>id_indic_laboratorio</columns>
         <desc-columns></desc-columns>
         <unique>1</unique>
       </index>
-      <key id="103" parent="10" name="pk_indic_laboratorio">
+      <key id="115" parent="9" name="pk_indic_laboratorio">
         <columns>id_indic_laboratorio</columns>
         <underlying-index>pk_indic_laboratorio</underlying-index>
         <primary>1</primary>
       </key>
-      <column id="104" parent="11" name="id_accesory_table_name">
+      <column id="116" parent="10" name="id_accesory_table_name">
         <state-number>6704</state-number>
         <mandatory>1</mandatory>
         <data-type>bigint</data-type>
       </column>
-      <column id="105" parent="11" name="table_accesory_name">
+      <column id="117" parent="10" name="table_accesory_name">
         <state-number>6704</state-number>
         <data-type>varchar(50)</data-type>
       </column>
-      <column id="106" parent="11" name="pk_column_name">
+      <column id="118" parent="10" name="pk_column_name">
         <state-number>6704</state-number>
         <data-type>varchar(50)</data-type>
       </column>
-      <index id="107" parent="11" name="PK_smtk_accesory_table_name">
+      <index id="119" parent="10" name="PK_smtk_accesory_table_name">
         <object-id>33389</object-id>
         <columns>id_accesory_table_name</columns>
         <desc-columns></desc-columns>
         <unique>1</unique>
       </index>
-      <key id="108" parent="11" name="PK_smtk_accesory_table_name">
+      <key id="120" parent="10" name="PK_smtk_accesory_table_name">
         <columns>id_accesory_table_name</columns>
         <underlying-index>PK_smtk_accesory_table_name</underlying-index>
         <primary>1</primary>
       </key>
-      <column id="109" parent="12" name="id_audit">
+      <column id="121" parent="11" name="id_audit">
         <state-number>6704</state-number>
         <mandatory>1</mandatory>
         <data-type>bigint</data-type>
       </column>
-      <column id="110" parent="12" name="table_name">
+      <column id="122" parent="11" name="table_name">
         <state-number>6704</state-number>
         <data-type>varchar(100)</data-type>
       </column>
-      <column id="111" parent="12" name="pk_value_in_table">
+      <column id="123" parent="11" name="pk_value_in_table">
         <state-number>6704</state-number>
         <data-type>bigint</data-type>
       </column>
-      <column id="112" parent="12" name="dml">
+      <column id="124" parent="11" name="dml">
         <state-number>6704</state-number>
         <data-type>text</data-type>
       </column>
-      <column id="113" parent="12" name="time_stamp">
+      <column id="125" parent="11" name="time_stamp">
         <state-number>6704</state-number>
         <data-type>timestamp</data-type>
       </column>
-      <column id="114" parent="12" name="id_user">
+      <column id="126" parent="11" name="id_user">
         <state-number>6704</state-number>
         <data-type>bigint</data-type>
       </column>
-      <index id="115" parent="12" name="PK_smtk_audit">
+      <index id="127" parent="11" name="PK_smtk_audit">
         <object-id>33260</object-id>
         <columns>table_name
 pk_value_in_table</columns>
         <desc-columns></desc-columns>
       </index>
-      <index id="116" parent="12" name="IXFK_smtk_audit_smtk_user">
+      <index id="128" parent="11" name="IXFK_smtk_audit_smtk_user">
         <object-id>33259</object-id>
         <columns>id_user</columns>
         <desc-columns></desc-columns>
       </index>
-      <foreign-key id="117" parent="12" name="FK_smtk_audit_smtk_user">
+      <foreign-key id="129" parent="11" name="FK_smtk_audit_smtk_user">
         <columns>id_user</columns>
         <cascade-update-rule>restrict</cascade-update-rule>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
-      <column id="118" parent="13" name="id_auxiliary">
+      <column id="130" parent="12" name="id_auxiliary">
         <state-number>6704</state-number>
         <mandatory>1</mandatory>
         <data-type>bigint</data-type>
       </column>
-      <column id="119" parent="13" name="id_accesory_table_name">
+      <column id="131" parent="12" name="id_accesory_table_name">
         <state-number>6704</state-number>
         <data-type>bigint</data-type>
       </column>
-      <column id="120" parent="13" name="pk_value_in_accesory_table">
+      <column id="132" parent="12" name="pk_value_in_accesory_table">
         <state-number>6704</state-number>
         <data-type>bigint</data-type>
       </column>
-      <index id="121" parent="13" name="PK_smtk_Auxiliar">
+      <index id="133" parent="12" name="PK_smtk_Auxiliar">
         <object-id>33394</object-id>
         <columns>id_auxiliary</columns>
         <desc-columns></desc-columns>
         <unique>1</unique>
       </index>
-      <index id="122" parent="13" name="IXFK_smtk_Auxiliar_smtk_TablasAccesorias">
+      <index id="134" parent="12" name="IXFK_smtk_Auxiliar_smtk_TablasAccesorias">
         <object-id>33393</object-id>
         <columns>id_accesory_table_name</columns>
         <desc-columns></desc-columns>
       </index>
-      <key id="123" parent="13" name="PK_smtk_Auxiliar">
+      <key id="135" parent="12" name="PK_smtk_Auxiliar">
         <columns>id_auxiliary</columns>
         <underlying-index>PK_smtk_Auxiliar</underlying-index>
         <primary>1</primary>
       </key>
-      <foreign-key id="124" parent="13" name="FK_smtk_Auxiliar_smtk_TablasAccesorias">
+      <foreign-key id="136" parent="12" name="FK_smtk_Auxiliar_smtk_TablasAccesorias">
         <columns>id_accesory_table_name</columns>
         <ref-key>~.smtk_accesory_table_names.PK_smtk_accesory_table_name</ref-key>
         <cascade-update-rule>restrict</cascade-update-rule>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
-      <column id="125" parent="14" name="id_basic_type">
-        <state-number>6704</state-number>
+      <column id="137" parent="13" name="id">
+        <state-number>286942</state-number>
         <mandatory>1</mandatory>
         <data-type>bigint</data-type>
       </column>
-      <column id="126" parent="14" name="name">
+      <column id="138" parent="13" name="name">
         <state-number>6704</state-number>
         <data-type>varchar(50)</data-type>
       </column>
-      <column id="127" parent="14" name="description">
+      <column id="139" parent="13" name="description">
         <state-number>6704</state-number>
         <data-type>varchar(4000)</data-type>
       </column>
-      <index id="128" parent="14" name="PK_smtk_basic_type">
+      <column id="140" parent="13" name="lower_boundary">
+        <state-number>286915</state-number>
+        <data-type>integer</data-type>
+      </column>
+      <column id="141" parent="13" name="upper_boundary">
+        <state-number>286900</state-number>
+        <data-type>integer</data-type>
+      </column>
+      <index id="142" parent="13" name="PK_smtk_basic_type">
         <object-id>33261</object-id>
-        <columns>id_basic_type</columns>
+        <columns>id</columns>
         <desc-columns></desc-columns>
         <unique>1</unique>
       </index>
-      <key id="129" parent="14" name="PK_smtk_basic_type">
-        <columns>id_basic_type</columns>
+      <key id="143" parent="13" name="PK_smtk_basic_type">
+        <columns>id</columns>
         <underlying-index>PK_smtk_basic_type</underlying-index>
         <primary>1</primary>
       </key>
-      <column id="130" parent="15" name="id_category">
+      <column id="144" parent="14" name="id">
+        <state-number>286872</state-number>
+        <mandatory>1</mandatory>
+        <data-type>bigint</data-type>
+      </column>
+      <column id="145" parent="14" name="float_value">
+        <state-number>286872</state-number>
+        <data-type>real</data-type>
+      </column>
+      <column id="146" parent="14" name="date_value">
+        <state-number>286872</state-number>
+        <data-type>date</data-type>
+      </column>
+      <column id="147" parent="14" name="string_value">
+        <state-number>286872</state-number>
+        <data-type>varchar(50)</data-type>
+      </column>
+      <column id="148" parent="14" name="boolean_value">
+        <state-number>286872</state-number>
+        <data-type>boolean</data-type>
+      </column>
+      <column id="149" parent="14" name="int_value">
+        <state-number>286872</state-number>
+        <data-type>bigint</data-type>
+      </column>
+      <column id="150" parent="14" name="id_basic_type">
+        <state-number>286872</state-number>
+        <data-type>bigint</data-type>
+      </column>
+      <index id="151" parent="14" name="PK_Table1">
+        <object-id>33839</object-id>
+        <columns>id</columns>
+        <desc-columns></desc-columns>
+        <unique>1</unique>
+      </index>
+      <index id="152" parent="14" name="IXFK_smtk_basic_type_item_smtk_basic_type">
+        <object-id>33838</object-id>
+        <columns>id</columns>
+        <desc-columns></desc-columns>
+      </index>
+      <index id="153" parent="14" name="IXFK_smtk_basic_type_domain_smtk_basic_type">
+        <object-id>33837</object-id>
+        <columns>id_basic_type</columns>
+        <desc-columns></desc-columns>
+      </index>
+      <key id="154" parent="14" name="PK_Table1">
+        <columns>id</columns>
+        <underlying-index>PK_Table1</underlying-index>
+        <primary>1</primary>
+      </key>
+      <foreign-key id="155" parent="14" name="FK_smtk_basic_type_domain_smtk_basic_type">
+        <columns>id_basic_type</columns>
+        <ref-key>~.smtk_basic_type_definition.PK_smtk_basic_type</ref-key>
+        <cascade-update-rule>restrict</cascade-update-rule>
+        <cascade-delete-rule>restrict</cascade-delete-rule>
+      </foreign-key>
+      <column id="156" parent="15" name="id_category">
         <state-number>6704</state-number>
         <mandatory>1</mandatory>
         <data-type>bigint</data-type>
       </column>
-      <column id="131" parent="15" name="name">
+      <column id="157" parent="15" name="name">
         <state-number>6704</state-number>
         <mandatory>1</mandatory>
         <data-type>varchar(100)</data-type>
       </column>
-      <column id="132" parent="15" name="name_abreviated">
+      <column id="158" parent="15" name="name_abreviated">
         <state-number>6704</state-number>
         <data-type>varchar(50)</data-type>
       </column>
-      <column id="133" parent="15" name="restriction">
+      <column id="159" parent="15" name="restriction">
         <state-number>6704</state-number>
         <data-type>boolean</data-type>
       </column>
-      <column id="134" parent="15" name="tag_semantikos">
+      <column id="160" parent="15" name="tag_semantikos">
         <state-number>6704</state-number>
         <data-type>bigint</data-type>
       </column>
-      <column id="135" parent="15" name="valid">
-        <state-number>6704</state-number>
+      <column id="161" parent="15" name="valid">
+        <state-number>286936</state-number>
         <data-type>boolean</data-type>
       </column>
-      <column id="136" parent="15" name="color">
+      <column id="162" parent="15" name="color">
         <state-number>6704</state-number>
         <data-type>integer</data-type>
       </column>
-      <index id="137" parent="15" name="PK_SMTK_CATEGORIAS">
+      <index id="163" parent="15" name="PK_SMTK_CATEGORIAS">
         <object-id>33369</object-id>
         <columns>id_category</columns>
         <desc-columns></desc-columns>
         <unique>1</unique>
       </index>
-      <key id="138" parent="15" name="PK_SMTK_CATEGORIAS">
+      <key id="164" parent="15" name="PK_SMTK_CATEGORIAS">
         <columns>id_category</columns>
         <underlying-index>PK_SMTK_CATEGORIAS</underlying-index>
         <primary>1</primary>
       </key>
-      <column id="139" parent="16" name="id_atributte_category">
+      <column id="165" parent="16" name="id_atributte_category">
         <state-number>6704</state-number>
         <mandatory>1</mandatory>
         <data-type>bigint</data-type>
       </column>
-      <column id="140" parent="16" name="id_atributte_category_definition">
+      <column id="166" parent="16" name="id_atributte_category_definition">
         <state-number>6704</state-number>
         <mandatory>1</mandatory>
         <data-type>bigint</data-type>
       </column>
-      <column id="141" parent="16" name="id_category">
+      <column id="167" parent="16" name="id_category">
         <state-number>6704</state-number>
         <data-type>bigint</data-type>
       </column>
-      <index id="142" parent="16" name="PK_smtk_atributtes">
+      <index id="168" parent="16" name="PK_smtk_atributtes">
         <object-id>33381</object-id>
         <columns>id_atributte_category</columns>
         <desc-columns></desc-columns>
         <unique>1</unique>
       </index>
-      <index id="143" parent="16" name="IXFK_smtk_atributtes_smtk_relation_types">
+      <index id="169" parent="16" name="IXFK_smtk_atributtes_smtk_relation_types">
         <object-id>33379</object-id>
         <columns>id_atributte_category_definition</columns>
         <desc-columns></desc-columns>
       </index>
-      <index id="144" parent="16" name="IXFK_smtk_category_relationship_smtk_category">
+      <index id="170" parent="16" name="IXFK_smtk_category_relationship_smtk_category">
         <object-id>33380</object-id>
         <columns>id_category</columns>
         <desc-columns></desc-columns>
       </index>
-      <key id="145" parent="16" name="PK_smtk_atributtes">
+      <key id="171" parent="16" name="PK_smtk_atributtes">
         <columns>id_atributte_category</columns>
         <underlying-index>PK_smtk_atributtes</underlying-index>
         <primary>1</primary>
       </key>
-      <foreign-key id="146" parent="16" name="FK_smtk_atributtes_smtk_relation_types">
+      <foreign-key id="172" parent="16" name="FK_smtk_atributtes_smtk_relation_types">
         <columns>id_atributte_category_definition</columns>
         <ref-key>~.smtk_relationship_definition.PK_smtk_relation_types</ref-key>
         <cascade-update-rule>restrict</cascade-update-rule>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
-      <foreign-key id="147" parent="16" name="FK_smtk_category_relationship_smtk_category">
+      <foreign-key id="173" parent="16" name="FK_smtk_category_relationship_smtk_category">
         <columns>id_category</columns>
         <ref-key>~.smtk_category.PK_SMTK_CATEGORIAS</ref-key>
         <cascade-update-rule>restrict</cascade-update-rule>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
-      <column id="148" parent="17" name="id_concept">
-        <state-number>6704</state-number>
+      <column id="174" parent="17" name="id_concept">
+        <state-number>286803</state-number>
         <mandatory>1</mandatory>
         <data-type>bigint</data-type>
       </column>
-      <column id="149" parent="17" name="conceptid">
+      <column id="175" parent="17" name="conceptid">
         <state-number>6704</state-number>
         <data-type>varchar(50)</data-type>
       </column>
-      <column id="150" parent="17" name="id_category">
+      <column id="176" parent="17" name="id_category">
         <state-number>6704</state-number>
         <data-type>bigint</data-type>
       </column>
-      <column id="151" parent="17" name="is_to_be_reviewed">
+      <column id="177" parent="17" name="is_to_be_reviewed">
         <state-number>6704</state-number>
         <data-type>boolean</data-type>
       </column>
-      <column id="152" parent="17" name="is_to_be_consultated">
+      <column id="178" parent="17" name="is_to_be_consultated">
         <state-number>6704</state-number>
         <data-type>boolean</data-type>
       </column>
-      <column id="153" parent="17" name="id_state_concept">
+      <column id="179" parent="17" name="id_state_concept">
         <state-number>6704</state-number>
         <data-type>bigint</data-type>
       </column>
-      <column id="154" parent="17" name="is_fully_defined">
+      <column id="180" parent="17" name="is_fully_defined">
         <state-number>6704</state-number>
         <data-type>boolean</data-type>
       </column>
-      <column id="155" parent="17" name="is_published">
+      <column id="181" parent="17" name="is_published">
         <state-number>6704</state-number>
         <data-type>boolean</data-type>
       </column>
-      <index id="156" parent="17" name="PK_smtk_conceptosG">
+      <index id="182" parent="17" name="PK_smtk_conceptosG">
         <object-id>33385</object-id>
         <columns>id_concept</columns>
         <desc-columns></desc-columns>
         <unique>1</unique>
       </index>
-      <index id="157" parent="17" name="smtk_conceptid">
+      <index id="183" parent="17" name="smtk_conceptid">
         <object-id>33387</object-id>
         <columns>conceptid</columns>
         <desc-columns></desc-columns>
         <unique>1</unique>
       </index>
-      <index id="158" parent="17" name="IXFK_smtk_conceptosG_categorias">
+      <index id="184" parent="17" name="IXFK_smtk_conceptosG_categorias">
         <object-id>33383</object-id>
         <columns>id_category</columns>
         <desc-columns></desc-columns>
       </index>
-      <index id="159" parent="17" name="IXFK_smtk_conceptos_smtk_estados_concepto">
+      <index id="185" parent="17" name="IXFK_smtk_conceptos_smtk_estados_concepto">
         <object-id>33384</object-id>
         <columns>id_state_concept</columns>
         <desc-columns></desc-columns>
       </index>
-      <key id="160" parent="17" name="PK_smtk_conceptosG">
+      <key id="186" parent="17" name="PK_smtk_conceptosG">
         <columns>id_concept</columns>
         <underlying-index>PK_smtk_conceptosG</underlying-index>
         <primary>1</primary>
       </key>
-      <key id="161" parent="17" name="smtk_conceptid">
+      <key id="187" parent="17" name="smtk_conceptid">
         <columns>conceptid</columns>
         <underlying-index>smtk_conceptid</underlying-index>
       </key>
-      <foreign-key id="162" parent="17" name="FK_smtk_conceptosG_categorias">
+      <foreign-key id="188" parent="17" name="FK_smtk_conceptosG_categorias">
         <columns>id_category</columns>
         <ref-key>~.smtk_category.PK_SMTK_CATEGORIAS</ref-key>
         <cascade-update-rule>restrict</cascade-update-rule>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
-      <foreign-key id="163" parent="17" name="FK_smtk_conceptos_smtk_estados_concepto">
+      <foreign-key id="189" parent="17" name="FK_smtk_conceptos_smtk_estados_concepto">
         <columns>id_state_concept</columns>
         <ref-key>~.smtk_state.PK_smtk_estados</ref-key>
         <cascade-update-rule>restrict</cascade-update-rule>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
-      <column id="164" parent="18" name="id_correlation">
+      <column id="190" parent="18" name="id_correlation">
         <state-number>6704</state-number>
         <mandatory>1</mandatory>
         <data-type>bigint</data-type>
       </column>
-      <column id="165" parent="18" name="description">
+      <column id="191" parent="18" name="description">
         <state-number>6704</state-number>
         <data-type>varchar(512)</data-type>
       </column>
-      <index id="166" parent="18" name="PK_smtk_correlation">
+      <index id="192" parent="18" name="PK_smtk_correlation">
         <object-id>33331</object-id>
         <columns>id_correlation</columns>
         <desc-columns></desc-columns>
         <unique>1</unique>
       </index>
-      <key id="167" parent="18" name="PK_smtk_correlation">
+      <key id="193" parent="18" name="PK_smtk_correlation">
         <columns>id_correlation</columns>
         <underlying-index>PK_smtk_correlation</underlying-index>
         <primary>1</primary>
       </key>
-      <column id="168" parent="19" name="id_cross_map_set">
+      <column id="194" parent="19" name="id_cross_map_set">
         <state-number>6704</state-number>
         <mandatory>1</mandatory>
         <data-type>bigint</data-type>
       </column>
-      <column id="169" parent="19" name="name_abbreviated">
+      <column id="195" parent="19" name="name_abbreviated">
         <state-number>6704</state-number>
         <data-type>varchar(50)</data-type>
       </column>
-      <column id="170" parent="19" name="name">
+      <column id="196" parent="19" name="name">
         <state-number>6704</state-number>
         <data-type>varchar(512)</data-type>
       </column>
-      <column id="171" parent="19" name="version">
+      <column id="197" parent="19" name="version">
         <state-number>6704</state-number>
         <data-type>varchar(50)</data-type>
       </column>
-      <column id="172" parent="19" name="state">
+      <column id="198" parent="19" name="state">
         <state-number>6704</state-number>
         <data-type>boolean</data-type>
       </column>
-      <index id="173" parent="19" name="PK_smtk_cross_map_set">
+      <index id="199" parent="19" name="PK_smtk_cross_map_set">
         <object-id>33335</object-id>
         <columns>id_cross_map_set</columns>
         <desc-columns></desc-columns>
         <unique>1</unique>
       </index>
-      <key id="174" parent="19" name="PK_smtk_cross_map_set">
+      <key id="200" parent="19" name="PK_smtk_cross_map_set">
         <columns>id_cross_map_set</columns>
         <underlying-index>PK_smtk_cross_map_set</underlying-index>
         <primary>1</primary>
       </key>
-      <column id="175" parent="20" name="id_cross_map_set_member">
+      <column id="201" parent="20" name="id_cross_map_set_member">
         <state-number>6704</state-number>
         <mandatory>1</mandatory>
         <data-type>bigint</data-type>
       </column>
-      <column id="176" parent="20" name="id_cross_map_set">
+      <column id="202" parent="20" name="id_cross_map_set">
         <state-number>6704</state-number>
         <data-type>bigint</data-type>
       </column>
-      <column id="177" parent="20" name="code">
+      <column id="203" parent="20" name="code">
         <state-number>6704</state-number>
         <data-type>varchar(50)</data-type>
       </column>
-      <column id="178" parent="20" name="gloss">
+      <column id="204" parent="20" name="gloss">
         <state-number>6704</state-number>
         <data-type>varchar(512)</data-type>
       </column>
-      <column id="179" parent="20" name="state">
+      <column id="205" parent="20" name="state">
         <state-number>6704</state-number>
         <data-type>boolean</data-type>
       </column>
-      <index id="180" parent="20" name="PK_CrossMapSetMembers">
+      <index id="206" parent="20" name="PK_CrossMapSetMembers">
         <object-id>33329</object-id>
         <columns>id_cross_map_set_member</columns>
         <desc-columns></desc-columns>
         <unique>1</unique>
       </index>
-      <index id="181" parent="20" name="IXFK_CrossMapSetMembers_CrossMapSets">
+      <index id="207" parent="20" name="IXFK_CrossMapSetMembers_CrossMapSets">
         <object-id>33328</object-id>
         <columns>id_cross_map_set</columns>
         <desc-columns></desc-columns>
       </index>
-      <key id="182" parent="20" name="PK_CrossMapSetMembers">
+      <key id="208" parent="20" name="PK_CrossMapSetMembers">
         <columns>id_cross_map_set_member</columns>
         <underlying-index>PK_CrossMapSetMembers</underlying-index>
         <primary>1</primary>
       </key>
-      <foreign-key id="183" parent="20" name="FK_CrossMapSetMembers_CrossMapSets">
+      <foreign-key id="209" parent="20" name="FK_CrossMapSetMembers_CrossMapSets">
         <columns>id_cross_map_set</columns>
         <ref-key>~.smtk_cross_map_set.PK_smtk_cross_map_set</ref-key>
         <cascade-update-rule>restrict</cascade-update-rule>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
-      <column id="184" parent="21" name="id_cross_map">
+      <column id="210" parent="21" name="id_cross_map">
         <state-number>6704</state-number>
         <mandatory>1</mandatory>
         <data-type>bigint</data-type>
       </column>
-      <column id="185" parent="21" name="id_cross_map_set_member">
+      <column id="211" parent="21" name="id_cross_map_set_member">
         <state-number>6704</state-number>
         <data-type>bigint</data-type>
       </column>
-      <column id="186" parent="21" name="id_cross_map_set">
+      <column id="212" parent="21" name="id_cross_map_set">
         <state-number>6704</state-number>
         <data-type>bigint</data-type>
       </column>
-      <column id="187" parent="21" name="id_snomed_ct">
+      <column id="213" parent="21" name="id_snomed_ct">
         <state-number>6704</state-number>
         <data-type>bigint</data-type>
       </column>
-      <column id="188" parent="21" name="map_group">
+      <column id="214" parent="21" name="map_group">
         <state-number>6704</state-number>
         <data-type>integer</data-type>
       </column>
-      <column id="189" parent="21" name="map_priority">
+      <column id="215" parent="21" name="map_priority">
         <state-number>6704</state-number>
         <data-type>integer</data-type>
       </column>
-      <column id="190" parent="21" name="map_rule">
+      <column id="216" parent="21" name="map_rule">
         <state-number>6704</state-number>
         <data-type>varchar(512)</data-type>
       </column>
-      <column id="191" parent="21" name="map_advice">
+      <column id="217" parent="21" name="map_advice">
         <state-number>6704</state-number>
         <data-type>varchar(512)</data-type>
       </column>
-      <column id="192" parent="21" name="map_target">
+      <column id="218" parent="21" name="map_target">
         <state-number>6704</state-number>
         <data-type>varchar(512)</data-type>
       </column>
-      <column id="193" parent="21" name="id_correlation">
+      <column id="219" parent="21" name="id_correlation">
         <state-number>6704</state-number>
         <data-type>bigint</data-type>
       </column>
-      <column id="194" parent="21" name="id_crossmap_category">
+      <column id="220" parent="21" name="id_crossmap_category">
         <state-number>6704</state-number>
         <data-type>bigint</data-type>
       </column>
-      <column id="195" parent="21" name="state">
+      <column id="221" parent="21" name="state">
         <state-number>6704</state-number>
         <data-type>boolean</data-type>
       </column>
-      <index id="196" parent="21" name="PK_CrossMaps">
+      <index id="222" parent="21" name="PK_CrossMaps">
         <object-id>33326</object-id>
         <columns>id_cross_map</columns>
         <desc-columns></desc-columns>
         <unique>1</unique>
       </index>
-      <index id="197" parent="21" name="IXFK_CrossMaps_CrossMapSetMembers">
+      <index id="223" parent="21" name="IXFK_CrossMaps_CrossMapSetMembers">
         <object-id>33324</object-id>
         <columns>id_cross_map_set_member</columns>
         <desc-columns></desc-columns>
       </index>
-      <index id="198" parent="21" name="IXFK_CrossMaps_CrossMapSets">
+      <index id="224" parent="21" name="IXFK_CrossMaps_CrossMapSets">
         <object-id>33325</object-id>
         <columns>id_cross_map_set</columns>
         <desc-columns></desc-columns>
       </index>
-      <index id="199" parent="21" name="IXFK_CrossMaps_Correlation">
+      <index id="225" parent="21" name="IXFK_CrossMaps_Correlation">
         <object-id>33323</object-id>
         <columns>id_correlation</columns>
         <desc-columns></desc-columns>
       </index>
-      <index id="200" parent="21" name="IXFK_CrossMaps_Category">
+      <index id="226" parent="21" name="IXFK_CrossMaps_Category">
         <object-id>33322</object-id>
         <columns>id_crossmap_category</columns>
         <desc-columns></desc-columns>
       </index>
-      <key id="201" parent="21" name="PK_CrossMaps">
+      <key id="227" parent="21" name="PK_CrossMaps">
         <columns>id_cross_map</columns>
         <underlying-index>PK_CrossMaps</underlying-index>
         <primary>1</primary>
       </key>
-      <foreign-key id="202" parent="21" name="FK_CrossMaps_CrossMapSetMembers">
+      <foreign-key id="228" parent="21" name="FK_CrossMaps_CrossMapSetMembers">
         <columns>id_cross_map_set_member</columns>
         <ref-key>~.smtk_cross_map_set_members.PK_CrossMapSetMembers</ref-key>
         <cascade-update-rule>restrict</cascade-update-rule>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
-      <foreign-key id="203" parent="21" name="FK_CrossMaps_CrossMapSets">
+      <foreign-key id="229" parent="21" name="FK_CrossMaps_CrossMapSets">
         <columns>id_cross_map_set</columns>
         <ref-key>~.smtk_cross_map_set.PK_smtk_cross_map_set</ref-key>
         <cascade-update-rule>restrict</cascade-update-rule>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
-      <foreign-key id="204" parent="21" name="FK_CrossMaps_Correlation">
+      <foreign-key id="230" parent="21" name="FK_CrossMaps_Correlation">
         <columns>id_correlation</columns>
         <ref-key>~.smtk_correlation.PK_smtk_correlation</ref-key>
         <cascade-update-rule>restrict</cascade-update-rule>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
-      <foreign-key id="205" parent="21" name="FK_CrossMaps_Category">
+      <foreign-key id="231" parent="21" name="FK_CrossMaps_Category">
         <columns>id_crossmap_category</columns>
         <ref-key>~.smtk_cross_maps_category.PK_CategoryId</ref-key>
         <cascade-update-rule>restrict</cascade-update-rule>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
-      <column id="206" parent="22" name="id_cross_maps_category">
+      <column id="232" parent="22" name="id_cross_maps_category">
         <state-number>6704</state-number>
         <mandatory>1</mandatory>
         <data-type>bigint</data-type>
       </column>
-      <column id="207" parent="22" name="description">
+      <column id="233" parent="22" name="description">
         <state-number>6704</state-number>
         <data-type>varchar(512)</data-type>
       </column>
-      <index id="208" parent="22" name="PK_CategoryId">
+      <index id="234" parent="22" name="PK_CategoryId">
         <object-id>33333</object-id>
         <columns>id_cross_maps_category</columns>
         <desc-columns></desc-columns>
         <unique>1</unique>
       </index>
-      <key id="209" parent="22" name="PK_CategoryId">
+      <key id="235" parent="22" name="PK_CategoryId">
         <columns>id_cross_maps_category</columns>
         <underlying-index>PK_CategoryId</underlying-index>
         <primary>1</primary>
       </key>
-      <column id="210" parent="23" name="id_description">
+      <column id="236" parent="23" name="id_description">
         <state-number>6704</state-number>
         <mandatory>1</mandatory>
         <data-type>bigint</data-type>
       </column>
-      <column id="211" parent="23" name="descid">
+      <column id="237" parent="23" name="descid">
         <state-number>6704</state-number>
         <mandatory>1</mandatory>
         <data-type>varchar(50)</data-type>
       </column>
-      <column id="212" parent="23" name="id_description_type">
+      <column id="238" parent="23" name="id_description_type">
         <state-number>6704</state-number>
         <mandatory>1</mandatory>
         <data-type>bigint</data-type>
       </column>
-      <column id="213" parent="23" name="term">
+      <column id="239" parent="23" name="term">
         <state-number>6704</state-number>
         <mandatory>1</mandatory>
         <data-type>varchar(512)</data-type>
       </column>
-      <column id="214" parent="23" name="case_sensitive">
+      <column id="240" parent="23" name="case_sensitive">
         <state-number>6704</state-number>
         <mandatory>1</mandatory>
         <data-type>boolean</data-type>
         <default-expression>false</default-expression>
       </column>
-      <column id="215" parent="23" name="autogenerated_name">
+      <column id="241" parent="23" name="autogenerated_name">
         <state-number>6704</state-number>
         <mandatory>1</mandatory>
         <data-type>boolean</data-type>
         <default-expression>false</default-expression>
       </column>
-      <column id="216" parent="23" name="is_active">
+      <column id="242" parent="23" name="is_active">
         <state-number>6704</state-number>
         <mandatory>1</mandatory>
         <data-type>boolean</data-type>
         <default-expression>false</default-expression>
       </column>
-      <column id="217" parent="23" name="is_published">
+      <column id="243" parent="23" name="is_published">
         <state-number>6704</state-number>
         <mandatory>1</mandatory>
         <data-type>boolean</data-type>
         <default-expression>false</default-expression>
       </column>
-      <column id="218" parent="23" name="id_estate_concept">
+      <column id="244" parent="23" name="id_estate_concept">
         <state-number>6704</state-number>
         <data-type>bigint</data-type>
       </column>
-      <column id="219" parent="23" name="id_user">
+      <column id="245" parent="23" name="id_user">
         <state-number>6704</state-number>
         <data-type>bigint</data-type>
       </column>
-      <column id="220" parent="23" name="uses">
+      <column id="246" parent="23" name="uses">
         <state-number>6704</state-number>
         <data-type>bigint</data-type>
       </column>
-      <column id="221" parent="23" name="id_concept">
+      <column id="247" parent="23" name="id_concept">
         <state-number>6704</state-number>
         <data-type>bigint</data-type>
       </column>
-      <index id="222" parent="23" name="PK_smtk_descripciones">
+      <index id="248" parent="23" name="PK_smtk_descripciones">
         <object-id>33365</object-id>
         <columns>id_description</columns>
         <desc-columns></desc-columns>
         <unique>1</unique>
       </index>
-      <index id="223" parent="23" name="smtk_descid">
+      <index id="249" parent="23" name="smtk_descid">
         <object-id>33367</object-id>
         <columns>descid</columns>
         <desc-columns></desc-columns>
         <unique>1</unique>
       </index>
-      <index id="224" parent="23" name="IXFK_smtk_DescripcionesConcepto_smtk_TipoDescripcion">
+      <index id="250" parent="23" name="IXFK_smtk_DescripcionesConcepto_smtk_TipoDescripcion">
         <object-id>33362</object-id>
         <columns>id_description_type</columns>
         <desc-columns></desc-columns>
       </index>
-      <index id="225" parent="23" name="IXFK_smtk_descripciones_concepto_smtk_estados_concepto">
+      <index id="251" parent="23" name="IXFK_smtk_descripciones_concepto_smtk_estados_concepto">
         <object-id>33361</object-id>
         <columns>id_estate_concept</columns>
         <desc-columns></desc-columns>
       </index>
-      <index id="226" parent="23" name="IXFK_smtk_description_smtk_user">
+      <index id="252" parent="23" name="IXFK_smtk_description_smtk_user">
         <object-id>33364</object-id>
         <columns>id_user</columns>
         <desc-columns></desc-columns>
       </index>
-      <index id="227" parent="23" name="IXFK_smtk_description_smtk_concept">
+      <index id="253" parent="23" name="IXFK_smtk_description_smtk_concept">
         <object-id>33363</object-id>
         <columns>id_concept</columns>
         <desc-columns></desc-columns>
       </index>
-      <key id="228" parent="23" name="PK_smtk_descripciones">
+      <key id="254" parent="23" name="PK_smtk_descripciones">
         <columns>id_description</columns>
         <underlying-index>PK_smtk_descripciones</underlying-index>
         <primary>1</primary>
       </key>
-      <key id="229" parent="23" name="smtk_descid">
+      <key id="255" parent="23" name="smtk_descid">
         <columns>descid</columns>
         <underlying-index>smtk_descid</underlying-index>
       </key>
-      <foreign-key id="230" parent="23" name="FK_smtk_DescripcionesConcepto_smtk_TipoDescripcion">
+      <foreign-key id="256" parent="23" name="FK_smtk_DescripcionesConcepto_smtk_TipoDescripcion">
         <columns>id_description_type</columns>
         <ref-key>~.smtk_description_type.PK_smtk_TipoDescripcionConcepto</ref-key>
         <cascade-update-rule>restrict</cascade-update-rule>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
-      <foreign-key id="231" parent="23" name="FK_smtk_descripciones_concepto_smtk_estados_concepto">
+      <foreign-key id="257" parent="23" name="FK_smtk_descripciones_concepto_smtk_estados_concepto">
         <columns>id_estate_concept</columns>
         <ref-key>~.smtk_state.PK_smtk_estados</ref-key>
         <cascade-update-rule>restrict</cascade-update-rule>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
-      <foreign-key id="232" parent="23" name="FK_smtk_description_smtk_user">
+      <foreign-key id="258" parent="23" name="FK_smtk_description_smtk_user">
         <columns>id_user</columns>
         <cascade-update-rule>restrict</cascade-update-rule>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
-      <foreign-key id="233" parent="23" name="FK_smtk_description_smtk_concept">
+      <foreign-key id="259" parent="23" name="FK_smtk_description_smtk_concept">
         <columns>id_concept</columns>
         <ref-key>~.smtk_concept.PK_smtk_conceptosG</ref-key>
         <cascade-update-rule>restrict</cascade-update-rule>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
-      <column id="234" parent="24" name="id_description_type">
+      <column id="260" parent="24" name="id_description_type">
         <state-number>6726</state-number>
         <mandatory>1</mandatory>
         <data-type>bigint</data-type>
         <default-expression>nextval(&apos;semantikos.smtk_seq_description_type&apos;::regclass)</default-expression>
       </column>
-      <column id="235" parent="24" name="gloss">
+      <column id="261" parent="24" name="gloss">
         <state-number>6704</state-number>
         <data-type>varchar(50)</data-type>
       </column>
-      <index id="236" parent="24" name="PK_smtk_TipoDescripcionConcepto">
+      <index id="262" parent="24" name="PK_smtk_TipoDescripcionConcepto">
         <object-id>33359</object-id>
         <columns>id_description_type</columns>
         <desc-columns></desc-columns>
         <unique>1</unique>
       </index>
-      <key id="237" parent="24" name="PK_smtk_TipoDescripcionConcepto">
+      <key id="263" parent="24" name="PK_smtk_TipoDescripcionConcepto">
         <columns>id_description_type</columns>
         <underlying-index>PK_smtk_TipoDescripcionConcepto</underlying-index>
         <primary>1</primary>
       </key>
-      <column id="238" parent="25" name="id_extern">
+      <column id="264" parent="25" name="id_extern">
         <state-number>6704</state-number>
         <mandatory>1</mandatory>
         <data-type>bigint</data-type>
       </column>
-      <column id="239" parent="25" name="id_extern_table_name">
+      <column id="265" parent="25" name="id_extern_table_name">
         <state-number>6704</state-number>
         <data-type>bigint</data-type>
       </column>
-      <column id="240" parent="25" name="pk_value_in_accesory_table">
+      <column id="266" parent="25" name="pk_value_in_accesory_table">
         <state-number>6704</state-number>
         <data-type>bigint</data-type>
       </column>
-      <index id="241" parent="25" name="PK_smtk_extern">
+      <index id="267" parent="25" name="PK_smtk_extern">
         <object-id>33291</object-id>
         <columns>id_extern</columns>
         <desc-columns></desc-columns>
         <unique>1</unique>
       </index>
-      <index id="242" parent="25" name="IXFK_smtk_extern_smtk_extern_table_names">
+      <index id="268" parent="25" name="IXFK_smtk_extern_smtk_extern_table_names">
         <object-id>33290</object-id>
         <columns>id_extern_table_name</columns>
         <desc-columns></desc-columns>
       </index>
-      <key id="243" parent="25" name="PK_smtk_extern">
+      <key id="269" parent="25" name="PK_smtk_extern">
         <columns>id_extern</columns>
         <underlying-index>PK_smtk_extern</underlying-index>
         <primary>1</primary>
       </key>
-      <foreign-key id="244" parent="25" name="FK_smtk_extern_smtk_extern_table_names">
+      <foreign-key id="270" parent="25" name="FK_smtk_extern_smtk_extern_table_names">
         <columns>id_extern_table_name</columns>
         <ref-key>~.smtk_extern_table_names.PK_smtk_extern_table_names</ref-key>
         <cascade-update-rule>restrict</cascade-update-rule>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
-      <column id="245" parent="26" name="id_extern_table_name">
+      <column id="271" parent="26" name="id_extern_table_name">
         <state-number>6704</state-number>
         <mandatory>1</mandatory>
         <data-type>bigint</data-type>
       </column>
-      <column id="246" parent="26" name="table_extern_name">
+      <column id="272" parent="26" name="table_extern_name">
         <state-number>6704</state-number>
         <data-type>varchar(50)</data-type>
       </column>
-      <column id="247" parent="26" name="pk_column_name">
+      <column id="273" parent="26" name="pk_column_name">
         <state-number>6704</state-number>
         <data-type>varchar(50)</data-type>
       </column>
-      <index id="248" parent="26" name="PK_smtk_extern_table_names">
+      <index id="274" parent="26" name="PK_smtk_extern_table_names">
         <object-id>33288</object-id>
         <columns>id_extern_table_name</columns>
         <desc-columns></desc-columns>
         <unique>1</unique>
       </index>
-      <key id="249" parent="26" name="PK_smtk_extern_table_names">
+      <key id="275" parent="26" name="PK_smtk_extern_table_names">
         <columns>id_extern_table_name</columns>
         <underlying-index>PK_smtk_extern_table_names</underlying-index>
         <primary>1</primary>
       </key>
-      <column id="250" parent="27" name="id_label">
+      <column id="276" parent="27" name="id_label">
         <state-number>6704</state-number>
         <mandatory>1</mandatory>
         <data-type>bigint</data-type>
       </column>
-      <column id="251" parent="27" name="name_label">
+      <column id="277" parent="27" name="name_label">
         <state-number>6704</state-number>
         <data-type>varchar(512)</data-type>
       </column>
-      <column id="252" parent="27" name="id_father">
+      <column id="278" parent="27" name="id_father">
         <state-number>6704</state-number>
         <data-type>integer</data-type>
       </column>
-      <column id="253" parent="27" name="state">
+      <column id="279" parent="27" name="state">
         <state-number>6704</state-number>
         <data-type>boolean</data-type>
       </column>
-      <column id="254" parent="27" name="date_register">
+      <column id="280" parent="27" name="date_register">
         <state-number>6704</state-number>
         <data-type>timestamp</data-type>
       </column>
-      <column id="255" parent="27" name="user_register">
+      <column id="281" parent="27" name="user_register">
         <state-number>6704</state-number>
         <data-type>integer</data-type>
       </column>
-      <index id="256" parent="27" name="PK_smtk_etiquetas">
+      <index id="282" parent="27" name="PK_smtk_etiquetas">
         <object-id>33320</object-id>
         <columns>id_label</columns>
         <desc-columns></desc-columns>
         <unique>1</unique>
       </index>
-      <key id="257" parent="27" name="PK_smtk_etiquetas">
+      <key id="283" parent="27" name="PK_smtk_etiquetas">
         <columns>id_label</columns>
         <underlying-index>PK_smtk_etiquetas</underlying-index>
         <primary>1</primary>
       </key>
-      <column id="258" parent="28" name="id_label_concept">
+      <column id="284" parent="28" name="id_label_concept">
         <state-number>6704</state-number>
         <mandatory>1</mandatory>
         <data-type>bigint</data-type>
       </column>
-      <column id="259" parent="28" name="id_label">
+      <column id="285" parent="28" name="id_label">
         <state-number>6704</state-number>
         <data-type>bigint</data-type>
       </column>
-      <column id="260" parent="28" name="id_concept">
+      <column id="286" parent="28" name="id_concept">
         <state-number>6704</state-number>
         <data-type>bigint</data-type>
       </column>
-      <column id="261" parent="28" name="state">
+      <column id="287" parent="28" name="state">
         <state-number>6704</state-number>
         <data-type>boolean</data-type>
       </column>
-      <column id="262" parent="28" name="date_register">
+      <column id="288" parent="28" name="date_register">
         <state-number>6704</state-number>
         <data-type>timestamp</data-type>
       </column>
-      <column id="263" parent="28" name="user_register">
+      <column id="289" parent="28" name="user_register">
         <state-number>6704</state-number>
         <data-type>integer</data-type>
       </column>
-      <index id="264" parent="28" name="PK_smtk_etiquetas_conceptos">
+      <index id="290" parent="28" name="PK_smtk_etiquetas_conceptos">
         <object-id>33318</object-id>
         <columns>id_label_concept</columns>
         <desc-columns></desc-columns>
         <unique>1</unique>
       </index>
-      <index id="265" parent="28" name="IXFK_smtk_etiquetas_conceptos_smtk_etiquetas">
+      <index id="291" parent="28" name="IXFK_smtk_etiquetas_conceptos_smtk_etiquetas">
         <object-id>33317</object-id>
         <columns>id_label</columns>
         <desc-columns></desc-columns>
       </index>
-      <index id="266" parent="28" name="IXFK_etiquetas_conceptos_smtk_conceptos">
+      <index id="292" parent="28" name="IXFK_etiquetas_conceptos_smtk_conceptos">
         <object-id>33316</object-id>
         <columns>id_concept</columns>
         <desc-columns></desc-columns>
       </index>
-      <key id="267" parent="28" name="PK_smtk_etiquetas_conceptos">
+      <key id="293" parent="28" name="PK_smtk_etiquetas_conceptos">
         <columns>id_label_concept</columns>
         <underlying-index>PK_smtk_etiquetas_conceptos</underlying-index>
         <primary>1</primary>
       </key>
-      <foreign-key id="268" parent="28" name="FK_smtk_etiquetas_conceptos_smtk_etiquetas">
+      <foreign-key id="294" parent="28" name="FK_smtk_etiquetas_conceptos_smtk_etiquetas">
         <columns>id_label</columns>
         <ref-key>~.smtk_label.PK_smtk_etiquetas</ref-key>
         <cascade-update-rule>restrict</cascade-update-rule>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
-      <foreign-key id="269" parent="28" name="FK_etiquetas_conceptos_smtk_conceptos">
+      <foreign-key id="295" parent="28" name="FK_etiquetas_conceptos_smtk_conceptos">
         <columns>id_concept</columns>
         <ref-key>~.smtk_concept.PK_smtk_conceptosG</ref-key>
         <cascade-update-rule>restrict</cascade-update-rule>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
-      <column id="270" parent="29" name="id_notvalid_observation">
+      <column id="296" parent="29" name="id_notvalid_observation">
         <state-number>6704</state-number>
         <mandatory>1</mandatory>
         <data-type>bigint</data-type>
       </column>
-      <column id="271" parent="29" name="observation">
+      <column id="297" parent="29" name="observation">
         <state-number>6704</state-number>
         <data-type>text</data-type>
       </column>
-      <index id="272" parent="29" name="PK_smtk_novalidos_observaciones">
+      <index id="298" parent="29" name="PK_smtk_novalidos_observaciones">
         <object-id>33377</object-id>
         <columns>id_notvalid_observation</columns>
         <desc-columns></desc-columns>
         <unique>1</unique>
       </index>
-      <key id="273" parent="29" name="PK_smtk_novalidos_observaciones">
+      <key id="299" parent="29" name="PK_smtk_novalidos_observaciones">
         <columns>id_notvalid_observation</columns>
         <underlying-index>PK_smtk_novalidos_observaciones</underlying-index>
         <primary>1</primary>
       </key>
-      <column id="274" parent="30" name="id__observation_concept">
+      <column id="300" parent="30" name="id__observation_concept">
         <state-number>6704</state-number>
         <mandatory>1</mandatory>
         <data-type>bigint</data-type>
       </column>
-      <column id="275" parent="30" name="id_concept">
+      <column id="301" parent="30" name="id_concept">
         <state-number>6704</state-number>
         <data-type>bigint</data-type>
       </column>
-      <column id="276" parent="30" name="observation">
+      <column id="302" parent="30" name="observation">
         <state-number>6704</state-number>
         <data-type>varchar(50)</data-type>
       </column>
-      <column id="277" parent="30" name="last_update">
+      <column id="303" parent="30" name="last_update">
         <state-number>6704</state-number>
         <data-type>timestamp</data-type>
       </column>
-      <index id="278" parent="30" name="PK_smtk_observaciones_concepto">
+      <index id="304" parent="30" name="PK_smtk_observaciones_concepto">
         <object-id>33308</object-id>
         <columns>id__observation_concept</columns>
         <desc-columns></desc-columns>
         <unique>1</unique>
       </index>
-      <index id="279" parent="30" name="IXFK_smtk_observaciones_concepto_smtk_conceptos">
+      <index id="305" parent="30" name="IXFK_smtk_observaciones_concepto_smtk_conceptos">
         <object-id>33307</object-id>
         <columns>id_concept</columns>
         <desc-columns></desc-columns>
       </index>
-      <key id="280" parent="30" name="PK_smtk_observaciones_concepto">
+      <key id="306" parent="30" name="PK_smtk_observaciones_concepto">
         <columns>id__observation_concept</columns>
         <underlying-index>PK_smtk_observaciones_concepto</underlying-index>
         <primary>1</primary>
       </key>
-      <foreign-key id="281" parent="30" name="FK_smtk_observaciones_concepto_smtk_conceptos">
+      <foreign-key id="307" parent="30" name="FK_smtk_observaciones_concepto_smtk_conceptos">
         <columns>id_concept</columns>
         <ref-key>~.smtk_concept.PK_smtk_conceptosG</ref-key>
         <cascade-update-rule>restrict</cascade-update-rule>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
-      <column id="282" parent="31" name="id_profile">
+      <column id="308" parent="31" name="id_profile">
         <state-number>6704</state-number>
         <mandatory>1</mandatory>
         <data-type>bigint</data-type>
       </column>
-      <column id="283" parent="31" name="description">
+      <column id="309" parent="31" name="description">
         <state-number>6704</state-number>
         <data-type>varchar(50)</data-type>
       </column>
-      <index id="284" parent="31" name="PK_smtk_perfiles">
+      <index id="310" parent="31" name="PK_smtk_perfiles">
         <object-id>33297</object-id>
         <columns>id_profile</columns>
         <desc-columns></desc-columns>
         <unique>1</unique>
       </index>
-      <key id="285" parent="31" name="PK_smtk_perfiles">
+      <key id="311" parent="31" name="PK_smtk_perfiles">
         <columns>id_profile</columns>
         <underlying-index>PK_smtk_perfiles</underlying-index>
         <primary>1</primary>
       </key>
-      <column id="286" parent="32" name="id_recomendacion">
+      <column id="312" parent="32" name="id_recomendacion">
         <state-number>6704</state-number>
         <mandatory>1</mandatory>
         <data-type>bigint</data-type>
       </column>
-      <column id="287" parent="32" name="descripcion">
+      <column id="313" parent="32" name="descripcion">
         <state-number>6704</state-number>
         <data-type>varchar(512)</data-type>
       </column>
-      <column id="288" parent="32" name="estado">
+      <column id="314" parent="32" name="estado">
         <state-number>6704</state-number>
         <data-type>boolean</data-type>
       </column>
-      <column id="289" parent="32" name="fecha_registro">
+      <column id="315" parent="32" name="fecha_registro">
         <state-number>6704</state-number>
         <data-type>timestamp</data-type>
       </column>
-      <column id="290" parent="32" name="usuario_registro">
+      <column id="316" parent="32" name="usuario_registro">
         <state-number>6704</state-number>
         <data-type>bigint</data-type>
       </column>
-      <index id="291" parent="32" name="PK_smtk_recomendaciones">
+      <index id="317" parent="32" name="PK_smtk_recomendaciones">
         <object-id>33398</object-id>
         <columns>id_recomendacion</columns>
         <desc-columns></desc-columns>
         <unique>1</unique>
       </index>
-      <key id="292" parent="32" name="PK_smtk_recomendaciones">
+      <key id="318" parent="32" name="PK_smtk_recomendaciones">
         <columns>id_recomendacion</columns>
         <underlying-index>PK_smtk_recomendaciones</underlying-index>
         <primary>1</primary>
       </key>
-      <column id="293" parent="33" name="id_refset">
+      <column id="319" parent="33" name="id_refset">
         <state-number>6704</state-number>
         <mandatory>1</mandatory>
         <data-type>bigint</data-type>
       </column>
-      <column id="294" parent="33" name="name_refset">
+      <column id="320" parent="33" name="name_refset">
         <state-number>6704</state-number>
         <data-type>varchar(512)</data-type>
       </column>
-      <column id="295" parent="33" name="state">
+      <column id="321" parent="33" name="state">
         <state-number>6704</state-number>
         <mandatory>1</mandatory>
         <data-type>boolean</data-type>
         <default-expression>false</default-expression>
       </column>
-      <column id="296" parent="33" name="date_register">
+      <column id="322" parent="33" name="date_register">
         <state-number>6704</state-number>
         <mandatory>1</mandatory>
         <data-type>timestamp</data-type>
       </column>
-      <column id="297" parent="33" name="id_user_register">
+      <column id="323" parent="33" name="id_user_register">
         <state-number>6704</state-number>
         <data-type>bigint</data-type>
       </column>
-      <column id="298" parent="33" name="type">
+      <column id="324" parent="33" name="type">
         <state-number>6704</state-number>
         <mandatory>1</mandatory>
         <data-type>integer</data-type>
       </column>
-      <column id="299" parent="33" name="creation">
+      <column id="325" parent="33" name="creation">
         <state-number>6704</state-number>
         <mandatory>1</mandatory>
         <data-type>integer</data-type>
       </column>
-      <column id="300" parent="33" name="visibility">
+      <column id="326" parent="33" name="visibility">
         <state-number>6704</state-number>
         <mandatory>1</mandatory>
         <data-type>integer</data-type>
       </column>
-      <index id="301" parent="33" name="PK_refsets">
+      <index id="327" parent="33" name="PK_refsets">
         <object-id>33343</object-id>
         <columns>id_refset</columns>
         <desc-columns></desc-columns>
         <unique>1</unique>
       </index>
-      <key id="302" parent="33" name="PK_refsets">
+      <key id="328" parent="33" name="PK_refsets">
         <columns>id_refset</columns>
         <underlying-index>PK_refsets</underlying-index>
         <primary>1</primary>
       </key>
-      <column id="303" parent="34" name="id_refset_admin">
+      <column id="329" parent="34" name="id_refset_admin">
         <state-number>6704</state-number>
         <mandatory>1</mandatory>
         <data-type>bigint</data-type>
       </column>
-      <column id="304" parent="34" name="id_user">
+      <column id="330" parent="34" name="id_user">
         <state-number>6704</state-number>
         <data-type>bigint</data-type>
       </column>
-      <column id="305" parent="34" name="active">
+      <column id="331" parent="34" name="active">
         <state-number>6704</state-number>
         <data-type>boolean</data-type>
         <default-expression>true</default-expression>
       </column>
-      <column id="306" parent="34" name="id_refset">
+      <column id="332" parent="34" name="id_refset">
         <state-number>6704</state-number>
         <data-type>bigint</data-type>
       </column>
-      <index id="307" parent="34" name="PK_RefsetAdmin">
+      <index id="333" parent="34" name="PK_RefsetAdmin">
         <object-id>33341</object-id>
         <columns>id_refset_admin</columns>
         <desc-columns></desc-columns>
         <unique>1</unique>
       </index>
-      <index id="308" parent="34" name="IXFK_smtk_refset_admin_smtk_refset">
+      <index id="334" parent="34" name="IXFK_smtk_refset_admin_smtk_refset">
         <object-id>33340</object-id>
         <columns>id_refset</columns>
         <desc-columns></desc-columns>
       </index>
-      <key id="309" parent="34" name="PK_RefsetAdmin">
+      <key id="335" parent="34" name="PK_RefsetAdmin">
         <columns>id_refset_admin</columns>
         <underlying-index>PK_RefsetAdmin</underlying-index>
         <primary>1</primary>
       </key>
-      <foreign-key id="310" parent="34" name="FK_smtk_refset_admin_smtk_refset">
+      <foreign-key id="336" parent="34" name="FK_smtk_refset_admin_smtk_refset">
         <columns>id_refset</columns>
         <ref-key>~.smtk_refset.PK_refsets</ref-key>
         <cascade-update-rule>restrict</cascade-update-rule>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
-      <column id="311" parent="35" name="id_refset _concept">
+      <column id="337" parent="35" name="id_refset _concept">
         <state-number>6704</state-number>
         <mandatory>1</mandatory>
         <data-type>bigint</data-type>
       </column>
-      <column id="312" parent="35" name="id_concept_stk">
+      <column id="338" parent="35" name="id_concept_stk">
         <state-number>6704</state-number>
         <data-type>bigint</data-type>
       </column>
-      <column id="313" parent="35" name="state">
+      <column id="339" parent="35" name="state">
         <state-number>6704</state-number>
         <data-type>boolean</data-type>
       </column>
-      <column id="314" parent="35" name="register_date">
+      <column id="340" parent="35" name="register_date">
         <state-number>6704</state-number>
         <data-type>timestamp</data-type>
       </column>
-      <column id="315" parent="35" name="id_concept">
+      <column id="341" parent="35" name="id_concept">
         <state-number>6704</state-number>
         <data-type>bigint</data-type>
       </column>
-      <column id="316" parent="35" name="id_register_user">
+      <column id="342" parent="35" name="id_register_user">
         <state-number>6704</state-number>
         <data-type>bigint</data-type>
       </column>
-      <column id="317" parent="35" name="id_refset">
+      <column id="343" parent="35" name="id_refset">
         <state-number>6704</state-number>
         <data-type>bigint</data-type>
       </column>
-      <index id="318" parent="35" name="PK_refset_conceptos">
+      <index id="344" parent="35" name="PK_refset_conceptos">
         <object-id>33347</object-id>
         <columns>id_refset _concept</columns>
         <desc-columns></desc-columns>
         <unique>1</unique>
       </index>
-      <index id="319" parent="35" name="IXFK_refset_conceptos_smtk_conceptos">
+      <index id="345" parent="35" name="IXFK_refset_conceptos_smtk_conceptos">
         <object-id>33345</object-id>
         <columns>id_concept</columns>
         <desc-columns></desc-columns>
       </index>
-      <index id="320" parent="35" name="IXFK_smtk_refset_concept_smtk_refset">
+      <index id="346" parent="35" name="IXFK_smtk_refset_concept_smtk_refset">
         <object-id>33346</object-id>
         <columns>id_refset</columns>
         <desc-columns></desc-columns>
       </index>
-      <key id="321" parent="35" name="PK_refset_conceptos">
+      <key id="347" parent="35" name="PK_refset_conceptos">
         <columns>id_refset _concept</columns>
         <underlying-index>PK_refset_conceptos</underlying-index>
         <primary>1</primary>
       </key>
-      <foreign-key id="322" parent="35" name="FK_refset_conceptos_smtk_conceptos">
+      <foreign-key id="348" parent="35" name="FK_refset_conceptos_smtk_conceptos">
         <columns>id_concept</columns>
         <ref-key>~.smtk_concept.PK_smtk_conceptosG</ref-key>
         <cascade-update-rule>restrict</cascade-update-rule>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
-      <foreign-key id="323" parent="35" name="FK_smtk_refset_concept_smtk_refset">
+      <foreign-key id="349" parent="35" name="FK_smtk_refset_concept_smtk_refset">
         <columns>id_refset</columns>
         <ref-key>~.smtk_refset.PK_refsets</ref-key>
         <cascade-update-rule>restrict</cascade-update-rule>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
-      <column id="324" parent="36" name="id_refset_query">
+      <column id="350" parent="36" name="id_refset_query">
         <state-number>6704</state-number>
         <mandatory>1</mandatory>
         <data-type>bigint</data-type>
       </column>
-      <column id="325" parent="36" name="query">
+      <column id="351" parent="36" name="query">
         <state-number>6704</state-number>
         <data-type>varchar(512)</data-type>
       </column>
-      <column id="326" parent="36" name="state">
+      <column id="352" parent="36" name="state">
         <state-number>6704</state-number>
         <data-type>boolean</data-type>
       </column>
-      <column id="327" parent="36" name="date_register">
+      <column id="353" parent="36" name="date_register">
         <state-number>6704</state-number>
         <data-type>timestamp</data-type>
       </column>
-      <column id="328" parent="36" name="id_user_register">
+      <column id="354" parent="36" name="id_user_register">
         <state-number>6704</state-number>
         <data-type>bigint</data-type>
       </column>
-      <column id="329" parent="36" name="id_refset">
+      <column id="355" parent="36" name="id_refset">
         <state-number>6704</state-number>
         <data-type>bigint</data-type>
       </column>
-      <index id="330" parent="36" name="PK_smtk_refset_consulta">
+      <index id="356" parent="36" name="PK_smtk_refset_consulta">
         <object-id>33338</object-id>
         <columns>id_refset_query</columns>
         <desc-columns></desc-columns>
         <unique>1</unique>
       </index>
-      <index id="331" parent="36" name="IXFK_smtk_refset_query_smtk_refset">
+      <index id="357" parent="36" name="IXFK_smtk_refset_query_smtk_refset">
         <object-id>33337</object-id>
         <columns>id_refset</columns>
         <desc-columns></desc-columns>
       </index>
-      <key id="332" parent="36" name="PK_smtk_refset_consulta">
+      <key id="358" parent="36" name="PK_smtk_refset_consulta">
         <columns>id_refset_query</columns>
         <underlying-index>PK_smtk_refset_consulta</underlying-index>
         <primary>1</primary>
       </key>
-      <foreign-key id="333" parent="36" name="FK_smtk_refset_query_smtk_refset">
+      <foreign-key id="359" parent="36" name="FK_smtk_refset_query_smtk_refset">
         <columns>id_refset</columns>
         <ref-key>~.smtk_refset.PK_refsets</ref-key>
         <cascade-update-rule>restrict</cascade-update-rule>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
-      <column id="334" parent="37" name="id_producto_isp">
+      <column id="360" parent="37" name="id_producto_isp">
         <state-number>6704</state-number>
         <mandatory>1</mandatory>
         <data-type>bigint</data-type>
       </column>
-      <column id="335" parent="37" name="registro">
+      <column id="361" parent="37" name="registro">
         <state-number>6704</state-number>
         <data-type>varchar(50)</data-type>
       </column>
-      <column id="336" parent="37" name="reg_num">
+      <column id="362" parent="37" name="reg_num">
         <state-number>6704</state-number>
         <data-type>varchar(50)</data-type>
       </column>
-      <column id="337" parent="37" name="reg_ano">
+      <column id="363" parent="37" name="reg_ano">
         <state-number>6704</state-number>
         <data-type>integer</data-type>
       </column>
-      <column id="338" parent="37" name="nombre">
+      <column id="364" parent="37" name="nombre">
         <state-number>6704</state-number>
         <data-type>varchar(512)</data-type>
       </column>
-      <column id="339" parent="37" name="eq_terapeutica">
+      <column id="365" parent="37" name="eq_terapeutica">
         <state-number>6704</state-number>
         <data-type>varchar(512)</data-type>
       </column>
-      <column id="340" parent="37" name="titular">
+      <column id="366" parent="37" name="titular">
         <state-number>6704</state-number>
         <data-type>varchar(50)</data-type>
       </column>
-      <column id="341" parent="37" name="estado_regsitro">
+      <column id="367" parent="37" name="estado_regsitro">
         <state-number>6704</state-number>
         <data-type>boolean</data-type>
       </column>
-      <column id="342" parent="37" name="resolucion_inscribase">
+      <column id="368" parent="37" name="resolucion_inscribase">
         <state-number>6704</state-number>
         <data-type>integer</data-type>
       </column>
-      <column id="343" parent="37" name="fecha_inscribase">
+      <column id="369" parent="37" name="fecha_inscribase">
         <state-number>6704</state-number>
         <data-type>date</data-type>
       </column>
-      <column id="344" parent="37" name="ult_renovacion">
+      <column id="370" parent="37" name="ult_renovacion">
         <state-number>6704</state-number>
         <data-type>date</data-type>
       </column>
-      <column id="345" parent="37" name="regimen">
+      <column id="371" parent="37" name="regimen">
         <state-number>6704</state-number>
         <data-type>varchar(512)</data-type>
       </column>
-      <column id="346" parent="37" name="via_administracion">
+      <column id="372" parent="37" name="via_administracion">
         <state-number>6704</state-number>
         <data-type>varchar(512)</data-type>
       </column>
-      <column id="347" parent="37" name="cond_venta">
+      <column id="373" parent="37" name="cond_venta">
         <state-number>6704</state-number>
         <data-type>varchar(512)</data-type>
       </column>
-      <column id="348" parent="37" name="exp_tipo_estab">
+      <column id="374" parent="37" name="exp_tipo_estab">
         <state-number>6704</state-number>
         <data-type>varchar(512)</data-type>
       </column>
-      <column id="349" parent="37" name="indicacion">
+      <column id="375" parent="37" name="indicacion">
         <state-number>6704</state-number>
         <data-type>varchar(512)</data-type>
       </column>
-      <column id="350" parent="37" name="fecha_ult_mod">
+      <column id="376" parent="37" name="fecha_ult_mod">
         <state-number>6704</state-number>
         <data-type>timestamp</data-type>
       </column>
-      <column id="351" parent="37" name="estado">
+      <column id="377" parent="37" name="estado">
         <state-number>6704</state-number>
         <data-type>boolean</data-type>
       </column>
-      <index id="352" parent="37" name="PK_smtk_registro_isp">
+      <index id="378" parent="37" name="PK_smtk_registro_isp">
         <object-id>33391</object-id>
         <columns>id_producto_isp</columns>
         <desc-columns></desc-columns>
         <unique>1</unique>
       </index>
-      <key id="353" parent="37" name="PK_smtk_registro_isp">
+      <key id="379" parent="37" name="PK_smtk_registro_isp">
         <columns>id_producto_isp</columns>
         <underlying-index>PK_smtk_registro_isp</underlying-index>
         <primary>1</primary>
       </key>
-      <column id="354" parent="38" name="id_relationships">
+      <column id="380" parent="38" name="id_relationships">
         <state-number>6704</state-number>
         <mandatory>1</mandatory>
         <data-type>bigint</data-type>
       </column>
-      <column id="355" parent="38" name="id_source_concept">
+      <column id="381" parent="38" name="id_source_concept">
         <state-number>6704</state-number>
         <data-type>bigint</data-type>
       </column>
-      <column id="356" parent="38" name="id_target">
+      <column id="382" parent="38" name="id_target">
         <state-number>6704</state-number>
         <data-type>bigint</data-type>
       </column>
-      <column id="357" parent="38" name="id_relationship_definition">
+      <column id="383" parent="38" name="id_relationship_definition">
         <state-number>6704</state-number>
         <data-type>bigint</data-type>
       </column>
-      <index id="358" parent="38" name="PK_smtk_dataConceptos">
+      <index id="384" parent="38" name="PK_smtk_dataConceptos">
         <object-id>33375</object-id>
         <columns>id_relationships</columns>
         <desc-columns></desc-columns>
         <unique>1</unique>
       </index>
-      <index id="359" parent="38" name="IXFK_smtk_relationships_smtk_relationships">
+      <index id="385" parent="38" name="IXFK_smtk_relationships_smtk_relationships">
         <object-id>33374</object-id>
         <columns>id_relationships</columns>
         <desc-columns></desc-columns>
       </index>
-      <index id="360" parent="38" name="IXFK_smtk_relationships_smtk_conceptos_03">
+      <index id="386" parent="38" name="IXFK_smtk_relationships_smtk_conceptos_03">
         <object-id>33373</object-id>
         <columns>id_source_concept</columns>
         <desc-columns></desc-columns>
       </index>
-      <index id="361" parent="38" name="IXFK_smtk_relationship_smtk_target">
+      <index id="387" parent="38" name="IXFK_smtk_relationship_smtk_target">
         <object-id>33372</object-id>
         <columns>id_target</columns>
         <desc-columns></desc-columns>
       </index>
-      <index id="362" parent="38" name="IXFK_smtk_relationship_smtk_relationship_definition">
+      <index id="388" parent="38" name="IXFK_smtk_relationship_smtk_relationship_definition">
         <object-id>33371</object-id>
         <columns>id_relationship_definition</columns>
         <desc-columns></desc-columns>
       </index>
-      <key id="363" parent="38" name="PK_smtk_dataConceptos">
+      <key id="389" parent="38" name="PK_smtk_dataConceptos">
         <columns>id_relationships</columns>
         <underlying-index>PK_smtk_dataConceptos</underlying-index>
         <primary>1</primary>
       </key>
-      <foreign-key id="364" parent="38" name="FK_smtk_relationships_smtk_conceptos">
+      <foreign-key id="390" parent="38" name="FK_smtk_relationships_smtk_conceptos">
         <columns>id_source_concept</columns>
         <ref-key>~.smtk_concept.PK_smtk_conceptosG</ref-key>
         <cascade-update-rule>restrict</cascade-update-rule>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
-      <foreign-key id="365" parent="38" name="FK_smtk_relationship_smtk_target">
+      <foreign-key id="391" parent="38" name="FK_smtk_relationship_smtk_target">
         <columns>id_target</columns>
         <ref-key>~.smtk_target.PK_smtk_destiny</ref-key>
         <cascade-update-rule>restrict</cascade-update-rule>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
-      <foreign-key id="366" parent="38" name="FK_smtk_relationship_smtk_relationship_definition">
+      <foreign-key id="392" parent="38" name="FK_smtk_relationship_smtk_relationship_definition">
         <columns>id_relationship_definition</columns>
         <ref-key>~.smtk_relationship_definition.PK_smtk_relation_types</ref-key>
         <cascade-update-rule>restrict</cascade-update-rule>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
-      <column id="367" parent="39" name="id_relationship_attribute">
+      <column id="393" parent="39" name="id_relationship_attribute">
         <state-number>6704</state-number>
         <data-type>bigint</data-type>
       </column>
-      <column id="368" parent="39" name="Id_relation_attribute_definition">
+      <column id="394" parent="39" name="Id_relation_attribute_definition">
         <state-number>6704</state-number>
         <data-type>bigint</data-type>
       </column>
-      <column id="369" parent="39" name="id_relationships">
+      <column id="395" parent="39" name="id_relationships">
         <state-number>6704</state-number>
         <data-type>bigint</data-type>
       </column>
-      <column id="370" parent="39" name="id_destiny">
+      <column id="396" parent="39" name="id_destiny">
         <state-number>6704</state-number>
         <data-type>bigint</data-type>
       </column>
-      <index id="371" parent="39" name="IXFK_smtk_relationship_attribute_smtk_relationship_attibute_def">
+      <index id="397" parent="39" name="IXFK_smtk_relationship_attribute_smtk_relationship_attibute_def">
         <object-id>33273</object-id>
         <columns>Id_relation_attribute_definition</columns>
         <desc-columns></desc-columns>
       </index>
-      <index id="372" parent="39" name="IXFK_smtk_relationship_attribute_smtk_relationships">
+      <index id="398" parent="39" name="IXFK_smtk_relationship_attribute_smtk_relationships">
         <object-id>33274</object-id>
         <columns>id_relationships</columns>
         <desc-columns></desc-columns>
       </index>
-      <index id="373" parent="39" name="IXFK_smtk_relationship_attribute_smtk_destiny">
+      <index id="399" parent="39" name="IXFK_smtk_relationship_attribute_smtk_destiny">
         <object-id>33272</object-id>
         <columns>id_destiny</columns>
         <desc-columns></desc-columns>
       </index>
-      <foreign-key id="374" parent="39" name="FK_smtk_relationship_attribute_smtk_relationship_attibute_defin">
+      <foreign-key id="400" parent="39" name="FK_smtk_relationship_attribute_smtk_relationship_attibute_defin">
         <columns>Id_relation_attribute_definition</columns>
         <ref-key>~.smtk_relationship_attribute_definition.PK_smtk_relation_attibute</ref-key>
         <cascade-update-rule>restrict</cascade-update-rule>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
-      <foreign-key id="375" parent="39" name="FK_smtk_relationship_attribute_smtk_relationships">
+      <foreign-key id="401" parent="39" name="FK_smtk_relationship_attribute_smtk_relationships">
         <columns>id_relationships</columns>
         <ref-key>~.smtk_relationship.PK_smtk_dataConceptos</ref-key>
         <cascade-update-rule>restrict</cascade-update-rule>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
-      <foreign-key id="376" parent="39" name="FK_smtk_relationship_attribute_smtk_target">
+      <foreign-key id="402" parent="39" name="FK_smtk_relationship_attribute_smtk_target">
         <columns>id_destiny</columns>
         <ref-key>~.smtk_target.PK_smtk_destiny</ref-key>
         <cascade-update-rule>restrict</cascade-update-rule>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
-      <column id="377" parent="40" name="id_relation_attribute_definition">
+      <column id="403" parent="40" name="id_relation_attribute_definition">
         <state-number>6704</state-number>
         <mandatory>1</mandatory>
         <data-type>bigint</data-type>
       </column>
-      <column id="378" parent="40" name="id_relationship_definition">
+      <column id="404" parent="40" name="id_relationship_definition">
         <state-number>6704</state-number>
         <data-type>bigint</data-type>
       </column>
-      <column id="379" parent="40" name="id_target_definition">
+      <column id="405" parent="40" name="id_target_definition">
         <state-number>6704</state-number>
         <data-type>bigint</data-type>
       </column>
-      <column id="380" parent="40" name="name">
+      <column id="406" parent="40" name="name">
         <state-number>6704</state-number>
         <data-type>varchar(50)</data-type>
       </column>
-      <column id="381" parent="40" name="multiplicity_from">
+      <column id="407" parent="40" name="multiplicity_from">
         <state-number>6704</state-number>
         <data-type>varchar(50)</data-type>
       </column>
-      <column id="382" parent="40" name="multiplicity_to">
+      <column id="408" parent="40" name="multiplicity_to">
         <state-number>6704</state-number>
         <data-type>varchar(50)</data-type>
       </column>
-      <index id="383" parent="40" name="PK_smtk_relation_attibute">
+      <index id="409" parent="40" name="PK_smtk_relation_attibute">
         <object-id>33277</object-id>
         <columns>id_relation_attribute_definition</columns>
         <desc-columns></desc-columns>
         <unique>1</unique>
       </index>
-      <index id="384" parent="40" name="IXFK_smtk_relation_attibute_smtk_relationship_definition">
+      <index id="410" parent="40" name="IXFK_smtk_relation_attibute_smtk_relationship_definition">
         <object-id>33275</object-id>
         <columns>id_relationship_definition</columns>
         <desc-columns></desc-columns>
       </index>
-      <index id="385" parent="40" name="IXFK_smtk_relationship_attibute_definition_smtk_target_type">
+      <index id="411" parent="40" name="IXFK_smtk_relationship_attibute_definition_smtk_target_type">
         <object-id>33276</object-id>
         <columns>id_target_definition</columns>
         <desc-columns></desc-columns>
       </index>
-      <key id="386" parent="40" name="PK_smtk_relation_attibute">
+      <key id="412" parent="40" name="PK_smtk_relation_attibute">
         <columns>id_relation_attribute_definition</columns>
         <underlying-index>PK_smtk_relation_attibute</underlying-index>
         <primary>1</primary>
       </key>
-      <foreign-key id="387" parent="40" name="FK_smtk_relation_attibute_smtk_relationship_definition">
+      <foreign-key id="413" parent="40" name="FK_smtk_relation_attibute_smtk_relationship_definition">
         <columns>id_relationship_definition</columns>
         <ref-key>~.smtk_relationship_definition.PK_smtk_relation_types</ref-key>
         <cascade-update-rule>restrict</cascade-update-rule>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
-      <foreign-key id="388" parent="40" name="FK_smtk_relationship_attibute_definition_smtk_target_type">
+      <foreign-key id="414" parent="40" name="FK_smtk_relationship_attibute_definition_smtk_target_type">
         <columns>id_target_definition</columns>
         <ref-key>~.smtk_target_definition.PK_smtk_Direccion</ref-key>
         <cascade-update-rule>restrict</cascade-update-rule>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
-      <column id="389" parent="41" name="id_relationship_definition">
+      <column id="415" parent="41" name="id_relationship_definition">
         <state-number>6704</state-number>
         <mandatory>1</mandatory>
         <data-type>bigint</data-type>
       </column>
-      <column id="390" parent="41" name="id_target_type">
-        <state-number>6704</state-number>
+      <column id="416" parent="41" name="id_target_definition">
+        <state-number>286859</state-number>
         <data-type>bigint</data-type>
       </column>
-      <column id="391" parent="41" name="name">
+      <column id="417" parent="41" name="name">
         <state-number>6704</state-number>
         <mandatory>1</mandatory>
         <data-type>varchar(50)</data-type>
       </column>
-      <column id="392" parent="41" name="multiplicity_from">
-        <state-number>6704</state-number>
+      <column id="418" parent="41" name="lower_boundary">
+        <state-number>286937</state-number>
         <data-type>integer</data-type>
       </column>
-      <column id="393" parent="41" name="multiplicity_to">
-        <state-number>6704</state-number>
+      <column id="419" parent="41" name="upper_boundary">
+        <state-number>286938</state-number>
         <data-type>integer</data-type>
       </column>
-      <index id="394" parent="41" name="PK_smtk_relation_types">
+      <column id="420" parent="41" name="description">
+        <state-number>286902</state-number>
+        <data-type>varchar</data-type>
+      </column>
+      <index id="421" parent="41" name="PK_smtk_relation_types">
         <object-id>33350</object-id>
         <columns>id_relationship_definition</columns>
         <desc-columns></desc-columns>
         <unique>1</unique>
       </index>
-      <index id="395" parent="41" name="IXFK_smtk_relation_types_smtk_Direccion">
+      <index id="422" parent="41" name="IXFK_smtk_relation_types_smtk_Direccion">
         <object-id>33349</object-id>
-        <columns>id_target_type</columns>
+        <columns>id_target_definition</columns>
         <desc-columns></desc-columns>
       </index>
-      <key id="396" parent="41" name="PK_smtk_relation_types">
+      <key id="423" parent="41" name="PK_smtk_relation_types">
         <columns>id_relationship_definition</columns>
         <underlying-index>PK_smtk_relation_types</underlying-index>
         <primary>1</primary>
       </key>
-      <foreign-key id="397" parent="41" name="FK_smtk_relation_types_smtk_Direccion">
-        <columns>id_target_type</columns>
+      <foreign-key id="424" parent="41" name="FK_smtk_relation_types_smtk_Direccion">
+        <columns>id_target_definition</columns>
         <ref-key>~.smtk_target_definition.PK_smtk_Direccion</ref-key>
         <cascade-update-rule>restrict</cascade-update-rule>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
-      <column id="398" parent="42" name="id">
+      <column id="425" parent="42" name="id">
         <state-number>6704</state-number>
         <mandatory>1</mandatory>
         <data-type>bigint</data-type>
       </column>
-      <column id="399" parent="42" name="effectiveTime">
+      <column id="426" parent="42" name="effectiveTime">
         <state-number>6704</state-number>
         <data-type>timestamp</data-type>
       </column>
-      <column id="400" parent="42" name="active">
+      <column id="427" parent="42" name="active">
         <state-number>6704</state-number>
         <data-type>boolean</data-type>
       </column>
-      <column id="401" parent="42" name="moduleId">
+      <column id="428" parent="42" name="moduleId">
         <state-number>6704</state-number>
         <data-type>bigint</data-type>
       </column>
-      <column id="402" parent="42" name="definitionStatusId">
+      <column id="429" parent="42" name="definitionStatusId">
         <state-number>6704</state-number>
         <data-type>bigint</data-type>
       </column>
-      <index id="403" parent="42" name="PK_conceptFile">
+      <index id="430" parent="42" name="PK_conceptFile">
         <object-id>33285</object-id>
         <columns>id</columns>
         <desc-columns></desc-columns>
         <unique>1</unique>
       </index>
-      <key id="404" parent="42" name="PK_conceptFile">
+      <key id="431" parent="42" name="PK_conceptFile">
         <columns>id</columns>
         <underlying-index>PK_conceptFile</underlying-index>
         <primary>1</primary>
       </key>
-      <column id="405" parent="43" name="id">
+      <column id="432" parent="43" name="id">
         <state-number>6704</state-number>
         <data-type>bigint</data-type>
       </column>
-      <column id="406" parent="43" name="effectiveTime">
+      <column id="433" parent="43" name="effectiveTime">
         <state-number>6704</state-number>
         <data-type>timestamp</data-type>
       </column>
-      <column id="407" parent="43" name="active">
+      <column id="434" parent="43" name="active">
         <state-number>6704</state-number>
         <data-type>boolean</data-type>
       </column>
-      <column id="408" parent="43" name="moduleId">
+      <column id="435" parent="43" name="moduleId">
         <state-number>6704</state-number>
         <data-type>bigint</data-type>
       </column>
-      <column id="409" parent="43" name="conceptId">
+      <column id="436" parent="43" name="conceptId">
         <state-number>6704</state-number>
         <data-type>bigint</data-type>
       </column>
-      <column id="410" parent="43" name="languageCode">
+      <column id="437" parent="43" name="languageCode">
         <state-number>6704</state-number>
         <data-type>varchar(50)</data-type>
       </column>
-      <column id="411" parent="43" name="typeId">
+      <column id="438" parent="43" name="typeId">
         <state-number>6704</state-number>
         <data-type>bigint</data-type>
       </column>
-      <column id="412" parent="43" name="term">
+      <column id="439" parent="43" name="term">
         <state-number>6704</state-number>
         <data-type>varchar(50)</data-type>
       </column>
-      <column id="413" parent="43" name="caseSignificanceId">
+      <column id="440" parent="43" name="caseSignificanceId">
         <state-number>6704</state-number>
         <data-type>bigint</data-type>
       </column>
-      <index id="414" parent="43" name="IXFK_descriptorFile_conceptFile">
+      <index id="441" parent="43" name="IXFK_descriptorFile_conceptFile">
         <object-id>33287</object-id>
         <columns>conceptId</columns>
         <desc-columns></desc-columns>
       </index>
-      <foreign-key id="415" parent="43" name="FK_descriptorFile_conceptFile">
+      <foreign-key id="442" parent="43" name="FK_descriptorFile_conceptFile">
         <columns>conceptId</columns>
         <ref-key>~.smtk_sct_concept.PK_conceptFile</ref-key>
         <cascade-update-rule>restrict</cascade-update-rule>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
-      <column id="416" parent="44" name="id">
+      <column id="443" parent="44" name="id">
         <state-number>6704</state-number>
         <mandatory>1</mandatory>
         <data-type>bigint</data-type>
       </column>
-      <column id="417" parent="44" name="effectiveTime">
+      <column id="444" parent="44" name="effectiveTime">
         <state-number>6704</state-number>
         <data-type>timestamp</data-type>
       </column>
-      <column id="418" parent="44" name="active">
+      <column id="445" parent="44" name="active">
         <state-number>6704</state-number>
         <data-type>boolean</data-type>
       </column>
-      <column id="419" parent="44" name="moduleId">
+      <column id="446" parent="44" name="moduleId">
         <state-number>6704</state-number>
         <data-type>bigint</data-type>
       </column>
-      <column id="420" parent="44" name="refSetId">
+      <column id="447" parent="44" name="refSetId">
         <state-number>6704</state-number>
         <data-type>bigint</data-type>
       </column>
-      <column id="421" parent="44" name="referencedComponentId">
+      <column id="448" parent="44" name="referencedComponentId">
         <state-number>6704</state-number>
         <data-type>bigint</data-type>
       </column>
-      <column id="422" parent="44" name="acceptabilityId">
+      <column id="449" parent="44" name="acceptabilityId">
         <state-number>6704</state-number>
         <data-type>bigint</data-type>
       </column>
-      <index id="423" parent="44" name="PK_langRefSet">
+      <index id="450" parent="44" name="PK_langRefSet">
         <object-id>33281</object-id>
         <columns>id</columns>
         <desc-columns></desc-columns>
         <unique>1</unique>
       </index>
-      <key id="424" parent="44" name="PK_langRefSet">
+      <key id="451" parent="44" name="PK_langRefSet">
         <columns>id</columns>
         <underlying-index>PK_langRefSet</underlying-index>
         <primary>1</primary>
       </key>
-      <column id="425" parent="45" name="id">
+      <column id="452" parent="45" name="id">
         <state-number>6704</state-number>
         <data-type>bigint</data-type>
       </column>
-      <column id="426" parent="45" name="effectiveTime">
+      <column id="453" parent="45" name="effectiveTime">
         <state-number>6704</state-number>
         <data-type>timestamp</data-type>
       </column>
-      <column id="427" parent="45" name="active">
+      <column id="454" parent="45" name="active">
         <state-number>6704</state-number>
         <data-type>boolean</data-type>
       </column>
-      <column id="428" parent="45" name="moduleId">
+      <column id="455" parent="45" name="moduleId">
         <state-number>6704</state-number>
         <data-type>bigint</data-type>
       </column>
-      <column id="429" parent="45" name="sourceId">
+      <column id="456" parent="45" name="sourceId">
         <state-number>6704</state-number>
         <data-type>bigint</data-type>
       </column>
-      <column id="430" parent="45" name="destinationId">
+      <column id="457" parent="45" name="destinationId">
         <state-number>6704</state-number>
         <data-type>bigint</data-type>
       </column>
-      <column id="431" parent="45" name="relationshipGroup">
+      <column id="458" parent="45" name="relationshipGroup">
         <state-number>6704</state-number>
         <data-type>bigint</data-type>
       </column>
-      <column id="432" parent="45" name="typeId">
+      <column id="459" parent="45" name="typeId">
         <state-number>6704</state-number>
         <data-type>bigint</data-type>
       </column>
-      <column id="433" parent="45" name="characteristicTypeId">
+      <column id="460" parent="45" name="characteristicTypeId">
         <state-number>6704</state-number>
         <data-type>bigint</data-type>
       </column>
-      <column id="434" parent="45" name="modifierId">
+      <column id="461" parent="45" name="modifierId">
         <state-number>6704</state-number>
         <data-type>bigint</data-type>
       </column>
-      <index id="435" parent="45" name="IXFK_relationshipFile_conceptFile">
+      <index id="462" parent="45" name="IXFK_relationshipFile_conceptFile">
         <object-id>33283</object-id>
         <columns>sourceId</columns>
         <desc-columns></desc-columns>
       </index>
-      <index id="436" parent="45" name="IXFK_relationshipFile_conceptFile_02">
+      <index id="463" parent="45" name="IXFK_relationshipFile_conceptFile_02">
         <object-id>33284</object-id>
         <columns>destinationId</columns>
         <desc-columns></desc-columns>
       </index>
-      <foreign-key id="437" parent="45" name="FK_relationshipFile_conceptFile">
+      <foreign-key id="464" parent="45" name="FK_relationshipFile_conceptFile">
         <columns>sourceId</columns>
         <ref-key>~.smtk_sct_concept.PK_conceptFile</ref-key>
         <cascade-update-rule>restrict</cascade-update-rule>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
-      <foreign-key id="438" parent="45" name="FK_relationshipFile_conceptFile_02">
+      <foreign-key id="465" parent="45" name="FK_relationshipFile_conceptFile_02">
         <columns>destinationId</columns>
         <ref-key>~.smtk_sct_concept.PK_conceptFile</ref-key>
         <cascade-update-rule>restrict</cascade-update-rule>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
-      <column id="439" parent="46" name="parent">
+      <column id="466" parent="46" name="parent">
         <state-number>6704</state-number>
         <data-type>bigint</data-type>
       </column>
-      <column id="440" parent="46" name="child">
+      <column id="467" parent="46" name="child">
         <state-number>6704</state-number>
         <data-type>bigint</data-type>
       </column>
-      <index id="441" parent="46" name="IXFK_smtk_sct_transitive_smtk_sct_concept">
+      <index id="468" parent="46" name="IXFK_smtk_sct_transitive_smtk_sct_concept">
         <object-id>33396</object-id>
         <columns>parent</columns>
         <desc-columns></desc-columns>
       </index>
-      <index id="442" parent="46" name="IXFK_smtk_sct_transitive_smtk_sct_concept_02">
+      <index id="469" parent="46" name="IXFK_smtk_sct_transitive_smtk_sct_concept_02">
         <object-id>33397</object-id>
         <columns>child</columns>
         <desc-columns></desc-columns>
       </index>
-      <foreign-key id="443" parent="46" name="FK_smtk_sct_transitive_smtk_sct_concept">
+      <foreign-key id="470" parent="46" name="FK_smtk_sct_transitive_smtk_sct_concept">
         <columns>parent</columns>
         <ref-key>~.smtk_sct_concept.PK_conceptFile</ref-key>
         <cascade-update-rule>restrict</cascade-update-rule>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
-      <foreign-key id="444" parent="46" name="FK_smtk_sct_transitive_smtk_sct_concept_02">
+      <foreign-key id="471" parent="46" name="FK_smtk_sct_transitive_smtk_sct_concept_02">
         <columns>child</columns>
         <ref-key>~.smtk_sct_concept.PK_conceptFile</ref-key>
         <cascade-update-rule>restrict</cascade-update-rule>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
-      <column id="445" parent="47" name="id_state">
+      <column id="472" parent="47" name="id_state">
         <state-number>6753</state-number>
         <mandatory>1</mandatory>
         <data-type>bigint</data-type>
         <default-expression>nextval(&apos;semantikos.smtk_seq_state&apos;::regclass)</default-expression>
       </column>
-      <column id="446" parent="47" name="name">
+      <column id="473" parent="47" name="name">
         <state-number>6704</state-number>
         <data-type>varchar(50)</data-type>
       </column>
-      <column id="447" parent="47" name="id_state_machine">
+      <column id="474" parent="47" name="id_state_machine">
         <state-number>6704</state-number>
         <data-type>bigint</data-type>
       </column>
-      <index id="448" parent="47" name="PK_smtk_estados">
+      <index id="475" parent="47" name="PK_smtk_estados">
         <object-id>33305</object-id>
         <columns>id_state</columns>
         <desc-columns></desc-columns>
         <unique>1</unique>
       </index>
-      <index id="449" parent="47" name="IXFK_smtk_estados_concepto_smtk_state_machine">
+      <index id="476" parent="47" name="IXFK_smtk_estados_concepto_smtk_state_machine">
         <object-id>33304</object-id>
         <columns>id_state_machine</columns>
         <desc-columns></desc-columns>
       </index>
-      <key id="450" parent="47" name="PK_smtk_estados">
+      <key id="477" parent="47" name="PK_smtk_estados">
         <columns>id_state</columns>
         <underlying-index>PK_smtk_estados</underlying-index>
         <primary>1</primary>
       </key>
-      <foreign-key id="451" parent="47" name="FK_smtk_estados_concepto_smtk_state_machine">
+      <foreign-key id="478" parent="47" name="FK_smtk_estados_concepto_smtk_state_machine">
         <columns>id_state_machine</columns>
         <ref-key>~.smtk_state_machine.PK_smtk_state_machine</ref-key>
         <cascade-update-rule>restrict</cascade-update-rule>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
-      <column id="452" parent="48" name="id_state_machine">
+      <column id="479" parent="48" name="id_state_machine">
         <state-number>6754</state-number>
         <mandatory>1</mandatory>
         <data-type>bigint</data-type>
         <default-expression>nextval(&apos;semantikos.smtk_seq_state_machine&apos;::regclass)</default-expression>
       </column>
-      <column id="453" parent="48" name="description">
+      <column id="480" parent="48" name="description">
         <state-number>6746</state-number>
         <data-type>varchar(512)</data-type>
       </column>
-      <index id="454" parent="48" name="PK_smtk_state_machine">
+      <index id="481" parent="48" name="PK_smtk_state_machine">
         <object-id>33279</object-id>
         <columns>id_state_machine</columns>
         <desc-columns></desc-columns>
         <unique>1</unique>
       </index>
-      <key id="455" parent="48" name="PK_smtk_state_machine">
+      <key id="482" parent="48" name="PK_smtk_state_machine">
         <columns>id_state_machine</columns>
         <underlying-index>PK_smtk_state_machine</underlying-index>
         <primary>1</primary>
       </key>
-      <column id="456" parent="49" name="id_target">
+      <column id="483" parent="49" name="id_target">
         <state-number>6704</state-number>
         <mandatory>1</mandatory>
         <data-type>bigint</data-type>
       </column>
-      <column id="457" parent="49" name="float_value">
+      <column id="484" parent="49" name="float_value">
         <state-number>6704</state-number>
         <data-type>real</data-type>
       </column>
-      <column id="458" parent="49" name="date_value">
+      <column id="485" parent="49" name="date_value">
         <state-number>6704</state-number>
         <data-type>timestamp</data-type>
       </column>
-      <column id="459" parent="49" name="string_value">
+      <column id="486" parent="49" name="string_value">
         <state-number>6704</state-number>
         <data-type>varchar(50)</data-type>
       </column>
-      <column id="460" parent="49" name="boolean_value">
+      <column id="487" parent="49" name="boolean_value">
         <state-number>6704</state-number>
         <data-type>boolean</data-type>
       </column>
-      <column id="461" parent="49" name="int_value">
+      <column id="488" parent="49" name="int_value">
         <state-number>6704</state-number>
         <data-type>bigint</data-type>
       </column>
-      <column id="462" parent="49" name="id_auxiliary">
+      <column id="489" parent="49" name="id_auxiliary">
         <state-number>6704</state-number>
         <data-type>bigint</data-type>
       </column>
-      <column id="463" parent="49" name="id_extern">
+      <column id="490" parent="49" name="id_extern">
         <state-number>6704</state-number>
         <data-type>bigint</data-type>
       </column>
-      <column id="464" parent="49" name="id_concept_sct">
+      <column id="491" parent="49" name="id_concept_sct">
         <state-number>6704</state-number>
         <data-type>bigint</data-type>
       </column>
-      <column id="465" parent="49" name="id_concept_stk">
+      <column id="492" parent="49" name="id_concept_stk">
         <state-number>6704</state-number>
         <data-type>bigint</data-type>
       </column>
-      <column id="466" parent="49" name="id_target_type">
+      <column id="493" parent="49" name="id_target_type">
         <state-number>6704</state-number>
         <data-type>bigint</data-type>
       </column>
-      <index id="467" parent="49" name="PK_smtk_destiny">
+      <index id="494" parent="49" name="PK_smtk_destiny">
         <object-id>33270</object-id>
         <columns>id_target</columns>
         <desc-columns></desc-columns>
         <unique>1</unique>
       </index>
-      <index id="468" parent="49" name="IXFK_smtk_destiny_smtk_auxiliary">
+      <index id="495" parent="49" name="IXFK_smtk_destiny_smtk_auxiliary">
         <object-id>33265</object-id>
         <columns>id_auxiliary</columns>
         <desc-columns></desc-columns>
       </index>
-      <index id="469" parent="49" name="IXFK_smtk_destiny_smtk_extern">
+      <index id="496" parent="49" name="IXFK_smtk_destiny_smtk_extern">
         <object-id>33268</object-id>
         <columns>id_extern</columns>
         <desc-columns></desc-columns>
       </index>
-      <index id="470" parent="49" name="IXFK_smtk_target_smtk_sct_concept">
+      <index id="497" parent="49" name="IXFK_smtk_target_smtk_sct_concept">
         <object-id>33269</object-id>
         <columns>id_concept_sct</columns>
         <desc-columns></desc-columns>
       </index>
-      <index id="471" parent="49" name="IXFK_smtk_destiny_smtk_conceptos">
+      <index id="498" parent="49" name="IXFK_smtk_destiny_smtk_conceptos">
         <object-id>33266</object-id>
         <columns>id_concept_stk</columns>
         <desc-columns></desc-columns>
       </index>
-      <index id="472" parent="49" name="IXFK_smtk_destiny_smtk_destiny_type">
+      <index id="499" parent="49" name="IXFK_smtk_destiny_smtk_destiny_type">
         <object-id>33267</object-id>
         <columns>id_target_type</columns>
         <desc-columns></desc-columns>
       </index>
-      <key id="473" parent="49" name="PK_smtk_destiny">
+      <key id="500" parent="49" name="PK_smtk_destiny">
         <columns>id_target</columns>
         <underlying-index>PK_smtk_destiny</underlying-index>
         <primary>1</primary>
       </key>
-      <foreign-key id="474" parent="49" name="FK_smtk_destiny_smtk_auxiliary">
+      <foreign-key id="501" parent="49" name="FK_smtk_destiny_smtk_auxiliary">
         <columns>id_auxiliary</columns>
         <ref-key>~.smtk_auxiliary.PK_smtk_Auxiliar</ref-key>
         <cascade-update-rule>restrict</cascade-update-rule>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
-      <foreign-key id="475" parent="49" name="FK_smtk_destiny_smtk_extern">
+      <foreign-key id="502" parent="49" name="FK_smtk_destiny_smtk_extern">
         <columns>id_extern</columns>
         <ref-key>~.smtk_extern.PK_smtk_extern</ref-key>
         <cascade-update-rule>restrict</cascade-update-rule>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
-      <foreign-key id="476" parent="49" name="FK_smtk_target_smtk_sct_concept">
+      <foreign-key id="503" parent="49" name="FK_smtk_target_smtk_sct_concept">
         <columns>id_concept_sct</columns>
         <ref-key>~.smtk_sct_concept.PK_conceptFile</ref-key>
         <cascade-update-rule>restrict</cascade-update-rule>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
-      <foreign-key id="477" parent="49" name="FK_smtk_destiny_smtk_conceptos">
+      <foreign-key id="504" parent="49" name="FK_smtk_destiny_smtk_conceptos">
         <columns>id_concept_stk</columns>
         <ref-key>~.smtk_concept.PK_smtk_conceptosG</ref-key>
         <cascade-update-rule>restrict</cascade-update-rule>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
-      <foreign-key id="478" parent="49" name="FK_smtk_destiny_smtk_destiny_type">
+      <foreign-key id="505" parent="49" name="FK_smtk_destiny_smtk_destiny_type">
         <columns>id_target_type</columns>
         <ref-key>~.smtk_target_definition.PK_smtk_Direccion</ref-key>
         <cascade-update-rule>restrict</cascade-update-rule>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
-      <column id="479" parent="50" name="id_target_definition">
+      <column id="506" parent="50" name="id_target_definition">
         <state-number>6704</state-number>
         <mandatory>1</mandatory>
         <data-type>bigint</data-type>
       </column>
-      <column id="480" parent="50" name="name">
+      <column id="507" parent="50" name="name">
         <state-number>6704</state-number>
         <data-type>varchar(50)</data-type>
       </column>
-      <column id="481" parent="50" name="id_category">
+      <column id="508" parent="50" name="id_category">
         <state-number>6704</state-number>
         <data-type>bigint</data-type>
       </column>
-      <column id="482" parent="50" name="id_accesory_table_name">
+      <column id="509" parent="50" name="id_accesory_table_name">
         <state-number>6704</state-number>
         <data-type>bigint</data-type>
       </column>
-      <column id="483" parent="50" name="id_extern_table_name">
+      <column id="510" parent="50" name="id_extern_table_name">
         <state-number>6704</state-number>
         <data-type>bigint</data-type>
       </column>
-      <column id="484" parent="50" name="id_target_type">
+      <column id="511" parent="50" name="id_target_type">
         <state-number>6704</state-number>
         <data-type>bigint</data-type>
       </column>
-      <column id="485" parent="50" name="id_basic_type">
+      <column id="512" parent="50" name="id_basic_type">
         <state-number>6704</state-number>
         <data-type>bigint</data-type>
       </column>
-      <index id="486" parent="50" name="PK_smtk_Direccion">
+      <column id="513" parent="50" name="is_sct_type">
+        <state-number>286903</state-number>
+        <data-type>boolean</data-type>
+      </column>
+      <index id="514" parent="50" name="PK_smtk_Direccion">
         <object-id>33357</object-id>
         <columns>id_target_definition</columns>
         <desc-columns></desc-columns>
         <unique>1</unique>
       </index>
-      <index id="487" parent="50" name="IXFK_smtk_target_type_smtk_category">
+      <index id="515" parent="50" name="IXFK_smtk_target_type_smtk_category">
         <object-id>33355</object-id>
         <columns>id_category</columns>
         <desc-columns></desc-columns>
       </index>
-      <index id="488" parent="50" name="IXFK_smtk_target_type_smtk_accesory_table_names">
+      <index id="516" parent="50" name="IXFK_smtk_target_type_smtk_accesory_table_names">
         <object-id>33354</object-id>
         <columns>id_accesory_table_name</columns>
         <desc-columns></desc-columns>
       </index>
-      <index id="489" parent="50" name="IXFK_smtk_target_type_smtk_extern_table_names">
+      <index id="517" parent="50" name="IXFK_smtk_target_type_smtk_extern_table_names">
         <object-id>33356</object-id>
         <columns>id_extern_table_name</columns>
         <desc-columns></desc-columns>
       </index>
-      <index id="490" parent="50" name="IXFK_smtk_target_definition_sct_target_type">
+      <index id="518" parent="50" name="IXFK_smtk_target_definition_sct_target_type">
         <object-id>33352</object-id>
         <columns>id_target_type</columns>
         <desc-columns></desc-columns>
       </index>
-      <index id="491" parent="50" name="IXFK_smtk_target_definition_smtk_basic_type">
+      <index id="519" parent="50" name="IXFK_smtk_target_definition_smtk_basic_type">
         <object-id>33353</object-id>
         <columns>id_basic_type</columns>
         <desc-columns></desc-columns>
       </index>
-      <key id="492" parent="50" name="PK_smtk_Direccion">
+      <key id="520" parent="50" name="PK_smtk_Direccion">
         <columns>id_target_definition</columns>
         <underlying-index>PK_smtk_Direccion</underlying-index>
         <primary>1</primary>
       </key>
-      <foreign-key id="493" parent="50" name="FK_smtk_target_type_smtk_category">
+      <foreign-key id="521" parent="50" name="FK_smtk_target_type_smtk_category">
         <columns>id_category</columns>
         <ref-key>~.smtk_category.PK_SMTK_CATEGORIAS</ref-key>
         <cascade-update-rule>restrict</cascade-update-rule>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
-      <foreign-key id="494" parent="50" name="FK_smtk_target_type_smtk_accesory_table_names">
+      <foreign-key id="522" parent="50" name="FK_smtk_target_type_smtk_accesory_table_names">
         <columns>id_accesory_table_name</columns>
         <ref-key>~.smtk_accesory_table_names.PK_smtk_accesory_table_name</ref-key>
         <cascade-update-rule>restrict</cascade-update-rule>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
-      <foreign-key id="495" parent="50" name="FK_smtk_target_type_smtk_extern_table_names">
+      <foreign-key id="523" parent="50" name="FK_smtk_target_type_smtk_extern_table_names">
         <columns>id_extern_table_name</columns>
         <ref-key>~.smtk_extern_table_names.PK_smtk_extern_table_names</ref-key>
         <cascade-update-rule>restrict</cascade-update-rule>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
-      <foreign-key id="496" parent="50" name="FK_smtk_target_definition_sct_target_type">
+      <foreign-key id="524" parent="50" name="FK_smtk_target_definition_sct_target_type">
         <columns>id_target_type</columns>
         <ref-key>~.smtk_target_type.PK_sct_target_type</ref-key>
         <cascade-update-rule>restrict</cascade-update-rule>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
-      <foreign-key id="497" parent="50" name="FK_smtk_target_definition_smtk_basic_type">
+      <foreign-key id="525" parent="50" name="FK_smtk_target_definition_smtk_basic_type">
         <columns>id_basic_type</columns>
-        <ref-key>~.smtk_basic_type.PK_smtk_basic_type</ref-key>
+        <ref-key>~.smtk_basic_type_definition.PK_smtk_basic_type</ref-key>
         <cascade-update-rule>restrict</cascade-update-rule>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
-      <column id="498" parent="51" name="id_target_type">
+      <column id="526" parent="51" name="id_target_type">
         <state-number>6704</state-number>
         <mandatory>1</mandatory>
         <data-type>bigint</data-type>
       </column>
-      <column id="499" parent="51" name="name">
+      <column id="527" parent="51" name="name">
         <state-number>6704</state-number>
         <data-type>varchar(50)</data-type>
       </column>
-      <column id="500" parent="51" name="description">
+      <column id="528" parent="51" name="description">
         <state-number>6704</state-number>
         <data-type>varchar(4000)</data-type>
       </column>
-      <index id="501" parent="51" name="PK_sct_target_type">
+      <index id="529" parent="51" name="PK_sct_target_type">
         <object-id>33263</object-id>
         <columns>id_target_type</columns>
         <desc-columns></desc-columns>
         <unique>1</unique>
       </index>
-      <key id="502" parent="51" name="PK_sct_target_type">
+      <key id="530" parent="51" name="PK_sct_target_type">
         <columns>id_target_type</columns>
         <underlying-index>PK_sct_target_type</underlying-index>
         <primary>1</primary>
       </key>
-      <column id="503" parent="52" name="id_transition">
+      <column id="531" parent="52" name="id_transition">
         <state-number>6751</state-number>
         <mandatory>1</mandatory>
         <data-type>bigint</data-type>
         <default-expression>nextval(&apos;semantikos.smtk_seq_transition&apos;::regclass)</default-expression>
       </column>
-      <column id="504" parent="52" name="id_state_origin">
+      <column id="532" parent="52" name="id_state_origin">
         <state-number>6704</state-number>
         <data-type>bigint</data-type>
       </column>
-      <column id="505" parent="52" name="id_state_destination">
+      <column id="533" parent="52" name="id_state_destination">
         <state-number>6704</state-number>
         <data-type>bigint</data-type>
       </column>
-      <index id="506" parent="52" name="PK_smtk_transiciones">
+      <index id="534" parent="52" name="PK_smtk_transiciones">
         <object-id>33302</object-id>
         <columns>id_transition</columns>
         <desc-columns></desc-columns>
         <unique>1</unique>
       </index>
-      <index id="507" parent="52" name="IXFK_smtk_transition_smtk_state">
+      <index id="535" parent="52" name="IXFK_smtk_transition_smtk_state">
         <object-id>33301</object-id>
         <columns>id_state_origin
 id_state_destination</columns>
         <desc-columns></desc-columns>
       </index>
-      <key id="508" parent="52" name="PK_smtk_transiciones">
+      <key id="536" parent="52" name="PK_smtk_transiciones">
         <columns>id_transition</columns>
         <underlying-index>PK_smtk_transiciones</underlying-index>
         <primary>1</primary>
       </key>
-      <foreign-key id="509" parent="52" name="FK_smtk_transition_smtk_state">
+      <foreign-key id="537" parent="52" name="FK_smtk_transition_smtk_state">
         <columns>id_state_origin</columns>
         <ref-key>~.smtk_state.PK_smtk_estados</ref-key>
         <cascade-update-rule>restrict</cascade-update-rule>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
-      <foreign-key id="510" parent="52" name="FK_smtk_transiciones_smtk_estados">
+      <foreign-key id="538" parent="52" name="FK_smtk_transiciones_smtk_estados">
         <columns>id_state_destination</columns>
         <ref-key>~.smtk_state.PK_smtk_estados</ref-key>
         <cascade-update-rule>restrict</cascade-update-rule>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
-      <column id="511" parent="53" name="id_user">
+      <column id="539" parent="53" name="id_user">
         <state-number>6704</state-number>
         <mandatory>1</mandatory>
         <data-type>bigint</data-type>
       </column>
-      <column id="512" parent="53" name="username">
+      <column id="540" parent="53" name="username">
         <state-number>286781</state-number>
         <mandatory>1</mandatory>
         <data-type>varchar(256)</data-type>
       </column>
-      <column id="513" parent="53" name="password_hash">
+      <column id="541" parent="53" name="password_hash">
         <state-number>286792</state-number>
         <data-type>varchar(512)</data-type>
       </column>
-      <column id="514" parent="53" name="password_salt">
+      <column id="542" parent="53" name="password_salt">
         <state-number>286774</state-number>
         <data-type>varchar(512)</data-type>
       </column>
-      <column id="515" parent="53" name="name">
+      <column id="543" parent="53" name="name">
         <state-number>286775</state-number>
         <data-type>varchar(512)</data-type>
       </column>
-      <column id="516" parent="53" name="last_name">
+      <column id="544" parent="53" name="last_name">
         <state-number>286776</state-number>
         <data-type>varchar(255)</data-type>
       </column>
-      <column id="517" parent="53" name="second_last_name">
+      <column id="545" parent="53" name="second_last_name">
         <state-number>286777</state-number>
         <data-type>varchar(255)</data-type>
       </column>
-      <column id="518" parent="53" name="email">
+      <column id="546" parent="53" name="email">
         <state-number>286778</state-number>
         <data-type>varchar(256)</data-type>
       </column>
-      <index id="519" parent="53" name="PK_smtk_usuarios">
+      <column id="547" parent="53" name="locked">
+        <state-number>287032</state-number>
+        <data-type>boolean</data-type>
+      </column>
+      <column id="548" parent="53" name="failed_login_attempts">
+        <state-number>287033</state-number>
+        <mandatory>1</mandatory>
+        <data-type>integer</data-type>
+        <default-expression>0</default-expression>
+      </column>
+      <column id="549" parent="53" name="last_login">
+        <state-number>287035</state-number>
+        <data-type>timestamp</data-type>
+      </column>
+      <column id="550" parent="53" name="last_password_change">
+        <state-number>287036</state-number>
+        <data-type>timestamp</data-type>
+      </column>
+      <column id="551" parent="53" name="last_password_hash1">
+        <state-number>287037</state-number>
+        <data-type>varchar(512)</data-type>
+      </column>
+      <column id="552" parent="53" name="last_password_hash2">
+        <state-number>287038</state-number>
+        <data-type>varchar(512)</data-type>
+      </column>
+      <column id="553" parent="53" name="last_password_hash3">
+        <state-number>287039</state-number>
+        <data-type>varchar(512)</data-type>
+      </column>
+      <column id="554" parent="53" name="last_password_hash4">
+        <state-number>287040</state-number>
+        <data-type>varchar(512)</data-type>
+      </column>
+      <column id="555" parent="53" name="last_password_salt1">
+        <state-number>287041</state-number>
+        <data-type>varchar(512)</data-type>
+      </column>
+      <column id="556" parent="53" name="last_password_salt2">
+        <state-number>287042</state-number>
+        <data-type>varchar(512)</data-type>
+      </column>
+      <column id="557" parent="53" name="last_password_salt3">
+        <state-number>287043</state-number>
+        <data-type>varchar(512)</data-type>
+      </column>
+      <column id="558" parent="53" name="last_password_salt4">
+        <state-number>287044</state-number>
+        <data-type>varchar(512)</data-type>
+      </column>
+      <index id="559" parent="53" name="PK_smtk_usuarios">
         <object-id>33299</object-id>
         <columns>id_user</columns>
         <desc-columns></desc-columns>
         <unique>1</unique>
       </index>
-      <index id="520" parent="53" name="smtk_user_username_uindex">
+      <index id="560" parent="53" name="smtk_user_username_uindex">
         <object-id>33766</object-id>
         <columns>username</columns>
         <desc-columns></desc-columns>
         <unique>1</unique>
       </index>
-      <key id="521" parent="53" name="PK_smtk_usuarios">
+      <key id="561" parent="53" name="PK_smtk_usuarios">
         <columns>id_user</columns>
         <underlying-index>PK_smtk_usuarios</underlying-index>
         <primary>1</primary>
       </key>
-      <column id="522" parent="54" name="id_relationship_user_profile">
+      <column id="562" parent="54" name="id_relationship_user_profile">
         <state-number>6704</state-number>
         <mandatory>1</mandatory>
         <data-type>bigint</data-type>
       </column>
-      <column id="523" parent="54" name="id_user">
+      <column id="563" parent="54" name="id_user">
         <state-number>6704</state-number>
         <data-type>bigint</data-type>
       </column>
-      <column id="524" parent="54" name="id_profile">
+      <column id="564" parent="54" name="id_profile">
         <state-number>6704</state-number>
         <data-type>bigint</data-type>
       </column>
-      <index id="525" parent="54" name="PK_smtk_relacionUsuarioPerfil">
+      <index id="565" parent="54" name="PK_smtk_relacionUsuarioPerfil">
         <object-id>33295</object-id>
         <columns>id_relationship_user_profile</columns>
         <desc-columns></desc-columns>
         <unique>1</unique>
       </index>
-      <index id="526" parent="54" name="IXFK_smtk_relacionUsuarioPerfil_smtk_usuarios">
+      <index id="566" parent="54" name="IXFK_smtk_relacionUsuarioPerfil_smtk_usuarios">
         <object-id>33294</object-id>
         <columns>id_user</columns>
         <desc-columns></desc-columns>
       </index>
-      <index id="527" parent="54" name="IXFK_smtk_relacionUsuarioPerfil_smtk_perfiles">
+      <index id="567" parent="54" name="IXFK_smtk_relacionUsuarioPerfil_smtk_perfiles">
         <object-id>33293</object-id>
         <columns>id_profile</columns>
         <desc-columns></desc-columns>
       </index>
-      <key id="528" parent="54" name="PK_smtk_relacionUsuarioPerfil">
+      <key id="568" parent="54" name="PK_smtk_relacionUsuarioPerfil">
         <columns>id_relationship_user_profile</columns>
         <underlying-index>PK_smtk_relacionUsuarioPerfil</underlying-index>
         <primary>1</primary>
       </key>
-      <foreign-key id="529" parent="54" name="FK_smtk_relacionUsuarioPerfil_smtk_usuarios">
+      <foreign-key id="569" parent="54" name="FK_smtk_relacionUsuarioPerfil_smtk_usuarios">
         <columns>id_user</columns>
         <cascade-update-rule>restrict</cascade-update-rule>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
-      <foreign-key id="530" parent="54" name="FK_smtk_relacionUsuarioPerfil_smtk_perfiles">
+      <foreign-key id="570" parent="54" name="FK_smtk_relacionUsuarioPerfil_smtk_perfiles">
         <columns>id_profile</columns>
         <ref-key>~.smtk_profiles.PK_smtk_perfiles</ref-key>
         <cascade-update-rule>restrict</cascade-update-rule>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
-      <argument id="531" parent="55">
-        <direction>RESULT</direction>
-        <data-type>table(count bigint)</data-type>
-      </argument>
-      <argument id="532" parent="56" name="categories">
-        <direction>IN</direction>
-        <data-type>integer[]</data-type>
-      </argument>
-      <argument id="533" parent="56" name="patterns">
-        <direction>IN</direction>
-        <data-type>text[]</data-type>
-      </argument>
-      <argument id="534" parent="56">
-        <direction>RESULT</direction>
-        <data-type>table(count bigint)</data-type>
-      </argument>
-      <argument id="535" parent="57" name="patterns">
-        <direction>IN</direction>
-        <data-type>text[]</data-type>
-      </argument>
-      <argument id="536" parent="57">
-        <direction>RESULT</direction>
-        <data-type>table(count bigint)</data-type>
-      </argument>
-      <argument id="537" parent="58" name="categories">
-        <direction>IN</direction>
-        <data-type>integer[]</data-type>
-      </argument>
-      <argument id="538" parent="58">
-        <direction>RESULT</direction>
-        <data-type>table(count bigint)</data-type>
-      </argument>
-      <argument id="539" parent="59" name="categories">
-        <direction>IN</direction>
-        <data-type>integer[]</data-type>
-      </argument>
-      <argument id="540" parent="59" name="page">
-        <direction>IN</direction>
-        <data-type>integer</data-type>
-      </argument>
-      <argument id="541" parent="59" name="page_size">
-        <direction>IN</direction>
-        <data-type>integer</data-type>
-      </argument>
-      <argument id="542" parent="59">
-        <direction>RESULT</direction>
-        <data-type>table(id bigint, id_category bigint, id_state_concept bigint, is_to_be_reviewed boolean, is_to_be_consultated boolean, is_fully_defined boolean, is_published boolean)</data-type>
-      </argument>
-      <argument id="543" parent="60" name="c_id">
+      <argument id="571" parent="55" name="c_id">
         <direction>IN</direction>
         <data-type>varchar</data-type>
       </argument>
-      <argument id="544" parent="60" name="page">
+      <argument id="572" parent="55" name="states">
         <direction>IN</direction>
-        <data-type>integer</data-type>
+        <data-type>bigint[]</data-type>
       </argument>
-      <argument id="545" parent="60" name="page_size">
-        <direction>IN</direction>
-        <data-type>integer</data-type>
-      </argument>
-      <argument id="546" parent="60">
+      <argument id="573" parent="55">
         <direction>RESULT</direction>
-        <data-type>table(id bigint, id_category bigint, id_state_concept bigint, is_to_be_reviewed boolean, is_to_be_consultated boolean, is_fully_defined boolean, is_published boolean)</data-type>
+        <data-type>table(count bigint)</data-type>
       </argument>
-      <argument id="547" parent="61" name="page">
+      <argument id="574" parent="56" name="c_id">
         <direction>IN</direction>
-        <data-type>integer</data-type>
+        <data-type>varchar</data-type>
       </argument>
-      <argument id="548" parent="61" name="page_size">
-        <direction>IN</direction>
-        <data-type>integer</data-type>
-      </argument>
-      <argument id="549" parent="61">
-        <direction>RESULT</direction>
-        <data-type>table(id bigint, id_category bigint, id_state_concept bigint, is_to_be_reviewed boolean, is_to_be_consultated boolean, is_fully_defined boolean, is_published boolean)</data-type>
-      </argument>
-      <argument id="550" parent="62" name="categories">
+      <argument id="575" parent="56" name="categories">
         <direction>IN</direction>
         <data-type>integer[]</data-type>
       </argument>
-      <argument id="551" parent="62" name="patterns">
+      <argument id="576" parent="56" name="states">
+        <direction>IN</direction>
+        <data-type>bigint[]</data-type>
+      </argument>
+      <argument id="577" parent="56">
+        <direction>RESULT</direction>
+        <data-type>table(count bigint)</data-type>
+      </argument>
+      <argument id="578" parent="57" name="states">
+        <direction>IN</direction>
+        <data-type>bigint[]</data-type>
+      </argument>
+      <argument id="579" parent="57">
+        <direction>RESULT</direction>
+        <data-type>table(count bigint)</data-type>
+      </argument>
+      <argument id="580" parent="58" name="categories">
+        <direction>IN</direction>
+        <data-type>integer[]</data-type>
+      </argument>
+      <argument id="581" parent="58" name="patterns">
         <direction>IN</direction>
         <data-type>text[]</data-type>
       </argument>
-      <argument id="552" parent="62" name="page">
+      <argument id="582" parent="58" name="states">
         <direction>IN</direction>
-        <data-type>integer</data-type>
+        <data-type>bigint[]</data-type>
       </argument>
-      <argument id="553" parent="62" name="page_size">
-        <direction>IN</direction>
-        <data-type>integer</data-type>
-      </argument>
-      <argument id="554" parent="62">
+      <argument id="583" parent="58">
         <direction>RESULT</direction>
-        <data-type>table(id bigint, id_category bigint, id_state_concept bigint, is_to_be_reviewed boolean, is_to_be_consultated boolean, is_fully_defined boolean, is_published boolean)</data-type>
+        <data-type>table(count bigint)</data-type>
       </argument>
-      <argument id="555" parent="63" name="patterns">
+      <argument id="584" parent="59" name="patterns">
         <direction>IN</direction>
         <data-type>text[]</data-type>
       </argument>
-      <argument id="556" parent="63" name="page">
+      <argument id="585" parent="59" name="states">
+        <direction>IN</direction>
+        <data-type>bigint[]</data-type>
+      </argument>
+      <argument id="586" parent="59">
+        <direction>RESULT</direction>
+        <data-type>table(count bigint)</data-type>
+      </argument>
+      <argument id="587" parent="60" name="categories">
+        <direction>IN</direction>
+        <data-type>integer[]</data-type>
+      </argument>
+      <argument id="588" parent="60" name="states">
+        <direction>IN</direction>
+        <data-type>bigint[]</data-type>
+      </argument>
+      <argument id="589" parent="60">
+        <direction>RESULT</direction>
+        <data-type>table(count bigint)</data-type>
+      </argument>
+      <argument id="590" parent="61" name="categories">
+        <direction>IN</direction>
+        <data-type>integer[]</data-type>
+      </argument>
+      <argument id="591" parent="61" name="page">
         <direction>IN</direction>
         <data-type>integer</data-type>
       </argument>
-      <argument id="557" parent="63" name="page_size">
+      <argument id="592" parent="61" name="page_size">
         <direction>IN</direction>
         <data-type>integer</data-type>
       </argument>
-      <argument id="558" parent="63">
+      <argument id="593" parent="61" name="states">
+        <direction>IN</direction>
+        <data-type>bigint[]</data-type>
+      </argument>
+      <argument id="594" parent="61">
+        <direction>RESULT</direction>
+        <data-type>table(id bigint, conceptid varchar, id_category bigint, id_state_concept bigint, is_to_be_reviewed boolean, is_to_be_consultated boolean, is_fully_defined boolean, is_published boolean)</data-type>
+      </argument>
+      <argument id="595" parent="62" name="c_id">
+        <direction>IN</direction>
+        <data-type>varchar</data-type>
+      </argument>
+      <argument id="596" parent="62" name="page">
+        <direction>IN</direction>
+        <data-type>integer</data-type>
+      </argument>
+      <argument id="597" parent="62" name="page_size">
+        <direction>IN</direction>
+        <data-type>integer</data-type>
+      </argument>
+      <argument id="598" parent="62" name="states">
+        <direction>IN</direction>
+        <data-type>bigint[]</data-type>
+      </argument>
+      <argument id="599" parent="62">
+        <direction>RESULT</direction>
+        <data-type>table(id bigint, conceptid varchar, id_category bigint, id_state_concept bigint, is_to_be_reviewed boolean, is_to_be_consultated boolean, is_fully_defined boolean, is_published boolean)</data-type>
+      </argument>
+      <argument id="600" parent="63" name="c_id">
+        <direction>IN</direction>
+        <data-type>varchar</data-type>
+      </argument>
+      <argument id="601" parent="63" name="categories">
+        <direction>IN</direction>
+        <data-type>integer[]</data-type>
+      </argument>
+      <argument id="602" parent="63" name="page">
+        <direction>IN</direction>
+        <data-type>integer</data-type>
+      </argument>
+      <argument id="603" parent="63" name="page_size">
+        <direction>IN</direction>
+        <data-type>integer</data-type>
+      </argument>
+      <argument id="604" parent="63" name="states">
+        <direction>IN</direction>
+        <data-type>bigint[]</data-type>
+      </argument>
+      <argument id="605" parent="63">
+        <direction>RESULT</direction>
+        <data-type>table(id bigint, conceptid varchar, id_category bigint, id_state_concept bigint, is_to_be_reviewed boolean, is_to_be_consultated boolean, is_fully_defined boolean, is_published boolean)</data-type>
+      </argument>
+      <argument id="606" parent="64" name="page">
+        <direction>IN</direction>
+        <data-type>integer</data-type>
+      </argument>
+      <argument id="607" parent="64" name="page_size">
+        <direction>IN</direction>
+        <data-type>integer</data-type>
+      </argument>
+      <argument id="608" parent="64" name="states">
+        <direction>IN</direction>
+        <data-type>bigint[]</data-type>
+      </argument>
+      <argument id="609" parent="64">
+        <direction>RESULT</direction>
+        <data-type>table(id bigint, conceptid varchar, id_category bigint, id_state_concept bigint, is_to_be_reviewed boolean, is_to_be_consultated boolean, is_fully_defined boolean, is_published boolean)</data-type>
+      </argument>
+      <argument id="610" parent="65" name="categories">
+        <direction>IN</direction>
+        <data-type>integer[]</data-type>
+      </argument>
+      <argument id="611" parent="65" name="patterns">
+        <direction>IN</direction>
+        <data-type>text[]</data-type>
+      </argument>
+      <argument id="612" parent="65" name="page">
+        <direction>IN</direction>
+        <data-type>integer</data-type>
+      </argument>
+      <argument id="613" parent="65" name="page_size">
+        <direction>IN</direction>
+        <data-type>integer</data-type>
+      </argument>
+      <argument id="614" parent="65" name="states">
+        <direction>IN</direction>
+        <data-type>bigint[]</data-type>
+      </argument>
+      <argument id="615" parent="65">
         <direction>RESULT</direction>
         <data-type>table(id bigint, id_category bigint, id_state_concept bigint, is_to_be_reviewed boolean, is_to_be_consultated boolean, is_fully_defined boolean, is_published boolean)</data-type>
       </argument>
-      <argument id="559" parent="64">
+      <argument id="616" parent="66" name="patterns">
+        <direction>IN</direction>
+        <data-type>text[]</data-type>
+      </argument>
+      <argument id="617" parent="66" name="page">
+        <direction>IN</direction>
+        <data-type>integer</data-type>
+      </argument>
+      <argument id="618" parent="66" name="page_size">
+        <direction>IN</direction>
+        <data-type>integer</data-type>
+      </argument>
+      <argument id="619" parent="66" name="states">
+        <direction>IN</direction>
+        <data-type>bigint[]</data-type>
+      </argument>
+      <argument id="620" parent="66">
+        <direction>RESULT</direction>
+        <data-type>table(id bigint, conceptid varchar, id_category bigint, id_state_concept bigint, is_to_be_reviewed boolean, is_to_be_consultated boolean, is_fully_defined boolean, is_published boolean)</data-type>
+      </argument>
+      <argument id="621" parent="67" name="p_id">
+        <direction>IN</direction>
+        <data-type>integer</data-type>
+      </argument>
+      <argument id="622" parent="67">
+        <direction>RETURN</direction>
+        <data-type>json</data-type>
+      </argument>
+      <argument id="623" parent="68">
         <direction>RESULT</direction>
         <data-type>table(idcategory bigint, namecategory varchar, nameabbreviated varchar, restriction boolean, active boolean)</data-type>
       </argument>
-      <argument id="560" parent="65">
+      <argument id="624" parent="69">
         <direction>RETURN</direction>
         <data-type>json</data-type>
       </argument>
-      <argument id="561" parent="66">
+      <argument id="625" parent="70">
         <direction>RETURN</direction>
         <data-type>json</data-type>
       </argument>
-      <argument id="562" parent="67" name="id">
+      <argument id="626" parent="71" name="p_id">
+        <direction>IN</direction>
+        <data-type>integer</data-type>
+      </argument>
+      <argument id="627" parent="71">
+        <direction>RETURN</direction>
+        <data-type>json</data-type>
+      </argument>
+      <argument id="628" parent="72" name="p_id">
+        <direction>IN</direction>
+        <data-type>integer</data-type>
+      </argument>
+      <argument id="629" parent="72">
+        <direction>RESULT</direction>
+        <data-type>table(id_basic_type bigint, name varchar, description varchar, lower_boundary integer, upper_boundary integer)</data-type>
+      </argument>
+      <argument id="630" parent="73" name="p_id">
+        <direction>IN</direction>
+        <data-type>integer</data-type>
+      </argument>
+      <argument id="631" parent="73">
+        <direction>RESULT</direction>
+        <data-type>table(id_basic_type bigint, name varchar, lower_boundary integer, upper_boundary integer)</data-type>
+      </argument>
+      <argument id="632" parent="74" name="p_id">
+        <direction>IN</direction>
+        <data-type>integer</data-type>
+      </argument>
+      <argument id="633" parent="74">
+        <direction>RETURN</direction>
+        <data-type>json</data-type>
+      </argument>
+      <argument id="634" parent="75" name="id">
         <direction>IN</direction>
         <data-type>bigint</data-type>
       </argument>
-      <argument id="563" parent="67">
+      <argument id="635" parent="75">
         <direction>RESULT</direction>
         <data-type>table(idcategory bigint, namecategory varchar, nameabbreviated varchar, restriction boolean, active boolean)</data-type>
       </argument>
-      <argument id="564" parent="68">
+      <argument id="636" parent="76" name="p_id">
+        <direction>IN</direction>
+        <data-type>integer</data-type>
+      </argument>
+      <argument id="637" parent="76">
         <direction>RETURN</direction>
         <data-type>json</data-type>
       </argument>
-      <argument id="565" parent="69" name="id">
+      <argument id="638" parent="77">
+        <direction>RETURN</direction>
+        <data-type>json</data-type>
+      </argument>
+      <argument id="639" parent="78" name="id">
         <direction>IN</direction>
         <data-type>bigint</data-type>
       </argument>
-      <argument id="566" parent="69">
+      <argument id="640" parent="78">
         <direction>RESULT</direction>
         <data-type>table(id_description bigint, id_description_type bigint, description_type varchar, description varchar, case_sensitive boolean, autogenerated boolean, is_active boolean, is_published boolean)</data-type>
       </argument>
-      <argument id="567" parent="70" name="id">
+      <argument id="641" parent="79" name="id">
         <direction>IN</direction>
         <data-type>integer</data-type>
       </argument>
-      <argument id="568" parent="70">
+      <argument id="642" parent="79">
         <direction>RETURN</direction>
         <data-type>json</data-type>
       </argument>
-      <argument id="569" parent="71" name="p_id_state_machine">
+      <argument id="643" parent="80" name="p_id_state_machine">
         <direction>IN</direction>
         <data-type>integer</data-type>
       </argument>
-      <argument id="570" parent="71">
+      <argument id="644" parent="80">
         <direction>RETURN</direction>
         <data-type>json</data-type>
       </argument>
-      <argument id="571" parent="72" name="id">
+      <argument id="645" parent="81" name="p_id">
         <direction>IN</direction>
         <data-type>integer</data-type>
       </argument>
-      <argument id="572" parent="72">
+      <argument id="646" parent="81">
         <direction>RETURN</direction>
         <data-type>json</data-type>
       </argument>
-      <argument id="573" parent="73" name="id">
+      <argument id="647" parent="82">
+        <direction>RETURN</direction>
+        <data-type>json</data-type>
+      </argument>
+      <argument id="648" parent="83" name="p_id_category">
         <direction>IN</direction>
         <data-type>integer</data-type>
       </argument>
-      <argument id="574" parent="73">
-        <direction>RETURN</direction>
-        <data-type>json</data-type>
+      <argument id="649" parent="83">
+        <direction>RESULT</direction>
+        <data-type>table(id_relationship_definition bigint, name varchar, multiplicity_from integer, multiplicity_to integer, id_target_definition bigint, id_category bigint, id_accesory_table_name bigint, id_basic_type bigint, is_sct_type boolean)</data-type>
       </argument>
-      <argument id="575" parent="74">
-        <direction>RETURN</direction>
-        <data-type>json</data-type>
-      </argument>
-      <argument id="576" parent="75" name="p_id_state">
+      <argument id="650" parent="84" name="p_id">
         <direction>IN</direction>
         <data-type>integer</data-type>
       </argument>
-      <argument id="577" parent="75" name="p_id_visited">
+      <argument id="651" parent="84">
+        <direction>RETURN</direction>
+        <data-type>json</data-type>
+      </argument>
+      <argument id="652" parent="85" name="p_id">
+        <direction>IN</direction>
+        <data-type>integer</data-type>
+      </argument>
+      <argument id="653" parent="85">
+        <direction>RETURN</direction>
+        <data-type>json</data-type>
+      </argument>
+      <argument id="654" parent="86">
+        <direction>RETURN</direction>
+        <data-type>json</data-type>
+      </argument>
+      <argument id="655" parent="87" name="p_id_state">
+        <direction>IN</direction>
+        <data-type>integer</data-type>
+      </argument>
+      <argument id="656" parent="87" name="p_id_visited">
         <direction>IN</direction>
         <data-type>integer[]</data-type>
       </argument>
-      <argument id="578" parent="75">
+      <argument id="657" parent="87">
         <direction>RETURN</direction>
         <data-type>json</data-type>
       </argument>
-      <argument id="579" parent="76" name="p_id_state_machine">
+      <argument id="658" parent="88" name="p_id_state_machine">
         <direction>IN</direction>
         <data-type>integer</data-type>
       </argument>
-      <argument id="580" parent="76">
+      <argument id="659" parent="88">
         <direction>RETURN</direction>
         <data-type>json</data-type>
       </argument>
-      <argument id="581" parent="77" name="p_id_state_origin">
+      <argument id="660" parent="89" name="p_id_state_origin">
         <direction>IN</direction>
         <data-type>integer</data-type>
       </argument>
-      <argument id="582" parent="77" name="p_id_visited">
+      <argument id="661" parent="89" name="p_id_visited">
         <direction>IN</direction>
         <data-type>integer[]</data-type>
       </argument>
-      <argument id="583" parent="77">
+      <argument id="662" parent="89">
         <direction>RETURN</direction>
         <data-type>json</data-type>
       </argument>
-      <argument id="584" parent="78">
+      <argument id="663" parent="90">
         <direction>RETURN</direction>
         <data-type>json</data-type>
       </argument>
-      <argument id="585" parent="79">
+      <argument id="664" parent="91">
         <direction>RETURN</direction>
         <data-type>json</data-type>
       </argument>
-      <argument id="586" parent="80">
+      <argument id="665" parent="92">
         <direction>RETURN</direction>
         <data-type>void</data-type>
       </argument>
-      <argument id="587" parent="81">
-        <direction>RETURN</direction>
-        <data-type>void</data-type>
+      <argument id="666" parent="93" name="c_id">
+        <direction>IN</direction>
+        <data-type>varchar</data-type>
+      </argument>
+      <argument id="667" parent="93" name="id">
+        <direction>IN</direction>
+        <data-type>bigint[]</data-type>
+      </argument>
+      <argument id="668" parent="93">
+        <direction>RESULT</direction>
+        <data-type>table(count bigint)</data-type>
       </argument>
     </database-model>
   </data-source>
