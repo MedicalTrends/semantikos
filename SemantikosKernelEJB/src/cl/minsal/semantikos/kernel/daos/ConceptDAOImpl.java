@@ -60,6 +60,7 @@ public class ConceptDAOImpl implements ConceptDAO {
 
             if (Pattern != null) {
 
+
                 Array ArrayPattern = connect.getConnection().createArrayOf("text", Pattern);
 
                 if (Category != null) {
@@ -140,106 +141,7 @@ public class ConceptDAOImpl implements ConceptDAO {
         }
 
         connect.closeConnection();
-
-
         return concepts;
-
-/* ******************************Código con JPA*************************
-        Query q;
-
-        List<Object[]> resultList=null;
-        if (Pattern != null) {
-
-
-            if (Category != null) {
-
-                q = em.createNativeQuery("select * from semantikos.find_concept_by(?,?,?,?)");
-
-                q.setParameter(1, Category);
-                q.setParameter(2, Pattern);
-                q.setParameter(3,pageNumber);
-                q.setParameter(4,pageSize);
-
-            } else {
-
-                q = em.createNativeQuery("select * from semantikos.find_concept_by_pattern(?,?,?)");
-
-
-                ArrayList<String> p = new ArrayList<>();
-                Object[] op= new Object[Pattern.length];
-                Collection<String> pat= new ArrayList<>();
-
-                for (int i = 0; i < Pattern.length; i++) {
-                    p.add(Pattern[i]);
-                    pat.add(Pattern[i]);
-                    op[i]=Pattern[i];
-                }
-
-
-
-
-                q.setParameter(1, p);
-                q.setParameter(2,pageNumber);
-                q.setParameter(3,pageSize);
-
-            }
-
-        } else {
-
-            if (Category != null) {
-                System.out.println("Category");
-
-                q = em.createNativeQuery("select * from semantikos.find_concept_by_categories(?,?,?)");
-
-                Integer[] cat= new Integer[Category.length];
-                for (int i = 0; i < Category.length; i++) {
-                    cat[i]=Integer.parseInt(Category[i]);
-                }
-                IntegerArray[] cat2;
-                q.setParameter(1, cat);
-                q.setParameter(2,pageNumber);
-                q.setParameter(3,pageSize);
-
-            } else {
-
-
-                q=em.createNativeQuery("select * from semantikos.get_concept_by_page_size(?,?)");
-
-                q.setParameter(1,pageNumber);
-                q.setParameter(2,pageSize);
-
-
-
-            }
-        }
-
-        resultList = q.getResultList();
-
-        for (Object[] result:resultList) {
-
-            id = ((BigInteger)result[0]).longValue();
-            idCategory = ((BigInteger)result[1]).longValue();
-            if (objectCategory != null) {
-                if (objectCategory.getIdCategory() != idCategory) {
-                    objectCategory = categoryDAO.getCategoryById(idCategory);
-                }
-            } else {
-                objectCategory = categoryDAO.getCategoryById(idCategory);
-            }
-
-            check = (boolean)result[3];
-            consult = (boolean)result[4];
-            state = ((BigInteger)result[2]).intValue();
-            completelyDefined = (boolean)result[5];
-            published = (boolean)result[6];
-            State st = new State();
-            List<Description> descriptions= descriptionDAO.getDescriptionByConceptID(id);
-            concepts.add(new ConceptSMTK(id,id,objectCategory, check, consult, st, completelyDefined, published, descriptions));
-
-
-        }
-
-         ****************************** Fin Código con JPA***********/
     }
 
     @Override
@@ -256,6 +158,7 @@ public class ConceptDAOImpl implements ConceptDAO {
 
 
         CallableStatement call;
+
 
         try {
 
