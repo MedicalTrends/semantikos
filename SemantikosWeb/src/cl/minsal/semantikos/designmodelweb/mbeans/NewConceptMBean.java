@@ -48,6 +48,7 @@ public class NewConceptMBean implements Serializable {
     public User user;
 
     private ConceptSMTK concept;
+
     private Category category;
     private List<DescriptionType> descriptionTypes = new ArrayList<DescriptionType>();
     private List<State> descriptionStates = new ArrayList<State>();
@@ -98,6 +99,14 @@ public class NewConceptMBean implements Serializable {
 
     public void setConcept(ConceptSMTK concept) {
         this.concept = concept;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
     public String getOtherTermino() {

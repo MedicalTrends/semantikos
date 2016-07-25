@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:composite="http://java.sun.com/jsf/composite"
+      xmlns:p="http://primefaces.org/ui"
+>
+
+<composite:interface>
+    <composite:attribute name="name" type="java.lang.String" />
+    <composite:attribute name="multiplicity" type="cl.minsal.semantikos.model.Multiplicity" />
+    <composite:attribute name="basicType" type="cl.minsal.semantikos.model.basictypes.BasicTypeDefinition" required="true" />
+</composite:interface>
+<composite:implementation>
+
+    <h:outputText value="#{cc.attrs.basicType.name}" />
+    <div class="ui-g">
+        <div class="ui-g-12 ui-md-6 ui-lg-1">
+            <p:outputLabel for="check" value="#{cc.attrs.name}"/>
+        </div>
+        <div class="ui-g-12 ui-md-6 ui-lg-5">
+            <!--p:inputText value="" rendered="#{cc.attrs.basicType.intervalType and cc.attrs.basicType.intervalTypeOf == 'String'}" />
+            <p:calendar value="" rendered="#{cc.attrs.basicType.intervalType and cc.attrs.basicType.intervalTypeOf == 'Date'}" /-->
+            <p:selectOneMenu value="" rendered="#{cc.attrs.basicType.domainType}">
+                <f:selectItem itemLabel="Seleccione" itemValue=""/>
+                <f:selectItems value="#{cc.attrs.basicType.domain}" var="domain"
+                               itemLabel="#{domain}" itemValue="#{domain}"/>
+            </p:selectOneMenu>
+        </div>
+        <div class="ui-g-12 ui-md-6 ui-lg-3">
+        </div>
+        <div class="ui-g-12 ui-md-6 ui-lg-3">
+        </div>
+    </div>
+</composite:implementation>
+</html>
