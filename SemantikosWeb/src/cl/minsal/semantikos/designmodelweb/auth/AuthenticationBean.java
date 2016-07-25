@@ -70,7 +70,7 @@ public class AuthenticationBean {
             //redirigir a pagina de inicio
             context.redirect(context.getRequestContextPath() + Constants.HOME_PAGE);
 
-            logger.info("Usuario [{}] ha iniciado sesión."+username);
+            logger.info("Usuario [{}] ha iniciado sesión.",username);
 
 
         } catch (IOException e) {
