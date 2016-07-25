@@ -120,4 +120,20 @@ public class RelationshipDefinition {
     public void setExcludes(RelationshipDefinition excludes) {
         this.excludes = excludes;
     }
+
+    public TargetDefinition getTargetDefinition() {
+        return targetDefinition;
+    }
+
+    public void setTargetDefinition(TargetDefinition targetDefinition) {
+        this.targetDefinition = targetDefinition;
+    }
+
+    public Multiplicity getMultiplicity() {
+        return multiplicity;
+    }
+
+    public void setMultiplicity(Multiplicity multiplicity) {
+        this.multiplicity = multiplicity;
+    }
 }

@@ -28,8 +28,6 @@ import java.util.List;
 @Stateless
 public class RelationshipDefinitionDAOImpl implements RelationshipDefinitionDAO {
 
-    private static final String SQL_GET_RELATIONSHIP_DEFINITIONS = "{call semantikos.get_full_category_by_id(?)}";
-
     @PersistenceContext(unitName = "SEMANTIKOS_PU")
     EntityManager em;
 
@@ -48,7 +46,10 @@ public class RelationshipDefinitionDAOImpl implements RelationshipDefinitionDAO 
         ArrayList<RelationshipDefinition> attributes = new ArrayList<RelationshipDefinition>();
 
         /* Se invoca la consulta para recuperar las relaciones */
-        Query nativeQuery = this.em.createNativeQuery("SELECT get_conf_rel_all()");
+        Query nativeQuery = this.em.createNativeQuery("SELECT semantikos.get_relationship_definitions_by_category(?)");
+
+        nativeQuery.setParameter(1,idCategory);
+
         List<Object[]> relationships = nativeQuery.getResultList();
 
         //TODO: finish this.
@@ -68,7 +69,8 @@ public class RelationshipDefinitionDAOImpl implements RelationshipDefinitionDAO 
 
             /* Se crea el objeto */
             RelationshipDefinition relationshipDefinition = new RelationshipDefinition(idRelationship, name, description, targetDefinition, multiplicity);
-            //Attributes.add(new AttributeCategory(idRelationship, name, multiplicity, description, required));
+
+            attributes.add(relationshipDefinition);
         }
 
         return attributes;

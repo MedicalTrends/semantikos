@@ -20,6 +20,7 @@ import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,15 +41,14 @@ public class CategoryDAOImpl implements CategoryDAO {
     private RelationshipDefinitionDAO relationshipDefinitionDAO;
 
     @Override
-    public Category getCategoryById(long id) {
+    public Category getCategoryById(long idCategory) throws ParseException {
 
 
-/*
-        Query q = em.createNativeQuery("select * from semantikos.get_category_by_id(?)");
-        q.setParameter(1,id);
+        Query nativeQuery = em.createNativeQuery("select * from semantikos.get_category_by_id(?)");
 
+        nativeQuery.setParameter(1,idCategory);
 
-        List<Object[]> resultList = q.getResultList();
+        List<Object[]> resultList = nativeQuery.getResultList();
         Category category=null;
 
         for (Object[] result:resultList) {
@@ -61,9 +61,11 @@ public class CategoryDAOImpl implements CategoryDAO {
             category.setRestriction((boolean) result[3]);
             category.setValid((boolean) result[4]);
 
-        }
-*/
+            category.setRelationshipDefinitions(getCategoryMetaData((int) idCategory));
 
+            return  category;
+
+        }
 
         return null;
     }
@@ -132,7 +134,7 @@ public class CategoryDAOImpl implements CategoryDAO {
     }
 
     @Override
-    public List<RelationshipDefinition> getCategoryMetaData(int idCategory) {
+    public List<RelationshipDefinition> getCategoryMetaData(int idCategory) throws ParseException {
         return relationshipDefinitionDAO.getRelationshipDefinitionsByCategory(idCategory);
     }
 
