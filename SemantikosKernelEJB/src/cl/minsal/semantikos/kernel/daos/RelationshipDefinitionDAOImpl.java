@@ -17,6 +17,7 @@ import javax.persistence.Query;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.sql.*;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,7 +43,7 @@ public class RelationshipDefinitionDAOImpl implements RelationshipDefinitionDAO 
     private TargetTypeDAO targetTypeDAO;
 
     @Override
-    public List<RelationshipDefinition> getRelationshipDefinitionsByCategory(int idCategory) {
+    public List<RelationshipDefinition> getRelationshipDefinitionsByCategory(int idCategory) throws ParseException {
 
         ArrayList<RelationshipDefinition> attributes = new ArrayList<RelationshipDefinition>();
 
@@ -74,10 +75,11 @@ public class RelationshipDefinitionDAOImpl implements RelationshipDefinitionDAO 
 
     }
 
-    private TargetDefinition getTargetDefinition(String idCategory, String idAccesoryTable, String idExternTable, String idBasicType, String isSCTType) {
+    private TargetDefinition getTargetDefinition(String idCategory, String idAccesoryTable, String idExternTable, String idBasicType, String isSCTType) throws ParseException {
 
         /* Se testea si es un tipo básico */
         BasicTypeDefinition basicTypeDefinition = null;
+
         if (idBasicType != null) {
             long id = new BigInteger(idBasicType).longValue();
             basicTypeDefinition = targetTypeDAO.findByID(id);
