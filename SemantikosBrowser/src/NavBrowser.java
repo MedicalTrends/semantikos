@@ -147,44 +147,6 @@ public class NavBrowser {
     }
 
 
-    private List<String> wordPrevius;
-    private List<String> wordActually;
 
-    private boolean isPrevius(){
-
-       wordActually = patternToList(pattern);
-
-        if(wordActually.size()==wordPrevius.size()){
-            for (int i = 0; i < wordActually.size(); i++) {
-                if(wordPrevius.get(i).equalsIgnoreCase(wordActually.get(i))){
-                    return true;
-                }
-            }
-        }
-
-       return false;
-    }
-
-
-    private List<String> patternToList(String pattern) {
-        StringTokenizer st;
-        String token;
-        st = new StringTokenizer(pattern, " ");
-        ArrayList<String> listPattern = new ArrayList<String>();
-        int count = 0;
-
-
-        while (st.hasMoreTokens()) {
-            token = st.nextToken();
-            if (token.length() >= 3) {
-                listPattern.add(token.trim());
-            }
-            if (count == 0 && listPattern.size() == 0) {
-                listPattern.add(token.trim());
-            }
-            count++;
-        }
-        return listPattern;
-    }
 
 }
