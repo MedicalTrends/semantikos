@@ -14,17 +14,14 @@ import java.util.List;
 
 @Local
 public interface CategoryDAO {
-
-    public Category getCategoryById(long id) throws ParseException;
-
     /**
      * Este método es responsable de recuperar toda la información de una categoría desde la BD y retornarla bien
      * organizada en un objeto de negocio.
      *
      * @return La categoría requerida por su ID.
      */
-    public Category getFullCategoryById(long id);
-
+    public Category getCategoryById(long id) throws ParseException;
+    
     public List<Category> getAllCategories();
 
     /**

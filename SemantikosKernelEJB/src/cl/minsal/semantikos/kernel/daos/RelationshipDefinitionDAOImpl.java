@@ -47,7 +47,6 @@ public class RelationshipDefinitionDAOImpl implements RelationshipDefinitionDAO 
 
         /* Se invoca la consulta para recuperar las relaciones */
         Query nativeQuery = this.em.createNativeQuery("SELECT semantikos.get_relationship_definitions_by_category(?)");
-
         nativeQuery.setParameter(1,idCategory);
 
         List<Object[]> relationships = nativeQuery.getResultList();

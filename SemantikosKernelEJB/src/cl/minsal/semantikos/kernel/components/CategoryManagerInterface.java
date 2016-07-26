@@ -43,6 +43,4 @@ public interface CategoryManagerInterface {
      * @return La categoría buscada.
      */
     public Category getFullCategoryById(int idCategory);
-
-
 }
