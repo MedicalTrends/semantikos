@@ -4,10 +4,7 @@ import cl.minsal.semantikos.kernel.util.ConnectionBD;
 import cl.minsal.semantikos.kernel.util.StringUtils;
 import cl.minsal.semantikos.model.Category;
 import cl.minsal.semantikos.model.RelationshipDefinition;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.DeserializationConfig;
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 //import org.hibernate.persister.internal.PersisterClassResolverInitiator;
@@ -46,9 +43,8 @@ public class CategoryDAOImpl implements CategoryDAO {
     @Override
     public Category getCategoryById(long idCategory) throws ParseException {
 
-
-        Query nativeQuery = em.createNativeQuery("select * from semantikos.get_category_by_id(?)");
-
+        // TODO: Cambiar esto a SQL JDBC
+        Query nativeQuery = em.createNativeQuery("SELECT * FROM semantikos.get_category_by_id(?)");
         nativeQuery.setParameter(1,idCategory);
 
         List<Object[]> resultList = nativeQuery.getResultList();
@@ -69,52 +65,14 @@ public class CategoryDAOImpl implements CategoryDAO {
             return  category;
 
         }
+        category.setRelationshipDefinitions(getCategoryMetaData((int) idCategory));
 
-        return null;
-    }
+        return  category;
 
-    @Override
-    public Category getFullCategoryById(long id) {
-
-        ConnectionBD connect = new ConnectionBD();
-
-        ObjectMapper mapper = new ObjectMapper();
-
-        mapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
-
-        Category category = new Category();
-
-
-        try (Connection connection = connect.getConnection();
-             CallableStatement call = connection.prepareCall(SQL_GET_FULL_CATEGORY)) {
-
-            call.setInt(1, (int) id);
-            call.execute();
-
-            ResultSet rs = call.getResultSet();
-            while (rs.next()) {
-                String resultJSON = rs.getString(1);
-                category = mapper.readValue(StringUtils.underScoreToCamelCaseJSON(resultJSON), Category.class);
-            }
-
-            rs.close();
-        } catch (SQLException e) {
-            // TODO: Llevar a un log.
-            e.printStackTrace();
-        } catch (JsonParseException e) {
-            e.printStackTrace();
-        } catch (JsonMappingException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return category;
     }
 
     @Override
     public List<Category> getAllCategories() {
-        /*
 
         Query q = em.createNativeQuery("select * from semantikos.get_all_categories()");
         List<Object[]> resultList = q.getResultList();
@@ -135,7 +93,7 @@ public class CategoryDAOImpl implements CategoryDAO {
         }
 
         return respuesta;
-        */ return null;
+
     }
 
     @Override

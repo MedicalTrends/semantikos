@@ -5,6 +5,7 @@ import cl.minsal.semantikos.model.*;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -178,12 +179,13 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
         }
 
         if (patter != null) {
+            patter=standardizationPattern(patter);
             if(patter.length()>=3){
 
                 List<String> listPattern;
                 listPattern=patternToList(patter);
                 if(listPattern.size()==1){
-                    return conceptDAO.getConceptByPatternOrConceptIDAndCategory(patter.trim(),categories,pageNumber,pageSize,states);
+                    return conceptDAO.getConceptByPatternOrConceptIDAndCategory(listPattern.get(0),categories,pageNumber,pageSize,states);
                 }
                 String[] arrPattern = listPattern.toArray(new String[listPattern.size()]);
 
@@ -193,7 +195,7 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
                     List<String> listPattern;
                     listPattern=patternToList(patter);
                     if(listPattern.size()==1){
-                        return conceptDAO.getConceptByPatternOrConceptIDAndCategory(patter.trim(),categories,pageNumber,pageSize,states);
+                        return conceptDAO.getConceptByPatternOrConceptIDAndCategory(listPattern.get(0),categories,pageNumber,pageSize,states);
                     }
                 }
 
@@ -213,10 +215,11 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
             if (category.length == 0) category = null;
         }
         if (Pattern != null) {
+            Pattern=standardizationPattern(Pattern);
             List<String> listPattern;
             listPattern=patternToList(Pattern);
             if(listPattern.size()==1){
-                return conceptDAO.getCountFindConceptID(Pattern.trim(),category,states);
+                return conceptDAO.getCountFindConceptID(listPattern.get(0),category,states);
             }
             String[] arrPattern = listPattern.toArray(new String[listPattern.size()]);
 
@@ -232,11 +235,30 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
         String token;
         st = new StringTokenizer(pattern, " ");
         ArrayList<String> listPattern = new ArrayList<String>();
+        int count =0;
+
 
         while (st.hasMoreTokens()) {
             token = st.nextToken();
-            listPattern.add(token);
+            if(token.length()>=3){
+                listPattern.add(token.trim());
+            }
+            if(count==0 && listPattern.size()==0){
+                listPattern.add(token.trim());
+            }
+            count++;
         }
         return listPattern;
+    }
+
+    private String standardizationPattern(String pattern){
+
+        pattern = Normalizer.normalize(pattern, Normalizer.Form.NFD);
+        pattern = pattern.toLowerCase();
+        pattern = pattern.replaceAll("[^\\p{ASCII}]", "");
+        pattern = pattern.replaceAll("\\p{Punct}+", "");
+
+        return pattern;
+
     }
 }
