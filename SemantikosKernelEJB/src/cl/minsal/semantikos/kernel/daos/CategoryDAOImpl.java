@@ -43,29 +43,32 @@ public class CategoryDAOImpl implements CategoryDAO {
     @Override
     public Category getCategoryById(long idCategory) throws ParseException {
 
-        // TODO: Cambiar esto a SQL JDBC
-        Query nativeQuery = em.createNativeQuery("SELECT * FROM semantikos.get_category_by_id(?)");
-        nativeQuery.setParameter(1,idCategory);
 
-        List<Object[]> resultList = nativeQuery.getResultList();
-        Category category=null;
+        Category category = new Category();
+        ConnectionBD connect = new ConnectionBD();
+        String GET_CATEGORY_BY_ID = "{call semantikos.get_category_by_id(?)}";
 
-        for (Object[] result:resultList) {
-            category = new Category();
+        try (Connection connection = connect.getConnection();
+             CallableStatement call = connection.prepareCall(GET_CATEGORY_BY_ID)) {
 
+            call.setLong(1, idCategory);
+            call.execute();
 
-            category.setIdCategory( ((BigInteger)result[0]).longValue());
-            category.setName((String) result[1]);
-            category.setNameAbreviated((String) result[2]);
-            category.setRestriction((boolean) result[3]);
-            category.setValid((boolean) result[4]);
+            ResultSet rs = call.getResultSet();
+            while (rs.next()) {
+                category.setIdCategory(rs.getLong("idcategory"));
+                category.setName(rs.getString("namecategory"));
+                category.setNameAbreviated(rs.getString("nameabbreviated"));
+                category.setRestriction(rs.getBoolean("restriction"));
+                category.setValid(rs.getBoolean("active"));
+                category.setRelationshipDefinitions(getCategoryMetaData((int) idCategory));
+            }
 
-            category.setRelationshipDefinitions(getCategoryMetaData((int) idCategory));
+            rs.close();
 
-            return  category;
-
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-        category.setRelationshipDefinitions(getCategoryMetaData((int) idCategory));
 
         return  category;
 
