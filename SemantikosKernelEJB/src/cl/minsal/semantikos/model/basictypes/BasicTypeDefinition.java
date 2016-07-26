@@ -21,7 +21,7 @@ import java.util.List;
  * Esta clase representa un dominio de valores básicos.
  * La única restricción, por ahora para el tipo básica
  */
-public class BasicTypeDefinition<T extends Comparable> extends TargetDefinition {
+public class BasicTypeDefinition<T extends Comparable> implements TargetDefinition {
 
     /** Identificador de la BD */
     private long id;
@@ -154,4 +154,8 @@ public class BasicTypeDefinition<T extends Comparable> extends TargetDefinition 
     }
 
 
+    @Override
+    public boolean isBasicType() {
+        return true;
+    }
 }

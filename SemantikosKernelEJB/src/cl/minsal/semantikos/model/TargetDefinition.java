@@ -1,24 +1,14 @@
 package cl.minsal.semantikos.model;
 
-import cl.minsal.semantikos.model.basictypes.BasicTypeDefinition;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-
-import java.util.List;
-
 /**
  * @author Andres Farias
  */
-@JsonIgnoreProperties(ignoreUnknown = true)
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonSubTypes({
-        @JsonSubTypes.Type(value = BasicTypeDefinition.class, name = "BasicTypeDefinition")
+public interface TargetDefinition {
 
-        //@JsonSubTypes.Type(value = Cat.class, name = "Cat")
-}
-)
-public abstract class TargetDefinition {
-
-
+    /**
+     * Este metodo es responsable de determinar si el target type es de tipo básico es o no.
+     *
+     * @return <code>true</code> si es de tipo básico y <code>false</code> sino.
+     */
+    public boolean isBasicType();
 }
