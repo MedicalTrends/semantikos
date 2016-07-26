@@ -85,13 +85,20 @@ public class BasicTypeDefinition<T extends Comparable> implements TargetDefiniti
 
     @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
     @JsonSubTypes({
-            @JsonSubTypes.Type(value = String[].class),
+            @JsonSubTypes.Type(value = String[].class, name="String[]"),
             @JsonSubTypes.Type(Integer[].class)
     })
     public List<T> getDomain() {
         return domain;
     }
 
+    public Interval<T> getInterval() {
+        return interval;
+    }
+
+    public void setInterval(Interval<T> interval) {
+        this.interval = interval;
+    }
 
     public void setDomain(List<T> domain) {
         this.domain = domain;

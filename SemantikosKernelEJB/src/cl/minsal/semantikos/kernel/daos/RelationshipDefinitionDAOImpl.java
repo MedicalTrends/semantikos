@@ -63,7 +63,6 @@ public class RelationshipDefinitionDAOImpl implements RelationshipDefinitionDAO 
                 String name = rs.getString("name");
                 String description = rs.getString("description");
 
-
                 /* Limites de la multiplicidad */
                 int lowerBoundary = rs.getInt("multiplicity_from");
                 int upperBoundary = rs.getInt("multiplicity_to");
