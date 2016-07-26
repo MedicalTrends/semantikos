@@ -3,7 +3,8 @@ package cl.minsal.semantikos.model;
 /**
  * Created by root on 08-07-16.
  */
-public class Auxiliary implements Target {
+public class HelperTable implements Target {
+
     private long idAuxiliary;
     private Long idAccesoryTableName;
     private Long pkValueInAccesoryTable;
@@ -37,7 +38,7 @@ public class Auxiliary implements Target {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Auxiliary that = (Auxiliary) o;
+        HelperTable that = (HelperTable) o;
 
         if (idAuxiliary != that.idAuxiliary) return false;
         if (idAccesoryTableName != null ? !idAccesoryTableName.equals(that.idAccesoryTableName) : that.idAccesoryTableName != null)
