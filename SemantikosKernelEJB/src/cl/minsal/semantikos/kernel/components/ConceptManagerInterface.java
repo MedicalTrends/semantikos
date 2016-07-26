@@ -38,7 +38,7 @@ public interface ConceptManagerInterface {
      */
     public List<ConceptSMTK> findConceptByConceptIDOrDescriptionCategoryPageNumber(String patter, Long[] categories, int pageNumber, int pageSize);
 
-    public int getAllConceptCount(String Pattern, Long[] category);
+    public int getAllConceptCount(String pattern, Long[] categories);
 
 
 }
