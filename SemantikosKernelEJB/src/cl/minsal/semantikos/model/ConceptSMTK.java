@@ -1,18 +1,14 @@
 package cl.minsal.semantikos.model;
 
-import sun.security.krb5.internal.crypto.Des;
-
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
-import java.util.ListIterator;
 
 /**
  * Esta clase representa al Concepto Semantikos.
  *
  * @author Diego Soto.
  */
-public class ConceptSMTK {
+public class ConceptSMTK implements Target {
 
     /** El valor que posee un CONCEPT_ID que no ha sido definido */
     public static final long CONCEPT_ID_UNDEFINED = -1;
@@ -49,6 +45,9 @@ public class ConceptSMTK {
 
     /** Otros descriptores */
     private List<Description> otherDescriptions = new ArrayList<Description>();
+
+    /** Relaciones **/
+    private List<Relationship> relationships = new ArrayList<>();
 
     public ConceptSMTK(long id, long conceptID, Category category, boolean isToBeReviewed, boolean isToBeConsultated, State state, boolean isFullyDefined, boolean isPublished, List<Description> otherDescriptions) {
         this.id = id;
@@ -207,6 +206,13 @@ public class ConceptSMTK {
     }
 
     public void removeDescription(Description description) { this.otherDescriptions.remove(description); }
+
+    public void addRelationship(Relationship relationship) {
+
+        relationship.setIdRelationship(relationships.size()+1);
+        this.relationships.add(relationship);
+
+    }
 
     @Override
     public boolean equals(Object o) {

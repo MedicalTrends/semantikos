@@ -11,7 +11,7 @@ public class BasicTypeValue<T extends Comparator> {
 
     private T value;
 
-    public BasicTypeValue(BasicTypeDefinition basicTypeDefinition, T value) {
+    public BasicTypeValue() {
         this.basicTypeDefinition = basicTypeDefinition;
         this.value = value;
     }

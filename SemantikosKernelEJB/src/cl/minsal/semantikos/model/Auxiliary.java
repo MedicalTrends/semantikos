@@ -3,7 +3,7 @@ package cl.minsal.semantikos.model;
 /**
  * Created by root on 08-07-16.
  */
-public class Auxiliary {
+public class Auxiliary implements Target {
     private long idAuxiliary;
     private Long idAccesoryTableName;
     private Long pkValueInAccesoryTable;

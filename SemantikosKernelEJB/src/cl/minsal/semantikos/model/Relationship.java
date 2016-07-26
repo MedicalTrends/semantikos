@@ -1,14 +1,12 @@
 package cl.minsal.semantikos.model;
 
-import javax.persistence.*;
-
 /**
  * Created by root on 08-07-16.
  */
 public class Relationship {
 
     /** ID en la base de datos */
-    private long idRelationships;
+    private long idRelationship;
 
     /** El concepto origen de esta relación */
     private ConceptSMTK sourceConcept;
@@ -19,12 +17,31 @@ public class Relationship {
     /** El tipo destino de esta relación */
     private Target target;
 
-    public long getIdRelationships() {
-        return idRelationships;
+    /**
+     * Este es el constructor mínimo con el cual se crean las Relaciones
+     *
+     * @param relationshipDefinition Definición de la relación
+     */
+    public Relationship(RelationshipDefinition relationshipDefinition) {
+        this.relationshipDefinition = relationshipDefinition;
     }
 
-    public void setIdRelationships(long idRelationships) {
-        this.idRelationships = idRelationships;
+    /**
+     * Igual al constructor mínimo, pero permite inicializar con el ID.
+     *
+     * @param id               El identificador único.
+     */
+    public Relationship(long id, RelationshipDefinition relationshipDefinition) {
+        this(relationshipDefinition);
+        this.idRelationship = id;
+    }
+
+    public long getIdRelationship() {
+        return idRelationship;
+    }
+
+    public void setIdRelationship(long idRelationship) {
+        this.idRelationship = idRelationship;
     }
 
     public ConceptSMTK getSourceConcept() {

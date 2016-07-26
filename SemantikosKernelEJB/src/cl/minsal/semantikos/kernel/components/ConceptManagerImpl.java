@@ -140,6 +140,10 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
         Description preferido = new Description(term, descriptionManager.getTypePreferido());
         preferido.setCreationDate(Calendar.getInstance().getTime());
         preferido.setState(propuesto);
+        ConceptSMTK concept = new ConceptSMTK(category, fsn, preferido, propuesto);
+        // Agregar las relaciones si existen
+        for(RelationshipDefinition relationshipDefinition: category.getRelationshipDefinitions())
+            concept.addRelationship(new Relationship(relationshipDefinition));
         return new ConceptSMTK(category, fsn, preferido, propuesto);
     }
 
