@@ -296,16 +296,10 @@ public class ConceptDAOImpl implements ConceptDAO {
         try (Connection connection = connect.getConnection();
              CallableStatement call = connection.prepareCall(COUNT_CALL)) {
 
-            Array ArrayStates = connection.createArrayOf("bigint", states);
-
+            call.setString(1, Pattern);
+            call.setArray(2, connection.createArrayOf("bigint", states));
             if (category.length > 0) {
-                Array arrayCategories = connect.getConnection().createArrayOf("integer", category);
-                call.setString(1, Pattern);
-                call.setArray(2, arrayCategories);
-                call.setArray(3, ArrayStates);
-            } else {
-                call.setString(1, Pattern);
-                call.setArray(2, ArrayStates);
+                call.setArray(3, connect.getConnection().createArrayOf("integer", category));
             }
 
             call.execute();
