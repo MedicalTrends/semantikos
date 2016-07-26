@@ -52,7 +52,6 @@ public class RelationshipDefinitionDAOImpl implements RelationshipDefinitionDAO 
 
         List<Object[]> relationships = nativeQuery.getResultList();
 
-        //TODO: finish this.
         for (Object[] relationship : relationships) {
 
             long idRelationship = ((BigInteger) relationship[0]).longValue();
