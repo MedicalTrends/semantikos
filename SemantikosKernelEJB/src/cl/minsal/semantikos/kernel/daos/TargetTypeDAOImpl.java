@@ -31,7 +31,7 @@ public class TargetTypeDAOImpl implements TargetTypeDAO {
     EntityManager em;
 
     @Override
-    public BasicTypeDefinition findByID(long idBasicType) throws ParseException {
+    public BasicTypeDefinition findByID(long idBasicType) {
 
         BasicTypeDefinition basicTypeDefinition = new BasicTypeDefinition();
 
