@@ -23,7 +23,7 @@ public class TargetTypeDAOImpl implements TargetTypeDAO {
     EntityManager em;
 
     @Override
-    public BasicTypeDefinition findByID(long idBasicType) throws ParseException {
+    public BasicTypeDefinition findByID(long idBasicType) {
 
         /* Se invoca la consulta para recuperar las relaciones */
         Query nativeQuery = this.em.createNativeQuery("SELECT semantikos.get_basic_type_definition_by_id(?)");
@@ -35,6 +35,7 @@ public class TargetTypeDAOImpl implements TargetTypeDAO {
             String name = (String) objects[1];
             String description = (String) objects[2];
 
+            // FIXME: Que onda esto?
             int lowerBoundary = Integer.parseInt((String) objects[3]);
             int upperBoundary = Integer.parseInt((String) objects[4]);
 
@@ -57,7 +58,16 @@ public class TargetTypeDAOImpl implements TargetTypeDAO {
                     basicTypeDefinition.addToDomain(floatValue);
                 }
                 if(objects2[1] != null) {
-                    dateValue = new SimpleDateFormat("dd-MM-yyyy").parse((String) objects2[1]);
+                    try {
+                        dateValue = new SimpleDateFormat("dd-MM-yyyy").parse((String) objects2[1]);
+                    } catch (ParseException e) {
+
+                        //FIXME: ojo aqui!
+                        e.printStackTrace();
+
+                        /* El dato es omitido */
+                        continue;
+                    }
                     basicTypeDefinition.addToDomain(dateValue);
                 }
                 if(objects2[2] != null) {

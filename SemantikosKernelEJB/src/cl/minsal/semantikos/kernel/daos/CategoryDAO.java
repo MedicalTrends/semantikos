@@ -18,9 +18,11 @@ public interface CategoryDAO {
      * Este método es responsable de recuperar toda la información de una categoría desde la BD y retornarla bien
      * organizada en un objeto de negocio.
      *
+     * TODO: Hacer esto con un cache
+     *
      * @return La categoría requerida por su ID.
      */
-    public Category getCategoryById(long id) throws ParseException;
+    public Category getCategoryById(long id);
     
     public List<Category> getAllCategories();
 
@@ -32,5 +34,5 @@ public interface CategoryDAO {
      *
      * @return La lista de definiciones de atributos de la categoría.
      */
-    public List<RelationshipDefinition> getCategoryMetaData(int idCategory) throws ParseException;
+    public List<RelationshipDefinition> getCategoryMetaData(long idCategory) throws ParseException;
 }

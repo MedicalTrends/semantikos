@@ -18,5 +18,5 @@ public interface TargetTypeDAO {
      *
      * @return El objecto fresco creado desde la BD.
      */
-    public BasicTypeDefinition findByID(long id) throws ParseException;
+    public BasicTypeDefinition findByID(long id);
 }

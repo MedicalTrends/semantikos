@@ -1,12 +1,8 @@
 package cl.minsal.semantikos.kernel.daos;
 
 import cl.minsal.semantikos.kernel.util.ConnectionBD;
-import cl.minsal.semantikos.kernel.util.StringUtils;
 import cl.minsal.semantikos.model.Category;
 import cl.minsal.semantikos.model.RelationshipDefinition;
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 //import org.hibernate.persister.internal.PersisterClassResolverInitiator;
 
 import javax.ejb.EJB;
@@ -14,7 +10,6 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import java.io.IOException;
 import java.math.BigInteger;
 import java.sql.CallableStatement;
 import java.sql.Connection;
@@ -41,7 +36,7 @@ public class CategoryDAOImpl implements CategoryDAO {
     private RelationshipDefinitionDAO relationshipDefinitionDAO;
 
     @Override
-    public Category getCategoryById(long idCategory) throws ParseException {
+    public Category getCategoryById(long idCategory) {
 
 
         Category category = new Category();
@@ -61,7 +56,7 @@ public class CategoryDAOImpl implements CategoryDAO {
                 category.setNameAbreviated(rs.getString("nameabbreviated"));
                 category.setRestriction(rs.getBoolean("restriction"));
                 category.setValid(rs.getBoolean("active"));
-                category.setRelationshipDefinitions(getCategoryMetaData((int) idCategory));
+                category.setRelationshipDefinitions(getCategoryMetaData(idCategory));
             }
 
             rs.close();
@@ -100,7 +95,7 @@ public class CategoryDAOImpl implements CategoryDAO {
     }
 
     @Override
-    public List<RelationshipDefinition> getCategoryMetaData(int idCategory) throws ParseException {
+    public List<RelationshipDefinition> getCategoryMetaData(long idCategory) {
         return relationshipDefinitionDAO.getRelationshipDefinitionsByCategory(idCategory);
     }
 
