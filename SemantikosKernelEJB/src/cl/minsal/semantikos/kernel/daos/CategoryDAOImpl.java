@@ -43,6 +43,7 @@ public class CategoryDAOImpl implements CategoryDAO {
     @Override
     public Category getCategoryById(long idCategory) throws ParseException {
 
+        // TODO: Cambiar esto a SQL JDBC
         Query nativeQuery = em.createNativeQuery("SELECT * FROM semantikos.get_category_by_id(?)");
         nativeQuery.setParameter(1,idCategory);
 

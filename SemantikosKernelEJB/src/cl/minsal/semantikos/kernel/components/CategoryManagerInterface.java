@@ -16,6 +16,16 @@ import java.util.List;
 public interface CategoryManagerInterface {
 
     /**
+     * Este metodo es responsable de recuperar una Categoría completa, con sus propiedades básicas y todos sus
+     * meta-atributos
+     *
+     * @param idCategory Identificador Unico de la categoría.
+     *
+     * @return La categoría buscada.
+     */
+    public Category getCategoryById(int idCategory) throws ParseException;
+
+    /**
      * Este método responsable de recuperar toda la meta-data que consituye la definición de una categoría, en
      * particular todos los atributos que define.
      *
@@ -35,12 +45,5 @@ public interface CategoryManagerInterface {
 
     public int addTypeRelationship(String name, int typeRelation, int idCategoryDes, int multiplicity);
 
-    public Category getCategoryById(int id) throws ParseException;
 
-    /**
-     * Este metodo es responsable de recuperar una Categoría completa, con sus propiedades básicas y todos sus meta-atributos
-     * @param idCategory Identificador Unico de la categoría.
-     * @return La categoría buscada.
-     */
-    public Category getFullCategoryById(int idCategory);
 }

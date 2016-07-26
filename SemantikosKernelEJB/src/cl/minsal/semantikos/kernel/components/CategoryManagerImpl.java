@@ -164,17 +164,7 @@ public class CategoryManagerImpl implements CategoryManagerInterface {
 
     @Override
     public Category getCategoryById(int id) throws ParseException {
-        /*
-        CategoryDAOImpl categoryDAO= new CategoryDAOImpl();
         return categoryDAO.getCategoryById(id);
-        */
-        return categoryDAO.getCategoryById(id);
-        //return new Category();
-    }
-
-    @Override
-    public Category getFullCategoryById(int idCategory) {
-        return categoryDAO.getFullCategoryById(idCategory);
     }
 
     @Override

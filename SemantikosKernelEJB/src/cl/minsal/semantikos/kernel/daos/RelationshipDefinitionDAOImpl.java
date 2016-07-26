@@ -45,6 +45,7 @@ public class RelationshipDefinitionDAOImpl implements RelationshipDefinitionDAO 
 
         ArrayList<RelationshipDefinition> attributes = new ArrayList<RelationshipDefinition>();
 
+        // TODO: Cambiar esto a SQL JDBC!!
         /* Se invoca la consulta para recuperar las relaciones */
         Query nativeQuery = this.em.createNativeQuery("SELECT semantikos.get_relationship_definitions_by_category(?)");
         nativeQuery.setParameter(1,idCategory);
