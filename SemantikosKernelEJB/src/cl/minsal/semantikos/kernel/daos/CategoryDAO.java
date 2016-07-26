@@ -4,6 +4,7 @@ import cl.minsal.semantikos.model.Category;
 import cl.minsal.semantikos.model.RelationshipDefinition;
 
 import javax.ejb.Local;
+import java.text.ParseException;
 import java.util.List;
 
 
@@ -13,17 +14,16 @@ import java.util.List;
 
 @Local
 public interface CategoryDAO {
-
-    public Category getCategoryById(long id);
-
     /**
      * Este método es responsable de recuperar toda la información de una categoría desde la BD y retornarla bien
      * organizada en un objeto de negocio.
      *
+     * TODO: Hacer esto con un cache
+     *
      * @return La categoría requerida por su ID.
      */
-    public Category getFullCategoryById(long id);
-
+    public Category getCategoryById(long id);
+    
     public List<Category> getAllCategories();
 
     /**
@@ -34,5 +34,5 @@ public interface CategoryDAO {
      *
      * @return La lista de definiciones de atributos de la categoría.
      */
-    public List<RelationshipDefinition> getCategoryMetaData(int idCategory);
+    public List<RelationshipDefinition> getCategoryMetaData(long idCategory) throws ParseException;
 }

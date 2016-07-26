@@ -6,26 +6,28 @@ import cl.minsal.semantikos.model.Category;
 import cl.minsal.semantikos.model.ConceptSMTK;
 import cl.minsal.semantikos.model.Description;
 import org.primefaces.model.LazyDataModel;
+import org.primefaces.model.SortMeta;
 import org.primefaces.model.SortOrder;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
+import java.util.StringTokenizer;
 
 
 @ManagedBean
 @ViewScoped
-public class NavBrowser  {
+public class NavBrowser {
 
 
     private List<Category> categories;
     private LazyDataModel<ConceptSMTK> concepts;
 
-    private String[]selectedCategories;
+    private Long[] selectedCategories;
     private String pattern;
 
     public String getPattern() {
@@ -41,7 +43,6 @@ public class NavBrowser  {
     private Description description;
     private ConceptSMTK conceptSelected;
 
-
     @EJB
     private CategoryManagerInterface categoryManager;
 
@@ -49,24 +50,28 @@ public class NavBrowser  {
     private ConceptManagerInterface conceptManager;
 
 
-
     @PostConstruct
     public void init() {
 
-        categories=categoryManager.getCategories();
+
+        categories = categoryManager.getCategories();
 
         concepts = new LazyDataModel<ConceptSMTK>() {
             @Override
             public List<ConceptSMTK> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
-                List <ConceptSMTK> conceptSMTKs= conceptManager.findConceptByConceptIDOrDescriptionCategoryPageNumber(pattern,selectedCategories,first,pageSize);
-                this.setRowCount(conceptManager.getAllConceptCount(pattern,selectedCategories));
+                List<ConceptSMTK> conceptSMTKs=null;
+
+                    conceptSMTKs = conceptManager.findConceptByConceptIDOrDescriptionCategoryPageNumber(pattern, selectedCategories, first, pageSize);
+                    this.setRowCount(conceptManager.getAllConceptCount(pattern, selectedCategories));
+
+
                 return conceptSMTKs;
             }
+
         };
 
+
     }
-
-
 
 
     public List<Category> getCategories() {
@@ -85,11 +90,11 @@ public class NavBrowser  {
         this.concepts = concepts;
     }
 
-    public String[] getSelectedCategories() {
+    public Long[] getSelectedCategories() {
         return selectedCategories;
     }
 
-    public void setSelectedCategories(String[] selectedCategories) {
+    public void setSelectedCategories(Long[] selectedCategories) {
         this.selectedCategories = selectedCategories;
     }
 
@@ -140,4 +145,8 @@ public class NavBrowser  {
     public void setConceptSelected(ConceptSMTK conceptSelected) {
         this.conceptSelected = conceptSelected;
     }
+
+
+
+
 }

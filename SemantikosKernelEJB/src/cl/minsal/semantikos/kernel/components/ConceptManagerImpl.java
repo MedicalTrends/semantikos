@@ -5,6 +5,7 @@ import cl.minsal.semantikos.model.*;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -67,7 +68,7 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
 
     @Override
     public String addConcept(String idCategory, boolean isValid) {
-        String idConcepto=null;
+        String idConcepto = null;
 
 
 
@@ -101,7 +102,7 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
     @Override
     public int getIDConceptBy(int idDescription) {
 
-        int idDes=0;
+        int idDes = 0;
 
 /*
         try {
@@ -132,111 +133,158 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
         State propuesto = stateMachineManager.getConceptStateMachine().getInitialState();
         //propuesto.setStateMachine(conceptStateMachine);
         // Crear descriptor FSN
-        Description fsn = new Description(term+" ("+category.getName()+")", descriptionManager.getTypeFSN());
+        Description fsn = new Description(term + " (" + category.getName() + ")", descriptionManager.getTypeFSN());
         fsn.setCreationDate(Calendar.getInstance().getTime());
         fsn.setState(propuesto);
         // Crear descriptor preferido
         Description preferido = new Description(term, descriptionManager.getTypePreferido());
         preferido.setCreationDate(Calendar.getInstance().getTime());
         preferido.setState(propuesto);
-        return new ConceptSMTK(category,fsn,preferido,propuesto);
+        return new ConceptSMTK(category, fsn, preferido, propuesto);
     }
 
     @Override
-    public List<ConceptSMTK> findConceptByPatternCategoryPageNumber(String Pattern, String[] category, int pageNumber, int pageSize) {
+    public List<ConceptSMTK> findConceptByPatternCategoryPageNumber(String Pattern, Long[] category, int pageNumber, int pageSize) {
 
-        Long[] states = {(long) 3,(long) 4};
-
+        Long[] states = {(long) 3, (long) 4};
         if (category != null) {
             if (category.length == 0) category = null;
         }
 
         if (Pattern != null) {
-            if(Pattern.length()>=3){
 
-                List<String> listPattern;
-                listPattern=patternToList(Pattern);
-                String[] arrPattern = listPattern.toArray(new String[listPattern.size()]);
+          /*
+                return conceptDAO.getConceptByPatternOrConceptIDAndCategory(arrPattern[0], category, pageSize, pageNumber, states);
+            */
 
-                return conceptDAO.getConceptByPatternCategory(arrPattern, category,pageNumber,pageSize,states);
-            }
 
         }
-        return conceptDAO.getConceptByPatternCategory(null,category,pageNumber,pageSize, states);
+        return conceptDAO.getConceptByPatternCategory(null, category, states, pageSize, pageNumber);
 
     }
 
     @Override
-    public List<ConceptSMTK> findConceptByConceptIDOrDescriptionCategoryPageNumber(String patter, String[] categories, int pageNumber, int pageSize) {
+    public List<ConceptSMTK> findConceptByConceptIDOrDescriptionCategoryPageNumber(String patter, Long[] categories, int pageNumber, int pageSize) {
 
 
-        Long[] states = {(long) 3,(long) 4};
+        Long[] states = {(long) 3, (long) 4};
 
+
+        if ((categories != null && patter != null)) {
+            if(patter.length()>0) {
+                List<String> listPattern;
+                patter = standardizationPattern(patter);
+                listPattern = patternToList(patter);
+                String[] arrPattern = listPattern.toArray(new String[listPattern.size()]);
+                if (listPattern.size() >= 2) {
+                    return conceptDAO.getConceptByPatternCategory(arrPattern, categories, states, pageSize, pageNumber);
+                } else {
+                    return conceptDAO.getConceptByPatternOrConceptIDAndCategory(arrPattern[0], categories, pageNumber, pageSize, states);
+                }
+            }
+        }
+        if (categories != null) {
+            if(categories.length>0){
+                return conceptDAO.getConceptByCategory(categories, states, pageSize, pageNumber);
+            }
+
+        }
+
+        if (patter != null ) {
+            if(patter.length()>0){
+                categories = new Long[0];
+                List<String> listPattern;
+                patter= standardizationPattern(patter);
+                listPattern = patternToList(patter);
+                String[] arrPattern = listPattern.toArray(new String[listPattern.size()]);
+                if (listPattern.size() >= 2) {
+                    return conceptDAO.getConceptByPatternCategory(arrPattern, categories, states, pageSize, pageNumber);
+                } else {
+                    return conceptDAO.getConceptByPatternOrConceptIDAndCategory(arrPattern[0], categories, pageNumber, pageSize, states);
+                }
+            }
+
+        }
+
+        return conceptDAO.getAllConcepts(states, pageSize, pageNumber);
+    }
+
+
+    @Override
+    public int getAllConceptCount(String pattern, Long[] categories) {
+
+        Long[] states = {(long) 3, (long) 4};
+
+
+        if (categories != null && pattern != null) {
+            if(pattern.length()>0) {
+                List<String> listPattern;
+                pattern = standardizationPattern(pattern);
+                listPattern = patternToList(pattern);
+                String[] arrPattern = listPattern.toArray(new String[listPattern.size()]);
+                if (listPattern.size() >= 2) {
+                    return conceptDAO.getAllConceptCount(arrPattern, categories, states);
+                } else {
+                    return conceptDAO.getCountFindConceptID(arrPattern[0], categories, states);
+                }
+            }
+        }
 
         if (categories != null) {
-            if (categories.length == 0) categories = null;
-        }
+            if(categories.length>0){
+                return conceptDAO.getAllConceptCount(null,categories,states);
+            }
 
-        if (patter != null) {
-            if(patter.length()>=3){
+        }
+        categories= new Long[0];
+        if (pattern != null) {
+            if(pattern.length()>0){
 
                 List<String> listPattern;
-                listPattern=patternToList(patter);
-                if(listPattern.size()==1){
-                    return conceptDAO.getConceptByPatternOrConceptIDAndCategory(patter.trim(),categories,pageNumber,pageSize,states);
-                }
+                pattern= standardizationPattern(pattern);
+                listPattern = patternToList(pattern);
                 String[] arrPattern = listPattern.toArray(new String[listPattern.size()]);
-
-                return conceptDAO.getConceptByPatternCategory(arrPattern, categories,pageNumber,pageSize,states);
-            }else{
-                if(patter.length()>0){
-                    List<String> listPattern;
-                    listPattern=patternToList(patter);
-                    if(listPattern.size()==1){
-                        return conceptDAO.getConceptByPatternOrConceptIDAndCategory(patter.trim(),categories,pageNumber,pageSize,states);
-                    }
+                if (listPattern.size() >= 2) {
+                    return conceptDAO.getAllConceptCount(arrPattern,null,states);
+                } else {
+                    return conceptDAO.getCountFindConceptID(arrPattern[0],categories,states);
                 }
-
             }
         }
-        return conceptDAO.getConceptByPatternCategory(null,categories,pageNumber,pageSize, states);
-    }
-
-
-    @Override
-    public int getAllConceptCount(String Pattern, String[] category) {
-
-        Long[] states = {(long) 3,(long) 4};
-
-
-        if (category != null) {
-            if (category.length == 0) category = null;
-        }
-        if (Pattern != null) {
-            List<String> listPattern;
-            listPattern=patternToList(Pattern);
-            if(listPattern.size()==1){
-                return conceptDAO.getCountFindConceptID(Pattern.trim(),category,states);
-            }
-            String[] arrPattern = listPattern.toArray(new String[listPattern.size()]);
-
-            return conceptDAO.getAllConceptCount(arrPattern, category, states);
-        }
-        return conceptDAO.getAllConceptCount(null,category, states);
+        return conceptDAO.getAllConceptCount(null, categories, states);
 
     }
 
 
-    private List<String> patternToList(String pattern){
+    private List<String> patternToList(String pattern) {
         StringTokenizer st;
         String token;
         st = new StringTokenizer(pattern, " ");
         ArrayList<String> listPattern = new ArrayList<String>();
+        int count = 0;
+
 
         while (st.hasMoreTokens()) {
             token = st.nextToken();
-            listPattern.add(token);
+            if (token.length() >= 3) {
+                listPattern.add(token.trim());
+            }
+            if (count == 0 && listPattern.size() == 0) {
+                listPattern.add(token.trim());
+            }
+            count++;
         }
         return listPattern;
+    }
+
+    private String standardizationPattern(String pattern) {
+
+        pattern = Normalizer.normalize(pattern, Normalizer.Form.NFD);
+        pattern = pattern.toLowerCase();
+        pattern = pattern.replaceAll("[^\\p{ASCII}]", "");
+        pattern = pattern.replaceAll("\\p{Punct}+", "");
+
+        return pattern;
+
     }
 }

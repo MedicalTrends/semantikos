@@ -5,6 +5,9 @@ package cl.minsal.semantikos.model;
  */
 public class Multiplicity {
 
+    public Multiplicity() {
+    }
+
     /** Limite inferior */
     private int lowerBoundary;
 

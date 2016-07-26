@@ -2,23 +2,18 @@ package cl.minsal.semantikos.kernel.daos;
 
 
 import cl.minsal.semantikos.kernel.util.ConnectionBD;
-import cl.minsal.semantikos.kernel.util.StringUtils;
-import cl.minsal.semantikos.model.*;
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import cl.minsal.semantikos.model.Category;
+import cl.minsal.semantikos.model.ConceptSMTK;
+import cl.minsal.semantikos.model.Description;
+import cl.minsal.semantikos.model.State;
+import com.sun.istack.internal.NotNull;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.io.IOException;
-import java.sql.Array;
-import java.sql.CallableStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
-
 import java.util.List;
 
 /**
@@ -38,213 +33,137 @@ public class ConceptDAOImpl implements ConceptDAO {
     DescriptionDAO descriptionDAO;
 
 
+    /**
+     * Este método es responsable de crear un concepto SMTK a partir de un resultset.
+     *
+     * @param resultSet El resultset a partir del cual se obtienen los conceptos.
+     *
+     * @return La lista de conceptos contenidos en el ResultSet.
+     *
+     * @throws SQLException Se arroja si hay un problema SQL.
+     */
+    private ConceptSMTK createConceptSMTKFromResultSet(ResultSet resultSet) throws SQLException {
+
+        long id;
+        long idCategory;
+        Category objectCategory;
+        boolean check;
+        boolean consult;
+        long state;
+        boolean completelyDefined;
+        boolean published;
+        long conceptId;
+        id = Long.valueOf(resultSet.getString("id"));
+        idCategory = Long.valueOf(resultSet.getString("id_category"));
+        objectCategory = categoryDAO.getCategoryById(idCategory);
+        check = Boolean.parseBoolean(resultSet.getString("is_to_be_reviewed"));
+        consult = Boolean.parseBoolean(resultSet.getString("is_to_be_consultated"));
+        state = Long.valueOf(resultSet.getString("id_state_concept"));
+        completelyDefined = Boolean.parseBoolean(resultSet.getString("is_fully_defined"));
+        published = Boolean.parseBoolean(resultSet.getString("is_published"));
+        conceptId = Long.valueOf(resultSet.getString("conceptid"));
+        State st = new State();
+        st.setName(String.valueOf(state));
+        List<Description> descriptions = descriptionDAO.getDescriptionByConceptID(id);
+
+        return new ConceptSMTK(id, conceptId, objectCategory, check, consult, st, completelyDefined, published, descriptions);
+    }
+
     @Override
-    public List<ConceptSMTK> getConceptByPatternCategory(String[] Pattern, String[] Category, int pageNumber, int pageSize, Long[] states) {
+    public List<ConceptSMTK> getAllConcepts(Long[] states, int pageSize, int pageNumber) {
 
-
-        long id, conceptId, idCategory,state;
-        boolean check, consult, completelyDefined, published;
-
-        Category objectCategory = null;
-
-
-        List<ConceptSMTK> concepts = new ArrayList<ConceptSMTK>();
-
-        ConnectionBD connect= new ConnectionBD();
-
-
+        List<ConceptSMTK> concepts = new ArrayList<>();
+        ConnectionBD connect = new ConnectionBD();
         CallableStatement call;
 
-        try {
-            Array ArrayStates = connect.getConnection().createArrayOf("bigint",  states);
+        try (Connection connection = connect.getConnection();) {
 
-            if (Pattern != null) {
-
-                Array ArrayPattern = connect.getConnection().createArrayOf("text", Pattern);
-
-                if (Category != null) {
-                    call = connect.getConnection().prepareCall("{call semantikos.find_concept_by_pattern_and_categories(?,?,?,?,?)}");
-                    Array ArrayCategories = connect.getConnection().createArrayOf("integer", Category);
-
-                    call.setArray(1, ArrayCategories);
-                    call.setArray(2, ArrayPattern);
-                    call.setInt(3,pageNumber);
-                    call.setInt(4,pageSize);
-                    call.setArray(5,ArrayStates);
-                } else {
-                    call = connect.getConnection().prepareCall("{call semantikos.find_concept_by_pattern(?,?,?,?)}");
-                    call.setArray(1, ArrayPattern);
-                    call.setInt(2,pageNumber);
-                    call.setInt(3,pageSize);
-                    call.setArray(4,ArrayStates);
-                }
-
-            } else {
-
-                if (Category != null) {
-                    call = connect.getConnection().prepareCall("{call semantikos.find_concept_by_categories(?,?,?,?)}");
-
-                    Array ArrayCategories = connect.getConnection().createArrayOf("integer", Category);
-
-                    call.setArray(1, ArrayCategories);
-                    call.setInt(2,pageNumber);
-                    call.setInt(3,pageSize);
-                    call.setArray(4,ArrayStates);
-
-                } else {
-                    call = connect.getConnection().prepareCall("{call semantikos.find_concept_by_page_size(?,?,?)}");
-                    call.setInt(1,pageNumber);
-                    call.setInt(2,pageSize);
-                    call.setArray(3,ArrayStates);
-                }
-            }
-
-
-
+            call = connection.prepareCall("{call semantikos.get_all_concepts(?,?,?)}");
+            call.setInt(1, pageNumber);
+            call.setInt(2, pageSize);
+            call.setArray(3, connection.createArrayOf("bigint", states));
             call.execute();
 
             ResultSet rs = call.getResultSet();
 
-            concepts = new ArrayList<>();
-
             while (rs.next()) {
-                id = Long.valueOf(rs.getString("id"));
-
-                idCategory = Long.valueOf(rs.getString("id_category"));
-
-                if (objectCategory != null) {
-                    if (objectCategory.getIdCategory() != idCategory) {
-                        objectCategory = categoryDAO.getCategoryById(idCategory);
-                    }
-                } else {
-                    objectCategory = categoryDAO.getCategoryById(idCategory);
-                }
-
-                check = Boolean.parseBoolean(rs.getString("is_to_be_reviewed"));
-                consult =  Boolean.parseBoolean(rs.getString("is_to_be_consultated"));
-                state = Long.valueOf(rs.getString("id_state_concept"));
-                completelyDefined =  Boolean.parseBoolean(rs.getString("is_fully_defined"));
-                published =  Boolean.parseBoolean(rs.getString("is_published"));
-                conceptId= Long.valueOf(rs.getString("conceptid"));
-                State st = new State();
-                st.setName(String.valueOf(state));
-                List<Description> descriptions= descriptionDAO.getDescriptionByConceptID(id);
-                concepts.add(new ConceptSMTK(id,conceptId,objectCategory, check, consult, st, completelyDefined, published, descriptions));
-
-
+                ConceptSMTK recoveredConcept = createConceptSMTKFromResultSet(rs);
+                concepts.add(recoveredConcept);
             }
-
+            rs.close();
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        connect.closeConnection();
-
-
         return concepts;
-
-/* ******************************Código con JPA*************************
-        Query q;
-
-        List<Object[]> resultList=null;
-        if (Pattern != null) {
-
-
-            if (Category != null) {
-
-                q = em.createNativeQuery("select * from semantikos.find_concept_by(?,?,?,?)");
-
-                q.setParameter(1, Category);
-                q.setParameter(2, Pattern);
-                q.setParameter(3,pageNumber);
-                q.setParameter(4,pageSize);
-
-            } else {
-
-                q = em.createNativeQuery("select * from semantikos.find_concept_by_pattern(?,?,?)");
-
-
-                ArrayList<String> p = new ArrayList<>();
-                Object[] op= new Object[Pattern.length];
-                Collection<String> pat= new ArrayList<>();
-
-                for (int i = 0; i < Pattern.length; i++) {
-                    p.add(Pattern[i]);
-                    pat.add(Pattern[i]);
-                    op[i]=Pattern[i];
-                }
-
-
-
-
-                q.setParameter(1, p);
-                q.setParameter(2,pageNumber);
-                q.setParameter(3,pageSize);
-
-            }
-
-        } else {
-
-            if (Category != null) {
-                System.out.println("Category");
-
-                q = em.createNativeQuery("select * from semantikos.find_concept_by_categories(?,?,?)");
-
-                Integer[] cat= new Integer[Category.length];
-                for (int i = 0; i < Category.length; i++) {
-                    cat[i]=Integer.parseInt(Category[i]);
-                }
-                IntegerArray[] cat2;
-                q.setParameter(1, cat);
-                q.setParameter(2,pageNumber);
-                q.setParameter(3,pageSize);
-
-            } else {
-
-
-                q=em.createNativeQuery("select * from semantikos.get_concept_by_page_size(?,?)");
-
-                q.setParameter(1,pageNumber);
-                q.setParameter(2,pageSize);
-
-
-
-            }
-        }
-
-        resultList = q.getResultList();
-
-        for (Object[] result:resultList) {
-
-            id = ((BigInteger)result[0]).longValue();
-            idCategory = ((BigInteger)result[1]).longValue();
-            if (objectCategory != null) {
-                if (objectCategory.getIdCategory() != idCategory) {
-                    objectCategory = categoryDAO.getCategoryById(idCategory);
-                }
-            } else {
-                objectCategory = categoryDAO.getCategoryById(idCategory);
-            }
-
-            check = (boolean)result[3];
-            consult = (boolean)result[4];
-            state = ((BigInteger)result[2]).intValue();
-            completelyDefined = (boolean)result[5];
-            published = (boolean)result[6];
-            State st = new State();
-            List<Description> descriptions= descriptionDAO.getDescriptionByConceptID(id);
-            concepts.add(new ConceptSMTK(id,id,objectCategory, check, consult, st, completelyDefined, published, descriptions));
-
-
-        }
-
-         ****************************** Fin Código con JPA***********/
     }
 
     @Override
-    public List<ConceptSMTK> getConceptByPatternOrConceptIDAndCategory(String PatternOrID, String[] Category, int pageNumber, int pageSize, Long[] states) {
-        long id,conceptId, idCategory,state;
+    public List<ConceptSMTK> getConceptByCategory(@NotNull Long[] categories, Long[] states, int pageSize, int pageNumber) {
+
+        List<ConceptSMTK> concepts = new ArrayList<>();
+        ConnectionBD connect = new ConnectionBD();
+        CallableStatement call;
+
+        try (Connection connection = connect.getConnection();) {
+
+            call = connection.prepareCall("{call semantikos.find_concept_by_categories(?,?,?,?)}");
+
+            call.setArray(1, connect.getConnection().createArrayOf("integer", categories));
+            call.setInt(2, pageNumber);
+            call.setInt(3, pageSize);
+            call.setArray(4, connection.createArrayOf("bigint", states));
+
+            call.execute();
+
+            ResultSet rs = call.getResultSet();
+            while (rs.next()) {
+                ConceptSMTK e = this.createConceptSMTKFromResultSet(rs);
+                concepts.add(e);
+            }
+            rs.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return concepts;
+    }
+
+    @Override
+    public List<ConceptSMTK> getConceptByPatternCategory(@NotNull String[] pattern, @NotNull Long[] categories, Long[] states, int pageSize, int pageNumber) {
+
+        List<ConceptSMTK> concepts = new ArrayList<ConceptSMTK>();
+        ConnectionBD connect = new ConnectionBD();
+
+        try (Connection connection = connect.getConnection();
+             CallableStatement call = connection.prepareCall("{call semantikos.find_concept_by_pattern_and_categories(?,?,?,?,?)}")) {
+
+            Array ArrayCategories = connection.createArrayOf("integer", categories);
+
+            call.setArray(1, ArrayCategories);
+            call.setArray(2, connection.createArrayOf("text", pattern));
+            call.setInt(3, pageNumber);
+            call.setInt(4, pageSize);
+            call.setArray(5, connection.createArrayOf("bigint", states));
+            call.execute();
+
+            ResultSet rs = call.getResultSet();
+            while (rs.next()) {
+                ConceptSMTK conceptSMTK = createConceptSMTKFromResultSet(rs);
+                concepts.add(conceptSMTK);
+            }
+            rs.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return concepts;
+    }
+
+    @Override
+    public List<ConceptSMTK> getConceptByPatternOrConceptIDAndCategory(String PatternOrID, Long[] Category, int pageNumber, int pageSize, Long[] states) {
+        long id, conceptId, idCategory, state;
         boolean check, consult, completelyDefined, published;
 
         Category objectCategory = null;
@@ -252,30 +171,32 @@ public class ConceptDAOImpl implements ConceptDAO {
 
         List<ConceptSMTK> concepts = new ArrayList<ConceptSMTK>();
 
-        ConnectionBD connect= new ConnectionBD();
+        ConnectionBD connect = new ConnectionBD();
 
 
         CallableStatement call;
 
-        try {
 
-            Array ArrayStates = connect.getConnection().createArrayOf("bigint",  states);
+        try (Connection connection = connect.getConnection();) {
 
-            if (Category != null) {
-                call = connect.getConnection().prepareCall("{call semantikos.find_concept_by_conceptid_categories(?,?,?,?,?)}");
-                Array ArrayCategories = connect.getConnection().createArrayOf("integer", Category);
+            Array ArrayStates = connection.createArrayOf("bigint", states);
+            System.out.println(Category.length);
+            if (Category.length>0) {
+                call = connection.prepareCall("{call semantikos.find_concept_by_conceptid_categories(?,?,?,?,?)}");
+                Array ArrayCategories = connection.createArrayOf("integer", Category);
 
 
                 call.setString(1, PatternOrID);
                 call.setArray(2, ArrayCategories);
-                call.setInt(3,pageNumber);
-                call.setInt(4,pageSize);
+                call.setInt(3, pageNumber);
+                call.setInt(4, pageSize);
                 call.setArray(5, ArrayStates);
             } else {
-                call = connect.getConnection().prepareCall("{call semantikos.find_concept_by_concept_id(?,?,?,?)}");
+                System.out.println(pageSize+"-"+pageNumber);
+                call = connection.prepareCall("{call semantikos.find_concept_by_concept_id(?,?,?,?)}");
                 call.setString(1, PatternOrID);
-                call.setInt(2,pageNumber);
-                call.setInt(3,pageSize);
+                call.setInt(2, pageNumber);
+                call.setInt(3, pageSize);
                 call.setArray(4, ArrayStates);
             }
 
@@ -288,7 +209,7 @@ public class ConceptDAOImpl implements ConceptDAO {
 
             while (rs.next()) {
                 id = Long.valueOf(rs.getString("id"));
-                conceptId= Long.valueOf(rs.getString("conceptid"));
+                conceptId = Long.valueOf(rs.getString("conceptid"));
                 idCategory = Long.valueOf(rs.getString("id_category"));
 
                 if (objectCategory != null) {
@@ -300,69 +221,66 @@ public class ConceptDAOImpl implements ConceptDAO {
                 }
 
                 check = Boolean.parseBoolean(rs.getString("is_to_be_reviewed"));
-                consult =  Boolean.parseBoolean(rs.getString("is_to_be_consultated"));
+                consult = Boolean.parseBoolean(rs.getString("is_to_be_consultated"));
                 state = Long.valueOf(rs.getString("id_state_concept"));
-                completelyDefined =  Boolean.parseBoolean(rs.getString("is_fully_defined"));
-                published =  Boolean.parseBoolean(rs.getString("is_published"));
+                completelyDefined = Boolean.parseBoolean(rs.getString("is_fully_defined"));
+                published = Boolean.parseBoolean(rs.getString("is_published"));
                 State st = new State();
                 st.setName(String.valueOf(state));
-                List<Description> descriptions= descriptionDAO.getDescriptionByConceptID(id);
-                concepts.add(new ConceptSMTK(id,conceptId,objectCategory, check, consult, st, completelyDefined, published, descriptions));
+                List<Description> descriptions = descriptionDAO.getDescriptionByConceptID(id);
+                concepts.add(new ConceptSMTK(id, conceptId, objectCategory, check, consult, st, completelyDefined, published, descriptions));
 
 
             }
-
+            rs.close();
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-        connect.closeConnection();
-
 
         return concepts;
     }
 
     @Override
-    public int getAllConceptCount(String[] Pattern, String[] category, Long[] states) {
+    public int getAllConceptCount(String[] Pattern, Long[] category, Long[] states) {
 
 
         ConnectionBD connect = new ConnectionBD();
         CallableStatement call;
-        int count=0;
+        int count = 0;
 
-        try {
-            Array ArrayStates = connect.getConnection().createArrayOf("bigint",  states);
+        try (Connection connection = connect.getConnection();) {
+            Array ArrayStates = connection.createArrayOf("bigint", states);
 
             if (Pattern != null) {
 
-                Array ArrayPattern = connect.getConnection().createArrayOf("text", Pattern);
+                Array ArrayPattern = connection.createArrayOf("text", Pattern);
 
-                if (category != null) {
-                    call = connect.getConnection().prepareCall("{call semantikos.count_concept_by_pattern_and_categories(?,?,?)}");
-                    Array ArrayCategories = connect.getConnection().createArrayOf("integer", category);
+                if (category.length>0) {
+                    call = connection.prepareCall("{call semantikos.count_concept_by_pattern_and_categories(?,?,?)}");
+                    Array ArrayCategories = connection.createArrayOf("integer", category);
 
                     call.setArray(1, ArrayCategories);
                     call.setArray(2, ArrayPattern);
-                    call.setArray(3,ArrayStates);
+                    call.setArray(3, ArrayStates);
 
                 } else {
-                    call = connect.getConnection().prepareCall("{call semantikos.count_concept_by_pattern(?,?)}");
+                    call = connection.prepareCall("{call semantikos.count_concept_by_pattern(?,?)}");
                     call.setArray(1, ArrayPattern);
-                    call.setArray(2,ArrayStates);
+                    call.setArray(2, ArrayStates);
                 }
 
             } else {
 
-                if (category != null) {
-                    call = connect.getConnection().prepareCall("{call semantikos.count_concept_count_by_categories(?,?)}");
+                if (category.length>0) {
+                    call = connection.prepareCall("{call semantikos.count_concept_count_by_categories(?,?)}");
                     Array ArrayCategories = connect.getConnection().createArrayOf("integer", category);
                     call.setArray(1, ArrayCategories);
-                    call.setArray(2,ArrayStates);
+                    call.setArray(2, ArrayStates);
 
                 } else {
-                    call = connect.getConnection().prepareCall("{call semantikos.count_concept_by_page_size(?)}");
-                    call.setArray(1,ArrayStates);
+                    call = connection.prepareCall("{call semantikos.count_concept_by_page_size(?)}");
+                    call.setArray(1, ArrayStates);
                 }
             }
 
@@ -372,42 +290,33 @@ public class ConceptDAOImpl implements ConceptDAO {
             while (rs.next()) {
                 count = Integer.parseInt(rs.getString("count"));
             }
+            rs.close();
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        connect.closeConnection();
 
         return count;
     }
 
     @Override
-    public int getCountFindConceptID(String Pattern, String[] category,Long[] states) {
+    public int getCountFindConceptID(@NotNull String Pattern, @NotNull Long[] category, Long[] states) {
         ConnectionBD connect = new ConnectionBD();
-        CallableStatement call=null;
-        int count=0;
-
-        try {
-
-            Array ArrayStates = connect.getConnection().createArrayOf("bigint",  states);
-
-            if (Pattern != null) {
-
-                if (category != null) {
-                    call = connect.getConnection().prepareCall("{call semantikos.count_concept_by_conceptid_categories(?,?,?)}");
-                    Array ArrayCategories = connect.getConnection().createArrayOf("integer", category);
-                    call.setString(1, Pattern);
-                    call.setArray(2, ArrayCategories);
-                    call.setArray(3,ArrayStates);
+        int count = 0;
 
 
-                } else {
-                    call = connect.getConnection().prepareCall("{call semantikos.count_concept_by_concept_id(?,?)}");
-                    call.setString(1, Pattern);
-                    call.setArray(2,ArrayStates);
-                }
+        String COUNT_WITH_CATEGORIES = "{call semantikos.count_concept_by_conceptid_categories(?,?,?)}";
+        String COUNT_WITHOUT_CATEGORIES = "{call semantikos.count_concept_by_concept_id(?,?)}";
+        String COUNT_CALL = (category.length > 0) ? COUNT_WITH_CATEGORIES : COUNT_WITHOUT_CATEGORIES;
 
+        try (Connection connection = connect.getConnection();
+             CallableStatement call = connection.prepareCall(COUNT_CALL)) {
+
+            call.setString(1, Pattern);
+            call.setArray(2, connection.createArrayOf("bigint", states));
+            if (category.length > 0) {
+                call.setArray(3, connect.getConnection().createArrayOf("integer", category));
             }
 
             call.execute();
@@ -417,12 +326,11 @@ public class ConceptDAOImpl implements ConceptDAO {
                 count = Integer.parseInt(rs.getString("count"));
             }
 
+            rs.close();
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-        connect.closeConnection();
-
         return count;
     }
 

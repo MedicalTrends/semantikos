@@ -1,12 +1,14 @@
 package cl.minsal.semantikos.model;
 
-import cl.minsal.semantikos.model.basictypes.BasicTypeDefinition;
-
-import java.util.List;
-
 /**
- * Created by root on 08-07-16.
+ * @author Andres Farias
  */
 public interface TargetDefinition {
 
+    /**
+     * Este metodo es responsable de determinar si el target type es de tipo básico es o no.
+     *
+     * @return <code>true</code> si es de tipo básico y <code>false</code> sino.
+     */
+    public boolean isBasicType();
 }

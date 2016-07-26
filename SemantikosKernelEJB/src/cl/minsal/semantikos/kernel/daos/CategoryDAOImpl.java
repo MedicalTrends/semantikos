@@ -1,12 +1,8 @@
 package cl.minsal.semantikos.kernel.daos;
 
 import cl.minsal.semantikos.kernel.util.ConnectionBD;
-import cl.minsal.semantikos.kernel.util.StringUtils;
 import cl.minsal.semantikos.model.Category;
 import cl.minsal.semantikos.model.RelationshipDefinition;
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 //import org.hibernate.persister.internal.PersisterClassResolverInitiator;
 
 import javax.ejb.EJB;
@@ -14,12 +10,12 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import java.io.IOException;
 import java.math.BigInteger;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,74 +36,41 @@ public class CategoryDAOImpl implements CategoryDAO {
     private RelationshipDefinitionDAO relationshipDefinitionDAO;
 
     @Override
-    public Category getCategoryById(long id) {
+    public Category getCategoryById(long idCategory) {
 
-
-/*
-        Query q = em.createNativeQuery("select * from semantikos.get_category_by_id(?)");
-        q.setParameter(1,id);
-
-
-        List<Object[]> resultList = q.getResultList();
-        Category category=null;
-
-        for (Object[] result:resultList) {
-            category = new Category();
-
-
-            category.setIdCategory( ((BigInteger)result[0]).longValue());
-            category.setName((String) result[1]);
-            category.setNameAbreviated((String) result[2]);
-            category.setRestriction((boolean) result[3]);
-            category.setValid((boolean) result[4]);
-
-        }
-*/
-
-
-        return null;
-    }
-
-    @Override
-    public Category getFullCategoryById(long id) {
-
-        ConnectionBD connect = new ConnectionBD();
-
-        ObjectMapper mapper = new ObjectMapper();
 
         Category category = new Category();
-
+        ConnectionBD connect = new ConnectionBD();
+        String GET_CATEGORY_BY_ID = "{call semantikos.get_category_by_id(?)}";
 
         try (Connection connection = connect.getConnection();
-             CallableStatement call = connection.prepareCall(SQL_GET_FULL_CATEGORY)) {
+             CallableStatement call = connection.prepareCall(GET_CATEGORY_BY_ID)) {
 
-            call.setInt(1, (int) id);
+            call.setLong(1, idCategory);
             call.execute();
 
             ResultSet rs = call.getResultSet();
             while (rs.next()) {
-                String resultJSON = rs.getString(1);
-                category = mapper.readValue(StringUtils.underScoreToCamelCaseJSON(resultJSON), Category.class);
+                category.setIdCategory(rs.getLong("idcategory"));
+                category.setName(rs.getString("namecategory"));
+                category.setNameAbreviated(rs.getString("nameabbreviated"));
+                category.setRestriction(rs.getBoolean("restriction"));
+                category.setValid(rs.getBoolean("active"));
+                category.setRelationshipDefinitions(getCategoryMetaData(idCategory));
             }
 
             rs.close();
+
         } catch (SQLException e) {
-            // TODO: Llevar a un log.
-            e.printStackTrace();
-        } catch (JsonParseException e) {
-            e.printStackTrace();
-        } catch (JsonMappingException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
             e.printStackTrace();
         }
 
-        return category;
+        return  category;
+
     }
 
     @Override
     public List<Category> getAllCategories() {
-        /*
 
         Query q = em.createNativeQuery("select * from semantikos.get_all_categories()");
         List<Object[]> resultList = q.getResultList();
@@ -128,11 +91,11 @@ public class CategoryDAOImpl implements CategoryDAO {
         }
 
         return respuesta;
-        */ return null;
+
     }
 
     @Override
-    public List<RelationshipDefinition> getCategoryMetaData(int idCategory) {
+    public List<RelationshipDefinition> getCategoryMetaData(long idCategory) {
         return relationshipDefinitionDAO.getRelationshipDefinitionsByCategory(idCategory);
     }
 

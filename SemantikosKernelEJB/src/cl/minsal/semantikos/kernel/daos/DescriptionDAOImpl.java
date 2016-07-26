@@ -132,7 +132,6 @@ public class DescriptionDAOImpl implements DescriptionDAO {
         for (Object[] result:resultList) {
 
 
-
             DescriptionType descriptionType= new DescriptionType();
             descriptionType.setIdDescriptionType(((BigInteger)result[1]).longValue());
             descriptionType.setGloss(((String)result[2]));

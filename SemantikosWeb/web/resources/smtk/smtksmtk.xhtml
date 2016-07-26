@@ -16,15 +16,19 @@
 
     <!--h:outputText value="#{cc.attrs.basicType.name}" /-->
     <div class="ui-g">
-        <div class="ui-g-12 ui-md-6 ui-lg-2">
+        <div class="ui-g-12 ui-md-6 ui-lg-1">
             <p:outputLabel value="#{cc.attrs.name}"/>
         </div>
         <div class="ui-g-12 ui-md-6 ui-lg-5">
+            <!--p:inputText value="" rendered="#{cc.attrs.basicType.intervalType and cc.attrs.basicType.intervalTypeOf == 'String'}" />
+            <p:calendar value="" rendered="#{cc.attrs.basicType.intervalType and cc.attrs.basicType.intervalTypeOf == 'Date'}" /-->
             <p:selectOneMenu value="" rendered="#{cc.attrs.basicType.domainType}">
                 <f:selectItem itemLabel="Seleccione" itemValue=""/>
                 <f:selectItems value="#{cc.attrs.basicType.domain}" var="domain"
                                itemLabel="#{domain}" itemValue="#{domain}"/>
             </p:selectOneMenu>
+        </div>
+        <div class="ui-g-12 ui-md-6 ui-lg-3">
         </div>
         <div class="ui-g-12 ui-md-6 ui-lg-3">
         </div>
