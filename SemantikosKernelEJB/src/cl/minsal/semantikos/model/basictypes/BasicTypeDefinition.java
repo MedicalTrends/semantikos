@@ -1,15 +1,27 @@
 package cl.minsal.semantikos.model.basictypes;
 
 import cl.minsal.semantikos.model.TargetDefinition;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 /**
  * Esta clase representa un dominio de valores básicos.
  * La única restricción, por ahora para el tipo básica
  */
-public class BasicTypeDefinition<T extends Comparable> implements TargetDefinition {
+public class BasicTypeDefinition<T extends Comparable> extends TargetDefinition {
 
     /** Identificador de la BD */
     private long id;
@@ -24,6 +36,9 @@ public class BasicTypeDefinition<T extends Comparable> implements TargetDefiniti
     private List<T> domain;
 
     private Interval<T> interval;
+
+    public BasicTypeDefinition() {
+    }
 
     public BasicTypeDefinition(String name, String description) {
         this(-1, name, description);
@@ -68,6 +83,21 @@ public class BasicTypeDefinition<T extends Comparable> implements TargetDefiniti
         this.description = description;
     }
 
+    @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+    @JsonSubTypes({
+            @JsonSubTypes.Type(value = String[].class),
+            @JsonSubTypes.Type(Integer[].class)
+    })
+    public List<T> getDomain() {
+        return domain;
+    }
+
+
+    public void setDomain(List<T> domain) {
+        this.domain = domain;
+    }
+
+
     public boolean addToDomain(T anElement) {
         return domain.add(anElement);
     }
@@ -89,4 +119,39 @@ public class BasicTypeDefinition<T extends Comparable> implements TargetDefiniti
         /* Luego en el conjunto de valores discretos */
         return this.domain.contains(anElement);
     }
+
+    public boolean isIntervalType(){
+        if(this.interval != null)
+            return true;
+        else
+            return false;
+    }
+
+    public boolean isDomainType(){
+        return !this.domain.isEmpty();
+    }
+
+    public String intervalTypeOf(){
+        if(this.interval != null) {
+            if (this.interval.bottomBoundary instanceof java.lang.Integer)
+                return "Integer";
+            if (this.interval.bottomBoundary instanceof java.lang.String)
+                return "String";
+            if (this.interval.bottomBoundary instanceof java.util.Date)
+                return "Date";
+        }
+        return "";
+    }
+
+    public String domainTypeOf(){
+        if (this.domain.get(0) instanceof java.lang.Integer)
+            return "Integer";
+        if (this.domain.get(0) instanceof java.lang.String)
+            return "String";
+        if (this.domain.get(0) instanceof java.util.Date)
+            return "Date";
+        return "";
+    }
+
+
 }

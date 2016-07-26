@@ -23,11 +23,13 @@ public class RelationshipDefinition {
     private Multiplicity multiplicity;
 
     /** Los atributos de esta relación: orden, color, vigencia... */
-    private List<RelationshipAttributeDefinition> attributes;
+    private List<RelationshipAttributeDefinition> relationshipAttributeDefinitions;
 
     /** Relaciones que excluye esta Relación */
     private RelationshipDefinition excludes;
 
+    public RelationshipDefinition() {
+    }
 
     /**
      * Este es el constructor mínimo con el cual se crean las RelacionesDefinitions.
@@ -135,5 +137,13 @@ public class RelationshipDefinition {
 
     public void setMultiplicity(Multiplicity multiplicity) {
         this.multiplicity = multiplicity;
+    }
+
+    public List<RelationshipAttributeDefinition> getRelationshipAttributeDefinitions() {
+        return relationshipAttributeDefinitions;
+    }
+
+    public void setRelationshipAttributeDefinitions(List<RelationshipAttributeDefinition> relationshipAttributeDefinitions) {
+        this.relationshipAttributeDefinitions = relationshipAttributeDefinitions;
     }
 }

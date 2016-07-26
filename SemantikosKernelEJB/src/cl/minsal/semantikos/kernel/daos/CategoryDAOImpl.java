@@ -4,7 +4,10 @@ import cl.minsal.semantikos.kernel.util.ConnectionBD;
 import cl.minsal.semantikos.kernel.util.StringUtils;
 import cl.minsal.semantikos.model.Category;
 import cl.minsal.semantikos.model.RelationshipDefinition;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.DeserializationConfig;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 //import org.hibernate.persister.internal.PersisterClassResolverInitiator;
@@ -76,6 +79,8 @@ public class CategoryDAOImpl implements CategoryDAO {
         ConnectionBD connect = new ConnectionBD();
 
         ObjectMapper mapper = new ObjectMapper();
+
+        mapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
 
         Category category = new Category();
 

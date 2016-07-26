@@ -73,8 +73,8 @@ public class NewConceptMBean implements Serializable {
         user.setPassword("amauro");
         /////////////////////////////////////////////
 
-        //category = categoryManager.getFullCategoryById(105590001);
-        category = categoryManager.getCategoryById(105590001);
+        category = categoryManager.getFullCategoryById(105590001);
+        //category = categoryManager.getCategoryById(105590001);
         descriptionTypes = descriptionManager.getOtherTypes();
         //concept = new ConceptSMTK(category, new Description("electrocardiograma de urgencia", descriptionTypes.get(0)));
         concept = conceptManager.newConcept(category, "electrocardiograma de urgencia");
