@@ -144,10 +144,9 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
     }
 
     @Override
-    public List<ConceptSMTK> findConceptByPatternCategoryPageNumber(String Pattern, String[] category, int pageNumber, int pageSize) {
+    public List<ConceptSMTK> findConceptByPatternCategoryPageNumber(String Pattern, Long[] category, int pageNumber, int pageSize) {
 
         Long[] states = {(long) 3,(long) 4};
-
         if (category != null) {
             if (category.length == 0) category = null;
         }
@@ -159,16 +158,16 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
                 listPattern=patternToList(Pattern);
                 String[] arrPattern = listPattern.toArray(new String[listPattern.size()]);
 
-                return conceptDAO.getConceptByPatternCategory(arrPattern, category,pageNumber,pageSize,states);
+                return conceptDAO.getConceptByPatternCategory(arrPattern, category, states, pageSize, pageNumber);
             }
 
         }
-        return conceptDAO.getConceptByPatternCategory(null,category,pageNumber,pageSize, states);
+        return conceptDAO.getConceptByPatternCategory(null,category, states, pageSize, pageNumber);
 
     }
 
     @Override
-    public List<ConceptSMTK> findConceptByConceptIDOrDescriptionCategoryPageNumber(String patter, String[] categories, int pageNumber, int pageSize) {
+    public List<ConceptSMTK> findConceptByConceptIDOrDescriptionCategoryPageNumber(String patter, Long[] categories, int pageNumber, int pageSize) {
 
 
         Long[] states = {(long) 3,(long) 4};
@@ -189,7 +188,7 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
                 }
                 String[] arrPattern = listPattern.toArray(new String[listPattern.size()]);
 
-                return conceptDAO.getConceptByPatternCategory(arrPattern, categories,pageNumber,pageSize,states);
+                return conceptDAO.getConceptByPatternCategory(arrPattern, categories, states, pageSize, pageNumber);
             }else{
                 if(patter.length()>0){
                     List<String> listPattern;
@@ -201,12 +200,12 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
 
             }
         }
-        return conceptDAO.getConceptByPatternCategory(null,categories,pageNumber,pageSize, states);
+        return conceptDAO.getConceptByPatternCategory(null,categories, states, pageSize, pageNumber);
     }
 
 
     @Override
-    public int getAllConceptCount(String Pattern, String[] category) {
+    public int getAllConceptCount(String Pattern, Long[] category) {
 
         Long[] states = {(long) 3,(long) 4};
 

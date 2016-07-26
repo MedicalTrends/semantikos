@@ -2,19 +2,13 @@ package cl.minsal.semantikos.kernel.daos;
 
 
 import cl.minsal.semantikos.kernel.util.ConnectionBD;
-import cl.minsal.semantikos.kernel.util.StringUtils;
 import cl.minsal.semantikos.model.*;
 import cl.minsal.semantikos.model.basictypes.BasicTypeDefinition;
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
-import java.io.IOException;
 import java.math.BigInteger;
 import java.sql.*;
 import java.text.ParseException;
@@ -41,7 +35,7 @@ public class RelationshipDefinitionDAOImpl implements RelationshipDefinitionDAO 
     private TargetTypeDAO targetTypeDAO;
 
     @Override
-    public List<RelationshipDefinition> getRelationshipDefinitionsByCategory(int idCategory) throws ParseException {
+    public List<RelationshipDefinition> getRelationshipDefinitionsByCategory(long idCategory) {
 
         ArrayList<RelationshipDefinition> attributes = new ArrayList<RelationshipDefinition>();
 
@@ -76,19 +70,17 @@ public class RelationshipDefinitionDAOImpl implements RelationshipDefinitionDAO 
                 attributes.add(relationshipDefinition);
 
             }
-
             rs.close();
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-
         return attributes;
 
     }
 
-    private TargetDefinition getTargetDefinition(String idCategory, String idAccesoryTable, String idExternTable, String idBasicType, String isSCTType) throws ParseException {
+    private TargetDefinition getTargetDefinition(String idCategory, String idAccesoryTable, String idExternTable, String idBasicType, String isSCTType) {
 
         /* Se testea si es un tipo básico */
         BasicTypeDefinition basicTypeDefinition = null;

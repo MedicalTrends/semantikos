@@ -13,7 +13,6 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.sql.*;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,116 +33,136 @@ public class ConceptDAOImpl implements ConceptDAO {
     DescriptionDAO descriptionDAO;
 
 
+    /**
+     * Este método es responsable de crear un concepto SMTK a partir de un resultset.
+     *
+     * @param resultSet El resultset a partir del cual se obtienen los conceptos.
+     *
+     * @return La lista de conceptos contenidos en el ResultSet.
+     *
+     * @throws SQLException Se arroja si hay un problema SQL.
+     */
+    private ConceptSMTK createConceptSMTKFromResultSet(ResultSet resultSet) throws SQLException {
+
+        long id;
+        long idCategory;
+        Category objectCategory;
+        boolean check;
+        boolean consult;
+        long state;
+        boolean completelyDefined;
+        boolean published;
+        long conceptId;
+        id = Long.valueOf(resultSet.getString("id"));
+        idCategory = Long.valueOf(resultSet.getString("id_category"));
+        objectCategory = categoryDAO.getCategoryById(idCategory);
+        check = Boolean.parseBoolean(resultSet.getString("is_to_be_reviewed"));
+        consult = Boolean.parseBoolean(resultSet.getString("is_to_be_consultated"));
+        state = Long.valueOf(resultSet.getString("id_state_concept"));
+        completelyDefined = Boolean.parseBoolean(resultSet.getString("is_fully_defined"));
+        published = Boolean.parseBoolean(resultSet.getString("is_published"));
+        conceptId = Long.valueOf(resultSet.getString("conceptid"));
+        State st = new State();
+        st.setName(String.valueOf(state));
+        List<Description> descriptions = descriptionDAO.getDescriptionByConceptID(id);
+
+        return new ConceptSMTK(id, conceptId, objectCategory, check, consult, st, completelyDefined, published, descriptions);
+    }
+
     @Override
-    public List<ConceptSMTK> getConceptByPatternCategory(String[] Pattern, String[] Category, int pageNumber, int pageSize, Long[] states) {
+    public List<ConceptSMTK> getAllConcepts(Long[] states, int pageSize, int pageNumber) {
 
-
-        long id, conceptId, idCategory, state;
-        boolean check, consult, completelyDefined, published;
-
-        Category objectCategory = null;
-
-
-        List<ConceptSMTK> concepts = new ArrayList<ConceptSMTK>();
-
+        List<ConceptSMTK> concepts = new ArrayList<>();
         ConnectionBD connect = new ConnectionBD();
-
-
         CallableStatement call;
 
         try (Connection connection = connect.getConnection();) {
-            Array ArrayStates = connection.createArrayOf("bigint", states);
 
-            if (Pattern != null) {
-
-
-                Array ArrayPattern = connection.createArrayOf("text", Pattern);
-
-                if (Category != null) {
-                    call = connection.prepareCall("{call semantikos.find_concept_by_pattern_and_categories(?,?,?,?,?)}");
-                    Array ArrayCategories = connection.createArrayOf("integer", Category);
-
-                    call.setArray(1, ArrayCategories);
-                    call.setArray(2, ArrayPattern);
-                    call.setInt(3, pageNumber);
-                    call.setInt(4, pageSize);
-                    call.setArray(5, ArrayStates);
-                } else {
-                    call = connection.prepareCall("{call semantikos.find_concept_by_pattern(?,?,?,?)}");
-                    call.setArray(1, ArrayPattern);
-                    call.setInt(2, pageNumber);
-                    call.setInt(3, pageSize);
-                    call.setArray(4, ArrayStates);
-                }
-
-            } else {
-
-                if (Category != null) {
-                    call = connection.prepareCall("{call semantikos.find_concept_by_categories(?,?,?,?)}");
-
-                    Array ArrayCategories = connect.getConnection().createArrayOf("integer", Category);
-
-                    call.setArray(1, ArrayCategories);
-                    call.setInt(2, pageNumber);
-                    call.setInt(3, pageSize);
-                    call.setArray(4, ArrayStates);
-
-                } else {
-                    call = connection.prepareCall("{call semantikos.find_concept_by_page_size(?,?,?)}");
-                    call.setInt(1, pageNumber);
-                    call.setInt(2, pageSize);
-                    call.setArray(3, ArrayStates);
-                }
-            }
-
-
+            call = connection.prepareCall("{call semantikos.get_all_concepts(?,?,?)}");
+            call.setInt(1, pageNumber);
+            call.setInt(2, pageSize);
+            call.setArray(3, connection.createArrayOf("bigint", states));
             call.execute();
 
             ResultSet rs = call.getResultSet();
 
-            concepts = new ArrayList<>();
-
             while (rs.next()) {
-                id = Long.valueOf(rs.getString("id"));
-
-                idCategory = Long.valueOf(rs.getString("id_category"));
-
-                if (objectCategory != null) {
-                    if (objectCategory.getIdCategory() != idCategory) {
-                        objectCategory = categoryDAO.getCategoryById(idCategory);
-                    }
-                } else {
-                    objectCategory = categoryDAO.getCategoryById(idCategory);
-                }
-
-                check = Boolean.parseBoolean(rs.getString("is_to_be_reviewed"));
-                consult = Boolean.parseBoolean(rs.getString("is_to_be_consultated"));
-                state = Long.valueOf(rs.getString("id_state_concept"));
-                completelyDefined = Boolean.parseBoolean(rs.getString("is_fully_defined"));
-                published = Boolean.parseBoolean(rs.getString("is_published"));
-                conceptId = Long.valueOf(rs.getString("conceptid"));
-                State st = new State();
-                st.setName(String.valueOf(state));
-                List<Description> descriptions = descriptionDAO.getDescriptionByConceptID(id);
-                concepts.add(new ConceptSMTK(id, conceptId, objectCategory, check, consult, st, completelyDefined, published, descriptions));
-
-
+                ConceptSMTK recoveredConcept = createConceptSMTKFromResultSet(rs);
+                concepts.add(recoveredConcept);
             }
             rs.close();
 
-
         } catch (SQLException e) {
             e.printStackTrace();
-        } catch (ParseException e) {
-            e.printStackTrace();
         }
-
 
         return concepts;
     }
 
     @Override
-    public List<ConceptSMTK> getConceptByPatternOrConceptIDAndCategory(String PatternOrID, String[] Category, int pageNumber, int pageSize, Long[] states) {
+    public List<ConceptSMTK> getConceptByCategory(@NotNull Long[] categories, Long[] states, int pageSize, int pageNumber) {
+
+        List<ConceptSMTK> concepts = new ArrayList<>();
+        ConnectionBD connect = new ConnectionBD();
+        CallableStatement call;
+
+        try (Connection connection = connect.getConnection();) {
+
+            call = connection.prepareCall("{call semantikos.find_concept_by_categories(?,?,?,?)}");
+
+            call.setArray(1, connect.getConnection().createArrayOf("integer", categories));
+            call.setInt(2, pageNumber);
+            call.setInt(3, pageSize);
+            call.setArray(4, connection.createArrayOf("bigint", states));
+
+            call.execute();
+
+            ResultSet rs = call.getResultSet();
+            while (rs.next()) {
+                ConceptSMTK e = this.createConceptSMTKFromResultSet(rs);
+                concepts.add(e);
+            }
+            rs.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return concepts;
+    }
+
+    @Override
+    public List<ConceptSMTK> getConceptByPatternCategory(@NotNull String[] pattern, @NotNull Long[] categories, Long[] states, int pageSize, int pageNumber) {
+
+        List<ConceptSMTK> concepts = new ArrayList<ConceptSMTK>();
+        ConnectionBD connect = new ConnectionBD();
+
+        try (Connection connection = connect.getConnection();
+             CallableStatement call = connection.prepareCall("{call semantikos.find_concept_by_pattern_and_categories(?,?,?,?,?)}")) {
+
+            Array ArrayCategories = connection.createArrayOf("integer", categories);
+
+            call.setArray(1, ArrayCategories);
+            call.setArray(2, connection.createArrayOf("text", pattern));
+            call.setInt(3, pageNumber);
+            call.setInt(4, pageSize);
+            call.setArray(5, connection.createArrayOf("bigint", states));
+            call.execute();
+
+            ResultSet rs = call.getResultSet();
+            while (rs.next()) {
+                ConceptSMTK conceptSMTK = createConceptSMTKFromResultSet(rs);
+                concepts.add(conceptSMTK);
+            }
+            rs.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return concepts;
+    }
+
+    @Override
+    public List<ConceptSMTK> getConceptByPatternOrConceptIDAndCategory(String PatternOrID, Long[] Category, int pageNumber, int pageSize, Long[] states) {
         long id, conceptId, idCategory, state;
         boolean check, consult, completelyDefined, published;
 
@@ -216,16 +235,13 @@ public class ConceptDAOImpl implements ConceptDAO {
 
         } catch (SQLException e) {
             e.printStackTrace();
-        } catch (ParseException e) {
-            e.printStackTrace();
         }
-
 
         return concepts;
     }
 
     @Override
-    public int getAllConceptCount(String[] Pattern, String[] category, Long[] states) {
+    public int getAllConceptCount(String[] Pattern, Long[] category, Long[] states) {
 
 
         ConnectionBD connect = new ConnectionBD();
@@ -284,7 +300,7 @@ public class ConceptDAOImpl implements ConceptDAO {
     }
 
     @Override
-    public int getCountFindConceptID(@NotNull String Pattern, @NotNull String[] category, Long[] states) {
+    public int getCountFindConceptID(@NotNull String Pattern, @NotNull Long[] category, Long[] states) {
         ConnectionBD connect = new ConnectionBD();
         int count = 0;
 

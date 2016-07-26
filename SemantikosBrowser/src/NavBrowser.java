@@ -27,7 +27,7 @@ public class NavBrowser {
     private List<Category> categories;
     private LazyDataModel<ConceptSMTK> concepts;
 
-    private String[] selectedCategories;
+    private Long[] selectedCategories;
     private String pattern;
 
     public String getPattern() {
@@ -90,11 +90,11 @@ public class NavBrowser {
         this.concepts = concepts;
     }
 
-    public String[] getSelectedCategories() {
+    public Long[] getSelectedCategories() {
         return selectedCategories;
     }
 
-    public void setSelectedCategories(String[] selectedCategories) {
+    public void setSelectedCategories(Long[] selectedCategories) {
         this.selectedCategories = selectedCategories;
     }
 

@@ -19,5 +19,5 @@ public interface RelationshipDefinitionDAO {
      *
      * @return Una lista con los atributos de la categoría.
      */
-    public List<RelationshipDefinition> getRelationshipDefinitionsByCategory(int idCategory) throws ParseException;
+    public List<RelationshipDefinition> getRelationshipDefinitionsByCategory(long idCategory);
 }
