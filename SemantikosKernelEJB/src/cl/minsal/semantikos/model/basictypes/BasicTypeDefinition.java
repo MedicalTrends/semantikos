@@ -165,4 +165,9 @@ public class BasicTypeDefinition<T extends Comparable> implements TargetDefiniti
     public boolean isBasicType() {
         return true;
     }
+
+    @Override
+    public boolean isSMTKType() {
+        return false;
+    }
 }

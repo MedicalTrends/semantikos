@@ -6,7 +6,7 @@ import java.util.List;
  * Created by root on 08-07-16.
  */
 
-public class Category {
+public class Category implements TargetDefinition{
     private long idCategory;
     private String name;
     private String nameAbreviated;
@@ -114,4 +114,13 @@ public class Category {
         return result;
     }
 
+    @Override
+    public boolean isBasicType() {
+        return false;
+    }
+
+    @Override
+    public boolean isSMTKType() {
+        return true;
+    }
 }

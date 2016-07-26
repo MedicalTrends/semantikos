@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:composite="http://java.sun.com/jsf/composite"
+      xmlns:p="http://primefaces.org/ui">
+
+<composite:interface>
+
+</composite:interface>
+<composite:implementation>
+
+    <p:panel id="panelSMTK"
+             widgetVar="panel" style="margin-bottom:20px">
+
+    <div class="ui-g">
+        <div class="ui-g-12 ui-md-6 ui-lg-1">
+            <p:outputLabel value="Búsqueda:" for="acSimple" />
+        </div>
+        <div class="ui-g-12 ui-md-6 ui-lg-5">
+            <p:autoComplete id="acSimple"  />
+        </div>
+        <div class="ui-g-12 ui-md-6 ui-lg-3">
+        </div>
+        <div class="ui-g-12 ui-md-6 ui-lg-3">
+        </div>
+    </div>
+    <div class="ui-g">
+        <p:dataTable >
+            <p:column headerText="ID">
+
+            </p:column>
+
+            <p:column headerText="Descripción">
+
+            </p:column>
+
+            <p:column headerText="Orden">
+
+            </p:column>
+
+            <p:column headerText="Estado">
+
+            </p:column>
+            <p:column headerText="Eliminar">
+
+            </p:column>
+        </p:dataTable>
+    </div>
+    </p:panel>
+</composite:implementation>
+</html>

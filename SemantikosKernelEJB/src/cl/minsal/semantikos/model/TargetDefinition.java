@@ -11,4 +11,6 @@ public interface TargetDefinition {
      * @return <code>true</code> si es de tipo básico y <code>false</code> sino.
      */
     public boolean isBasicType();
+
+    public boolean isSMTKType();
 }

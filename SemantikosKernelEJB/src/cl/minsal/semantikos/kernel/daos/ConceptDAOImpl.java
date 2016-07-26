@@ -185,14 +185,12 @@ public class ConceptDAOImpl implements ConceptDAO {
                 call = connection.prepareCall("{call semantikos.find_concept_by_conceptid_categories(?,?,?,?,?)}");
                 Array ArrayCategories = connection.createArrayOf("integer", Category);
 
-
                 call.setString(1, PatternOrID);
                 call.setArray(2, ArrayCategories);
                 call.setInt(3, pageNumber);
                 call.setInt(4, pageSize);
                 call.setArray(5, ArrayStates);
             } else {
-                System.out.println(pageSize+"-"+pageNumber);
                 call = connection.prepareCall("{call semantikos.find_concept_by_concept_id(?,?,?,?)}");
                 call.setString(1, PatternOrID);
                 call.setInt(2, pageNumber);

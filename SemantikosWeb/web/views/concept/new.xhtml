@@ -70,7 +70,7 @@
                 </div>
             </div>
 
-            <p:panel id="otrosDescriptores" header="Otros Descriptores" toggleable="true" toggleSpeed="500" closeSpeed="500"
+            <p:panel id="toggleable" header="Otros Descriptores" toggleable="true" toggleSpeed="500" closeSpeed="500"
                      widgetVar="panel" style="margin-bottom:20px">
                 <div class="ui-g">
                     <div class="ui-g-12 ui-md-6 ui-lg-1">
@@ -208,14 +208,18 @@
                     </p:dataTable>
                 </div>
             </p:panel>
+
             <!--Relaciones -->
             <p:panel id="atributos" header="Atributos" toggleable="true" toggleSpeed="500" closeSpeed="500"
                      widgetVar="panel" style="margin-bottom:20px">
+
                 <ui:repeat value="#{newConceptMBean.category.relationshipDefinitions}" var="relationshipDefinition">
                     <smtk:basicType name="#{relationshipDefinition.name}"
                                     multiplicity="#{relationshipDefinition.multiplicity}"
                                     basicType="#{relationshipDefinition.targetDefinition}"
                                     rendered="#{relationshipDefinition.targetDefinition.basicType}"/>
+                    <smtk:smtkType
+                            rendered="#{relationshipDefinition.targetDefinition.SMTKType}"/>
                 </ui:repeat>
             </p:panel>
 

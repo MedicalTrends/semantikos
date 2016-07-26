@@ -27,8 +27,6 @@ import java.util.List;
 @Stateless
 public class TargetTypeDAOImpl implements TargetTypeDAO {
 
-    @PersistenceContext(unitName = "SEMANTIKOS_PU")
-    EntityManager em;
 
     @Override
     public BasicTypeDefinition findByID(long idBasicType) {

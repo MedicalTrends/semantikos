@@ -83,14 +83,22 @@ public class RelationshipDefinitionDAOImpl implements RelationshipDefinitionDAO 
     private TargetDefinition getTargetDefinition(String idCategory, String idAccesoryTable, String idExternTable, String idBasicType, String isSCTType) {
 
         /* Se testea si es un tipo básico */
-        BasicTypeDefinition basicTypeDefinition = null;
+        BasicTypeDefinition basicTypeDefinition ;
+        Category smtkTypeDefinition ;
 
         if (idBasicType != null) {
             long id = new BigInteger(idBasicType).longValue();
             basicTypeDefinition = targetTypeDAO.findByID(id);
+            return basicTypeDefinition;
+        }
+        if(idCategory!=null){
+            long id = new BigInteger(idCategory).longValue();
+            smtkTypeDefinition = categoryDAO.getCategoryById(id);
+            return smtkTypeDefinition;
         }
 
+        return null;
 
-        return basicTypeDefinition;
+
     }
 }
