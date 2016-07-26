@@ -45,32 +45,45 @@ public class RelationshipDefinitionDAOImpl implements RelationshipDefinitionDAO 
 
         ArrayList<RelationshipDefinition> attributes = new ArrayList<RelationshipDefinition>();
 
-        // TODO: Cambiar esto a SQL JDBC!!
-        /* Se invoca la consulta para recuperar las relaciones */
-        Query nativeQuery = this.em.createNativeQuery("SELECT semantikos.get_relationship_definitions_by_category(?)");
-        nativeQuery.setParameter(1,idCategory);
+        ConnectionBD connect = new ConnectionBD();
+        String GET_RELATIONSHIP_DEFINITIONS_BY_ID_CATEGORY = "{call semantikos.get_relationship_definitions_by_category(?)}";
 
-        List<Object[]> relationships = nativeQuery.getResultList();
+        try (Connection connection = connect.getConnection();
+             CallableStatement call = connection.prepareCall(GET_RELATIONSHIP_DEFINITIONS_BY_ID_CATEGORY)) {
 
-        for (Object[] relationship : relationships) {
+            /* Se invoca la consulta para recuperar las relaciones */
 
-            long idRelationship = ((BigInteger) relationship[0]).longValue();
-            String name = (String) relationship[1];
-            String description = (String) relationship[2];
+            call.setLong(1, idCategory);
+            call.execute();
 
-            /* Limites de la multiplicidad */
-            int lowerBoundary = Integer.parseInt((String) relationship[3]);
-            int upperBoundary = Integer.parseInt((String) relationship[4]);
-            Multiplicity multiplicity = new Multiplicity(lowerBoundary, upperBoundary);
+            ResultSet rs = call.getResultSet();
+            while (rs.next()) {
 
-            /* Se recupera el target definition */
-            TargetDefinition targetDefinition = getTargetDefinition((String)relationship[6], (String)relationship[7], (String)relationship[8], (String)relationship[9], (String)relationship[10]);
+                long idRelationship = rs.getLong("id_relationship_definition");
+                String name = rs.getString("name");
+                String description = rs.getString("description");
 
-            /* Se crea el objeto */
-            RelationshipDefinition relationshipDefinition = new RelationshipDefinition(idRelationship, name, description, targetDefinition, multiplicity);
 
-            attributes.add(relationshipDefinition);
+                /* Limites de la multiplicidad */
+                int lowerBoundary = rs.getInt("multiplicity_from");
+                int upperBoundary = rs.getInt("multiplicity_to");
+                Multiplicity multiplicity = new Multiplicity(lowerBoundary, upperBoundary);
+
+                /* Se recupera el target definition */
+                TargetDefinition targetDefinition = getTargetDefinition(rs.getString("id_category"), rs.getString("id_accesory_table_name"), rs.getString("id_extern_table_name"), rs.getString("id_basic_type"), rs.getString("is_sct_type"));
+
+                 /* Se crea el objeto */
+                RelationshipDefinition relationshipDefinition = new RelationshipDefinition(idRelationship, name, description, targetDefinition, multiplicity);
+                attributes.add(relationshipDefinition);
+
+            }
+
+            rs.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
+
 
         return attributes;
 
