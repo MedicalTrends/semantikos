@@ -2,6 +2,8 @@ package cl.minsal.semantikos.designmodelweb.auth;
 
 import cl.minsal.semantikos.kernel.auth.UserManager;
 import cl.minsal.semantikos.model.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -16,6 +18,7 @@ import java.util.List;
 @ViewScoped
 public class UsersBean {
 
+    static private final Logger logger = LoggerFactory.getLogger(UsersBean.class);
 
     @EJB
     UserManager userManager;
@@ -32,6 +35,9 @@ public class UsersBean {
 
 
     public List<User> getAllUsers(){
+
+        logger.info("buscando usuarios");
+
         return userManager.getAllUsers();
 
 
