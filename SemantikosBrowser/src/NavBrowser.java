@@ -145,6 +145,25 @@ public class NavBrowser {
     }
 
 
+    private List<String> wordPrevius;
+    private List<String> wordActually;
+
+    private boolean isPrevius(){
+
+       wordActually = patternToList(pattern);
+
+        if(wordActually.size()==wordPrevius.size()){
+            for (int i = 0; i < wordActually.size(); i++) {
+                if(wordPrevius.get(i).equalsIgnoreCase(wordActually.get(i))){
+                    return true;
+                }
+            }
+        }
+
+       return false;
+    }
+
+
     private List<String> patternToList(String pattern) {
         StringTokenizer st;
         String token;

@@ -46,7 +46,7 @@ public class CategoryDAOImpl implements CategoryDAO {
 
         Query nativeQuery = em.createNativeQuery("select * from semantikos.get_category_by_id(?)");
 
-        nativeQuery.setParameter(1,idCategory);
+        nativeQuery.setParameter((int)1,idCategory);
 
         List<Object[]> resultList = nativeQuery.getResultList();
         Category category=null;
@@ -61,13 +61,13 @@ public class CategoryDAOImpl implements CategoryDAO {
             category.setRestriction((boolean) result[3]);
             category.setValid((boolean) result[4]);
 
-            category.setRelationshipDefinitions(getCategoryMetaData((int) idCategory));
 
-            return  category;
 
         }
+        category.setRelationshipDefinitions(getCategoryMetaData((int) idCategory));
 
-        return null;
+        return  category;
+
     }
 
     @Override
@@ -109,7 +109,7 @@ public class CategoryDAOImpl implements CategoryDAO {
 
     @Override
     public List<Category> getAllCategories() {
-        /*
+
 
         Query q = em.createNativeQuery("select * from semantikos.get_all_categories()");
         List<Object[]> resultList = q.getResultList();
@@ -130,7 +130,7 @@ public class CategoryDAOImpl implements CategoryDAO {
         }
 
         return respuesta;
-        */ return null;
+
     }
 
     @Override
