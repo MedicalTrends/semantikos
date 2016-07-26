@@ -98,8 +98,6 @@ public class TargetTypeDAOImpl implements TargetTypeDAO {
             e.printStackTrace();
         }
 
-        System.out.println("basicTypeDefinition.getDomain().size()="+basicTypeDefinition.getDomain().size());
-
         return basicTypeDefinition;
 
     }

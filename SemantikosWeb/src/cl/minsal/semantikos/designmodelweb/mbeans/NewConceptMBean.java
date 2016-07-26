@@ -182,7 +182,6 @@ public class NewConceptMBean implements Serializable {
     }
 
     public void addItem() {
-        System.out.println("addItem");
         Description description = new Description(otherTermino, otherDescriptionType);
         description.setTerm(otherTermino);
         description.setCaseSensitive(otherSensibilidad);
