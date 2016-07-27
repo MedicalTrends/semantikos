@@ -1,10 +1,6 @@
 package cl.minsal.semantikos.model.basictypes;
 
-import cl.minsal.semantikos.model.DescriptionType;
-import cl.minsal.semantikos.model.Target;
-
-import java.util.Comparator;
-import java.util.List;
+import cl.minsal.semantikos.model.relationships.Target;
 
 /**
  *

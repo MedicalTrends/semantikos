@@ -6,13 +6,14 @@ import cl.minsal.semantikos.kernel.components.DescriptionManagerInterface;
 import cl.minsal.semantikos.model.*;
 import cl.minsal.semantikos.model.basictypes.BasicTypeDefinition;
 import cl.minsal.semantikos.model.basictypes.BasicTypeValue;
+import cl.minsal.semantikos.model.relationships.Relationship;
+import cl.minsal.semantikos.model.relationships.RelationshipDefinition;
 import org.primefaces.event.CellEditEvent;
 import org.primefaces.event.RowEditEvent;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
-import javax.faces.application.StateManager;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
@@ -250,9 +251,9 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
 
     public void addRelationship() {
 
-        Relationship relationship = new Relationship();
+        /* Relationship relationship = new Relationship();
         relationship.setTarget(basicTypeValue);
-        concept.addRelationship(relationship);
+        concept.addRelationship(relationship); */
     }
 
     public void setRelationship(){

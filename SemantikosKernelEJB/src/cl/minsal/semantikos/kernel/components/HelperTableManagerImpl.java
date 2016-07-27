@@ -1,7 +1,7 @@
 package cl.minsal.semantikos.kernel.components;
 
 import cl.minsal.semantikos.kernel.daos.HelperTableDAO;
-import cl.minsal.semantikos.model.factories.HelperTableFactory;
+import cl.minsal.semantikos.model.helpertables.HelperTableFactory;
 import cl.minsal.semantikos.model.helpertables.HelperTable;
 
 import javax.ejb.EJB;
@@ -29,7 +29,7 @@ public class HelperTableManagerImpl implements HelperTableManagerInterface {
     public List<HelperTable> getHelperTables() {
 
         /* Esto se resuelve con delegación sobre el Factory, mientras las tablas estén en duro */
-        return new HelperTableFactory().getHelperTables();
+        return HelperTableFactory.getInstance().getHelperTables();
     }
 
     @Override

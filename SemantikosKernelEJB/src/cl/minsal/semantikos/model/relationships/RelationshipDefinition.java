@@ -1,4 +1,6 @@
-package cl.minsal.semantikos.model;
+package cl.minsal.semantikos.model.relationships;
+
+import cl.minsal.semantikos.model.Multiplicity;
 
 import java.util.List;
 
@@ -27,9 +29,6 @@ public class RelationshipDefinition {
 
     /** Relaciones que excluye esta Relación */
     private RelationshipDefinition excludes;
-
-    public RelationshipDefinition() {
-    }
 
     /**
      * Este es el constructor mínimo con el cual se crean las RelacionesDefinitions.

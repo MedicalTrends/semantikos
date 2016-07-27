@@ -119,4 +119,39 @@ public class HelperTableDAOImpl implements HelperTableDAO {
         return records;
     }
 
+    @Override
+    public List<Map<String, String>> getAllRecords(HelperTable helperTable) {
+        List<Map<String, String>> records = new ArrayList<>();
+        ConnectionBD connectionBD = new ConnectionBD();
+
+        // TODO: Crear esta función y las tablas.
+        String selectRecord = "{call semantikos.get_all_records_from_helper_table(?)}";
+        try (Connection connection = connectionBD.getConnection();
+             CallableStatement preparedStatement = connection.prepareCall(selectRecord);) {
+
+            /* Se prepara y realiza la consulta */
+            preparedStatement.setString(1, helperTable.getTablaName());
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            /* Por cada elemento del resultset se extrae un registro */
+            while (resultSet.next()) {
+
+                Map<String, String> record = new HashMap<String, String>();
+
+                /* Se recuperan los valores de las columnas de la tabla auxiliar indicados */
+                for (HelperTableColumn column : helperTable.getShowableColumns()) {
+                    String columnName = column.getColumnName();
+                    String columnValue = resultSet.getString(columnName);
+                    record.put(columnName, columnValue);
+                }
+
+                records.add(record);
+            }
+        } catch (SQLException e) {
+            logger.error("Error al realizar una consulta sobre las tablas auxiliares", e);
+        }
+
+        return records;
+    }
+
 }

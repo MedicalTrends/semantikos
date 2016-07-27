@@ -2,7 +2,7 @@ package cl.minsal.semantikos.kernel.daos;
 
 import cl.minsal.semantikos.kernel.util.ConnectionBD;
 import cl.minsal.semantikos.model.Category;
-import cl.minsal.semantikos.model.RelationshipDefinition;
+import cl.minsal.semantikos.model.relationships.RelationshipDefinition;
 //import org.hibernate.persister.internal.PersisterClassResolverInitiator;
 
 import javax.ejb.EJB;
@@ -15,7 +15,6 @@ import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 

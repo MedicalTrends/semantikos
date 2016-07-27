@@ -1,9 +1,8 @@
 package cl.minsal.semantikos.kernel.daos;
 
-import cl.minsal.semantikos.model.RelationshipDefinition;
+import cl.minsal.semantikos.model.relationships.RelationshipDefinition;
 
 import javax.ejb.Local;
-import java.text.ParseException;
 import java.util.List;
 
 /**

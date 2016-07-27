@@ -1,4 +1,4 @@
-package cl.minsal.semantikos.model;
+package cl.minsal.semantikos.model.relationships;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;

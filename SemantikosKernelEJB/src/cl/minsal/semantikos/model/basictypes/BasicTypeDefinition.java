@@ -1,20 +1,10 @@
 package cl.minsal.semantikos.model.basictypes;
 
-import cl.minsal.semantikos.model.TargetDefinition;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import cl.minsal.semantikos.model.relationships.TargetDefinition;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.core.JsonFactory;
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -165,6 +155,11 @@ public class BasicTypeDefinition<T extends Comparable> implements TargetDefiniti
 
     @Override
     public boolean isSMTKType() {
+        return false;
+    }
+
+    @Override
+    public boolean isHelperTable() {
         return false;
     }
 

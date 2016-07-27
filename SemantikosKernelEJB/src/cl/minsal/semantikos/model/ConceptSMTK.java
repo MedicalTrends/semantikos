@@ -1,5 +1,8 @@
 package cl.minsal.semantikos.model;
 
+import cl.minsal.semantikos.model.relationships.Relationship;
+import cl.minsal.semantikos.model.relationships.Target;
+
 import java.util.ArrayList;
 import java.util.List;
 

@@ -1,12 +1,15 @@
 package cl.minsal.semantikos.model;
 
+import cl.minsal.semantikos.model.relationships.RelationshipDefinition;
+import cl.minsal.semantikos.model.relationships.TargetDefinition;
+
 import java.util.List;
 
 /**
  * Created by root on 08-07-16.
  */
 
-public class Category implements TargetDefinition{
+public class Category implements TargetDefinition {
     private long idCategory;
     private String name;
     private String nameAbreviated;
@@ -123,4 +126,7 @@ public class Category implements TargetDefinition{
     public boolean isSMTKType() {
         return true;
     }
+
+    @Override
+    public boolean isHelperTable() { return false; }
 }
