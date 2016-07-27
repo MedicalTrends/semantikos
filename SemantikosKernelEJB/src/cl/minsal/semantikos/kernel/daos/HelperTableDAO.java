@@ -43,4 +43,14 @@ public interface HelperTableDAO {
      * @return Una lista de registros (en forma de mappings) de la tabla indicada.
      */
     public List<Map<String, String>> getAllRecords(HelperTable helperTable, String[] columnNames);
+
+    /**
+     * Este método es responsable de recuperar todos los registros de una tabla auxiliar, recuperando sólo las columnas
+     * indicadas como <i>mostrables</i> (showables == <code>true</code>)en la tabla.
+     *
+     * @param helperTable La tabla cuyos registros son recuperados.
+     *
+     * @return Una lista de registros (en forma de mappings) de la tabla indicada.
+     */
+    public List<Map<String, String>> getAllRecords(HelperTable helperTable);
 }

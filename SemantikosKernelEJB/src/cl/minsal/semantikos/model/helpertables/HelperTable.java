@@ -2,6 +2,9 @@ package cl.minsal.semantikos.model.helpertables;
 
 import cl.minsal.semantikos.model.Target;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by root on 08-07-16.
  */
@@ -46,5 +49,18 @@ public class HelperTable implements Target {
 
     public String getTablaName() {
         return tablaName;
+    }
+
+    /**
+     * Este método es responsable de retornar aquellas columnas que han sido definidas como <i>mostrables</i>.
+     * @return
+     */
+    public List<HelperTableColumn> getShowableColumns() {
+        List<HelperTableColumn> showableColumns = new ArrayList<>();
+        for (HelperTableColumn column : columns) {
+            if (column.isShowable()) { showableColumns.add(column); }
+        }
+
+        return showableColumns;
     }
 }
