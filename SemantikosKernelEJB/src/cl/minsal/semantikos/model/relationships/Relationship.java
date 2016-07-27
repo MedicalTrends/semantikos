@@ -1,6 +1,8 @@
 package cl.minsal.semantikos.model.relationships;
 
 import cl.minsal.semantikos.model.ConceptSMTK;
+import cl.minsal.semantikos.model.basictypes.BasicTypeValue;
+import cl.minsal.semantikos.model.helpertables.HelperTableRecord;
 
 /**
  * @author Andrés Farías
@@ -31,7 +33,7 @@ public class Relationship {
     /**
      * Igual al constructor mínimo, pero permite inicializar con el ID.
      *
-     * @param id               El identificador único.
+     * @param id El identificador único.
      */
     public Relationship(long id, RelationshipDefinition relationshipDefinition) {
         this(relationshipDefinition);
@@ -68,5 +70,23 @@ public class Relationship {
 
     public void setTarget(Target target) {
         this.target = target;
+    }
+
+    /**
+     * Este método es responsable de determinar si la relación tiene un valor consistente con su definición.
+     *
+     * @return <code>true</code> si la relación es consistente con su definición o <code>false</code> si no.
+     */
+    public boolean isConsistent() {
+
+        if (this.relationshipDefinition.getTargetDefinition().isBasicType()){
+            return (this.target instanceof BasicTypeValue);
+        }
+
+        if (this.relationshipDefinition.getTargetDefinition().isHelperTable()){
+            return (this.target instanceof HelperTableRecord);
+        }
+
+        return false;
     }
 }

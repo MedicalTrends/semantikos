@@ -43,7 +43,7 @@ public class HelperTableFactory {
         return this.atcHT;
     }
 
-    public TargetDefinition getHelperTableATC() {
+    public HelperTable getHelperTableATC() {
         return atcHT;
     }
 
