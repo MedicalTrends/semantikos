@@ -20,7 +20,7 @@
                 <p:outputLabel for="domainSelect" value="#{cc.attrs.name}"/>
             </div>
             <div class="ui-g-12 ui-md-6 ui-lg-5">
-                <p:selectOneMenu id="domainSelect1"
+                <p:selectOneMenu id="domainSelect"
                                  value="#{cc.attrs.target.value}"
                                  converter="omnifaces.SelectItemsConverter"
                                  rendered="#{cc.attrs.targetDefinition.domainType}">
@@ -34,23 +34,37 @@
             </div>
         </div>
     </h:panelGrid>
-    <h:panelGrid rendered="#{cc.attrs.multiplicity.upperBoundary == null}" >
+    <h:panelGrid rendered="#{cc.attrs.multiplicity.upperBoundary == 0}" >
         <div class="ui-g">
-            <div class="ui-g-12 ui-md-6 ui-lg-2">
-                <p:outputLabel for="domainSelect" value="#{cc.attrs.name}"/>
+            <div class="ui-g-12 ui-md-6 ui-lg-12">
+                <p:commandButton update="basicTypeDefinitions"
+                                 icon="fa fa-plus"
+                                 title="Agregar"
+                                 actionListener="#{newConceptMBean.addBasicTypeDefinition(cc.attrs.targetDefinition)}">
+                </p:commandButton>
             </div>
-            <div class="ui-g-12 ui-md-6 ui-lg-5">
-                <p:selectOneMenu id="domainSelect2"
-                                 value="#{cc.attrs.target.value}"
-                                 converter="omnifaces.SelectItemsConverter"
-                                 rendered="#{cc.attrs.targetDefinition.domainType}">
-                    <f:selectItem itemLabel="Seleccione" itemValue=""/>
-                    <f:selectItems value="#{cc.attrs.targetDefinition.domain}" var="domain"
-                                   itemLabel="#{domain}" itemValue="#{domain}"/>
-                </p:selectOneMenu>
-            </div>
-            <div class="ui-g-12 ui-md-6 ui-lg-3">
-                <p:message for="domainSelect" ></p:message>
+        </div>
+        <div class="ui-g">
+            <div class="ui-g-12 ui-md-6 ui-lg-12">
+
+                <p:dataTable id="basicTypeDefinitions"
+                             var="basicTypeDefinition"
+                             value="#{newConceptMBean.basicTypeDefinitions}"
+                             reflow="true">
+                    <p:column headerText="Name">
+                        <p:outputLabel value="#{cc.attrs.name}"/>
+                    </p:column>
+                    <p:column headerText="Value">
+                        <p:selectOneMenu
+                                value="#{cc.attrs.target.value}"
+                                converter="omnifaces.SelectItemsConverter"
+                                rendered="#{cc.attrs.targetDefinition.domainType}">
+                            <f:selectItem itemLabel="Seleccione" itemValue=""/>
+                            <f:selectItems value="#{cc.attrs.targetDefinition.domain}" var="domain"
+                                           itemLabel="#{domain}" itemValue="#{domain}"/>
+                        </p:selectOneMenu>
+                    </p:column>
+                </p:dataTable>
             </div>
         </div>
     </h:panelGrid>

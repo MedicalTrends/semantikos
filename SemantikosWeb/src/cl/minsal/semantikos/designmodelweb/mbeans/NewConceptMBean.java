@@ -4,6 +4,7 @@ import cl.minsal.semantikos.kernel.components.*;
 import cl.minsal.semantikos.kernel.components.ConceptManagerInterface;
 import cl.minsal.semantikos.kernel.components.DescriptionManagerInterface;
 import cl.minsal.semantikos.model.*;
+import cl.minsal.semantikos.model.basictypes.BasicTypeDefinition;
 import cl.minsal.semantikos.model.basictypes.BasicTypeValue;
 import org.primefaces.event.CellEditEvent;
 import org.primefaces.event.RowEditEvent;
@@ -63,8 +64,10 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
 
     private DescriptionType otherDescriptionType;
 
-    // Placeholder para las relaciones
+    // Placeholder para los target (multiplicidad N)
     private BasicTypeValue basicTypeValue;
+
+    private List<BasicTypeDefinition> basicTypeDefinitions = new ArrayList<BasicTypeDefinition>();
 
 
     private T basicValue;
@@ -212,18 +215,28 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         return basicTypeValue;
     }
 
+    public List<BasicTypeDefinition> getBasicTypeDefinitions() {
+        return basicTypeDefinitions;
+    }
+
+    public void setBasicTypeDefinitions(List<BasicTypeDefinition> basicTypeDefinitions) {
+        this.basicTypeDefinitions = basicTypeDefinitions;
+    }
+
     public void setBasicTypeValue(BasicTypeValue basicTypeValue) {
         System.out.println("setBasicTypeValue");
         this.basicTypeValue = basicTypeValue;
     }
 
-    public void addRelationship() {
-        /*
-        Relationship relationship = new Relationship();
+    public void addBasicTypeDefinition(BasicTypeDefinition basicTypeDefinition){
+        basicTypeDefinitions.add(basicTypeDefinition);
+    }
 
+    public void addRelationship() {
+
+        Relationship relationship = new Relationship();
         relationship.setTarget(basicTypeValue);
         concept.addRelationship(relationship);
-        */
     }
 
     public void setRelationship(){

@@ -19,6 +19,10 @@ public class Relationship {
     /** El tipo destino de esta relación */
     private Target target;
 
+
+    public Relationship() {
+    }
+
     /**
      * Este es el constructor mínimo con el cual se crean las Relaciones
      *
