@@ -144,7 +144,7 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
         // Agregar las relaciones si existen
         for(RelationshipDefinition relationshipDefinition: category.getRelationshipDefinitions())
             concept.addRelationship(new Relationship(relationshipDefinition));
-        return new ConceptSMTK(category, fsn, preferido, propuesto);
+        return concept;
     }
 
     @Override

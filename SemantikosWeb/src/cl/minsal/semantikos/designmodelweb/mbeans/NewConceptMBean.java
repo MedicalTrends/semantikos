@@ -4,6 +4,7 @@ import cl.minsal.semantikos.kernel.components.*;
 import cl.minsal.semantikos.kernel.components.ConceptManagerInterface;
 import cl.minsal.semantikos.kernel.components.DescriptionManagerInterface;
 import cl.minsal.semantikos.model.*;
+import cl.minsal.semantikos.model.basictypes.BasicTypeValue;
 import org.primefaces.event.CellEditEvent;
 import org.primefaces.event.RowEditEvent;
 
@@ -27,7 +28,7 @@ import java.util.List;
  */
 @ManagedBean(name="newConceptMBean")
 @ViewScoped
-public class NewConceptMBean implements Serializable {
+public class NewConceptMBean<T extends Comparable> implements Serializable {
 
     @EJB
     ConceptManagerInterface conceptManager;
@@ -55,12 +56,18 @@ public class NewConceptMBean implements Serializable {
     private List<State> descriptionStates = new ArrayList<State>();
     private List<Description> selectedDescriptions = new ArrayList<Description>();
 
+    // Placeholder para las descripciones
     private String otherTermino;
 
     private boolean otherSensibilidad;
 
     private DescriptionType otherDescriptionType;
 
+    // Placeholder para las relaciones
+    private BasicTypeValue basicTypeValue;
+
+
+    private T basicValue;
 
     @PostConstruct
     protected void initialize() throws ParseException {
@@ -73,11 +80,12 @@ public class NewConceptMBean implements Serializable {
         user.setPassword("amauro");
         /////////////////////////////////////////////
 
-        category = categoryManager.getCategoryById(1);
-        //category = categoryManager.getCategoryById(105590001);
+        //category = categoryManager.getCategoryById(1);
+        category = categoryManager.getCategoryById(105590001);
         descriptionTypes = descriptionManager.getOtherTypes();
         //concept = new ConceptSMTK(category, new Description("electrocardiograma de urgencia", descriptionTypes.get(0)));
         concept = conceptManager.newConcept(category, "electrocardiograma de urgencia");
+        System.out.println("concept.getRelationships().size()="+concept.getRelationships().size());
     }
 
     public String getMyFormattedDate(Date date) {
@@ -93,6 +101,16 @@ public class NewConceptMBean implements Serializable {
     public void onRowCancel(RowEditEvent event) {
         FacesMessage msg = new FacesMessage("Edit Cancelled", ((Description) event.getObject()).getTerm());
         FacesContext.getCurrentInstance().addMessage(null, msg);
+    }
+
+    public void onCellEdit(CellEditEvent event) {
+        Object oldValue = event.getOldValue();
+        Object newValue = event.getNewValue();
+
+        if(newValue != null && !newValue.equals(oldValue)) {
+            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Cell Changed", "Old: " + oldValue + ", New:" + newValue);
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+        }
     }
 
     public ConceptSMTK getConcept() {
@@ -167,21 +185,11 @@ public class NewConceptMBean implements Serializable {
         this.stateMachineManager = stateMachineManager;
     }
 
-    public void onCellEdit(CellEditEvent event) {
-        Object oldValue = event.getOldValue();
-        Object newValue = event.getNewValue();
-
-        if(newValue != null && !newValue.equals(oldValue)) {
-            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Cell Changed", "Old: " + oldValue + ", New:" + newValue);
-            FacesContext.getCurrentInstance().addMessage(null, msg);
-        }
-    }
-
     public void removeItem(Description item) {
         concept.getOtherDescriptions().remove(item);
     }
 
-    public void addItem() {
+    public void addDescription() {
         Description description = new Description(otherTermino, otherDescriptionType);
         description.setTerm(otherTermino);
         description.setCaseSensitive(otherSensibilidad);
@@ -189,6 +197,38 @@ public class NewConceptMBean implements Serializable {
         description.setCreationDate(Calendar.getInstance().getTime());
         description.setUser(user);
         concept.addDescription(description);
+    }
+
+    public T getBasicValue() {
+        return basicValue;
+    }
+
+    public void setBasicValue(T basicValue) {
+        System.out.println("setBasicValue");
+        this.basicValue = basicValue;
+    }
+
+    public BasicTypeValue getBasicTypeValue() {
+        return basicTypeValue;
+    }
+
+    public void setBasicTypeValue(BasicTypeValue basicTypeValue) {
+        System.out.println("setBasicTypeValue");
+        this.basicTypeValue = basicTypeValue;
+    }
+
+    public void addRelationship() {
+        /*
+        Relationship relationship = new Relationship();
+
+        relationship.setTarget(basicTypeValue);
+        concept.addRelationship(relationship);
+        */
+    }
+
+    public void setRelationship(){
+        System.out.println("setRelationship");
+        //concept.getRelationships()
     }
 }
 

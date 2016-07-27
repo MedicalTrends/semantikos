@@ -11,7 +11,7 @@
         <h:form id="mainForm">
             <p:growl id="growl" showDetail="true" showSummary="true"/>
             <p:growl id="editMsgs" showDetail="true"/>
-
+            <p:messages autoUpdate="true"></p:messages>
             <h3>Responsive</h3>
 
             <div class="ui-g">
@@ -96,7 +96,7 @@
                         </p:selectOneMenu>
                     </div>
                     <div class="ui-g-12 ui-md-6 ui-lg-1">
-                        <p:commandButton value="Agregar" id="btn" action="#{newConceptMBean.addItem}"
+                        <p:commandButton value="Agregar" id="btn" action="#{newConceptMBean.addDescription}"
                                          update="otherDescriptions" styleClass="ui-priority-primary"
                                          style="float: right"/>
                     </div>
@@ -211,15 +211,15 @@
 
             <!--Relaciones -->
             <p:panel id="atributos" header="Atributos" toggleable="true" toggleSpeed="500" closeSpeed="500"
-                     widgetVar="panel" style="margin-bottom:20px">
+                     widgetVar="panel" style="margin-bottom:20px" >
 
-                <ui:repeat value="#{newConceptMBean.category.relationshipDefinitions}" var="relationshipDefinition">
-                    <smtk:basicType name="#{relationshipDefinition.name}"
-                                    multiplicity="#{relationshipDefinition.multiplicity}"
-                                    basicType="#{relationshipDefinition.targetDefinition}"
-                                    rendered="#{relationshipDefinition.targetDefinition.basicType}"/>
-                    <smtk:smtkType
-                                    rendered="#{relationshipDefinition.targetDefinition.SMTKType}"/>
+                <ui:repeat value="#{newConceptMBean.concept.relationships}" var="relationship">
+                    <smtk:basicType name="#{relationship.relationshipDefinition.name}"
+                                    multiplicity="#{relationship.relationshipDefinition.multiplicity}"
+                                    targetDefinition="#{relationship.relationshipDefinition.targetDefinition}"
+                                    target="#{relationship.target}"
+                                    rendered="#{relationship.relationshipDefinition.targetDefinition.basicType}"/>
+                    <smtk:smtkType  rendered="#{relationship.relationshipDefinition.targetDefinition.SMTKType}"/>
                 </ui:repeat>
             </p:panel>
 
