@@ -1,10 +1,9 @@
 package cl.minsal.semantikos.model.relationships;
 
 import cl.minsal.semantikos.model.ConceptSMTK;
-import cl.minsal.semantikos.model.basictypes.BasicTypeValue;
 
 /**
- * Created by root on 08-07-16.
+ * @author Andrés Farías
  */
 public class Relationship {
 
@@ -17,12 +16,8 @@ public class Relationship {
     /** La definición de esta relación */
     private RelationshipDefinition relationshipDefinition;
 
-    /** El tipo destino de esta relación */
+    /** El elemento destino de esta relación */
     private Target target;
-
-
-    public Relationship() {
-    }
 
     /**
      * Este es el constructor mínimo con el cual se crean las Relaciones
@@ -31,10 +26,6 @@ public class Relationship {
      */
     public Relationship(RelationshipDefinition relationshipDefinition) {
         this.relationshipDefinition = relationshipDefinition;
-        if(relationshipDefinition.getTargetDefinition().isBasicType()) {
-            BasicTypeValue<String> basicTypeValue = new BasicTypeValue<String>();
-            this.setTarget(basicTypeValue);
-        }
     }
 
     /**

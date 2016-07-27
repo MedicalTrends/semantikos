@@ -7,6 +7,7 @@ import cl.minsal.semantikos.model.*;
 import cl.minsal.semantikos.model.basictypes.BasicTypeDefinition;
 import cl.minsal.semantikos.model.basictypes.BasicTypeValue;
 import cl.minsal.semantikos.model.relationships.Relationship;
+import cl.minsal.semantikos.model.relationships.RelationshipDefinition;
 import org.primefaces.event.CellEditEvent;
 import org.primefaces.event.RowEditEvent;
 
@@ -234,9 +235,9 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
 
     public void addRelationship() {
 
-        Relationship relationship = new Relationship();
+        /* Relationship relationship = new Relationship();
         relationship.setTarget(basicTypeValue);
-        concept.addRelationship(relationship);
+        concept.addRelationship(relationship); */
     }
 
     public void setRelationship(){

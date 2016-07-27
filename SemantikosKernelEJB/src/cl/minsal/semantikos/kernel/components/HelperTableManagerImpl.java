@@ -29,7 +29,7 @@ public class HelperTableManagerImpl implements HelperTableManagerInterface {
     public List<HelperTable> getHelperTables() {
 
         /* Esto se resuelve con delegación sobre el Factory, mientras las tablas estén en duro */
-        return new HelperTableFactory().getHelperTables();
+        return HelperTableFactory.getInstance().getHelperTables();
     }
 
     @Override

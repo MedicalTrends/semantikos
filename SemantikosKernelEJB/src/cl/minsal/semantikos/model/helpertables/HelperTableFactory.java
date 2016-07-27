@@ -1,7 +1,6 @@
 package cl.minsal.semantikos.model.helpertables;
 
-import cl.minsal.semantikos.model.helpertables.HelperTable;
-import cl.minsal.semantikos.model.helpertables.HelperTableColumn;
+import cl.minsal.semantikos.model.relationships.TargetDefinition;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,17 +10,44 @@ import java.util.List;
  */
 public class HelperTableFactory {
 
-    public List<HelperTable> getHelperTables(){
+    private HelperTable atcHT;
+    private List<HelperTable> helperTables = new ArrayList<>();
 
-        List<HelperTable> helperTables = new ArrayList<>();
+    private static final HelperTableFactory singletonInstance = new HelperTableFactory();
 
+    private HelperTableFactory() {
+        createHelperTables();
+    }
+
+    private void createHelperTables() {
+        helperTables.add(createATC());
+    }
+
+    public List<HelperTable> getHelperTables() {
+        return helperTables;
+    }
+
+    /**
+     * Este método es responsable de crear una Tabla Auxiliar ATC.
+     *
+     * @return Una tabla ATC.
+     */
+    private HelperTable createATC() {
         HelperTableColumn idColumn = new HelperTableColumn("ID", true, false, false);
         HelperTableColumn codigoATCColumn = new HelperTableColumn("CODIGO_ATC", false, true, true);
         HelperTableColumn descripcionATCColumn = new HelperTableColumn("DESCRIPCION_ATC", false, true, true);
 
         HelperTableColumn[] columns = {idColumn, codigoATCColumn, descripcionATCColumn};
-        helperTables.add(new HelperTable("ATC", "Tabla de códigos ATC", "HELPER_TABLE_ATC", columns));
+        this.atcHT = new HelperTable("ATC", "Tabla de códigos ATC", "HELPER_TABLE_ATC", columns);
 
-        return helperTables;
+        return this.atcHT;
+    }
+
+    public TargetDefinition getHelperTableATC() {
+        return atcHT;
+    }
+
+    public static HelperTableFactory getInstance(){
+        return singletonInstance;
     }
 }
