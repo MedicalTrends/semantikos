@@ -10,45 +10,78 @@
 <composite:interface>
 
 </composite:interface>
+
 <composite:implementation>
 
     <p:panel id="panelSMTK"
              widgetVar="panel" style="margin-bottom:20px">
 
-    <div class="ui-g">
-        <div class="ui-g-12 ui-md-6 ui-lg-1">
-            <p:outputLabel value="Búsqueda:" for="acSimple" />
+        <div class="ui-g">
+            <div class="ui-g-12 ui-md-6 ui-lg-1">
+                <p:outputLabel value="Búsqueda:" for="acSimple"/>
+            </div>
+            <div class="ui-g-12 ui-md-6 ui-lg-5">
+                <p:autoComplete id="acSimple"/>
+            </div>
+            <div class="ui-g-12 ui-md-6 ui-lg-3">
+
+            </div>
+            <div class="ui-g-12 ui-md-6 ui-lg-3">
+            </div>
         </div>
-        <div class="ui-g-12 ui-md-6 ui-lg-5">
-            <p:autoComplete id="acSimple"  />
+        <div class="ui-g">
+            <p:dataTable value="#{smtkBean.conceptSearch}" var="concept"
+                         rows="5"
+                         paginator="true"
+                         lazy="true"
+                         dynamic="true"
+                         emptyMessage="No se han encontrado conceptos con los criterios utilizados"
+            >
+
+
+                <p:column headerText="ID">
+                    <h:outputText value="#{concept.id}"/>
+                </p:column>
+
+                <p:column headerText="Descripcion">
+                    <h:outputText value="#{concept.descriptionFavorite.term}"/>
+                </p:column>
+                <p:column headerText="Agregar" style="width:60px;text-align: center">
+                    <p:commandButton update=":mainForm" icon="fa fa-plus"
+                                     title="Agregar" actionListener="#{smtkBean.addRelationSMTK(concept)}">
+                        <f:setPropertyActionListener value="#{concept}"
+                                                     target="#{smtkBean.conceptSelected}"/>
+                    </p:commandButton>
+                </p:column>
+
+            </p:dataTable>
         </div>
-        <div class="ui-g-12 ui-md-6 ui-lg-3">
+        <p:spacer></p:spacer>
+
+        <div class="ui-g">
+            <p:dataTable id="conceptSavetbl" value="#{smtkBean.conceptSave}" var="concept" >
+                <p:column headerText="ID">
+                    <h:outputText value="#{concept.id}"/>
+                </p:column>
+
+                <p:column headerText="Descripción">
+                    <h:outputText value="#{concept.descriptionFavorite.term}"/>
+                </p:column>
+
+                <p:column headerText="Orden">
+
+                </p:column>
+
+                <p:column headerText="Estado">
+                    <h:outputText value="#{concept.state}"/>
+                </p:column>
+                <p:column headerText="Eliminar" style="width:60px;text-align: center">
+                    <p:commandButton icon="fa fa-trash" title="Eliminar">
+
+                    </p:commandButton>
+                </p:column>
+            </p:dataTable>
         </div>
-        <div class="ui-g-12 ui-md-6 ui-lg-3">
-        </div>
-    </div>
-    <div class="ui-g">
-        <p:dataTable >
-            <p:column headerText="ID">
-
-            </p:column>
-
-            <p:column headerText="Descripción">
-
-            </p:column>
-
-            <p:column headerText="Orden">
-
-            </p:column>
-
-            <p:column headerText="Estado">
-
-            </p:column>
-            <p:column headerText="Eliminar">
-
-            </p:column>
-        </p:dataTable>
-    </div>
     </p:panel>
 </composite:implementation>
 </html>

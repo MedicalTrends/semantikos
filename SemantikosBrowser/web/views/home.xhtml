@@ -81,13 +81,13 @@
 
                 <h:form id="form">
                     <p:dialog widgetVar="conceptDialog" modal="true" showEffect="fade"
-                              hideEffect="fade" resizable="false">
+                              hideEffect="fade" resizable="true" style="margin:40px;">
                         <p:outputPanel id="conceptDetail" style="text-align:center;">
 
 
                             <p:dataTable id="detailConcept" var="description"
                                          value="#{navBrowser.conceptSelected.otherDescriptions}"
-                                         style="margin-top:40px">
+                                         >
                                 <f:facet name="header">
                                     Detalle del concepto
                                 </f:facet>

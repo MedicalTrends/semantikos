@@ -1,9 +1,10 @@
 package cl.minsal.semantikos.model;
 
 /**
- * Created by root on 08-07-16.
+ * TODO: Esta clase tiene como objetivo representar ...
  */
-public class AccesoryTableNames {
+public class HelperTableNames {
+
     private long idAccesoryTableName;
     private String tableAccesoryName;
     private String pkColumnName;
@@ -37,7 +38,7 @@ public class AccesoryTableNames {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        AccesoryTableNames that = (AccesoryTableNames) o;
+        HelperTableNames that = (HelperTableNames) o;
 
         if (idAccesoryTableName != that.idAccesoryTableName) return false;
         if (tableAccesoryName != null ? !tableAccesoryName.equals(that.tableAccesoryName) : that.tableAccesoryName != null)
