@@ -2,6 +2,8 @@ package cl.minsal.semantikos.kernel.components;
 
 import cl.minsal.semantikos.kernel.daos.ConceptDAO;
 import cl.minsal.semantikos.model.*;
+import cl.minsal.semantikos.model.relationships.Relationship;
+import cl.minsal.semantikos.model.relationships.RelationshipDefinition;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;

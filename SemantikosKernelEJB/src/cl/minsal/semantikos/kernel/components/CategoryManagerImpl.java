@@ -3,7 +3,7 @@ package cl.minsal.semantikos.kernel.components;
 
 import cl.minsal.semantikos.kernel.daos.CategoryDAO;
 import cl.minsal.semantikos.model.Category;
-import cl.minsal.semantikos.model.RelationshipDefinition;
+import cl.minsal.semantikos.model.relationships.RelationshipDefinition;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;

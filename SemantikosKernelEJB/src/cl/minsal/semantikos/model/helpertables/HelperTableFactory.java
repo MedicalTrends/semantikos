@@ -1,4 +1,4 @@
-package cl.minsal.semantikos.model.factories;
+package cl.minsal.semantikos.model.helpertables;
 
 import cl.minsal.semantikos.model.helpertables.HelperTable;
 import cl.minsal.semantikos.model.helpertables.HelperTableColumn;

@@ -1,7 +1,7 @@
 package cl.minsal.semantikos.kernel.components;
 
 import cl.minsal.semantikos.kernel.daos.HelperTableDAO;
-import cl.minsal.semantikos.model.factories.HelperTableFactory;
+import cl.minsal.semantikos.model.helpertables.HelperTableFactory;
 import cl.minsal.semantikos.model.helpertables.HelperTable;
 
 import javax.ejb.EJB;

@@ -1,15 +1,9 @@
 package cl.minsal.semantikos.designmodelweb.mbeans;
 
-import cl.minsal.semantikos.model.RelationshipDefinition;
-import cl.minsal.semantikos.model.User;
-import cl.minsal.semantikos.model.basictypes.BasicTypeDefinition;
-import cl.minsal.semantikos.model.basictypes.BasicTypeValue;
-
 import javax.annotation.PostConstruct;
 import javax.faces.component.FacesComponent;
 import javax.faces.component.UINamingContainer;
 import java.text.ParseException;
-import java.util.List;
 
 /**
  * Created by root on 22-07-16.

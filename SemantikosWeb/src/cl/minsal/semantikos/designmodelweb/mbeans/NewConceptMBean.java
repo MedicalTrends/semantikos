@@ -6,13 +6,13 @@ import cl.minsal.semantikos.kernel.components.DescriptionManagerInterface;
 import cl.minsal.semantikos.model.*;
 import cl.minsal.semantikos.model.basictypes.BasicTypeDefinition;
 import cl.minsal.semantikos.model.basictypes.BasicTypeValue;
+import cl.minsal.semantikos.model.relationships.Relationship;
 import org.primefaces.event.CellEditEvent;
 import org.primefaces.event.RowEditEvent;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
-import javax.faces.application.StateManager;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
