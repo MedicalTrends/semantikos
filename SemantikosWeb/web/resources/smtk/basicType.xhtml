@@ -45,16 +45,16 @@
             </div>
         </div>
         <div class="ui-g">
-            <div class="ui-g-12 ui-md-6 ui-lg-12">
+            <div class="ui-g-12 ui-md-6 ui-lg-6">
 
                 <p:dataTable id="basicTypeDefinitions"
                              var="basicTypeDefinition"
                              value="#{newConceptMBean.basicTypeDefinitions}"
                              reflow="true">
-                    <p:column headerText="Name">
+                    <p:column headerText="Nombre">
                         <p:outputLabel value="#{cc.attrs.name}"/>
                     </p:column>
-                    <p:column headerText="Value">
+                    <p:column headerText="Valor">
                         <p:selectOneMenu
                                 value="#{cc.attrs.target.value}"
                                 converter="omnifaces.SelectItemsConverter"
@@ -63,6 +63,13 @@
                             <f:selectItems value="#{cc.attrs.targetDefinition.domain}" var="domain"
                                            itemLabel="#{domain}" itemValue="#{domain}"/>
                         </p:selectOneMenu>
+                    </p:column>
+                    <p:column headerText="Valor">
+                        <p:commandLink actionListener="#{newConceptMBean.removeBasicType(basicTypeDefinition)}" ajax="true"
+                                       update="basicTypeDefinitions" immediate="true">
+                            <h:graphicImage name="images/trash-.png" style="width: 14px; height: 14px"
+                                            icon="trash"/>
+                        </p:commandLink>
                     </p:column>
                 </p:dataTable>
             </div>

@@ -65,7 +65,7 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
     private DescriptionType otherDescriptionType;
 
     // Placeholder para los target (multiplicidad N)
-    private BasicTypeValue basicTypeValue;
+    private BasicTypeValue basicTypeValue = new BasicTypeValue();
 
     private List<BasicTypeDefinition> basicTypeDefinitions = new ArrayList<BasicTypeDefinition>();
 
@@ -192,6 +192,10 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         concept.getOtherDescriptions().remove(item);
     }
 
+    public void removeBasicType(BasicTypeDefinition item) {
+        getBasicTypeDefinitions().remove(item);
+    }
+
     public void addDescription() {
         Description description = new Description(otherTermino, otherDescriptionType);
         description.setTerm(otherTermino);
@@ -200,6 +204,15 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         description.setCreationDate(Calendar.getInstance().getTime());
         description.setUser(user);
         concept.addDescription(description);
+    }
+
+    public void addRelationship(RelationshipDefinition relationshipDefinition, Target target){
+        Relationship relationship= new Relationship();
+
+        relationship.setRelationshipDefinition(relationshipDefinition);
+        relationship.setTarget(target);
+
+        this.concept.addRelationship(relationship);
     }
 
     public T getBasicValue() {
@@ -228,8 +241,11 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         this.basicTypeValue = basicTypeValue;
     }
 
-    public void addBasicTypeDefinition(BasicTypeDefinition basicTypeDefinition){
-        basicTypeDefinitions.add(basicTypeDefinition);
+    public void addBasicTypeDefinition(TargetDefinition targetDefinition){
+        //Relationship relationship = new Relationship();
+        //concept.addRelationship(new Relationship());
+        category.getRelationshipDefinitions().get
+        basicTypeDefinitions.add((BasicTypeDefinition) targetDefinition);
     }
 
     public void addRelationship() {
