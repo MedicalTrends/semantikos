@@ -1,7 +1,6 @@
 package cl.minsal.semantikos.model.relationships;
 
 import cl.minsal.semantikos.model.Multiplicity;
-import cl.minsal.semantikos.model.TargetDefinition;
 
 import java.util.List;
 

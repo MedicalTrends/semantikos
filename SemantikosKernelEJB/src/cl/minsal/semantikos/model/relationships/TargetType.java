@@ -1,4 +1,4 @@
-package cl.minsal.semantikos.model;
+package cl.minsal.semantikos.model.relationships;
 
 import cl.minsal.semantikos.model.basictypes.BasicTypeDefinition;
 

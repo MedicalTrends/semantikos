@@ -1,6 +1,6 @@
 package cl.minsal.semantikos.model.helpertables;
 
-import cl.minsal.semantikos.model.Target;
+import cl.minsal.semantikos.model.relationships.Target;
 
 import java.util.ArrayList;
 import java.util.List;
