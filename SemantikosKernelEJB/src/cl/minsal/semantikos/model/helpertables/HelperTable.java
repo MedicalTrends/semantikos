@@ -1,0 +1,50 @@
+package cl.minsal.semantikos.model.helpertables;
+
+import cl.minsal.semantikos.model.Target;
+
+/**
+ * Created by root on 08-07-16.
+ */
+public class HelperTable implements Target {
+
+    /** Un nombre legible por humanos para la Tabla Auxiliar */
+    private String name;
+
+    /* Una breve descripción de la tabla auxiliar */
+    private String description;
+
+    /** El nombre de la tabla física */
+    private String tablaName;
+
+    /** Columna con la llave primaria de los registros de la tabla auxiliar */
+    private String pkColumnName;
+
+    /** El nombre de las columnas que posee la tabla física */
+    private HelperTableColumn[] columns;
+
+    public HelperTable(String name, String description, String tablaName, HelperTableColumn[] columns) {
+        this.name = name;
+        this.description = description;
+        this.tablaName = tablaName;
+        this.columns = columns;
+
+        /* El nombre por defecto de la columna de PK es ID */
+        this.pkColumnName = "ID";
+    }
+
+    public HelperTableColumn[] getColumns() {
+        return columns;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String getTablaName() {
+        return tablaName;
+    }
+}
