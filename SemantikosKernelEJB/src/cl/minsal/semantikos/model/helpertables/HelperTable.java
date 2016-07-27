@@ -1,6 +1,7 @@
 package cl.minsal.semantikos.model.helpertables;
 
 import cl.minsal.semantikos.model.relationships.Target;
+import cl.minsal.semantikos.model.relationships.TargetDefinition;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,7 +9,7 @@ import java.util.List;
 /**
  * Created by root on 08-07-16.
  */
-public class HelperTable implements Target {
+public class HelperTable implements TargetDefinition {
 
     /** Un nombre legible por humanos para la Tabla Auxiliar */
     private String name;
@@ -62,5 +63,20 @@ public class HelperTable implements Target {
         }
 
         return showableColumns;
+    }
+
+    @Override
+    public boolean isBasicType() {
+        return false;
+    }
+
+    @Override
+    public boolean isSMTKType() {
+        return false;
+    }
+
+    @Override
+    public boolean isHelperTable() {
+        return true;
     }
 }

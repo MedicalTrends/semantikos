@@ -158,6 +158,11 @@ public class BasicTypeDefinition<T extends Comparable> implements TargetDefiniti
         return false;
     }
 
+    @Override
+    public boolean isHelperTable() {
+        return false;
+    }
+
     public List<String> asString(){
         return (List<String>)domain;
     }

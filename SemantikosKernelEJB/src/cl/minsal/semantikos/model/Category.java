@@ -126,4 +126,7 @@ public class Category implements TargetDefinition {
     public boolean isSMTKType() {
         return true;
     }
+
+    @Override
+    public boolean isHelperTable() { return false; }
 }

@@ -13,4 +13,11 @@ public interface TargetDefinition {
     public boolean isBasicType();
 
     public boolean isSMTKType();
+
+    /**
+     * Este método es responsable de determinar si el target type es de tipo Tabla Auxiliar o no.
+     *
+     * @return <code>true</code> si es de tipo Tabla Auxiliar y <code>false</code> si no.
+     */
+    public boolean isHelperTable();
 }

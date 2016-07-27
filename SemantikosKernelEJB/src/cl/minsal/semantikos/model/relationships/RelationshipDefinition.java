@@ -30,9 +30,6 @@ public class RelationshipDefinition {
     /** Relaciones que excluye esta Relación */
     private RelationshipDefinition excludes;
 
-    public RelationshipDefinition() {
-    }
-
     /**
      * Este es el constructor mínimo con el cual se crean las RelacionesDefinitions.
      *
