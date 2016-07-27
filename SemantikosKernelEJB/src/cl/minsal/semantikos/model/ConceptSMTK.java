@@ -130,6 +130,13 @@ public class ConceptSMTK implements Target {
         this.otherDescriptions = otherDescriptions;
     }
 
+    public List<Relationship> getRelationships() {
+        return relationships;
+    }
+
+    public void setRelationships(List<Relationship> relationships) {
+        this.relationships = relationships;
+    }
 
     public long getId() {
         return id;

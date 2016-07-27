@@ -10,25 +10,63 @@
 <composite:interface componentType="basicTypeBean">
     <composite:attribute name="name" type="java.lang.String" />
     <composite:attribute name="multiplicity" type="cl.minsal.semantikos.model.Multiplicity" />
-    <composite:attribute name="basicTypeDefinition" type="cl.minsal.semantikos.model.basictypes.BasicTypeDefinition" />
-    <composite:attribute name="basicType" type="cl.minsal.semantikos.model.basictypes.BasicTypeValue" />
+    <composite:attribute name="targetDefinition" type="cl.minsal.semantikos.model.basictypes.BasicTypeDefinition" />
+    <composite:attribute name="target" type="cl.minsal.semantikos.model.basictypes.BasicTypeValue" />
 </composite:interface>
 <composite:implementation>
+    <h:panelGrid rendered="#{cc.attrs.multiplicity.upperBoundary == 1}" >
+        <div class="ui-g">
+            <div class="ui-g-12 ui-md-6 ui-lg-2">
+                <p:outputLabel for="domainSelect" value="#{cc.attrs.name}"/>
+            </div>
+            <div class="ui-g-12 ui-md-6 ui-lg-5">
+                <p:selectOneMenu id="domainSelect"
+                                 value="#{cc.attrs.target.value}"
+                                 converter="omnifaces.SelectItemsConverter"
+                                 rendered="#{cc.attrs.targetDefinition.domainType}">
+                    <f:selectItem itemLabel="Seleccione" itemValue=""/>
+                    <f:selectItems value="#{cc.attrs.targetDefinition.domain}" var="domain"
+                                   itemLabel="#{domain}" itemValue="#{domain}"/>
+                </p:selectOneMenu>
+            </div>
+            <div class="ui-g-12 ui-md-6 ui-lg-3">
+                <p:message for="domainSelect" ></p:message>
+            </div>
+        </div>
+    </h:panelGrid>
+    <h:panelGrid rendered="#{cc.attrs.multiplicity.upperBoundary == 0}" >
+        <div class="ui-g">
+            <div class="ui-g-12 ui-md-6 ui-lg-12">
+                <p:commandButton update="basicTypeDefinitions"
+                                 icon="fa fa-plus"
+                                 title="Agregar"
+                                 actionListener="#{newConceptMBean.addBasicTypeDefinition(cc.attrs.targetDefinition)}">
+                </p:commandButton>
+            </div>
+        </div>
+        <div class="ui-g">
+            <div class="ui-g-12 ui-md-6 ui-lg-12">
 
-    <!--h:outputText value="#{cc.attrs.basicType.name}" /-->
-    <div class="ui-g">
-        <div class="ui-g-12 ui-md-6 ui-lg-2">
-            <p:outputLabel value="#{cc.attrs.name}"/>
+                <p:dataTable id="basicTypeDefinitions"
+                             var="basicTypeDefinition"
+                             value="#{newConceptMBean.basicTypeDefinitions}"
+                             reflow="true">
+                    <p:column headerText="Name">
+                        <p:outputLabel value="#{cc.attrs.name}"/>
+                    </p:column>
+                    <p:column headerText="Value">
+                        <p:selectOneMenu
+                                value="#{cc.attrs.target.value}"
+                                converter="omnifaces.SelectItemsConverter"
+                                rendered="#{cc.attrs.targetDefinition.domainType}">
+                            <f:selectItem itemLabel="Seleccione" itemValue=""/>
+                            <f:selectItems value="#{cc.attrs.targetDefinition.domain}" var="domain"
+                                           itemLabel="#{domain}" itemValue="#{domain}"/>
+                        </p:selectOneMenu>
+                    </p:column>
+                </p:dataTable>
+            </div>
         </div>
-        <div class="ui-g-12 ui-md-6 ui-lg-5">
-            <p:selectOneMenu value="" rendered="#{cc.attrs.basicTypeDefinition.domainType}">
-                <f:selectItem itemLabel="Seleccione" itemValue=""/>
-                <f:selectItems value="#{cc.attrs.basicType.domain}" var="domain"
-                               itemLabel="#{domain}" itemValue="#{domain}"/>
-            </p:selectOneMenu>
-        </div>
-        <div class="ui-g-12 ui-md-6 ui-lg-3">
-        </div>
-    </div>
+    </h:panelGrid>
 </composite:implementation>
 </html>

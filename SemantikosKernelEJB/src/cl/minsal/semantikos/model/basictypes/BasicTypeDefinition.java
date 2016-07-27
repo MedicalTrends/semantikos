@@ -138,7 +138,15 @@ public class BasicTypeDefinition<T extends Comparable> implements TargetDefiniti
         return !this.domain.isEmpty();
     }
 
-    public String intervalTypeOf(){
+    public String typeOf(){
+        if(this.domain != null){
+            if (this.domain.get(0) instanceof java.lang.Integer)
+                return "Integer";
+            if (this.domain.get(0) instanceof java.lang.String)
+                return "String";
+            if (this.domain.get(0) instanceof java.util.Date)
+                return "Date";
+        }
         if(this.interval != null) {
             if (this.interval.bottomBoundary instanceof java.lang.Integer)
                 return "Integer";
@@ -150,17 +158,6 @@ public class BasicTypeDefinition<T extends Comparable> implements TargetDefiniti
         return "";
     }
 
-    public String domainTypeOf(){
-        if (this.domain.get(0) instanceof java.lang.Integer)
-            return "Integer";
-        if (this.domain.get(0) instanceof java.lang.String)
-            return "String";
-        if (this.domain.get(0) instanceof java.util.Date)
-            return "Date";
-        return "";
-    }
-
-
     @Override
     public boolean isBasicType() {
         return true;
@@ -169,5 +166,9 @@ public class BasicTypeDefinition<T extends Comparable> implements TargetDefiniti
     @Override
     public boolean isSMTKType() {
         return false;
+    }
+
+    public List<String> asString(){
+        return (List<String>)domain;
     }
 }
