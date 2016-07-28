@@ -106,12 +106,8 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         //concept = new ConceptSMTK(category, new Description("electrocardiograma de urgencia", descriptionTypes.get(0)));
         concept = conceptManager.newConcept(category, "electrocardiograma de urgencia");
         System.out.println("concept.getRelationships().size()= "+concept.getRelationships().size());
-        System.out.println("category: "+ category.getRelationshipDefinitions().size());
+        System.out.println("category: "+ category.getRelationshipDefinitions().get(0).getRelationships().size());
 
-
-        for (int i = 0; i < category.getRelationshipDefinitions().size(); i++) {
-            System.out.println(category.getRelationshipDefinitions().get(i).getTargetDefinition().isBasicType());
-        }
 
 
 
@@ -127,15 +123,19 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
                 category.getRelationshipDefinitions().get(i).getRelationships().add(r);
             }
         }*/
+        System.out.println("Target: "+c);
+if(c!= null){
+    int index = category.getRelationshipDefinitions().indexOf(rd);
 
-        int index = category.getRelationshipDefinitions().indexOf(rd);
+    category.getRelationshipDefinitions().get(index).getRelationships().add(r);
+}
 
-        category.getRelationshipDefinitions().get(index).getRelationships().add(r);
 
         //concept.addRelationship(r);
         //concept.addRelationship(r);
         for (int i = 0; i < category.getRelationshipDefinitions().get(0).getRelationships().size(); i++) {
             System.out.println(category.getRelationshipDefinitions().get(0).getRelationships().get(i));
+            System.out.println(category.getRelationshipDefinitions().get(0).getRelationships().get(i).getTarget());
         }
     }
 
