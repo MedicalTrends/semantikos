@@ -216,8 +216,8 @@
                 <ui:repeat value="#{newConceptMBean.category.relationshipDefinitions}" var="relationshipDefinition">
                     <smtk:basicType name="#{relationshipDefinition.name}"
                                     targetDefinition="#{relationshipDefinition.targetDefinition}"
-                                              relationshipDefinition="#{relationshipDefinition}"
-                                              rendered="#{relationshipDefinition.targetDefinition.basicType}"
+                                    relationshipDefinition="#{relationshipDefinition}"
+                                    rendered="#{relationshipDefinition.targetDefinition.basicType}"
                                     target="#{newConceptMBean.basicValue}"
                     />
                     <smtk:smtkType  relationshipDefinition="#{relationshipDefinition}"

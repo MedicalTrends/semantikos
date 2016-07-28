@@ -22,10 +22,11 @@
             </div>
             <div class="ui-g-12 ui-md-6 ui-lg-5">
                 <p:selectOneMenu id="domainSelect"
-                                 value="#{cc.attrs.target.value}"
+                                 value="#{newConceptMBean.basicTypeValue.value}"
+                                 var="value"
                                  converter="omnifaces.SelectItemsConverter"
                                  rendered="#{cc.attrs.targetDefinition.domainType}">
-                    <p:ajax update="conceptSavetbl" listener="#{newConceptMBean.addRelationSMTK(cc.attrs.relationshipDefinition,domain)}"/>
+                    <p:ajax update="conceptSavetbl" listener="#{newConceptMBean.addRelationSMTK(cc.attrs.relationshipDefinition,value)}"/>
                     <f:selectItem itemLabel="Seleccione" itemValue=""/>
                     <f:selectItems value="#{cc.attrs.targetDefinition.domain}" var="domain"
                                    itemLabel="#{domain}" itemValue="#{domain}"/>
