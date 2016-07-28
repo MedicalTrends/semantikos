@@ -12,6 +12,8 @@ import cl.minsal.semantikos.model.relationships.Target;
 import cl.minsal.semantikos.model.relationships.TargetDefinition;
 import org.primefaces.event.CellEditEvent;
 import org.primefaces.event.RowEditEvent;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -34,6 +36,8 @@ import java.util.List;
 @ManagedBean(name="newConceptMBean")
 @ViewScoped
 public class NewConceptMBean<T extends Comparable> implements Serializable {
+
+    static final Logger LOGGER = LoggerFactory.getLogger(NewConceptMBean.class);
 
     @EJB
     ConceptManagerInterface conceptManager;
@@ -71,20 +75,6 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
     // Placeholder para los target (multiplicidad N)
     private BasicTypeValue basicTypeValue = new BasicTypeValue();
 
-    private List<BasicTypeDefinition> basicTypeDefinitions = new ArrayList<BasicTypeDefinition>();
-
-
-    private T basicValue;
-
-    private ConceptSMTK conceptSMTK;
-
-    public ConceptSMTK getConceptSMTK() {
-        return conceptSMTK;
-    }
-
-    public void setConceptSMTK(ConceptSMTK conceptSMTK) {
-        this.conceptSMTK = conceptSMTK;
-    }
 
     @PostConstruct
     protected void initialize() throws ParseException {
@@ -108,9 +98,37 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         System.out.println("concept.getRelationships().size()= "+concept.getRelationships().size());
         System.out.println("category: "+ category.getRelationshipDefinitions().get(0).getRelationships().size());
 
+    }
+
+    public void setRelationship(RelationshipDefinition rd, Relationship r){
+
+        LOGGER.debug("setRelationship, Target ={} ",r.getTarget());
 
 
+        int index = concept.getRelationships().indexOf(r);
+        concept.getRelationships().set(index, r);
 
+        if(r.getTarget()!= null){
+
+            int index1 = category.getRelationshipDefinitions().indexOf(rd);
+            int index2 = category.getRelationshipDefinitions().get(index1).getRelationships().indexOf(r);
+
+            System.out.println("voy a actualizar la relacion");
+            System.out.println("index="+index1+" index2="+index2);
+            //category.getRelationshipDefinitions().get(index).getRelationships().set(index2,r);
+
+            for (Relationship relationship : category.getRelationshipDefinitions().get(0).getRelationships()) {
+                BasicTypeValue basic=(BasicTypeValue)relationship.getTarget();
+                System.out.println("basic.getValue()="+basic.getValue());
+            }
+            System.out.println("Concept");
+            for (Relationship relationship : concept.getRelationships()) {
+                BasicTypeValue basic=(BasicTypeValue)relationship.getTarget();
+                System.out.println("basic.getValue()="+basic.getValue());
+            }
+
+        }
+        basicTypeValue = new BasicTypeValue();
     }
 
 
@@ -123,20 +141,25 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
                 category.getRelationshipDefinitions().get(i).getRelationships().add(r);
             }
         }*/
+        System.out.println("addRelationSMTK");
         System.out.println("Target: "+c);
-if(c!= null){
-    int index = category.getRelationshipDefinitions().indexOf(rd);
+        if(c!= null){
+            rd.getRelationships().add(r);
+        }
 
-    category.getRelationshipDefinitions().get(index).getRelationships().add(r);
-}
-
+        concept.addRelationship(r);
 
         //concept.addRelationship(r);
         //concept.addRelationship(r);
+        /*
         for (int i = 0; i < category.getRelationshipDefinitions().get(0).getRelationships().size(); i++) {
             System.out.println(category.getRelationshipDefinitions().get(0).getRelationships().get(i));
             System.out.println(category.getRelationshipDefinitions().get(0).getRelationships().get(i).getTarget());
         }
+        */
+
+        basicTypeValue = new BasicTypeValue();
+
     }
 
 
@@ -241,10 +264,6 @@ if(c!= null){
         concept.getOtherDescriptions().remove(item);
     }
 
-    public void removeBasicType(BasicTypeDefinition item) {
-        getBasicTypeDefinitions().remove(item);
-    }
-
     public void addDescription() {
         Description description = new Description(otherTermino, otherDescriptionType);
         description.setTerm(otherTermino);
@@ -255,33 +274,8 @@ if(c!= null){
         concept.addDescription(description);
     }
 
-    public void addRelationship(RelationshipDefinition relationshipDefinition, Target target){
-
-        Relationship relationship= new Relationship(relationshipDefinition);
-        relationship.setTarget(target);
-
-        this.concept.addRelationship(relationship);
-    }
-
-    public T getBasicValue() {
-        return basicValue;
-    }
-
-    public void setBasicValue(T basicValue) {
-        System.out.println("setBasicValue");
-        this.basicValue = basicValue;
-    }
-
     public BasicTypeValue getBasicTypeValue() {
         return basicTypeValue;
-    }
-
-    public List<BasicTypeDefinition> getBasicTypeDefinitions() {
-        return basicTypeDefinitions;
-    }
-
-    public void setBasicTypeDefinitions(List<BasicTypeDefinition> basicTypeDefinitions) {
-        this.basicTypeDefinitions = basicTypeDefinitions;
     }
 
     public void setBasicTypeValue(BasicTypeValue basicTypeValue) {
@@ -289,28 +283,5 @@ if(c!= null){
         this.basicTypeValue = basicTypeValue;
     }
 
-    public void addBasicTypeDefinition(RelationshipDefinition relationshipDefinition){
-        Relationship relationship = new Relationship(relationshipDefinition);
-        relationship.setTarget(basicTypeValue);
-        //concept.addRelationship(new Relationship());
-        basicTypeDefinitions.add((BasicTypeDefinition) relationshipDefinition.getTargetDefinition());
-        concept.addRelationship(relationship);
-        //basicTypeValue = new BasicTypeValue();
-        System.out.println("concept.getRelationships().size()="+concept.getRelationships().size());
-        BasicTypeValue valor= (BasicTypeValue)concept.getRelationships().get(0).getTarget();
-        System.out.println("valor.getValue()="+valor.getValue());
-    }
-
-    public void addRelationship() {
-
-        /* Relationship relationship = new Relationship();
-        relationship.setTarget(basicTypeValue);
-        concept.addRelationship(relationship); */
-    }
-
-    public void setRelationship(){
-        System.out.println("setRelationship");
-        //concept.getRelationships()
-    }
 }
 

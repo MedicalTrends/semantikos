@@ -3,6 +3,8 @@ package cl.minsal.semantikos.kernel.daos;
 import cl.minsal.semantikos.kernel.util.ConnectionBD;
 import cl.minsal.semantikos.model.Category;
 import cl.minsal.semantikos.model.relationships.RelationshipDefinition;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 //import org.hibernate.persister.internal.PersisterClassResolverInitiator;
 
 import javax.ejb.EJB;
@@ -24,6 +26,8 @@ import java.util.List;
 
 @Stateless
 public class CategoryDAOImpl implements CategoryDAO {
+
+    static final Logger LOGGER = LoggerFactory.getLogger(CategoryDAOImpl.class);
 
     private static final String SQL_GET_FULL_CATEGORY = "{call semantikos.get_full_category_by_id(?)}";
 
@@ -61,7 +65,9 @@ public class CategoryDAOImpl implements CategoryDAO {
             rs.close();
 
         } catch (SQLException e) {
-            e.printStackTrace();
+
+            LOGGER.error("error en getCategoryById , id= {}",idCategory,e);
+
         }
 
         return  category;

@@ -214,16 +214,15 @@
                      widgetVar="panel" style="margin-bottom:20px" >
 
                 <ui:repeat value="#{newConceptMBean.category.relationshipDefinitions}" var="relationshipDefinition">
-                    <smtk:basicType name="#{relationshipDefinition.name}"
+                    <smtk:basicType relationshipDefinition="#{relationshipDefinition}"
                                     targetDefinition="#{relationshipDefinition.targetDefinition}"
-                                    relationshipDefinition="#{relationshipDefinition}"
+                                    multiplicity="#{relationshipDefinition.multiplicity}"
                                     rendered="#{relationshipDefinition.targetDefinition.basicType}"
-                                    target="#{newConceptMBean.basicValue}"
                     />
                     <smtk:smtkType  relationshipDefinition="#{relationshipDefinition}"
                                     rendered="#{relationshipDefinition.targetDefinition.SMTKType}"
                                     targetDefinition="#{relationshipDefinition.targetDefinition}"
-                                    target="#{newConceptMBean.conceptSMTK}"/>
+                    />
                 </ui:repeat>
             </p:panel>
 

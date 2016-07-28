@@ -1,13 +1,16 @@
 package cl.minsal.semantikos.model.basictypes;
 
+import cl.minsal.semantikos.kernel.daos.CategoryDAOImpl;
 import cl.minsal.semantikos.model.ConceptSMTK;
 import cl.minsal.semantikos.model.relationships.Target;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
  */
 public class BasicTypeValue<T extends Comparable> implements Target {
-
+    static final Logger LOGGER = LoggerFactory.getLogger(BasicTypeValue.class);
     private BasicTypeDefinition basicTypeDefinition;
 
     private T value;
@@ -23,7 +26,11 @@ public class BasicTypeValue<T extends Comparable> implements Target {
         return value;
     }
 
-    public void setValue(T value) {
+    public void setValue(T value)
+
+    {
+        LOGGER.debug("seteando valor de target valor={}",value);
+        System.out.println("seteando valor de target valor="+value);
         this.value = value;
     }
 
@@ -44,7 +51,10 @@ public class BasicTypeValue<T extends Comparable> implements Target {
     @Override
     public String toString() {
         //return String.format("ExampleEntity[%d, %s]", idDescriptionType, glosa);
-        return getValue().toString();
+        if(this.getValue()!=null)
+            return getValue().toString();
+        else
+            return "null";
     }
 
     public String asString(){
