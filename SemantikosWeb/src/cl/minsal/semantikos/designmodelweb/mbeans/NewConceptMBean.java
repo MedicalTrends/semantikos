@@ -8,6 +8,8 @@ import cl.minsal.semantikos.model.basictypes.BasicTypeDefinition;
 import cl.minsal.semantikos.model.basictypes.BasicTypeValue;
 import cl.minsal.semantikos.model.relationships.Relationship;
 import cl.minsal.semantikos.model.relationships.RelationshipDefinition;
+import cl.minsal.semantikos.model.relationships.Target;
+import cl.minsal.semantikos.model.relationships.TargetDefinition;
 import org.primefaces.event.CellEditEvent;
 import org.primefaces.event.RowEditEvent;
 
@@ -208,9 +210,8 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
     }
 
     public void addRelationship(RelationshipDefinition relationshipDefinition, Target target){
-        Relationship relationship= new Relationship();
 
-        relationship.setRelationshipDefinition(relationshipDefinition);
+        Relationship relationship= new Relationship(relationshipDefinition);
         relationship.setTarget(target);
 
         this.concept.addRelationship(relationship);
@@ -242,11 +243,16 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         this.basicTypeValue = basicTypeValue;
     }
 
-    public void addBasicTypeDefinition(TargetDefinition targetDefinition){
-        //Relationship relationship = new Relationship();
+    public void addBasicTypeDefinition(RelationshipDefinition relationshipDefinition){
+        Relationship relationship = new Relationship(relationshipDefinition);
+        relationship.setTarget(basicTypeValue);
         //concept.addRelationship(new Relationship());
-        category.getRelationshipDefinitions().get
-        basicTypeDefinitions.add((BasicTypeDefinition) targetDefinition);
+        basicTypeDefinitions.add((BasicTypeDefinition) relationshipDefinition.getTargetDefinition());
+        concept.addRelationship(relationship);
+        //basicTypeValue = new BasicTypeValue();
+        System.out.println("concept.getRelationships().size()="+concept.getRelationships().size());
+        BasicTypeValue valor= (BasicTypeValue)concept.getRelationships().get(0).getTarget();
+        System.out.println("valor.getValue()="+valor.getValue());
     }
 
     public void addRelationship() {

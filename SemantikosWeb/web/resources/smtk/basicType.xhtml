@@ -8,6 +8,7 @@
       xmlns:p="http://primefaces.org/ui">
 
 <composite:interface componentType="basicTypeBean">
+    <composite:attribute name="relationshipDefinition" type="cl.minsal.semantikos.model.relationships.RelationshipDefinition" />
     <composite:attribute name="name" type="java.lang.String" />
     <composite:attribute name="multiplicity" type="cl.minsal.semantikos.model.Multiplicity" />
     <composite:attribute name="targetDefinition" type="cl.minsal.semantikos.model.basictypes.BasicTypeDefinition" />
@@ -40,7 +41,7 @@
                 <p:commandButton update="basicTypeDefinitions"
                                  icon="fa fa-plus"
                                  title="Agregar"
-                                 actionListener="#{newConceptMBean.addBasicTypeDefinition(cc.attrs.targetDefinition)}">
+                                 actionListener="#{newConceptMBean.addBasicTypeDefinition(cc.attrs.relationshipDefinition)}">
                 </p:commandButton>
             </div>
         </div>
@@ -56,7 +57,7 @@
                     </p:column>
                     <p:column headerText="Valor">
                         <p:selectOneMenu
-                                value="#{cc.attrs.target.value}"
+                                value="#{newConceptMBean.basicTypeValue.value}"
                                 converter="omnifaces.SelectItemsConverter"
                                 rendered="#{cc.attrs.targetDefinition.domainType}">
                             <f:selectItem itemLabel="Seleccione" itemValue=""/>

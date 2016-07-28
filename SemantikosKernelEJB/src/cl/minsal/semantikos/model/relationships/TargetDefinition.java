@@ -1,5 +1,7 @@
 package cl.minsal.semantikos.model.relationships;
 
+import cl.minsal.semantikos.model.basictypes.BasicTypeDefinition;
+
 /**
  * @author Andres Farias
  */
@@ -20,4 +22,5 @@ public interface TargetDefinition {
      * @return <code>true</code> si es de tipo Tabla Auxiliar y <code>false</code> si no.
      */
     public boolean isHelperTable();
+
 }

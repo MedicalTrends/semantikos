@@ -3,6 +3,7 @@ package cl.minsal.semantikos.model;
 import cl.minsal.semantikos.model.relationships.RelationshipDefinition;
 import cl.minsal.semantikos.model.relationships.TargetDefinition;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -82,6 +83,18 @@ public class Category implements TargetDefinition {
 
     public void setRelationshipDefinitions(List<RelationshipDefinition> relationshipDefinitions) {
         this.relationshipDefinitions = relationshipDefinitions;
+    }
+
+    public List<RelationshipDefinition> getRelationshipDefinitionsOfTypeCollection(){
+
+        List<RelationshipDefinition> relationshipDefinitions = new ArrayList<>();
+
+        for (RelationshipDefinition relationshipDefinition : relationshipDefinitions) {
+            if(relationshipDefinition.getMultiplicity().getUpperBoundary()==0)
+                relationshipDefinitions.add(relationshipDefinition);
+        }
+
+        return relationshipDefinitions;
     }
 
 

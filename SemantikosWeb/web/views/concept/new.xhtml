@@ -213,12 +213,10 @@
             <p:panel id="atributos" header="Atributos" toggleable="true" toggleSpeed="500" closeSpeed="500"
                      widgetVar="panel" style="margin-bottom:20px" >
 
-                <ui:repeat value="#{newConceptMBean.category.relationshipDefinitions}" var="relationshipDefinition">
-                    <smtk:basicType name="#{relationshipDefinition.name}"
-                                    multiplicity="#{relationshipDefinition.multiplicity}"
-                                    targetDefinition="#{relationshipDefinition.targetDefinition}"
-                                    target="#{newConceptMBean.basicTypeValue}"
-                                    rendered="#{relationshipDefinition.targetDefinition.basicType}"/>
+                <ui:repeat value="#{newConceptMBean.category.relationshipDefinitionsOfTypeCollection}" var="relationshipDefinition">
+                    <smtk:basicTypeCollection name="#{relationshipDefinition.name}"
+                                              relationshipDefinition="#{relationshipDefinition}"
+                                              rendered="#{relationshipDefinition.targetDefinition.basicType}"/>
                     <smtk:smtkType  rendered="#{relationshipDefinition.targetDefinition.SMTKType}"/>
                 </ui:repeat>
             </p:panel>
