@@ -1,5 +1,6 @@
 package cl.minsal.semantikos.model.basictypes;
 
+import cl.minsal.semantikos.model.ConceptSMTK;
 import cl.minsal.semantikos.model.relationships.Target;
 
 /**
@@ -49,6 +50,5 @@ public class BasicTypeValue<T extends Comparable> implements Target {
     public String asString(){
         return value.toString();
     }
-
 
 }

@@ -3,6 +3,7 @@ package cl.minsal.semantikos.designmodelweb.mbeans;
 import cl.minsal.semantikos.kernel.components.ConceptManagerInterface;
 import cl.minsal.semantikos.model.Category;
 import cl.minsal.semantikos.model.ConceptSMTK;
+import cl.minsal.semantikos.model.relationships.RelationshipDefinition;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
 
@@ -18,6 +19,7 @@ import java.util.Map;
 /**
  * Created by des01c7 on 26-07-16.
  */
+
 @ManagedBean(name="smtkBean")
 @ViewScoped
 public class SMTKTypeBean implements Serializable{
@@ -54,7 +56,7 @@ public class SMTKTypeBean implements Serializable{
 
     }
 
-    public void addRelationSMTK(ConceptSMTK c){
+    public void addRelationSMTK(RelationshipDefinition r,ConceptSMTK c){
 
         conceptSave.add(c);
 

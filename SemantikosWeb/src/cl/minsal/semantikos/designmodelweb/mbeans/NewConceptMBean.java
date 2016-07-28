@@ -30,6 +30,7 @@ import java.util.List;
 /**
  * Created by diego on 26/06/2016.
  */
+
 @ManagedBean(name="newConceptMBean")
 @ViewScoped
 public class NewConceptMBean<T extends Comparable> implements Serializable {
@@ -75,6 +76,16 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
 
     private T basicValue;
 
+    private ConceptSMTK conceptSMTK;
+
+    public ConceptSMTK getConceptSMTK() {
+        return conceptSMTK;
+    }
+
+    public void setConceptSMTK(ConceptSMTK conceptSMTK) {
+        this.conceptSMTK = conceptSMTK;
+    }
+
     @PostConstruct
     protected void initialize() throws ParseException {
 
@@ -88,11 +99,46 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
 
         //category = categoryManager.getCategoryById(1);
         category = categoryManager.getCategoryById(105590001);
+        for (int i = 0; i < category.getRelationshipDefinitions().size() ; i++) {
+            System.out.println(category.getRelationshipDefinitions().get(i).getName());
+        }
         descriptionTypes = descriptionManager.getOtherTypes();
         //concept = new ConceptSMTK(category, new Description("electrocardiograma de urgencia", descriptionTypes.get(0)));
         concept = conceptManager.newConcept(category, "electrocardiograma de urgencia");
-        System.out.println("concept.getRelationships().size()="+concept.getRelationships().size());
+        System.out.println("concept.getRelationships().size()= "+concept.getRelationships().size());
+        System.out.println("category: "+ category.getRelationshipDefinitions().size());
+
+
+        for (int i = 0; i < category.getRelationshipDefinitions().size(); i++) {
+            System.out.println(category.getRelationshipDefinitions().get(i).getTargetDefinition().isBasicType());
+        }
+
+
+
     }
+
+
+    public void addRelationSMTK(RelationshipDefinition rd,Target c){
+
+        Relationship r= new Relationship(rd);
+        r.setTarget(c);
+        /*for (int i = 0; i < category.getRelationshipDefinitions().size() ; i++) {
+            if(category.getRelationshipDefinitions().get(i).getId()==rd.getId()){
+                category.getRelationshipDefinitions().get(i).getRelationships().add(r);
+            }
+        }*/
+
+        int index = category.getRelationshipDefinitions().indexOf(rd);
+
+        category.getRelationshipDefinitions().get(index).getRelationships().add(r);
+
+        //concept.addRelationship(r);
+        //concept.addRelationship(r);
+        for (int i = 0; i < category.getRelationshipDefinitions().get(0).getRelationships().size(); i++) {
+            System.out.println(category.getRelationshipDefinitions().get(0).getRelationships().get(i));
+        }
+    }
+
 
     public String getMyFormattedDate(Date date) {
         SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");

@@ -272,4 +272,5 @@ public class ConceptSMTK implements Target {
     public int countDescription(){
         return otherDescriptions.size();
     }
+
 }

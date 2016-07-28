@@ -2,6 +2,7 @@ package cl.minsal.semantikos.model.relationships;
 
 import cl.minsal.semantikos.model.Multiplicity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,6 +21,9 @@ public class RelationshipDefinition {
 
     /** El tipo del objeto destino de la relación */
     private TargetDefinition targetDefinition;
+
+    /** El tipo del objeto destino de la relación */
+    private List<Relationship> relationships;
 
     /** Multiplicidad de la relación */
     private Multiplicity multiplicity;
@@ -58,6 +62,7 @@ public class RelationshipDefinition {
     public RelationshipDefinition(long id, String name, String description, TargetDefinition targetDefinition, Multiplicity multiplicity) {
         this(name, description, multiplicity, targetDefinition);
         this.id = id;
+        relationships= new ArrayList<>();
     }
 
     public int getIdCategoryDes() {
@@ -144,5 +149,13 @@ public class RelationshipDefinition {
 
     public void setRelationshipAttributeDefinitions(List<RelationshipAttributeDefinition> relationshipAttributeDefinitions) {
         this.relationshipAttributeDefinitions = relationshipAttributeDefinitions;
+    }
+
+    public List<Relationship> getRelationships() {
+        return relationships;
+    }
+
+    public void setRelationships(List<Relationship> relationships) {
+        this.relationships = relationships;
     }
 }

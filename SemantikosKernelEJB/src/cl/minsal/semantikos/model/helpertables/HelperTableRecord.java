@@ -1,5 +1,6 @@
 package cl.minsal.semantikos.model.helpertables;
 
+import cl.minsal.semantikos.model.ConceptSMTK;
 import cl.minsal.semantikos.model.relationships.Target;
 
 /**
@@ -23,4 +24,5 @@ public class HelperTableRecord implements Target {
         this.helperTable = helperTable;
         this.idRecord = idRecord;
     }
+
 }
