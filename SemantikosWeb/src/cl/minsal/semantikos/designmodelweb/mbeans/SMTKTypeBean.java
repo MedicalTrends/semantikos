@@ -13,6 +13,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -26,7 +27,10 @@ public class SMTKTypeBean implements Serializable{
 
     private Category category;
     private String pattern;
-    private LazyDataModel<ConceptSMTK> conceptSearch;
+    //private LazyDataModel<ConceptSMTK> conceptSearch;
+
+    private Map<Long,LazyDataModel<ConceptSMTK>> conceptSearchMap;
+
     private ConceptSMTK conceptSelected;
     private List<ConceptSMTK> conceptSave;
 
@@ -35,6 +39,36 @@ public class SMTKTypeBean implements Serializable{
     @EJB
     private ConceptManagerInterface conceptManager;
 
+
+    public LazyDataModel<ConceptSMTK> getConceptSearchForRDId(Long idRelationshipDefinition){
+
+        if(conceptSearchMap == null)
+            conceptSearchMap = new HashMap<Long, LazyDataModel<ConceptSMTK>>();
+
+
+        if (!conceptSearchMap.containsKey(idRelationshipDefinition)){
+            LazyDataModel<ConceptSMTK> conceptSearch;
+            conceptSearch = new LazyDataModel<ConceptSMTK>() {
+                @Override
+                public List<ConceptSMTK> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
+                    List<ConceptSMTK> conceptSMTKs;
+
+                    final Long[] categoryArr = new Long[1];
+                    categoryArr[0]=(long)105590001;
+
+                    conceptSMTKs = conceptManager.findConceptByConceptIDOrDescriptionCategoryPageNumber(pattern, categoryArr, first, pageSize);
+                    this.setRowCount(conceptManager.getAllConceptCount(pattern, categoryArr));
+                    return conceptSMTKs;
+                }
+
+            };
+
+            conceptSearchMap.put(idRelationshipDefinition,conceptSearch);
+        }
+
+        return  conceptSearchMap.get(idRelationshipDefinition);
+    }
+
     @PostConstruct
     public void init() {
         conceptSave= new ArrayList<ConceptSMTK>();
@@ -42,7 +76,7 @@ public class SMTKTypeBean implements Serializable{
         //categoryArr[0]=category.getIdCategory();
         categoryArr[0]=(long)105590001;
 
-        conceptSearch = new LazyDataModel<ConceptSMTK>() {
+        /*conceptSearch = new LazyDataModel<ConceptSMTK>() {
             @Override
             public List<ConceptSMTK> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
                 List<ConceptSMTK> conceptSMTKs;
@@ -52,7 +86,7 @@ public class SMTKTypeBean implements Serializable{
                 return conceptSMTKs;
             }
 
-        };
+        };*/
 
     }
 
@@ -87,13 +121,6 @@ public class SMTKTypeBean implements Serializable{
         this.pattern = pattern;
     }
 
-    public LazyDataModel<ConceptSMTK> getConceptSearch() {
-        return conceptSearch;
-    }
-
-    public void setConceptSearch(LazyDataModel<ConceptSMTK> conceptSearch) {
-        this.conceptSearch = conceptSearch;
-    }
 
     public ConceptManagerInterface getConceptManager() {
         return conceptManager;

@@ -11,6 +11,9 @@ import java.util.List;
  */
 public class HelperTable implements TargetDefinition {
 
+    /** Identificador único */
+    private long id;
+
     /** Un nombre legible por humanos para la Tabla Auxiliar */
     private String name;
 
@@ -34,6 +37,11 @@ public class HelperTable implements TargetDefinition {
 
         /* El nombre por defecto de la columna de PK es ID */
         this.pkColumnName = "ID";
+    }
+
+    public HelperTable(long id, String name, String description, String tablaName, HelperTableColumn[] columns) {
+        this(name, description, tablaName, columns);
+        this.id = id;
     }
 
     public HelperTableColumn[] getColumns() {

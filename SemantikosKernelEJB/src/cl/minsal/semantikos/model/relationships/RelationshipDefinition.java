@@ -159,12 +159,20 @@ public class RelationshipDefinition {
         this.relationships = relationships;
     }
 
-    public void addRelationship(Relationship relationship) {
 
-        relationship.setIdRelationship(relationships.size()+1);
-        this.relationships.add(relationship);
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        RelationshipDefinition that = (RelationshipDefinition) o;
+
+        return id == that.id;
 
     }
 
-    public Relationship getRelationship() { return relationships.get(0); }
+    @Override
+    public int hashCode() {
+        return (int) (id ^ (id >>> 32));
+    }
 }

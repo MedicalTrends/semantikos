@@ -38,7 +38,7 @@ public class HelperTableFactory {
         HelperTableColumn descripcionATCColumn = new HelperTableColumn("DESCRIPCION_ATC", false, true, true);
 
         HelperTableColumn[] columns = {idColumn, codigoATCColumn, descripcionATCColumn};
-        this.atcHT = new HelperTable("ATC", "Tabla de códigos ATC", "HELPER_TABLE_ATC", columns);
+        this.atcHT = new HelperTable((long)1, "ATC", "Tabla de códigos ATC", "HELPER_TABLE_ATC", columns);
 
         return this.atcHT;
     }

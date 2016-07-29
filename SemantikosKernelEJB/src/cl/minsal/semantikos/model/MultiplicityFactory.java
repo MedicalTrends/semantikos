@@ -13,6 +13,8 @@ public class MultiplicityFactory {
 
     private static final Logger logger = LoggerFactory.getLogger(MultiplicityFactory.class);
 
+    public static final Multiplicity ONE_TO_MANY = new MultiplicityFactory().createMultiplicityByUML("1-N");
+
     /**
      * Este método es responsable de crear una multiplicidad, a partir de una expresión UML.
      * <p>Ejemplo: <code>1-N</code>, o <code>1-1</code>, o <code>0-N</code></p>
