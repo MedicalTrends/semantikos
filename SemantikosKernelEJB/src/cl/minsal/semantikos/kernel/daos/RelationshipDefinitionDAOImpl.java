@@ -96,7 +96,7 @@ public class RelationshipDefinitionDAOImpl implements RelationshipDefinitionDAO 
      *
      * @throws IllegalArgumentException Arrojado si todos los parámetros son nulos.
      */
-    private TargetDefinition getTargetDefinition(String idCategory, String idAccesoryTable, String idExternTable, String idBasicType, String isSCTType) throws IllegalArgumentException {
+    protected TargetDefinition getTargetDefinition(String idCategory, String idAccesoryTable, String idExternTable, String idBasicType, String isSCTType) throws IllegalArgumentException {
 
         /* Se testea si es un tipo básico */
 
