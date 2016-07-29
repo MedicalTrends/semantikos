@@ -40,7 +40,6 @@
                          emptyMessage="No se han encontrado conceptos con los criterios utilizados"
             >
 
-
                 <p:column headerText="ID">
                     <h:outputText value="#{concept.id}"/>
                 </p:column>
@@ -50,7 +49,7 @@
                 </p:column>
                 <p:column headerText="Agregar" style="width:60px;text-align: center">
                     <p:commandButton update=":mainForm" icon="fa fa-plus"
-                                     title="Agregar" actionListener="#{newConceptMBean.addRelationSMTK(cc.attrs.relationshipDefinition,concept)}" >
+                                     title="Agregar" actionListener="#{newConceptMBean.addRelationship(cc.attrs.relationshipDefinition,concept)}" >
                     </p:commandButton>
                 </p:column>
 

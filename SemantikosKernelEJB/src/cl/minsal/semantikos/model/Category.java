@@ -130,6 +130,10 @@ public class Category implements TargetDefinition {
         return result;
     }
 
+    public boolean isHasRelationshipDefinitions(){
+        return !relationshipDefinitions.isEmpty();
+    }
+
     @Override
     public boolean isBasicType() {
         return false;

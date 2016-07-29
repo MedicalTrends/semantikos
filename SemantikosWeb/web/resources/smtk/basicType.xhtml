@@ -13,68 +13,130 @@
     <composite:attribute name="targetDefinition" type="cl.minsal.semantikos.model.basictypes.BasicTypeDefinition" />
 </composite:interface>
 <composite:implementation>
-    <h:panelGrid rendered="#{cc.attrs.multiplicity.upperBoundary == 1}">
+    <p:panel rendered="#{cc.attrs.multiplicity.upperBoundary == 1}">
         <div class="ui-g">
             <div class="ui-g-12 ui-md-6 ui-lg-2">
-                <p:outputLabel for="domainSelect" value="#{cc.attrs.relationshipDefinition.name}"/>
+                <p:outputLabel for="basicTypeValue" value="#{cc.attrs.relationshipDefinition.name}"/>
             </div>
-            <div class="ui-g-12 ui-md-6 ui-lg-5">
-                <p:selectOneMenu id="domainSelect"
+            <div class="ui-g-12 ui-md-6 ui-lg-10">
+                <p:selectOneMenu id="basicTypeValue"
                                  value="#{newConceptMBean.basicTypeValue.value}"
                                  var="value1"
                                  converter="omnifaces.SelectItemsConverter"
-                                 rendered="#{cc.attrs.targetDefinition.domainType}">
-                    <p:ajax update="conceptSavetbl" listener="#{newConceptMBean.setRelationship(cc.attrs.relationshipDefinition,newConceptMBean.basicTypeValue)}"/>
-                    <f:selectItem itemLabel="Seleccione" itemValue=""/>
-                    <f:selectItems value="#{cc.attrs.targetDefinition.domain}" var="domain"
-                                   itemLabel="#{domain}" itemValue="#{domain}"/>
+                                 rendered="#{cc.attrs.targetDefinition.hasDomain}">
+                        <f:selectItem itemLabel="Seleccione" itemValue=""/>
+                        <f:selectItems value="#{cc.attrs.targetDefinition.domain}" var="domain"
+                                       itemLabel="#{domain}" itemValue="#{domain}"/>
                 </p:selectOneMenu>
-            </div>
-            <p:dataTable id="conceptSavetbl" value="#{cc.attrs.relationshipDefinition.relationships}" var="rel" >
-                <p:column headerText="value">
-                    <h:outputText value="#{rel.target.value}"/>
-                </p:column>
-            </p:dataTable>
-
-            <div class="ui-g-12 ui-md-6 ui-lg-3">
-                <p:message for="domainSelect" ></p:message>
+                <p:inputNumber id="basicTypeValue2"
+                               value="#{newConceptMBean.basicTypeValue.value}"
+                               var="value"
+                               minValue="#{cc.attrs.targetDefinition.interval.lowerBoundary}"
+                               maxValue="#{cc.attrs.targetDefinition.interval.upperBoundary}"
+                               decimalPlaces="0"
+                               rendered="#{cc.attrs.targetDefinition.integer}">
+                </p:inputNumber>
+                <p:inputNumber id="basicTypeValue3"
+                               value="#{newConceptMBean.basicTypeValue.value}"
+                               var="value"
+                               minValue="#{cc.attrs.targetDefinition.interval.lowerBoundary}"
+                               maxValue="#{cc.attrs.targetDefinition.interval.upperBoundary}"
+                               decimalPlaces="2"
+                               rendered="#{cc.attrs.targetDefinition.float}">
+                </p:inputNumber>
+                <p:inputText id="basicTypeValue4"
+                             value="#{newConceptMBean.basicTypeValue.value}"
+                             var="value"
+                             minValue="#{cc.attrs.targetDefinition.interval.lowerBoundary}"
+                             maxValue="#{cc.attrs.targetDefinition.interval.upperBoundary}"
+                             rendered="#{cc.attrs.targetDefinition.string}">
+                </p:inputText>
+                <p:calendar id="basicTypeValue5"
+                            value="#{newConceptMBean.basicTypeValue.value}"
+                            var="value"
+                            mindate="#{cc.attrs.targetDefinition.interval.lowerBoundary}"
+                            maxdate="#{cc.attrs.targetDefinition.interval.upperBoundary}"
+                            rendered="#{cc.attrs.targetDefinition.date}">
+                </p:calendar>
             </div>
         </div>
-    </h:panelGrid>
-    <h:panelGrid rendered="#{cc.attrs.multiplicity.upperBoundary == 0}" >
+    </p:panel>
+    <p:panel id="basicType#{cc.attrs.relationshipDefinition.id}" header="#{cc.attrs.relationshipDefinition.name}"
+             toggleable="true" toggleSpeed="500"
+             closeSpeed="500"
+             widgetVar="panel" style="margin-bottom:20px"
+             rendered="#{cc.attrs.multiplicity.upperBoundary == 0}">
         <div class="ui-g">
-            <div class="ui-g-12 ui-md-6 ui-lg-12">
-                <p:commandButton update="basicTypeValues"
-                                 icon="fa fa-plus"
-                                 title="Agregar"
-                                 actionListener="#{newConceptMBean.addRelationSMTK(cc.attrs.relationshipDefinition,newConceptMBean.basicTypeValue)}">
-                </p:commandButton>
-            </div>
-        </div>
-        <div class="ui-g">
-            <div class="ui-g-12 ui-md-6 ui-lg-6">
+            <div class="ui-g-12 ui-md-6 ui-lg-5">
 
                 <p:dataTable id="basicTypeValues"
                              var="relationship"
                              value="#{cc.attrs.relationshipDefinition.relationships}"
                              reflow="true">
-                    <p:column>
+                    <p:column style="width:80%">
                         <p:selectOneMenu
-                                id="menu#{relationship.idRelationship}"
+                                id="basicValue6"
                                 value="#{relationship.target.value}"
                                 converter="omnifaces.SelectItemsConverter"
-                                rendered="#{cc.attrs.targetDefinition.domainType}">
-                            <!--p:ajax update=":mainForm" listener="#{newConceptMBean.setRelationship(cc.attrs.relationshipDefinition,relationship)}"/-->
+                                rendered="#{cc.attrs.targetDefinition.hasDomain}">
                             <f:selectItem itemLabel="Seleccione" itemValue=""/>
                             <f:selectItems value="#{cc.attrs.targetDefinition.domain}" var="domain"
                                            itemLabel="#{domain}" itemValue="#{domain}"/>
                         </p:selectOneMenu>
+                        <p:inputNumber id="basicValue7"
+                                       value="#{relationship.target.value}"
+                                       var="value"
+                                       minValue="#{cc.attrs.targetDefinition.interval.lowerBoundary}"
+                                       maxValue="#{cc.attrs.targetDefinition.interval.upperBoundary}"
+                                       decimalPlaces="0"
+                                       rendered="#{cc.attrs.targetDefinition.integer}">
+                        </p:inputNumber>
+                        <p:inputNumber id="basicValue8"
+                                       value="#{relationship.target.value}"
+                                       var="value"
+                                       minValue="#{cc.attrs.targetDefinition.interval.lowerBoundary}"
+                                       maxValue="#{cc.attrs.targetDefinition.interval.upperBoundary}"
+                                       decimalPlaces="2"
+                                       rendered="#{cc.attrs.targetDefinition.float}">
+                        </p:inputNumber>
+                        <p:inputText id="basicValue9"
+                                     value="#{relationship.target.value}"
+                                     var="value"
+                                     minValue="#{cc.attrs.targetDefinition.interval.lowerBoundary}"
+                                     maxValue="#{cc.attrs.targetDefinition.interval.upperBoundary}"
+                                     rendered="#{cc.attrs.targetDefinition.string}">
+                        </p:inputText>
+                        <p:calendar id="basicValue10"
+                                    value="#{relationship.target.value}"
+                                    var="value"
+                                    mindate="#{cc.attrs.targetDefinition.interval.lowerBoundary}"
+                                    maxdate="#{cc.attrs.targetDefinition.interval.upperBoundary}"
+                                    rendered="#{cc.attrs.targetDefinition.date}">
+                        </p:calendar>
                     </p:column>
-                    <p:column headerText="Eliminar">
+                    <p:column headerText="Eliminar" style="width:20%">
+                        <p:commandButton icon="fa fa-trash" title="Eliminar"
+                                         actionListener="#{newConceptMBean.removeRelationship(cc.attrs.relationshipDefinition, relationship)}"
+                                         update="basicTypeValues">
+                        </p:commandButton>
                     </p:column>
                 </p:dataTable>
             </div>
         </div>
-    </h:panelGrid>
+        <f:facet name="actions">
+            <p:commandLink styleClass="ui-panel-titlebar-icon ui-corner-all ui-state-default"
+                           update="basicTypeValues"
+                           title="Agregar"
+                           actionListener="#{newConceptMBean.addRelationship(cc.attrs.relationshipDefinition,newConceptMBean.basicTypeValue)}">
+                <h:outputText styleClass="ui-icon ui-icon-plusthick" />
+            </p:commandLink>
+            <!--p:commandButton update="basicTypeValues"
+                             value="Agregar"
+                             styleClass="ui-btn-warning"
+                             style="float: right"
+                             actionListener="#{newConceptMBean.addRelationship(cc.attrs.relationshipDefinition,newConceptMBean.basicTypeValue)}">
+            </p:commandButton-->
+        </f:facet>
+    </p:panel>
 </composite:implementation>
 </html>

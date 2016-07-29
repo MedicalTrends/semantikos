@@ -124,9 +124,26 @@ public class BasicTypeDefinition<T extends Comparable> implements TargetDefiniti
             return false;
     }
 
-    public boolean isDomainType(){
+    public boolean isHasDomain(){
         return !this.domain.isEmpty();
     }
+
+    public boolean isInteger() {
+        return (this.interval.lowerBoundary instanceof java.lang.Integer || this.interval.upperBoundary instanceof java.lang.Integer);
+    }
+
+    public boolean isString() {
+        return (this.interval.lowerBoundary instanceof java.lang.String || this.interval.upperBoundary instanceof java.lang.String);
+    }
+
+    public boolean isDate() {
+        return (this.interval.lowerBoundary instanceof java.util.Date || this.interval.upperBoundary instanceof java.util.Date);
+    }
+
+    public boolean isFloat() {
+        return (this.interval.lowerBoundary instanceof java.lang.Float || this.interval.upperBoundary instanceof java.lang.Float);
+    }
+
 
     public String typeOf(){
         if(this.domain != null){
@@ -138,11 +155,11 @@ public class BasicTypeDefinition<T extends Comparable> implements TargetDefiniti
                 return "Date";
         }
         if(this.interval != null) {
-            if (this.interval.bottomBoundary instanceof java.lang.Integer)
+            if (this.interval.lowerBoundary instanceof java.lang.Integer)
                 return "Integer";
-            if (this.interval.bottomBoundary instanceof java.lang.String)
+            if (this.interval.lowerBoundary instanceof java.lang.String)
                 return "String";
-            if (this.interval.bottomBoundary instanceof java.util.Date)
+            if (this.interval.lowerBoundary instanceof java.util.Date)
                 return "Date";
         }
         return "";

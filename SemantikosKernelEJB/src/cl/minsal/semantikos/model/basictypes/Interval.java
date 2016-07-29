@@ -6,7 +6,7 @@ package cl.minsal.semantikos.model.basictypes;
 public abstract class Interval<T extends Comparable> {
 
     /** Limite inferior del intervalo */
-    protected T bottomBoundary;
+    protected T lowerBoundary;
 
     /** Límite superior del intervalo */
     protected T upperBoundary;
@@ -15,16 +15,16 @@ public abstract class Interval<T extends Comparable> {
     }
 
     protected Interval(T bottomBoundary, T upperBoundary) {
-        this.bottomBoundary = bottomBoundary;
+        this.lowerBoundary = bottomBoundary;
         this.upperBoundary = upperBoundary;
     }
 
-    public T getBottomBoundary() {
-        return bottomBoundary;
+    public T getLowerBoundary() {
+        return lowerBoundary;
     }
 
-    public void setBottomBoundary(T bottomBoundary) {
-        this.bottomBoundary = bottomBoundary;
+    public void setLowerBoundary(T lowerBoundary) {
+        this.lowerBoundary = lowerBoundary;
     }
 
     public T getUpperBoundary() {

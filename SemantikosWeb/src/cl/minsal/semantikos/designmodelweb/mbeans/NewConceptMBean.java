@@ -104,7 +104,6 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
 
         LOGGER.debug("setRelationship, Target ={} ",r.getTarget());
 
-
         int index = concept.getRelationships().indexOf(r);
         concept.getRelationships().set(index, r);
 
@@ -132,34 +131,22 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
     }
 
 
-    public void addRelationSMTK(RelationshipDefinition rd,Target c){
+    public void addRelationship(RelationshipDefinition rd, Target c){
 
         Relationship r= new Relationship(rd);
         r.setTarget(c);
-        /*for (int i = 0; i < category.getRelationshipDefinitions().size() ; i++) {
-            if(category.getRelationshipDefinitions().get(i).getId()==rd.getId()){
-                category.getRelationshipDefinitions().get(i).getRelationships().add(r);
-            }
-        }*/
-        System.out.println("addRelationSMTK");
-        System.out.println("Target: "+c);
-        if(c!= null){
+
+        //if(c!= null){
             rd.getRelationships().add(r);
-        }
-
-        concept.addRelationship(r);
-
-        //concept.addRelationship(r);
-        //concept.addRelationship(r);
-        /*
-        for (int i = 0; i < category.getRelationshipDefinitions().get(0).getRelationships().size(); i++) {
-            System.out.println(category.getRelationshipDefinitions().get(0).getRelationships().get(i));
-            System.out.println(category.getRelationshipDefinitions().get(0).getRelationships().get(i).getTarget());
-        }
-        */
-
+        //}
         basicTypeValue = new BasicTypeValue();
 
+        concept.addRelationship(r);
+    }
+
+    public void removeRelationship(RelationshipDefinition rd, Relationship r){
+        rd.getRelationships().remove(r);
+        concept.getRelationships().remove(r);
     }
 
 
