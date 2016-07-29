@@ -92,6 +92,7 @@ public class RelationshipDefinitionDAOImpl implements RelationshipDefinitionDAO 
             basicTypeDefinition = targetTypeDAO.findByID(id);
             return basicTypeDefinition;
         }
+
         if(idCategory!=null){
             long id = new BigInteger(idCategory).longValue();
             smtkTypeDefinition = categoryDAO.getCategoryById(id);
