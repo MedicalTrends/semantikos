@@ -11,6 +11,8 @@
     <composite:attribute name="relationshipDefinition" type="cl.minsal.semantikos.model.relationships.RelationshipDefinition" />
     <composite:attribute name="targetDefinition" type="cl.minsal.semantikos.model.Category" />
     <composite:attribute name="target" type="cl.minsal.semantikos.model.ConceptSMTK" />
+
+
 </composite:interface>
 
 <composite:implementation>
@@ -31,17 +33,22 @@
             <div class="ui-g-12 ui-md-6 ui-lg-3">
             </div>
         </div>
+
+
         <div class="ui-g">
-            <p:dataTable value="#{smtkBean.getConceptSearchForRDId(cc.attrs.relationshipDefinition.id)}" var="concept"
-                         rows="5"
-                         paginator="true"
-                         lazy="true"
-                         dynamic="true"
-                         emptyMessage="No se han encontrado conceptos con los criterios utilizados"
-            >
+            <h:form id="form1" >
+            <p:dataTable
+                    value="#{smtkBean.getConceptSearchForRDId(cc.attrs.relationshipDefinition.id)}" var="concept"
+                         rows="3"
+                         paginator="true"  dynamic="true"
+                    lazy="true"
+
+                         paginatorTemplate=" {CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "
+                         emptyMessage="No se han encontrado conceptos con los criterios utilizados">
 
 
-                <p:column headerText="ID">
+
+            <p:column headerText="ID">
                     <h:outputText value="#{concept.id}"/>
                 </p:column>
 
@@ -49,41 +56,51 @@
                     <h:outputText value="#{concept.descriptionFavorite.term}"/>
                 </p:column>
                 <p:column headerText="Agregar" style="width:60px;text-align: center">
-                    <p:commandButton update=":mainForm" icon="fa fa-plus"
-                                     title="Agregar" actionListener="#{newConceptMBean.addRelationSMTK(cc.attrs.relationshipDefinition,concept)}" >
+                    <p:commandButton
+                            process="@this"
+                            action="#{newConceptMBean.addRelationship(cc.attrs.relationshipDefinition,concept)}"
+                            update=":#{cc.clientId}:form2:conceptSavetbl"
+                            icon="fa fa-plus"
+                                     title="Agregar"
+                            >
                     </p:commandButton>
-
-                    <h:outputText value="id concepto #{concept.id}" />
                 </p:column>
 
             </p:dataTable>
+            </h:form>
         </div>
+
         <p:spacer></p:spacer>
 
-        <div class="ui-g">
-            <p:dataTable id="conceptSavetbl" value="#{cc.attrs.relationshipDefinition.relationships}" var="rel" >
-                <p:column headerText="ID">
-                    <h:outputText value="#{rel.target.id}"/>
-                </p:column>
+        <h:form id="form2"  >
+            <div class="ui-g">
+                <p:dataTable id="conceptSavetbl" value="#{cc.attrs.relationshipDefinition.relationships}" var="rel" >
+                    <p:column headerText="ID">
+                        <h:outputText value="#{rel.target.id}"/>
+                    </p:column>
 
-                <p:column headerText="Descripción">
-                    <h:outputText value="#{rel.target.descriptionFavorite.term}"/>
-                </p:column>
+                    <p:column headerText="Descripción">
+                        <h:outputText value="#{rel.target.descriptionFavorite.term}"/>
+                    </p:column>
 
-                <p:column headerText="Orden">
+                    <p:column headerText="Orden">
 
-                </p:column>
+                    </p:column>
 
-                <p:column headerText="Estado">
-                    <h:outputText value="#{rel.target.state}"/>
-                </p:column>
-                <p:column headerText="Eliminar" style="width:60px;text-align: center">
-                    <p:commandButton icon="fa fa-trash" title="Eliminar">
+                    <p:column headerText="Estado">
+                        <h:outputText value="#{rel.target.state}"/>
+                    </p:column>
+                    <p:column headerText="Eliminar" style="width:60px;text-align: center">
+                        <p:commandButton icon="fa fa-trash" title="Eliminar">
 
-                    </p:commandButton>
-                </p:column>
-            </p:dataTable>
-        </div>
+                        </p:commandButton>
+                    </p:column>
+                </p:dataTable>
+            </div>
+        </h:form>
+
+        <p:spacer></p:spacer>
+
     </p:panel>
 </composite:implementation>
 </html>
