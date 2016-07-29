@@ -158,4 +158,13 @@ public class RelationshipDefinition {
     public void setRelationships(List<Relationship> relationships) {
         this.relationships = relationships;
     }
+
+    public void addRelationship(Relationship relationship) {
+
+        relationship.setIdRelationship(relationships.size()+1);
+        this.relationships.add(relationship);
+
+    }
+
+    public Relationship getRelationship() { return relationships.get(0); }
 }

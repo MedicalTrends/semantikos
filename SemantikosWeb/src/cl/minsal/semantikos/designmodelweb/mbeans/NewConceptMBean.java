@@ -96,6 +96,8 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         //concept = new ConceptSMTK(category, new Description("electrocardiograma de urgencia", descriptionTypes.get(0)));
         concept = conceptManager.newConcept(category, "electrocardiograma de urgencia");
         System.out.println("concept.getRelationships().size()= "+concept.getRelationships().size());
+        System.out.println("category.getRelationshipDefinitions().get(0).getRelationships().size()="+category.getRelationshipDefinitions().get(0).getRelationships().size());
+        System.out.println("category.getRelationshipDefinitions().get(1).getRelationships().size()="+category.getRelationshipDefinitions().get(1).getRelationships().size());
         System.out.println("category: "+ category.getRelationshipDefinitions().get(0).getRelationships().size());
 
     }
@@ -132,6 +134,8 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
 
 
     public void addRelationship(RelationshipDefinition rd, Target c){
+
+        System.out.println("addRelationship");
 
         Relationship r= new Relationship(rd);
         r.setTarget(c);

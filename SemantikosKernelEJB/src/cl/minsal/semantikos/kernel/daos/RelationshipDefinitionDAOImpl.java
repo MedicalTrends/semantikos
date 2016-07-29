@@ -4,6 +4,7 @@ package cl.minsal.semantikos.kernel.daos;
 import cl.minsal.semantikos.kernel.util.ConnectionBD;
 import cl.minsal.semantikos.model.*;
 import cl.minsal.semantikos.model.basictypes.BasicTypeDefinition;
+import cl.minsal.semantikos.model.helpertables.HelperTable;
 import cl.minsal.semantikos.model.relationships.RelationshipDefinition;
 import cl.minsal.semantikos.model.relationships.TargetDefinition;
 
@@ -85,7 +86,8 @@ public class RelationshipDefinitionDAOImpl implements RelationshipDefinitionDAO 
 
         /* Se testea si es un tipo básico */
         BasicTypeDefinition basicTypeDefinition ;
-        Category smtkTypeDefinition ;
+        Category smtkTypeDefinition;
+        HelperTable helperTable;
 
         if (idBasicType != null) {
             long id = new BigInteger(idBasicType).longValue();
@@ -96,6 +98,12 @@ public class RelationshipDefinitionDAOImpl implements RelationshipDefinitionDAO 
             long id = new BigInteger(idCategory).longValue();
             smtkTypeDefinition = categoryDAO.getCategoryById(id);
             return smtkTypeDefinition;
+        }
+        if(idAccesoryTable != null){
+            long id = new BigInteger(idAccesoryTable).longValue();
+            //helperTable = helperTableDAO.getHelperTableById();
+            //return helperTable;
+
         }
 
         return null;

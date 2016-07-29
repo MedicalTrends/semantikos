@@ -20,7 +20,7 @@
             </div>
             <div class="ui-g-12 ui-md-6 ui-lg-10">
                 <p:selectOneMenu id="basicTypeValue"
-                                 value="#{newConceptMBean.basicTypeValue.value}"
+                                 value="#{cc.attrs.relationshipDefinition.relationship.target.value}"
                                  var="value1"
                                  converter="omnifaces.SelectItemsConverter"
                                  rendered="#{cc.attrs.targetDefinition.hasDomain}">
@@ -41,6 +41,7 @@
                                var="value"
                                minValue="#{cc.attrs.targetDefinition.interval.lowerBoundary}"
                                maxValue="#{cc.attrs.targetDefinition.interval.upperBoundary}"
+                               decimalSeparator=","
                                decimalPlaces="2"
                                rendered="#{cc.attrs.targetDefinition.float}">
                 </p:inputNumber>
@@ -72,7 +73,8 @@
                 <p:dataTable id="basicTypeValues"
                              var="relationship"
                              value="#{cc.attrs.relationshipDefinition.relationships}"
-                             reflow="true">
+                             reflow="true"
+                             rowIndexVar="rowId">
                     <p:column style="width:80%">
                         <p:selectOneMenu
                                 id="basicValue6"
@@ -114,10 +116,12 @@
                                     rendered="#{cc.attrs.targetDefinition.date}">
                         </p:calendar>
                     </p:column>
-                    <p:column headerText="Eliminar" style="width:20%">
+                    <p:column style="width:20%">
                         <p:commandButton icon="fa fa-trash" title="Eliminar"
                                          actionListener="#{newConceptMBean.removeRelationship(cc.attrs.relationshipDefinition, relationship)}"
-                                         update="basicTypeValues">
+                                         update="basicTypeValues"
+                                         rendered="#{rowId>cc.attrs.relationshipDefinition.multiplicity.lowerBoundary}"
+                        >
                         </p:commandButton>
                     </p:column>
                 </p:dataTable>
@@ -127,7 +131,7 @@
             <p:commandLink styleClass="ui-panel-titlebar-icon ui-corner-all ui-state-default"
                            update="basicTypeValues"
                            title="Agregar"
-                           actionListener="#{newConceptMBean.addRelationship(cc.attrs.relationshipDefinition,newConceptMBean.basicTypeValue)}">
+                           action="#{newConceptMBean.addRelationship(cc.attrs.relationshipDefinition,newConceptMBean.basicTypeValue)}">
                 <h:outputText styleClass="ui-icon ui-icon-plusthick" />
             </p:commandLink>
             <!--p:commandButton update="basicTypeValues"

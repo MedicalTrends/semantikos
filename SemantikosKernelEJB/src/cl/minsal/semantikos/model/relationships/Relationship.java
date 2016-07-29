@@ -28,6 +28,13 @@ public class Relationship {
      */
     public Relationship(RelationshipDefinition relationshipDefinition) {
         this.relationshipDefinition = relationshipDefinition;
+
+        if(relationshipDefinition.getTargetDefinition().isBasicType())
+            this.target = new BasicTypeValue<>();
+        //if(relationshipDefinition.getTargetDefinition().isHelperTable())
+            //this.target = new HelperTableRecord();
+        if(relationshipDefinition.getTargetDefinition().isSMTKType())
+            this.target = new ConceptSMTK();
     }
 
     /**

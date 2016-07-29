@@ -69,7 +69,7 @@ public class ConceptSMTK implements Target {
      * El constructor privado con las inicializaciones de los campos por defecto.
      * TODO: Crear el test unitario para validar los estados iniciales por defecto.
      */
-    private ConceptSMTK() {
+    public ConceptSMTK() {
 
         /* El concepto parte con su estado inicial */
         this.state = ConceptStateMachine.getInstance().getInitialState();
