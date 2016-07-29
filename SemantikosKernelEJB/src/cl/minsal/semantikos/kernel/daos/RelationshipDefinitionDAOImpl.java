@@ -2,8 +2,8 @@ package cl.minsal.semantikos.kernel.daos;
 
 
 import cl.minsal.semantikos.kernel.util.ConnectionBD;
-import cl.minsal.semantikos.model.*;
-import cl.minsal.semantikos.model.basictypes.BasicTypeDefinition;
+import cl.minsal.semantikos.model.Multiplicity;
+import cl.minsal.semantikos.model.helpertables.HelperTableFactory;
 import cl.minsal.semantikos.model.relationships.RelationshipDefinition;
 import cl.minsal.semantikos.model.relationships.TargetDefinition;
 
@@ -12,7 +12,10 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.math.BigInteger;
-import java.sql.*;
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -81,26 +84,37 @@ public class RelationshipDefinitionDAOImpl implements RelationshipDefinitionDAO 
 
     }
 
-    private TargetDefinition getTargetDefinition(String idCategory, String idAccesoryTable, String idExternTable, String idBasicType, String isSCTType) {
+    /**
+     * Este método es responsable de retornar una instancia del target Definition adecuado.
+     *
+     * @param idCategory      Identificador de la categoría destino.
+     * @param idAccesoryTable Identificador de la Tabla auxiliar.
+     * @param idBasicType     Identificador del tipo básico.
+     * @param isSCTType       Indicador booleano (<code>"true"</code> o "<code>false</code>").
+     *
+     * @return Una instancia del Target Definition concreto.
+     *
+     * @throws IllegalArgumentException Arrojado si todos los parámetros son nulos.
+     */
+    private TargetDefinition getTargetDefinition(String idCategory, String idAccesoryTable, String idExternTable, String idBasicType, String isSCTType) throws IllegalArgumentException {
 
         /* Se testea si es un tipo básico */
-        BasicTypeDefinition basicTypeDefinition ;
-        Category smtkTypeDefinition ;
 
         if (idBasicType != null) {
             long id = new BigInteger(idBasicType).longValue();
-            basicTypeDefinition = targetTypeDAO.findByID(id);
-            return basicTypeDefinition;
+            return targetTypeDAO.findByID(id);
         }
 
-        if(idCategory!=null){
+        if (idCategory != null) {
             long id = new BigInteger(idCategory).longValue();
-            smtkTypeDefinition = categoryDAO.getCategoryById(id);
-            return smtkTypeDefinition;
+            return categoryDAO.getCategoryById(id);
         }
 
-        return null;
+        if (idAccesoryTable != null) {
+            long id = Long.parseLong(idAccesoryTable);
+            return HelperTableFactory.getInstance().getHelperTable(id);
+        }
 
-
+        throw new IllegalArgumentException("Todos los parámetros eran nulos.");
     }
 }
