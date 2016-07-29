@@ -1,7 +1,5 @@
 package cl.minsal.semantikos.model.helpertables;
 
-import cl.minsal.semantikos.model.relationships.TargetDefinition;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,7 +36,7 @@ public class HelperTableFactory {
         HelperTableColumn descripcionATCColumn = new HelperTableColumn("DESCRIPCION_ATC", false, true, true);
 
         HelperTableColumn[] columns = {idColumn, codigoATCColumn, descripcionATCColumn};
-        this.atcHT = new HelperTable("ATC", "Tabla de códigos ATC", "HELPER_TABLE_ATC", columns);
+        this.atcHT = new HelperTable((long) 1, "ATC", "Tabla de códigos ATC", "HELPER_TABLE_ATC", columns);
 
         return this.atcHT;
     }
@@ -47,7 +45,26 @@ public class HelperTableFactory {
         return atcHT;
     }
 
-    public static HelperTableFactory getInstance(){
+    public static HelperTableFactory getInstance() {
         return singletonInstance;
+    }
+
+    /**
+     * Este método es responsable de retornar la tabla auxiliar cuyo ID coincide con el parámetro.
+     *
+     * @param idHelperTable Identificador único de la tabla auxiliar que se desea recuperar.
+     *
+     * @return Una instancia de la tabla.
+     *
+     * @throws java.lang.IllegalArgumentException Si no existe una tabla con dicho ID.
+     */
+    public HelperTable getHelperTable(long idHelperTable) throws IllegalArgumentException {
+
+        switch ((int)idHelperTable){
+            case 1:
+                return this.atcHT;
+        }
+
+        throw new IllegalArgumentException("No existe tabla auxiliar con ID = " + idHelperTable);
     }
 }
