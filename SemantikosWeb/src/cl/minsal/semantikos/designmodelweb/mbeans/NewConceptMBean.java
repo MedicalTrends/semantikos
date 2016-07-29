@@ -9,7 +9,6 @@ import cl.minsal.semantikos.model.basictypes.BasicTypeValue;
 import cl.minsal.semantikos.model.relationships.Relationship;
 import cl.minsal.semantikos.model.relationships.RelationshipDefinition;
 import cl.minsal.semantikos.model.relationships.Target;
-import cl.minsal.semantikos.model.relationships.TargetDefinition;
 import org.primefaces.event.CellEditEvent;
 import org.primefaces.event.RowEditEvent;
 import org.slf4j.Logger;
@@ -75,6 +74,20 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
     // Placeholder para los target (multiplicidad N)
     private BasicTypeValue basicTypeValue = new BasicTypeValue();
 
+    private List<BasicTypeDefinition> basicTypeDefinitions = new ArrayList<BasicTypeDefinition>();
+
+
+    private T basicValue;
+
+    private ConceptSMTK conceptSMTK;
+
+    public ConceptSMTK getConceptSMTK() {
+        return conceptSMTK;
+    }
+
+    public void setConceptSMTK(ConceptSMTK conceptSMTK) {
+        this.conceptSMTK = conceptSMTK;
+    }
 
     @PostConstruct
     protected void initialize() throws ParseException {
@@ -87,8 +100,8 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         user.setPassword("amauro");
         /////////////////////////////////////////////
 
-        //category = categoryManager.getCategoryById(1);
-        category = categoryManager.getCategoryById(105590001);
+        category = categoryManager.getCategoryById(1);
+        //category = categoryManager.getCategoryById(105590001);
         for (int i = 0; i < category.getRelationshipDefinitions().size() ; i++) {
             System.out.println(category.getRelationshipDefinitions().get(i).getName());
         }
@@ -131,7 +144,7 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
     }
 
 
-    public void addRelationship(RelationshipDefinition rd, Target c){
+    /*public void addRelationship(RelationshipDefinition rd, Target c){
 
         Relationship r= new Relationship(rd);
         r.setTarget(c);
@@ -142,7 +155,7 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         basicTypeValue = new BasicTypeValue();
 
         concept.addRelationship(r);
-    }
+    }*/
 
     public void removeRelationship(RelationshipDefinition rd, Relationship r){
         rd.getRelationships().remove(r);
@@ -251,6 +264,10 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         concept.getOtherDescriptions().remove(item);
     }
 
+    public void removeBasicType(BasicTypeDefinition item) {
+        getBasicTypeDefinitions().remove(item);
+    }
+
     public void addDescription() {
         Description description = new Description(otherTermino, otherDescriptionType);
         description.setTerm(otherTermino);
@@ -261,8 +278,33 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         concept.addDescription(description);
     }
 
+    public void addRelationship(RelationshipDefinition relationshipDefinition, Target target){
+
+        Relationship relationship= new Relationship(relationshipDefinition);
+        relationship.setTarget(target);
+
+        this.concept.addRelationship(relationship);
+    }
+
+    public T getBasicValue() {
+        return basicValue;
+    }
+
+    public void setBasicValue(T basicValue) {
+        System.out.println("setBasicValue");
+        this.basicValue = basicValue;
+    }
+
     public BasicTypeValue getBasicTypeValue() {
         return basicTypeValue;
+    }
+
+    public List<BasicTypeDefinition> getBasicTypeDefinitions() {
+        return basicTypeDefinitions;
+    }
+
+    public void setBasicTypeDefinitions(List<BasicTypeDefinition> basicTypeDefinitions) {
+        this.basicTypeDefinitions = basicTypeDefinitions;
     }
 
     public void setBasicTypeValue(BasicTypeValue basicTypeValue) {
@@ -270,5 +312,28 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         this.basicTypeValue = basicTypeValue;
     }
 
+    public void addBasicTypeDefinition(RelationshipDefinition relationshipDefinition){
+        Relationship relationship = new Relationship(relationshipDefinition);
+        relationship.setTarget(basicTypeValue);
+        //concept.addRelationship(new Relationship());
+        basicTypeDefinitions.add((BasicTypeDefinition) relationshipDefinition.getTargetDefinition());
+        concept.addRelationship(relationship);
+        //basicTypeValue = new BasicTypeValue();
+        System.out.println("concept.getRelationships().size()="+concept.getRelationships().size());
+        BasicTypeValue valor= (BasicTypeValue)concept.getRelationships().get(0).getTarget();
+        System.out.println("valor.getValue()="+valor.getValue());
+    }
+
+    public void addRelationship() {
+
+        /* Relationship relationship = new Relationship();
+        relationship.setTarget(basicTypeValue);
+        concept.addRelationship(relationship); */
+    }
+
+    public void setRelationship(){
+        System.out.println("setRelationship");
+        //concept.getRelationships()
+    }
 }
 

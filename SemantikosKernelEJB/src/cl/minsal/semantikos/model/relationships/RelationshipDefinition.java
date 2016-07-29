@@ -158,4 +158,21 @@ public class RelationshipDefinition {
     public void setRelationships(List<Relationship> relationships) {
         this.relationships = relationships;
     }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        RelationshipDefinition that = (RelationshipDefinition) o;
+
+        return id == that.id;
+
+    }
+
+    @Override
+    public int hashCode() {
+        return (int) (id ^ (id >>> 32));
+    }
 }
