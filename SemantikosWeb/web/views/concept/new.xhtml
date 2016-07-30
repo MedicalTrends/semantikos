@@ -200,7 +200,7 @@
                         <p:column headerText="Acción" style="width:5%">
                             <p:commandLink actionListener="#{newConceptMBean.removeItem(description)}" ajax="true"
                                            update="otherDescriptions" immediate="true">
-                                <h:graphicImage name="images/trash-.png" style="width: 14px; height: 14px"
+                                <h:graphicImage  style="width: 14px; height: 14px"
                                                 icon="trash"/>
                             </p:commandLink>
                             <p:rowEditor style="display: inline"/>
@@ -208,6 +208,8 @@
                     </p:dataTable>
                 </div>
             </p:panel>
+
+     </h:form>
 
             <!--Relaciones -->
             <p:panel id="atributos" header="Atributos" toggleable="true" toggleSpeed="500" closeSpeed="500"
@@ -239,7 +241,7 @@
             </p:messages>
 
 
-        </h:form>
+
 
     </ui:define>
 

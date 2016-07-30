@@ -10,6 +10,7 @@ import org.primefaces.model.SortOrder;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -23,7 +24,7 @@ import java.util.Map;
 
 @ManagedBean(name="smtkBean")
 @ViewScoped
-public class SMTKTypeBean implements Serializable{
+public class SMTKTypeBean {
 
     private Category category;
     private String pattern;
@@ -40,7 +41,7 @@ public class SMTKTypeBean implements Serializable{
     private ConceptManagerInterface conceptManager;
 
 
-    public LazyDataModel<ConceptSMTK> getConceptSearchForRDId(Long idRelationshipDefinition){
+    public LazyDataModel<ConceptSMTK> getConceptSearchForRDId(final Long idRelationshipDefinition){
 
         if(conceptSearchMap == null)
             conceptSearchMap = new HashMap<Long, LazyDataModel<ConceptSMTK>>();
@@ -53,8 +54,14 @@ public class SMTKTypeBean implements Serializable{
                 public List<ConceptSMTK> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
                     List<ConceptSMTK> conceptSMTKs;
 
+
                     final Long[] categoryArr = new Long[1];
-                    categoryArr[0]=(long)105590001;
+                    if((idRelationshipDefinition).intValue()==2){
+
+                        categoryArr[0]=(long)105590001;
+                    }else{
+                        categoryArr[0]=(long)362981000;
+                    }
 
                     conceptSMTKs = conceptManager.findConceptByConceptIDOrDescriptionCategoryPageNumber(pattern, categoryArr, first, pageSize);
                     this.setRowCount(conceptManager.getAllConceptCount(pattern, categoryArr));
