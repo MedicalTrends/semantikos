@@ -53,4 +53,6 @@ public interface HelperTableDAO {
      * @return Una lista de registros (en forma de mappings) de la tabla indicada.
      */
     public List<Map<String, String>> getAllRecords(HelperTable helperTable);
+
+    public List<Object> getAllRecordsJson(HelperTable helperTable);
 }

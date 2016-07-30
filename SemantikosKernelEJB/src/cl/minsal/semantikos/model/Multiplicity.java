@@ -37,4 +37,10 @@ public class Multiplicity {
     public void setLowerBoundary(int lowerBoundary) {
         this.lowerBoundary = lowerBoundary;
     }
+
+    public boolean isCollection(){
+        return (this.upperBoundary==0);
+    }
+
+    public boolean isSimple(){ return (this.upperBoundary==1); }
 }

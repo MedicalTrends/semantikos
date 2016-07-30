@@ -107,7 +107,7 @@
                                  value="#{newConceptMBean.concept.otherDescriptions}"
                                  editable="true"
                                  selection="#{newConceptMBean.selectedDescriptions}"
-                                 rowKey="#{description.id}"
+                                 rowKey="#{description.ID}"
                                  reflow="true">
 
                         <p:ajax event="rowEdit" listener="#{newConceptMBean.onRowEdit}" update=":mainForm:editMsgs"/>
@@ -223,6 +223,10 @@
                     <smtk:smtkType  relationshipDefinition="#{relationshipDefinition}"
                                     rendered="#{relationshipDefinition.targetDefinition.SMTKType}"
                                     />
+                    <smtk:helperTableType   relationshipDefinition="#{relationshipDefinition}"
+                                            targetDefinition="#{relationshipDefinition.targetDefinition}"
+                                            rendered="#{relationshipDefinition.targetDefinition.helperTable}"
+                    />
                 </ui:repeat>
             </p:panel>
 

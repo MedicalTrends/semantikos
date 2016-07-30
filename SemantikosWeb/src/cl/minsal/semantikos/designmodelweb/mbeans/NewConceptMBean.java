@@ -6,6 +6,7 @@ import cl.minsal.semantikos.kernel.components.DescriptionManagerInterface;
 import cl.minsal.semantikos.model.*;
 import cl.minsal.semantikos.model.basictypes.BasicTypeDefinition;
 import cl.minsal.semantikos.model.basictypes.BasicTypeValue;
+import cl.minsal.semantikos.model.helpertables.HelperTableRecord;
 import cl.minsal.semantikos.model.relationships.Relationship;
 import cl.minsal.semantikos.model.relationships.RelationshipDefinition;
 import cl.minsal.semantikos.model.relationships.Target;
@@ -50,6 +51,9 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
     @EJB
     StateMachineManagerInterface stateMachineManager;
 
+    @EJB
+    HelperTableManagerInterface helperTableManager;
+
     /*
     @EJB
     StateManagerInterface stateManager;
@@ -71,13 +75,10 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
 
     private DescriptionType otherDescriptionType;
 
-    // Placeholder para los target (multiplicidad N)
+    // Placeholder para los target de las relaciones
     private BasicTypeValue basicTypeValue = new BasicTypeValue();
 
-    private List<BasicTypeDefinition> basicTypeDefinitions = new ArrayList<BasicTypeDefinition>();
-
-
-    private T basicValue;
+    private Object selectedHelperTableRecord = new HelperTableRecord();
 
     private ConceptSMTK conceptSMTK;
 
@@ -100,8 +101,8 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         user.setPassword("amauro");
         /////////////////////////////////////////////
 
-        category = categoryManager.getCategoryById(1);
-        //category = categoryManager.getCategoryById(105590001);
+        //category = categoryManager.getCategoryById(1);
+        category = categoryManager.getCategoryById(105590001);
         for (int i = 0; i < category.getRelationshipDefinitions().size() ; i++) {
             System.out.println(category.getRelationshipDefinitions().get(i).getName());
         }
@@ -110,56 +111,20 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         concept = conceptManager.newConcept(category, "electrocardiograma de urgencia");
         System.out.println("concept.getRelationships().size()= "+concept.getRelationships().size());
         System.out.println("category.getRelationshipDefinitions().get(0).getRelationships().size()="+category.getRelationshipDefinitions().get(0).getRelationships().size());
-        System.out.println("category.getRelationshipDefinitions().get(1).getRelationships().size()="+category.getRelationshipDefinitions().get(1).getRelationships().size());
+        //System.out.println("category.getRelationshipDefinitions().get(1).getRelationships().size()="+category.getRelationshipDefinitions().get(1).getRelationships().size());
         System.out.println("category: "+ category.getRelationshipDefinitions().get(0).getRelationships().size());
 
-    }
-
-    public void setRelationship(RelationshipDefinition rd, Relationship r){
-
-        LOGGER.debug("setRelationship, Target ={} ",r.getTarget());
-
-        int index = concept.getRelationships().indexOf(r);
-        concept.getRelationships().set(index, r);
-
-        if(r.getTarget()!= null){
-
-            int index1 = category.getRelationshipDefinitions().indexOf(rd);
-            int index2 = category.getRelationshipDefinitions().get(index1).getRelationships().indexOf(r);
-
-            System.out.println("voy a actualizar la relacion");
-            System.out.println("index="+index1+" index2="+index2);
-            //category.getRelationshipDefinitions().get(index).getRelationships().set(index2,r);
-
-            for (Relationship relationship : category.getRelationshipDefinitions().get(0).getRelationships()) {
-                BasicTypeValue basic=(BasicTypeValue)relationship.getTarget();
-                System.out.println("basic.getValue()="+basic.getValue());
-            }
-            System.out.println("Concept");
-            for (Relationship relationship : concept.getRelationships()) {
-                BasicTypeValue basic=(BasicTypeValue)relationship.getTarget();
-                System.out.println("basic.getValue()="+basic.getValue());
-            }
-
+        for (RelationshipDefinition relationshipDefinition : category.getRelationshipDefinitions()) {
+            System.out.println("---------------------------------------");
+            System.out.println("relationshipDefinition.getMultiplicity().getLowerBoundary()="+relationshipDefinition.getMultiplicity().getLowerBoundary());
+            System.out.println("relationshipDefinition.getMultiplicity().getUpperBoundary()="+relationshipDefinition.getMultiplicity().getUpperBoundary());
+            System.out.println("relationshipDefinition.getTargetDefinition().isBasicType()="+relationshipDefinition.getTargetDefinition().isBasicType());
+            System.out.println("relationshipDefinition.getTargetDefinition().isSMTKType()="+relationshipDefinition.getTargetDefinition().isSMTKType());
+            System.out.println("relationshipDefinition.getTargetDefinition().isHelperTable()="+relationshipDefinition.getTargetDefinition().isHelperTable());
         }
-        basicTypeValue = new BasicTypeValue();
+
     }
 
-
-    /*public void addRelationship(RelationshipDefinition rd, Target c){
-
-        System.out.println("addRelationship");
-
-        Relationship r= new Relationship(rd);
-        r.setTarget(c);
-
-        //if(c!= null){
-            rd.getRelationships().add(r);
-        //}
-        basicTypeValue = new BasicTypeValue();
-
-        concept.addRelationship(r);
-    }*/
 
     public void removeRelationship(RelationshipDefinition rd, Relationship r){
         rd.getRelationships().remove(r);
@@ -268,9 +233,6 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         concept.getOtherDescriptions().remove(item);
     }
 
-    public void removeBasicType(BasicTypeDefinition item) {
-        getBasicTypeDefinitions().remove(item);
-    }
 
     public void addDescription() {
         Description description = new Description(otherTermino, otherDescriptionType);
@@ -290,54 +252,28 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         this.concept.addRelationship(relationship);
     }
 
-    public T getBasicValue() {
-        return basicValue;
+    public HelperTableManagerInterface getHelperTableManager() {
+        return helperTableManager;
     }
 
-    public void setBasicValue(T basicValue) {
-        System.out.println("setBasicValue");
-        this.basicValue = basicValue;
+    public void setHelperTableManager(HelperTableManagerInterface helperTableManager) {
+        this.helperTableManager = helperTableManager;
     }
 
     public BasicTypeValue getBasicTypeValue() {
         return basicTypeValue;
     }
 
-    public List<BasicTypeDefinition> getBasicTypeDefinitions() {
-        return basicTypeDefinitions;
-    }
-
-    public void setBasicTypeDefinitions(List<BasicTypeDefinition> basicTypeDefinitions) {
-        this.basicTypeDefinitions = basicTypeDefinitions;
-    }
-
     public void setBasicTypeValue(BasicTypeValue basicTypeValue) {
-        System.out.println("setBasicTypeValue");
         this.basicTypeValue = basicTypeValue;
     }
 
-    public void addBasicTypeDefinition(RelationshipDefinition relationshipDefinition){
-        Relationship relationship = new Relationship(relationshipDefinition);
-        relationship.setTarget(basicTypeValue);
-        //concept.addRelationship(new Relationship());
-        basicTypeDefinitions.add((BasicTypeDefinition) relationshipDefinition.getTargetDefinition());
-        concept.addRelationship(relationship);
-        //basicTypeValue = new BasicTypeValue();
-        System.out.println("concept.getRelationships().size()="+concept.getRelationships().size());
-        BasicTypeValue valor= (BasicTypeValue)concept.getRelationships().get(0).getTarget();
-        System.out.println("valor.getValue()="+valor.getValue());
+    public Object getSelectedHelperTableRecord() {
+        return selectedHelperTableRecord;
     }
 
-    public void addRelationship() {
-
-        /* Relationship relationship = new Relationship();
-        relationship.setTarget(basicTypeValue);
-        concept.addRelationship(relationship); */
-    }
-
-    public void setRelationship(){
-        System.out.println("setRelationship");
-        //concept.getRelationships()
+    public void setSelectedHelperTableRecord(Object selectedHelperTableRecord) {
+        this.selectedHelperTableRecord = selectedHelperTableRecord;
     }
 }
 

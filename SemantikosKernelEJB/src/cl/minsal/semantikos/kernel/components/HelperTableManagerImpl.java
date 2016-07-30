@@ -36,4 +36,9 @@ public class HelperTableManagerImpl implements HelperTableManagerInterface {
     public List<Map<String, String>> getAllRecords(HelperTable helperTable, String[] columnNames) {
         return helperTableDAO.getAllRecords(helperTable, columnNames);
     }
+
+    @Override
+    public List<Object> getAllRecords(HelperTable helperTable) {
+        return helperTableDAO.getAllRecordsJson(helperTable);
+    }
 }

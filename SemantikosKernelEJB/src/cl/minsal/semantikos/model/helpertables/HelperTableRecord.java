@@ -12,17 +12,28 @@ public class HelperTableRecord implements Target {
     private HelperTable helperTable;
 
     /** La llave primaria del registro */
-    private long idRecord;
+    private long id;
+
+    public HelperTableRecord() {
+    }
 
     /**
      * El constructor básico que requiere ambos campos.
      *
      * @param helperTable La tabla auxiliar en cuestión.
-     * @param idRecord    La llave primaria del registro de la tabla auxiliar.
+     * @param id    La llave primaria del registro de la tabla auxiliar.
      */
-    public HelperTableRecord(HelperTable helperTable, long idRecord) {
+    public HelperTableRecord(HelperTable helperTable, long id) {
         this.helperTable = helperTable;
-        this.idRecord = idRecord;
+        this.id = id;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
 }

@@ -25,5 +25,12 @@ public interface HelperTableManagerInterface {
      */
     public List<Map<String, String>> getAllRecords(HelperTable helperTable, String[] columnNames);
 
+    /**
+     *
+     * @param helperTable     
+     * @return
+     */
+    public List<Object> getAllRecords(HelperTable helperTable);
+
 
 }

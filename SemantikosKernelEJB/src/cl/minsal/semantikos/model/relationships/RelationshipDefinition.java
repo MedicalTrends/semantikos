@@ -159,6 +159,15 @@ public class RelationshipDefinition {
         this.relationships = relationships;
     }
 
+    public void addRelationship(Relationship relationship) {
+
+        relationship.setIdRelationship(relationships.size()+1);
+        this.relationships.add(relationship);
+
+    }
+
+    public Relationship getRelationship() { return relationships.get(0); }
+
 
     @Override
     public boolean equals(Object o) {

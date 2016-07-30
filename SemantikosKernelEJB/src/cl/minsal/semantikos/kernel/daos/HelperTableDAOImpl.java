@@ -1,17 +1,21 @@
 package cl.minsal.semantikos.kernel.daos;
 
 import cl.minsal.semantikos.kernel.util.ConnectionBD;
+import cl.minsal.semantikos.kernel.util.StringUtils;
+import cl.minsal.semantikos.model.ConceptStateMachine;
+import cl.minsal.semantikos.model.DescriptionType;
 import cl.minsal.semantikos.model.helpertables.HelperTable;
 import cl.minsal.semantikos.model.helpertables.HelperTableColumn;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.ejb.Stateless;
+import java.io.IOException;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author Andrés Farías
@@ -152,6 +156,46 @@ public class HelperTableDAOImpl implements HelperTableDAO {
         }
 
         return records;
+    }
+
+    @Override
+    public List<Object> getAllRecordsJson(HelperTable helperTable) {
+
+        ConnectionBD connect = new ConnectionBD();
+
+        ObjectMapper mapper = new ObjectMapper();
+
+        Object[] objects= new Object[0];
+
+        try {
+
+            CallableStatement call = connect.getConnection().prepareCall("{call semantikos.get_all_records_from_helper_table(?)}");
+
+            call.setString(1, helperTable.getTablaName());
+
+            call.execute();
+
+            ResultSet rs = call.getResultSet();
+
+            while (rs.next()) {
+                String resultJSON = rs.getString(1);
+
+                objects = mapper.readValue(resultJSON.toUpperCase() , Object[].class);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (JsonParseException e) {
+            e.printStackTrace();
+        } catch (JsonMappingException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        connect.closeConnection();
+
+        return Arrays.asList(objects);
     }
 
 }
