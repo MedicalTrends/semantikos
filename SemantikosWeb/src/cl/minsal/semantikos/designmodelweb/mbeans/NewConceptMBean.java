@@ -101,8 +101,8 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         user.setPassword("amauro");
         /////////////////////////////////////////////
 
-        //category = categoryManager.getCategoryById(1);
-        category = categoryManager.getCategoryById(105590001);
+        category = categoryManager.getCategoryById(1);
+        //category = categoryManager.getCategoryById(105590001);
         for (int i = 0; i < category.getRelationshipDefinitions().size() ; i++) {
             System.out.println(category.getRelationshipDefinitions().get(i).getName());
         }
@@ -269,6 +269,7 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
 
         Relationship relationship= new Relationship(relationshipDefinition);
         relationship.setTarget(target);
+        relationshipDefinition.addRelationship(relationship);
 
         this.concept.addRelationship(relationship);
     }

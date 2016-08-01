@@ -3,6 +3,7 @@
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
                 xmlns:smtk="http://java.sun.com/jsf/composite/smtk"
                 template="/WEB-INF/template/template.xhtml">
 
@@ -215,7 +216,11 @@
             <p:panel id="atributos" header="Atributos" toggleable="true" toggleSpeed="500" closeSpeed="500"
                      widgetVar="panel" style="margin-bottom:20px" >
 
-                <ui:repeat value="#{newConceptMBean.category.relationshipDefinitions}" var="relationshipDefinition">
+                <!--ui:repeat value="#{newConceptMBean.category.relationshipDefinitions}" var="relationshipDefinition"-->
+                <!--c:forEach items="#{newConceptMBean.category.relationshipDefinitions}" var="relationshipDefinition"-->
+                <h:dataTable value="#{newConceptMBean.category.relationshipDefinitions}" var="relationshipDefinition">
+
+                    <h:column>
                     <smtk:basicType
                                     targetDefinition="#{relationshipDefinition.targetDefinition}"
                                     relationshipDefinition="#{relationshipDefinition}"
@@ -228,8 +233,11 @@
                     <smtk:helperTableType   relationshipDefinition="#{relationshipDefinition}"
                                             targetDefinition="#{relationshipDefinition.targetDefinition}"
                                             rendered="#{relationshipDefinition.targetDefinition.helperTable}"
-                    />
-                </ui:repeat>
+                   />
+                    </h:column>
+                </h:dataTable>
+                <!--/c:forEach-->
+                <!--/ui:repeat-->
             </p:panel>
 
 

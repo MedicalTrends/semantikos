@@ -39,7 +39,7 @@ public class Multiplicity {
     }
 
     public boolean isCollection(){
-        return (this.upperBoundary==0);
+        return (this.upperBoundary!=1);
     }
 
     public boolean isSimple(){ return (this.upperBoundary==1); }

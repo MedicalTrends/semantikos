@@ -166,6 +166,7 @@ public class HelperTableDAOImpl implements HelperTableDAO {
         ObjectMapper mapper = new ObjectMapper();
 
         Object[] objects= new Object[0];
+        List<Object> records;
 
         try {
 
@@ -194,6 +195,18 @@ public class HelperTableDAOImpl implements HelperTableDAO {
         }
 
         connect.closeConnection();
+
+        /*
+        for (Object object : objects) {
+            // Se recuperan los valores de las columnas de la tabla auxiliar indicados
+            for (HelperTableColumn column : helperTable.getShowableColumns()) {
+                String columnName = column.getColumnName();
+                //String columnValue = resultSet.getString(columnName);
+                //record.put(columnName, columnValue);
+                //object[column.getColumnName()]
+            }
+        }
+        */
 
         return Arrays.asList(objects);
     }
