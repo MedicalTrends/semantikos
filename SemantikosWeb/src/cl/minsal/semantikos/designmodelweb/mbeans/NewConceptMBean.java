@@ -123,6 +123,27 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
             System.out.println("relationshipDefinition.getTargetDefinition().isHelperTable()="+relationshipDefinition.getTargetDefinition().isHelperTable());
         }
 
+        Long[] categoryArr= new Long[1];
+        categoryArr[0]=(long)105590001;
+        String pattern ="";
+        conceptSave=  conceptManager.findConceptByConceptIDOrDescriptionCategoryPageNumber(pattern, categoryArr, 0, 100);
+
+    }
+
+
+    private List<ConceptSMTK> conceptSave;
+
+
+    public void sy(){
+        System.out.println("yughj");
+    }
+
+    public List<ConceptSMTK> getConceptSave() {
+        return conceptSave;
+    }
+
+    public void setConceptSave(List<ConceptSMTK> conceptSave) {
+        this.conceptSave = conceptSave;
     }
 
 

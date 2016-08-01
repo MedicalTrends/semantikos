@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:composite="http://java.sun.com/jsf/composite"
+      xmlns:p="http://primefaces.org/ui">
+
+<composite:interface componentType="basicTypeBean">
+    <composite:attribute name="relationshipDefinition" type="cl.minsal.semantikos.model.relationships.RelationshipDefinition" />
+    <composite:attribute name="multiplicity" type="cl.minsal.semantikos.model.Multiplicity" />
+    <composite:attribute name="targetDefinition" type="cl.minsal.semantikos.model.helpertables.HelperTable" />
+</composite:interface>
+<composite:implementation>
+    <p:panel>
+        <div class="ui-g">
+            <div class="ui-g-12 ui-md-6 ui-lg-2">
+                <p:outputLabel for="helperTableRecords" value="#{cc.attrs.relationshipDefinition.name}"/>
+            </div>
+            <div class="ui-g-12 ui-md-6 ui-lg-10">
+                <p:dataTable id="helperTableRecords"
+                             var="helperTableRecord"
+                             value="#{newConceptMBean.helperTableManager.getAllRecords(cc.attrs.targetDefinition)}"
+                             >
+                    <f:facet name="right">
+                        <p:outputPanel>
+                            <h:outputText value="Search all fields:" />
+                            <p:inputText id="globalFilter"
+                                         onkeyup="#{newConceptMBean.helperTableManager.getAllRecords(cc.attrs.targetDefinition)}"
+                                         style="width:150px"
+                                         placeholder="Enter keyword"/>
+                        </p:outputPanel>
+                    </f:facet>
+                    <p:columns value="#{cc.attrs.targetDefinition.showableColumns}"
+                               var="column"
+                               columnIndexVar="colIndex"
+                               sortBy="#{helperTableRecord[column.columnName]}">
+                        <f:facet name="header">
+                            <h:outputText value="#{column.columnName}" />
+                        </f:facet>
+                        <h:outputText value="#{helperTableRecord.get(column.columnName)}" />
+                    </p:columns>
+                </p:dataTable>
+            </div>
+        </div>
+    </p:panel>
+</composite:implementation>
+</html>
