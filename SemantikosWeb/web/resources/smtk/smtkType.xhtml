@@ -8,9 +8,10 @@
       xmlns:p="http://primefaces.org/ui">
 
 <composite:interface>
-    <composite:attribute name="relationshipDefinition" type="cl.minsal.semantikos.model.relationships.RelationshipDefinition" />
-    <composite:attribute name="targetDefinition" type="cl.minsal.semantikos.model.Category" />
-    <composite:attribute name="target" type="cl.minsal.semantikos.model.ConceptSMTK" />
+    <composite:attribute name="relationshipDefinition"
+                         type="cl.minsal.semantikos.model.relationships.RelationshipDefinition"/>
+    <composite:attribute name="targetDefinition" type="cl.minsal.semantikos.model.Category"/>
+    <composite:attribute name="target" type="cl.minsal.semantikos.model.ConceptSMTK"/>
 
 
 </composite:interface>
@@ -18,63 +19,69 @@
 <composite:implementation>
 
     <p:panel id="panelSMTK"
-             widgetVar="panel" style="margin-bottom:20px" >
+             style="margin-bottom:20px"
+             rendered="#{cc.attrs.relationshipDefinition.multiplicity.upperBoundary==0}">
+        <h3>#{cc.attrs.relationshipDefinition.name}</h3>
 
-        <div class="ui-g">
-            <div class="ui-g-12 ui-md-6 ui-lg-1">
-                <p:outputLabel value="Búsqueda:" for="acSimple"/>
+        <h:form id="form1" onkeypress="return event.keyCode != 13">
+            <div class="ui-g">
+
+                <div class="ui-g-12 ui-md-6 ui-lg-6">
+                    <p:inputText value="#{smtkBean.pattern}" style="width: 90%; margin: 10px;"
+                                 placeholder="Buscar...">
+                        <p:ajax event="keyup"
+                                update=":#{cc.clientId}:form1:tableConcept"/>
+                    </p:inputText>
+                </div>
+                <div class="ui-g-12 ui-md-6 ui-lg-3">
+
+                </div>
+                <div class="ui-g-12 ui-md-6 ui-lg-3">
+                </div>
             </div>
-            <div class="ui-g-12 ui-md-6 ui-lg-5">
-                <p:autoComplete id="acSimple"/>
-            </div>
-            <div class="ui-g-12 ui-md-6 ui-lg-3">
+
+
+            <div class="ui-g">
+
+                <p:dataTable id="tableConcept"
+                             value="#{smtkBean.getConceptSearchForRDId(cc.attrs.relationshipDefinition.id)}"
+                             var="concept"
+                             rows="3"
+                             paginator="true" dynamic="true"
+                             lazy="true"
+
+                             paginatorTemplate=" {CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "
+                             emptyMessage="No se han encontrado conceptos con los criterios utilizados">
+
+
+                    <p:column headerText="ID">
+                        <h:outputText value="#{concept.id}"/>
+                    </p:column>
+
+                    <p:column headerText="Descripcion">
+                        <h:outputText value="#{concept.descriptionFavorite.term}"/>
+                    </p:column>
+                    <p:column headerText="Agregar" style="width:60px;text-align: center">
+                        <p:commandButton
+                                process="@this"
+                                action="#{newConceptMBean.addRelationship(cc.attrs.relationshipDefinition,concept)}"
+                                update=":#{cc.clientId}:form2:tableRelationship"
+                                icon="fa fa-plus"
+                                title="Agregar"
+                        >
+
+                        </p:commandButton>
+                    </p:column>
+
+                </p:dataTable>
 
             </div>
-            <div class="ui-g-12 ui-md-6 ui-lg-3">
-            </div>
-        </div>
-
-
-        <div class="ui-g">
-            <h:form id="form1" >
-            <p:dataTable
-                    value="#{smtkBean.getConceptSearchForRDId(cc.attrs.relationshipDefinition.id)}" var="concept"
-                         rows="3"
-                         paginator="true"  dynamic="true"
-                    lazy="true"
-
-                         paginatorTemplate=" {CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "
-                         emptyMessage="No se han encontrado conceptos con los criterios utilizados">
-
-
-
-            <p:column headerText="ID">
-                    <h:outputText value="#{concept.id}"/>
-                </p:column>
-
-                <p:column headerText="Descripcion">
-                    <h:outputText value="#{concept.descriptionFavorite.term}"/>
-                </p:column>
-                <p:column headerText="Agregar" style="width:60px;text-align: center">
-                    <p:commandButton
-                            process="@this"
-                            action="#{newConceptMBean.addRelationship(cc.attrs.relationshipDefinition,concept)}"
-                            update=":#{cc.clientId}:form2:conceptSavetbl"
-                            icon="fa fa-plus"
-                                     title="Agregar"
-                            >
-                    </p:commandButton>
-                </p:column>
-
-            </p:dataTable>
-            </h:form>
-        </div>
-
+        </h:form>
         <p:spacer></p:spacer>
 
-        <h:form id="form2"  >
+        <h:form id="form2">
             <div class="ui-g">
-                <p:dataTable id="conceptSavetbl" value="#{cc.attrs.relationshipDefinition.relationships}" var="rel" >
+                <p:dataTable id="tableRelationship" value="#{cc.attrs.relationshipDefinition.relationships}" var="rel">
                     <p:column headerText="ID">
                         <h:outputText value="#{rel.target.id}"/>
                     </p:column>
@@ -91,16 +98,40 @@
                         <h:outputText value="#{rel.target.state}"/>
                     </p:column>
                     <p:column headerText="Eliminar" style="width:60px;text-align: center">
-                        <p:commandButton icon="fa fa-trash" title="Eliminar">
-
+                        <p:commandButton icon="fa fa-trash" title="Eliminar"
+                                         action="#{newConceptMBean.removeRelationship(cc.attrs.relationshipDefinition,rel)}"
+                                         update=":#{cc.clientId}:form2:tableRelationship">
                         </p:commandButton>
                     </p:column>
                 </p:dataTable>
             </div>
         </h:form>
 
-        <p:spacer></p:spacer>
-
     </p:panel>
+
+    <p:panel id="id2panel"
+             style="margin-bottom:20px"
+             rendered="#{cc.attrs.relationshipDefinition.multiplicity.upperBoundary!=0}">
+        <h:form id="form3">
+
+            <div class="ui-g">
+
+                <div class="ui-g-12 ui-md-6 ui-lg-3">
+
+                </div>
+                <div class="ui-g-12 ui-md-6 ui-lg-3">
+
+                </div>
+                <div class="ui-g-12 ui-md-6 ui-lg-3">
+
+                </div>
+                <div class="ui-g-12 ui-md-6 ui-lg-3">
+
+                </div>
+            </div>
+
+        </h:form>
+    </p:panel>
+
 </composite:implementation>
 </html>

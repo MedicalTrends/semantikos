@@ -216,9 +216,7 @@
             <p:panel id="atributos" header="Atributos" toggleable="true" toggleSpeed="500" closeSpeed="500"
                      widgetVar="panel" style="margin-bottom:20px" >
 
-                <!--ui:repeat value="#{newConceptMBean.category.relationshipDefinitions}" var="relationshipDefinition"-->
-                <!--c:forEach items="#{newConceptMBean.category.relationshipDefinitions}" var="relationshipDefinition"-->
-                <h:dataTable value="#{newConceptMBean.category.relationshipDefinitions}" var="relationshipDefinition">
+                 <h:dataTable value="#{newConceptMBean.category.relationshipDefinitions}" var="relationshipDefinition">
 
                     <h:column>
                     <smtk:basicType
@@ -234,11 +232,12 @@
                                             targetDefinition="#{relationshipDefinition.targetDefinition}"
                                             rendered="#{relationshipDefinition.targetDefinition.helperTable}"
                    />
+
                     </h:column>
                 </h:dataTable>
-                <!--/c:forEach-->
-                <!--/ui:repeat-->
             </p:panel>
+
+
 
 
             <p:messages id="msg" showDetail="true" showSummary="true">
