@@ -71,16 +71,18 @@
                 </div>
             </div>
 
-            <p:panel id="toggleable" header="Otros Descriptores" toggleable="true" toggleSpeed="500" closeSpeed="500"
-                     widgetVar="panel" style="margin-bottom:20px">
+            <p:panel id="descriptorsPanel" header="Otros Descriptores" toggleable="true" toggleSpeed="500" closeSpeed="500"
+                     widgetVar="panelDescriptores" style="margin-bottom:20px">
                 <div class="ui-g">
                     <div class="ui-g-12 ui-md-6 ui-lg-1">
                         <p:outputLabel for="otherTermino" value="Termino (*)"/>
                     </div>
 
                     <div class="ui-g-12 ui-md-6 ui-lg-5">
-                        <p:inputText id="otherTermino" value="#{newConceptMBean.otherTermino}" style="width:90%"/>
+                        <p:inputText id="otherTermino"  value="#{newConceptMBean.otherTermino}" style="width:90%"/>
+                        <p:message id="errorOtherTermino" for="otherTermino" />
                     </div>
+
                     <div class="ui-g-12 ui-md-6 ui-lg-3">
                         <p:selectOneRadio id="radio4" value="#{newConceptMBean.otherSensibilidad}" layout="responsive"
                                           columns="2" style="width:100%">
@@ -98,7 +100,8 @@
                     </div>
                     <div class="ui-g-12 ui-md-6 ui-lg-1">
                         <p:commandButton value="Agregar" id="btn" action="#{newConceptMBean.addDescription}"
-                                         update="otherDescriptions" styleClass="ui-priority-primary"
+                                         update="otherDescriptions"
+                                         styleClass="ui-priority-primary"
                                          style="float: right"/>
                     </div>
                 </div>
@@ -108,12 +111,11 @@
                                  value="#{newConceptMBean.concept.otherDescriptions}"
                                  editable="true"
                                  selection="#{newConceptMBean.selectedDescriptions}"
-                                 rowKey="#{description.ID}"
+                                 rowKey="#{description.id}"
                                  reflow="true">
 
                         <p:ajax event="rowEdit" listener="#{newConceptMBean.onRowEdit}" update=":mainForm:editMsgs"/>
-                        <p:ajax event="rowEditCancel" listener="#{newConceptMBean.onRowCancel}"
-                                update=":mainForm:editMsgs"/>
+                        <p:ajax event="rowEditCancel" listener="#{newConceptMBean.onRowCancel}" update=":mainForm:editMsgs"/>
 
                         <p:column selectionMode="multiple" style="width:16px;text-align:center"/>
 
@@ -198,11 +200,12 @@
                             </div>
                         </p:column>
 
-                        <p:column headerText="Acción" style="width:5%">
+                        <p:column headerText="Acción" style="width:4%">
                             <p:commandLink actionListener="#{newConceptMBean.removeItem(description)}" ajax="true"
-                                           update="otherDescriptions" immediate="true">
-                                <h:graphicImage  style="width: 14px; height: 14px"
-                                                icon="trash"/>
+                                           update="otherDescriptions" style="float: right">
+                                <h:graphicImage  style="width: 15px; height: 15px"
+                                                 name="images/trash-blue.png"
+                                />
                             </p:commandLink>
                             <p:rowEditor style="display: inline"/>
                         </p:column>
@@ -214,7 +217,7 @@
 
             <!--Relaciones -->
             <p:panel id="atributos" header="Atributos" toggleable="true" toggleSpeed="500" closeSpeed="500"
-                     widgetVar="panel" style="margin-bottom:20px" >
+                     widgetVar="panelAtributos" style="margin-bottom:20px" >
 
                  <h:dataTable value="#{newConceptMBean.category.relationshipDefinitions}" var="relationshipDefinition">
 

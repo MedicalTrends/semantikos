@@ -16,7 +16,7 @@
 
         <div class="ui-g">
             <div class="ui-g-12 ui-md-6 ui-lg-2">
-                <p:outputLabel for="basicTypeValue" value="#{cc.attrs.relationshipDefinition.name}"/>
+                <p:outputLabel for="basicTypeValue" value="#{cc.attrs.relationshipDefinition.name} (*)"/>
             </div>
             <div class="ui-g-12 ui-md-6 ui-lg-10">
                 <p:selectOneMenu id="basicTypeValue"
@@ -61,6 +61,7 @@
                 <p:calendar id="basicTypeValue5"
                             value="#{newConceptMBean.basicTypeValue.value}"
                             var="value"
+                            showOn="button"
                             mindate="#{cc.attrs.targetDefinition.interval.lowerBoundary}"
                             maxdate="#{cc.attrs.targetDefinition.interval.upperBoundary}"
                             rendered="#{cc.attrs.targetDefinition.date}">
@@ -88,6 +89,7 @@
                 <p:dataTable id="basicTypeValues"
                              var="relationship"
                              value="#{cc.attrs.relationshipDefinition.relationships}"
+                             reflow="true"
                              rowIndexVar="rowId">
                     <p:column style="width:80%">
                         <p:selectOneMenu
@@ -125,19 +127,30 @@
                         <p:calendar id="basicValue10"
                                     value="#{relationship.target.value}"
                                     var="value"
+                                    showOn="button"
+                                    showButtonPanel="true"
                                     mindate="#{cc.attrs.targetDefinition.interval.lowerBoundary}"
                                     maxdate="#{cc.attrs.targetDefinition.interval.upperBoundary}"
                                     rendered="#{cc.attrs.targetDefinition.date}">
                         </p:calendar>
                     </p:column>
                     <p:column style="width:20%">
-                        <p:commandButton icon="fa fa-trash" title="Eliminar"
-                                         actionListener="#{newConceptMBean.removeRelationship(cc.attrs.relationshipDefinition, relationship)}"
-                                         update="basicTypeValues"
-                                         rendered="#{rowId>=cc.attrs.relationshipDefinition.multiplicity.lowerBoundary}"
-
-                        >
-                        </p:commandButton>
+                        <div style="text-align: center;">
+                            <p:commandButton
+                                           icon="fa fa-trash" title="Eliminar"
+                                           update="basicTypeValues"
+                                           actionListener="#{newConceptMBean.removeRelationship(cc.attrs.relationshipDefinition, relationship)}"
+                                           rendered="#{rowId>=cc.attrs.relationshipDefinition.multiplicity.lowerBoundary}"
+                            >
+                            </p:commandButton>
+                            <!--p:commandLink
+                            >
+                                <h:graphicImage  style="width: 15px; height: 15px"
+                                                 name="images/trash_blue_3.png"
+                                />
+                            </p:commandLink-->
+                            <p:outputLabel value="(*)" rendered="#{!(rowId>=cc.attrs.relationshipDefinition.multiplicity.lowerBoundary)}"/>
+                        </div>
                     </p:column>
                 </p:dataTable>
             </div>

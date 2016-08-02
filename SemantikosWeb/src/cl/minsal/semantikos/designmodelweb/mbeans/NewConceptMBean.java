@@ -10,6 +10,7 @@ import cl.minsal.semantikos.model.helpertables.HelperTableRecord;
 import cl.minsal.semantikos.model.relationships.Relationship;
 import cl.minsal.semantikos.model.relationships.RelationshipDefinition;
 import cl.minsal.semantikos.model.relationships.Target;
+import org.omnifaces.util.Ajax;
 import org.primefaces.event.CellEditEvent;
 import org.primefaces.event.RowEditEvent;
 import org.slf4j.Logger;
@@ -97,8 +98,8 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         user.setPassword("amauro");
         /////////////////////////////////////////////
 
-        category = categoryManager.getCategoryById(1);
-        //category = categoryManager.getCategoryById(105590001);
+        //category = categoryManager.getCategoryById(1);
+        category = categoryManager.getCategoryById(105590001);
         descriptionTypes = descriptionManager.getOtherTypes();
         //concept = new ConceptSMTK(category, new Description("electrocardiograma de urgencia", descriptionTypes.get(0)));
         concept = conceptManager.newConcept(category, "electrocardiograma de urgencia");
@@ -220,6 +221,13 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
 
 
     public void addDescription() {
+        if(otherTermino=="") {
+            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "ERROR", "Debe completar este campo para agregar el descriptor");
+            FacesContext.getCurrentInstance().addMessage(":mainForm:errorOtherTermino", msg);
+            Ajax.update(":mainForm:errorOtherTermino");
+            return;
+        }
+
         Description description = new Description(otherTermino, otherDescriptionType);
         description.setTerm(otherTermino);
         description.setCaseSensitive(otherSensibilidad);
@@ -227,6 +235,10 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         description.setCreationDate(Calendar.getInstance().getTime());
         description.setUser(user);
         concept.addDescription(description);
+        otherTermino = "";
+        otherDescriptionType = new DescriptionType();
+        Ajax.update("mainForm:otherTermino");
+
     }
 
     public void addRelationship(RelationshipDefinition relationshipDefinition, Target target){
