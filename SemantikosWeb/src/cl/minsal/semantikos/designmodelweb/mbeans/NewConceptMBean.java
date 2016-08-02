@@ -54,10 +54,6 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
     @EJB
     HelperTableManagerInterface helperTableManager;
 
-    /*
-    @EJB
-    StateManagerInterface stateManager;
-    */
 
     public User user;
 
@@ -101,44 +97,19 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         user.setPassword("amauro");
         /////////////////////////////////////////////
 
-        //category = categoryManager.getCategoryById(1);
-        category = categoryManager.getCategoryById(105590001);
-        for (int i = 0; i < category.getRelationshipDefinitions().size() ; i++) {
-            System.out.println(category.getRelationshipDefinitions().get(i).getName());
-        }
+        category = categoryManager.getCategoryById(1);
+        //category = categoryManager.getCategoryById(105590001);
         descriptionTypes = descriptionManager.getOtherTypes();
         //concept = new ConceptSMTK(category, new Description("electrocardiograma de urgencia", descriptionTypes.get(0)));
         concept = conceptManager.newConcept(category, "electrocardiograma de urgencia");
-        System.out.println("concept.getRelationships().size()= "+concept.getRelationships().size());
-        System.out.println("category.getRelationshipDefinitions().get(0).getRelationships().size()="+category.getRelationshipDefinitions().get(0).getRelationships().size());
-        //System.out.println("category.getRelationshipDefinitions().get(1).getRelationships().size()="+category.getRelationshipDefinitions().get(1).getRelationships().size());
-        System.out.println("category: "+ category.getRelationshipDefinitions().get(0).getRelationships().size());
 
-        System.out.println("category.getRelationshipDefinitions().get(3).getRelationships().size()="+category.getRelationshipDefinitions().get(2).getRelationships().size());
 
-        Long[] categoryArr= new Long[1];
-        categoryArr[0]=(long)105590001;
-        String pattern ="";
-        conceptSave=  conceptManager.findConceptByConceptIDOrDescriptionCategoryPageNumber(pattern, categoryArr, 0, 100);
 
     }
 
-
-    private List<ConceptSMTK> conceptSave;
-
-
-    public void sy(){
-        System.out.println("yughj");
+    public void test(){
+        System.out.println("test");
     }
-
-    public List<ConceptSMTK> getConceptSave() {
-        return conceptSave;
-    }
-
-    public void setConceptSave(List<ConceptSMTK> conceptSave) {
-        this.conceptSave = conceptSave;
-    }
-
 
     public void removeRelationship(RelationshipDefinition rd, Relationship r){
         rd.getRelationships().remove(r);
@@ -262,7 +233,6 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
 
         Relationship relationship= new Relationship(relationshipDefinition);
         relationship.setTarget(target);
-
         relationshipDefinition.addRelationship(relationship);
 
         this.concept.addRelationship(relationship);
