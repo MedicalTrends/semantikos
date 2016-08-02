@@ -26,17 +26,17 @@
                              value="#{newConceptMBean.helperTableManager.getAllRecords(cc.attrs.targetDefinition)}"
                              selection="#{newConceptMBean.selectedHelperTableRecord}"
                              reflow="true"
-                             rowKey="#{helperTableRecord.id}"
+                             rowKey="#{helperTableRecord.fields.id}"
                              >
                     <p:column selectionMode="single" style="width:16px;text-align:center"/>
                     <p:columns value="#{cc.attrs.targetDefinition.showableColumns}"
                                var="column"
                                columnIndexVar="colIndex"
-                               sortBy="#{helperTableRecord[column.columnName]}">
+                               sortBy="#{helperTableRecord.fields[column.columnName]}">
                         <f:facet name="header">
                             <h:outputText value="#{column.columnName}" />
                         </f:facet>
-                        <h:outputText value="#{helperTableRecord.get(column.columnName)}" />
+                        <h:outputText value="#{helperTableRecord.fields.get(column.columnName)}" />
                     </p:columns>
                 </p:dataTable>
             </div>

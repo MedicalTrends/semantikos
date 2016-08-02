@@ -115,6 +115,7 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
     public void removeRelationship(RelationshipDefinition rd, Relationship r){
         rd.getRelationships().remove(r);
         concept.getRelationships().remove(r);
+        System.out.println("rd.getRelationships()="+rd.getRelationships().size());
     }
 
 
@@ -223,8 +224,8 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
     public void addDescription() {
         if(otherTermino=="") {
             FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "ERROR", "Debe completar este campo para agregar el descriptor");
-            FacesContext.getCurrentInstance().addMessage(":mainForm:errorOtherTermino", msg);
-            Ajax.update(":mainForm:errorOtherTermino");
+            FacesContext.getCurrentInstance().addMessage(":mainForm:messages", msg);
+            Ajax.update(":mainForm:messages");
             return;
         }
 

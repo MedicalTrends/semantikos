@@ -4,6 +4,7 @@ import cl.minsal.semantikos.kernel.util.ConnectionBD;
 import cl.minsal.semantikos.model.helpertables.HelperTable;
 import cl.minsal.semantikos.model.helpertables.HelperTableColumn;
 import cl.minsal.semantikos.model.helpertables.HelperTableRecord;
+import cl.minsal.semantikos.model.helpertables.HelperTableRecordFactory;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -100,7 +101,8 @@ public class HelperTableDAOImpl implements HelperTableDAO {
     public List<HelperTableRecord> getAllRecords(HelperTable helperTable) {
 
         ConnectionBD connect = new ConnectionBD();
-        Object[] records = new Object[0];
+        //Object[] records = new Object[0];
+        List<HelperTableRecord> helperTableRecords = new ArrayList<>();
 
         String sql = "{call semantikos.get_all_records_from_helper_table(?)}";
         try (Connection connection = connect.getConnection();
@@ -114,7 +116,8 @@ public class HelperTableDAOImpl implements HelperTableDAO {
             ResultSet rs = call.getResultSet();
             while (rs.next()) {
                 String resultJSON = rs.getString(1);
-                records = mapper.readValue(resultJSON.toUpperCase(), Object[].class);
+                //records = mapper.readValue(resultJSON.toUpperCase(), Object[].class);
+                helperTableRecords = HelperTableRecordFactory.getInstance().createRecordsFromJSON(resultJSON);
             }
         } catch (SQLException e) {
             logger.error("Hubo un error al acceder a la base de datos.", e);
@@ -130,7 +133,7 @@ public class HelperTableDAOImpl implements HelperTableDAO {
         connect.closeConnection();
         //return Arrays.asList(records);
         //FIXME: Rapido y urgente.
-        return null;
+        return helperTableRecords;
 
     }
 }

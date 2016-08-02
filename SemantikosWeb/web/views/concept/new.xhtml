@@ -12,7 +12,7 @@
         <h:form id="mainForm">
             <p:growl id="growl" showDetail="true" showSummary="true"/>
             <p:growl id="editMsgs" showDetail="true"/>
-            <p:messages autoUpdate="true"></p:messages>
+            <p:messages autoUpdate="true" showDetail="true"></p:messages>
             <h3>Responsive</h3>
 
             <div class="ui-g">
@@ -80,7 +80,7 @@
 
                     <div class="ui-g-12 ui-md-6 ui-lg-5">
                         <p:inputText id="otherTermino"  value="#{newConceptMBean.otherTermino}" style="width:90%"/>
-                        <p:message id="errorOtherTermino" for="otherTermino" />
+                        <p:message id="errorOtherTermino" showDetail="true" for="otherTermino" />
                     </div>
 
                     <div class="ui-g-12 ui-md-6 ui-lg-3">
@@ -234,7 +234,7 @@
                     <smtk:helperTableType   relationshipDefinition="#{relationshipDefinition}"
                                             targetDefinition="#{relationshipDefinition.targetDefinition}"
                                             rendered="#{relationshipDefinition.targetDefinition.helperTable}"
-                   />
+                    />
 
                     </h:column>
                 </h:dataTable>

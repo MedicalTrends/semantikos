@@ -77,10 +77,12 @@
              rendered="#{cc.attrs.relationshipDefinition.multiplicity.collection}">
         <div class="ui-g">
             <div class="ui-g-12 ui-md-6 ui-lg-12">
-                <p:commandButton update="basicTypeValues"
+                <p:commandButton
+                                 update="#{cc.clientId}:basicTypeCollection"
                                  value="Agregar"
                                  style="float: right"
-                                 action="#{newConceptMBean.addRelationship(cc.attrs.relationshipDefinition,newConceptMBean.basicTypeValue)}">
+                                 action="#{newConceptMBean.addRelationship(cc.attrs.relationshipDefinition,newConceptMBean.basicTypeValue)}"
+                                 disabled="#{cc.attrs.relationshipDefinition.multiplicity.isUpperBoundaryReached(cc.attrs.relationshipDefinition.relationships.size())}">
                 </p:commandButton>
             </div>
         </div>
@@ -138,9 +140,9 @@
                         <div style="text-align: center;">
                             <p:commandButton
                                            icon="fa fa-trash" title="Eliminar"
-                                           update="basicTypeValues"
+                                           update="#{cc.clientId}:basicTypeCollection"
                                            actionListener="#{newConceptMBean.removeRelationship(cc.attrs.relationshipDefinition, relationship)}"
-                                           rendered="#{rowId>=cc.attrs.relationshipDefinition.multiplicity.lowerBoundary}"
+                                           rendered="#{!cc.attrs.relationshipDefinition.multiplicity.isBelowLowerBoundary(rowId)}"
                             >
                             </p:commandButton>
                             <!--p:commandLink
@@ -149,7 +151,7 @@
                                                  name="images/trash_blue_3.png"
                                 />
                             </p:commandLink-->
-                            <p:outputLabel value="(*)" rendered="#{!(rowId>=cc.attrs.relationshipDefinition.multiplicity.lowerBoundary)}"/>
+                            <p:outputLabel value="(*)" rendered="#{cc.attrs.relationshipDefinition.multiplicity.isBelowLowerBoundary(rowId)}"/>
                         </div>
                     </p:column>
                 </p:dataTable>
