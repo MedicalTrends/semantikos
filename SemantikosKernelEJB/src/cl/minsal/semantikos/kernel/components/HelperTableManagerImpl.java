@@ -1,13 +1,14 @@
 package cl.minsal.semantikos.kernel.components;
 
 import cl.minsal.semantikos.kernel.daos.HelperTableDAO;
-import cl.minsal.semantikos.model.helpertables.HelperTableFactory;
 import cl.minsal.semantikos.model.helpertables.HelperTable;
+import cl.minsal.semantikos.model.helpertables.HelperTableFactory;
+import cl.minsal.semantikos.model.helpertables.HelperTableRecord;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Este manager es responsable de proveer acceso a las distintas tablas auxiliares.
@@ -26,19 +27,19 @@ public class HelperTableManagerImpl implements HelperTableManagerInterface {
     private HelperTableDAO helperTableDAO;
 
     @Override
-    public List<HelperTable> getHelperTables() {
+    public Collection<HelperTable> getHelperTables() {
 
         /* Esto se resuelve con delegación sobre el Factory, mientras las tablas estén en duro */
         return HelperTableFactory.getInstance().getHelperTables();
     }
 
     @Override
-    public List<Map<String, String>> getAllRecords(HelperTable helperTable, String[] columnNames) {
+    public List<HelperTableRecord> getAllRecords(HelperTable helperTable, String[] columnNames) {
         return helperTableDAO.getAllRecords(helperTable, columnNames);
     }
 
     @Override
-    public List<Object> getAllRecords(HelperTable helperTable) {
-        return helperTableDAO.getAllRecordsJson(helperTable);
+    public List<HelperTableRecord> getAllRecords(HelperTable helperTable) {
+        return helperTableDAO.getAllRecords(helperTable);
     }
 }
