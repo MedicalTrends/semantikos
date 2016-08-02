@@ -129,17 +129,6 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
             relationshipDefinition.addRelationship(relationship);
             this.concept.addRelationship(relationship);
         }
-        System.out.println("***"+relationshipDefinition.getRelationships().size());
-
-        for (int i = 0; i < relationshipDefinition.getRelationships().size(); i++) {
-            System.out.println(relationshipDefinition.getRelationships().get(i).toString());
-            System.out.println("***********");
-
-        }
-        for (int i = 0; i < concept.getRelationships().size(); i++) {
-            System.out.println(concept.getRelationships().get(i).toString());
-            System.out.println("_______________");
-        }
     }
 
 
