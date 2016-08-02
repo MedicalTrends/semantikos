@@ -11,7 +11,6 @@
     <composite:attribute name="relationshipDefinition"
                          type="cl.minsal.semantikos.model.relationships.RelationshipDefinition"/>
     <composite:attribute name="targetDefinition" type="cl.minsal.semantikos.model.Category"/>
-    <composite:attribute name="target" type="cl.minsal.semantikos.model.ConceptSMTK"/>
 
 
 </composite:interface>
@@ -44,7 +43,7 @@
             <div class="ui-g">
 
                 <p:dataTable id="tableConcept"
-                             value="#{smtkBean.getConceptSearchForRDId(cc.attrs.relationshipDefinition.id)}"
+                             value="#{smtkBean.getConceptSearchForRDId(cc.attrs.relationshipDefinition.id,cc.attrs.targetDefinition)}"
                              var="concept"
                              rows="3"
                              paginator="true" dynamic="true"
@@ -110,23 +109,31 @@
     </p:panel>
 
     <p:panel id="id2panel"
-             style="margin-bottom:20px"
+             style="margin-bottom:20px; width: 100%;"
              rendered="#{cc.attrs.relationshipDefinition.multiplicity.upperBoundary!=0}">
         <h:form id="form3">
 
             <div class="ui-g">
 
-                <div class="ui-g-12 ui-md-6 ui-lg-3">
+
+                <div class="ui-g-12 ui-md-6 ui-lg-6">
+                    <p:outputLabel value="#{cc.attrs.relationshipDefinition.name}: " for="findConceptSMTK"/>
+                    <p:autoComplete id="findConceptSMTK" scrollHeight="200" size="5" style="width: 80%;"
+                                    inputStyle="width: 80%;" value="#{smtkBean.conceptSelected}"
+                                    completeMethod="#{smtkBean.getConceptSearchInput}"
+                                    converter="omnifaces.SelectItemsConverter"
+                                    var="concept" itemLabel="#{concept.descriptionFavorite.term}" itemValue="#{concept}"
+                                    forceSelection="true">
+                        <p:ajax event="itemSelect"
+                                listener="#{newConceptMBean.addOrChangeRelationship(cc.attrs.relationshipDefinition,concept)}"/>
+                        <f:attribute name="targetDef" value="#{cc.attrs.targetDefinition}"></f:attribute>
+                    </p:autoComplete>
 
                 </div>
                 <div class="ui-g-12 ui-md-6 ui-lg-3">
 
                 </div>
                 <div class="ui-g-12 ui-md-6 ui-lg-3">
-
-                </div>
-                <div class="ui-g-12 ui-md-6 ui-lg-3">
-
                 </div>
             </div>
 

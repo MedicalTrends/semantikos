@@ -105,17 +105,31 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         concept = conceptManager.newConcept(category, "electrocardiograma de urgencia");
 
 
-
     }
 
-    public void test(){
-        System.out.println("test");
-    }
 
     public void removeRelationship(RelationshipDefinition rd, Relationship r){
         rd.getRelationships().remove(r);
         concept.getRelationships().remove(r);
         System.out.println("rd.getRelationships()="+rd.getRelationships().size());
+    }
+
+    public void addOrChangeRelationship(RelationshipDefinition relationshipDefinition, Target target){
+
+        Relationship relationship= new Relationship(relationshipDefinition);
+        relationship.setTarget(target);
+        relationshipDefinition.addRelationship(relationship);
+
+        if(relationshipDefinition.getRelationships().size()==0){
+            relationshipDefinition.addRelationship(relationship);
+            this.concept.addRelationship(relationship);
+        }else{
+            this.concept.getRelationships().remove(relationshipDefinition.getRelationships().get(0));
+            relationshipDefinition.getRelationships().clear();
+
+            relationshipDefinition.addRelationship(relationship);
+            this.concept.addRelationship(relationship);
+        }
     }
 
 
