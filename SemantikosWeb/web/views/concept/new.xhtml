@@ -216,7 +216,8 @@
         <p:panel id="atributos" header="Atributos" toggleable="true" toggleSpeed="500" closeSpeed="500"
                  widgetVar="panel" style="margin-bottom:20px">
 
-            <h:dataTable style="width: 100%;" value="#{newConceptMBean.category.relationshipDefinitions}" var="relationshipDefinition">
+            <h:dataTable style="width: 100%;" value="#{newConceptMBean.category.relationshipDefinitions}"
+                         var="relationshipDefinition">
 
                 <h:column>
                     <smtk:basicType
@@ -225,7 +226,8 @@
                             rendered="#{relationshipDefinition.targetDefinition.basicType}"
 
                     />
-                    <smtk:smtkType relationshipDefinition="#{relationshipDefinition}"
+                    <smtk:smtkType targetDefinition="#{relationshipDefinition.targetDefinition}"
+                                   relationshipDefinition="#{relationshipDefinition}"
                                    rendered="#{relationshipDefinition.targetDefinition.SMTKType}"
                     />
                     <smtk:helperTableType relationshipDefinition="#{relationshipDefinition}"

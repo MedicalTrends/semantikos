@@ -104,7 +104,6 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         concept = conceptManager.newConcept(category, "electrocardiograma de urgencia");
 
 
-
     }
 
 

@@ -1,6 +1,7 @@
 package cl.minsal.semantikos.designmodelweb.mbeans;
 
 import cl.minsal.semantikos.kernel.components.ConceptManagerInterface;
+import cl.minsal.semantikos.model.Category;
 import cl.minsal.semantikos.model.ConceptSMTK;
 import cl.minsal.semantikos.model.relationships.RelationshipDefinition;
 import org.primefaces.model.LazyDataModel;
@@ -12,7 +13,6 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-import javax.faces.event.ValueChangeEvent;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,23 +29,20 @@ public class SMTKTypeBean implements Serializable {
 
     private String pattern;
 
+    private ConceptSMTK conceptSelected;
 
     private Map<Long, LazyDataModel<ConceptSMTK>> conceptSearchMap;
 
     private List<ConceptSMTK> conceptSearchList;
 
-
-
-
     @EJB
     private ConceptManagerInterface conceptManager;
 
 
-    public LazyDataModel<ConceptSMTK> getConceptSearchForRDId(final Long idRelationshipDefinition) {
+    public LazyDataModel<ConceptSMTK> getConceptSearchForRDId(final Long idRelationshipDefinition, final Category targetDefinition) {
 
         if (conceptSearchMap == null)
             conceptSearchMap = new HashMap<Long, LazyDataModel<ConceptSMTK>>();
-
 
         if (!conceptSearchMap.containsKey(idRelationshipDefinition)) {
             LazyDataModel<ConceptSMTK> conceptSearch;
@@ -53,23 +50,13 @@ public class SMTKTypeBean implements Serializable {
                 @Override
                 public List<ConceptSMTK> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
                     List<ConceptSMTK> conceptSMTKs;
-
-
-                    final Long[] categoryArr = new Long[1];
-                    if ((idRelationshipDefinition).intValue() == 2) {
-
-                        categoryArr[0] = (long) 105590001;
-                    } else {
-                        categoryArr[0] = (long) 362981000;
-                    }
-
+                    Long[] categoryArr = new Long[1];
+                    categoryArr[0] = targetDefinition.getIdCategory();
                     conceptSMTKs = conceptManager.findConceptByConceptIDOrDescriptionCategoryPageNumber(pattern, categoryArr, first, pageSize);
                     this.setRowCount(conceptManager.getAllConceptCount(pattern, categoryArr));
                     return conceptSMTKs;
                 }
-
             };
-
             conceptSearchMap.put(idRelationshipDefinition, conceptSearch);
         }
 
@@ -77,27 +64,17 @@ public class SMTKTypeBean implements Serializable {
     }
 
 
-
     public List<ConceptSMTK> getConceptSearchInput(String patron) {
 
         FacesContext context = FacesContext.getCurrentInstance();
-        RelationshipDefinition rD = (RelationshipDefinition) UIComponent.getCurrentComponent(context).getAttributes().get("relationshipD");
-
+        Category cD = (Category) UIComponent.getCurrentComponent(context).getAttributes().get("targetDef");
         conceptSearchList = new ArrayList<ConceptSMTK>();
         final Long[] categoryArr = new Long[1];
-        categoryArr[0] = (long) 105590001;
-        System.out.println(patron);
+
         if (patron != null) {
             if (patron.length() > 2) {
-
-                if (rD.getId() == 2) {
-
-                    categoryArr[0] = (long) 105590001;
-                    return conceptManager.findConceptByConceptIDOrDescriptionCategoryPageNumber(patron, categoryArr, 0, 20);
-                } else {
-                    categoryArr[0] = (long) 362981000;
-                     return conceptManager.findConceptByConceptIDOrDescriptionCategoryPageNumber(patron, categoryArr, 0, 20);
-                }
+                categoryArr[0] = cD.getIdCategory();
+                return conceptManager.findConceptByConceptIDOrDescriptionCategoryPageNumber(patron, categoryArr, 0, 20);
             }
         }
         return conceptSearchList;
@@ -105,7 +82,6 @@ public class SMTKTypeBean implements Serializable {
 
     @PostConstruct
     public void init() {
-
     }
 
     public String getPattern() {
@@ -124,4 +100,11 @@ public class SMTKTypeBean implements Serializable {
         this.conceptManager = conceptManager;
     }
 
+    public ConceptSMTK getConceptSelected() {
+        return conceptSelected;
+    }
+
+    public void setConceptSelected(ConceptSMTK conceptSelected) {
+        this.conceptSelected = conceptSelected;
+    }
 }
