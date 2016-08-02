@@ -7,31 +7,28 @@
       xmlns:composite="http://java.sun.com/jsf/composite"
       xmlns:p="http://primefaces.org/ui">
 
-<composite:interface componentType="basicTypeBean">
+<composite:interface>
     <composite:attribute name="relationshipDefinition" type="cl.minsal.semantikos.model.relationships.RelationshipDefinition" />
-    <composite:attribute name="multiplicity" type="cl.minsal.semantikos.model.Multiplicity" />
     <composite:attribute name="targetDefinition" type="cl.minsal.semantikos.model.helpertables.HelperTable" />
 </composite:interface>
 <composite:implementation>
-    <p:panel>
+    <p:panel
+             id="helperTableTypeSimple"
+             widgetVar="panelHelperTableTypeSimple"
+             rendered="#{cc.attrs.relationshipDefinition.multiplicity.simple}">
         <div class="ui-g">
             <div class="ui-g-12 ui-md-6 ui-lg-2">
-                <p:outputLabel for="helperTableRecords" value="#{cc.attrs.relationshipDefinition.name}"/>
+                <p:outputLabel for="helperTableRecordsSimple" value="#{cc.attrs.relationshipDefinition.name}"/>
             </div>
             <div class="ui-g-12 ui-md-6 ui-lg-10">
-                <p:dataTable id="helperTableRecords"
+                <p:dataTable id="helperTableRecordsSimple"
                              var="helperTableRecord"
                              value="#{newConceptMBean.helperTableManager.getAllRecords(cc.attrs.targetDefinition)}"
+                             selection="#{newConceptMBean.selectedHelperTableRecord}"
+                             reflow="true"
+                             rowKey="#{helperTableRecord.id}"
                              >
-                    <f:facet name="right">
-                        <p:outputPanel>
-                            <h:outputText value="Search all fields:" />
-                            <p:inputText id="globalFilter"
-                                         onkeyup="#{newConceptMBean.helperTableManager.getAllRecords(cc.attrs.targetDefinition)}"
-                                         style="width:150px"
-                                         placeholder="Enter keyword"/>
-                        </p:outputPanel>
-                    </f:facet>
+                    <p:column selectionMode="single" style="width:16px;text-align:center"/>
                     <p:columns value="#{cc.attrs.targetDefinition.showableColumns}"
                                var="column"
                                columnIndexVar="colIndex"
@@ -41,6 +38,59 @@
                         </f:facet>
                         <h:outputText value="#{helperTableRecord.get(column.columnName)}" />
                     </p:columns>
+                </p:dataTable>
+            </div>
+        </div>
+    </p:panel>
+    <p:panel id="helperTableTypeCollection"
+             header="#{cc.attrs.relationshipDefinition.name}"
+             toggleable="true" toggleSpeed="500"
+             closeSpeed="500"
+             widgetVar="panelHelperTableTypeCollection"
+             rendered="#{cc.attrs.relationshipDefinition.multiplicity.collection}">
+        <div class="ui-g">
+            <div class="ui-g-12 ui-md-6 ui-lg-12">
+                <p:commandButton update="HelperTableTypeValues"
+                                 value="Agregar"
+                                 style="float: right"
+                                 action="#{newConceptMBean.addRelationship(cc.attrs.relationshipDefinition,newConceptMBean.selectedHelperTableRecord)}">
+                </p:commandButton>
+            </div>
+        </div>
+        <div class="ui-g">
+            <div class="ui-g-12 ui-md-6 ui-lg-5">
+                <p:dataTable id="HelperTableTypeValues"
+                             var="relationship"
+                             value="#{cc.attrs.relationshipDefinition.relationships}"
+                             rowIndexVar="rowId">
+                    <p:column style="width:80%">
+                        <p:dataTable id="helperTableRecordsCollection"
+                                     var="helperTableRecord"
+                                     value="#{newConceptMBean.helperTableManager.getAllRecords(cc.attrs.targetDefinition)}"
+                                     selection="#{newConceptMBean.selectedHelperTableRecord}"
+                                     reflow="true"
+                                     rowKey="#{helperTableRecord.id}">
+                            <p:column selectionMode="single" style="width:16px;text-align:center"/>
+                            <p:columns value="#{cc.attrs.targetDefinition.showableColumns}"
+                                       var="column"
+                                       columnIndexVar="colIndex"
+                                       sortBy="#{helperTableRecord[column.columnName]}">
+                                <f:facet name="header">
+                                    <h:outputText value="#{column.columnName}" />
+                                </f:facet>
+                                <h:outputText value="#{helperTableRecord.get(column.columnName)}" />
+                            </p:columns>
+                        </p:dataTable>
+                    </p:column>
+                    <p:column style="width:20%">
+                        <p:commandButton icon="fa fa-trash" title="Eliminar"
+                                         actionListener="#{newConceptMBean.removeRelationship(cc.attrs.relationshipDefinition, relationship)}"
+                                         update="HelperTableTypeValues"
+                                         rendered="#{rowId>=cc.attrs.relationshipDefinition.multiplicity.lowerBoundary}"
+
+                        >
+                        </p:commandButton>
+                    </p:column>
                 </p:dataTable>
             </div>
         </div>

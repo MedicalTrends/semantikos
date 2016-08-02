@@ -72,7 +72,7 @@
             </div>
 
             <p:panel id="toggleable" header="Otros Descriptores" toggleable="true" toggleSpeed="500" closeSpeed="500"
-                     widgetVar="panel" style="margin-bottom:20px">
+                     widgetVar="panelDescriptores" style="margin-bottom:20px">
                 <div class="ui-g">
                     <div class="ui-g-12 ui-md-6 ui-lg-1">
                         <p:outputLabel for="otherTermino" value="Termino (*)"/>
@@ -108,7 +108,7 @@
                                  value="#{newConceptMBean.concept.otherDescriptions}"
                                  editable="true"
                                  selection="#{newConceptMBean.selectedDescriptions}"
-                                 rowKey="#{description.ID}"
+                                 rowKey="#{description.id}"
                                  reflow="true">
 
                         <p:ajax event="rowEdit" listener="#{newConceptMBean.onRowEdit}" update=":mainForm:editMsgs"/>
@@ -200,9 +200,10 @@
 
                         <p:column headerText="Acción" style="width:5%">
                             <p:commandLink actionListener="#{newConceptMBean.removeItem(description)}" ajax="true"
-                                           update="otherDescriptions" immediate="true">
-                                <h:graphicImage  style="width: 14px; height: 14px"
-                                                icon="trash"/>
+                                           update="otherDescriptions">
+                                <h:graphicImage  style="width: 15px; height: 15px; float: right"
+                                                 name="images/trash-blue.png"
+                                />
                             </p:commandLink>
                             <p:rowEditor style="display: inline"/>
                         </p:column>
@@ -214,11 +215,11 @@
 
             <!--Relaciones -->
             <p:panel id="atributos" header="Atributos" toggleable="true" toggleSpeed="500" closeSpeed="500"
-                     widgetVar="panel" style="margin-bottom:20px" >
+                     widgetVar="panelAtributos" style="margin-bottom:20px" >
 
                 <!--ui:repeat value="#{newConceptMBean.category.relationshipDefinitions}" var="relationshipDefinition"-->
                 <!--c:forEach items="#{newConceptMBean.category.relationshipDefinitions}" var="relationshipDefinition"-->
-                <h:dataTable value="#{newConceptMBean.category.relationshipDefinitions}" var="relationshipDefinition">
+                <h:dataTable value="#{newConceptMBean.category.relationshipDefinitions}" var="relationshipDefinition" style="width:100%">
 
                     <h:column>
                     <smtk:basicType

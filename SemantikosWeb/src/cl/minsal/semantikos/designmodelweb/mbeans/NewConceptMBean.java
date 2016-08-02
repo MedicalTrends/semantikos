@@ -101,8 +101,8 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         user.setPassword("amauro");
         /////////////////////////////////////////////
 
-        category = categoryManager.getCategoryById(1);
-        //category = categoryManager.getCategoryById(105590001);
+        //category = categoryManager.getCategoryById(1);
+        category = categoryManager.getCategoryById(105590001);
         for (int i = 0; i < category.getRelationshipDefinitions().size() ; i++) {
             System.out.println(category.getRelationshipDefinitions().get(i).getName());
         }
@@ -114,14 +114,7 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         //System.out.println("category.getRelationshipDefinitions().get(1).getRelationships().size()="+category.getRelationshipDefinitions().get(1).getRelationships().size());
         System.out.println("category: "+ category.getRelationshipDefinitions().get(0).getRelationships().size());
 
-        for (RelationshipDefinition relationshipDefinition : category.getRelationshipDefinitions()) {
-            System.out.println("---------------------------------------");
-            System.out.println("relationshipDefinition.getMultiplicity().getLowerBoundary()="+relationshipDefinition.getMultiplicity().getLowerBoundary());
-            System.out.println("relationshipDefinition.getMultiplicity().getUpperBoundary()="+relationshipDefinition.getMultiplicity().getUpperBoundary());
-            System.out.println("relationshipDefinition.getTargetDefinition().isBasicType()="+relationshipDefinition.getTargetDefinition().isBasicType());
-            System.out.println("relationshipDefinition.getTargetDefinition().isSMTKType()="+relationshipDefinition.getTargetDefinition().isSMTKType());
-            System.out.println("relationshipDefinition.getTargetDefinition().isHelperTable()="+relationshipDefinition.getTargetDefinition().isHelperTable());
-        }
+        System.out.println("category.getRelationshipDefinitions().get(3).getRelationships().size()="+category.getRelationshipDefinitions().get(2).getRelationships().size());
 
         Long[] categoryArr= new Long[1];
         categoryArr[0]=(long)105590001;
@@ -269,6 +262,7 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
 
         Relationship relationship= new Relationship(relationshipDefinition);
         relationship.setTarget(target);
+
         relationshipDefinition.addRelationship(relationship);
 
         this.concept.addRelationship(relationship);

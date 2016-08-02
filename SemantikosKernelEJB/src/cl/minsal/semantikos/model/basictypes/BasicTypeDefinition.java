@@ -129,19 +129,20 @@ public class BasicTypeDefinition<T extends Comparable> implements TargetDefiniti
     }
 
     public boolean isInteger() {
-        return (this.interval.lowerBoundary instanceof java.lang.Integer || this.interval.upperBoundary instanceof java.lang.Integer);
+        return ((this.interval.lowerBoundary instanceof java.lang.Long || this.interval.upperBoundary instanceof java.lang.Long) && this.domain.isEmpty());
     }
 
     public boolean isString() {
-        return (this.interval.lowerBoundary instanceof java.lang.String || this.interval.upperBoundary instanceof java.lang.String);
+        return ((this.interval.lowerBoundary instanceof java.lang.String || this.interval.upperBoundary instanceof java.lang.String) && this.domain.isEmpty());
     }
 
     public boolean isDate() {
-        return (this.interval.lowerBoundary instanceof java.util.Date || this.interval.upperBoundary instanceof java.util.Date);
+        return ((this.interval.lowerBoundary instanceof java.util.Date || this.interval.upperBoundary instanceof java.util.Date) && this.domain.isEmpty()) ;
     }
 
     public boolean isFloat() {
-        return (this.interval.lowerBoundary instanceof java.lang.Float || this.interval.upperBoundary instanceof java.lang.Float);
+        System.out.println("isFloat="+(this.interval.lowerBoundary instanceof java.lang.Float || this.interval.upperBoundary instanceof java.lang.Float));
+        return ((this.interval.lowerBoundary instanceof java.lang.Float || this.interval.upperBoundary instanceof java.lang.Float) && this.domain.isEmpty());
     }
 
 

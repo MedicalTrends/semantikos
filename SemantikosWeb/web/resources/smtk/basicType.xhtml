@@ -7,13 +7,12 @@
       xmlns:composite="http://java.sun.com/jsf/composite"
       xmlns:p="http://primefaces.org/ui">
 
-<composite:interface componentType="basicTypeBean">
+<composite:interface>
     <composite:attribute name="relationshipDefinition" type="cl.minsal.semantikos.model.relationships.RelationshipDefinition" />
-    <composite:attribute name="multiplicity" type="cl.minsal.semantikos.model.Multiplicity" />
     <composite:attribute name="targetDefinition" type="cl.minsal.semantikos.model.basictypes.BasicTypeDefinition" />
 </composite:interface>
 <composite:implementation>
-    <p:panel rendered="#{cc.attrs.relationshipDefinition.multiplicity.simple}">
+    <p:panel rendered="#{cc.attrs.relationshipDefinition.multiplicity.simple}" widgetVar="panelBasicTypeSimple">
 
         <div class="ui-g">
             <div class="ui-g-12 ui-md-6 ui-lg-2">
@@ -25,9 +24,12 @@
                                  var="value1"
                                  converter="omnifaces.SelectItemsConverter"
                                  rendered="#{cc.attrs.targetDefinition.hasDomain}">
-                    <f:selectItem itemLabel="Seleccione" itemValue=""/>
-                    <f:selectItems value="#{cc.attrs.targetDefinition.domain}" var="domain"
-                                   itemLabel="#{domain}" itemValue="#{domain}"/>
+                    <f:selectItem itemLabel="Seleccione"
+                                  itemValue=""/>
+                    <f:selectItems value="#{cc.attrs.targetDefinition.domain}"
+                                   var="domain"
+                                   itemLabel="#{domain}"
+                                   itemValue="#{domain}"/>
                 </p:selectOneMenu>
                 <p:inputNumber id="basicTypeValue2"
                                value="#{newConceptMBean.basicTypeValue.value}"
@@ -35,6 +37,8 @@
                                minValue="#{cc.attrs.targetDefinition.interval.lowerBoundary}"
                                maxValue="#{cc.attrs.targetDefinition.interval.upperBoundary}"
                                decimalPlaces="0"
+                               decimalSeparator=","
+                               thousandSeparator="."
                                rendered="#{cc.attrs.targetDefinition.integer}">
                 </p:inputNumber>
                 <p:inputNumber id="basicTypeValue3"
@@ -43,6 +47,7 @@
                                minValue="#{cc.attrs.targetDefinition.interval.lowerBoundary}"
                                maxValue="#{cc.attrs.targetDefinition.interval.upperBoundary}"
                                decimalSeparator=","
+                               thousandSeparator="."
                                decimalPlaces="2"
                                rendered="#{cc.attrs.targetDefinition.float}">
                 </p:inputNumber>
@@ -63,18 +68,26 @@
             </div>
         </div>
     </p:panel>
-    <p:panel id="basicType#{cc.attrs.relationshipDefinition.id}" header="#{cc.attrs.relationshipDefinition.name}"
+    <p:panel id="basicTypeCollection"
+             header="#{cc.attrs.relationshipDefinition.name}"
              toggleable="true" toggleSpeed="500"
              closeSpeed="500"
-             widgetVar="panel" style="margin-bottom:20px"
+             widgetVar="panelBasicTypeCollection"
              rendered="#{cc.attrs.relationshipDefinition.multiplicity.collection}">
         <div class="ui-g">
+            <div class="ui-g-12 ui-md-6 ui-lg-12">
+                <p:commandButton update="basicTypeValues"
+                                 value="Agregar"
+                                 style="float: right"
+                                 action="#{newConceptMBean.addRelationship(cc.attrs.relationshipDefinition,newConceptMBean.basicTypeValue)}">
+                </p:commandButton>
+            </div>
+        </div>
+        <div class="ui-g">
             <div class="ui-g-12 ui-md-6 ui-lg-5">
-
                 <p:dataTable id="basicTypeValues"
                              var="relationship"
                              value="#{cc.attrs.relationshipDefinition.relationships}"
-                             reflow="true"
                              rowIndexVar="rowId">
                     <p:column style="width:80%">
                         <p:selectOneMenu
@@ -121,27 +134,14 @@
                         <p:commandButton icon="fa fa-trash" title="Eliminar"
                                          actionListener="#{newConceptMBean.removeRelationship(cc.attrs.relationshipDefinition, relationship)}"
                                          update="basicTypeValues"
-                                         rendered="#{rowId>cc.attrs.relationshipDefinition.multiplicity.lowerBoundary}"
+                                         rendered="#{rowId>=cc.attrs.relationshipDefinition.multiplicity.lowerBoundary}"
+
                         >
                         </p:commandButton>
                     </p:column>
                 </p:dataTable>
             </div>
         </div>
-        <f:facet name="actions">
-            <p:commandLink styleClass="ui-panel-titlebar-icon ui-corner-all ui-state-default"
-                           update="basicTypeValues"
-                           title="Agregar"
-                           action="#{newConceptMBean.addRelationship(cc.attrs.relationshipDefinition,newConceptMBean.basicTypeValue)}">
-                <h:outputText styleClass="ui-icon ui-icon-plusthick" />
-            </p:commandLink>
-            <!--p:commandButton update="basicTypeValues"
-                             value="Agregar"
-                             styleClass="ui-btn-warning"
-                             style="float: right"
-                             actionListener="#{newConceptMBean.addRelationship(cc.attrs.relationshipDefinition,newConceptMBean.basicTypeValue)}">
-            </p:commandButton-->
-        </f:facet>
     </p:panel>
 </composite:implementation>
 </html>

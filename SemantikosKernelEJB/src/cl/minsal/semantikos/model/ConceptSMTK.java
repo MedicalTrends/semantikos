@@ -220,7 +220,7 @@ public class ConceptSMTK implements Target {
 
     public void addRelationship(Relationship relationship) {
 
-        relationship.setIdRelationship(relationships.size()+1);
+        //relationship.setIdRelationship(relationships.size()+1);
         this.relationships.add(relationship);
 
     }

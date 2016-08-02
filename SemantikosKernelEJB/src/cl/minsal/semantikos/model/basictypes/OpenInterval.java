@@ -5,7 +5,7 @@ package cl.minsal.semantikos.model.basictypes;
  */
 public class OpenInterval<T extends Comparable> extends Interval<T> {
 
-    protected OpenInterval(T bottomBoundary, T upperBoundary) {
+    public OpenInterval(T bottomBoundary, T upperBoundary) {
         super(bottomBoundary, upperBoundary);
     }
 

@@ -153,6 +153,7 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
             }
 
         }
+
         return concept;
     }
 

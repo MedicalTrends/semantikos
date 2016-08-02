@@ -21,7 +21,7 @@ public class HelperTableRecord implements Target {
      * El constructor básico que requiere ambos campos.
      *
      * @param helperTable La tabla auxiliar en cuestión.
-     * @param id    La llave primaria del registro de la tabla auxiliar.
+     * @param id La llave primaria del registro de la tabla auxiliar.
      */
     public HelperTableRecord(HelperTable helperTable, long id) {
         this.helperTable = helperTable;
