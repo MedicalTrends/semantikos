@@ -1,7 +1,9 @@
 package cl.minsal.semantikos.kernel.components;
 
 import cl.minsal.semantikos.model.helpertables.HelperTable;
+import cl.minsal.semantikos.model.helpertables.HelperTableRecord;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -15,7 +17,7 @@ public interface HelperTableManagerInterface {
      *
      * @return Una lista de <code>HelperTable</code> disponibles.
      */
-    public List<HelperTable> getHelperTables();
+    public Collection<HelperTable> getHelperTables();
 
     /**
      *
@@ -23,14 +25,12 @@ public interface HelperTableManagerInterface {
      * @param columnNames
      * @return
      */
-    public List<Map<String, String>> getAllRecords(HelperTable helperTable, String[] columnNames);
+    public List<HelperTableRecord> getAllRecords(HelperTable helperTable, String[] columnNames);
 
     /**
      *
-     * @param helperTable     
+     * @param helperTable
      * @return
      */
-    public List<Object> getAllRecords(HelperTable helperTable);
-
-
+    public List<HelperTableRecord> getAllRecords(HelperTable helperTable);
 }

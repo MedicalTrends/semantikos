@@ -1,7 +1,6 @@
 package cl.minsal.semantikos.model.helpertables;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * Esta enumeración almacena todas las tablas auxiliares existentes.
@@ -9,7 +8,7 @@ import java.util.List;
 public class HelperTableFactory {
 
     private HelperTable atcHT;
-    private List<HelperTable> helperTables = new ArrayList<>();
+    private Map<String, HelperTable> helperTables = new HashMap<>();
 
     private static final HelperTableFactory singletonInstance = new HelperTableFactory();
 
@@ -18,11 +17,12 @@ public class HelperTableFactory {
     }
 
     private void createHelperTables() {
-        helperTables.add(createATC());
+        HelperTable atcHelperTable = createATC();
+        helperTables.put(atcHelperTable.getTablaName(), atcHelperTable);
     }
 
-    public List<HelperTable> getHelperTables() {
-        return helperTables;
+    public Collection<HelperTable> getHelperTables() {
+        return helperTables.values();
     }
 
     /**
@@ -60,11 +60,20 @@ public class HelperTableFactory {
      */
     public HelperTable getHelperTable(long idHelperTable) throws IllegalArgumentException {
 
-        switch ((int)idHelperTable){
+        switch ((int) idHelperTable) {
             case 1:
                 return this.atcHT;
         }
 
         throw new IllegalArgumentException("No existe tabla auxiliar con ID = " + idHelperTable);
+    }
+
+    /**
+     * Este método es responsable de retornar una Tabla Auxiliar a partir de su nombre.
+     * @param tableName El nombre de la tabla auxiliar que se desea recuperar.
+     * @return La tabla auxiliar de nombre <code>tableName</code>.
+     */
+    public HelperTable getHelperTable(String tableName) {
+        return null;
     }
 }
