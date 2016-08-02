@@ -1,6 +1,7 @@
 package cl.minsal.semantikos.kernel.daos;
 
 import cl.minsal.semantikos.model.helpertables.HelperTable;
+import cl.minsal.semantikos.model.helpertables.HelperTableRecord;
 
 import javax.ejb.Local;
 import java.util.List;
@@ -42,7 +43,7 @@ public interface HelperTableDAO {
      *
      * @return Una lista de registros (en forma de mappings) de la tabla indicada.
      */
-    public List<Map<String, String>> getAllRecords(HelperTable helperTable, String[] columnNames);
+    public List<HelperTableRecord> getAllRecords(HelperTable helperTable, String[] columnNames);
 
     /**
      * Este método es responsable de recuperar todos los registros de una tabla auxiliar, recuperando sólo las columnas
@@ -52,7 +53,5 @@ public interface HelperTableDAO {
      *
      * @return Una lista de registros (en forma de mappings) de la tabla indicada.
      */
-    public List<Map<String, String>> getAllRecords(HelperTable helperTable);
-
-    public List<Object> getAllRecordsJson(HelperTable helperTable);
+    public List<HelperTableRecord> getAllRecords(HelperTable helperTable);
 }
