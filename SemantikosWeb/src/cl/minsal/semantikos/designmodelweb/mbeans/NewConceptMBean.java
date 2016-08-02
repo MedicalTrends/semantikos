@@ -107,13 +107,39 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
 
     }
 
-    public void test(){
-        System.out.println("test");
-    }
 
     public void removeRelationship(RelationshipDefinition rd, Relationship r){
         rd.getRelationships().remove(r);
         concept.getRelationships().remove(r);
+    }
+
+    public void addOrChangeRelationship(RelationshipDefinition relationshipDefinition, Target target){
+
+        Relationship relationship= new Relationship(relationshipDefinition);
+        relationship.setTarget(target);
+        relationshipDefinition.addRelationship(relationship);
+
+        if(relationshipDefinition.getRelationships().size()==0){
+            relationshipDefinition.addRelationship(relationship);
+            this.concept.addRelationship(relationship);
+        }else{
+            this.concept.getRelationships().remove(relationshipDefinition.getRelationships().get(0));
+            relationshipDefinition.getRelationships().clear();
+
+            relationshipDefinition.addRelationship(relationship);
+            this.concept.addRelationship(relationship);
+        }
+        System.out.println("***"+relationshipDefinition.getRelationships().size());
+
+        for (int i = 0; i < relationshipDefinition.getRelationships().size(); i++) {
+            System.out.println(relationshipDefinition.getRelationships().get(i).toString());
+            System.out.println("***********");
+
+        }
+        for (int i = 0; i < concept.getRelationships().size(); i++) {
+            System.out.println(concept.getRelationships().get(i).toString());
+            System.out.println("_______________");
+        }
     }
 
 

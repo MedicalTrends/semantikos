@@ -201,7 +201,7 @@
                         <p:column headerText="Acción" style="width:5%">
                             <p:commandLink actionListener="#{newConceptMBean.removeItem(description)}" ajax="true"
                                            update="otherDescriptions" immediate="true">
-                                <h:graphicImage  style="width: 14px; height: 14px"
+                                <h:graphicImage style="width: 14px; height: 14px"
                                                 icon="trash"/>
                             </p:commandLink>
                             <p:rowEditor style="display: inline"/>
@@ -210,44 +210,40 @@
                 </div>
             </p:panel>
 
-     </h:form>
+        </h:form>
 
-            <!--Relaciones -->
-            <p:panel id="atributos" header="Atributos" toggleable="true" toggleSpeed="500" closeSpeed="500"
-                     widgetVar="panel" style="margin-bottom:20px" >
+        <!--Relaciones -->
+        <p:panel id="atributos" header="Atributos" toggleable="true" toggleSpeed="500" closeSpeed="500"
+                 widgetVar="panel" style="margin-bottom:20px">
 
-                 <h:dataTable value="#{newConceptMBean.category.relationshipDefinitions}" var="relationshipDefinition">
+            <h:dataTable style="width: 100%;" value="#{newConceptMBean.category.relationshipDefinitions}" var="relationshipDefinition">
 
-                    <h:column>
+                <h:column>
                     <smtk:basicType
-                                    targetDefinition="#{relationshipDefinition.targetDefinition}"
-                                    relationshipDefinition="#{relationshipDefinition}"
-                                    rendered="#{relationshipDefinition.targetDefinition.basicType}"
+                            targetDefinition="#{relationshipDefinition.targetDefinition}"
+                            relationshipDefinition="#{relationshipDefinition}"
+                            rendered="#{relationshipDefinition.targetDefinition.basicType}"
 
                     />
-                    <smtk:smtkType  relationshipDefinition="#{relationshipDefinition}"
-                                    rendered="#{relationshipDefinition.targetDefinition.SMTKType}"
-                                    />
-                    <smtk:helperTableType   relationshipDefinition="#{relationshipDefinition}"
-                                            targetDefinition="#{relationshipDefinition.targetDefinition}"
-                                            rendered="#{relationshipDefinition.targetDefinition.helperTable}"
-                   />
+                    <smtk:smtkType relationshipDefinition="#{relationshipDefinition}"
+                                   rendered="#{relationshipDefinition.targetDefinition.SMTKType}"
+                    />
+                    <smtk:helperTableType relationshipDefinition="#{relationshipDefinition}"
+                                          targetDefinition="#{relationshipDefinition.targetDefinition}"
+                                          rendered="#{relationshipDefinition.targetDefinition.helperTable}"
+                    />
 
-                    </h:column>
-                </h:dataTable>
-            </p:panel>
-
-
+                </h:column>
+            </h:dataTable>
+        </p:panel>
 
 
-            <p:messages id="msg" showDetail="true" showSummary="true">
-                <p:effect type="pulsate" event="load" delay="0">
-                    <f:param name="mode" value="'show'"/>
-                    <f:param name="times" value="'1'"/>
-                </p:effect>
-            </p:messages>
-
-
+        <p:messages id="msg" showDetail="true" showSummary="true">
+            <p:effect type="pulsate" event="load" delay="0">
+                <f:param name="mode" value="'show'"/>
+                <f:param name="times" value="'1'"/>
+            </p:effect>
+        </p:messages>
 
 
     </ui:define>

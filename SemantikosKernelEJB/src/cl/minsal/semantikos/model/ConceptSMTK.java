@@ -220,7 +220,6 @@ public class ConceptSMTK implements Target {
 
     public void addRelationship(Relationship relationship) {
 
-        //relationship.setIdRelationship(relationships.size()+1);
         this.relationships.add(relationship);
 
     }
@@ -271,6 +270,14 @@ public class ConceptSMTK implements Target {
 
     public int countDescription(){
         return otherDescriptions.size();
+    }
+
+
+
+
+    @Override
+    public String toString() {
+        return getDescriptionFavorite().getTerm();
     }
 
 }

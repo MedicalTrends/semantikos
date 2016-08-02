@@ -2,6 +2,7 @@ package cl.minsal.semantikos.designmodelweb.mbeans;
 
 import cl.minsal.semantikos.kernel.components.ConceptManagerInterface;
 import cl.minsal.semantikos.model.ConceptSMTK;
+import cl.minsal.semantikos.model.relationships.RelationshipDefinition;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
 
@@ -9,6 +10,9 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.event.ValueChangeEvent;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,10 +31,10 @@ public class SMTKTypeBean implements Serializable {
 
 
     private Map<Long, LazyDataModel<ConceptSMTK>> conceptSearchMap;
+
     private List<ConceptSMTK> conceptSearchList;
 
-    private ConceptSMTK conceptSelected;
-    private ConceptSMTK conceptSemantikos;
+
 
 
     @EJB
@@ -73,33 +77,36 @@ public class SMTKTypeBean implements Serializable {
     }
 
 
-    public List<ConceptSMTK> getConceptSearchInput(String patt) {
 
-        if (conceptSearchList == null)
-            conceptSearchList = new ArrayList<ConceptSMTK>();
+    public List<ConceptSMTK> getConceptSearchInput(String patron) {
 
-        int idRelationshipDefinition=2;
+        FacesContext context = FacesContext.getCurrentInstance();
+        RelationshipDefinition rD = (RelationshipDefinition) UIComponent.getCurrentComponent(context).getAttributes().get("relationshipD");
+
+        conceptSearchList = new ArrayList<ConceptSMTK>();
         final Long[] categoryArr = new Long[1];
-        if (idRelationshipDefinition == 2) {
+        categoryArr[0] = (long) 105590001;
+        System.out.println(patron);
+        if (patron != null) {
+            if (patron.length() > 2) {
 
-            categoryArr[0] = (long) 105590001;
-        } else {
-            categoryArr[0] = (long) 362981000;
+                if (rD.getId() == 2) {
+
+                    categoryArr[0] = (long) 105590001;
+                    return conceptManager.findConceptByConceptIDOrDescriptionCategoryPageNumber(patron, categoryArr, 0, 20);
+                } else {
+                    categoryArr[0] = (long) 362981000;
+                     return conceptManager.findConceptByConceptIDOrDescriptionCategoryPageNumber(patron, categoryArr, 0, 20);
+                }
+            }
         }
-
-        return conceptManager.findConceptByConceptIDOrDescriptionCategoryPageNumber(patt, categoryArr, 0, conceptManager.getAllConceptCount(patt, categoryArr));
-
+        return conceptSearchList;
     }
 
     @PostConstruct
     public void init() {
 
     }
-
-    public void test(){
-        System.out.println("test!");
-    }
-
 
     public String getPattern() {
         return pattern;
@@ -109,7 +116,6 @@ public class SMTKTypeBean implements Serializable {
         this.pattern = pattern;
     }
 
-
     public ConceptManagerInterface getConceptManager() {
         return conceptManager;
     }
@@ -117,23 +123,5 @@ public class SMTKTypeBean implements Serializable {
     public void setConceptManager(ConceptManagerInterface conceptManager) {
         this.conceptManager = conceptManager;
     }
-
-    public ConceptSMTK getConceptSemantikos() {
-        return conceptSemantikos;
-    }
-
-    public void setConceptSemantikos(ConceptSMTK conceptSemantikos) {
-        this.conceptSemantikos = conceptSemantikos;
-    }
-
-    public ConceptSMTK getConceptSelected() {
-        return conceptSelected;
-    }
-
-    public void setConceptSelected(ConceptSMTK conceptSelected) {
-        this.conceptSelected = conceptSelected;
-        System.out.println("selected");
-    }
-
 
 }
