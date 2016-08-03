@@ -12,9 +12,8 @@
     <composite:attribute name="targetDefinition" type="cl.minsal.semantikos.model.helpertables.HelperTable" />
 </composite:interface>
 <composite:implementation>
-    <p:panel
-             id="helperTableTypeSimple"
-             widgetVar="panelHelperTableTypeSimple"
+    <p:panel id="helperTableTypeSimple#{cc.attrs.relationshipDefinition.id}"
+             widgetVar="panelHelperTableTypeSimple#{cc.attrs.relationshipDefinition.id}"
              rendered="#{cc.attrs.relationshipDefinition.multiplicity.simple}">
         <div class="ui-g">
             <div class="ui-g-12 ui-md-6 ui-lg-2">
@@ -42,15 +41,15 @@
             </div>
         </div>
     </p:panel>
-    <p:panel id="helperTableTypeCollection"
+    <p:panel id="helperTableTypeCollection#{cc.attrs.relationshipDefinition.id}"
              header="#{cc.attrs.relationshipDefinition.name}"
              toggleable="true" toggleSpeed="500"
              closeSpeed="500"
-             widgetVar="panelHelperTableTypeCollection"
+             widgetVar="panelHelperTableTypeCollection#{cc.attrs.relationshipDefinition.id}"
              rendered="#{cc.attrs.relationshipDefinition.multiplicity.collection}">
         <div class="ui-g">
             <div class="ui-g-12 ui-md-6 ui-lg-12">
-                <p:commandButton update="HelperTableTypeValues"
+                <p:commandButton update="#{cc.clientId}:helperTableTypeCollection#{cc.attrs.relationshipDefinition.id}"
                                  value="Agregar"
                                  style="float: right"
                                  action="#{newConceptMBean.addRelationship(cc.attrs.relationshipDefinition,newConceptMBean.selectedHelperTableRecord)}">
@@ -85,11 +84,11 @@
                     <p:column style="width:20%">
                         <p:commandButton icon="fa fa-trash" title="Eliminar"
                                          actionListener="#{newConceptMBean.removeRelationship(cc.attrs.relationshipDefinition, relationship)}"
-                                         update="HelperTableTypeValues"
-                                         rendered="#{rowId>=cc.attrs.relationshipDefinition.multiplicity.lowerBoundary}"
-
+                                         update="#{cc.clientId}:helperTableTypeCollection#{cc.attrs.relationshipDefinition.id}"
+                                         rendered="#{!cc.attrs.relationshipDefinition.multiplicity.isBelowLowerBoundary(rowId)}"
                         >
                         </p:commandButton>
+                        <p:outputLabel value="(*)" rendered="#{cc.attrs.relationshipDefinition.multiplicity.isBelowLowerBoundary(rowId)}"/>
                     </p:column>
                 </p:dataTable>
             </div>

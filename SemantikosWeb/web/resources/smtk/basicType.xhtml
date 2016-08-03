@@ -12,7 +12,8 @@
     <composite:attribute name="targetDefinition" type="cl.minsal.semantikos.model.basictypes.BasicTypeDefinition" />
 </composite:interface>
 <composite:implementation>
-    <p:panel rendered="#{cc.attrs.relationshipDefinition.multiplicity.simple}" widgetVar="panelBasicTypeSimple">
+    <p:panel rendered="#{cc.attrs.relationshipDefinition.multiplicity.simple}"
+             widgetVar="panelBasicTypeSimple#{cc.attrs.relationshipDefinition.id}">
 
         <div class="ui-g">
             <div class="ui-g-12 ui-md-6 ui-lg-2">
@@ -73,7 +74,7 @@
              header="#{cc.attrs.relationshipDefinition.name}"
              toggleable="true" toggleSpeed="500"
              closeSpeed="500"
-             widgetVar="panelBasicTypeCollection"
+             widgetVar="panelBasicTypeCollection#{cc.attrs.relationshipDefinition.id}"
              rendered="#{cc.attrs.relationshipDefinition.multiplicity.collection}">
         <div class="ui-g">
             <div class="ui-g-12 ui-md-6 ui-lg-12">

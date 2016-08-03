@@ -68,8 +68,6 @@ public class StateMachine {
 
             if(transition.getTargetState().equals(targetState))
                 return true;
-            else
-                return false;
 
         }
 

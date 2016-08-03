@@ -143,7 +143,7 @@ public class ConceptSMTK implements Target {
      * @param relationshipDefinition El tipo de relación al que pertenecen las relaciones a retornar.
      * @return Una <code>java.util.List</code> de relaciones de tipo <code>relationshipDefinition</code>.
      */
-    public List<Relationship> getRelationships(RelationshipDefinition relationshipDefinition) {
+    public List<Relationship> getRelationshipsByRelationDefinition(RelationshipDefinition relationshipDefinition) {
         List<Relationship> someRelationships = new ArrayList<>();
         for (Relationship relationship : relationships) {
             if (relationship.getRelationshipDefinition().equals(relationshipDefinition)){
