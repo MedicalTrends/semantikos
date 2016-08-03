@@ -10,6 +10,7 @@ import cl.minsal.semantikos.model.helpertables.HelperTableRecord;
 import cl.minsal.semantikos.model.relationships.Relationship;
 import cl.minsal.semantikos.model.relationships.RelationshipDefinition;
 import cl.minsal.semantikos.model.relationships.Target;
+import org.omnifaces.util.Ajax;
 import org.primefaces.event.CellEditEvent;
 import org.primefaces.event.RowEditEvent;
 import org.slf4j.Logger;
@@ -234,6 +235,13 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
 
 
     public void addDescription() {
+        if(otherTermino=="") {
+            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "ERROR", "Debe completar este campo para agregar el descriptor");
+            FacesContext.getCurrentInstance().addMessage(":mainForm:messages", msg);
+            Ajax.update(":mainForm:messages");
+            return;
+        }
+
         Description description = new Description(otherTermino, otherDescriptionType);
         description.setTerm(otherTermino);
         description.setCaseSensitive(otherSensibilidad);
@@ -241,6 +249,18 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         description.setCreationDate(Calendar.getInstance().getTime());
         description.setUser(user);
         concept.addDescription(description);
+        otherTermino = "";
+        otherDescriptionType = new DescriptionType();
+        Ajax.update("mainForm:otherTermino");
+
+    }
+
+    public void addRelationship(RelationshipDefinition relationshipDefinition){
+
+        Relationship relationship= new Relationship(relationshipDefinition);
+        relationshipDefinition.addRelationship(relationship);
+        this.concept.addRelationship(relationship);
+
     }
 
     public void addRelationship(RelationshipDefinition relationshipDefinition, Target target){
@@ -248,9 +268,23 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         Relationship relationship= new Relationship(relationshipDefinition);
         relationship.setTarget(target);
         relationshipDefinition.addRelationship(relationship);
-
         this.concept.addRelationship(relationship);
     }
+
+
+    public void setRelationship(RelationshipDefinition rd, Relationship relationship){
+
+        LOGGER.debug("setRelationship, Target ={} ",relationship.getTarget());
+
+        int index = concept.getRelationships().indexOf(relationship);
+        concept.getRelationships().set(index, relationship);
+
+        for (Relationship r : rd.getRelationships()) {
+            BasicTypeValue basicTypeValue = (BasicTypeValue) r.getTarget();
+        }
+
+    }
+
 
     public HelperTableManagerInterface getHelperTableManager() {
         return helperTableManager;
@@ -274,6 +308,21 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
 
     public void setSelectedHelperTableRecord(Object selectedHelperTableRecord) {
         this.selectedHelperTableRecord = selectedHelperTableRecord;
+    }
+
+    public boolean limitRelationship(RelationshipDefinition relationshipD){
+        if(relationshipD.getMultiplicity().getUpperBoundary()!=0){
+            if(relationshipD.getRelationships().size()==relationshipD.getMultiplicity().getUpperBoundary()){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void saveConcept(){
+        for (int i = 0; i < category.getRelationshipDefinitions().size() ; i++) {
+
+        }
     }
 }
 

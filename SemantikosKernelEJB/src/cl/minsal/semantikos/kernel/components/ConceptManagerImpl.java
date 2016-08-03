@@ -144,15 +144,20 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
         preferido.setState(propuesto);
         ConceptSMTK concept = new ConceptSMTK(category, fsn, preferido, propuesto);
         // Agregar las relaciones si existen
-        /*for(RelationshipDefinition relationshipDefinition: category.getRelationshipDefinitions()) {
+
+
+        for(RelationshipDefinition relationshipDefinition: category.getRelationshipDefinitions()) {
             //Evaluar la multiplicidad de la relación
             for(int i=0; i<relationshipDefinition.getMultiplicity().getLowerBoundary();++i) {
                 Relationship relationship = new Relationship(relationshipDefinition);
-                relationshipDefinition.addRelationship(relationship);
-                concept.addRelationship(relationship);
+                if(!relationshipDefinition.getTargetDefinition().isSMTKType()){
+                    relationshipDefinition.addRelationship(relationship);
+                    concept.addRelationship(relationship);
+                }
+
             }
 
-        }*/
+        }
 
         return concept;
     }

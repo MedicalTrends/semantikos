@@ -22,7 +22,6 @@ public class StateMachineManagerImpl implements StateMachineManagerInterface {
     @PostConstruct
     public void init() {
         if(stateMachineDAO == null)
-            System.out.println("ES NULL");
         conceptStateMachine = stateMachineDAO.initConceptStateMachine();
     }
 
