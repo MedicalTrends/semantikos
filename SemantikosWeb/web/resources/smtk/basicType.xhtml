@@ -81,7 +81,7 @@
                                  update="#{cc.clientId}:basicTypeCollection"
                                  value="Agregar"
                                  style="float: right"
-                                 action="#{newConceptMBean.addRelationship(cc.attrs.relationshipDefinition,newConceptMBean.basicTypeValue)}"
+                                 action="#{newConceptMBean.addRelationship(cc.attrs.relationshipDefinition)}"
                                  disabled="#{cc.attrs.relationshipDefinition.multiplicity.isUpperBoundaryReached(cc.attrs.relationshipDefinition.relationships.size())}">
                 </p:commandButton>
             </div>

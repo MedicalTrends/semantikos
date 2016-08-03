@@ -256,14 +256,37 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
 
     }
 
+    public void addRelationship(RelationshipDefinition relationshipDefinition){
+
+        Relationship relationship= new Relationship(relationshipDefinition);
+        relationshipDefinition.addRelationship(relationship);
+        this.concept.addRelationship(relationship);
+
+    }
+
     public void addRelationship(RelationshipDefinition relationshipDefinition, Target target){
 
         Relationship relationship= new Relationship(relationshipDefinition);
         relationship.setTarget(target);
         relationshipDefinition.addRelationship(relationship);
-
         this.concept.addRelationship(relationship);
     }
+
+
+    public void setRelationship(RelationshipDefinition rd, Relationship relationship){
+
+        LOGGER.debug("setRelationship, Target ={} ",relationship.getTarget());
+
+        int index = concept.getRelationships().indexOf(relationship);
+        concept.getRelationships().set(index, relationship);
+
+        for (Relationship r : rd.getRelationships()) {
+            BasicTypeValue basicTypeValue = (BasicTypeValue) r.getTarget();
+            System.out.println("basicTypeValue.getValue()="+basicTypeValue.getValue());
+        }
+
+    }
+
 
     public HelperTableManagerInterface getHelperTableManager() {
         return helperTableManager;
