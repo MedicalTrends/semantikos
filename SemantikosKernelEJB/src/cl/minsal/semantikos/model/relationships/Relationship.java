@@ -4,6 +4,8 @@ import cl.minsal.semantikos.model.ConceptSMTK;
 import cl.minsal.semantikos.model.basictypes.BasicTypeValue;
 import cl.minsal.semantikos.model.helpertables.HelperTableRecord;
 
+import java.sql.Timestamp;
+
 /**
  * @author Andrés Farías
  */
@@ -20,6 +22,9 @@ public class Relationship {
 
     /** El elemento destino de esta relación */
     private Target target;
+
+    /** La relación es Vigente (valida) hasta la fecha... */
+    private Timestamp validityUntil;
 
     /**
      * Este es el constructor mínimo con el cual se crean las Relaciones
@@ -42,9 +47,13 @@ public class Relationship {
      *
      * @param id El identificador único.
      */
-    public Relationship(long id, RelationshipDefinition relationshipDefinition) {
+    public Relationship(long id, ConceptSMTK sourceConcept, RelationshipDefinition relationshipDefinition, Target target, Timestamp validityUntil) {
         this(relationshipDefinition);
         this.idRelationship = id;
+        this.sourceConcept = sourceConcept;
+        this.relationshipDefinition = relationshipDefinition;
+        this.target = target;
+        this.validityUntil = validityUntil;
     }
 
     public long getIdRelationship() {
@@ -69,6 +78,14 @@ public class Relationship {
 
     public void setRelationshipDefinition(RelationshipDefinition relationshipDefinition) {
         this.relationshipDefinition = relationshipDefinition;
+    }
+
+    public Timestamp getValidityUntil() {
+        return validityUntil;
+    }
+
+    public void setValidityUntil(Timestamp validityUntil) {
+        this.validityUntil = validityUntil;
     }
 
     public Target getTarget() {
