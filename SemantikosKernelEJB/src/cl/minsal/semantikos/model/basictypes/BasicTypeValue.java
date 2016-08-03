@@ -30,7 +30,6 @@ public class BasicTypeValue<T extends Comparable> implements Target {
 
     {
         LOGGER.debug("seteando valor de target valor={}",value);
-        System.out.println("seteando valor de target valor="+value);
         this.value = value;
     }
 

@@ -180,7 +180,6 @@ public class ConceptDAOImpl implements ConceptDAO {
         try (Connection connection = connect.getConnection();) {
 
             Array ArrayStates = connection.createArrayOf("bigint", states);
-            System.out.println(Category.length);
             if (Category.length>0) {
                 call = connection.prepareCall("{call semantikos.find_concept_by_conceptid_categories(?,?,?,?,?)}");
                 Array ArrayCategories = connection.createArrayOf("integer", Category);

@@ -98,8 +98,8 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         user.setPassword("amauro");
         /////////////////////////////////////////////
 
-        //category = categoryManager.getCategoryById(1);
-        category = categoryManager.getCategoryById(105590001);
+        category = categoryManager.getCategoryById(1);
+        //category = categoryManager.getCategoryById(105590001);
         descriptionTypes = descriptionManager.getOtherTypes();
         //concept = new ConceptSMTK(category, new Description("electrocardiograma de urgencia", descriptionTypes.get(0)));
         concept = conceptManager.newConcept(category, "electrocardiograma de urgencia");
@@ -111,7 +111,6 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
     public void removeRelationship(RelationshipDefinition rd, Relationship r){
         rd.getRelationships().remove(r);
         concept.getRelationships().remove(r);
-        System.out.println("rd.getRelationships()="+rd.getRelationships().size());
     }
 
     public void addOrChangeRelationship(RelationshipDefinition relationshipDefinition, Target target){
@@ -282,7 +281,6 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
 
         for (Relationship r : rd.getRelationships()) {
             BasicTypeValue basicTypeValue = (BasicTypeValue) r.getTarget();
-            System.out.println("basicTypeValue.getValue()="+basicTypeValue.getValue());
         }
 
     }

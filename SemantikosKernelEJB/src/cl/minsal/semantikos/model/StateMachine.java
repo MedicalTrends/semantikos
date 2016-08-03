@@ -42,7 +42,6 @@ public class StateMachine {
 
     public List<State> getTargetStates(State aSourceState){
 
-        System.out.println("aSourceState.getName()="+aSourceState.getName());
 
         List<State> results = new ArrayList<State>();
         for (Transition transition : transitions) {

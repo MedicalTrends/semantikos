@@ -48,12 +48,10 @@ public class BasicTypeBean<T extends Comparable> extends UINamingContainer {
     */
 
     public String getValue() {
-        System.out.println("setValue");
         return value.toString();
     }
 
     public void setValue(T value) {
-        System.out.println("setValue");
         this.value = value;
     }
     /*
