@@ -275,5 +275,20 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
     public void setSelectedHelperTableRecord(Object selectedHelperTableRecord) {
         this.selectedHelperTableRecord = selectedHelperTableRecord;
     }
+
+    public boolean limitRelationship(RelationshipDefinition relationshipD){
+        if(relationshipD.getMultiplicity().getUpperBoundary()!=0){
+            if(relationshipD.getRelationships().size()==relationshipD.getMultiplicity().getUpperBoundary()){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void saveConcept(){
+        for (int i = 0; i < category.getRelationshipDefinitions().size() ; i++) {
+
+        }
+    }
 }
 
