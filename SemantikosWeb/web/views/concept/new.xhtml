@@ -3,6 +3,7 @@
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
                 xmlns:smtk="http://java.sun.com/jsf/composite/smtk"
                 template="/WEB-INF/template/template.xhtml">
 
@@ -209,11 +210,9 @@
                 </div>
             </p:panel>
 
-
-
-        <!--Relaciones -->
-        <p:panel id="atributos" header="Atributos" toggleable="true" toggleSpeed="500" closeSpeed="500"
-                 widgetVar="panel" style="margin-bottom:20px">
+            <!--Relaciones -->
+            <p:panel id="atributos" header="Atributos" toggleable="true" toggleSpeed="500" closeSpeed="500"
+                     widgetVar="panelAtributos" style="margin-bottom:20px" >
 
             <h:dataTable style="width: 100%;" value="#{newConceptMBean.category.relationshipDefinitions}"
                          var="relationshipDefinition">
@@ -229,7 +228,10 @@
                                    relationshipDefinition="#{relationshipDefinition}"
                                    rendered="#{relationshipDefinition.targetDefinition.SMTKType}"
                     />
-
+                    <smtk:helperTableType relationshipDefinition="#{relationshipDefinition}"
+                                          targetDefinition="#{relationshipDefinition.targetDefinition}"
+                                          rendered="#{relationshipDefinition.targetDefinition.helperTable}"
+                    />
 
                 </h:column>
             </h:dataTable>
