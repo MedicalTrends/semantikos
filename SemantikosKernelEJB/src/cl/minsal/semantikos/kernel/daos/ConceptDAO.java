@@ -54,4 +54,13 @@ public interface ConceptDAO {
     public int getAllConceptCount(String[] Pattern, Long[] category, Long[] states);
 
     public int getCountFindConceptID(String Pattern, Long[] category, Long[] states);
+
+    /**
+     * Este método es responsable de recuperar el concepto con DESCRIPTION_ID.
+     *
+     * @param conceptID El DESCRIPTION_ID (valor de negocio) del concepto que se desea recuperar.
+     *
+     * @return Un objeto fresco de tipo <code>ConceptSMTK</code> con el Concepto solicitado.
+     */
+    public ConceptSMTK getConceptByCONCEPT_ID(String conceptID);
 }

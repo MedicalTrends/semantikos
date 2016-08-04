@@ -1,7 +1,10 @@
 package cl.minsal.semantikos.kernel.components;
 
 import cl.minsal.semantikos.kernel.daos.ConceptDAO;
-import cl.minsal.semantikos.model.*;
+import cl.minsal.semantikos.model.Category;
+import cl.minsal.semantikos.model.ConceptSMTK;
+import cl.minsal.semantikos.model.Description;
+import cl.minsal.semantikos.model.State;
 import cl.minsal.semantikos.model.relationships.Relationship;
 import cl.minsal.semantikos.model.relationships.RelationshipDefinition;
 
@@ -102,30 +105,8 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
     }
 
     @Override
-    public int getIDConceptBy(int idDescription) {
-
-        int idDes = 0;
-
-/*
-        try {
-            Class.forName(driver);
-            Connection conne = (Connection) DriverManager.getConnection(ruta, user, password);
-            CallableStatement call = conne.prepareCall("{call get_concept_by_description_id(?)}");
-
-            call.setInt(1, idDescription);
-            call.execute();
-
-            ResultSet rs = call.getResultSet();
-            while (rs.next()) {
-                idDes = Integer.parseInt(rs.getString(1));
-            }
-            conne.close();
-        } catch (SQLException | ClassNotFoundException e) {
-            System.out.println(e.toString());
-        }
-*/
-
-        return idDes;
+    public ConceptSMTK getConceptByCONCEPT_ID(long conceptID) {
+        return  this.conceptDAO.getConceptByCONCEPT_ID(conceptID);
     }
 
     @Override
@@ -146,11 +127,11 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
         // Agregar las relaciones si existen
 
 
-        for(RelationshipDefinition relationshipDefinition: category.getRelationshipDefinitions()) {
+        for (RelationshipDefinition relationshipDefinition : category.getRelationshipDefinitions()) {
             //Evaluar la multiplicidad de la relación
-            for(int i=0; i<relationshipDefinition.getMultiplicity().getLowerBoundary();++i) {
+            for (int i = 0; i < relationshipDefinition.getMultiplicity().getLowerBoundary(); ++i) {
                 Relationship relationship = new Relationship(relationshipDefinition);
-                if(!relationshipDefinition.getTargetDefinition().isSMTKType()){
+                if (!relationshipDefinition.getTargetDefinition().isSMTKType()) {
                     relationshipDefinition.addRelationship(relationship);
                     concept.addRelationship(relationship);
                 }
@@ -190,7 +171,7 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
 
 
         if ((categories != null && patter != null)) {
-            if(patter.length()>0) {
+            if (patter.length() > 0) {
                 List<String> listPattern;
                 patter = standardizationPattern(patter);
                 listPattern = patternToList(patter);
@@ -203,17 +184,17 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
             }
         }
         if (categories != null) {
-            if(categories.length>0){
+            if (categories.length > 0) {
                 return conceptDAO.getConceptByCategory(categories, states, pageSize, pageNumber);
             }
 
         }
 
-        if (patter != null ) {
-            if(patter.length()>0){
+        if (patter != null) {
+            if (patter.length() > 0) {
                 categories = new Long[0];
                 List<String> listPattern;
-                patter= standardizationPattern(patter);
+                patter = standardizationPattern(patter);
                 listPattern = patternToList(patter);
                 String[] arrPattern = listPattern.toArray(new String[listPattern.size()]);
                 if (listPattern.size() >= 2) {
@@ -236,7 +217,7 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
 
 
         if (categories != null && pattern != null) {
-            if(pattern.length()>0) {
+            if (pattern.length() > 0) {
                 List<String> listPattern;
                 pattern = standardizationPattern(pattern);
                 listPattern = patternToList(pattern);
@@ -250,23 +231,23 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
         }
 
         if (categories != null) {
-            if(categories.length>0){
-                return conceptDAO.getAllConceptCount(null,categories,states);
+            if (categories.length > 0) {
+                return conceptDAO.getAllConceptCount(null, categories, states);
             }
 
         }
-        categories= new Long[0];
+        categories = new Long[0];
         if (pattern != null) {
-            if(pattern.length()>0){
+            if (pattern.length() > 0) {
 
                 List<String> listPattern;
-                pattern= standardizationPattern(pattern);
+                pattern = standardizationPattern(pattern);
                 listPattern = patternToList(pattern);
                 String[] arrPattern = listPattern.toArray(new String[listPattern.size()]);
                 if (listPattern.size() >= 2) {
-                    return conceptDAO.getAllConceptCount(arrPattern,null,states);
+                    return conceptDAO.getAllConceptCount(arrPattern, null, states);
                 } else {
-                    return conceptDAO.getCountFindConceptID(arrPattern[0],categories,states);
+                    return conceptDAO.getCountFindConceptID(arrPattern[0], categories, states);
                 }
             }
         }
