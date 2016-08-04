@@ -34,6 +34,23 @@ public class SMTKTypeBean implements Serializable {
     private Map<Long, LazyDataModel<ConceptSMTK>> conceptSearchMap;
 
     private List<ConceptSMTK> conceptSearchList;
+    private List<ConceptSMTK> conceptSel;
+
+    public List<ConceptSMTK> getConceptSearchList() {
+        return conceptSearchList;
+    }
+
+    public void setConceptSearchList(List<ConceptSMTK> conceptSearchList) {
+        this.conceptSearchList = conceptSearchList;
+    }
+
+    public List<ConceptSMTK> getConceptSel() {
+        return conceptSel;
+    }
+
+    public void setConceptSel(List<ConceptSMTK> conceptSel) {
+        this.conceptSel = conceptSel;
+    }
 
     @EJB
     private ConceptManagerInterface conceptManager;
@@ -74,7 +91,8 @@ public class SMTKTypeBean implements Serializable {
         if (patron != null) {
             if (patron.length() > 2) {
                 categoryArr[0] = cD.getIdCategory();
-                return conceptManager.findConceptByConceptIDOrDescriptionCategoryPageNumber(patron, categoryArr, 0, 20);
+                conceptSearchList=conceptManager.findConceptByConceptIDOrDescriptionCategoryPageNumber(patron, categoryArr, 0, 20);
+                return conceptSearchList;
             }
         }
         return conceptSearchList;
@@ -107,4 +125,7 @@ public class SMTKTypeBean implements Serializable {
     public void setConceptSelected(ConceptSMTK conceptSelected) {
         this.conceptSelected = conceptSelected;
     }
+
+
+
 }
