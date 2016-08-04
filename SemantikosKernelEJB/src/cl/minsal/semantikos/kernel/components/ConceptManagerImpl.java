@@ -105,8 +105,13 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
     }
 
     @Override
-    public ConceptSMTK getConceptByCONCEPT_ID(long conceptID) {
+    public ConceptSMTK getConceptByCONCEPT_ID(String conceptID) {
         return  this.conceptDAO.getConceptByCONCEPT_ID(conceptID);
+    }
+
+    @Override
+    public ConceptSMTK getConceptByID(long id) {
+        return this.conceptDAO.getConceptByID(id);
     }
 
     @Override

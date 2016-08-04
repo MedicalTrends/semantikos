@@ -63,4 +63,6 @@ public interface ConceptDAO {
      * @return Un objeto fresco de tipo <code>ConceptSMTK</code> con el Concepto solicitado.
      */
     public ConceptSMTK getConceptByCONCEPT_ID(String conceptID);
+
+    public ConceptSMTK getConceptByID(long id);
 }

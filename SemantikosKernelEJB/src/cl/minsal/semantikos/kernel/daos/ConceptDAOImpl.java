@@ -364,4 +364,32 @@ public class ConceptDAOImpl implements ConceptDAO {
 
         return conceptSMTK;
     }
+
+    @Override
+    public ConceptSMTK getConceptByID(long id) {
+        ConnectionBD connect = new ConnectionBD();
+
+        String sql = "{call semantikos.get_concept_by_id(?)}";
+        ConceptSMTK conceptSMTK;
+        try (Connection connection = connect.getConnection();
+             CallableStatement call = connection.prepareCall(sql)) {
+
+            call.setLong(1, id);
+            call.execute();
+
+            ResultSet rs = call.getResultSet();
+            if (rs.next()) {
+                conceptSMTK = createConceptSMTKFromResultSet(rs);
+            } else {
+                String errorMsg = "No existe un concepto con CONCEPT_ID=" + id;
+                logger.error(errorMsg);
+                throw new IllegalArgumentException(errorMsg);
+            }
+            rs.close();
+        } catch (SQLException e) {
+            throw new EJBException(e);
+        }
+
+        return conceptSMTK;
+    }
 }

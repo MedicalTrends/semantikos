@@ -25,8 +25,17 @@ public interface ConceptManagerInterface {
      *
      * @return Un objeto fresco de tipo <code>ConceptSMTK</code> con el Concepto solicitado.
      */
-    public ConceptSMTK getConceptByCONCEPT_ID(long descriptionID);
+    public ConceptSMTK getConceptByCONCEPT_ID(String descriptionID);
 
+    /**
+     * Este método es responsable de recuperar el concepto con id (de BD)
+     *
+     * @param id El identificador de BD del concepto.
+     * @return Un concepto fresco de tipo <code>ConceptSMTK</code>.
+     */
+    public ConceptSMTK getConceptByID(long id);
+
+    // TODO: translate termino a term.
     public ConceptSMTK newConcept(Category category, String termino);
 
     public List<ConceptSMTK> findConceptByPatternCategoryPageNumber(String pattern, Long[] category, int pageNumber, int pageSize);
