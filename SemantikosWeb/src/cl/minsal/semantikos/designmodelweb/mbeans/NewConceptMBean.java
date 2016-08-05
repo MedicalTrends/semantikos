@@ -10,6 +10,7 @@ import cl.minsal.semantikos.model.relationships.Relationship;
 import cl.minsal.semantikos.model.relationships.RelationshipDefinition;
 import cl.minsal.semantikos.model.relationships.Target;
 import org.omnifaces.util.Ajax;
+import org.primefaces.context.RequestContext;
 import org.primefaces.event.CellEditEvent;
 import org.primefaces.event.RowEditEvent;
 import org.slf4j.Logger;
@@ -68,6 +69,11 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
     private List<State> descriptionStates = new ArrayList<State>();
     private List<Description> selectedDescriptions = new ArrayList<Description>();
 
+
+    //Nombre del concepto (Descripcion preferida)
+
+    private String favoriteDescription;
+
     // Placeholder para las descripciones
     private String otherTermino;
 
@@ -92,6 +98,11 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         this.conceptSMTK = conceptSMTK;
     }
 
+
+    //Inicializacion del Bean
+
+
+
     @PostConstruct
     protected void initialize() throws ParseException {
 
@@ -103,65 +114,26 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         user.setPassword("amauro");
         /////////////////////////////////////////////
 
+        // Iniciar cuadro de dialogo
+
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.execute("PF('dialogNameConcept').show();");
+
         category = categoryManager.getCategoryById(1);
         //category = categoryManager.getCategoryById(105590001);
         descriptionTypes = descriptionManager.getOtherTypes();
         //concept = new ConceptSMTK(category, new Description("electrocardiograma de urgencia", descriptionTypes.get(0)));
-        concept = conceptManager.newConcept(category, "electrocardiograma de urgencia");
+
 
 
     }
 
 
-    public void removeRelationship(RelationshipDefinition rd, Relationship r){
-        concept.getRelationships().remove(r);
-    }
-
-    public void addOrChangeRelationship(RelationshipDefinition relationshipDefinition, Target target){
-
-        Relationship relationship= new Relationship(relationshipDefinition);
-        relationship.setTarget(conceptSelected);
-
-        if(concept.getRelationshipsByRelationDefinition(relationshipDefinition).size()==0){
-            this.concept.addRelationship(relationship);
-        }else{
-            for (int i = 0; i < this.concept.getRelationships().size(); i++) {
-                if(this.concept.getRelationships().get(i).getRelationshipDefinition().equals(relationshipDefinition)){
-                    this.concept.getRelationships().remove(i);
-                }
-            }
-            this.concept.addRelationship(relationship);
-        }
-        for (int i = 0; i < concept.getRelationships().size(); i++) {
-            System.out.println(((ConceptSMTK)(concept.getRelationships().get(i).getTarget())).getDescriptionFavorite().getTerm());
-        }
-    }
 
 
-    public String getMyFormattedDate(Date date) {
-        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-        return new SimpleDateFormat("dd-MM-yyyy").format(date);
-    }
 
-    public void onRowEdit(RowEditEvent event) {
-        FacesMessage msg = new FacesMessage("Description Edited", ((Description) event.getObject()).getTerm());
-        FacesContext.getCurrentInstance().addMessage(null, msg);
-    }
+    // Getter and Setter
 
-    public void onRowCancel(RowEditEvent event) {
-        FacesMessage msg = new FacesMessage("Edit Cancelled", ((Description) event.getObject()).getTerm());
-        FacesContext.getCurrentInstance().addMessage(null, msg);
-    }
-
-    public void onCellEdit(CellEditEvent event) {
-        Object oldValue = event.getOldValue();
-        Object newValue = event.getNewValue();
-
-        if(newValue != null && !newValue.equals(oldValue)) {
-            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Cell Changed", "Old: " + oldValue + ", New:" + newValue);
-            FacesContext.getCurrentInstance().addMessage(null, msg);
-        }
-    }
 
     public ConceptSMTK getConcept() {
         return concept;
@@ -235,10 +207,77 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         this.stateMachineManager = stateMachineManager;
     }
 
+    public ConceptSMTK getConceptSelected() {
+        return conceptSelected;
+    }
+
+    public void setConceptSelected(ConceptSMTK conceptSelected) {
+        this.conceptSelected = conceptSelected;
+    }
+
+    public SMTKTypeBean getSmtkTypeBean() {
+        return smtkTypeBean;
+    }
+
+    public void setSmtkTypeBean(SMTKTypeBean smtkTypeBean) {
+        this.smtkTypeBean = smtkTypeBean;
+    }
+
+    public String getFavoriteDescription() {
+        return favoriteDescription;
+    }
+
+    public void setFavoriteDescription(String favoriteDescription) {
+        this.favoriteDescription = favoriteDescription;
+    }
+
+    public HelperTableManagerInterface getHelperTableManager() {
+        return helperTableManager;
+    }
+
+    public void setHelperTableManager(HelperTableManagerInterface helperTableManager) {
+        this.helperTableManager = helperTableManager;
+    }
+
+    public BasicTypeValue getBasicTypeValue() {
+        return basicTypeValue;
+    }
+
+    public void setBasicTypeValue(BasicTypeValue basicTypeValue) {
+        this.basicTypeValue = basicTypeValue;
+    }
+
+    public Object getSelectedHelperTableRecord() {
+        return selectedHelperTableRecord;
+    }
+
+    public void setSelectedHelperTableRecord(Object selectedHelperTableRecord) {
+        this.selectedHelperTableRecord = selectedHelperTableRecord;
+    }
+
+
+
+    //      Methods
+
+    public void createConcept(){
+        concept = conceptManager.newConcept(category, favoriteDescription);
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.execute("PF('dialogNameConcept').hide();");
+
+    }
+
+    public boolean limitRelationship(RelationshipDefinition relationshipD){
+        if(relationshipD.getMultiplicity().getUpperBoundary()!=0){
+            if(concept.getRelationshipsByRelationDefinition(relationshipD).size()==relationshipD.getMultiplicity().getUpperBoundary()){
+                return true;
+            }
+        }
+        return false;
+    }
+
     public void removeItem(Description item) {
         concept.getOtherDescriptions().remove(item);
     }
-
 
     public void addDescription() {
         if(otherTermino=="") {
@@ -275,7 +314,6 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         this.concept.addRelationship(relationship);
     }
 
-
     public void setRelationship(RelationshipDefinition rd, Relationship relationship){
 
         LOGGER.debug("setRelationship, Target ={} ",relationship.getTarget());
@@ -289,54 +327,53 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
 
     }
 
-
-    public HelperTableManagerInterface getHelperTableManager() {
-        return helperTableManager;
+    public void removeRelationship(RelationshipDefinition rd, Relationship r){
+        concept.getRelationships().remove(r);
     }
 
-    public void setHelperTableManager(HelperTableManagerInterface helperTableManager) {
-        this.helperTableManager = helperTableManager;
-    }
+    public void addOrChangeRelationship(RelationshipDefinition relationshipDefinition, Target target){
 
-    public BasicTypeValue getBasicTypeValue() {
-        return basicTypeValue;
-    }
+        Relationship relationship= new Relationship(relationshipDefinition);
+        relationship.setTarget(conceptSelected);
 
-    public void setBasicTypeValue(BasicTypeValue basicTypeValue) {
-        this.basicTypeValue = basicTypeValue;
-    }
-
-    public Object getSelectedHelperTableRecord() {
-        return selectedHelperTableRecord;
-    }
-
-    public void setSelectedHelperTableRecord(Object selectedHelperTableRecord) {
-        this.selectedHelperTableRecord = selectedHelperTableRecord;
-    }
-
-    public boolean limitRelationship(RelationshipDefinition relationshipD){
-        if(relationshipD.getMultiplicity().getUpperBoundary()!=0){
-            if(concept.getRelationshipsByRelationDefinition(relationshipD).size()==relationshipD.getMultiplicity().getUpperBoundary()){
-                return true;
+        if(concept.getRelationshipsByRelationDefinition(relationshipDefinition).size()==0){
+            this.concept.addRelationship(relationship);
+        }else{
+            for (int i = 0; i < this.concept.getRelationships().size(); i++) {
+                if(this.concept.getRelationships().get(i).getRelationshipDefinition().equals(relationshipDefinition)){
+                    this.concept.getRelationships().remove(i);
+                }
             }
+            this.concept.addRelationship(relationship);
         }
-        return false;
+        for (int i = 0; i < concept.getRelationships().size(); i++) {
+            System.out.println(((ConceptSMTK)(concept.getRelationships().get(i).getTarget())).getDescriptionFavorite().getTerm());
+        }
     }
 
-    public ConceptSMTK getConceptSelected() {
-        return conceptSelected;
+    public String getMyFormattedDate(Date date) {
+        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+        return new SimpleDateFormat("dd-MM-yyyy").format(date);
     }
 
-    public void setConceptSelected(ConceptSMTK conceptSelected) {
-        this.conceptSelected = conceptSelected;
+    public void onRowEdit(RowEditEvent event) {
+        FacesMessage msg = new FacesMessage("Description Edited", ((Description) event.getObject()).getTerm());
+        FacesContext.getCurrentInstance().addMessage(null, msg);
     }
 
-    public SMTKTypeBean getSmtkTypeBean() {
-        return smtkTypeBean;
+    public void onRowCancel(RowEditEvent event) {
+        FacesMessage msg = new FacesMessage("Edit Cancelled", ((Description) event.getObject()).getTerm());
+        FacesContext.getCurrentInstance().addMessage(null, msg);
     }
 
-    public void setSmtkTypeBean(SMTKTypeBean smtkTypeBean) {
-        this.smtkTypeBean = smtkTypeBean;
+    public void onCellEdit(CellEditEvent event) {
+        Object oldValue = event.getOldValue();
+        Object newValue = event.getNewValue();
+
+        if(newValue != null && !newValue.equals(oldValue)) {
+            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Cell Changed", "Old: " + oldValue + ", New:" + newValue);
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+        }
     }
 
     public void saveConcept(){
