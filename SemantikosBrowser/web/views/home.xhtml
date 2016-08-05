@@ -86,7 +86,7 @@
 
 
                             <p:dataTable id="detailConcept" var="description"
-                                         value="#{navBrowser.conceptSelected.otherDescriptions}"
+                                         value="#{navBrowser.conceptSelected.descriptions}"
                                          >
                                 <f:facet name="header">
                                     Detalle del concepto
@@ -139,7 +139,7 @@
                                     <f:facet name="header">
                                         <h:outputText value="Description Type"/>
                                     </f:facet>
-                                    <h:outputText value="#{description.descriptionType.gloss}"></h:outputText>
+                                    <h:outputText value="#{description.descriptionType.description}"></h:outputText>
                                 </p:column>
                             </p:dataTable>
 

@@ -2,9 +2,7 @@ package cl.minsal.semantikos.kernel.components;
 
 
 import cl.minsal.semantikos.kernel.daos.DescriptionDAO;
-import cl.minsal.semantikos.model.Description;
-import cl.minsal.semantikos.model.DescriptionType;
-import cl.minsal.semantikos.model.TypeDescription;
+import cl.minsal.semantikos.model.*;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -12,13 +10,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by stk-des01 on 07-06-16.
+ * TODO: REFACTOR THIS!!!
  */
 @Stateless
 public class DescriptionManagerImpl implements DescriptionManagerInterface {
 
-    String driver = "org.postgresql.Driver";
-    String ruta = "jdbc:postgresql://192.168.0.221:5432/postgres";
     String user = "postgres";
     String password = "1q2w3e";
 
@@ -75,7 +71,7 @@ public class DescriptionManagerImpl implements DescriptionManagerInterface {
         }
         return idDescription;
 */
-    return null;
+        return null;
 
     }
 
@@ -83,15 +79,10 @@ public class DescriptionManagerImpl implements DescriptionManagerInterface {
     public List<DescriptionType> getAllTypes() {
         /*
           DescriptionDAOImpl descriptionDAO= new DescriptionDAOImpl();
-        System.out.println("descriptionDAO.getAllTypes().size()="+descriptionDAO.getAllTypes().size());
-        return descriptionDAO.getAllTypes();
+        System.out.println("descriptionDAO.getDescriptionTypes().size()="+descriptionDAO.getDescriptionTypes().size());
+        return descriptionDAO.getDescriptionTypes();
         * */
-        return descriptionDAO.getAllTypes();
-    }
-
-    @Override
-    public List<DescriptionType> getOtherTypes() {
-        return  descriptionDAO.getOtherTypes();
+        return descriptionDAO.getDescriptionTypes();
     }
 
     @Override
@@ -110,8 +101,17 @@ public class DescriptionManagerImpl implements DescriptionManagerInterface {
 
 
     @Override
-    public DescriptionType getTypeFSN() { return descriptionDAO.getTypeFSN(); }
+    public DescriptionType getTypeFSN() {
+        return DescriptionTypeFactory.getInstance().getFSNDescriptionType();
+    }
 
     @Override
-    public DescriptionType getTypePreferido() { return descriptionDAO.getTypePreferido(); }
+    public DescriptionType getTypeFavorite() {
+        return DescriptionTypeFactory.getInstance().getFavoriteDescriptionType();
+    }
+
+    @Override
+    public List<Description> getDescriptionsOf(ConceptSMTK concept) {
+        return descriptionDAO.getDescriptionsByConceptID(concept.getId());
+    }
 }

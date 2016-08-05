@@ -1,45 +1,75 @@
 package cl.minsal.semantikos.model;
 
 /**
- * Created by root on 08-07-16.
+ * @author Diego Soto.
  */
 public class DescriptionType {
+
+    /** Identificador unico */
     private long id;
-    private String gloss;
+
+    /* Nombre del tipo de descripción */
+    private String name;
+
+    /* Descripción (opcional) del tipo de descripcion */
+    private String description;
+
+    /**
+     * Constructor completo para construir una entidad normal.
+     *
+     * @param id          Identificador único del Description Type.
+     * @param name        Nombre del tipo de descripcion
+     * @param description Descripción del tipo de descripcion.
+     */
+    public DescriptionType(long id, String name, String description) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+    }
 
     public long getId() {
         return id;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setId(long idTipoDescripcion) {
+        this.id = idTipoDescripcion;
     }
 
-    public String getGloss() {
-        return gloss;
+    public String getName() {
+        return name;
     }
 
-    public void setGloss(String gloss) {
-        this.gloss = gloss;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    @Override
-    public boolean equals(Object other) {
-        return (other instanceof DescriptionType) && ( String.valueOf(id) != null )
-                ? String.valueOf(id).equals(String.valueOf(((DescriptionType) other).id))
-                : (other == this);
+    public String getDescription() {
+        return description;
     }
 
-    @Override
-    public int hashCode() {
-        return (String.valueOf(id) != null)
-                ? (this.getClass().hashCode() + String.valueOf(id).hashCode())
-                : super.hashCode();
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     @Override
     public String toString() {
-        return getGloss();
+        return this.name + " - " + this.description;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        DescriptionType that = (DescriptionType) o;
+
+        if (!name.equals(that.name)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return name.hashCode();
+    }
 }

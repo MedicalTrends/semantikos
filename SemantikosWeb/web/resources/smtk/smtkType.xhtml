@@ -82,7 +82,7 @@
 
             <div class="ui-g">
                 <p:spacer></p:spacer>
-                <p:dataTable id="tableRelationship" style="margin: 10px;" value="#{newConceptMBean.concept.getRelationshipsByRelationDefinition(cc.attrs.relationshipDefinition)}" var="rel">
+                <p:dataTable id="tableRelationship" draggableRows="true" style="margin: 10px;" value="#{newConceptMBean.concept.getRelationshipsByRelationDefinition(cc.attrs.relationshipDefinition)}" var="rel">
                     <p:column headerText="ID">
                         <h:outputText value="#{rel.target.id}"/>
                     </p:column>

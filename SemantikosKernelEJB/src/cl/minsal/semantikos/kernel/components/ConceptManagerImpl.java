@@ -106,12 +106,34 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
 
     @Override
     public ConceptSMTK getConceptByCONCEPT_ID(String conceptID) {
-        return  this.conceptDAO.getConceptByCONCEPT_ID(conceptID);
+
+        /* Se recupera el concepto base (sus atributos) sin sus relaciones ni descripciones */
+        ConceptSMTK concept = this.conceptDAO.getConceptByCONCEPT_ID(conceptID);
+
+        /* Se completa el objeto con sus relaciones (relaciones y descripciones por el momento) faltantes. */
+        this.refresh(concept);
+
+        return concept;
     }
 
     @Override
     public ConceptSMTK getConceptByID(long id) {
+
+        // TODO: Repetir lo que se hace en getConceptByCONCEPT_ID
         return this.conceptDAO.getConceptByID(id);
+    }
+
+    /**
+     * Este método es responsable de sincronizar el concepto respecto a la base de datos,
+     * @param concept
+     */
+    private void refresh(ConceptSMTK concept) {
+
+        /* Se refrescan las descripciones primero */
+        List<Description> descriptions = this.descriptionManager.getDescriptionsOf(concept);
+        concept.setDescriptions(descriptions);
+
+        // TODO: Continuar.jajaja
     }
 
     @Override
@@ -125,7 +147,7 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
         fsn.setCreationDate(Calendar.getInstance().getTime());
         fsn.setState(propuesto);
         // Crear descriptor preferido
-        Description preferido = new Description(term, descriptionManager.getTypePreferido());
+        Description preferido = new Description(term, descriptionManager.getTypeFavorite());
         preferido.setCreationDate(Calendar.getInstance().getTime());
         preferido.setState(propuesto);
         ConceptSMTK concept = new ConceptSMTK(category, fsn, preferido, propuesto);
