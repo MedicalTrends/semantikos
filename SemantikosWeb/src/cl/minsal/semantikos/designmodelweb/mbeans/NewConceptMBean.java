@@ -235,12 +235,14 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
 
 
     public void addDescription() {
+        /*
         if(otherTermino=="") {
             FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "ERROR", "Debe completar este campo para agregar el descriptor");
             FacesContext.getCurrentInstance().addMessage(":mainForm:messages", msg);
             Ajax.update(":mainForm:messages");
             return;
         }
+        */
 
         Description description = new Description(otherTermino, otherDescriptionType);
         description.setTerm(otherTermino);

@@ -146,12 +146,12 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
         // Agregar las relaciones si existen
 
 
-        for(RelationshipDefinition relationshipDefinition: category.getRelationshipDefinitions()) {
+        for(RelationshipDefinition relDef: category.getRelationshipDefinitions()) {
             //Evaluar la multiplicidad de la relación
-            for(int i=0; i<relationshipDefinition.getMultiplicity().getLowerBoundary();++i) {
-                Relationship relationship = new Relationship(relationshipDefinition);
-                if(!relationshipDefinition.getTargetDefinition().isSMTKType()){
-                    relationshipDefinition.addRelationship(relationship);
+            for(int i=0; i<Math.max(relDef.getMultiplicity().getLowerBoundary(),1);++i) {
+                Relationship relationship = new Relationship(relDef);
+                if(!relDef.getTargetDefinition().isSMTKType()){
+                    relDef.addRelationship(relationship);
                     concept.addRelationship(relationship);
                 }
 
