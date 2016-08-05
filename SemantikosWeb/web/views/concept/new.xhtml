@@ -118,6 +118,7 @@
                         </div>
                         <div class="ui-g-12 ui-md-6 ui-lg-1">
                             <p:commandButton value="Agregar" id="btn" action="#{newConceptMBean.addDescription}"
+                                             process="otherDescriptorsPanel"
                                              update="otherDescriptorsPanel" styleClass="ui-priority-primary"
                                              style="float: right"/>
                         </div>
@@ -222,6 +223,7 @@
 
                         <p:column headerText="Acción" style="width:5%">
                             <p:commandLink actionListener="#{newConceptMBean.removeItem(description)}" ajax="true"
+                                           process=":mainForm:otherDescriptorsPanel"
                                            update="otherDescriptions" style="float: right">
                                 <h:graphicImage  style="width: 15px; height: 15px"
                                                  name="images/trash-blue.png"
@@ -254,6 +256,7 @@
                     />
                     <smtk:helperTableType relationshipDefinition="#{relationshipDefinition}"
                                           targetDefinition="#{relationshipDefinition.targetDefinition}"
+                                          concept="#{newConceptMBean.concept}"
                                           rendered="#{relationshipDefinition.targetDefinition.helperTable}"
                     />
 

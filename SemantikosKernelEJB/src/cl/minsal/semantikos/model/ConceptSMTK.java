@@ -277,7 +277,7 @@ public class ConceptSMTK implements Target {
 
     public Description getDescriptionFavorite(){
         for (int i = 0; i < otherDescriptions.size(); i++) {
-            if(otherDescriptions.get(i).getDescriptionType().getIdDescriptionType()==2){
+            if(otherDescriptions.get(i).getDescriptionType().getId()==2){
                 return otherDescriptions.get(i);
             }
         }
