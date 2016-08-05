@@ -137,40 +137,6 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
     }
 
     @Override
-    public ConceptSMTK newConcept(Category category, String term) {
-        // Crear estado propuesto
-        //ConceptStateMachine conceptStateMachine = conceptDAO.getConceptStateMachine();
-        State propuesto = stateMachineManager.getConceptStateMachine().getInitialState();
-        //propuesto.setStateMachine(conceptStateMachine);
-        // Crear descriptor FSN
-        Description fsn = new Description(term + " (" + category.getName() + ")", descriptionManager.getTypeFSN());
-        fsn.setCreationDate(Calendar.getInstance().getTime());
-        fsn.setState(propuesto);
-        // Crear descriptor preferido
-        Description preferido = new Description(term, descriptionManager.getTypeFavorite());
-        preferido.setCreationDate(Calendar.getInstance().getTime());
-        preferido.setState(propuesto);
-        ConceptSMTK concept = new ConceptSMTK(category, fsn, preferido, propuesto);
-
-        // Agregar las relaciones si existen
-
-        for (RelationshipDefinition relationshipDefinition : category.getRelationshipDefinitions()) {
-            //Evaluar la multiplicidad de la relación
-            for (int i = 0; i < Math.max(relationshipDefinition.getMultiplicity().getLowerBoundary(),1); ++i) {
-                Relationship relationship = new Relationship(relationshipDefinition);
-                if (!relationshipDefinition.getTargetDefinition().isSMTKType()) {
-                    //relationshipDefinition.addRelationship(relationship);
-                    concept.addRelationship(relationship);
-                }
-
-            }
-
-        }
-
-        return concept;
-    }
-
-    @Override
     public List<ConceptSMTK> findConceptByPatternCategoryPageNumber(String Pattern, Long[] category, int pageNumber, int pageSize) {
 
         Long[] states = {(long) 3, (long) 4};

@@ -62,7 +62,7 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
 
     public User user;
 
-    private ConceptSMTK concept;
+    private ConceptSMTKWeb concept;
 
     private Category category;
     private List<DescriptionType> descriptionTypes = new ArrayList<DescriptionType>();
@@ -86,22 +86,15 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
 
     private Object selectedHelperTableRecord = new HelperTableRecord();
 
-    private ConceptSMTK conceptSMTK;
-
     private ConceptSMTK conceptSelected;
-
-    public ConceptSMTK getConceptSMTK() {
-        return conceptSMTK;
-    }
-
-    public void setConceptSMTK(ConceptSMTK conceptSMTK) {
-        this.conceptSMTK = conceptSMTK;
-    }
 
 
     //Inicializacion del Bean
 
 
+    public NewConceptMBean() {
+        this.concept = new ConceptSMTKWeb();
+    }
 
     @PostConstruct
     protected void initialize() throws ParseException {
@@ -124,11 +117,7 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         descriptionTypes = DescriptionTypeFactory.getInstance().getDescriptionTypes();
         //concept = new ConceptSMTK(category, new Description("electrocardiograma de urgencia", descriptionTypes.get(0)));
 
-
-
     }
-
-
 
 
 
@@ -139,7 +128,7 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         return concept;
     }
 
-    public void setConcept(ConceptSMTK concept) {
+    public void setConcept(ConceptSMTKWeb concept) {
         this.concept = concept;
     }
 
@@ -260,7 +249,9 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
     //      Methods
 
     public void createConcept(){
-        concept = conceptManager.newConcept(category, favoriteDescription);
+        Description preferida = new Description(favoriteDescription, descriptionManager.getTypeFavorite());
+        concept.getDescriptions().add(preferida);
+
         RequestContext context = RequestContext.getCurrentInstance();
         context.execute("PF('dialogNameConcept').hide();");
 
@@ -374,6 +365,17 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
             FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Cell Changed", "Old: " + oldValue + ", New:" + newValue);
             FacesContext.getCurrentInstance().addMessage(null, msg);
         }
+    }
+
+    /**
+     *
+     * @param category
+     */
+    private void newConcept(Category category) {
+
+        this.concept.setCategory(category);
+        this.concept.setState(stateMachineManager.getConceptStateMachine().getInitialState());
+
     }
 
     public void saveConcept(){

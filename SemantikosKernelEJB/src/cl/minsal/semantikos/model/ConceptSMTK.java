@@ -239,6 +239,7 @@ public class ConceptSMTK implements Target {
         throw new BusinessRuleException("Concepto sin descripción preferida");
     }
 
+
     /**
      * <p>
      * Este método es responsable de retornar la <i>descripción FSN</i>. Basados en la regla de negocio que dice

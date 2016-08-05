@@ -35,9 +35,6 @@ public interface ConceptManagerInterface {
      */
     public ConceptSMTK getConceptByID(long id);
 
-    // TODO: translate termino a term.
-    public ConceptSMTK newConcept(Category category, String termino);
-
     public List<ConceptSMTK> findConceptByPatternCategoryPageNumber(String pattern, Long[] category, int pageNumber, int pageSize);
 
     /**
