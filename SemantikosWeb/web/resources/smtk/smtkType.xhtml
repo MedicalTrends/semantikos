@@ -31,7 +31,10 @@
                     </p:inputText>
                 </div>
                 <div class="ui-g-12 ui-md-6 ui-lg-3">
-
+                    <p:commandButton value="Info" type="button" onclick="PF('dlg1').show();" />
+                    <p:dialog header="Informacion" widgetVar="dlg1" minHeight="40">
+                        <h:outputText value="Se requiere  #{cc.attrs.relationshipDefinition.multiplicity.lowerBoundary} relaciones" />
+                    </p:dialog>
                 </div>
                 <div class="ui-g-12 ui-md-6 ui-lg-3">
                 </div>
@@ -77,11 +80,9 @@
 
             </div>
 
-
-
             <div class="ui-g">
                 <p:spacer></p:spacer>
-                <p:dataTable id="tableRelationship" style="margin: 10px;" value="#{cc.attrs.relationshipDefinition.relationships}" var="rel">
+                <p:dataTable id="tableRelationship" style="margin: 10px;" value="#{newConceptMBean.concept.getRelationshipsByRelationDefinition(cc.attrs.relationshipDefinition)}" var="rel">
                     <p:column headerText="ID">
                         <h:outputText value="#{rel.target.id}"/>
                     </p:column>
@@ -110,6 +111,8 @@
 
     </p:panel>
 
+
+
     <p:panel id="id2panel"
              style="margin:10px; width: 100%;"
              rendered="#{cc.attrs.relationshipDefinition.multiplicity.upperBoundary==1}">
@@ -117,17 +120,18 @@
 
             <div class="ui-g">
 
-
                 <div class="ui-g-12 ui-md-6 ui-lg-6">
                     <p:outputLabel value="#{cc.attrs.relationshipDefinition.name}: " for="findConceptSMTK"/>
                     <p:autoComplete id="findConceptSMTK" scrollHeight="200" size="5" style="width: 80%;"
-                                    inputStyle="width: 80%;" value="#{smtkBean.conceptSelected}"
+                                    inputStyle="width: 80%;"
                                     completeMethod="#{smtkBean.getConceptSearchInput}"
-                                    converter="omnifaces.SelectItemsConverter"
-                                    var="concept" itemLabel="#{concept.descriptionFavorite.term}" itemValue="#{concept}"
-                                    forceSelection="true" required="true">
-                        <p:ajax event="itemSelect"
-                                listener="#{newConceptMBean.addOrChangeRelationship(cc.attrs.relationshipDefinition,concept)}"/>
+                                    converter="conceptConverter"
+                                    var="concept"
+                                    value="#{newConceptMBean.conceptSelected}"
+                                    itemLabel="#{concept.descriptionFavorite.term}" itemValue="#{concept}"
+                                     >
+                        <p:ajax event="itemSelect" listener="#{newConceptMBean.addOrChangeRelationship(cc.attrs.relationshipDefinition,concept)}" process="@this, :#{cc.clientId}:findConceptSMTK" />
+
                         <f:attribute name="targetDef" value="#{cc.attrs.targetDefinition}"></f:attribute>
                     </p:autoComplete>
 

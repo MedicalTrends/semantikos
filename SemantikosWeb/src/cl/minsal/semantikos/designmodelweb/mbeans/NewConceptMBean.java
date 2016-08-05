@@ -4,7 +4,6 @@ import cl.minsal.semantikos.kernel.components.*;
 import cl.minsal.semantikos.kernel.components.ConceptManagerInterface;
 import cl.minsal.semantikos.kernel.components.DescriptionManagerInterface;
 import cl.minsal.semantikos.model.*;
-import cl.minsal.semantikos.model.basictypes.BasicTypeDefinition;
 import cl.minsal.semantikos.model.basictypes.BasicTypeValue;
 import cl.minsal.semantikos.model.helpertables.HelperTableRecord;
 import cl.minsal.semantikos.model.relationships.Relationship;
@@ -20,7 +19,9 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import java.io.Serializable;
 import java.text.ParseException;
@@ -55,6 +56,8 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
     @EJB
     HelperTableManagerInterface helperTableManager;
 
+    @ManagedProperty(value="#{smtkBean}")
+    private SMTKTypeBean smtkTypeBean;
 
     public User user;
 
@@ -79,6 +82,8 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
 
     private ConceptSMTK conceptSMTK;
 
+    private ConceptSMTK conceptSelected;
+
     public ConceptSMTK getConceptSMTK() {
         return conceptSMTK;
     }
@@ -98,8 +103,8 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         user.setPassword("amauro");
         /////////////////////////////////////////////
 
-        //category = categoryManager.getCategoryById(1);
-        category = categoryManager.getCategoryById(105590001);
+        category = categoryManager.getCategoryById(1);
+        //category = categoryManager.getCategoryById(105590001);
         descriptionTypes = descriptionManager.getOtherTypes();
         //concept = new ConceptSMTK(category, new Description("electrocardiograma de urgencia", descriptionTypes.get(0)));
         concept = conceptManager.newConcept(category, "electrocardiograma de urgencia");
@@ -109,25 +114,26 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
 
 
     public void removeRelationship(RelationshipDefinition rd, Relationship r){
-        rd.getRelationships().remove(r);
         concept.getRelationships().remove(r);
     }
 
     public void addOrChangeRelationship(RelationshipDefinition relationshipDefinition, Target target){
 
         Relationship relationship= new Relationship(relationshipDefinition);
-        relationship.setTarget(target);
-        relationshipDefinition.addRelationship(relationship);
+        relationship.setTarget(conceptSelected);
 
-        if(relationshipDefinition.getRelationships().size()==0){
-            relationshipDefinition.addRelationship(relationship);
+        if(concept.getRelationshipsByRelationDefinition(relationshipDefinition).size()==0){
             this.concept.addRelationship(relationship);
         }else{
-            this.concept.getRelationships().remove(relationshipDefinition.getRelationships().get(0));
-            relationshipDefinition.getRelationships().clear();
-
-            relationshipDefinition.addRelationship(relationship);
+            for (int i = 0; i < this.concept.getRelationships().size(); i++) {
+                if(this.concept.getRelationships().get(i).getRelationshipDefinition().equals(relationshipDefinition)){
+                    this.concept.getRelationships().remove(i);
+                }
+            }
             this.concept.addRelationship(relationship);
+        }
+        for (int i = 0; i < concept.getRelationships().size(); i++) {
+            System.out.println(((ConceptSMTK)(concept.getRelationships().get(i).getTarget())).getDescriptionFavorite().getTerm());
         }
     }
 
@@ -260,7 +266,6 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
     public void addRelationship(RelationshipDefinition relationshipDefinition){
 
         Relationship relationship= new Relationship(relationshipDefinition);
-        relationshipDefinition.addRelationship(relationship);
         this.concept.addRelationship(relationship);
 
     }
@@ -269,7 +274,6 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
 
         Relationship relationship= new Relationship(relationshipDefinition);
         relationship.setTarget(target);
-        relationshipDefinition.addRelationship(relationship);
         this.concept.addRelationship(relationship);
     }
 
@@ -314,17 +318,31 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
 
     public boolean limitRelationship(RelationshipDefinition relationshipD){
         if(relationshipD.getMultiplicity().getUpperBoundary()!=0){
-            if(relationshipD.getRelationships().size()==relationshipD.getMultiplicity().getUpperBoundary()){
+            if(concept.getRelationshipsByRelationDefinition(relationshipD).size()==relationshipD.getMultiplicity().getUpperBoundary()){
                 return true;
             }
         }
         return false;
     }
 
-    public void saveConcept(){
-        for (int i = 0; i < category.getRelationshipDefinitions().size() ; i++) {
+    public ConceptSMTK getConceptSelected() {
+        return conceptSelected;
+    }
 
-        }
+    public void setConceptSelected(ConceptSMTK conceptSelected) {
+        this.conceptSelected = conceptSelected;
+    }
+
+    public SMTKTypeBean getSmtkTypeBean() {
+        return smtkTypeBean;
+    }
+
+    public void setSmtkTypeBean(SMTKTypeBean smtkTypeBean) {
+        this.smtkTypeBean = smtkTypeBean;
+    }
+
+    public void saveConcept(){
+
     }
 }
 

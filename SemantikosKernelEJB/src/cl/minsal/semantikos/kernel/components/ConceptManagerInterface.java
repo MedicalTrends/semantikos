@@ -18,8 +18,24 @@ public interface ConceptManagerInterface {
 
     public String addConcept(String idCategory, boolean isValid);
 
-    public int getIDConceptBy(int idDescription);
+    /**
+     * Este método es responsable de recuperar el concepto con DESCRIPTION_ID.
+     *
+     * @param descriptionID El DESCRIPTION_ID (valor de negocio) del concepto que se desea recuperar.
+     *
+     * @return Un objeto fresco de tipo <code>ConceptSMTK</code> con el Concepto solicitado.
+     */
+    public ConceptSMTK getConceptByCONCEPT_ID(String descriptionID);
 
+    /**
+     * Este método es responsable de recuperar el concepto con id (de BD)
+     *
+     * @param id El identificador de BD del concepto.
+     * @return Un concepto fresco de tipo <code>ConceptSMTK</code>.
+     */
+    public ConceptSMTK getConceptByID(long id);
+
+    // TODO: translate termino a term.
     public ConceptSMTK newConcept(Category category, String termino);
 
     public List<ConceptSMTK> findConceptByPatternCategoryPageNumber(String pattern, Long[] category, int pageNumber, int pageSize);
@@ -29,7 +45,7 @@ public interface ConceptManagerInterface {
      * entregar los resultados de manera paginada.
      *
      * @param patter     El patrón de búsqueda.
-     * @param categories   Las categorías a las que pertenecen los conceptos sobre los cuales se realiza la búsqueda.
+     * @param categories Las categorías a las que pertenecen los conceptos sobre los cuales se realiza la búsqueda.
      * @param pageNumber El número de página que se desea obtener.
      * @param pageSize   La cantidad de resultados por página.
      *

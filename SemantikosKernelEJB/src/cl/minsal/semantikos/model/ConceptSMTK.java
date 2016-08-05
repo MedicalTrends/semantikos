@@ -293,6 +293,9 @@ public class ConceptSMTK implements Target {
 
     @Override
     public String toString() {
+        if(getDescriptionFavorite()==null){
+            return null;
+        }
         return getDescriptionFavorite().getTerm();
     }
 
