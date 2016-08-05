@@ -70,7 +70,7 @@ public class ConceptDAOImpl implements ConceptDAO {
         conceptId = Long.valueOf(resultSet.getString("conceptid"));
         State st = new State();
         st.setName(String.valueOf(state));
-        List<Description> descriptions = descriptionDAO.getDescriptionByConceptID(id);
+        List<Description> descriptions = descriptionDAO.getDescriptionsByConceptID(id);
 
         return new ConceptSMTK(id, conceptId, objectCategory, check, consult, st, completelyDefined, published, descriptions);
     }
@@ -230,7 +230,7 @@ public class ConceptDAOImpl implements ConceptDAO {
                 published = Boolean.parseBoolean(rs.getString("is_published"));
                 State st = new State();
                 st.setName(String.valueOf(state));
-                List<Description> descriptions = descriptionDAO.getDescriptionByConceptID(id);
+                List<Description> descriptions = descriptionDAO.getDescriptionsByConceptID(id);
                 concepts.add(new ConceptSMTK(id, conceptId, objectCategory, check, consult, st, completelyDefined, published, descriptions));
 
 

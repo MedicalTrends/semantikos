@@ -105,7 +105,7 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
 
         category = categoryManager.getCategoryById(1);
         //category = categoryManager.getCategoryById(105590001);
-        descriptionTypes = descriptionManager.getOtherTypes();
+        descriptionTypes = DescriptionTypeFactory.getInstance().getDescriptionTypes();
         //concept = new ConceptSMTK(category, new Description("electrocardiograma de urgencia", descriptionTypes.get(0)));
         concept = conceptManager.newConcept(category, "electrocardiograma de urgencia");
 
@@ -236,7 +236,7 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
     }
 
     public void removeItem(Description item) {
-        concept.getOtherDescriptions().remove(item);
+        concept.getDescriptions().remove(item);
     }
 
 
@@ -251,14 +251,12 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         */
 
         Description description = new Description(otherTermino, otherDescriptionType);
-        description.setTerm(otherTermino);
         description.setCaseSensitive(otherSensibilidad);
         description.setState(concept.getState());
         description.setCreationDate(Calendar.getInstance().getTime());
         description.setUser(user);
         concept.addDescription(description);
         otherTermino = "";
-        otherDescriptionType = new DescriptionType();
         Ajax.update("mainForm:otherTermino");
 
     }

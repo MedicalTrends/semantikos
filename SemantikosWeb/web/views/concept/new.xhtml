@@ -113,7 +113,7 @@
                                              required="true">
                                 <f:selectItem itemLabel="Seleccione tipo" itemValue=""/>
                                 <f:selectItems value="#{newConceptMBean.descriptionTypes}" var="descriptionType"
-                                               itemLabel="#{descriptionType.gloss}" itemValue="#{descriptionType}"/>
+                                               itemLabel="#{descriptionType.description}" itemValue="#{descriptionType}"/>
                             </p:selectOneMenu>
                         </div>
                         <div class="ui-g-12 ui-md-6 ui-lg-1">
@@ -183,7 +183,7 @@
                                                          converter="omnifaces.SelectItemsConverter" style="width:100%">
                                             <f:selectItem itemLabel="Seleccione tipo" itemValue=""/>
                                             <f:selectItems value="#{newConceptMBean.descriptionTypes}"
-                                                           var="descriptionType" itemLabel="#{descriptionType.gloss}"
+                                                           var="descriptionType" itemLabel="#{descriptionType.description}"
                                                            itemValue="#{descriptionType}"/>
                                         </h:selectOneMenu>
                                     </f:facet>
