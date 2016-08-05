@@ -9,7 +9,8 @@
 
     <ui:define name="content">
 
-        <h:form id="mainForm">
+        <p:panel id="createEdit">
+        <h:form id="mainForm" rendered="#{newConceptMBean.concept!=null}">
             <p:growl id="growl" showDetail="true" showSummary="true"/>
             <p:growl id="editMsgs" showDetail="true"/>
             <!--p:messages autoUpdate="true"></p:messages-->
@@ -75,55 +76,37 @@
                 </div>
             </div>
 
-            <!--p:messages id="msg" showDetail="true" showSummary="true">
-                <p:effect type="pulsate" event="load" delay="0">
-                    <f:param name="mode" value="'show'"/>
-                    <f:param name="times" value="'1'"/>
-                </p:effect>
-            </p:messages-->
-
-        <!--/h:form-->
-
-            <p:panel id="otherDescriptorsPanel" header="Otros Descriptores" toggleable="true" toggleSpeed="500" closeSpeed="500"
+            <p:panel id="toggleable" header="Otros Descriptores" toggleable="true" toggleSpeed="500" closeSpeed="500"
                      widgetVar="panel" style="margin-bottom:20px">
-                <!--h:form id="otherDescriptorsForm"-->
-                    <p:growl id="otherDescriptorsGrowl" showDetail="true" sticky="true" />
-                    <!--p:messages id="messagesOtherDescriptors" showDetail="true" autoUpdate="true" closable="true" /-->
-
-                    <div class="ui-g">
-                        <div class="ui-g-12 ui-md-6 ui-lg-1">
-                            <p:outputLabel for="otherTermino" value="Termino"/>
-                        </div>
-
-                        <div class="ui-g-12 ui-md-6 ui-lg-5">
-                            <p:inputText id="otherTermino" value="#{newConceptMBean.otherTermino}"
-                                         required="true" style="width:90%"/>
-                            <!--p:message for="otherTermino" display="text" value="test text"></p:message-->
-                        </div>
-                        <div class="ui-g-12 ui-md-6 ui-lg-3">
-                            <p:selectOneRadio id="radio4" value="#{newConceptMBean.otherSensibilidad}" layout="responsive"
-                                              columns="2" style="width:100%">
-                                <f:selectItem itemValue="#{true}" itemLabel="Sensible"/>
-                                <f:selectItem itemValue="#{false}" itemLabel="Insensible"/>
-                            </p:selectOneRadio>
-                        </div>
-                        <div class="ui-g-12 ui-md-6 ui-lg-2">
-                            <p:selectOneMenu id="console" value="#{newConceptMBean.otherDescriptionType}"
-                                             converter="omnifaces.SelectItemsConverter" style="width:70%"
-                                             required="true">
-                                <f:selectItem itemLabel="Seleccione tipo" itemValue=""/>
-                                <f:selectItems value="#{newConceptMBean.descriptionTypes}" var="descriptionType"
-                                               itemLabel="#{descriptionType.description}" itemValue="#{descriptionType}"/>
-                            </p:selectOneMenu>
-                        </div>
-                        <div class="ui-g-12 ui-md-6 ui-lg-1">
-                            <p:commandButton value="Agregar" id="btn" action="#{newConceptMBean.addDescription}"
-                                             update="otherDescriptorsPanel" styleClass="ui-priority-primary"
-                                             style="float: right"/>
-                        </div>
+                <div class="ui-g">
+                    <div class="ui-g-12 ui-md-6 ui-lg-1">
+                        <p:outputLabel for="otherTermino" value="Termino (*)"/>
                     </div>
-                <!--/h:form-->
 
+                    <div class="ui-g-12 ui-md-6 ui-lg-5">
+                        <p:inputText id="otherTermino" value="#{newConceptMBean.otherTermino}" style="width:90%"/>
+                    </div>
+                    <div class="ui-g-12 ui-md-6 ui-lg-3">
+                        <p:selectOneRadio id="radio4" value="#{newConceptMBean.otherSensibilidad}" layout="responsive"
+                                          columns="2" style="width:100%">
+                            <f:selectItem itemValue="#{true}" itemLabel="Sensible"/>
+                            <f:selectItem itemValue="#{false}" itemLabel="Insensible"/>
+                        </p:selectOneRadio>
+                    </div>
+                    <div class="ui-g-12 ui-md-6 ui-lg-2">
+                        <p:selectOneMenu id="console" value="#{newConceptMBean.otherDescriptionType}"
+                                         converter="omnifaces.SelectItemsConverter" style="width:70%">
+                            <f:selectItem itemLabel="Seleccione tipo" itemValue=""/>
+                            <f:selectItems value="#{newConceptMBean.descriptionTypes}" var="descriptionType"
+                                           itemLabel="#{descriptionType.gloss}" itemValue="#{descriptionType}"/>
+                        </p:selectOneMenu>
+                    </div>
+                    <div class="ui-g-12 ui-md-6 ui-lg-1">
+                        <p:commandButton value="Agregar" id="btn" action="#{newConceptMBean.addDescription}"
+                                         update="otherDescriptions" styleClass="ui-priority-primary"
+                                         style="float: right"/>
+                    </div>
+                </div>
                 <div class="ui-g">
                     <p:dataTable id="otherDescriptions"
                                  var="description"
@@ -183,7 +166,7 @@
                                                          converter="omnifaces.SelectItemsConverter" style="width:100%">
                                             <f:selectItem itemLabel="Seleccione tipo" itemValue=""/>
                                             <f:selectItems value="#{newConceptMBean.descriptionTypes}"
-                                                           var="descriptionType" itemLabel="#{descriptionType.description}"
+                                                           var="descriptionType" itemLabel="#{descriptionType.gloss}"
                                                            itemValue="#{descriptionType}"/>
                                         </h:selectOneMenu>
                                     </f:facet>
@@ -260,7 +243,37 @@
                 </h:column>
             </h:dataTable>
         </p:panel>
+
         </h:form>
+
+        <p:messages id="msg" showDetail="true" showSummary="true">
+            <p:effect type="pulsate" event="load" delay="0">
+                <f:param name="mode" value="'show'"/>
+                <f:param name="times" value="'1'"/>
+            </p:effect>
+        </p:messages>
+
+
+        <p:confirmDialog id="dialogNameConcept" header="Crear Concepto" widgetVar="dialogNameConcept" global="true"
+                         showEffect="fade" hideEffect="fade" closable="false"
+                         rendered="#{newConceptMBean.concept==null}">
+            <h:form id="initialForm" >
+                <h:outputText value="Ingrerse el nombre de su concepto:"/>
+                <div class="ui-g">
+                    <div class="ui-g-12 ui-md-6 ui-lg-12">
+                        <p:outputLabel value="Nombre: " for="NameConcept"/>
+                        <p:inputText id="NameConcept" value="#{newConceptMBean.favoriteDescription}"/>
+                    </div>
+                </div>
+                <p:commandButton actionListener="#{newConceptMBean.createConcept}" update=":createEdit"
+                                 value="Siguiente"
+
+                />
+
+            </h:form>
+        </p:confirmDialog>
+        </p:panel>
+
     </ui:define>
 
 </ui:composition>
