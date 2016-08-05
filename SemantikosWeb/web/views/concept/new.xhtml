@@ -13,7 +13,7 @@
         <h:form id="mainForm" rendered="#{newConceptMBean.concept!=null}">
             <p:growl id="growl" showDetail="true" showSummary="true"/>
             <p:growl id="editMsgs" showDetail="true"/>
-            <p:messages autoUpdate="true"></p:messages>
+            <!--p:messages autoUpdate="true"></p:messages-->
             <h3>Responsive</h3>
 
             <div class="ui-g">
@@ -34,11 +34,13 @@
 
             <div class="ui-g">
                 <div class="ui-g-12 ui-md-6 ui-lg-1">
-                    <p:outputLabel for="FSN" value="FSN (*)"/>
+                    <p:outputLabel for="FSN" value="FSN"/>
                 </div>
                 <div class="ui-g-12 ui-md-6 ui-lg-5">
                     <p:inputText id="FSN" value="#{newConceptMBean.concept.fsn.term}" disabled="true"
+                                 required="true"
                                  style="width:90%"/>
+                    <p:message for="FSN" display="tooltip" ></p:message>
                 </div>
                 <div class="ui-g-12 ui-md-6 ui-lg-3">
                     <p:selectOneRadio id="FSNCaseSensitive" value="#{newConceptMBean.concept.fsn.caseSensitive}"
@@ -55,10 +57,12 @@
 
             <div class="ui-g">
                 <div class="ui-g-12 ui-md-6 ui-lg-1">
-                    <p:outputLabel for="preferido" value="Preferido (*)"/>
+                    <p:outputLabel for="preferido" value="Preferido"/>
                 </div>
                 <div class="ui-g-12 ui-md-6 ui-lg-5">
-                    <p:inputText id="preferido" value="#{newConceptMBean.concept.preferido.term}" style="width:90%"/>
+                    <p:inputText id="preferido" value="#{newConceptMBean.concept.preferido.term}"
+                                 required="true"
+                                 style="width:90%"/>
                 </div>
                 <div class="ui-g-12 ui-md-6 ui-lg-3">
                     <p:selectOneRadio id="preferidoCaseSensitive"
@@ -202,8 +206,8 @@
                         <p:column headerText="Acción" style="width:5%">
                             <p:commandLink actionListener="#{newConceptMBean.removeItem(description)}" ajax="true"
                                            update="otherDescriptions" style="float: right">
-                                <h:graphicImage style="width: 15px; height: 15px"
-                                                name="images/trash-blue.png"
+                                <h:graphicImage  style="width: 15px; height: 15px"
+                                                 name="images/trash-blue.png"
                                 />
                             </p:commandLink>
                             <p:rowEditor style="display: inline"/>
@@ -214,31 +218,31 @@
 
             <!--Relaciones -->
             <p:panel id="atributos" header="Atributos" toggleable="true" toggleSpeed="500" closeSpeed="500"
-                     widgetVar="panelAtributos" style="margin-bottom:20px">
+                     widgetVar="panelAtributos" style="margin-bottom:20px" >
 
-                <h:dataTable style="width: 100%;" value="#{newConceptMBean.category.relationshipDefinitions}"
-                             var="relationshipDefinition">
+            <h:dataTable style="width: 100%;" value="#{newConceptMBean.category.relationshipDefinitions}"
+                         var="relationshipDefinition">
 
-                    <h:column>
-                        <smtk:basicType
-                                targetDefinition="#{relationshipDefinition.targetDefinition}"
-                                relationshipDefinition="#{relationshipDefinition}"
+                <h:column>
+                    <smtk:basicType
+                            targetDefinition="#{relationshipDefinition.targetDefinition}"
+                            relationshipDefinition="#{relationshipDefinition}"
+                            concept="#{newConceptMBean.concept}"
+                            rendered="#{relationshipDefinition.targetDefinition.basicType}"
 
-                                rendered="#{relationshipDefinition.targetDefinition.basicType}"
+                    />
+                    <smtk:smtkType targetDefinition="#{relationshipDefinition.targetDefinition}"
+                                   relationshipDefinition="#{relationshipDefinition}"
+                                   rendered="#{relationshipDefinition.targetDefinition.SMTKType}"
+                    />
+                    <smtk:helperTableType relationshipDefinition="#{relationshipDefinition}"
+                                          targetDefinition="#{relationshipDefinition.targetDefinition}"
+                                          rendered="#{relationshipDefinition.targetDefinition.helperTable}"
+                    />
 
-                        />
-                        <smtk:smtkType targetDefinition="#{relationshipDefinition.targetDefinition}"
-                                       relationshipDefinition="#{relationshipDefinition}"
-                                       rendered="#{relationshipDefinition.targetDefinition.SMTKType}"
-                        />
-                        <smtk:helperTableType relationshipDefinition="#{relationshipDefinition}"
-                                              targetDefinition="#{relationshipDefinition.targetDefinition}"
-                                              rendered="#{relationshipDefinition.targetDefinition.helperTable}"
-                        />
-
-                    </h:column>
-                </h:dataTable>
-            </p:panel>
+                </h:column>
+            </h:dataTable>
+        </p:panel>
 
         </h:form>
 

@@ -48,7 +48,7 @@ public class Multiplicity {
         return ((cardinality>=this.getUpperBoundary()) && this.getUpperBoundary()!=0);
     }
 
-    public boolean isBelowLowerBoundary(int cardinality){
+    public boolean isRequired(int cardinality){
         return ((cardinality<this.getLowerBoundary()));
     }
 }
