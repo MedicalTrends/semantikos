@@ -128,13 +128,6 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
 
     }
 
-
-
-
-
-    // Getter and Setter
-
-
     public ConceptSMTK getConcept() {
         return concept;
     }
@@ -255,28 +248,13 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         this.selectedHelperTableRecord = selectedHelperTableRecord;
     }
 
-
-
-    //      Methods
-
-
-
     public void createConcept(){
         concept = conceptManager.newConcept(category, favoriteDescription);
-        concept= new ConceptSMTK();
         RequestContext context = RequestContext.getCurrentInstance();
         context.execute("PF('dialogNameConcept').hide();");
 
     }
 
-
-    /**
-     * Este metodo es el responsable de retornar verdadero en caso que se cumpla el UpperBoundary de la multiplicidad, para asi desactivar
-     * la opcion de agregar mas relaciones en la vista. En el caso que se retorne falso este seguira activo el boton en la presentacion.
-     *
-     * @param relationshipD
-     * @return
-     */
     public boolean limitRelationship(RelationshipDefinition relationshipD){
         if(relationshipD.getMultiplicity().getUpperBoundary()!=0){
             if(concept.getRelationshipsByRelationDefinition(relationshipD).size()==relationshipD.getMultiplicity().getUpperBoundary()){
@@ -286,18 +264,9 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         return false;
     }
 
-    /**
-     * Este metodo es el encargado de remover una descripcion especifica de la lista de descripciones del concepto.
-     * @param item
-     */
-
     public void removeItem(Description item) {
         concept.getDescriptions().remove(item);
     }
-
-    /**
-     * Este metodo es el encargado de agregar descripciones al concepto
-     */
 
     public void addDescription() {
         Description description = new Description(otherTermino, otherDescriptionType);
@@ -309,24 +278,12 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
 
     }
 
-
-    /**
-     * Este metodo es el encargado de agregar relaciones al concepto recibiendo como parametro un Relationship Definition
-     * @param relationshipDefinition
-     */
-
     public void addRelationship(RelationshipDefinition relationshipDefinition){
 
         Relationship relationship= new Relationship(relationshipDefinition);
         this.concept.addRelationship(relationship);
 
     }
-
-    /**
-     * Este metodo es el encargado de agregar una nuva relacion con los parametros que se indican.
-     * @param relationshipDefinition
-     * @param target
-     */
 
     public void addRelationship(RelationshipDefinition relationshipDefinition, Target target){
 
@@ -348,21 +305,9 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
 
     }
 
-    /**
-     * Este metodo es el encargado de remover una relacion especifica del concepto.
-     * @param rd
-     * @param r
-     */
-
     public void removeRelationship(RelationshipDefinition rd, Relationship r){
         concept.getRelationships().remove(r);
     }
-
-    /**
-     * Este metodo se encarga de agregar o cambiar la relacion para el caso de multiplicidad 1.
-     * @param relationshipDefinition
-     * @param target
-     */
 
     public void addOrChangeRelationship(RelationshipDefinition relationshipDefinition, Target target){
 
@@ -412,5 +357,20 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
     public void saveConcept(){
 
     }
+
+    public ConceptSMTK newConcept(Category category, String term) {
+
+        /* Valores iniciales para el concepto */
+        Description favouriteDescription = new Description(term, descriptionManager.getTypeFavorite());
+        State initialState = stateMachineManager.getConceptStateMachine().getInitialState();
+
+        ConceptSMTKWeb concept = new ConceptSMTKWeb(category, favouriteDescription, initialState);
+        concept.setCategory(category);
+        concept.addDescription(favouriteDescription);
+        concept.setState(initialState);
+
+        return concept;
+    }
+
 }
 

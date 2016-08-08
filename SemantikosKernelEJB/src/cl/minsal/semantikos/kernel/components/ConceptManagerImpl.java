@@ -121,6 +121,12 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
         return this.conceptDAO.getConceptByID(id);
     }
 
+    // TODO: translate termino a term.
+    @Override
+    public ConceptSMTK newConcept(Category category, String term) {
+        return null;
+    }
+
     /**
      * Este método es responsable de sincronizar el concepto respecto a la base de datos,
      * @param concept
@@ -132,22 +138,6 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
         concept.setDescriptions(descriptions);
 
         // TODO: Continuar.jajaja
-    }
-
-    @Override
-    public ConceptSMTK newConcept(Category category, String term) {
-
-        /* Valores iniciales para el concepto */
-        State initialState = stateMachineManager.getConceptStateMachine().getInitialState();
-        Description favouriteDescription = new Description(term, descriptionManager.getTypeFavorite());
-        favouriteDescription.setState(initialState);
-
-        ConceptSMTK concept = new ConceptSMTK();
-        concept.setCategory(category);
-        concept.addDescription(favouriteDescription);
-        concept.setState(initialState);
-
-        return concept;
     }
 
     @Override
