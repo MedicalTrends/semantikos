@@ -242,6 +242,25 @@ public class ConceptSMTK implements Target {
 
     /**
      * <p>
+     * Este método es responsable de determinar si este concepto tiene una <i>descripción preferida</i>. Basados en la
+     * regla de negocio que dice que un concepto debe siempre tener una y solo una descripción preferida.</p>
+     *
+     * @return <code>true</code> si el concepto tiene Descripción Preferida y <code>false</code> sino.
+     */
+    public boolean hasFavouriteDescription() {
+        for (Description description : descriptions) {
+            DescriptionType favoriteDescriptionType = DescriptionTypeFactory.getInstance().getFavoriteDescriptionType();
+            if (description.getDescriptionType().equals(favoriteDescriptionType)) {
+                return true;
+            }
+        }
+
+        /* En este punto, no se encontró una descripción preferida, y se arroja una excepción */
+        return false;
+    }
+
+    /**
+     * <p>
      * Este método es responsable de retornar la <i>descripción FSN</i>. Basados en la regla de negocio que dice
      * que un concepto debe siempre tener una y solo una descripción FSN.</p>
      * <p>
@@ -264,9 +283,15 @@ public class ConceptSMTK implements Target {
     @Override
     public String toString() {
 
-        if (getDescriptionFavorite() == null) {
-            return null;
+        if (descriptions.isEmpty()) {
+            return "ID=" + this.getId() + " - ConceptID=" + this.getConceptID();
         }
-        return getDescriptionFavorite().getTerm();
+
+        Description descriptionFavorite = getDescriptionFavorite();
+        if (this.hasFavouriteDescription()) {
+            return "Preferida: " + descriptionFavorite.getTerm();
+        }
+        Description aDescription = this.descriptions.get(1);
+        return aDescription.getDescriptionType().getName() + ": " + aDescription.getTerm();
     }
 }

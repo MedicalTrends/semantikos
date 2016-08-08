@@ -62,7 +62,7 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
 
     public User user;
 
-    private ConceptSMTKWeb concept;
+    private ConceptSMTK concept;
 
     private Category category;
     private List<DescriptionType> descriptionTypes = new ArrayList<DescriptionType>();
@@ -86,15 +86,22 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
 
     private Object selectedHelperTableRecord = new HelperTableRecord();
 
+    private ConceptSMTK conceptSMTK;
+
     private ConceptSMTK conceptSelected;
+
+    public ConceptSMTK getConceptSMTK() {
+        return conceptSMTK;
+    }
+
+    public void setConceptSMTK(ConceptSMTK conceptSMTK) {
+        this.conceptSMTK = conceptSMTK;
+    }
 
 
     //Inicializacion del Bean
 
 
-    public NewConceptMBean() {
-        this.concept = new ConceptSMTKWeb();
-    }
 
     @PostConstruct
     protected void initialize() throws ParseException {
@@ -117,18 +124,15 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         descriptionTypes = DescriptionTypeFactory.getInstance().getDescriptionTypes();
         //concept = new ConceptSMTK(category, new Description("electrocardiograma de urgencia", descriptionTypes.get(0)));
 
+
+
     }
-
-
-
-    // Getter and Setter
-
 
     public ConceptSMTK getConcept() {
         return concept;
     }
 
-    public void setConcept(ConceptSMTKWeb concept) {
+    public void setConcept(ConceptSMTK concept) {
         this.concept = concept;
     }
 
@@ -244,14 +248,8 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         this.selectedHelperTableRecord = selectedHelperTableRecord;
     }
 
-
-
-    //      Methods
-
     public void createConcept(){
-        Description preferida = new Description(favoriteDescription, descriptionManager.getTypeFavorite());
-        concept.getDescriptions().add(preferida);
-
+        concept = conceptManager.newConcept(category, favoriteDescription);
         RequestContext context = RequestContext.getCurrentInstance();
         context.execute("PF('dialogNameConcept').hide();");
 
@@ -271,20 +269,9 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
     }
 
     public void addDescription() {
-        /*
-        if(otherTermino=="") {
-            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "ERROR", "Debe completar este campo para agregar el descriptor");
-            FacesContext.getCurrentInstance().addMessage(":mainForm:messages", msg);
-            Ajax.update(":mainForm:messages");
-            return;
-        }
-        */
-
         Description description = new Description(otherTermino, otherDescriptionType);
         description.setCaseSensitive(otherSensibilidad);
         description.setState(concept.getState());
-        description.setCreationDate(Calendar.getInstance().getTime());
-        description.setUser(user);
         concept.addDescription(description);
         otherTermino = "";
         Ajax.update("mainForm:otherTermino");
@@ -367,19 +354,23 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         }
     }
 
-    /**
-     *
-     * @param category
-     */
-    private void newConcept(Category category) {
-
-        this.concept.setCategory(category);
-        this.concept.setState(stateMachineManager.getConceptStateMachine().getInitialState());
-
-    }
-
     public void saveConcept(){
 
     }
+
+    public ConceptSMTK newConcept(Category category, String term) {
+
+        /* Valores iniciales para el concepto */
+        Description favouriteDescription = new Description(term, descriptionManager.getTypeFavorite());
+        State initialState = stateMachineManager.getConceptStateMachine().getInitialState();
+
+        ConceptSMTKWeb concept = new ConceptSMTKWeb(category, favouriteDescription, initialState);
+        concept.setCategory(category);
+        concept.addDescription(favouriteDescription);
+        concept.setState(initialState);
+
+        return concept;
+    }
+
 }
 

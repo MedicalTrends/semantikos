@@ -15,8 +15,16 @@ public class ConceptSMTKWeb extends ConceptSMTK {
     public ConceptSMTKWeb() {
     }
 
-    public ConceptSMTKWeb(Category category, Description fsn) {
-        super(category, fsn);
+    /**
+     *
+     * @param category
+     * @param favouriteDescription
+     * @param initialState
+     */
+    public ConceptSMTKWeb(Category category, Description favouriteDescription, State initialState) {
+        this(category, favouriteDescription, new Description("", DescriptionTypeFactory.getInstance().getFSNDescriptionType()));
+
+        this.setState(initialState);
     }
 
     public ConceptSMTKWeb(Category category, Description fsn, Description preferido) {

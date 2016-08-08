@@ -1,5 +1,7 @@
 package cl.minsal.semantikos.model;
 
+import com.sun.javafx.beans.annotations.NonNull;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -14,21 +16,28 @@ public class DescriptionTypeFactory {
 
     public static final DescriptionType TYPELESS_DESCRIPTION_TYPE = new DescriptionType(-1, "Sin Tipo", "El tipo de descripcion sin tipo :).");
 
-    private Map<String, DescriptionType> descriptionTypes;
+    public static final String FAVOURITE_DESCRIPTION_TYPE_NAME = "Preferida";
+
+    /** La lista de descripciones */
+    private List<DescriptionType> descriptionTypes;
+
+    /** Mapa de Descripciones por su nombre. */
+    private Map<String, DescriptionType> descriptionTypesByName;
+
+    /** Mapa de Descripciones por su ID */
+    private Map<Long, DescriptionType> descriptionTypesByID;
 
     /**
      * Constructor privado para el Singleton del Factory.
      */
     private DescriptionTypeFactory() {
-        this.descriptionTypes = new HashMap();
+        this.descriptionTypes = new ArrayList<>();
+        this.descriptionTypesByID = new HashMap<>();
+        this.descriptionTypesByName = new HashMap<>();
     }
 
     public static DescriptionTypeFactory getInstance() {
         return instance;
-    }
-
-    public DescriptionType getTypelessDescriptionType() {
-        return TYPELESS_DESCRIPTION_TYPE;
     }
 
     /**
@@ -37,18 +46,55 @@ public class DescriptionTypeFactory {
      * @return Retorna una instancia de FSN.
      */
     public DescriptionType getFSNDescriptionType() {
-        return this.descriptionTypes.get("FSN");
+        return this.descriptionTypesByName.get("FSN");
     }
 
+    /**
+     * Este método retorna la descripción preferida, si existe. De no existir crea una y la retorna
+     *
+     * @return El tipo de Descripción llamado Preferida.
+     */
     public DescriptionType getFavoriteDescriptionType() {
-        return this.descriptionTypes.get("Preferido".toUpperCase());
+        if (descriptionTypesByName.containsKey(FAVOURITE_DESCRIPTION_TYPE_NAME)) {
+            return this.descriptionTypesByName.get(FAVOURITE_DESCRIPTION_TYPE_NAME.toUpperCase());
+        } else {
+            return new DescriptionType(-1, FAVOURITE_DESCRIPTION_TYPE_NAME, "Descripción Preferida (por defecto)");
+        }
     }
 
-    public void setDescriptionTypes(Map<String, DescriptionType> descriptionTypes) {
+    /**
+     * Este método es responsable de asignar un nuevo conjunto de descripciones. Al hacerlo, es necesario actualizar
+     * los
+     * mapas de tipo de descripciones.
+     */
+    public void setDescriptionTypes(@NonNull List<DescriptionType> descriptionTypes) {
+
+        /* Se actualiza la lista */
         this.descriptionTypes = descriptionTypes;
+
+        /* Se actualiza el mapa por nombres */
+        this.descriptionTypesByName.clear();
+        for (DescriptionType descriptionType : descriptionTypes) {
+            this.descriptionTypesByName.put(descriptionType.getName(), descriptionType);
+        }
+
+        /* Se actualiza el mapa por ID's */
+        this.descriptionTypesByID.clear();
+        for (DescriptionType descriptionType : descriptionTypes) {
+            this.descriptionTypesByID.put(descriptionType.getId(), descriptionType);
+        }
     }
 
     public List<DescriptionType> getDescriptionTypes() {
-        return new ArrayList<>(descriptionTypes.values());
+        return descriptionTypes;
+    }
+
+    public DescriptionType getDescriptionTypeByID(long idDescriptionType) {
+
+        if (this.descriptionTypesByID.containsKey(idDescriptionType)){
+            return this.descriptionTypesByID.get(idDescriptionType);
+        }
+
+        throw new IllegalArgumentException("DescriptionType con ID=" + idDescriptionType + " no existe.");
     }
 }
