@@ -30,7 +30,6 @@ public interface DescriptionManagerInterface {
 
     public DescriptionType getTypeFavorite();
 
-
     /**
      * Este método es responsable de recuperar las descripciones de un concepto.
      *

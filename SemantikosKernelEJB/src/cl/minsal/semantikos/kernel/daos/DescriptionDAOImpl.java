@@ -150,6 +150,7 @@ public class DescriptionDAOImpl implements DescriptionDAO {
 }
 
 class DescriptionTypeDTO {
+
     private long id;
     private String name;
     private String description;
