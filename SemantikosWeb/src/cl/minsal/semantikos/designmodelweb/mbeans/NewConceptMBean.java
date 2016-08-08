@@ -119,8 +119,8 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         context.execute("PF('dialogNameConcept').show();");
 
-        category = categoryManager.getCategoryById(1);
-        //category = categoryManager.getCategoryById(105590001);
+        //category = categoryManager.getCategoryById(1);
+        category = categoryManager.getCategoryById(105590001);
         descriptionTypes = DescriptionTypeFactory.getInstance().getDescriptionTypes();
         //concept = new ConceptSMTK(category, new Description("electrocardiograma de urgencia", descriptionTypes.get(0)));
 
@@ -366,12 +366,24 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
 
         /* Valores iniciales para el concepto */
         Description favouriteDescription = new Description(term, descriptionManager.getTypeFavorite());
+
         State initialState = stateMachineManager.getConceptStateMachine().getInitialState();
 
         ConceptSMTKWeb concept = new ConceptSMTKWeb(category, favouriteDescription, initialState);
         concept.setCategory(category);
         concept.addDescription(favouriteDescription);
         concept.setState(initialState);
+
+        // Agregar las relaciones si existen
+
+        for (RelationshipDefinition relationshipDefinition : category.getRelationshipDefinitions()) {
+            //Evaluar la multiplicidad de la relación
+            for (int i = 0; i < Math.max(relationshipDefinition.getMultiplicity().getLowerBoundary(),1); ++i) {
+                Relationship relationship = new Relationship(relationshipDefinition);
+                if (!relationshipDefinition.getTargetDefinition().isSMTKType())
+                    concept.addRelationship(relationship);
+            }
+        }
 
         return concept;
     }
