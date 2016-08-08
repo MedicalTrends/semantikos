@@ -248,8 +248,12 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         this.selectedHelperTableRecord = selectedHelperTableRecord;
     }
 
+
+
+
+
     public void createConcept(){
-        concept = conceptManager.newConcept(category, favoriteDescription);
+        concept = newConcept(category, favoriteDescription);
         RequestContext context = RequestContext.getCurrentInstance();
         context.execute("PF('dialogNameConcept').hide();");
 
