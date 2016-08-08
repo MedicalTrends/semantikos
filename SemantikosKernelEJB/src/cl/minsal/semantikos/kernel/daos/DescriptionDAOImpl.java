@@ -4,8 +4,6 @@ import cl.minsal.semantikos.kernel.util.ConnectionBD;
 import cl.minsal.semantikos.model.Description;
 import cl.minsal.semantikos.model.DescriptionType;
 import cl.minsal.semantikos.model.DescriptionTypeFactory;
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -119,6 +117,17 @@ public class DescriptionDAOImpl implements DescriptionDAO {
         ObjectMapper mapper = new ObjectMapper();
 
         Map<String, DescriptionType> descriptionTypes = new HashMap<>();
+
+        /*
+         Esta función SQL, al ser invocada, retorna un objeto JSON de este tipo:
+        [{"id":1,"name":"FSN","description":"Full Specified Name"},
+         {"id":2,"name":"preferido","description":"Descripción Preferida"},
+         {"id":3,"name":"sinónimo","description":"Sinónimo"},
+         {"id":4,"name":"abreviado","description":"Abreviado"},
+         {"id":5,"name":"general","description":"General"},
+         {"id":6,"name":"ambiguo","description":"Ambiguo"},
+         {"id":7,"name":"mal escrito","description":"Mal Escrito"}]
+         */
         String sql = "{call semantikos.get_description_types()}";
         try (Connection connection = connect.getConnection();
              CallableStatement call = connection.prepareCall(sql);) {
@@ -127,10 +136,17 @@ public class DescriptionDAOImpl implements DescriptionDAO {
             ResultSet rs = call.getResultSet();
 
             /* Se recuperan los description types */
-            while (rs.next()) {
+            DescriptionTypeDTO[] theDescriptionTypes = new DescriptionTypeDTO[0];
+            if (rs.next()) {
                 String resultJSON = rs.getString(1);
-                DescriptionTypeDTO descriptionType = mapper.readValue(underScoreToCamelCaseJSON(resultJSON), DescriptionTypeDTO.class);
-                descriptionTypes.put(descriptionType.getName().toUpperCase(), descriptionType.getDescriptionType());
+                theDescriptionTypes = mapper.readValue(underScoreToCamelCaseJSON(resultJSON), DescriptionTypeDTO[].class);
+            }
+
+            if (theDescriptionTypes.length > 0){
+                for (DescriptionTypeDTO aDescriptionType : theDescriptionTypes) {
+                    DescriptionType descriptionType = new DescriptionType(aDescriptionType.getId(), aDescriptionType.getName(), aDescriptionType.getDescription());
+                    descriptionTypes.put(descriptionType.getName(), descriptionType);
+                }
             }
 
             DescriptionTypeFactory.getInstance().setDescriptionTypes(descriptionTypes);
@@ -144,7 +160,6 @@ public class DescriptionDAOImpl implements DescriptionDAO {
             throw new EJBException(errorMsg, e);
         }
 
-        // TODO: Hacer el caso de prueba de JSON.
         return DescriptionTypeFactory.getInstance();
     }
 }
@@ -182,7 +197,16 @@ class DescriptionTypeDTO {
         this.id = id;
     }
 
-    public DescriptionType getDescriptionType(){
+    public DescriptionType getDescriptionType() {
         return new DescriptionType(this.id, this.name, this.description);
+    }
+
+    @Override
+    public String toString() {
+        return "DescriptionTypeDTO{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                '}';
     }
 }
