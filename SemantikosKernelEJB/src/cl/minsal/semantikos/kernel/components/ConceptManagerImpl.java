@@ -121,12 +121,6 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
         return this.conceptDAO.getConceptByID(id);
     }
 
-    // TODO: translate termino a term.
-    @Override
-    public ConceptSMTK newConcept(Category category, String term) {
-        return null;
-    }
-
     /**
      * Este método es responsable de sincronizar el concepto respecto a la base de datos,
      * @param concept
