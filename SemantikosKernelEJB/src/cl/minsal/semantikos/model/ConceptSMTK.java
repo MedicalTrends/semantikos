@@ -230,7 +230,7 @@ public class ConceptSMTK implements Target {
      */
     public Description getDescriptionFavorite() {
         for (Description description : descriptions) {
-            if (description.getDescriptionType().getDescription().equalsIgnoreCase("Preferida")) {
+            if (description.getDescriptionType().getName().equalsIgnoreCase("preferido")) {
                 return description;
             }
         }
