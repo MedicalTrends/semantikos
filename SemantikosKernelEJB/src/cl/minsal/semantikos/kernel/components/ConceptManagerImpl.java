@@ -5,14 +5,12 @@ import cl.minsal.semantikos.model.Category;
 import cl.minsal.semantikos.model.ConceptSMTK;
 import cl.minsal.semantikos.model.Description;
 import cl.minsal.semantikos.model.State;
-import cl.minsal.semantikos.model.relationships.Relationship;
-import cl.minsal.semantikos.model.relationships.RelationshipDefinition;
+import com.sun.javafx.beans.annotations.NonNull;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import java.text.Normalizer;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 import java.util.StringTokenizer;
 
@@ -138,57 +136,32 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
 
     @Override
     public ConceptSMTK newConcept(Category category, String term) {
-        // Crear estado propuesto
-        //ConceptStateMachine conceptStateMachine = conceptDAO.getConceptStateMachine();
-        State propuesto = stateMachineManager.getConceptStateMachine().getInitialState();
-        //propuesto.setStateMachine(conceptStateMachine);
-        // Crear descriptor FSN
-        Description fsn = new Description(term + " (" + category.getName() + ")", descriptionManager.getTypeFSN());
-        fsn.setCreationDate(Calendar.getInstance().getTime());
-        fsn.setState(propuesto);
-        // Crear descriptor preferido
-        Description preferido = new Description(term, descriptionManager.getTypeFavorite());
-        preferido.setCreationDate(Calendar.getInstance().getTime());
-        preferido.setState(propuesto);
-        ConceptSMTK concept = new ConceptSMTK(category, fsn, preferido, propuesto);
-        // Agregar las relaciones si existen
 
+        /* Valores iniciales para el concepto */
+        State initialState = stateMachineManager.getConceptStateMachine().getInitialState();
+        Description favouriteDescription = new Description(term, descriptionManager.getTypeFavorite());
+        favouriteDescription.setState(initialState);
 
-        for (RelationshipDefinition relationshipDefinition : category.getRelationshipDefinitions()) {
-            //Evaluar la multiplicidad de la relación
-            for (int i = 0; i < relationshipDefinition.getMultiplicity().getLowerBoundary(); ++i) {
-                Relationship relationship = new Relationship(relationshipDefinition);
-                if (!relationshipDefinition.getTargetDefinition().isSMTKType()) {
-                    relationshipDefinition.addRelationship(relationship);
-                    concept.addRelationship(relationship);
-                }
-
-            }
-
-        }
+        ConceptSMTK concept = new ConceptSMTK();
+        concept.setCategory(category);
+        concept.addDescription(favouriteDescription);
+        concept.setState(initialState);
 
         return concept;
     }
 
     @Override
-    public List<ConceptSMTK> findConceptByPatternCategoryPageNumber(String Pattern, Long[] category, int pageNumber, int pageSize) {
+    public List<ConceptSMTK> findConceptByPatternCategoryPageNumber(@NonNull String pattern, Long[] categories, int pageNumber, int pageSize) {
 
+        // FIXME: Cambiar estados en duro a variables?
         Long[] states = {(long) 3, (long) 4};
-        if (category != null) {
-            if (category.length == 0) category = null;
+        if (categories != null) {
+            if (categories.length == 0) categories = null;
         }
 
-        if (Pattern != null) {
-
-          /*
-                return conceptDAO.getConceptByPatternOrConceptIDAndCategory(arrPattern[0], category, pageSize, pageNumber, states);
-            */
-
-
-        }
-        return conceptDAO.getConceptByPatternCategory(null, category, states, pageSize, pageNumber);
-
-    }
+        /* El patron se separa en varios palabras: pattern.split(pattern) */
+        return conceptDAO.getConceptByPatternCategory(pattern.split(pattern), categories, states, pageSize, pageNumber);
+     }
 
     @Override
     public List<ConceptSMTK> findConceptByConceptIDOrDescriptionCategoryPageNumber(String patter, Long[] categories, int pageNumber, int pageSize) {
@@ -287,7 +260,7 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
         StringTokenizer st;
         String token;
         st = new StringTokenizer(pattern, " ");
-        ArrayList<String> listPattern = new ArrayList<String>();
+        ArrayList<String> listPattern = new ArrayList<>();
         int count = 0;
 
 
