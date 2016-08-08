@@ -128,13 +128,6 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
 
     }
 
-
-
-
-
-    // Getter and Setter
-
-
     public ConceptSMTK getConcept() {
         return concept;
     }
@@ -255,10 +248,6 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         this.selectedHelperTableRecord = selectedHelperTableRecord;
     }
 
-
-
-    //      Methods
-
     public void createConcept(){
         concept = conceptManager.newConcept(category, favoriteDescription);
         RequestContext context = RequestContext.getCurrentInstance();
@@ -368,5 +357,20 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
     public void saveConcept(){
 
     }
+
+    public ConceptSMTK newConcept(Category category, String term) {
+
+        /* Valores iniciales para el concepto */
+        Description favouriteDescription = new Description(term, descriptionManager.getTypeFavorite());
+        State initialState = stateMachineManager.getConceptStateMachine().getInitialState();
+
+        ConceptSMTKWeb concept = new ConceptSMTKWeb(category, favouriteDescription, initialState);
+        concept.setCategory(category);
+        concept.addDescription(favouriteDescription);
+        concept.setState(initialState);
+
+        return concept;
+    }
+
 }
 
