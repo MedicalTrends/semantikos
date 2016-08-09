@@ -212,6 +212,8 @@
 
                 <div class="ui-g-12 ui-md-6 ui-lg-6">
                     <p:outputLabel value="#{cc.attrs.relationshipDefinition.name}: " for="findConceptSMTK"/>
+                    <h:outputText rendered="#{newConceptMBean.concept.getRelationshipsByRelationDefinition(cc.attrs.relationshipDefinition).get(0).target.descriptionFavorite.term}"/>
+
                     <p:autoComplete id="findConceptSMTK" scrollHeight="200" size="5" style="width: 80%;"
                                     inputStyle="width: 80%;"
                                     completeMethod="#{smtkBean.getConceptSearchInput}"
@@ -229,7 +231,7 @@
                             <h:outputText value="#{concept.descriptionFavorite.term}" />
                         </p:column>
 
-                        <p:ajax event="itemSelect" listener="#{newConceptMBean.addOrChangeRelationship(cc.attrs.relationshipDefinition,concept)}" process="@this, :#{cc.clientId}:findConceptSMTK" />
+                        <p:ajax event="itemSelect" listener="#{newConceptMBean.addOrChangeRelationship(cc.attrs.relationshipDefinition,newConceptMBean.conceptSelected)}" process="@this, :#{cc.clientId}:findConceptSMTK" />
 
                         <f:attribute name="targetDef" value="#{cc.attrs.targetDefinition}"></f:attribute>
                     </p:autoComplete>
