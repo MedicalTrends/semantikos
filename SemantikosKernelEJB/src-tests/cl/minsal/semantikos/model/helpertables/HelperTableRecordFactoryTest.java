@@ -37,7 +37,7 @@ public class HelperTableRecordFactoryTest {
      */
     @Test
     public void transformJSON2Records() throws Exception {
-        JSONHelperTableRecords twoRecords = mapper.readValue(createJSONRecords(), JSONHelperTableRecords.class);
+        JSONHelperTableRecords twoRecords = mapper.readValue(createJSONRocords(), JSONHelperTableRecords.class);
 
         assertTrue(twoRecords.getTableName().equalsIgnoreCase("helper_table_atc"));
         assertEquals(twoRecords.getRecords().size(), 2);
@@ -64,15 +64,10 @@ public class HelperTableRecordFactoryTest {
         assertEquals(3, recordFromJSON.getFields().size());
     }
 
-
-
-
-
-    private String createJSONRecords() {
+    private String createJSONRocords() {
         return "{\"tableName\":\"helper_table_atc\",\"records\":[{\"id\":1,\"codigo_atc\":\"atc1\",\"descripcion_atc\":\"Esta es una descripción ATC\"}, \n" +
                 " {\"id\":2,\"codigo_atc\":\"atc2\",\"descripcion_atc\":\"Esta es otra descripción ATC\"}]}";
     }
-
 
     private String createJSONRocord() {
         return "{\"tableName\":\"helper_table_atc\",\"fields\":{\"id\":1,\"codigo_atc\":\"atc1\",\"descripcion_atc\":\"Esta es una descripción ATC\"}}";
@@ -112,12 +107,5 @@ public class HelperTableRecordFactoryTest {
     private String createJSONManyRecords() {
         return "{\"tableName\":\"helper_table_dci\",\"records\":[{\"id\":1,\"description\":\"descripcion dci 1\",\"creation_date\":null,\"user_register\":1,\"is_valid\":true,\"delete_date\":null}, \n" +
                 " {\"id\":2,\"description\":\"descripcion dci 2\",\"creation_date\":null,\"user_register\":1,\"is_valid\":true,\"delete_date\":null}]}";
-    }
-
-    @Test
-    public void transformJSON3SingleRecord() throws Exception {
-        String jsonRocord = createJSONManyRecords();
-        List<HelperTableRecord> recordFromJSON = this.helperTableRecordFactory.createRecordsFromJSON(jsonRocord);
-        assertEquals(2, recordFromJSON.size());
     }
 }

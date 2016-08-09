@@ -40,6 +40,6 @@ public class HelperTableManagerImpl implements HelperTableManagerInterface {
 
     @Override
     public List<HelperTableRecord> getAllRecords(HelperTable helperTable) {
-        return helperTableDAO.getAllRecords(helperTable, helperTable.getShowableColumnsNames().toArray(new String[helperTable.getShowableColumnsNames().size()]));
+        return helperTableDAO.getAllRecords(helperTable);
     }
 }
