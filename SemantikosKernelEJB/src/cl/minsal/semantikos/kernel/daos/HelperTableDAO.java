@@ -50,7 +50,7 @@ public interface HelperTableDAO {
      * indicadas como <i>mostrables</i> (showables == <code>true</code>)en la tabla.
      *
      * @param helperTable La tabla cuyos registros son recuperados.
-     *
+
      * @return Una lista de registros (en forma de mappings) de la tabla indicada.
      */
     public List<HelperTableRecord> getAllRecords(HelperTable helperTable);

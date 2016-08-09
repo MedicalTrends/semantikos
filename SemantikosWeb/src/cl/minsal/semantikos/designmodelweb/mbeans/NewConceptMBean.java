@@ -120,9 +120,9 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         context.execute("PF('dialogNameConcept').show();");
 
         //category = categoryManager.getCategoryById(1);
-        //category = categoryManager.getCategoryById(105590001);
+        category = categoryManager.getCategoryById(105590001);
 
-        category = categoryManager.getCategoryById(71388002);
+        //category = categoryManager.getCategoryById(71388002);
         descriptionTypes = DescriptionTypeFactory.getInstance().getDescriptionTypes();
         //concept = new ConceptSMTK(category, new Description("electrocardiograma de urgencia", descriptionTypes.get(0)));
 

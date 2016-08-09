@@ -21,7 +21,6 @@
         <ui:repeat value="#{cc.attrs.concept.getRelationshipsByRelationDefinition(cc.attrs.relationshipDefinition)}"
                    var="relationship"
                    varStatus="var">
-
             <div class="ui-g">
                 <div class="ui-g-12 ui-md-6 ui-lg-2">
                     <p:outputLabel for="helperTableRecordsSimple" value="#{cc.attrs.relationshipDefinition.name}"/>
@@ -30,7 +29,7 @@
                     <p:dataTable id="helperTableRecordsSimple"
                                  var="helperTableRecord"
                                  value="#{newConceptMBean.helperTableManager.getAllRecords(cc.attrs.targetDefinition)}"
-                                 selection="#{relationship.target.id}"
+                                 selection="#{newConceptMBean.selectedHelperTableRecord}"
                                  reflow="true"
                                  rowKey="#{helperTableRecord.fields.id}"
                                  >
@@ -61,7 +60,7 @@
                 <div class="ui-g-12 ui-md-6 ui-lg-10">
                     <p:dataTable id="helperTableRecordsCollection"
                                  var="helperTableRecord"
-                                 value="#{newConceptMBean.helperTableManager.getAllRecords(cc.attrs.targetDefinition)}"
+                                 value="#{newConceptMBean.getHelperTableAllRecords(cc.attrs.targetDefinition)}"
                                  reflow="true"
                     >
                         <p:columns value="#{cc.attrs.targetDefinition.showableColumns}"
