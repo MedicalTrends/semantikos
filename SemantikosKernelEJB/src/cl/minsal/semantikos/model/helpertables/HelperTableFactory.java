@@ -40,7 +40,7 @@ public class HelperTableFactory {
      * @return Una tabla ATC.
      */
     private HelperTable createATC() {
-        HelperTableColumn idColumn = new HelperTableColumn("id", true, false, false);
+        HelperTableColumn idColumn = new HelperTableColumn("id", true, false, true);
         HelperTableColumn codigoATCColumn = new HelperTableColumn("codigo_atc", false, true, true);
         HelperTableColumn descripcionATCColumn = new HelperTableColumn("descripcion_atc", false, true, true);
 
