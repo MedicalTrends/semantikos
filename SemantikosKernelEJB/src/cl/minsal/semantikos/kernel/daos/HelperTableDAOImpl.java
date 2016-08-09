@@ -137,7 +137,6 @@ public class HelperTableDAOImpl implements HelperTableDAO {
 
     @Override
     public List<HelperTableRecord> getAllRecords(HelperTable helperTable) {
-        // TODO
-        return null;
+        return this.getAllRecords(helperTable, (String[])helperTable.getShowableColumnsNames().toArray());
     }
 }

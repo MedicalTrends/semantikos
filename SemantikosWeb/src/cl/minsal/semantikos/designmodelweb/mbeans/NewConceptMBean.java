@@ -289,6 +289,14 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
 
     }
 
+    public void addRelationshipAutocomplete(RelationshipDefinition relationshipDefinition){
+
+        Relationship relationship= new Relationship(relationshipDefinition);
+        relationship.setTarget(conceptSelected);
+        this.concept.addRelationship(relationship);
+
+    }
+
     public void addRelationship(RelationshipDefinition relationshipDefinition, Target target){
 
         Relationship relationship= new Relationship(relationshipDefinition);
@@ -327,9 +335,6 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
                 }
             }
             this.concept.addRelationship(relationship);
-        }
-        for (int i = 0; i < concept.getRelationships().size(); i++) {
-            System.out.println(((ConceptSMTK)(concept.getRelationships().get(i).getTarget())).getDescriptionFavorite().getTerm());
         }
     }
 
@@ -373,6 +378,7 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         concept.setCategory(category);
         concept.addDescription(favouriteDescription);
         concept.setState(initialState);
+
 
         return concept;
     }
