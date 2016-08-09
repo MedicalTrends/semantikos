@@ -40,7 +40,7 @@ public class HelperTableFactory {
      * @return Una tabla ATC.
      */
     private HelperTable createATC() {
-        HelperTableColumn idColumn = new HelperTableColumn("id", true, false, false);
+        HelperTableColumn idColumn = new HelperTableColumn("id", true, false, true);
         HelperTableColumn codigoATCColumn = new HelperTableColumn("codigo_atc", false, true, true);
         HelperTableColumn descripcionATCColumn = new HelperTableColumn("descripcion_atc", false, true, true);
 
@@ -56,7 +56,7 @@ public class HelperTableFactory {
      * @return Una tabla ATC.
      */
     private HelperTable createDCI() {
-        HelperTableColumn idColumn = new HelperTableColumn("id", true, false, false);
+        HelperTableColumn idColumn = new HelperTableColumn("id", true, false, true);
         HelperTableColumn descriptionColumn = new HelperTableColumn("description", false, true, true);
         HelperTableColumn creation_dateColumn = new HelperTableColumn("creation_date", false, true, true);
         HelperTableColumn user_registerColumn = new HelperTableColumn("user_register", false, true, true);
@@ -66,7 +66,7 @@ public class HelperTableFactory {
         HelperTableColumn[] columns = {idColumn, descriptionColumn, creation_dateColumn, user_registerColumn, is_validColumn, delete_dateColumn};
         this.dciHT = new HelperTable((long) 2, "DCI", "Tabla de Denominaciones Comunes Internacionales (DCI)", "helper_table_dci", Arrays.asList(columns));
 
-        return this.atcHT;
+        return this.dciHT;
     }
 
     public HelperTable getHelperTableATC() {

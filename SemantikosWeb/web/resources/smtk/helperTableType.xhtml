@@ -21,7 +21,6 @@
         <ui:repeat value="#{cc.attrs.concept.getRelationshipsByRelationDefinition(cc.attrs.relationshipDefinition)}"
                    var="relationship"
                    varStatus="var">
-
             <div class="ui-g">
                 <div class="ui-g-12 ui-md-6 ui-lg-2">
                     <p:outputLabel for="helperTableRecordsSimple" value="#{cc.attrs.relationshipDefinition.name}"/>
@@ -37,8 +36,8 @@
                         <p:column selectionMode="single" style="width:16px;text-align:center"/>
                         <p:columns value="#{cc.attrs.targetDefinition.showableColumns}"
                                    var="column"
-                                   columnIndexVar="colIndex"
-                                   sortBy="#{helperTableRecord.fields[column.columnName]}">
+                                   sortBy="#{helperTableRecord.fields[column.columnName]}"
+                                   rendered="#{column.columnName!='id'}">
                             <f:facet name="header">
                                 <h:outputText value="#{column.columnName}" />
                             </f:facet>

@@ -75,29 +75,21 @@ public class TargetTypeDAOImpl implements TargetTypeDAO {
                     Long upperBoundaryIntValue = DaoTools.getLong(rs2,"upper_bound_int_value");
                     Date upperBoundaryDateValue = DaoTools.getDate(rs2,"upper_bound_date_value");
 
-                    //if(lowerBoundaryStringValue==null && upperBoundaryStringValue==null)
-                        //basicTypeDefinition.setInterval(new EmptyInterval());
                     if(lowerBoundaryFloatValue!=null || upperBoundaryFloatValue!=null)
                         basicTypeDefinition.setInterval(new OpenInterval(lowerBoundaryFloatValue, upperBoundaryFloatValue));
                     if(lowerBoundaryFloatValue!=null && upperBoundaryFloatValue!=null)
                         basicTypeDefinition.setInterval(new CloseInterval(lowerBoundaryFloatValue, upperBoundaryFloatValue));
 
-                    //if(lowerBoundaryStringValue==null && upperBoundaryStringValue==null)
-                        //basicTypeDefinition.setInterval(new EmptyInterval());
                     if(lowerBoundaryStringValue!=null || upperBoundaryStringValue!=null)
                         basicTypeDefinition.setInterval(new OpenInterval(lowerBoundaryStringValue, upperBoundaryStringValue));
                     if(lowerBoundaryStringValue!=null && upperBoundaryStringValue!=null)
                         basicTypeDefinition.setInterval(new CloseInterval(lowerBoundaryStringValue, upperBoundaryStringValue));
 
-                    //if(lowerBoundaryIntValue==null && upperBoundaryIntValue==null)
-                        //basicTypeDefinition.setInterval(new EmptyInterval());
                     if(lowerBoundaryIntValue!=null || upperBoundaryIntValue!=null)
                         basicTypeDefinition.setInterval(new OpenInterval(lowerBoundaryIntValue, upperBoundaryIntValue));
                     if(lowerBoundaryIntValue!=null && upperBoundaryIntValue!=null)
                         basicTypeDefinition.setInterval(new CloseInterval(lowerBoundaryIntValue, upperBoundaryIntValue));
 
-                    //if(lowerBoundaryDateValue==null && upperBoundaryDateValue==null)
-                        //basicTypeDefinition.setInterval(new EmptyInterval());
                     if(lowerBoundaryDateValue!=null || upperBoundaryDateValue!=null)
                         basicTypeDefinition.setInterval(new OpenInterval(lowerBoundaryDateValue, upperBoundaryDateValue));
                     if(lowerBoundaryDateValue!=null && upperBoundaryDateValue!=null)

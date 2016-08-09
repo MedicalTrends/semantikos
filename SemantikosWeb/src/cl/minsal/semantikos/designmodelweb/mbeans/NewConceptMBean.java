@@ -120,7 +120,9 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         context.execute("PF('dialogNameConcept').show();");
 
         //category = categoryManager.getCategoryById(1);
-        category = categoryManager.getCategoryById(105590001);
+        //category = categoryManager.getCategoryById(105590001);
+
+        category = categoryManager.getCategoryById(71388002);
         descriptionTypes = DescriptionTypeFactory.getInstance().getDescriptionTypes();
         //concept = new ConceptSMTK(category, new Description("electrocardiograma de urgencia", descriptionTypes.get(0)));
 
@@ -289,14 +291,6 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
 
     }
 
-    public void addRelationshipAutocomplete(RelationshipDefinition relationshipDefinition){
-
-        Relationship relationship= new Relationship(relationshipDefinition);
-        relationship.setTarget(conceptSelected);
-        this.concept.addRelationship(relationship);
-
-    }
-
     public void addRelationship(RelationshipDefinition relationshipDefinition, Target target){
 
         Relationship relationship= new Relationship(relationshipDefinition);
@@ -335,6 +329,9 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
                 }
             }
             this.concept.addRelationship(relationship);
+        }
+        for (int i = 0; i < concept.getRelationships().size(); i++) {
+            System.out.println(((ConceptSMTK)(concept.getRelationships().get(i).getTarget())).getDescriptionFavorite().getTerm());
         }
     }
 
@@ -379,6 +376,16 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         concept.addDescription(favouriteDescription);
         concept.setState(initialState);
 
+        // Agregar las relaciones si existen
+
+        for (RelationshipDefinition relationshipDefinition : category.getRelationshipDefinitions()) {
+            //Evaluar la multiplicidad de la relación
+            for (int i = 0; i < Math.max(relationshipDefinition.getMultiplicity().getLowerBoundary(),1); ++i) {
+                Relationship relationship = new Relationship(relationshipDefinition);
+                if (!relationshipDefinition.getTargetDefinition().isSMTKType())
+                    concept.addRelationship(relationship);
+            }
+        }
 
         return concept;
     }
