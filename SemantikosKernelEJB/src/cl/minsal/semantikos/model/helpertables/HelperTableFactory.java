@@ -13,7 +13,7 @@ public class HelperTableFactory {
     /** Tabla Auxiliar DCI */
     private HelperTable dciHT;
 
-    private Map<String, HelperTable> helperTables = new HashMap<>();
+    private Map<String, HelperTable> helperTablesByTableName = new HashMap<>();
 
     private static final HelperTableFactory singletonInstance = new HelperTableFactory();
 
@@ -26,12 +26,12 @@ public class HelperTableFactory {
         HelperTable atcHelperTable = createATC();
         HelperTable dciHelperTable = createDCI();
 
-        helperTables.put(atcHelperTable.getTablaName(), atcHelperTable);
-        helperTables.put(dciHelperTable.getTablaName(), dciHelperTable);
+        helperTablesByTableName.put(atcHelperTable.getTablaName(), atcHelperTable);
+        helperTablesByTableName.put(dciHelperTable.getTablaName(), dciHelperTable);
     }
 
-    public Collection<HelperTable> getHelperTables() {
-        return helperTables.values();
+    public Collection<HelperTable> getHelperTablesByTableName() {
+        return helperTablesByTableName.values();
     }
 
     /**
@@ -45,7 +45,7 @@ public class HelperTableFactory {
         HelperTableColumn descripcionATCColumn = new HelperTableColumn("descripcion_atc", false, true, true);
 
         HelperTableColumn[] columns = {idColumn, codigoATCColumn, descripcionATCColumn};
-        this.atcHT = new HelperTable((long) 1, "ATC", "Tabla de códigos ATC", "HELPER_TABLE_ATC", Arrays.asList(columns));
+        this.atcHT = new HelperTable((long) 1, "ATC", "Tabla de códigos ATC", "helper_table_atc", Arrays.asList(columns));
 
         return this.atcHT;
     }
@@ -109,8 +109,8 @@ public class HelperTableFactory {
      * @return La tabla auxiliar de nombre <code>tableName</code>.
      */
     public HelperTable getHelperTable(String tableName) {
-        if (this.helperTables.containsKey(tableName)) {
-            return this.helperTables.get(tableName);
+        if (this.helperTablesByTableName.containsKey(tableName)) {
+            return this.helperTablesByTableName.get(tableName);
         }
 
         throw new IllegalArgumentException("No existe tabla auxiliar de nombre '" + tableName + ".");

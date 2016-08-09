@@ -59,8 +59,9 @@ public class HelperTableRecordFactoryTest {
 
     @Test
     public void transformJSON2SingleRecord() throws Exception {
-        HelperTableRecord recordFromJSON = this.helperTableRecordFactory.createRecordFromJSON(createJSONRocord());
-        assertEquals(2, recordFromJSON.getFields().size());
+        String jsonRocord = createJSONRocord();
+        HelperTableRecord recordFromJSON = this.helperTableRecordFactory.createRecordFromJSON(jsonRocord);
+        assertEquals(3, recordFromJSON.getFields().size());
     }
 
     private String createJSONRocords() {
