@@ -12,6 +12,6 @@ public class CloseInterval<T extends Comparable> extends Interval<T> {
     @Override
     public boolean contains(T anElement) {
         return ((anElement.compareTo(this.upperBoundary) <= 0) &&
-                (anElement.compareTo(this.bottomBoundary) >= 0));
+                (anElement.compareTo(this.lowerBoundary) >= 0));
     }
 }

@@ -1,4 +1,4 @@
-package cl.minsal.semantikos.model;
+package cl.minsal.semantikos.model.relationships;
 
 /**
  * Created by root on 08-07-16.

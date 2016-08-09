@@ -1,9 +1,9 @@
 package cl.minsal.semantikos.kernel.components;
 
 
+import cl.minsal.semantikos.model.ConceptSMTK;
 import cl.minsal.semantikos.model.Description;
 import cl.minsal.semantikos.model.DescriptionType;
-import cl.minsal.semantikos.model.State;
 import cl.minsal.semantikos.model.TypeDescription;
 
 import javax.ejb.Local;
@@ -24,13 +24,18 @@ public interface DescriptionManagerInterface {
 
     public List<DescriptionType> getAllTypes();
 
-    public List<DescriptionType> getOtherTypes();
-
     public List<Description> findDescriptionsByConcept(int idConcept);
 
     public DescriptionType getTypeFSN();
 
-    public DescriptionType getTypePreferido();
+    public DescriptionType getTypeFavorite();
 
-
+    /**
+     * Este método es responsable de recuperar las descripciones de un concepto.
+     *
+     * @param concept El concepto cuyas descripciones deben ser recuperadas.
+     *
+     * @return Un objeto <code>java.util.List</code> con las descripciones del concepto <code>concept</code>.
+     */
+    List<Description> getDescriptionsOf(ConceptSMTK concept);
 }

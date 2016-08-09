@@ -5,9 +5,6 @@ package cl.minsal.semantikos.model;
  */
 public class Multiplicity {
 
-    public Multiplicity() {
-    }
-
     /** Limite inferior */
     private int lowerBoundary;
 
@@ -39,5 +36,19 @@ public class Multiplicity {
 
     public void setLowerBoundary(int lowerBoundary) {
         this.lowerBoundary = lowerBoundary;
+    }
+
+    public boolean isCollection(){
+        return (this.upperBoundary!=1);
+    }
+
+    public boolean isSimple(){ return (this.upperBoundary==1); }
+
+    public boolean isUpperBoundaryReached(int cardinality){
+        return ((cardinality>=this.getUpperBoundary()) && this.getUpperBoundary()!=0);
+    }
+
+    public boolean isRequired(int cardinality){
+        return ((cardinality<this.getLowerBoundary()));
     }
 }

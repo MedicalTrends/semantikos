@@ -1,18 +1,19 @@
 package cl.minsal.semantikos.model;
 
-import sun.security.krb5.internal.crypto.Des;
+import cl.minsal.semantikos.model.exceptions.BusinessRuleException;
+import cl.minsal.semantikos.model.relationships.Relationship;
+import cl.minsal.semantikos.model.relationships.RelationshipDefinition;
+import cl.minsal.semantikos.model.relationships.Target;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
-import java.util.ListIterator;
 
 /**
  * Esta clase representa al Concepto Semantikos.
  *
  * @author Diego Soto.
  */
-public class ConceptSMTK {
+public class ConceptSMTK implements Target {
 
     /** El valor que posee un CONCEPT_ID que no ha sido definido */
     public static final long CONCEPT_ID_UNDEFINED = -1;
@@ -41,16 +42,13 @@ public class ConceptSMTK {
     /** Determina si el concepto está publicado o no */
     private boolean isPublished;
 
-    /** Descriptor fsn **/
-    private Description fsn;
-
-    /** Descriptor preferido **/
-    private Description preferido;
-
     /** Otros descriptores */
-    private List<Description> otherDescriptions = new ArrayList<Description>();
+    private List<Description> descriptions = new ArrayList<Description>();
 
-    public ConceptSMTK(long id, long conceptID, Category category, boolean isToBeReviewed, boolean isToBeConsultated, State state, boolean isFullyDefined, boolean isPublished, List<Description> otherDescriptions) {
+    /** Relaciones * */
+    private List<Relationship> relationships = new ArrayList<>();
+
+    public ConceptSMTK(long id, long conceptID, Category category, boolean isToBeReviewed, boolean isToBeConsultated, State state, boolean isFullyDefined, boolean isPublished, List<Description> descriptions) {
         this.id = id;
         this.conceptID = conceptID;
         this.category = category;
@@ -59,19 +57,19 @@ public class ConceptSMTK {
         this.state = state;
         this.isFullyDefined = isFullyDefined;
         this.isPublished = isPublished;
-        this.otherDescriptions = otherDescriptions;
+        this.descriptions = descriptions;
     }
 
     /**
      * El constructor privado con las inicializaciones de los campos por defecto.
      * TODO: Crear el test unitario para validar los estados iniciales por defecto.
      */
-    private ConceptSMTK() {
+    public ConceptSMTK() {
 
         /* El concepto parte con su estado inicial */
         this.state = ConceptStateMachine.getInstance().getInitialState();
 
-        this.otherDescriptions = new ArrayList<Description>();
+        this.descriptions = new ArrayList<Description>();
 
         this.isFullyDefined = false;
         this.isPublished = false;
@@ -83,54 +81,58 @@ public class ConceptSMTK {
         this();
 
         fsn.setId(1);
-        this.setFsn(fsn);
-        fsn.setTerm(fsn.getTerm()+"("+category.getName()+")");
+        fsn.setTerm(fsn.getTerm() + "(" + category.getName() + ")");
         fsn.setId(2);
-        this.setPreferido(fsn);
         this.setCategory(category);
     }
 
     public ConceptSMTK(Category category, Description fsn, Description preferido) {
         this();
 
-        this.setFsn(fsn);
-        this.setPreferido(preferido);
         this.setCategory(category);
     }
 
     public ConceptSMTK(Category category, Description fsn, Description preferido, State state) {
         this();
 
-        this.setFsn(fsn);
-        this.setPreferido(preferido);
         this.setCategory(category);
         this.setState(state);
     }
 
-    public Description getFsn() {
-        return fsn;
+    public List<Description> getDescriptions() {
+        return descriptions;
     }
 
-    public void setFsn(Description fsn) {
-        this.fsn = fsn;
+    public void setDescriptions(List<Description> descriptions) {
+        this.descriptions = descriptions;
     }
 
-    public Description getPreferido() {
-        return preferido;
+    public List<Relationship> getRelationships() {
+        return relationships;
     }
 
-    public void setPreferido(Description preferido) {
-        this.preferido = preferido;
+    /**
+     * Este método es responsable de retornar todas las relaciones de este concepto que son de un cierto tipo de
+     * relación.
+     *
+     * @param relationshipDefinition El tipo de relación al que pertenecen las relaciones a retornar.
+     *
+     * @return Una <code>java.util.List</code> de relaciones de tipo <code>relationshipDefinition</code>.
+     */
+    public List<Relationship> getRelationshipsByRelationDefinition(RelationshipDefinition relationshipDefinition) {
+        List<Relationship> someRelationships = new ArrayList<>();
+        for (Relationship relationship : relationships) {
+            if (relationship.getRelationshipDefinition().equals(relationshipDefinition)) {
+                someRelationships.add(relationship);
+            }
+        }
+        System.out.println("someRelationships.size()="+someRelationships.size());
+        return someRelationships;
     }
 
-    public List<Description> getOtherDescriptions() {
-        return otherDescriptions;
+    public void setRelationships(List<Relationship> relationships) {
+        this.relationships = relationships;
     }
-
-    public void setOtherDescriptions(List<Description> otherDescriptions) {
-        this.otherDescriptions = otherDescriptions;
-    }
-
 
     public long getId() {
         return id;
@@ -201,58 +203,95 @@ public class ConceptSMTK {
 
     public void addDescription(Description description) {
 
-        description.setId(otherDescriptions.size()+1);
-        this.otherDescriptions.add(description);
+        description.setId(descriptions.size() + 1);
+        this.descriptions.add(description);
 
     }
 
-    public void removeDescription(Description description) { this.otherDescriptions.remove(description); }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        ConceptSMTK that = (ConceptSMTK) o;
-
-        if (conceptID != that.conceptID) return false;
-        if (id != that.id) return false;
-        if (isFullyDefined != that.isFullyDefined) return false;
-        if (isPublished != that.isPublished) return false;
-        if (isToBeConsultated != that.isToBeConsultated) return false;
-        if (isToBeReviewed != that.isToBeReviewed) return false;
-        if (category != null ? !category.equals(that.category) : that.category != null) return false;
-        if (!otherDescriptions.equals(that.otherDescriptions)) return false;
-        if (!state.equals(that.state)) return false;
-
-        return true;
+    public void removeDescription(Description description) {
+        this.descriptions.remove(description);
     }
 
-    @Override
-    public int hashCode() {
-        int result = (int) (id ^ (id >>> 32));
-        result = 31 * result + (int) (conceptID ^ (conceptID >>> 32));
-        result = 31 * result + (category != null ? category.hashCode() : 0);
-        result = 31 * result + (isToBeReviewed ? 1 : 0);
-        result = 31 * result + (isToBeConsultated ? 1 : 0);
-        result = 31 * result + state.hashCode();
-        result = 31 * result + (isFullyDefined ? 1 : 0);
-        result = 31 * result + (isPublished ? 1 : 0);
-        result = 31 * result + otherDescriptions.hashCode();
-        return result;
+    public void addRelationship(Relationship relationship) {
+
+        this.relationships.add(relationship);
+
     }
 
-
-    public Description getDescriptionFavorite(){
-        for (int i = 0; i < otherDescriptions.size(); i++) {
-            if(otherDescriptions.get(i).getDescriptionType().getIdDescriptionType()==2){
-                return otherDescriptions.get(i);
+    /**
+     * <p>
+     * Este método es responsable de retornar la <i>descripción preferida</i>. Basados en la regla de negocio que dice
+     * que un concepto debe siempre tener una y solo una descripción preferida.</p>
+     * <p>
+     * Si el concepto no tuviera descripción preferida, se retorna una descripción "sin tipo".
+     * </p>
+     *
+     * @return La descripción preferida.
+     */
+    public Description getDescriptionFavorite() {
+        for (Description description : descriptions) {
+            if (description.getDescriptionType().getName().equalsIgnoreCase("preferido")) {
+                return description;
             }
         }
-        return null;
+
+        /* En este punto, no se encontró una descripción preferida, y se arroja una excepción */
+        throw new BusinessRuleException("Concepto sin descripción preferida");
     }
 
-    public int countDescription(){
-        return otherDescriptions.size();
+
+    /**
+     * <p>
+     * Este método es responsable de determinar si este concepto tiene una <i>descripción preferida</i>. Basados en la
+     * regla de negocio que dice que un concepto debe siempre tener una y solo una descripción preferida.</p>
+     *
+     * @return <code>true</code> si el concepto tiene Descripción Preferida y <code>false</code> sino.
+     */
+    public boolean hasFavouriteDescription() {
+        for (Description description : descriptions) {
+            DescriptionType favoriteDescriptionType = DescriptionTypeFactory.getInstance().getFavoriteDescriptionType();
+            if (description.getDescriptionType().equals(favoriteDescriptionType)) {
+                return true;
+            }
+        }
+
+        /* En este punto, no se encontró una descripción preferida, y se arroja una excepción */
+        return false;
+    }
+
+    /**
+     * <p>
+     * Este método es responsable de retornar la <i>descripción FSN</i>. Basados en la regla de negocio que dice
+     * que un concepto debe siempre tener una y solo una descripción FSN.</p>
+     * <p>
+     * Si el concepto no tuviera descripción preferida, se retorna una descripción "sin tipo".
+     * </p>
+     *
+     * @return La descripción preferida.
+     */
+    public Description getDescriptionFSN() {
+        for (Description description : descriptions) {
+            if (description.getDescriptionType().getDescription().equalsIgnoreCase("FSN")) {
+                return description;
+            }
+        }
+
+        /* En este punto, no se encontró una descripción preferida, y se arroja una excepción */
+        throw new BusinessRuleException("Concepto sin descripción FSN");
+    }
+
+    @Override
+    public String toString() {
+
+        if (descriptions.isEmpty()) {
+            return "ID=" + this.getId() + " - ConceptID=" + this.getConceptID();
+        }
+
+        Description descriptionFavorite = getDescriptionFavorite();
+        if (this.hasFavouriteDescription()) {
+            return "Preferida: " + descriptionFavorite.getTerm();
+        }
+        Description aDescription = this.descriptions.get(1);
+        return aDescription.getDescriptionType().getName() + ": " + aDescription.getTerm();
     }
 }

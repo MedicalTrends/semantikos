@@ -1,6 +1,6 @@
 package cl.minsal.semantikos.model;
 
-import cl.minsal.semantikos.model.Category;
+import cl.minsal.semantikos.model.relationships.TargetDefinition;
 
 /**
  * Created by root on 08-07-16.

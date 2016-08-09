@@ -1,13 +1,16 @@
 package cl.minsal.semantikos.kernel.components;
 
 import cl.minsal.semantikos.kernel.daos.ConceptDAO;
-import cl.minsal.semantikos.model.*;
+import cl.minsal.semantikos.model.Category;
+import cl.minsal.semantikos.model.ConceptSMTK;
+import cl.minsal.semantikos.model.Description;
+import cl.minsal.semantikos.model.State;
+import com.sun.javafx.beans.annotations.NonNull;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import java.text.Normalizer;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 import java.util.StringTokenizer;
 
@@ -100,68 +103,49 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
     }
 
     @Override
-    public int getIDConceptBy(int idDescription) {
+    public ConceptSMTK getConceptByCONCEPT_ID(String conceptID) {
 
-        int idDes = 0;
+        /* Se recupera el concepto base (sus atributos) sin sus relaciones ni descripciones */
+        ConceptSMTK concept = this.conceptDAO.getConceptByCONCEPT_ID(conceptID);
 
-/*
-        try {
-            Class.forName(driver);
-            Connection conne = (Connection) DriverManager.getConnection(ruta, user, password);
-            CallableStatement call = conne.prepareCall("{call get_concept_by_description_id(?)}");
+        /* Se completa el objeto con sus relaciones (relaciones y descripciones por el momento) faltantes. */
+        this.refresh(concept);
 
-            call.setInt(1, idDescription);
-            call.execute();
-
-            ResultSet rs = call.getResultSet();
-            while (rs.next()) {
-                idDes = Integer.parseInt(rs.getString(1));
-            }
-            conne.close();
-        } catch (SQLException | ClassNotFoundException e) {
-            System.out.println(e.toString());
-        }
-*/
-
-        return idDes;
+        return concept;
     }
 
     @Override
-    public ConceptSMTK newConcept(Category category, String term) {
-        // Crear estado propuesto
-        //ConceptStateMachine conceptStateMachine = conceptDAO.getConceptStateMachine();
-        State propuesto = stateMachineManager.getConceptStateMachine().getInitialState();
-        //propuesto.setStateMachine(conceptStateMachine);
-        // Crear descriptor FSN
-        Description fsn = new Description(term + " (" + category.getName() + ")", descriptionManager.getTypeFSN());
-        fsn.setCreationDate(Calendar.getInstance().getTime());
-        fsn.setState(propuesto);
-        // Crear descriptor preferido
-        Description preferido = new Description(term, descriptionManager.getTypePreferido());
-        preferido.setCreationDate(Calendar.getInstance().getTime());
-        preferido.setState(propuesto);
-        return new ConceptSMTK(category, fsn, preferido, propuesto);
+    public ConceptSMTK getConceptByID(long id) {
+
+        // TODO: Repetir lo que se hace en getConceptByCONCEPT_ID
+        return this.conceptDAO.getConceptByID(id);
+    }
+
+    /**
+     * Este método es responsable de sincronizar el concepto respecto a la base de datos,
+     * @param concept
+     */
+    private void refresh(ConceptSMTK concept) {
+
+        /* Se refrescan las descripciones primero */
+        List<Description> descriptions = this.descriptionManager.getDescriptionsOf(concept);
+        concept.setDescriptions(descriptions);
+
+        // TODO: Continuar.jajaja
     }
 
     @Override
-    public List<ConceptSMTK> findConceptByPatternCategoryPageNumber(String Pattern, Long[] category, int pageNumber, int pageSize) {
+    public List<ConceptSMTK> findConceptByPatternCategoryPageNumber(@NonNull String pattern, Long[] categories, int pageNumber, int pageSize) {
 
+        // FIXME: Cambiar estados en duro a variables?
         Long[] states = {(long) 3, (long) 4};
-        if (category != null) {
-            if (category.length == 0) category = null;
+        if (categories != null) {
+            if (categories.length == 0) categories = null;
         }
 
-        if (Pattern != null) {
-
-          /*
-                return conceptDAO.getConceptByPatternOrConceptIDAndCategory(arrPattern[0], category, pageSize, pageNumber, states);
-            */
-
-
-        }
-        return conceptDAO.getConceptByPatternCategory(null, category, states, pageSize, pageNumber);
-
-    }
+        /* El patron se separa en varios palabras: pattern.split(pattern) */
+        return conceptDAO.getConceptByPatternCategory(pattern.split(pattern), categories, states, pageSize, pageNumber);
+     }
 
     @Override
     public List<ConceptSMTK> findConceptByConceptIDOrDescriptionCategoryPageNumber(String patter, Long[] categories, int pageNumber, int pageSize) {
@@ -171,7 +155,7 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
 
 
         if ((categories != null && patter != null)) {
-            if(patter.length()>0) {
+            if (patter.length() > 0) {
                 List<String> listPattern;
                 patter = standardizationPattern(patter);
                 listPattern = patternToList(patter);
@@ -184,17 +168,17 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
             }
         }
         if (categories != null) {
-            if(categories.length>0){
+            if (categories.length > 0) {
                 return conceptDAO.getConceptByCategory(categories, states, pageSize, pageNumber);
             }
 
         }
 
-        if (patter != null ) {
-            if(patter.length()>0){
+        if (patter != null) {
+            if (patter.length() > 0) {
                 categories = new Long[0];
                 List<String> listPattern;
-                patter= standardizationPattern(patter);
+                patter = standardizationPattern(patter);
                 listPattern = patternToList(patter);
                 String[] arrPattern = listPattern.toArray(new String[listPattern.size()]);
                 if (listPattern.size() >= 2) {
@@ -217,7 +201,7 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
 
 
         if (categories != null && pattern != null) {
-            if(pattern.length()>0) {
+            if (pattern.length() > 0) {
                 List<String> listPattern;
                 pattern = standardizationPattern(pattern);
                 listPattern = patternToList(pattern);
@@ -231,23 +215,23 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
         }
 
         if (categories != null) {
-            if(categories.length>0){
-                return conceptDAO.getAllConceptCount(null,categories,states);
+            if (categories.length > 0) {
+                return conceptDAO.getAllConceptCount(null, categories, states);
             }
 
         }
-        categories= new Long[0];
+        categories = new Long[0];
         if (pattern != null) {
-            if(pattern.length()>0){
+            if (pattern.length() > 0) {
 
                 List<String> listPattern;
-                pattern= standardizationPattern(pattern);
+                pattern = standardizationPattern(pattern);
                 listPattern = patternToList(pattern);
                 String[] arrPattern = listPattern.toArray(new String[listPattern.size()]);
                 if (listPattern.size() >= 2) {
-                    return conceptDAO.getAllConceptCount(arrPattern,null,states);
+                    return conceptDAO.getAllConceptCount(arrPattern, null, states);
                 } else {
-                    return conceptDAO.getCountFindConceptID(arrPattern[0],categories,states);
+                    return conceptDAO.getCountFindConceptID(arrPattern[0], categories, states);
                 }
             }
         }
@@ -260,7 +244,7 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
         StringTokenizer st;
         String token;
         st = new StringTokenizer(pattern, " ");
-        ArrayList<String> listPattern = new ArrayList<String>();
+        ArrayList<String> listPattern = new ArrayList<>();
         int count = 0;
 
 

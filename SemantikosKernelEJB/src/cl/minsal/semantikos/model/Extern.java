@@ -3,25 +3,25 @@ package cl.minsal.semantikos.model;
 /**
  * Created by root on 08-07-16.
  */
-public class Auxiliary {
-    private long idAuxiliary;
-    private Long idAccesoryTableName;
+public class Extern {
+    private long idExtern;
+    private Long idExternTableName;
     private Long pkValueInAccesoryTable;
 
-    public long getIdAuxiliary() {
-        return idAuxiliary;
+    public long getIdExtern() {
+        return idExtern;
     }
 
-    public void setIdAuxiliary(long idAuxiliary) {
-        this.idAuxiliary = idAuxiliary;
+    public void setIdExtern(long idExtern) {
+        this.idExtern = idExtern;
     }
 
-    public Long getIdAccesoryTableName() {
-        return idAccesoryTableName;
+    public Long getIdExternTableName() {
+        return idExternTableName;
     }
 
-    public void setIdAccesoryTableName(Long idAccesoryTableName) {
-        this.idAccesoryTableName = idAccesoryTableName;
+    public void setIdExternTableName(Long idExternTableName) {
+        this.idExternTableName = idExternTableName;
     }
 
     public Long getPkValueInAccesoryTable() {
@@ -37,10 +37,10 @@ public class Auxiliary {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Auxiliary that = (Auxiliary) o;
+        Extern that = (Extern) o;
 
-        if (idAuxiliary != that.idAuxiliary) return false;
-        if (idAccesoryTableName != null ? !idAccesoryTableName.equals(that.idAccesoryTableName) : that.idAccesoryTableName != null)
+        if (idExtern != that.idExtern) return false;
+        if (idExternTableName != null ? !idExternTableName.equals(that.idExternTableName) : that.idExternTableName != null)
             return false;
         if (pkValueInAccesoryTable != null ? !pkValueInAccesoryTable.equals(that.pkValueInAccesoryTable) : that.pkValueInAccesoryTable != null)
             return false;
@@ -50,8 +50,8 @@ public class Auxiliary {
 
     @Override
     public int hashCode() {
-        int result = (int) (idAuxiliary ^ (idAuxiliary >>> 32));
-        result = 31 * result + (idAccesoryTableName != null ? idAccesoryTableName.hashCode() : 0);
+        int result = (int) (idExtern ^ (idExtern >>> 32));
+        result = 31 * result + (idExternTableName != null ? idExternTableName.hashCode() : 0);
         result = 31 * result + (pkValueInAccesoryTable != null ? pkValueInAccesoryTable.hashCode() : 0);
         return result;
     }

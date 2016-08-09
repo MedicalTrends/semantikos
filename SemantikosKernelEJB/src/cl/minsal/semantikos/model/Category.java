@@ -1,12 +1,16 @@
 package cl.minsal.semantikos.model;
 
+import cl.minsal.semantikos.model.relationships.RelationshipDefinition;
+import cl.minsal.semantikos.model.relationships.TargetDefinition;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by root on 08-07-16.
  */
 
-public class Category {
+public class Category implements TargetDefinition {
     private long idCategory;
     private String name;
     private String nameAbreviated;
@@ -81,6 +85,18 @@ public class Category {
         this.relationshipDefinitions = relationshipDefinitions;
     }
 
+    public List<RelationshipDefinition> getRelationshipDefinitionsOfTypeCollection(){
+
+        List<RelationshipDefinition> relationshipDefinitions = new ArrayList<>();
+
+        for (RelationshipDefinition relationshipDefinition : relationshipDefinitions) {
+            if(relationshipDefinition.getMultiplicity().getUpperBoundary()==0)
+                relationshipDefinitions.add(relationshipDefinition);
+        }
+
+        return relationshipDefinitions;
+    }
+
 
     @Override
     public boolean equals(Object o) {
@@ -114,4 +130,20 @@ public class Category {
         return result;
     }
 
+    public boolean isHasRelationshipDefinitions(){
+        return !relationshipDefinitions.isEmpty();
+    }
+
+    @Override
+    public boolean isBasicType() {
+        return false;
+    }
+
+    @Override
+    public boolean isSMTKType() {
+        return true;
+    }
+
+    @Override
+    public boolean isHelperTable() { return false; }
 }

@@ -1,49 +1,61 @@
 package cl.minsal.semantikos.model;
 
 /**
- * Created by root on 08-07-16.
+ * @author Diego Soto.
  */
 public class DescriptionType {
-    private long idDescriptionType;
-    private String gloss;
 
-    public long getIdDescriptionType() {
-        return idDescriptionType;
+    /** Identificador unico */
+    private long id;
+
+    /* Nombre del tipo de descripción */
+    private String name;
+
+    /* Descripción (opcional) del tipo de descripcion */
+    private String description;
+
+    /**
+     * Constructor completo para construir una entidad normal.
+     *
+     * @param id          Identificador único del Description Type.
+     * @param name        Nombre del tipo de descripcion
+     * @param description Descripción del tipo de descripcion.
+     */
+    public DescriptionType(long id, String name, String description) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
     }
 
-    public void setIdDescriptionType(long idTipoDescripcion) {
-        this.idDescriptionType = idTipoDescripcion;
+    public long getId() {
+        return id;
     }
 
-    public String getGloss() {
-        return gloss;
+    public void setId(long idTipoDescripcion) {
+        this.id = idTipoDescripcion;
     }
 
-    public void setGloss(String gloss) {
-        this.gloss = gloss;
+    public String getName() {
+        return name;
     }
 
-    @Override
-    public boolean equals(Object other) {
-        return (other instanceof DescriptionType) && ( String.valueOf(idDescriptionType) != null )
-                ? String.valueOf(idDescriptionType).equals(String.valueOf(((DescriptionType) other).idDescriptionType))
-                : (other == this);
+    public void setName(String name) {
+        this.name = name;
     }
 
-    @Override
-    public int hashCode() {
-        return (String.valueOf(idDescriptionType) != null)
-                ? (this.getClass().hashCode() + String.valueOf(idDescriptionType).hashCode())
-                : super.hashCode();
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     @Override
     public String toString() {
-        //return String.format("ExampleEntity[%d, %s]", idDescriptionType, glosa);
-        return getGloss();
+        return this.name + " - " + this.description;
     }
 
-    /*
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -51,17 +63,13 @@ public class DescriptionType {
 
         DescriptionType that = (DescriptionType) o;
 
-        if (idDescriptionType != that.idDescriptionType) return false;
-        if (gloss != null ? !gloss.equals(that.gloss) : that.gloss != null) return false;
+        if (!name.equals(that.name)) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result = (int) (idDescriptionType ^ (idDescriptionType >>> 32));
-        result = 31 * result + (gloss != null ? gloss.hashCode() : 0);
-        return result;
+        return name.hashCode();
     }
-    */
 }

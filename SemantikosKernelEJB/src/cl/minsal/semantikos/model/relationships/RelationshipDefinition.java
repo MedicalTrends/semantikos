@@ -1,5 +1,8 @@
-package cl.minsal.semantikos.model;
+package cl.minsal.semantikos.model.relationships;
 
+import cl.minsal.semantikos.model.Multiplicity;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -19,6 +22,9 @@ public class RelationshipDefinition {
     /** El tipo del objeto destino de la relación */
     private TargetDefinition targetDefinition;
 
+    /** El tipo del objeto destino de la relación */
+    private List<Relationship> relationships;
+
     /** Multiplicidad de la relación */
     private Multiplicity multiplicity;
 
@@ -27,9 +33,6 @@ public class RelationshipDefinition {
 
     /** Relaciones que excluye esta Relación */
     private RelationshipDefinition excludes;
-
-    public RelationshipDefinition() {
-    }
 
     /**
      * Este es el constructor mínimo con el cual se crean las RelacionesDefinitions.
@@ -59,6 +62,7 @@ public class RelationshipDefinition {
     public RelationshipDefinition(long id, String name, String description, TargetDefinition targetDefinition, Multiplicity multiplicity) {
         this(name, description, multiplicity, targetDefinition);
         this.id = id;
+        relationships= new ArrayList<>();
     }
 
     public int getIdCategoryDes() {
@@ -145,5 +149,39 @@ public class RelationshipDefinition {
 
     public void setRelationshipAttributeDefinitions(List<RelationshipAttributeDefinition> relationshipAttributeDefinitions) {
         this.relationshipAttributeDefinitions = relationshipAttributeDefinitions;
+    }
+
+    public List<Relationship> getRelationships() {
+        return relationships;
+    }
+
+    public void setRelationships(List<Relationship> relationships) {
+        this.relationships = relationships;
+    }
+
+    public void addRelationship(Relationship relationship) {
+
+        //relationship.setIdRelationship(relationships.size()+1);
+        this.relationships.add(relationship);
+
+    }
+
+    public Relationship getRelationship() { return relationships.get(0); }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        RelationshipDefinition that = (RelationshipDefinition) o;
+
+        return id == that.id;
+
+    }
+
+    @Override
+    public int hashCode() {
+        return (int) (id ^ (id >>> 32));
     }
 }

@@ -4,15 +4,25 @@ import cl.minsal.semantikos.kernel.components.*;
 import cl.minsal.semantikos.kernel.components.ConceptManagerInterface;
 import cl.minsal.semantikos.kernel.components.DescriptionManagerInterface;
 import cl.minsal.semantikos.model.*;
+import cl.minsal.semantikos.model.basictypes.BasicTypeValue;
+import cl.minsal.semantikos.model.helpertables.HelperTableRecord;
+import cl.minsal.semantikos.model.relationships.Relationship;
+import cl.minsal.semantikos.model.relationships.RelationshipDefinition;
+import cl.minsal.semantikos.model.relationships.Target;
+import org.omnifaces.util.Ajax;
+import org.primefaces.context.RequestContext;
 import org.primefaces.event.CellEditEvent;
 import org.primefaces.event.RowEditEvent;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
-import javax.faces.application.StateManager;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import java.io.Serializable;
 import java.text.ParseException;
@@ -25,9 +35,12 @@ import java.util.List;
 /**
  * Created by diego on 26/06/2016.
  */
+
 @ManagedBean(name="newConceptMBean")
 @ViewScoped
-public class NewConceptMBean implements Serializable {
+public class NewConceptMBean<T extends Comparable> implements Serializable {
+
+    static final Logger LOGGER = LoggerFactory.getLogger(NewConceptMBean.class);
 
     @EJB
     ConceptManagerInterface conceptManager;
@@ -41,10 +54,11 @@ public class NewConceptMBean implements Serializable {
     @EJB
     StateMachineManagerInterface stateMachineManager;
 
-    /*
     @EJB
-    StateManagerInterface stateManager;
-    */
+    HelperTableManagerInterface helperTableManager;
+
+    @ManagedProperty(value="#{smtkBean}")
+    private SMTKTypeBean smtkTypeBean;
 
     public User user;
 
@@ -55,11 +69,38 @@ public class NewConceptMBean implements Serializable {
     private List<State> descriptionStates = new ArrayList<State>();
     private List<Description> selectedDescriptions = new ArrayList<Description>();
 
+
+    //Nombre del concepto (Descripcion preferida)
+
+    private String favoriteDescription;
+
+    // Placeholder para las descripciones
     private String otherTermino;
 
     private boolean otherSensibilidad;
 
     private DescriptionType otherDescriptionType;
+
+    // Placeholder para los target de las relaciones
+    private BasicTypeValue basicTypeValue = new BasicTypeValue();
+
+    private Object selectedHelperTableRecord = new HelperTableRecord();
+
+    private ConceptSMTK conceptSMTK;
+
+    private ConceptSMTK conceptSelected;
+
+    public ConceptSMTK getConceptSMTK() {
+        return conceptSMTK;
+    }
+
+    public void setConceptSMTK(ConceptSMTK conceptSMTK) {
+        this.conceptSMTK = conceptSMTK;
+    }
+
+
+    //Inicializacion del Bean
+
 
 
     @PostConstruct
@@ -73,26 +114,18 @@ public class NewConceptMBean implements Serializable {
         user.setPassword("amauro");
         /////////////////////////////////////////////
 
+        // Iniciar cuadro de dialogo
+
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.execute("PF('dialogNameConcept').show();");
+
+        //category = categoryManager.getCategoryById(1);
         category = categoryManager.getCategoryById(105590001);
-        //category = categoryManager.getCategoryById(105590001);
-        descriptionTypes = descriptionManager.getOtherTypes();
+        descriptionTypes = DescriptionTypeFactory.getInstance().getDescriptionTypes();
         //concept = new ConceptSMTK(category, new Description("electrocardiograma de urgencia", descriptionTypes.get(0)));
-        concept = conceptManager.newConcept(category, "electrocardiograma de urgencia");
-    }
 
-    public String getMyFormattedDate(Date date) {
-        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-        return new SimpleDateFormat("dd-MM-yyyy").format(date);
-    }
 
-    public void onRowEdit(RowEditEvent event) {
-        FacesMessage msg = new FacesMessage("Description Edited", ((Description) event.getObject()).getTerm());
-        FacesContext.getCurrentInstance().addMessage(null, msg);
-    }
 
-    public void onRowCancel(RowEditEvent event) {
-        FacesMessage msg = new FacesMessage("Edit Cancelled", ((Description) event.getObject()).getTerm());
-        FacesContext.getCurrentInstance().addMessage(null, msg);
     }
 
     public ConceptSMTK getConcept() {
@@ -167,6 +200,159 @@ public class NewConceptMBean implements Serializable {
         this.stateMachineManager = stateMachineManager;
     }
 
+    public ConceptSMTK getConceptSelected() {
+        return conceptSelected;
+    }
+
+    public void setConceptSelected(ConceptSMTK conceptSelected) {
+        this.conceptSelected = conceptSelected;
+    }
+
+    public SMTKTypeBean getSmtkTypeBean() {
+        return smtkTypeBean;
+    }
+
+    public void setSmtkTypeBean(SMTKTypeBean smtkTypeBean) {
+        this.smtkTypeBean = smtkTypeBean;
+    }
+
+    public String getFavoriteDescription() {
+        return favoriteDescription;
+    }
+
+    public void setFavoriteDescription(String favoriteDescription) {
+        this.favoriteDescription = favoriteDescription;
+    }
+
+    public HelperTableManagerInterface getHelperTableManager() {
+        return helperTableManager;
+    }
+
+    public void setHelperTableManager(HelperTableManagerInterface helperTableManager) {
+        this.helperTableManager = helperTableManager;
+    }
+
+    public BasicTypeValue getBasicTypeValue() {
+        return basicTypeValue;
+    }
+
+    public void setBasicTypeValue(BasicTypeValue basicTypeValue) {
+        this.basicTypeValue = basicTypeValue;
+    }
+
+    public Object getSelectedHelperTableRecord() {
+        return selectedHelperTableRecord;
+    }
+
+    public void setSelectedHelperTableRecord(Object selectedHelperTableRecord) {
+        this.selectedHelperTableRecord = selectedHelperTableRecord;
+    }
+
+
+
+
+
+    public void createConcept(){
+        concept = newConcept(category, favoriteDescription);
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.execute("PF('dialogNameConcept').hide();");
+
+    }
+
+    public boolean limitRelationship(RelationshipDefinition relationshipD){
+        if(relationshipD.getMultiplicity().getUpperBoundary()!=0){
+            if(concept.getRelationshipsByRelationDefinition(relationshipD).size()==relationshipD.getMultiplicity().getUpperBoundary()){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void removeItem(Description item) {
+        concept.getDescriptions().remove(item);
+    }
+
+    public void addDescription() {
+        Description description = new Description(otherTermino, otherDescriptionType);
+        description.setCaseSensitive(otherSensibilidad);
+        description.setState(concept.getState());
+        concept.addDescription(description);
+        otherTermino = "";
+        Ajax.update("mainForm:otherTermino");
+
+    }
+
+    public void addRelationship(RelationshipDefinition relationshipDefinition){
+
+        Relationship relationship= new Relationship(relationshipDefinition);
+        this.concept.addRelationship(relationship);
+
+    }
+
+    public void addRelationshipAutocomplete(RelationshipDefinition relationshipDefinition){
+
+        Relationship relationship= new Relationship(relationshipDefinition);
+        relationship.setTarget(conceptSelected);
+        this.concept.addRelationship(relationship);
+
+    }
+
+    public void addRelationship(RelationshipDefinition relationshipDefinition, Target target){
+
+        Relationship relationship= new Relationship(relationshipDefinition);
+        relationship.setTarget(target);
+        this.concept.addRelationship(relationship);
+    }
+
+    public void setRelationship(RelationshipDefinition rd, Relationship relationship){
+
+        LOGGER.debug("setRelationship, Target ={} ",relationship.getTarget());
+
+        int index = concept.getRelationships().indexOf(relationship);
+        concept.getRelationships().set(index, relationship);
+
+        for (Relationship r : rd.getRelationships()) {
+            BasicTypeValue basicTypeValue = (BasicTypeValue) r.getTarget();
+        }
+
+    }
+
+    public void removeRelationship(RelationshipDefinition rd, Relationship r){
+        concept.getRelationships().remove(r);
+    }
+
+    public void addOrChangeRelationship(RelationshipDefinition relationshipDefinition, Target target){
+
+        Relationship relationship= new Relationship(relationshipDefinition);
+        relationship.setTarget(conceptSelected);
+
+        if(concept.getRelationshipsByRelationDefinition(relationshipDefinition).size()==0){
+            this.concept.addRelationship(relationship);
+        }else{
+            for (int i = 0; i < this.concept.getRelationships().size(); i++) {
+                if(this.concept.getRelationships().get(i).getRelationshipDefinition().equals(relationshipDefinition)){
+                    this.concept.getRelationships().remove(i);
+                }
+            }
+            this.concept.addRelationship(relationship);
+        }
+    }
+
+    public String getMyFormattedDate(Date date) {
+        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+        return new SimpleDateFormat("dd-MM-yyyy").format(date);
+    }
+
+    public void onRowEdit(RowEditEvent event) {
+        FacesMessage msg = new FacesMessage("Description Edited", ((Description) event.getObject()).getTerm());
+        FacesContext.getCurrentInstance().addMessage(null, msg);
+    }
+
+    public void onRowCancel(RowEditEvent event) {
+        FacesMessage msg = new FacesMessage("Edit Cancelled", ((Description) event.getObject()).getTerm());
+        FacesContext.getCurrentInstance().addMessage(null, msg);
+    }
+
     public void onCellEdit(CellEditEvent event) {
         Object oldValue = event.getOldValue();
         Object newValue = event.getNewValue();
@@ -177,19 +363,25 @@ public class NewConceptMBean implements Serializable {
         }
     }
 
-    public void removeItem(Description item) {
-        concept.getOtherDescriptions().remove(item);
+    public void saveConcept(){
+
     }
 
-    public void addItem() {
-        System.out.println("addItem");
-        Description description = new Description(otherTermino, otherDescriptionType);
-        description.setTerm(otherTermino);
-        description.setCaseSensitive(otherSensibilidad);
-        description.setState(concept.getState());
-        description.setCreationDate(Calendar.getInstance().getTime());
-        description.setUser(user);
-        concept.addDescription(description);
+    public ConceptSMTK newConcept(Category category, String term) {
+
+        /* Valores iniciales para el concepto */
+        Description favouriteDescription = new Description(term, descriptionManager.getTypeFavorite());
+
+        State initialState = stateMachineManager.getConceptStateMachine().getInitialState();
+
+        ConceptSMTKWeb concept = new ConceptSMTKWeb(category, favouriteDescription, initialState);
+        concept.setCategory(category);
+        concept.addDescription(favouriteDescription);
+        concept.setState(initialState);
+
+
+        return concept;
     }
+
 }
 

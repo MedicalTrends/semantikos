@@ -1,20 +1,10 @@
 package cl.minsal.semantikos.model.basictypes;
 
-import cl.minsal.semantikos.model.TargetDefinition;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import cl.minsal.semantikos.model.relationships.TargetDefinition;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.core.JsonFactory;
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -134,35 +124,64 @@ public class BasicTypeDefinition<T extends Comparable> implements TargetDefiniti
             return false;
     }
 
-    public boolean isDomainType(){
+    public boolean isHasDomain(){
         return !this.domain.isEmpty();
     }
 
-    public String intervalTypeOf(){
-        if(this.interval != null) {
-            if (this.interval.bottomBoundary instanceof java.lang.Integer)
+    public boolean isInteger() {
+        return ((this.interval.lowerBoundary instanceof java.lang.Long || this.interval.upperBoundary instanceof java.lang.Long) && this.domain.isEmpty());
+    }
+
+    public boolean isString() {
+        return ((this.interval.lowerBoundary instanceof java.lang.String || this.interval.upperBoundary instanceof java.lang.String) && this.domain.isEmpty());
+    }
+
+    public boolean isDate() {
+        return ((this.interval.lowerBoundary instanceof java.util.Date || this.interval.upperBoundary instanceof java.util.Date) && this.domain.isEmpty()) ;
+    }
+
+    public boolean isFloat() {
+        //System.out.println("isFloat="+(this.interval.lowerBoundary instanceof java.lang.Float || this.interval.upperBoundary instanceof java.lang.Float));
+        return ((this.interval.lowerBoundary instanceof java.lang.Float || this.interval.upperBoundary instanceof java.lang.Float) && this.domain.isEmpty());
+    }
+
+
+    public String typeOf(){
+        if(this.domain != null){
+            if (this.domain.get(0) instanceof java.lang.Integer)
                 return "Integer";
-            if (this.interval.bottomBoundary instanceof java.lang.String)
+            if (this.domain.get(0) instanceof java.lang.String)
                 return "String";
-            if (this.interval.bottomBoundary instanceof java.util.Date)
+            if (this.domain.get(0) instanceof java.util.Date)
+                return "Date";
+        }
+        if(this.interval != null) {
+            if (this.interval.lowerBoundary instanceof java.lang.Integer)
+                return "Integer";
+            if (this.interval.lowerBoundary instanceof java.lang.String)
+                return "String";
+            if (this.interval.lowerBoundary instanceof java.util.Date)
                 return "Date";
         }
         return "";
     }
 
-    public String domainTypeOf(){
-        if (this.domain.get(0) instanceof java.lang.Integer)
-            return "Integer";
-        if (this.domain.get(0) instanceof java.lang.String)
-            return "String";
-        if (this.domain.get(0) instanceof java.util.Date)
-            return "Date";
-        return "";
-    }
-
-
     @Override
     public boolean isBasicType() {
         return true;
+    }
+
+    @Override
+    public boolean isSMTKType() {
+        return false;
+    }
+
+    @Override
+    public boolean isHelperTable() {
+        return false;
+    }
+
+    public List<String> asString(){
+        return (List<String>)domain;
     }
 }

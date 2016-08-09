@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:composite="http://java.sun.com/jsf/composite"
+      xmlns:p="http://primefaces.org/ui">
+
+<composite:interface>
+    <composite:attribute name="relationshipDefinition" type="cl.minsal.semantikos.model.relationships.RelationshipDefinition" />
+    <composite:attribute name="targetDefinition" type="cl.minsal.semantikos.model.helpertables.HelperTable" />
+    <composite:attribute name="concept" type="cl.minsal.semantikos.model.ConceptSMTK" />
+</composite:interface>
+<composite:implementation>
+    <p:panel id="helperTableTypeSimple"
+             widgetVar="panelHelperTableTypeSimple#{cc.attrs.relationshipDefinition.id}"
+             rendered="#{cc.attrs.relationshipDefinition.multiplicity.simple}">
+
+        <ui:repeat value="#{cc.attrs.concept.getRelationshipsByRelationDefinition(cc.attrs.relationshipDefinition)}"
+                   var="relationship"
+                   varStatus="var">
+
+            <div class="ui-g">
+                <div class="ui-g-12 ui-md-6 ui-lg-2">
+                    <p:outputLabel for="helperTableRecordsSimple" value="#{cc.attrs.relationshipDefinition.name}"/>
+                </div>
+                <div class="ui-g-12 ui-md-6 ui-lg-10">
+                    <p:dataTable id="helperTableRecordsSimple"
+                                 var="helperTableRecord"
+                                 value="#{newConceptMBean.helperTableManager.getAllRecords(cc.attrs.targetDefinition)}"
+                                 selection="#{relationship.target.id}"
+                                 reflow="true"
+                                 rowKey="#{helperTableRecord.fields.id}"
+                                 >
+                        <p:column selectionMode="single" style="width:16px;text-align:center"/>
+                        <p:columns value="#{cc.attrs.targetDefinition.showableColumns}"
+                                   var="column"
+                                   columnIndexVar="colIndex"
+                                   sortBy="#{helperTableRecord.fields[column.columnName]}">
+                            <f:facet name="header">
+                                <h:outputText value="#{column.columnName}" />
+                            </f:facet>
+                            <h:outputText value="#{helperTableRecord.fields.get(column.columnName)}" />
+                        </p:columns>
+                    </p:dataTable>
+                </div>
+            </div>
+        </ui:repeat>
+    </p:panel>
+
+    <p:panel id="helperTableTypeCollection"
+             widgetVar="panelHelperTableTypeCollection#{cc.attrs.relationshipDefinition.id}"
+             rendered="#{cc.attrs.relationshipDefinition.multiplicity.collection}">
+
+            <div class="ui-g">
+                <div class="ui-g-12 ui-md-6 ui-lg-2">
+                    <p:outputLabel for="helperTableRecordsCollection" value="#{cc.attrs.relationshipDefinition.name}"/>
+                </div>
+                <div class="ui-g-12 ui-md-6 ui-lg-10">
+                    <p:dataTable id="helperTableRecordsCollection"
+                                 var="helperTableRecord"
+                                 value="#{newConceptMBean.helperTableManager.getAllRecords(cc.attrs.targetDefinition)}"
+                                 reflow="true"
+                    >
+                        <p:columns value="#{cc.attrs.targetDefinition.showableColumns}"
+                                   var="column"
+                                   columnIndexVar="colIndex"
+                                   sortBy="#{helperTableRecord.fields[column.columnName]}">
+                            <f:facet name="header">
+                                <h:outputText value="#{column.columnName}" />
+                            </f:facet>
+                            <h:outputText value="#{helperTableRecord.fields.get(column.columnName)}" />
+                        </p:columns>
+                        <p:column headerText="Agregar" style="width:60px;text-align: center;">
+                            <p:commandButton
+                                    process="@this"
+                                    action="#{newConceptMBean.addRelationship(cc.attrs.relationshipDefinition)}"
+                                    update=":#{cc.clientId}:helperTableTypeCollection"
+                                    icon="fa fa-plus"
+                                    title="Agregar"
+                            >
+                            </p:commandButton>
+                        </p:column>
+                    </p:dataTable>
+                </div>
+            </div>
+            <div class="ui-g">
+                <div class="ui-g-12 ui-md-6 ui-lg-2">
+                </div>
+                <div class="ui-g-12 ui-md-6 ui-lg-10">
+                    <p:dataTable id="collectionValues"
+                                 var="helperTableRecord"
+                                 value="#{cc.attrs.concept.getRelationshipsByRelationDefinition(cc.attrs.relationshipDefinition)}"
+                                 reflow="true">
+
+                        <p:columns value="#{cc.attrs.targetDefinition.showableColumns}"
+                                   var="column"
+                                   columnIndexVar="colIndex"
+                                   sortBy="#{helperTableRecord.fields[column.columnName]}">
+                            <f:facet name="header">
+                                <h:outputText value="#{column.columnName}" />
+                            </f:facet>
+                            <h:outputText value="#{helperTableRecord.target.fields.get(column.columnName)}" />
+                        </p:columns>
+                    </p:dataTable>
+                </div>
+            </div>
+
+    </p:panel>
+</composite:implementation>
+</html>
