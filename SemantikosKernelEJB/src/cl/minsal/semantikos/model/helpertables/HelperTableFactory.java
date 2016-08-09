@@ -7,7 +7,12 @@ import java.util.*;
  */
 public class HelperTableFactory {
 
+    /** Tabla Auxiliar ATC */
     private HelperTable atcHT;
+
+    /** Tabla Auxiliar DCI */
+    private HelperTable dciHT;
+
     private Map<String, HelperTable> helperTables = new HashMap<>();
 
     private static final HelperTableFactory singletonInstance = new HelperTableFactory();
@@ -17,8 +22,12 @@ public class HelperTableFactory {
     }
 
     private void createHelperTables() {
+
         HelperTable atcHelperTable = createATC();
+        HelperTable dciHelperTable = createDCI();
+
         helperTables.put(atcHelperTable.getTablaName(), atcHelperTable);
+        helperTables.put(dciHelperTable.getTablaName(), dciHelperTable);
     }
 
     public Collection<HelperTable> getHelperTables() {
@@ -36,13 +45,36 @@ public class HelperTableFactory {
         HelperTableColumn descripcionATCColumn = new HelperTableColumn("descripcion_atc", false, true, true);
 
         HelperTableColumn[] columns = {idColumn, codigoATCColumn, descripcionATCColumn};
-        this.atcHT = new HelperTable((long) 1, "ATC", "Tabla de códigos ATC", "HELPER_TABLE_ATC", columns);
+        this.atcHT = new HelperTable((long) 1, "ATC", "Tabla de códigos ATC", "HELPER_TABLE_ATC", Arrays.asList(columns));
+
+        return this.atcHT;
+    }
+
+    /**
+     * Este método es responsable de crear una Tabla Auxiliar ATC.
+     *
+     * @return Una tabla ATC.
+     */
+    private HelperTable createDCI() {
+        HelperTableColumn idColumn = new HelperTableColumn("id", true, false, false);
+        HelperTableColumn descriptionColumn = new HelperTableColumn("description", false, true, true);
+        HelperTableColumn creation_dateColumn = new HelperTableColumn("creation_date", false, true, true);
+        HelperTableColumn user_registerColumn = new HelperTableColumn("user_register", false, true, true);
+        HelperTableColumn is_validColumn = new HelperTableColumn("is_valid", false, true, true);
+        HelperTableColumn delete_dateColumn = new HelperTableColumn("delete_date", false, true, true);
+
+        HelperTableColumn[] columns = {idColumn, descriptionColumn, creation_dateColumn, user_registerColumn, is_validColumn, delete_dateColumn};
+        this.dciHT = new HelperTable((long) 2, "DCI", "Tabla de Denominaciones Comunes Internacionales (DCI)", "helper_table_dci", Arrays.asList(columns));
 
         return this.atcHT;
     }
 
     public HelperTable getHelperTableATC() {
         return atcHT;
+    }
+
+    public HelperTable getHelperTableDCI() {
+        return dciHT;
     }
 
     public static HelperTableFactory getInstance() {
@@ -63,6 +95,9 @@ public class HelperTableFactory {
         switch ((int) idHelperTable) {
             case 1:
                 return this.atcHT;
+
+            case 2:
+                return this.dciHT;
         }
 
         throw new IllegalArgumentException("No existe tabla auxiliar con ID = " + idHelperTable);
@@ -74,6 +109,10 @@ public class HelperTableFactory {
      * @return La tabla auxiliar de nombre <code>tableName</code>.
      */
     public HelperTable getHelperTable(String tableName) {
-        return null;
+        if (this.helperTables.containsKey(tableName)) {
+            return this.helperTables.get(tableName);
+        }
+
+        throw new IllegalArgumentException("No existe tabla auxiliar de nombre '" + tableName + ".");
     }
 }
