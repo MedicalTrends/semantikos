@@ -103,4 +103,16 @@ public class HelperTableRecordFactoryTest {
 
         return jsonHelperTableRecord;
     }
+
+    private String createJSONManyRecords() {
+        return "{\"tableName\":\"helper_table_dci\",\"records\":[{\"id\":1,\"description\":\"descripcion dci 1\",\"creation_date\":null,\"user_register\":1,\"is_valid\":true,\"delete_date\":null}, \n" +
+                " {\"id\":2,\"description\":\"descripcion dci 2\",\"creation_date\":null,\"user_register\":1,\"is_valid\":true,\"delete_date\":null}]}";
+    }
+
+    @Test
+    public void transformJSON3SingleRecord() throws Exception {
+        String jsonRocord = createJSONManyRecords();
+        List<HelperTableRecord> recordFromJSON = this.helperTableRecordFactory.createRecordsFromJSON(jsonRocord);
+        assertEquals(2, recordFromJSON.size());
+    }
 }

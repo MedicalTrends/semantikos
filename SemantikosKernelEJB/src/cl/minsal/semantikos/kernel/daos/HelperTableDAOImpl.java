@@ -108,8 +108,8 @@ public class HelperTableDAOImpl implements HelperTableDAO {
         try (Connection connection = connectionBD.getConnection();
              CallableStatement call = connection.prepareCall(selectRecord);) {
 
-            String[] columnsNames = (String[]) helperTable.getShowableColumnsNames().toArray();
-            Array columnsNamesArray = connection.createArrayOf("string", columnsNames);
+            String[] columnsNames = helperTable.getShowableColumnsNames().toArray(new String[helperTable.getShowableColumnsNames().size()]);
+            Array columnsNamesArray = connection.createArrayOf("text", columnsNames);
 
             /* Se prepara y realiza la consulta */
             call.setString(1, helperTable.getTablaName());
@@ -137,6 +137,6 @@ public class HelperTableDAOImpl implements HelperTableDAO {
 
     @Override
     public List<HelperTableRecord> getAllRecords(HelperTable helperTable) {
-        return this.getAllRecords(helperTable, (String[])helperTable.getShowableColumnsNames().toArray());
+        return this.getAllRecords(helperTable, helperTable.getShowableColumnsNames().toArray(new String[helperTable.getShowableColumnsNames().size()]));
     }
 }

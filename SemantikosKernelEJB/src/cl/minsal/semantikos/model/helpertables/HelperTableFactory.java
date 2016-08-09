@@ -66,7 +66,7 @@ public class HelperTableFactory {
         HelperTableColumn[] columns = {idColumn, descriptionColumn, creation_dateColumn, user_registerColumn, is_validColumn, delete_dateColumn};
         this.dciHT = new HelperTable((long) 2, "DCI", "Tabla de Denominaciones Comunes Internacionales (DCI)", "helper_table_dci", Arrays.asList(columns));
 
-        return this.atcHT;
+        return this.dciHT;
     }
 
     public HelperTable getHelperTableATC() {

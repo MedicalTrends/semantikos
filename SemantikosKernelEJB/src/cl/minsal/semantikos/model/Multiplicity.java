@@ -51,4 +51,8 @@ public class Multiplicity {
     public boolean isRequired(int cardinality){
         return ((cardinality<this.getLowerBoundary()));
     }
+
+    public int getLowerBoundaryView(){
+        return Math.max(1,this.getLowerBoundary());
+    }
 }

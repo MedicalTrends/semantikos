@@ -49,7 +49,6 @@
                              rows="3"
                              paginator="true" dynamic="true"
                              lazy="true"
-
                              paginatorTemplate=" {CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "
                              emptyMessage="No se han encontrado conceptos con los criterios utilizados"
                              style="margin: 10px;"
@@ -66,7 +65,7 @@
                     <p:column headerText="Agregar" style="width:60px;text-align: center;">
                         <p:commandButton
                                 process="@this"
-                                action="#{newConceptMBean.addRelationship(cc.attrs.relationshipDefinition,concept)}"
+                                action="#{newConceptMBean.addRelationship(cc.attrs.relationshipDefinition)}"
                                 update=":#{cc.clientId}:tableRelationship,:#{cc.clientId}:tableConcept"
                                 icon="fa fa-plus"
                                 title="Agregar"
