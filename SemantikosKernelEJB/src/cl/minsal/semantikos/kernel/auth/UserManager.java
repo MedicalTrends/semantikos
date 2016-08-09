@@ -1,6 +1,7 @@
 package cl.minsal.semantikos.kernel.auth;
 
 import cl.minsal.semantikos.kernel.daos.AuthDAO;
+import cl.minsal.semantikos.model.Profile;
 import cl.minsal.semantikos.model.User;
 
 import javax.ejb.EJB;
@@ -22,5 +23,19 @@ public class UserManager {
 
         return authDAO.getAllUsers();
 
+    }
+
+    public User getUser(long idUser) {
+        return authDAO.getUserById(idUser);
+    }
+
+    public void updateUser(User user) {
+
+        authDAO.updateUser(user);
+    }
+
+    public List<Profile> getAllProfiles() {
+
+        return authDAO.getAllProfiles();
     }
 }

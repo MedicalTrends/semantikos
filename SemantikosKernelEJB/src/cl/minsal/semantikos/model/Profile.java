@@ -46,4 +46,20 @@ public class Profile {
         return permissions;
     }
 
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Profile profile = (Profile) o;
+
+        return idProfile == profile.idProfile;
+
+    }
+
+    @Override
+    public int hashCode() {
+        return (int) (idProfile ^ (idProfile >>> 32));
+    }
 }

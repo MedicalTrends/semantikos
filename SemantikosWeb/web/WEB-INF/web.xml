@@ -110,8 +110,8 @@
 
 
     <mime-mapping>
-        <extension>wof</extension>
-        <mime-type>application/x-font-woff2</mime-type>
+        <extension>woff</extension>
+        <mime-type>application/x-font-woff</mime-type>
     </mime-mapping>
 
 

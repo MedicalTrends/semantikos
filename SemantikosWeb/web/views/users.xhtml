@@ -15,13 +15,13 @@
                             <h2 class="TexAlCenter BigTopic">Administracion de Usuarios</h2>
 
                             <h:form id="form">
-                                <p:dataTable id="singleDT" var="user" value="#{users.allUsers}" selectionMode="single" selection="#{users.selectedUser}" rowKey="#{user.idUser}"
+                                <p:dataTable id="singleDT" var="user" value="#{users.allUsers}" rowKey="#{user.idUser}"
                                              rows="10" paginator="true" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                              rowsPerPageTemplate="10,50,100" emptyMessage="No hay usuarios en la Base de Datos" reflow="true">
 
-                                    <p:ajax event="rowSelect" update=":form:userDetail" oncomplete="PF('userDialog').show()" />
+                                    <p:ajax event="rowSelect" update=":form:user-detail" oncomplete="PF('userDialog').show()" />
 
-                                    <p:column headerText="Id" sortBy="#{user.idUser}" footerText="Id">
+                                    <p:column headerText="Id" sortBy="#{user.idUser}" footerText="Id" width="10">
                                         <h:outputText value="#{user.idUser}" />
                                     </p:column>
                                     <p:column headerText="Nombre de Usuario" sortBy="#{user.username}" footerText="Nombre de Usuario">
@@ -33,12 +33,20 @@
                                     <p:column headerText="Email" sortBy="#{user.email}" footerText="Email">
                                         <h:outputText value="#{user.email}" />
                                     </p:column>
+
+                                    <p:column exportable="false" style="width:32px;text-align: center">
+                                        <p:commandButton action="#{users.setSelectedUser(user)}" update=":form:user-detail" oncomplete="PF('userDialog').show()" icon="fa fa-view" title="Ver" />
+                                        <p:commandButton action="#{users.setSelectedUser(user)}" update=":form:user-edit" oncomplete="PF('editDialog').show()" icon="fa fa-edit" title="Editar" />
+                                    </p:column>
+
                                 </p:dataTable>
 
-                                <p:dialog header="user Info" widgetVar="userDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" responsive="true">
-                                    <p:outputPanel id="userDetail" style="text-align:center;">
-                                        <p:panelGrid  columns="2" layout="grid" styleClass="ui-panelgrid-blank">
-
+                                <p:dialog height="300" width="500" header="Detalles del Usuario" widgetVar="userDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="true" responsive="true">
+                                    <h:panelGroup layout="block" id="user-detail" styleClass="Container100">
+                                        <p:panelGrid columns="2" styleClass="Wid100" rendered="#{users.selectedUser != null}">
+                                            <f:facet name="header">
+                                                Datos Basicos
+                                            </f:facet>
                                             <h:outputText value="Id:" style="font-weight: bold"/>
                                             <h:outputText value="#{users.selectedUser.idUser}" />
 
@@ -54,12 +62,126 @@
                                             <h:outputText value="Apellido Materno:" style="font-weight: bold"/>
                                             <h:outputText value="#{users.selectedUser.secondLastName}"/>
 
+                                            <h:outputText value="RUT:" style="font-weight: bold"/>
+                                            <h:outputText value="#{users.selectedUser.rut}"/>
+
                                             <h:outputText value="Email" style="font-weight: bold"/>
-                                            <h:outputText value="$#{users.selectedUser.email}" />
+                                            <h:outputText value="#{users.selectedUser.email}" />
+
+                                        </p:panelGrid>
+
+                                        <br />
+                                        <div class="separator" />
+                                        <br />
+
+                                        <p:panelGrid columns="2" styleClass="Wid100" rendered="#{users.selectedUser != null}">
+                                            <f:facet name="header">
+                                                Datos De acceso
+                                            </f:facet>
+                                            <h:outputText value="Fecha Ultimo acceso:" style="font-weight: bold"/>
+                                            <h:outputText value="#{users.selectedUser.lastLogin}">
+                                                <f:convertDateTime type="date" pattern="dd-MM-yyyy hh:mm"/>
+                                            </h:outputText>
+
+                                            <h:outputText value="Fecha Ultimo cambio de contraseña" style="font-weight: bold"/>
+                                            <h:outputText value="#{users.selectedUser.lastPasswordChange}">
+                                                <f:convertDateTime type="date" pattern="dd-MM-yyyy hh:mm"/>
+                                            </h:outputText>
+
+                                            <h:outputText value="Bloqueado:" style="font-weight: bold"/>
+                                            <h:outputText value="#{users.selectedUser.locked?'Si':'No'}"/>
 
 
                                         </p:panelGrid>
-                                    </p:outputPanel>
+
+
+                                        <br />
+                                        <div class="separator" />
+                                        <br />
+
+
+                                        <p:panelGrid columns="2" styleClass="Wid100" rendered="#{users.selectedUser != null and not empty users.selectedUser.profiles}">
+                                            <f:facet name="header">
+                                                Perfiles
+                                            </f:facet>
+                                            <h:outputText value="Perfil" style="font-weight: bold"/>
+                                            <h:outputText value="Descripcion" style="font-weight: bold"/>
+
+
+                                            <ui:repeat value="#{users.selectedUser.profiles}" var="profile">
+                                                <h:outputText value="#{profile.name}" />
+                                                <h:outputText value="#{profile.description}" />
+                                            </ui:repeat>
+
+                                        </p:panelGrid>
+                                        <h:outputText value="Usuario no tiene Perfiles asignados" rendered="#{users.selectedUser != null and empty users.selectedUser.profiles}" />
+
+                                    </h:panelGroup>
+                                </p:dialog>
+
+
+                                <p:dialog height="500" width="600" header="Editar Usuario" widgetVar="editDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="true" responsive="true">
+                                    <h:panelGroup layout="block" id="user-edit" styleClass="Container100">
+
+                                        <p:panelGrid columns="2" styleClass="Wid100" >
+                                            <f:facet name="header">
+                                                Datos Basicos
+                                            </f:facet>
+                                            <h:outputText value="Id:" style="font-weight: bold"/>
+                                            <h:outputText value="#{users.selectedUser.idUser}" />
+
+                                            <h:outputText value="Username" style="font-weight: bold"/>
+                                            <h:outputText value="#{users.selectedUser.username}" />
+
+                                        </p:panelGrid>
+
+                                        <br />
+                                        <div class="separator" />
+                                        <br />
+
+                                        <p:panelGrid columns="1" layout="grid" rendered="#{users.selectedUser != null}" styleClass="ui-panelgrid-blank">
+                                            <f:facet name="header">
+                                                Datos Usuario
+                                            </f:facet>
+                                            <p:outputLabel for="input-user-name" value="Nombre:"/>
+                                            <p:inputText id="input-user-name" value="#{users.selectedUser.name}" required="true" styleClass="Wid90"/>
+                                            <p:message for="input-user-name" />
+
+                                            <p:outputLabel for="input-user-lastname" value="Apellido Paterno:"  required="true"/>
+                                            <p:inputText id="input-user-lastname" value="#{users.selectedUser.lastName}" styleClass="Wid90"/>
+                                            <p:message for="input-user-lastname" />
+
+                                            <p:outputLabel for="input-user-secondlastname" value="Apellido Materno:"/>
+                                            <p:inputText id="input-user-secondlastname" value="#{users.selectedUser.secondLastName}" styleClass="Wid90"/>
+                                            <p:message for="input-user-secondlastname" />
+
+                                            <p:outputLabel for="input-user-rut" value="RUT:" style="font-weight: bold" />
+                                            <p:inputText id="input-user-rut" value="#{users.selectedUser.rut}" required="true" styleClass="Wid90" />
+                                            <p:message for="input-user-rut" />
+
+                                            <p:outputLabel for="input-user-email" value="Email" style="font-weight: bold" />
+                                            <p:inputText id="input-user-email" value="#{users.selectedUser.email}"  styleClass="Wid90" />
+                                            <p:message for="input-user-email" />
+
+                                        </p:panelGrid>
+
+                                        <p:pickList id="pickList" rendered="#{users.selectedUser != null}" value="#{users.selectedUserProfileModel}" var="profile" itemLabel="#{profile.name}" itemValue="#{profile}"
+                                                    showSourceControls="true" showTargetControls="true" showSourceFilter="true" showTargetFilter="true" responsive="true">
+                                            <f:facet name="sourceCaption">Perfiles disponibles</f:facet>
+                                            <f:facet name="targetCaption">Perfiles Asignados</f:facet>
+                                        </p:pickList>
+
+                                        <p:commandButton value="Guardar" icon="fa-save" action="#{users.saveUser()}" />
+
+                                        <br />
+                                        <div class="separator" />
+                                        <br />
+
+                                        <p:commandButton value="Desbloquear Usuario" action="#{users.unlockUser()}" disabled="#{not users.selectedUser.locked}"  rendered="#{users.selectedUser != null}" />
+                                        <p:commandButton value="Cambiar Password Usuario" rendered="#{users.selectedUser != null}" />
+
+
+                                    </h:panelGroup>
                                 </p:dialog>
                             </h:form>
                         </div>
