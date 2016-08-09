@@ -59,6 +59,7 @@ public class HelperTableRecordFactory {
      * @throws IOException Arrojada si hay un problema.
      */
     public List<HelperTableRecord> createRecordsFromJSON(String jsonExpression) throws IOException {
+
         JSONHelperTableRecords jsonHelperTableRecord = mapper.readValue(jsonExpression, JSONHelperTableRecords.class);
         HelperTable helperTable = HelperTableFactory.getInstance().getHelperTable(jsonHelperTableRecord.getTableName());
 

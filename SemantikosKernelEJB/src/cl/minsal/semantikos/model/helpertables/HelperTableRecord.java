@@ -13,11 +13,14 @@ public class HelperTableRecord implements Target {
 
     private static final Logger logger = LoggerFactory.getLogger(HelperTableRecord.class);
 
-    /** La tabla auxiliar referenciada */
-    private HelperTable helperTable;
-
     /** La llave primaria del registro */
     private long id;
+
+    /** Un registro puede ser vigente o no */
+    private boolean isValid;
+
+    /** La tabla auxiliar referenciada */
+    private HelperTable helperTable;
 
     /** Los campos de la tabla */
     private Map<String, String> fields;

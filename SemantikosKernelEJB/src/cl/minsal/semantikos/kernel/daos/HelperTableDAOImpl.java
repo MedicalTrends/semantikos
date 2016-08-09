@@ -23,20 +23,28 @@ import java.util.*;
 @Stateless
 public class HelperTableDAOImpl implements HelperTableDAO {
 
+    /** Logger de la clase */
     private static final Logger logger = LoggerFactory.getLogger(HelperTableDAOImpl.class);
+
+    /** Nombre de la columna de Vigencia */
+    public static final String IS_VALID_COLUMN_NAME = "is_valid";
+
+    /** Nombre de la columna de ID */
+    public static final String ID_COLUMN_NAME = "id";
 
     @Override
     public Map<String, String> getRecord(HelperTable helperTable, long idRecord) {
 
         Map<String, String> record = new HashMap<>();
         ConnectionBD connectionBD = new ConnectionBD();
-        String selectRecord = "SELECT * FROM " + helperTable.getTablaName() + " WHERE ID=?";
+
+        String selectRecord = "{call semantikos.get_record(?)}";
         try (Connection connection = connectionBD.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(selectRecord);) {
+             CallableStatement callableStatement = connection.prepareCall(selectRecord);) {
 
             /* Se prepara y realiza la consulta */
-            preparedStatement.setLong(1, idRecord);
-            ResultSet resultSet = preparedStatement.executeQuery();
+            callableStatement.setLong(1, idRecord);
+            ResultSet resultSet = callableStatement.executeQuery();
 
             /* Se recuperan los valores de las columnas de la tabla auxiliar */
             for (HelperTableColumn helperTableColumn : helperTable.getColumns()) {
@@ -71,7 +79,7 @@ public class HelperTableDAOImpl implements HelperTableDAO {
             /* Por cada elemento del resultset se extrae un registro */
             while (resultSet.next()) {
 
-                Map<String, String> record = new HashMap<String, String>();
+                Map<String, String> record = new HashMap<>();
                 /* Se recuperan los valores de las columnas de la tabla auxiliar */
                 for (HelperTableColumn helperTableColumn : helperTable.getColumns()) {
                     String columnName = helperTableColumn.getColumnName();
@@ -89,27 +97,23 @@ public class HelperTableDAOImpl implements HelperTableDAO {
         return records;
     }
 
+
     @Override
     public List<HelperTableRecord> getAllRecords(HelperTable helperTable, String[] columnNames) {
 
-        //FIXME: Rapido y urgente.
-        return null;
-
-    }
-
-    @Override
-    public List<HelperTableRecord> getAllRecords(HelperTable helperTable) {
-
-        ConnectionBD connect = new ConnectionBD();
-        //Object[] records = new Object[0];
+        ConnectionBD connectionBD = new ConnectionBD();
         List<HelperTableRecord> helperTableRecords = new ArrayList<>();
 
-        String sql = "{call semantikos.get_all_records_from_helper_table(?)}";
-        try (Connection connection = connect.getConnection();
-             CallableStatement call = connection.prepareCall(sql);) {
+        String selectRecord = "{call semantikos.get_all_records_from_helper_table(?,?)}";
+        try (Connection connection = connectionBD.getConnection();
+             CallableStatement call = connection.prepareCall(selectRecord);) {
 
-            /* Se prepara y ejecuta la consulta */
+            String[] columnsNames = (String[]) helperTable.getShowableColumnsNames().toArray();
+            Array columnsNamesArray = connection.createArrayOf("string", columnsNames);
+
+            /* Se prepara y realiza la consulta */
             call.setString(1, helperTable.getTablaName());
+            call.setArray(2, columnsNamesArray);
             call.execute();
 
             ObjectMapper mapper = new ObjectMapper();
@@ -122,18 +126,18 @@ public class HelperTableDAOImpl implements HelperTableDAO {
         } catch (SQLException e) {
             logger.error("Hubo un error al acceder a la base de datos.", e);
             throw new EJBException(e);
-        } catch (JsonParseException | JsonMappingException e) {
-            logger.error("Hubo un error procesar los restulados con JSON.", e);
-            throw new EJBException(e);
         } catch (IOException e) {
-            logger.error("Hubo un error de escritura al operar con JSON.", e);
+            logger.error("Hubo un error procesar los restulados con JSON.", e);
             throw new EJBException(e);
         }
 
-        connect.closeConnection();
-        //return Arrays.asList(records);
-        //FIXME: Rapido y urgente.
         return helperTableRecords;
 
+    }
+
+    @Override
+    public List<HelperTableRecord> getAllRecords(HelperTable helperTable) {
+        // TODO
+        return null;
     }
 }
