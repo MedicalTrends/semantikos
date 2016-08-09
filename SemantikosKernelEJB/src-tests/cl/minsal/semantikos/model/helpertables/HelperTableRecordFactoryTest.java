@@ -37,7 +37,7 @@ public class HelperTableRecordFactoryTest {
      */
     @Test
     public void transformJSON2Records() throws Exception {
-        JSONHelperTableRecords twoRecords = mapper.readValue(createJSONRocords(), JSONHelperTableRecords.class);
+        JSONHelperTableRecords twoRecords = mapper.readValue(createJSONRecords(), JSONHelperTableRecords.class);
 
         assertTrue(twoRecords.getTableName().equalsIgnoreCase("helper_table_atc"));
         assertEquals(twoRecords.getRecords().size(), 2);
@@ -64,10 +64,15 @@ public class HelperTableRecordFactoryTest {
         assertEquals(3, recordFromJSON.getFields().size());
     }
 
-    private String createJSONRocords() {
+
+
+
+
+    private String createJSONRecords() {
         return "{\"tableName\":\"helper_table_atc\",\"records\":[{\"id\":1,\"codigo_atc\":\"atc1\",\"descripcion_atc\":\"Esta es una descripción ATC\"}, \n" +
                 " {\"id\":2,\"codigo_atc\":\"atc2\",\"descripcion_atc\":\"Esta es otra descripción ATC\"}]}";
     }
+
 
     private String createJSONRocord() {
         return "{\"tableName\":\"helper_table_atc\",\"fields\":{\"id\":1,\"codigo_atc\":\"atc1\",\"descripcion_atc\":\"Esta es una descripción ATC\"}}";
