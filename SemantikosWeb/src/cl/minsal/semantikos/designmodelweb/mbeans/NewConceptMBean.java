@@ -374,17 +374,6 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         concept.addDescription(favouriteDescription);
         concept.setState(initialState);
 
-        // Agregar las relaciones si existen
-
-        for (RelationshipDefinition relationshipDefinition : category.getRelationshipDefinitions()) {
-            //Evaluar la multiplicidad de la relación
-            for (int i = 0; i < Math.max(relationshipDefinition.getMultiplicity().getLowerBoundary(),1); ++i) {
-                Relationship relationship = new Relationship(relationshipDefinition);
-                if (!relationshipDefinition.getTargetDefinition().isSMTKType())
-                    concept.addRelationship(relationship);
-            }
-        }
-
         return concept;
     }
 
