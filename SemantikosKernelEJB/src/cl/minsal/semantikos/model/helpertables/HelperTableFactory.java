@@ -56,7 +56,7 @@ public class HelperTableFactory {
      * @return Una tabla ATC.
      */
     private HelperTable createDCI() {
-        HelperTableColumn idColumn = new HelperTableColumn("id", true, false, false);
+        HelperTableColumn idColumn = new HelperTableColumn("id", true, false, true);
         HelperTableColumn descriptionColumn = new HelperTableColumn("description", false, true, true);
         HelperTableColumn creation_dateColumn = new HelperTableColumn("creation_date", false, true, true);
         HelperTableColumn user_registerColumn = new HelperTableColumn("user_register", false, true, true);

@@ -32,13 +32,13 @@
                                  value="#{newConceptMBean.helperTableManager.getAllRecords(cc.attrs.targetDefinition)}"
                                  selection="#{relationship.target.id}"
                                  reflow="true"
-                                 rowKey="1"
+                                 rowKey="#{helperTableRecord.fields.id}"
                                  >
                         <p:column selectionMode="single" style="width:16px;text-align:center"/>
                         <p:columns value="#{cc.attrs.targetDefinition.showableColumns}"
                                    var="column"
-                                   columnIndexVar="colIndex"
-                                   sortBy="#{helperTableRecord.fields[column.columnName]}">
+                                   sortBy="#{helperTableRecord.fields[column.columnName]}"
+                                   rendered="#{column.columnName!='id'}">
                             <f:facet name="header">
                                 <h:outputText value="#{column.columnName}" />
                             </f:facet>
