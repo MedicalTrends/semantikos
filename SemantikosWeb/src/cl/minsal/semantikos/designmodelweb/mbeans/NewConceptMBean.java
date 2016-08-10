@@ -119,8 +119,8 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         context.execute("PF('dialogNameConcept').show();");
 
-        category = categoryManager.getCategoryById(1);
-        //category = categoryManager.getCategoryById(105590001);
+        //category = categoryManager.getCategoryById(1);
+        category = categoryManager.getCategoryById(105590001);
 
         //category = categoryManager.getCategoryById(71388002);
         descriptionTypes = DescriptionTypeFactory.getInstance().getDescriptionTypes();
@@ -433,7 +433,6 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         concept.setCategory(category);
         concept.addDescription(favouriteDescription);
         concept.setState(initialState);
-
 
 
         return concept;
