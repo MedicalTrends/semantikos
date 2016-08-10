@@ -27,10 +27,7 @@ import javax.faces.context.FacesContext;
 import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by diego on 26/06/2016.
@@ -90,6 +87,9 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
 
     private ConceptSMTK conceptSelected;
 
+    private Map<Long,ConceptSMTK> targetSelected;
+
+
     public ConceptSMTK getConceptSMTK() {
         return conceptSMTK;
     }
@@ -119,16 +119,20 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         context.execute("PF('dialogNameConcept').show();");
 
-        //category = categoryManager.getCategoryById(1);
+        category = categoryManager.getCategoryById(1);
         //category = categoryManager.getCategoryById(105590001);
 
-        category = categoryManager.getCategoryById(71388002);
+        //category = categoryManager.getCategoryById(71388002);
         descriptionTypes = DescriptionTypeFactory.getInstance().getDescriptionTypes();
         //concept = new ConceptSMTK(category, new Description("electrocardiograma de urgencia", descriptionTypes.get(0)));
 
 
-
     }
+
+
+
+    // Getter and Setter
+
 
     public ConceptSMTK getConcept() {
         return concept;
@@ -251,7 +255,20 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
     }
 
 
+    //      Methods
 
+    public ConceptSMTK getTargetForRD(RelationshipDefinition relationshipDefinition, ConceptSMTK conceptSel){
+        if(targetSelected==null){
+            targetSelected= new HashMap<Long, ConceptSMTK>();
+        }
+
+        if(!targetSelected.containsKey(relationshipDefinition.getId())){
+            targetSelected.put(relationshipDefinition.getId(),conceptSel);
+        }
+        return targetSelected.get(relationshipDefinition.getId());
+
+
+    }
 
 
     public void createConcept(){
@@ -261,6 +278,14 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
 
     }
 
+
+    /**
+     * Este método es el responsable de retornar verdadero en caso que se cumpla el UpperBoundary de la multiplicidad, para asi desactivar
+     * la opcion de agregar más relaciones en la vista. En el caso que se retorne falso este seguira activo el boton en la presentación.
+     *
+     * @param relationshipD
+     * @return
+     */
     public boolean limitRelationship(RelationshipDefinition relationshipD){
         if(relationshipD.getMultiplicity().getUpperBoundary()!=0){
             if(concept.getRelationshipsByRelationDefinition(relationshipD).size()==relationshipD.getMultiplicity().getUpperBoundary()){
@@ -270,9 +295,18 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         return false;
     }
 
+    /**
+     * Este método es el encargado de remover una descripción específica de la lista de descripciones del concepto.
+     * @param item
+     */
+
     public void removeItem(Description item) {
         concept.getDescriptions().remove(item);
     }
+
+    /**
+     * Este método es el encargado de agregar descripciones al concepto
+     */
 
     public void addDescription() {
         Description description = new Description(otherTermino, otherDescriptionType);
@@ -284,12 +318,24 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
 
     }
 
+
+    /**
+     * Este método es el encargado de agregar relaciones al concepto recibiendo como parámetro un Relationship Definition
+     * @param relationshipDefinition
+     */
+
     public void addRelationship(RelationshipDefinition relationshipDefinition){
 
         Relationship relationship= new Relationship(relationshipDefinition);
         this.concept.addRelationship(relationship);
 
     }
+
+    /**
+     * Este método es el encargado de agregar una nuva relacion con los parémetros que se indican.
+     * @param relationshipDefinition
+     * @param target
+     */
 
     public void addRelationship(RelationshipDefinition relationshipDefinition, Target target){
 
@@ -311,28 +357,21 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
 
     }
 
+    /**
+     * Este método es el encargado de remover una relación específica del concepto.
+     * @param rd
+     * @param r
+     */
+
     public void removeRelationship(RelationshipDefinition rd, Relationship r){
         concept.getRelationships().remove(r);
     }
 
-    public void addOrChangeRelationship(RelationshipDefinition relationshipDefinition, BasicTypeValue basicTypeValue){
-
-        boolean isRelationshipFound = false;
-
-        for (Relationship relationship : concept.getRelationships()) {
-            if(relationship.getRelationshipDefinition().equals(relationshipDefinition)) {
-                relationship.setTarget(basicTypeValue);
-                isRelationshipFound = true;
-                break;
-            }
-        }
-
-        if(!isRelationshipFound) {
-            Relationship newRelationship = new Relationship(relationshipDefinition);
-            newRelationship.setTarget(basicTypeValue);
-            concept.addRelationship(newRelationship);
-        }
-    }
+    /**
+     * Este método se encarga de agregar o cambiar la relación para el caso de multiplicidad 1.
+     * @param relationshipDefinition
+     * @param target
+     */
 
     public void addOrChangeRelationship(RelationshipDefinition relationshipDefinition, Target target){
 
@@ -394,6 +433,7 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         concept.setCategory(category);
         concept.addDescription(favouriteDescription);
         concept.setState(initialState);
+
 
 
         return concept;
