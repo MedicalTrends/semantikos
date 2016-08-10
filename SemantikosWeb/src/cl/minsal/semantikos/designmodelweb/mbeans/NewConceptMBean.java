@@ -315,6 +315,25 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         concept.getRelationships().remove(r);
     }
 
+    public void addOrChangeRelationship(RelationshipDefinition relationshipDefinition, BasicTypeValue basicTypeValue){
+
+        boolean isRelationshipFound = false;
+
+        for (Relationship relationship : concept.getRelationships()) {
+            if(relationship.getRelationshipDefinition().equals(relationshipDefinition)) {
+                relationship.setTarget(basicTypeValue);
+                isRelationshipFound = true;
+                break;
+            }
+        }
+
+        if(!isRelationshipFound) {
+            Relationship newRelationship = new Relationship(relationshipDefinition);
+            newRelationship.setTarget(basicTypeValue);
+            concept.addRelationship(newRelationship);
+        }
+    }
+
     public void addOrChangeRelationship(RelationshipDefinition relationshipDefinition, Target target){
 
         Relationship relationship= new Relationship(relationshipDefinition);
@@ -376,16 +395,6 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         concept.addDescription(favouriteDescription);
         concept.setState(initialState);
 
-        // Agregar las relaciones si existen
-
-        for (RelationshipDefinition relationshipDefinition : category.getRelationshipDefinitions()) {
-            //Evaluar la multiplicidad de la relación
-            for (int i = 0; i < Math.max(relationshipDefinition.getMultiplicity().getLowerBoundary(),1); ++i) {
-                Relationship relationship = new Relationship(relationshipDefinition);
-                if (!relationshipDefinition.getTargetDefinition().isSMTKType())
-                    concept.addRelationship(relationship);
-            }
-        }
 
         return concept;
     }

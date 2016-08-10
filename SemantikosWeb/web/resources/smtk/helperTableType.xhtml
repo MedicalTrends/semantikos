@@ -76,7 +76,7 @@
                             <p:commandButton
                                     process="@this"
                                     action="#{newConceptMBean.addRelationship(cc.attrs.relationshipDefinition)}"
-                                    update=":#{cc.clientId}:helperTableTypeCollection"
+                                    update="#{cc.clientId}:helperTableTypeComponent:collectionValues"
                                     icon="fa fa-plus"
                                     title="Agregar"
                             >
@@ -90,18 +90,18 @@
                 </div>
                 <div class="ui-g-12 ui-md-6 ui-lg-10">
                     <p:dataTable id="collectionValues"
-                                 var="helperTableRecord"
+                                 var="helperTableRecord2"
                                  value="#{cc.attrs.concept.getRelationshipsByRelationDefinition(cc.attrs.relationshipDefinition)}"
                                  reflow="true">
 
                         <p:columns value="#{cc.attrs.targetDefinition.showableColumns}"
                                    var="column"
                                    columnIndexVar="colIndex"
-                                   sortBy="#{helperTableRecord.fields[column.columnName]}">
+                                   sortBy="#{helperTableRecord2.fields[column.columnName]}">
                             <f:facet name="header">
                                 <h:outputText value="#{column.columnName}" />
                             </f:facet>
-                            <h:outputText value="#{helperTableRecord.target.fields.get(column.columnName)}" />
+                            <h:outputText value="#{helperTableRecord2.target.fields.get(column.columnName)}" />
                         </p:columns>
                     </p:dataTable>
                 </div>

@@ -44,6 +44,8 @@ public class Multiplicity {
 
     public boolean isSimple(){ return (this.upperBoundary==1); }
 
+    public boolean isOptional(){ return this.lowerBoundary==0; }
+
     public boolean isUpperBoundaryReached(int cardinality){
         return ((cardinality>=this.getUpperBoundary()) && this.getUpperBoundary()!=0);
     }
