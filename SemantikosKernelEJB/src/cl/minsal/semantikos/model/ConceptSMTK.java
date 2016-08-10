@@ -126,7 +126,6 @@ public class ConceptSMTK implements Target {
                 someRelationships.add(relationship);
             }
         }
-        System.out.println("someRelationships.size()="+someRelationships.size());
         return someRelationships;
     }
 
