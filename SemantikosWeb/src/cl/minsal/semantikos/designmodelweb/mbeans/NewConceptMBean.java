@@ -367,12 +367,30 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         concept.getRelationships().remove(r);
     }
 
+    public void addOrChangeRelationship(RelationshipDefinition relationshipDefinition, BasicTypeValue basicTypeValue){
+
+        boolean isRelationshipFound = false;
+
+        for (Relationship relationship : concept.getRelationships()) {
+            if(relationship.getRelationshipDefinition().equals(relationshipDefinition)) {
+                relationship.setTarget(basicTypeValue);
+                isRelationshipFound = true;
+                break;
+            }
+        }
+
+        if(!isRelationshipFound) {
+            Relationship newRelationship = new Relationship(relationshipDefinition);
+            newRelationship.setTarget(basicTypeValue);
+            concept.addRelationship(newRelationship);
+        }
+    }
+
     /**
      * Este método se encarga de agregar o cambiar la relación para el caso de multiplicidad 1.
      * @param relationshipDefinition
      * @param target
      */
-
     public void addOrChangeRelationship(RelationshipDefinition relationshipDefinition, Target target){
 
         Relationship relationship= new Relationship(relationshipDefinition);
