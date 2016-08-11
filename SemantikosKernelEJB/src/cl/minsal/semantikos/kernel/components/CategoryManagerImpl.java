@@ -62,6 +62,7 @@ public class CategoryManagerImpl implements CategoryManagerInterface {
     @Override
     public int addCategory(Category category) {
 
+
 /*
         try {
 
