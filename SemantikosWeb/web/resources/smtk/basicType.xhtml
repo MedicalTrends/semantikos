@@ -106,90 +106,87 @@
                             process=":#{cc.clientId}:basicTypeCollection"
                             immediate="true"
                             action="#{newConceptMBean.addRelationship(cc.attrs.relationshipDefinition)}"
-                            rendered="#{!cc.attrs.relationshipDefinition.multiplicity.isUpperBoundaryReached(cc.attrs.concept.getRelationshipsByRelationDefinition(cc.attrs.relationshipDefinition).size())}">
+                            disabled="#{cc.attrs.relationshipDefinition.multiplicity.isUpperBoundaryReached(cc.attrs.concept.getRelationshipsByRelationDefinition(cc.attrs.relationshipDefinition).size())}">
                     </p:commandButton>
                 </div>
             </div>
+        <ui:repeat value="#{cc.attrs.concept.getRelationshipsByRelationDefinition(cc.attrs.relationshipDefinition)}"
+                   var="relationship"
+                   varStatus="var">
             <div class="ui-g">
-                <div class="ui-g-12 ui-md-6 ui-lg-12">
-                    <p:dataTable value="#{cc.attrs.concept.getRelationshipsByRelationDefinition(cc.attrs.relationshipDefinition)}"
-                                 var="relationship"
-                                 rowIndexVar="var"
-                                 >
-                        <p:column style="width:10%">
-                            <div style="text-align: left;">
-                                <p:outputLabel for="basicTypeCollectionValue1" value="#{cc.attrs.relationshipDefinition.name}"/>
-                            </div>
-                        </p:column>
-                        <p:column >
-                            <p:selectOneMenu id="basicTypeCollectionValue1"
-                                             value="#{relationship.target.value}"
-                                             var="value1"
-                                             converter="omnifaces.SelectItemsConverter"
-                                             styleClass="ui-inputfield"
-                                             rendered="#{cc.attrs.targetDefinition.hasDomain}"
-                                             required="#{cc.attrs.relationshipDefinition.multiplicity.isRequired(var)}">
-                                <f:selectItem itemLabel="Seleccione"
-                                              itemValue=""
-                                />
-                                <f:selectItems value="#{cc.attrs.targetDefinition.domain}"
-                                               var="domain"
-                                               itemLabel="#{domain}"
-                                               itemValue="#{domain}"/>
-                            </p:selectOneMenu>
-                            <p:inputNumber id="basicTypeCollectionValue2"
-                                           value="#{relationship.target.value}"
-                                           var="value"
-                                           minValue="#{cc.attrs.targetDefinition.interval.lowerBoundary}"
-                                           maxValue="#{cc.attrs.targetDefinition.interval.upperBoundary}"
-                                           decimalPlaces="0"
-                                           decimalSeparator=","
-                                           thousandSeparator="."
-                                           required="#{cc.attrs.relationshipDefinition.multiplicity.isRequired(var)}"
-                                           rendered="#{cc.attrs.targetDefinition.integer}">
-                            </p:inputNumber>
-                            <p:inputNumber id="basicTypeCollectionValue3"
-                                           value="#{relationship.target.value}"
-                                           var="value"
-                                           minValue="#{cc.attrs.targetDefinition.interval.lowerBoundary}"
-                                           maxValue="#{cc.attrs.targetDefinition.interval.upperBoundary}"
-                                           decimalSeparator=","
-                                           thousandSeparator="."
-                                           decimalPlaces="2"
-                                           required="#{cc.attrs.relationshipDefinition.multiplicity.isRequired(var)}"
-                                           rendered="#{cc.attrs.targetDefinition.float}">
-                            </p:inputNumber>
-                            <p:inputText id="basicTypeCollectionValue4"
-                                         value="#{relationship.target.value}"
-                                         var="value"
-                                         minValue="#{cc.attrs.targetDefinition.interval.lowerBoundary}"
-                                         maxValue="#{cc.attrs.targetDefinition.interval.upperBoundary}"
-                                         required="#{cc.attrs.relationshipDefinition.multiplicity.isRequired(var)}"
-                                         rendered="#{cc.attrs.targetDefinition.string}">
-                            </p:inputText>
-                            <p:calendar id="basicTypeCollectionValue5"
-                                        value="#{relationship.target.value}"
-                                        var="value"
-                                        showOn="button"
-                                        mindate="#{cc.attrs.targetDefinition.interval.lowerBoundary}"
-                                        maxdate="#{cc.attrs.targetDefinition.interval.upperBoundary}"
-                                        required="#{cc.attrs.relationshipDefinition.multiplicity.isRequired(var)}"
-                                        rendered="#{cc.attrs.targetDefinition.date}">
-                            </p:calendar>
-                            <p:commandButton
-                                    icon="fa fa-trash" title="Eliminar"
-                                    update="#{cc.clientId}:basicTypeCollection"
-                                    styleClass="ui-datepicker-trigger ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only"
-                                    process=":#{cc.clientId}:basicTypeCollection"
-                                    immediate="true"
-                                    actionListener="#{newConceptMBean.removeRelationship(cc.attrs.relationshipDefinition, relationship)}"
-                                    rendered="#{!cc.attrs.relationshipDefinition.multiplicity.isRequired(var) and var>0}"
-                            >
-                            </p:commandButton>
-                        </p:column>
-                    </p:dataTable>
+                <div class="ui-g-12 ui-md-6 ui-lg-2">
+                    <p:outputLabel for="basicTypeValue6" value="#{cc.attrs.relationshipDefinition.name} #{var.index+1}" />
+                </div>
+                <div class="ui-g-12 ui-md-6 ui-lg-3">
+                    <p:selectOneMenu id="basicTypeValue6"
+                                     value="#{relationship.target.value}"
+                                     var="value1"
+                                     converter="omnifaces.SelectItemsConverter"
+                                     rendered="#{cc.attrs.targetDefinition.hasDomain}"
+                                     required="#{cc.attrs.relationshipDefinition.multiplicity.isRequired(var.index)}">
+                        <f:selectItem itemLabel="Seleccione"
+                                      itemValue=""
+                        />
+                        <f:selectItems value="#{cc.attrs.targetDefinition.domain}"
+                                       var="domain"
+                                       itemLabel="#{domain}"
+                                       itemValue="#{domain}"/>
+                    </p:selectOneMenu>
+                    <p:inputNumber id="basicTypeValue7"
+                                   value="#{relationship.target.value}"
+                                   var="value"
+                                   minValue="#{cc.attrs.targetDefinition.interval.lowerBoundary}"
+                                   maxValue="#{cc.attrs.targetDefinition.interval.upperBoundary}"
+                                   decimalPlaces="0"
+                                   decimalSeparator=","
+                                   thousandSeparator="."
+                                   required="#{cc.attrs.relationshipDefinition.multiplicity.isRequired(var.index)}"
+                                   rendered="#{cc.attrs.targetDefinition.integer}">
+                    </p:inputNumber>
+                    <p:inputNumber id="basicTypeValue8"
+                                   value="#{relationship.target.value}"
+                                   var="value"
+                                   minValue="#{cc.attrs.targetDefinition.interval.lowerBoundary}"
+                                   maxValue="#{cc.attrs.targetDefinition.interval.upperBoundary}"
+                                   decimalSeparator=","
+                                   thousandSeparator="."
+                                   decimalPlaces="2"
+                                   required="#{cc.attrs.relationshipDefinition.multiplicity.isRequired(var.index)}"
+                                   rendered="#{cc.attrs.targetDefinition.float}">
+                    </p:inputNumber>
+                    <p:inputText id="basicTypeValue9"
+                                 value="#{relationship.target.value}"
+                                 var="value"
+                                 minValue="#{cc.attrs.targetDefinition.interval.lowerBoundary}"
+                                 maxValue="#{cc.attrs.targetDefinition.interval.upperBoundary}"
+                                 required="#{cc.attrs.relationshipDefinition.multiplicity.isRequired(var.index)}"
+                                 rendered="#{cc.attrs.targetDefinition.string}">
+                    </p:inputText>
+                    <p:calendar id="basicTypeValue10"
+                                value="#{relationship.target.value}"
+                                var="value"
+                                showOn="button"
+                                mindate="#{cc.attrs.targetDefinition.interval.lowerBoundary}"
+                                maxdate="#{cc.attrs.targetDefinition.interval.upperBoundary}"
+                                required="#{cc.attrs.relationshipDefinition.multiplicity.isRequired(var.index)}"
+                                rendered="#{cc.attrs.targetDefinition.date}">
+                    </p:calendar>
+                    <p:commandButton
+                            icon="fa fa-trash" title="Eliminar"
+                            update="#{cc.clientId}:basicTypeCollection"
+                            styleClass="ui-datepicker-trigger ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only"
+                            process="#{cc.clientId}:basicTypeCollection"
+                            actionListener="#{newConceptMBean.removeRelationship(cc.attrs.relationshipDefinition, relationship)}"
+                            rendered="#{!cc.attrs.relationshipDefinition.multiplicity.isRequired(var.index) and var.index>0}"
+                    >
+                    </p:commandButton>
+                </div>
+                <div class="ui-g-12 ui-md-6 ui-lg-1">
+                </div>
+                <div class="ui-g-12 ui-md-6 ui-lg-6">
                 </div>
             </div>
+        </ui:repeat>
     </p:panel>
 
     <h:outputStylesheet id="customCSS">

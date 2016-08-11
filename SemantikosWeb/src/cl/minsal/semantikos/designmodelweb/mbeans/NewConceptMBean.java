@@ -126,10 +126,10 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         context.execute("PF('dialogNameConcept').show();");
 
-        category = categoryManager.getCategoryById(1);
+        //category = categoryManager.getCategoryById(1);
         //category = categoryManager.getCategoryById(105590001);
 
-        //category = categoryManager.getCategoryById(71388002);
+        category = categoryManager.getCategoryById(71388002);
                 //descriptionManager.getAllTypes();
                 //DescriptionTypeFactory.getInstance().getDescriptionTypes();
 
@@ -399,25 +399,6 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         concept.getRelationships().remove(r);
     }
 
-    public void addOrChangeRelationship(RelationshipDefinition relationshipDefinition, BasicTypeValue basicTypeValue){
-
-        boolean isRelationshipFound = false;
-
-        for (Relationship relationship : concept.getRelationships()) {
-            if(relationship.getRelationshipDefinition().equals(relationshipDefinition)) {
-                relationship.setTarget(basicTypeValue);
-                isRelationshipFound = true;
-                break;
-            }
-        }
-
-        if(!isRelationshipFound) {
-            Relationship newRelationship = new Relationship(relationshipDefinition);
-            newRelationship.setTarget(basicTypeValue);
-            concept.addRelationship(newRelationship);
-        }
-    }
-
     /**
      * Este método se encarga de agregar o cambiar la relación para el caso de multiplicidad 1.
      * @param relationshipDefinition
@@ -425,20 +406,21 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
      */
     public void addOrChangeRelationship(RelationshipDefinition relationshipDefinition, Target target){
 
-        Relationship relationship= new Relationship(relationshipDefinition);
-        relationship.setTarget(conceptSelected);
+        boolean isRelationshipFound = false;
 
-        if(concept.getRelationshipsByRelationDefinition(relationshipDefinition).size()==0){
-            this.concept.addRelationship(relationship);
-        }else{
-            for (int i = 0; i < this.concept.getRelationships().size(); i++) {
-                if(this.concept.getRelationships().get(i).getRelationshipDefinition().equals(relationshipDefinition)){
-                    this.concept.getRelationships().remove(i);
-                }
+        for (Relationship relationship : concept.getRelationships()) {
+            if(relationship.getRelationshipDefinition().equals(relationshipDefinition)) {
+                relationship.setTarget(target);
+                isRelationshipFound = true;
+                break;
             }
-            this.concept.addRelationship(relationship);
         }
 
+        if(!isRelationshipFound) {
+            Relationship newRelationship = new Relationship(relationshipDefinition);
+            newRelationship.setTarget(target);
+            concept.addRelationship(newRelationship);
+        }
     }
 
     /**
