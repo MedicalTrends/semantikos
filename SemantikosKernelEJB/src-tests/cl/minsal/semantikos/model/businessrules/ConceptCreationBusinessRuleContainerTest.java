@@ -40,6 +40,45 @@ public class ConceptCreationBusinessRuleContainerTest {
 
     /**
      * Usuarios con rol de Diseñador o Modelador pueden crear conceptos de esta categoria.
+     *
+     * @throws Exception
+     */
+    @Test
+    public void testBR002_01() throws Exception {
+        ConceptSMTK conceptSMTK = new ConceptSMTK();
+        Category catFMB = new Category();
+        conceptSMTK.setCategory(catFMB);
+        conceptCreationBRC.br002creationRights(conceptSMTK, createUserProfile(DESIGNER_PROFILE_NAME));
+    }
+
+    /**
+     * Usuarios con rol de Diseñador o Modelador pueden crear conceptos de esta categoria.
+     *
+     * @throws Exception
+     */
+    @Test
+    public void testBR002_02() throws Exception {
+        ConceptSMTK conceptSMTK = new ConceptSMTK();
+        Category catFMB = new Category();
+        conceptSMTK.setCategory(catFMB);
+        conceptCreationBRC.br002creationRights(conceptSMTK, createUserProfile(MODELER_PROFILE_NAME));
+    }
+
+    /**
+     * Usuarios con rol de Diseñador o Modelador pueden crear conceptos de esta categoria.
+     * Un usuario Admin debe arrojar una excepcion
+     * @throws Exception
+     */
+    @Test(expected = BusinessRuleException.class)
+    public void testBR002_03() throws Exception {
+        ConceptSMTK conceptSMTK = new ConceptSMTK();
+        Category catFMB = new Category();
+        conceptSMTK.setCategory(catFMB);
+        conceptCreationBRC.br002creationRights(conceptSMTK, createUserProfile(ADMIN_PROFILE_NAME));
+    }
+
+    /**
+     * Usuarios con rol de Diseñador o Modelador pueden crear conceptos de esta categoria.
      * Este test verifica si usuarios con otros roles no lo logran
      *
      */

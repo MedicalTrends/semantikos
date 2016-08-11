@@ -129,5 +129,7 @@ public class Category implements TargetDefinition {
     }
 
     @Override
-    public boolean isHelperTable() { return false; }
+    public boolean isHelperTable() {
+        return false;
+    }
 }

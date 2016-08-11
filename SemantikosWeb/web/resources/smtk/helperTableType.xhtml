@@ -14,13 +14,12 @@
     <composite:attribute name="concept" type="cl.minsal.semantikos.model.ConceptSMTK" />
 </composite:interface>
 <composite:implementation>
+
     <p:panel id="helperTableTypeSimple"
              widgetVar="panelHelperTableTypeSimple#{cc.attrs.relationshipDefinition.id}"
-             rendered="#{cc.attrs.relationshipDefinition.multiplicity.simple}">
+             rendered="#{cc.attrs.relationshipDefinition.multiplicity.simple}"
+             >
 
-        <ui:repeat value="#{cc.attrs.concept.getRelationshipsByRelationDefinition(cc.attrs.relationshipDefinition)}"
-                   var="relationship"
-                   varStatus="var">
             <div class="ui-g">
                 <div class="ui-g-12 ui-md-6 ui-lg-2">
                     <p:outputLabel for="helperTableRecordsSimple" value="#{cc.attrs.relationshipDefinition.name}"/>
@@ -29,11 +28,12 @@
                     <p:dataTable id="helperTableRecordsSimple"
                                  var="helperTableRecord"
                                  value="#{newConceptMBean.helperTableManager.getAllRecords(cc.attrs.targetDefinition)}"
-                                 selection="#{relationship.target.id}"
+                                 selection="#{newConceptMBean.selectedHelperTableRecord}"
+                                 selectionMode="single"
                                  reflow="true"
                                  rowKey="#{helperTableRecord.fields.id}"
                                  >
-                        <p:column selectionMode="single" style="width:16px;text-align:center"/>
+                        <p:ajax event="rowSelect" listener="#{newConceptMBean.addOrChangeRelationship(cc.attrs.relationshipDefinition,newConceptMBean.selectedHelperTableRecord)}" />
                         <p:columns value="#{cc.attrs.targetDefinition.showableColumns}"
                                    var="column"
                                    sortBy="#{helperTableRecord.fields[column.columnName]}"
@@ -46,7 +46,6 @@
                     </p:dataTable>
                 </div>
             </div>
-        </ui:repeat>
     </p:panel>
 
     <p:panel id="helperTableTypeCollection"
@@ -57,25 +56,10 @@
                     <p:outputLabel for="helperTableRecordsCollection" value="#{cc.attrs.relationshipDefinition.name}"/>
                 </div>
                 <div class="ui-g-12 ui-md-6 ui-lg-10">
-                    <p:commandButton
-                            process="@this"
-                            style="float: right"
-                            action="#{newConceptMBean.addRelationship(cc.attrs.relationshipDefinition,newConceptMBean.selectedHelperTableRecord)}"
-                            update="collectionValues12"
-                            icon="fa fa-plus"
-                            value="Agregar"/>
-                </div>
-            </div>
-            <div class="ui-g">
-                <div class="ui-g-12 ui-md-6 ui-lg-12">
                     <p:dataTable id="helperTableRecordsCollection"
                                  var="helperTableRecord"
                                  value="#{newConceptMBean.helperTableManager.getAllRecords(cc.attrs.targetDefinition)}"
-                                 selection="#{newConceptMBean.selectedHelperTableRecord}"
-                                 selectionMode="single"
-                                 rowKey="#{helperTableRecord.fields.id}"
                                  reflow="true">
-                        <p:ajax event="rowSelect" listener="#{newConceptMBean.onRowSelect}" />
                         <p:columns value="#{cc.attrs.targetDefinition.showableColumns}"
                                    var="column"
                                    columnIndexVar="colIndex"
@@ -86,32 +70,23 @@
                             </f:facet>
                             <h:outputText value="#{helperTableRecord.fields.get(column.columnName)}" />
                         </p:columns>
+                        <p:column style="width: 4%">
+                            <p:commandButton
+                                    process="@this"
+                                    style="float: right"
+                                    disabled="#{cc.attrs.relationshipDefinition.multiplicity.isUpperBoundaryReached(cc.attrs.concept.getRelationshipsByRelationDefinition(cc.attrs.relationshipDefinition).size())}"
+                                    update="mainForm"
+                                    action="#{newConceptMBean.addRelationship(cc.attrs.relationshipDefinition,helperTableRecord)}"
+                                    icon="fa fa-plus"
+                                    title="Agregar"/>
+                        </p:column>
                     </p:dataTable>
-                </div>
-            </div>
-            <div class="ui-g">
-                <div class="ui-g-12 ui-md-6 ui-lg-12">
-                    <p:commandButton
-                            icon="fa fa-trash"
-                            value="Eliminar"
-                            style="float: right"
-                            update="collectionValues12"
-                            process="@this"
-                            immediate="true"
-                            actionListener="#{newConceptMBean.removeRelationship(cc.attrs.relationshipDefinition, relationship)}"
-                    />
-                </div>
-            </div>
-            <div class="ui-g">
-                <div class="ui-g-12 ui-md-6 ui-lg-12">
+                    <p:spacer></p:spacer>
                     <p:dataTable id="collectionValues12"
                                  var="relationship"
                                  value="#{cc.attrs.concept.getRelationshipsByRelationDefinition(cc.attrs.relationshipDefinition)}"
-                                 selection="#{relationship}"
-                                 selectionMode="single"
-                                 rowKey="#{relationship.target.fields.id}"
+                                 style="width: 100%"
                                  reflow="true">
-                        <p:ajax event="rowSelect" listener="#{newConceptMBean.onRowSelect}" />
                         <p:columns value="#{cc.attrs.targetDefinition.showableColumns}"
                                    var="column"
                                    columnIndexVar="colIndex"
@@ -122,7 +97,23 @@
                             </f:facet>
                             <h:outputText value="#{relationship.target.fields.get(column.columnName)}" />
                         </p:columns>
+                        <p:column style="width: 4%">
+                            <p:commandButton
+                                    icon="fa fa-trash"
+                                    title="Eliminar"
+                                    style="float: right"
+                                    update="mainForm"
+                                    process="@this"
+                                    immediate="true"
+                                    actionListener="#{newConceptMBean.removeRelationship(cc.attrs.relationshipDefinition, relationship)}"
+                            />
+                        </p:column>
                     </p:dataTable>
+                </div>
+            </div>
+            <div class="ui-g">
+                <div class="ui-g-12 ui-md-6 ui-lg-12">
+
                 </div>
             </div>
     </p:panel>
