@@ -11,6 +11,7 @@
 
         <p:panel id="createEdit">
         <h:form id="mainForm" rendered="#{newConceptMBean.concept!=null}">
+
             <p:growl id="growl" showDetail="true" showSummary="true"/>
             <p:growl id="editMsgs" showDetail="true"/>
             <!--p:messages autoUpdate="true"></p:messages-->
@@ -37,9 +38,9 @@
                     <p:outputLabel for="FSN" value="FSN"/>
                 </div>
                 <div class="ui-g-12 ui-md-6 ui-lg-5">
-                    <p:inputText id="FSN"  disabled="true"
+                    <p:inputText id="FSN" name="FSN"
                                  required="true"
-                                 style="width:90%" />
+                                 style="width:90%" value="#{newConceptMBean.FSN}"/>
                     <p:message for="FSN" display="tooltip" ></p:message>
                 </div>
                 <div class="ui-g-12 ui-md-6 ui-lg-3">
@@ -60,7 +61,7 @@
                     <p:outputLabel for="preferido" value="Preferido"/>
                 </div>
                 <div class="ui-g-12 ui-md-6 ui-lg-5">
-                    <p:inputText id="preferido" value="#{newConceptMBean.concept.descriptionFavorite.term}"
+                    <p:inputText id="preferido" onkeyup="autogenerate(this)"  value="#{newConceptMBean.concept.descriptionFavorite.term}"
                                  required="true"
                                  style="width:90%"/>
                 </div>
@@ -247,6 +248,11 @@
             </h:dataTable>
         </p:panel>
 
+
+            <p:commandButton actionListener="#{newConceptMBean.saveConcept}" value="Guardar" type="submit" update="growl"
+
+            />
+
         </h:form>
 
         <p:messages id="msg" showDetail="true" showSummary="true">
@@ -269,7 +275,7 @@
                     </div>
                 </div>
                 <p:commandButton actionListener="#{newConceptMBean.createConcept}" update=":createEdit"
-                                 value="Siguiente"
+                                 value="Siguiente" onclick="loadAutogenerate()"
 
                 />
 
@@ -280,6 +286,18 @@
 
         <script type="text/javascript">
 
+            function loadAutogenerate(){
+
+                setTimeout(function() {
+                    autogenerate(document.getElementById('initialForm:NameConcept'));
+                }, 1000);
+            }
+             function autogenerate(favorite){
+                 categoryName= "#{newConceptMBean.category.name}";
+                 document.getElementById('mainForm:FSN').value=favorite.value+' ('+categoryName+')';
+
+
+             }
 
         </script>
 

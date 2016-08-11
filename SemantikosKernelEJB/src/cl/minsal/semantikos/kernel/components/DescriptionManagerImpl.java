@@ -44,10 +44,7 @@ public class DescriptionManagerImpl implements DescriptionManagerInterface {
 
     }
 
-    @Override
-    public ArrayList<TypeDescription> getAllTypeDescription() {
-        return null;
-    }
+
 
     @Override
     public String getIdDescription(String tipoDescription) {
@@ -77,12 +74,9 @@ public class DescriptionManagerImpl implements DescriptionManagerInterface {
 
     @Override
     public List<DescriptionType> getAllTypes() {
-        /*
-          DescriptionDAOImpl descriptionDAO= new DescriptionDAOImpl();
-        System.out.println("descriptionDAO.getDescriptionTypes().size()="+descriptionDAO.getDescriptionTypes().size());
-        return descriptionDAO.getDescriptionTypes();
-        * */
-        return descriptionDAO.getDescriptionTypes();
+
+        return DescriptionTypeFactory.getInstance().getDescriptionTypes();
+
     }
 
     @Override

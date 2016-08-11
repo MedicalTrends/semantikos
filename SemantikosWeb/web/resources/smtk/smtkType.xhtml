@@ -216,7 +216,8 @@
 
             <div class="ui-g-12 ui-md-6 ui-lg-6">
                 <p:outputLabel value="#{cc.attrs.relationshipDefinition.name}: " for="findConceptSMTK"/>
-                <p:autoComplete id="findConceptSMTK" scrollHeight="200" size="5" style="width: 85%;"
+                <p:autoComplete forceSelection="true"
+                                id="findConceptSMTK" scrollHeight="200" size="5" style="width: 85%;"
                                 inputStyle="width: 85%;"
                                 completeMethod="#{smtkBean.getConceptSearchInput}"
                                 converter="conceptConverter"

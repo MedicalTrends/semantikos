@@ -18,8 +18,6 @@ public interface DescriptionManagerInterface {
 
     public void addDescriptionToConcept(String idConcept, String description, String type);
 
-    public ArrayList<TypeDescription> getAllTypeDescription();
-
     public String getIdDescription(String tipoDescription);
 
     public List<DescriptionType> getAllTypes();
