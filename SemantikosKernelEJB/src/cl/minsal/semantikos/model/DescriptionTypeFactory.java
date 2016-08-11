@@ -1,7 +1,5 @@
 package cl.minsal.semantikos.model;
 
-import com.sun.javafx.beans.annotations.NonNull;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -72,7 +70,7 @@ public class DescriptionTypeFactory {
      * los
      * mapas de tipo de descripciones.
      */
-    public void setDescriptionTypes(@NonNull List<DescriptionType> descriptionTypes) {
+    public void setDescriptionTypes( List<DescriptionType> descriptionTypes) {
 
         /* Se actualiza la lista */
         this.descriptionTypes = descriptionTypes;

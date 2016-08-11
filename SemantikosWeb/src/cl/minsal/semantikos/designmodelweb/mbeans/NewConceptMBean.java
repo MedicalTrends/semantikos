@@ -345,8 +345,6 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
 
         HelperTableRecord record = (HelperTableRecord) target;
 
-        System.out.println("record.getId()="+record.getId());
-
         Relationship relationship= new Relationship(relationshipDefinition);
         relationship.setTarget(target);
         this.concept.addRelationship(relationship);

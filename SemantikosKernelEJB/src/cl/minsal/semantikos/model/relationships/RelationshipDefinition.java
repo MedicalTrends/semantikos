@@ -180,8 +180,9 @@ public class RelationshipDefinition {
 
     }
 
+
     @Override
-    public int hashCode() {
-        return (int) (id ^ (id >>> 32));
+    public String toString(){
+        return "id: " + id + ". ["+super.toString()+"]";
     }
 }

@@ -104,7 +104,7 @@
                     </div>
                     <div class="ui-g-12 ui-md-6 ui-lg-1">
                         <p:commandButton value="Agregar" id="btn" action="#{newConceptMBean.addDescription}"
-                                         update="otherDescriptions" styleClass="ui-priority-primary"
+                                         update="otherDescriptions"
                                          style="float: right"/>
                     </div>
                 </div>
@@ -221,32 +221,32 @@
             <p:panel id="atributos" header="Atributos" toggleable="true" toggleSpeed="500" closeSpeed="500"
                      widgetVar="panelAtributos" style="margin-bottom:20px" >
 
-            <h:dataTable style="width: 100%;" value="#{newConceptMBean.category.relationshipDefinitions}"
-                         var="relationshipDefinition">
+                <h:dataTable value="#{newConceptMBean.category.relationshipDefinitions}"
+                             var="relationshipDefinition">
 
-                <h:column>
-                    <smtk:basicType
-                            targetDefinition="#{relationshipDefinition.targetDefinition}"
-                            relationshipDefinition="#{relationshipDefinition}"
-                            concept="#{newConceptMBean.concept}"
-                            rendered="#{relationshipDefinition.targetDefinition.basicType}"
+                    <h:column>
 
-                    />
+                        <smtk:basicType
+                                targetDefinition="#{relationshipDefinition.targetDefinition}"
+                                relationshipDefinition="#{relationshipDefinition}"
+                                concept="#{newConceptMBean.concept}"
+                                rendered="#{relationshipDefinition.targetDefinition.basicType}" />
 
-                    <smtk:smtkType rendered="#{relationshipDefinition.targetDefinition.SMTKType}"
-                                   targetDefinition="#{relationshipDefinition.targetDefinition}"
-                                   relationshipDefinition="#{relationshipDefinition}"
-                    />
+                        <smtk:helperTableType
+                                rendered="#{relationshipDefinition.targetDefinition.helperTable}"
+                                relationshipDefinition="#{relationshipDefinition}"
+                                targetDefinition="#{relationshipDefinition.targetDefinition}"
+                                concept="#{newConceptMBean.concept}"  />
 
-                    <smtk:helperTableType
-                                          rendered="#{relationshipDefinition.targetDefinition.helperTable}"
-                                          relationshipDefinition="#{relationshipDefinition}"
-                                          targetDefinition="#{relationshipDefinition.targetDefinition}"
-                                          concept="#{newConceptMBean.concept}"
-                    />
+                        <smtk:smtkType rendered="#{relationshipDefinition.targetDefinition.SMTKType}"
+                                       targetDefinition="#{relationshipDefinition.targetDefinition}"
+                                       relationshipDefinition="#{relationshipDefinition}" />
 
-                </h:column>
-            </h:dataTable>
+                    </h:column>
+
+                </h:dataTable>
+
+
         </p:panel>
 
 

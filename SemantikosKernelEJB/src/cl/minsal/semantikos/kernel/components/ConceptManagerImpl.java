@@ -5,7 +5,6 @@ import cl.minsal.semantikos.model.Category;
 import cl.minsal.semantikos.model.ConceptSMTK;
 import cl.minsal.semantikos.model.Description;
 import cl.minsal.semantikos.model.State;
-import com.sun.javafx.beans.annotations.NonNull;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -135,7 +134,7 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
     }
 
     @Override
-    public List<ConceptSMTK> findConceptByPatternCategoryPageNumber(@NonNull String pattern, Long[] categories, int pageNumber, int pageSize) {
+    public List<ConceptSMTK> findConceptByPatternCategoryPageNumber( String pattern, Long[] categories, int pageNumber, int pageSize) {
 
         // FIXME: Cambiar estados en duro a variables?
         Long[] states = {(long) 3, (long) 4};
