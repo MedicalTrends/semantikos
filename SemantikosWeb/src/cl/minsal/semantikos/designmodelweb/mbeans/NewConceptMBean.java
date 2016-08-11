@@ -126,10 +126,10 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         context.execute("PF('dialogNameConcept').show();");
 
-        //category = categoryManager.getCategoryById(1);
+        category = categoryManager.getCategoryById(1);
         //category = categoryManager.getCategoryById(105590001);
 
-        category = categoryManager.getCategoryById(71388002);
+        //category = categoryManager.getCategoryById(71388002);
                 //descriptionManager.getAllTypes();
                 //DescriptionTypeFactory.getInstance().getDescriptionTypes();
 
@@ -324,6 +324,8 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
     }
 
 
+
+
     /**
      * Este método es el encargado de agregar relaciones al concepto recibiendo como parámetro un Relationship Definition
      * @param relationshipDefinition
@@ -468,7 +470,6 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         State initialState = stateMachineManager.getConceptStateMachine().getInitialState();
         ConceptSMTKWeb concept = new ConceptSMTKWeb(category, favouriteDescription, initialState);
         concept.setCategory(category);
-        concept.addDescription(favouriteDescription);
         concept.setState(initialState);
 
 
@@ -491,24 +492,15 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
             addDescriptionToConcept(FSN, descriptionManager.getTypeFSN(), true);
 
         }else{
-            context.addMessage(null, new FacesMessage("Error",  "Falta el FSN al concepto") );
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error",  "Falta el FSN al concepto") );
         }
 
         if (!validateRelationships()) {
-            context.addMessage(null, new FacesMessage("Error",  "Las relaciones no cumplen con el minimo requerido") );
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error",  "Las relaciones no cumplen con el minimo requerido") );
 
         }else{
             context.addMessage(null, new FacesMessage("Successful",  "Concepto guardado ") );
         }
-
-
-
-
-
-
-
-
-
 
 
     }

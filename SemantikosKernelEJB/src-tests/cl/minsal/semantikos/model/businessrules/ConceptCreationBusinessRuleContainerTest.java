@@ -4,6 +4,9 @@ import cl.minsal.semantikos.model.*;
 import cl.minsal.semantikos.model.exceptions.BusinessRuleException;
 import org.junit.Test;
 
+import static cl.minsal.semantikos.model.DescriptionTypeFactory.getInstance;
+import static cl.minsal.semantikos.model.businessrules.ConceptCreationBusinessRuleContainer.*;
+
 public class ConceptCreationBusinessRuleContainerTest {
 
     private static final String ADMIN_PROFILE_NAME = "Admin";
@@ -11,12 +14,57 @@ public class ConceptCreationBusinessRuleContainerTest {
     private static final String MODELER_PROFILE_NAME = "Modelador";
 
     private ConceptCreationBusinessRuleContainer conceptCreationBRC = new ConceptCreationBusinessRuleContainer();
+    private Category catFarSus = createCategory(CATEGORY_FARMACOS_SUSTANCIAS_NAME);
+    private Category catFarMedBas = createCategory(CATEGORY_FARMACOS_MEDICAMENTO_BASICO_NAME);
+    private Category catFarMedCli = createCategory(CATEGORY_FARMACOS_MEDICAMENTO_CLINICO_NAME);
+
+    private User userDesigner = createUserProfile(DESIGNER_PROFILE_NAME);
+    private User userModeler = createUserProfile(MODELER_PROFILE_NAME);
+    private User userAdmin = createUserProfile(ADMIN_PROFILE_NAME);
 
     @Test(expected = BusinessRuleException.class)
-    public void testApply() throws Exception {
-        conceptCreationBRC.apply(new ConceptSMTK(), createUserProfile(DESIGNER_PROFILE_NAME));
+    public void testApply_FarmSubs_Designer() throws Exception {
+        ConceptSMTK conceptSMTK = new ConceptSMTK(catFarSus);
+        conceptCreationBRC.apply(conceptSMTK, userDesigner);
     }
 
+    @Test(expected = BusinessRuleException.class)
+    public void testApply_FarmSubst_Modeler() throws Exception {
+        ConceptSMTK conceptSMTK = new ConceptSMTK(catFarSus);
+        conceptCreationBRC.apply(conceptSMTK, userModeler);
+    }
+
+    @Test
+    public void testApply_FarmsSubs() throws Exception {
+        ConceptSMTK conceptSMTK = createBasicConceptSMTK(catFarSus);
+        conceptCreationBRC.apply(conceptSMTK, userDesigner);
+    }
+
+    @Test
+    public void testApply_FarmsMedBas() throws Exception {
+        ConceptSMTK conceptSMTK = createBasicConceptSMTK(catFarMedBas);
+        conceptCreationBRC.apply(conceptSMTK, userDesigner);
+    }
+
+    @Test(expected = BusinessRuleException.class)
+    public void testApply_FarmsMedBas_Modeler() throws Exception {
+        ConceptSMTK conceptSMTK = new ConceptSMTK(catFarMedBas);
+
+        conceptCreationBRC.apply(conceptSMTK, userModeler);
+    }
+
+    @Test(expected = BusinessRuleException.class)
+    public void testApply_FarmsMedCli_Designer() throws Exception {
+        ConceptSMTK conceptSMTK = new ConceptSMTK(catFarMedBas);
+        conceptCreationBRC.apply(conceptSMTK, userDesigner);
+    }
+
+    @Test(expected = BusinessRuleException.class)
+    public void testApply_FarmsMedCli_Modeler() throws Exception {
+        ConceptSMTK conceptSMTK = new ConceptSMTK(catFarMedBas);
+
+        conceptCreationBRC.apply(conceptSMTK, userModeler);
+    }
 
     /**
      * Usuarios con rol de Diseñador o Modelador pueden crear conceptos de esta categoria.
@@ -25,7 +73,8 @@ public class ConceptCreationBusinessRuleContainerTest {
      */
     @Test
     public void testBR001_01() throws Exception {
-        conceptCreationBRC.br001creationRights(new ConceptSMTK(), createUserProfile(DESIGNER_PROFILE_NAME));
+        ConceptSMTK conceptSMTK = new ConceptSMTK(catFarSus);
+        conceptCreationBRC.br001creationRights(conceptSMTK, userDesigner);
     }
 
     /**
@@ -35,7 +84,17 @@ public class ConceptCreationBusinessRuleContainerTest {
      */
     @Test
     public void testBR001_02() throws Exception {
-        conceptCreationBRC.br001creationRights(new ConceptSMTK(), createUserProfile(MODELER_PROFILE_NAME));
+        conceptCreationBRC.br001creationRights(new ConceptSMTK(), userModeler);
+    }
+
+    /**
+     * Usuarios con rol de Diseñador o Modelador pueden crear conceptos de esta categoria.
+     * Este test verifica si usuarios con otros roles no lo logran
+     */
+    @Test(expected = BusinessRuleException.class)
+    public void testBR001_03() {
+        /* perfil Admin no debe poder crear conceptos */
+        conceptCreationBRC.br001creationRights(new ConceptSMTK(catFarSus), userAdmin);
     }
 
     /**
@@ -45,10 +104,7 @@ public class ConceptCreationBusinessRuleContainerTest {
      */
     @Test
     public void testBR002_01() throws Exception {
-        ConceptSMTK conceptSMTK = new ConceptSMTK();
-        Category catFMB = new Category();
-        conceptSMTK.setCategory(catFMB);
-        conceptCreationBRC.br002creationRights(conceptSMTK, createUserProfile(DESIGNER_PROFILE_NAME));
+        conceptCreationBRC.br002creationRights(new ConceptSMTK(catFarMedBas), userDesigner);
     }
 
     /**
@@ -58,59 +114,76 @@ public class ConceptCreationBusinessRuleContainerTest {
      */
     @Test
     public void testBR002_02() throws Exception {
-        ConceptSMTK conceptSMTK = new ConceptSMTK();
-        Category catFMB = new Category();
-        conceptSMTK.setCategory(catFMB);
-        conceptCreationBRC.br002creationRights(conceptSMTK, createUserProfile(MODELER_PROFILE_NAME));
+        conceptCreationBRC.br002creationRights(new ConceptSMTK(catFarMedBas), userModeler);
     }
 
     /**
      * Usuarios con rol de Diseñador o Modelador pueden crear conceptos de esta categoria.
      * Un usuario Admin debe arrojar una excepcion
+     *
      * @throws Exception
      */
     @Test(expected = BusinessRuleException.class)
     public void testBR002_03() throws Exception {
-        ConceptSMTK conceptSMTK = new ConceptSMTK();
-        Category catFMB = new Category();
-        conceptSMTK.setCategory(catFMB);
-        conceptCreationBRC.br002creationRights(conceptSMTK, createUserProfile(ADMIN_PROFILE_NAME));
+        conceptCreationBRC.br002creationRights(new ConceptSMTK(catFarMedBas), userAdmin);
     }
 
     /**
-     * Usuarios con rol de Diseñador o Modelador pueden crear conceptos de esta categoria.
-     * Este test verifica si usuarios con otros roles no lo logran
+     * BR003	Usuarios con rol de Diseñador o Modelador pueden crear conceptos de la categoría: Fármacos – Medicamento
+     * Clínico
      *
+     * @throws Exception
+     */
+    @Test
+    public void testBR003_01() throws Exception {
+        conceptCreationBRC.br003creationRights(new ConceptSMTK(catFarMedCli), userDesigner);
+    }
+
+    /**
+     * BR003	Usuarios con rol de Diseñador o Modelador pueden crear conceptos de la categoría: Fármacos – Medicamento
+     * Clínico
+     *
+     * @throws Exception
+     */
+    @Test
+    public void testBR003_02() throws Exception {
+        conceptCreationBRC.br003creationRights(new ConceptSMTK(catFarMedCli), userModeler);
+    }
+
+    /**
+     * BR003	Usuarios con rol de Diseñador o Modelador pueden crear conceptos de la categoría: Fármacos – Medicamento
+     * Clínico. Un usuario Admin debe arrojar una excepcion
+     *
+     * @throws Exception
      */
     @Test(expected = BusinessRuleException.class)
-    public void testBR001_03() {
-        ConceptSMTK conceptSMTK = new ConceptSMTK();
-        conceptSMTK.setCategory(createFarmacosSustanciasCategory());
-        conceptCreationBRC.br001creationRights(conceptSMTK, createUserProfile(ADMIN_PROFILE_NAME));
+    public void testBR003_03() throws Exception {
+        conceptCreationBRC.br003creationRights(new ConceptSMTK(catFarMedCli), userAdmin);
     }
 
     @Test
-    public void testApply02() throws Exception {
+    public void testBR003_04() throws Exception {
+        ConceptSMTK conceptSMTK = createBasicConceptSMTK(catFarMedCli);
+        conceptCreationBRC.apply(conceptSMTK, userDesigner);
+    }
 
-        Category substancesCategory = createFarmacosSustanciasCategory();
+    private ConceptSMTK createBasicConceptSMTK(Category category) {
+        ConceptSMTK conceptSMTK = new ConceptSMTK(category);
 
-        ConceptSMTK conceptSMTK = new ConceptSMTK();
-        conceptSMTK.setCategory(substancesCategory);
-
-        DescriptionType fsnDT = DescriptionTypeFactory.getInstance().getFSNDescriptionType();
+        DescriptionType fsnDT = getInstance().getFSNDescriptionType();
         Description fsn = new Description("FSN", fsnDT);
         conceptSMTK.addDescription(fsn);
 
-        DescriptionType favDT = DescriptionTypeFactory.getInstance().getFavoriteDescriptionType();
+        DescriptionType favDT = getInstance().getFavoriteDescriptionType();
         Description fav = new Description("Preferida", favDT);
         conceptSMTK.addDescription(fav);
 
-        conceptCreationBRC.apply(conceptSMTK, createUserProfile(DESIGNER_PROFILE_NAME));
+        return conceptSMTK;
     }
 
-    private Category createFarmacosSustanciasCategory() {
+    private Category createCategory(String categoryName) {
         Category substancesCategory = new Category();
-        substancesCategory.setName("Fármacos - Sustancias");
+        substancesCategory.setName(categoryName);
         return substancesCategory;
     }
 
@@ -121,6 +194,7 @@ public class ConceptCreationBusinessRuleContainerTest {
      */
     private User createUserProfile(String profileName) {
         User user = new User();
+        user.setName(profileName);
         Profile profile = new Profile();
         profile.setName(profileName);
         user.addProfile(profile);
