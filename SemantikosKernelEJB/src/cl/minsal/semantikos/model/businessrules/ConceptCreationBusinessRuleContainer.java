@@ -15,9 +15,9 @@ public class ConceptCreationBusinessRuleContainer implements BusinessRulesContai
 
     private static final Logger logger = LoggerFactory.getLogger(ConceptCreationBusinessRuleContainer.class);
 
-    private static final String CATEGORY_FARMACOS_SUSTANCIAS_NAME = "Fármacos - Sustancias";
+    protected static final String CATEGORY_FARMACOS_SUSTANCIAS_NAME = "Fármacos - Sustancias";
 
-    private static final String CATEGORY_FARMACOS_MEDICAMENTO_BASICO_NAME = "Fármacos - Medicamento Básico";
+    protected static final String CATEGORY_FARMACOS_MEDICAMENTO_BASICO_NAME = "Fármacos - Medicamento Básico";
 
 
 
@@ -34,6 +34,7 @@ public class ConceptCreationBusinessRuleContainer implements BusinessRulesContai
                 logger.debug("Aplicando reglas de negocio para GUARDADO para categoría Fármacos - Sustancias.");
                 br001creationRights(conceptSMTK, user);
                 break;
+
             case CATEGORY_FARMACOS_MEDICAMENTO_BASICO_NAME:
                 logger.debug("Aplicando reglas de negocio para GUARDADO para categoría Fármacos - Medicamento Básico.");
                 br002creationRights(conceptSMTK, user);
@@ -96,14 +97,9 @@ public class ConceptCreationBusinessRuleContainer implements BusinessRulesContai
         if (!(isDesigner || isModeler)) {
             throw new BusinessRuleException("Solo usuarios con rol de Diseñador o Modelador pueden crear conceptos de esta categoria.");
         }
-
     }
 
     private void br101HasFSN(ConceptSMTK conceptSMTK) {
         conceptSMTK.getDescriptionFSN();
-    }
-
-    private void br102SavingConceptAllCategories(ConceptSMTK conceptSMTK) {
-        conceptSMTK.getDescriptionFavorite();
     }
 }
