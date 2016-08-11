@@ -96,14 +96,16 @@
                     </div>
                     <div class="ui-g-12 ui-md-6 ui-lg-2">
                         <p:selectOneMenu id="console" value="#{newConceptMBean.otherDescriptionType}"
-                                         converter="omnifaces.SelectItemsConverter" style="width:70%">
-                            <f:selectItem itemLabel="Seleccione tipo" itemValue=""/>
+                                         converter="descriptionTypeConverter"
+                                         style="width:70%">
+
                             <f:selectItems value="#{newConceptMBean.descriptionTypes}" var="descriptionType"
                                            itemLabel="#{descriptionType.name}" itemValue="#{descriptionType}"/>
+
                         </p:selectOneMenu>
                     </div>
                     <div class="ui-g-12 ui-md-6 ui-lg-1">
-                        <p:commandButton value="Agregar" id="btn" action="#{newConceptMBean.addDescription}"
+                        <p:commandButton value="Agregar" id="btn"  action="#{newConceptMBean.addDescription}"
                                          update="otherDescriptions" styleClass="ui-priority-primary"
                                          style="float: right"/>
                     </div>

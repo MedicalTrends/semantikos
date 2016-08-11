@@ -324,6 +324,8 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
     }
 
 
+
+
     /**
      * Este método es el encargado de agregar relaciones al concepto recibiendo como parámetro un Relationship Definition
      * @param relationshipDefinition
@@ -511,24 +513,15 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
             addDescriptionToConcept(FSN, descriptionManager.getTypeFSN(), true);
 
         }else{
-            context.addMessage(null, new FacesMessage("Error",  "Falta el FSN al concepto") );
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error",  "Falta el FSN al concepto") );
         }
 
         if (!validateRelationships()) {
-            context.addMessage(null, new FacesMessage("Error",  "Las relaciones no cumplen con el minimo requerido") );
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error",  "Las relaciones no cumplen con el minimo requerido") );
 
         }else{
             context.addMessage(null, new FacesMessage("Successful",  "Concepto guardado ") );
         }
-
-
-
-
-
-
-
-
-
 
 
     }

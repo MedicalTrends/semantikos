@@ -9,9 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
-import javax.ejb.EJBException;
-import javax.ejb.Startup;
-import javax.ejb.Stateless;
+import javax.ejb.*;
 import java.io.IOException;
 import java.sql.CallableStatement;
 import java.sql.Connection;
@@ -26,15 +24,19 @@ import static cl.minsal.semantikos.kernel.util.StringUtils.underScoreToCamelCase
 /**
  * @author Andres Farias.
  */
-@Stateless
+@Singleton
 @Startup
 public class DescriptionDAOImpl implements DescriptionDAO {
 
     /** El logger para esta clase */
     private static final Logger logger = LoggerFactory.getLogger(DescriptionDAOImpl.class);
 
+
+
     @PostConstruct
     private void init() {
+        logger.warn("********* EJB inicio");
+        System.out.println("****************");
         this.refreshDescriptionTypes();
     }
 
