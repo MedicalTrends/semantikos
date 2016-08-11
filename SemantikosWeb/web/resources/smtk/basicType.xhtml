@@ -97,14 +97,16 @@
          widgetVar="panelBasicTypeCollection#{cc.attrs.relationshipDefinition.id}"
          rendered="#{cc.attrs.relationshipDefinition.multiplicity.collection}">
             <div class="ui-g">
-                <div class="ui-g-12 ui-md-6 ui-lg-12">
+                <div class="ui-g-12 ui-md-6 ui-lg-2">
+                    <p:outputLabel value="#{cc.attrs.relationshipDefinition.name}"/>
+                </div>
+                <div class="ui-g-12 ui-md-6 ui-lg-10">
                     <p:commandButton
                             id="addRelationshipButton"
-                            update=":#{cc.clientId}:basicTypeCollection"
                             value="Agregar"
                             style="float: right"
-                            process=":#{cc.clientId}:basicTypeCollection"
-                            immediate="true"
+                            process="#{cc.clientId}:basicTypeCollection"
+                            update="#{cc.clientId}:basicTypeCollection"
                             action="#{newConceptMBean.addRelationship(cc.attrs.relationshipDefinition)}"
                             disabled="#{cc.attrs.relationshipDefinition.multiplicity.isUpperBoundaryReached(cc.attrs.concept.getRelationshipsByRelationDefinition(cc.attrs.relationshipDefinition).size())}">
                     </p:commandButton>
@@ -138,6 +140,7 @@
                                    minValue="#{cc.attrs.targetDefinition.interval.lowerBoundary}"
                                    maxValue="#{cc.attrs.targetDefinition.interval.upperBoundary}"
                                    decimalPlaces="0"
+                                   immediate="true"
                                    decimalSeparator=","
                                    thousandSeparator="."
                                    required="#{cc.attrs.relationshipDefinition.multiplicity.isRequired(var.index)}"
@@ -146,6 +149,7 @@
                     <p:inputNumber id="basicTypeValue8"
                                    value="#{relationship.target.value}"
                                    var="value"
+                                   immediate="true"
                                    minValue="#{cc.attrs.targetDefinition.interval.lowerBoundary}"
                                    maxValue="#{cc.attrs.targetDefinition.interval.upperBoundary}"
                                    decimalSeparator=","
@@ -173,9 +177,10 @@
                     </p:calendar>
                     <p:commandButton
                             icon="fa fa-trash" title="Eliminar"
-                            update="#{cc.clientId}:basicTypeCollection"
-                            styleClass="ui-datepicker-trigger ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only"
                             process="#{cc.clientId}:basicTypeCollection"
+                            update="#{cc.clientId}:basicTypeCollection"
+                            immediate="true"
+                            styleClass="ui-datepicker-trigger ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only"
                             actionListener="#{newConceptMBean.removeRelationship(cc.attrs.relationshipDefinition, relationship)}"
                             rendered="#{!cc.attrs.relationshipDefinition.multiplicity.isRequired(var.index) and var.index>0}"
                     >
