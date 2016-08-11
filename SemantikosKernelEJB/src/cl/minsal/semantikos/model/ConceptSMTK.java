@@ -270,7 +270,8 @@ public class ConceptSMTK implements Target {
      */
     public Description getDescriptionFSN() {
         for (Description description : descriptions) {
-            if (description.getDescriptionType().getDescription().equalsIgnoreCase("FSN")) {
+            DescriptionType descriptionType = description.getDescriptionType();
+            if (descriptionType.getDescription().equalsIgnoreCase("FSN")) {
                 return description;
             }
         }

@@ -46,7 +46,12 @@ public class DescriptionTypeFactory {
      * @return Retorna una instancia de FSN.
      */
     public DescriptionType getFSNDescriptionType() {
-        return this.descriptionTypesByName.get("FSN");
+
+        if (descriptionTypesByName.containsKey("FSN")) {
+            return this.descriptionTypesByName.get("FSN");
+        }
+
+        return new DescriptionType(-1, "FSN", "Full Specified Name");
     }
 
     /**
