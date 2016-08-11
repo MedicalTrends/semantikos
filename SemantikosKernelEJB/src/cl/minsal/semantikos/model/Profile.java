@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by BluePrints Developer on 19-05-2016.
+ * @author Francisco Mendez.
  */
 public class Profile {
 
@@ -46,4 +46,20 @@ public class Profile {
         return permissions;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Profile profile = (Profile) o;
+
+        if (name != null ? !name.equals(profile.name) : profile.name != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return name != null ? name.hashCode() : 0;
+    }
 }

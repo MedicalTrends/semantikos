@@ -23,6 +23,14 @@ public class User {
     List<Permission> permissions;
     List<Group> groups;
 
+    /**
+     * Constructor base para inicializar los objetos que lo requieren.
+     */
+    public User() {
+        this.profiles = new ArrayList<>();
+        this.permissions = new ArrayList<>();
+        this.groups = new ArrayList<>();
+    }
 
     public long getIdUser() {
         return idUser;
@@ -57,8 +65,8 @@ public class User {
     }
 
     public List<Profile> getProfiles() {
-        if(profiles==null)
-            profiles= new ArrayList<Profile>();
+        if (profiles == null)
+            profiles = new ArrayList<Profile>();
         return profiles;
     }
 
@@ -67,8 +75,8 @@ public class User {
     }
 
     public List<Group> getGroups() {
-        if(groups==null)
-            groups= new ArrayList<Group>();
+        if (groups == null)
+            groups = new ArrayList<Group>();
         return groups;
     }
 
@@ -78,8 +86,8 @@ public class User {
 
 
     public List<Permission> getPermissions() {
-        if(permissions==null)
-            permissions= new ArrayList<Permission>();
+        if (permissions == null)
+            permissions = new ArrayList<Permission>();
         return permissions;
     }
 
@@ -129,7 +137,7 @@ public class User {
 
     @Override
     public boolean equals(Object other) {
-        return (other instanceof User) && ( String.valueOf(idUser) != null )
+        return (other instanceof User) && (String.valueOf(idUser) != null)
                 ? String.valueOf(idUser).equals(String.valueOf(((User) other).idUser))
                 : (other == this);
     }
@@ -145,5 +153,15 @@ public class User {
     public String toString() {
         //return String.format("ExampleEntity[%d, %s]", idDescriptionType, glosa);
         return getUsername();
+    }
+
+    /**
+     * Este método es responsable de agregar un perfil al usuario. No es buena práctica devolver el objeto de la
+     * estructura interna para hacerlo directamente.
+     *
+     * @return <code>true</code> si se agregó el perfile y <code>false</code> sino.
+     */
+    public boolean addProfile(Profile aProfile) {
+        return this.profiles.add(aProfile);
     }
 }

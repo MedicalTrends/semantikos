@@ -271,7 +271,7 @@ public class ConceptSMTK implements Target {
     public Description getDescriptionFSN() {
         for (Description description : descriptions) {
             DescriptionType descriptionType = description.getDescriptionType();
-            if (descriptionType.getDescription().equalsIgnoreCase("FSN")) {
+            if (descriptionType.getName().equalsIgnoreCase("FSN")) {
                 return description;
             }
         }
@@ -287,11 +287,28 @@ public class ConceptSMTK implements Target {
             return "ID=" + this.getId() + " - ConceptID=" + this.getConceptID();
         }
 
-        Description descriptionFavorite = getDescriptionFavorite();
         if (this.hasFavouriteDescription()) {
+            Description descriptionFavorite = getDescriptionFavorite();
             return "Preferida: " + descriptionFavorite.getTerm();
         }
         Description aDescription = this.descriptions.get(1);
         return aDescription.getDescriptionType().getName() + ": " + aDescription.getTerm();
+    }
+
+    /**
+     * Este método es responsable de determinar si el concepto pertenece a una cierta categoría.
+     *
+     * @param category La categoría a la cual se desea determinar si pertenece o no.
+     *
+     * @return <code>true</code> si está asociado a dicha categoría y <code>false</code> sino.
+     */
+    public boolean belongsTo(Category category) {
+
+        /* Si no tiene categoría, no pertenece a ninguna */
+        if (this.category == null) {
+            return false;
+        }
+
+        return this.category.equals(category);
     }
 }
