@@ -17,6 +17,10 @@ public class ConceptCreationBusinessRuleContainer implements BusinessRulesContai
 
     private static final String CATEGORY_FARMACOS_SUSTANCIAS_NAME = "Fármacos - Sustancias";
 
+    private static final String CATEGORY_FARMACOS_MEDICAMENTO_BASICO_NAME = "Fármacos - Medicamento Básico";
+
+
+
     @Override
     public void apply(ConceptSMTK conceptSMTK, User user) throws BusinessRuleException {
 
@@ -29,6 +33,10 @@ public class ConceptCreationBusinessRuleContainer implements BusinessRulesContai
             case CATEGORY_FARMACOS_SUSTANCIAS_NAME:
                 logger.debug("Aplicando reglas de negocio para GUARDADO para categoría Fármacos - Sustancias.");
                 br001creationRights(conceptSMTK, user);
+                break;
+            case CATEGORY_FARMACOS_MEDICAMENTO_BASICO_NAME:
+                logger.debug("Aplicando reglas de negocio para GUARDADO para categoría Fármacos - Medicamento Básico.");
+                br002creationRights(conceptSMTK, user);
                 break;
         }
     }
@@ -45,6 +53,35 @@ public class ConceptCreationBusinessRuleContainer implements BusinessRulesContai
         Category farmacosSustanciaCategory = new Category();
         farmacosSustanciaCategory.setName(CATEGORY_FARMACOS_SUSTANCIAS_NAME);
         if (!conceptSMTK.belongsTo(farmacosSustanciaCategory)) return;
+
+        Profile designerProfile = new Profile();
+        designerProfile.setName("Diseñador");
+
+        Profile modelerProfile = new Profile();
+        modelerProfile.setName("Modelador");
+
+        boolean isDesigner = user.getProfiles().contains(designerProfile);
+        boolean isModeler = user.getProfiles().contains(modelerProfile);
+
+        /* El usuario debe ser modelador o diseñador */
+        if (!(isDesigner || isModeler)) {
+            throw new BusinessRuleException("Solo usuarios con rol de Diseñador o Modelador pueden crear conceptos de esta categoria.");
+        }
+
+    }
+
+    /**
+     * Usuarios con rol de Diseñador o Modelador pueden crear conceptos de esta categoria.
+     *
+     * @param conceptSMTK El concepto a crear ser creado.
+     * @param user        El usuario que realiza la acción.
+     */
+    protected void br002creationRights(ConceptSMTK conceptSMTK, User user) {
+
+        /* Solo aplica a farmacos - medicamento básico */
+        Category farmacosMedicamentoBasicoCategory = new Category();
+        farmacosMedicamentoBasicoCategory.setName(CATEGORY_FARMACOS_MEDICAMENTO_BASICO_NAME);
+        if (!conceptSMTK.belongsTo(farmacosMedicamentoBasicoCategory)) return;
 
         Profile designerProfile = new Profile();
         designerProfile.setName("Diseñador");
