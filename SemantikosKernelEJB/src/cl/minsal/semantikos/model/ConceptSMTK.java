@@ -4,8 +4,10 @@ import cl.minsal.semantikos.model.exceptions.BusinessRuleException;
 import cl.minsal.semantikos.model.relationships.Relationship;
 import cl.minsal.semantikos.model.relationships.RelationshipDefinition;
 import cl.minsal.semantikos.model.relationships.Target;
+import com.sun.istack.internal.NotNull;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -77,26 +79,22 @@ public class ConceptSMTK implements Target {
         this.isToBeReviewed = false;
     }
 
-    public ConceptSMTK(Category category, Description fsn) {
+    public ConceptSMTK(Category category, @NotNull Description... descriptions) {
         this();
 
-        fsn.setId(1);
-        fsn.setTerm(fsn.getTerm() + "(" + category.getName() + ")");
-        fsn.setId(2);
-        this.setCategory(category);
+        this.descriptions.addAll(Arrays.asList(descriptions));
+        this.category = category;
     }
 
-    public ConceptSMTK(Category category, Description fsn, Description preferido) {
-        this();
+    public ConceptSMTK(Category category, State state, Description... descriptions) {
+        this(category, descriptions);
 
-        this.setCategory(category);
+        this.state = state;
     }
 
-    public ConceptSMTK(Category category, Description fsn, Description preferido, State state) {
+    public ConceptSMTK(Category category) {
         this();
-
-        this.setCategory(category);
-        this.setState(state);
+        this.category = category;
     }
 
     public List<Description> getDescriptions() {
