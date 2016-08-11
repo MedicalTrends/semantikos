@@ -13,6 +13,7 @@ import org.omnifaces.util.Ajax;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.CellEditEvent;
 import org.primefaces.event.RowEditEvent;
+import org.primefaces.event.SelectEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -81,7 +82,7 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
     // Placeholder para los target de las relaciones
     private BasicTypeValue basicTypeValue = new BasicTypeValue();
 
-    private Object selectedHelperTableRecord = new HelperTableRecord();
+    private HelperTableRecord selectedHelperTableRecord = new HelperTableRecord();
 
     private ConceptSMTK conceptSMTK;
 
@@ -246,11 +247,11 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         this.basicTypeValue = basicTypeValue;
     }
 
-    public Object getSelectedHelperTableRecord() {
+    public HelperTableRecord getSelectedHelperTableRecord() {
         return selectedHelperTableRecord;
     }
 
-    public void setSelectedHelperTableRecord(Object selectedHelperTableRecord) {
+    public void setSelectedHelperTableRecord(HelperTableRecord selectedHelperTableRecord) {
         this.selectedHelperTableRecord = selectedHelperTableRecord;
     }
 
@@ -338,6 +339,10 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
      */
 
     public void addRelationship(RelationshipDefinition relationshipDefinition, Target target){
+
+        HelperTableRecord record = (HelperTableRecord) target;
+
+        System.out.println("record.getId()="+record.getId());
 
         Relationship relationship= new Relationship(relationshipDefinition);
         relationship.setTarget(target);
@@ -456,5 +461,10 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         return concept;
     }
 
+    public void onRowSelect(SelectEvent event) {
+        //System.out.println("selectedHelperTableRecord.getFields().get('id')="+selectedHelperTableRecord.getFields().get("id"));
+        //FacesMessage msg = new FacesMessage("Car Selected", new Long(((HelperTableRecord) event.getObject()).getId()).toString());
+        //FacesContext.getCurrentInstance().addMessage(null, msg);
+    }
 }
 

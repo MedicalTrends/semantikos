@@ -15,10 +15,10 @@
 </composite:interface>
 
 <composite:implementation>
-
     <p:panel id="panelSMTK"
              style="margin:20px;"
              rendered="#{cc.attrs.relationshipDefinition.multiplicity.upperBoundary!=1}">
+
         <h3>#{cc.attrs.relationshipDefinition.name}</h3>
 
 
@@ -244,7 +244,7 @@
             </div>
             <div class="ui-g-12 ui-md-6 ui-lg-3">
                 <p:panel style="border: hidden; padding-bottom: 10px;"
-                         rendered="#{newConceptMBean.concept.getRelationshipsByRelationDefinition(cc.attrs.relationshipDefinition).size()!=0}">
+                         rendered="#{newConceptMBean.concept.getRelationshipsByRelationDefinition(cc.attrs.relationshipDefinition).size() != 0}">
                     <p:outputLabel value="Item seleccionado: " for="itemSelected"></p:outputLabel>
                     <p:inputText disabled="true" id="itemSelected"
                                  value="#{newConceptMBean.concept.getRelationshipsByRelationDefinition(cc.attrs.relationshipDefinition).get(0).target.descriptionFavorite.term}"></p:inputText>
