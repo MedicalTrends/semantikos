@@ -8,6 +8,8 @@ import cl.minsal.semantikos.model.exceptions.BusinessRuleException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.validation.constraints.NotNull;
+
 /**
  * @author Andrés Farías
  */
@@ -23,7 +25,7 @@ public class ConceptCreationBusinessRuleContainer implements BusinessRulesContai
     private Profile modelerProfile = createProfile("Modelador");
 
     @Override
-    public void apply(ConceptSMTK conceptSMTK, User user) throws BusinessRuleException {
+    public void apply(@NotNull ConceptSMTK conceptSMTK, User user) throws BusinessRuleException {
 
         /* Reglas que aplican para todas las categorías */
         br101HasFSN(conceptSMTK);
