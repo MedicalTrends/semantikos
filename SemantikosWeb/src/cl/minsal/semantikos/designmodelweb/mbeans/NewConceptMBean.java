@@ -472,7 +472,6 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         State initialState = stateMachineManager.getConceptStateMachine().getInitialState();
         ConceptSMTKWeb concept = new ConceptSMTKWeb(category, favouriteDescription, initialState);
         concept.setCategory(category);
-        concept.addDescription(favouriteDescription);
         concept.setState(initialState);
 
 

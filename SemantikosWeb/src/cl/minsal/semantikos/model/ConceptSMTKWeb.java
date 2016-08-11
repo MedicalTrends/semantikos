@@ -8,16 +8,8 @@ import java.util.List;
  */
 public class ConceptSMTKWeb extends ConceptSMTK {
 
-    /**
-     *
-     * @param category
-     * @param favouriteDescription
-     * @param initialState
-     */
     public ConceptSMTKWeb(Category category, Description favouriteDescription, State initialState) {
-        this(category, favouriteDescription, new Description("", DescriptionTypeFactory.getInstance().getFSNDescriptionType()));
-
-        this.setState(initialState);
+        super(category, initialState, favouriteDescription);
     }
 
     public ConceptSMTKWeb(Category category, Description fsn, Description favorite) {
