@@ -4,16 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by andres on 8/5/16.
+ * @author Diego Soto
  */
 public class ConceptSMTKWeb extends ConceptSMTK {
-
-    public ConceptSMTKWeb(long id, long conceptID, Category category, boolean isToBeReviewed, boolean isToBeConsultated, State state, boolean isFullyDefined, boolean isPublished, List<Description> descriptions) {
-        super(id, conceptID, category, isToBeReviewed, isToBeConsultated, state, isFullyDefined, isPublished, descriptions);
-    }
-
-    public ConceptSMTKWeb() {
-    }
 
     /**
      *
@@ -27,12 +20,8 @@ public class ConceptSMTKWeb extends ConceptSMTK {
         this.setState(initialState);
     }
 
-    public ConceptSMTKWeb(Category category, Description fsn, Description preferido) {
-        super(category, fsn, preferido);
-    }
-
-    public ConceptSMTKWeb(Category category, Description fsn, Description preferido, State state) {
-        super(category, fsn, preferido, state);
+    public ConceptSMTKWeb(Category category, Description fsn, Description favorite) {
+        super(category, fsn, favorite);
     }
 
     /**
