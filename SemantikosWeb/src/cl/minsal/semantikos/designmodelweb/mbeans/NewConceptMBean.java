@@ -126,16 +126,15 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         context.execute("PF('dialogNameConcept').show();");
 
-        //category = categoryManager.getCategoryById(1);
+        category = categoryManager.getCategoryById(1);
         //category = categoryManager.getCategoryById(105590001);
 
-        category = categoryManager.getCategoryById(71388002);
+        //category = categoryManager.getCategoryById(71388002);
                 //descriptionManager.getAllTypes();
                 //DescriptionTypeFactory.getInstance().getDescriptionTypes();
 
         descriptionTypes= descriptionManager.getAllTypes();
         //concept = new ConceptSMTK(category, new Description("electrocardiograma de urgencia", descriptionTypes.get(0)));
-
 
     }
 
@@ -314,12 +313,32 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
      */
 
     public void addDescription() {
-        Description description = new Description(otherTermino, otherDescriptionType);
-        description.setCaseSensitive(otherSensibilidad);
-        description.setState(concept.getState());
-        concept.addDescription(description);
-        otherTermino = "";
-        Ajax.update("mainForm:otherTermino");
+        FacesContext context = FacesContext.getCurrentInstance();
+        if(otherTermino!=null ){
+            if(otherTermino.length()>0){
+                if(otherDescriptionType!=null){
+                    Description description = new Description(otherTermino, otherDescriptionType);
+                    description.setCaseSensitive(otherSensibilidad);
+                    description.setState(concept.getState());
+                    concept.addDescription(description);
+                    otherTermino = "";
+                }else{
+                    context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error",  "No se ha seleccionado el tipo de descripción") );
+                }
+
+            }else{
+                context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error",  "No se ha ingresado el término a la descripción") );
+                context.getAttributes();
+            }
+
+        }else{
+
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error",  "No se ha ingresado el término a la descripción") );
+
+        }
+
+
+
 
     }
 
@@ -419,6 +438,8 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
             newRelationship.setTarget(target);
             concept.addRelationship(newRelationship);
         }
+
+        conceptSelected=null;
     }
 
     /**
@@ -490,6 +511,7 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
             addDescriptionToConcept(FSN, descriptionManager.getTypeFSN(), true);
 
         }else{
+
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error",  "Falta el FSN al concepto") );
         }
 
