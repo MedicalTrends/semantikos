@@ -4,8 +4,8 @@ import cl.minsal.semantikos.model.exceptions.BusinessRuleException;
 import cl.minsal.semantikos.model.relationships.Relationship;
 import cl.minsal.semantikos.model.relationships.RelationshipDefinition;
 import cl.minsal.semantikos.model.relationships.Target;
-import com.sun.istack.internal.NotNull;
 
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -63,6 +63,7 @@ public class ConceptSMTK implements Target {
 
         this.descriptions = new ArrayList<>();
         this.relationships = new ArrayList<>();
+        this.labels = new ArrayList<>();
 
         this.isFullyDefined = false;
         this.isPublished = false;
@@ -196,12 +197,39 @@ public class ConceptSMTK implements Target {
         this.isPublished = published;
     }
 
+    public List<Label> getLabels() {
+        return labels;
+    }
 
+    /**
+     * Este método es responsable de agregar una etiqueta al concepto.
+     *
+     * @param label La etiqueta a ser agregada.
+     *
+     * @return <code>true</code> si se agrega y <code>false</code> si no.
+     */
+    public boolean addLabel(@NotNull Label label) {
+        return this.labels.add(label);
+    }
+
+    /**
+     * Este método es responsable de agregar una etiqueta al concepto.
+     *
+     * @param description La descripción a ser agregada.
+     */
     public void addDescription(Description description) {
-
-        description.setId(descriptions.size() + 1);
         this.descriptions.add(description);
+    }
 
+    /**
+     * Este método es responsable de agregar una etiqueta al concepto.
+     *
+     * @param label La etiqueta a eliminar.
+     *
+     * @return <code>true</code> si se elimina y <code>false</code> si no.
+     */
+    public boolean removeLabel(@NotNull Label label) {
+        return this.labels.remove(label);
     }
 
     public void removeDescription(Description description) {
