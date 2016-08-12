@@ -12,6 +12,7 @@
     <composite:attribute name="relationshipDefinition" type="cl.minsal.semantikos.model.relationships.RelationshipDefinition" />
     <composite:attribute name="targetDefinition" type="cl.minsal.semantikos.model.basictypes.BasicTypeDefinition" />
     <composite:attribute name="concept" type="cl.minsal.semantikos.model.ConceptSMTK" />
+    <composite:attribute name="componentId" type="java.lang.String" />
 </composite:interface>
 <composite:implementation>
     <p:panel
@@ -49,7 +50,7 @@
                                    decimalPlaces="0"
                                    decimalSeparator=","
                                    thousandSeparator="."
-                                   required="#{cc.attrs.relationshipDefinition.multiplicity.isRequired(var)}"
+                                   required="#{!cc.attrs.relationshipDefinition.multiplicity.optional}"
                                    rendered="#{cc.attrs.targetDefinition.integer}">
                         <p:ajax listener="#{newConceptMBean.addOrChangeRelationship(cc.attrs.relationshipDefinition,newConceptMBean.basicTypeValue)}" />
                     </p:inputNumber>
@@ -62,7 +63,7 @@
                                    decimalSeparator=","
                                    thousandSeparator="."
                                    decimalPlaces="2"
-                                   required="#{cc.attrs.relationshipDefinition.multiplicity.isRequired(var)}"
+                                   required="#{!cc.attrs.relationshipDefinition.multiplicity.optional}"
                                    rendered="#{cc.attrs.targetDefinition.float}">
                         <p:ajax listener="#{newConceptMBean.addOrChangeRelationship(cc.attrs.relationshipDefinition,newConceptMBean.basicTypeValue)}" />
                     </p:inputNumber>
@@ -71,7 +72,7 @@
                                  var="value"
                                  minValue="#{cc.attrs.targetDefinition.interval.lowerBoundary}"
                                  maxValue="#{cc.attrs.targetDefinition.interval.upperBoundary}"
-                                 required="#{cc.attrs.relationshipDefinition.multiplicity.isRequired(var)}"
+                                 required="#{!cc.attrs.relationshipDefinition.multiplicity.optional}"
                                  rendered="#{cc.attrs.targetDefinition.string}">
                         <p:ajax listener="#{newConceptMBean.addOrChangeRelationship(cc.attrs.relationshipDefinition,newConceptMBean.basicTypeValue)}" />
                     </p:inputText>
@@ -81,7 +82,7 @@
                                 showOn="button"
                                 mindate="#{cc.attrs.targetDefinition.interval.lowerBoundary}"
                                 maxdate="#{cc.attrs.targetDefinition.interval.upperBoundary}"
-                                required="#{cc.attrs.relationshipDefinition.multiplicity.isRequired(var)}"
+                                required="#{!cc.attrs.relationshipDefinition.multiplicity.optional}"
                                 rendered="#{cc.attrs.targetDefinition.date}">
                         <p:ajax listener="#{newConceptMBean.addOrChangeRelationship(cc.attrs.relationshipDefinition,newConceptMBean.basicTypeValue)}" />
                     </p:calendar>
@@ -94,7 +95,7 @@
     </p:panel>
     <p:panel
          id="basicTypeCollection"
-         styleClass="basic"
+         styleClass="basic#{cc.attrs.relationshipDefinition.id}"
          widgetVar="panelBasicTypeCollection#{cc.attrs.relationshipDefinition.id}"
          rendered="#{cc.attrs.relationshipDefinition.multiplicity.collection}">
             <div class="ui-g">
@@ -106,8 +107,8 @@
                             id="addRelationshipButton"
                             value="Agregar"
                             style="float: right"
-                            process="@(.basic)"
-                            update="@(.basic)"
+                            process="@(.basic#{cc.attrs.relationshipDefinition.id})"
+                            update="@(.basic#{cc.attrs.relationshipDefinition.id})"
                             action="#{newConceptMBean.addRelationship(cc.attrs.relationshipDefinition)}"
                             disabled="#{cc.attrs.relationshipDefinition.multiplicity.isUpperBoundaryReached(cc.attrs.concept.getRelationshipsByRelationDefinition(cc.attrs.relationshipDefinition).size())}">
                     </p:commandButton>
@@ -144,7 +145,6 @@
                                    minValue="#{cc.attrs.targetDefinition.interval.lowerBoundary}"
                                    maxValue="#{cc.attrs.targetDefinition.interval.upperBoundary}"
                                    decimalPlaces="0"
-                                   immediate="true"
                                    decimalSeparator=","
                                    thousandSeparator="."
                                    required="#{cc.attrs.relationshipDefinition.multiplicity.isRequired(var.index)}"
@@ -153,7 +153,6 @@
                     <p:inputNumber id="basicTypeValue8"
                                    value="#{relationship.target.value}"
                                    var="value"
-                                   immediate="true"
                                    minValue="#{cc.attrs.targetDefinition.interval.lowerBoundary}"
                                    maxValue="#{cc.attrs.targetDefinition.interval.upperBoundary}"
                                    decimalSeparator=","
@@ -182,8 +181,7 @@
                     <p:commandButton
                             icon="fa fa-trash" title="Eliminar"
                             process="@this"
-                            update="@(.basic)"
-                            immediate="true"
+                            update="@(.basic#{cc.attrs.relationshipDefinition.id})"
                             styleClass="ui-datepicker-trigger ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only"
                             actionListener="#{newConceptMBean.removeRelationship(cc.attrs.relationshipDefinition, relationship)}"
                             rendered="#{!cc.attrs.relationshipDefinition.multiplicity.isRequired(var.index) and var.index>0}"

@@ -50,6 +50,7 @@
     </p:panel>
 
     <p:panel id="helperTableTypeCollection"
+             styleClass="helper#{cc.attrs.relationshipDefinition.id}"
              rendered="#{cc.attrs.relationshipDefinition.multiplicity.collection}">
 
             <div class="ui-g">
@@ -78,7 +79,7 @@
                                     process="@this"
                                     style="float: right"
                                     disabled="#{cc.attrs.relationshipDefinition.multiplicity.isUpperBoundaryReached(cc.attrs.concept.getRelationshipsByRelationDefinition(cc.attrs.relationshipDefinition).size())}"
-                                    update="@(.tablas)"
+                                    update="@(.helper#{cc.attrs.relationshipDefinition.id})"
                                     action="#{newConceptMBean.addRelationship(cc.attrs.relationshipDefinition,helperTableRecord)}"
                                     icon="fa fa-plus"
                                     title="Agregar"/>
@@ -105,7 +106,7 @@
                             <p:commandButton
                                     icon="fa fa-trash"
                                     title="Eliminar"
-                                    update="@(.tablas)"
+                                    update="@(.helper#{cc.attrs.relationshipDefinition.id})"
                                     style="float: right"
                                     process="@this"
                                     immediate="true"
