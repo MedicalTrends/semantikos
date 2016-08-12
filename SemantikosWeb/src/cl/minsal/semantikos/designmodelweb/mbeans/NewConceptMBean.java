@@ -367,6 +367,7 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         Relationship relationship= new Relationship(relationshipDefinition);
         relationship.setTarget(target);
         this.concept.addRelationship(relationship);
+        conceptSelected=null;
     }
 
 
