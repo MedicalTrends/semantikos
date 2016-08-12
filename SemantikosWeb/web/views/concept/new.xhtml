@@ -226,11 +226,11 @@
 
                     <h:column>
 
-                        <smtk:basicType
-                                targetDefinition="#{relationshipDefinition.targetDefinition}"
-                                relationshipDefinition="#{relationshipDefinition}"
-                                concept="#{newConceptMBean.concept}"
-                                rendered="#{relationshipDefinition.targetDefinition.basicType}" />
+
+
+                        <smtk:smtkType rendered="#{relationshipDefinition.targetDefinition.SMTKType}"
+                                       targetDefinition="#{relationshipDefinition.targetDefinition}"
+                                       relationshipDefinition="#{relationshipDefinition}" />
 
                         <smtk:helperTableType
                                 rendered="#{relationshipDefinition.targetDefinition.helperTable}"
@@ -238,9 +238,13 @@
                                 targetDefinition="#{relationshipDefinition.targetDefinition}"
                                 concept="#{newConceptMBean.concept}"  />
 
-                        <smtk:smtkType rendered="#{relationshipDefinition.targetDefinition.SMTKType}"
-                                       targetDefinition="#{relationshipDefinition.targetDefinition}"
-                                       relationshipDefinition="#{relationshipDefinition}" />
+                        <smtk:basicType
+                                targetDefinition="#{relationshipDefinition.targetDefinition}"
+                                relationshipDefinition="#{relationshipDefinition}"
+                                concept="#{newConceptMBean.concept}"
+                                rendered="#{relationshipDefinition.targetDefinition.basicType}" />
+
+
 
                     </h:column>
 

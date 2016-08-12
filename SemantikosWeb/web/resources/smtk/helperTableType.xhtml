@@ -59,6 +59,7 @@
                 </div>
                 <div class="ui-g-12 ui-md-6 ui-lg-10">
                     <p:dataTable id="helperTableRecordsCollection"
+                                 styleClass="tablas"
                                  var="helperTableRecord"
                                  value="#{newConceptMBean.helperTableManager.getAllRecords(cc.attrs.targetDefinition)}"
                                  reflow="true">
@@ -77,7 +78,7 @@
                                     process="@this"
                                     style="float: right"
                                     disabled="#{cc.attrs.relationshipDefinition.multiplicity.isUpperBoundaryReached(cc.attrs.concept.getRelationshipsByRelationDefinition(cc.attrs.relationshipDefinition).size())}"
-                                    update="#{cc.clientId}:collectionValues12,#{cc.clientId}:helperTableRecordsCollection"
+                                    update="@(.tablas)"
                                     action="#{newConceptMBean.addRelationship(cc.attrs.relationshipDefinition,helperTableRecord)}"
                                     icon="fa fa-plus"
                                     title="Agregar"/>
@@ -85,6 +86,7 @@
                     </p:dataTable>
                     <p:spacer></p:spacer>
                     <p:dataTable id="collectionValues12"
+                                 styleClass="tablas"
                                  var="relationship"
                                  value="#{cc.attrs.concept.getRelationshipsByRelationDefinition(cc.attrs.relationshipDefinition)}"
                                  style="width: 100%"
@@ -103,8 +105,8 @@
                             <p:commandButton
                                     icon="fa fa-trash"
                                     title="Eliminar"
+                                    update="@(.tablas)"
                                     style="float: right"
-                                    update="#{cc.clientId}:collectionValues12,#{cc.clientId}:helperTableRecordsCollection"
                                     process="@this"
                                     immediate="true"
                                     actionListener="#{newConceptMBean.removeRelationship(cc.attrs.relationshipDefinition, relationship)}"

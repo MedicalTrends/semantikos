@@ -29,7 +29,7 @@
                 <p:inputText value="#{smtkBean.pattern}" style="width: 90%; margin: 10px;"
                              placeholder="Buscar...">
                     <p:ajax event="keyup"
-                            update=":#{cc.clientId}:tableConcept"/>
+                            update="@(.tablas)"/>
                 </p:inputText>
             </div>
             <div class="ui-g-12 ui-md-6 ui-lg-3">
@@ -47,6 +47,7 @@
         <div class="ui-g">
 
             <p:dataTable id="tableConcept"
+                         styleClass="tablas"
                          value="#{smtkBean.getConceptSearchForRDId(cc.attrs.relationshipDefinition.id,cc.attrs.targetDefinition)}"
                          var="concept"
                          rows="3"
@@ -68,8 +69,8 @@
                 <p:column headerText="Agregar" style="width:60px;text-align: center;">
                     <p:commandButton
                             process="@this"
-                            action="#{newConceptMBean.addRelationship(cc.attrs.relationshipDefinition)}"
-                            update=":#{cc.clientId}:tableRelationship,:#{cc.clientId}:tableConcept"
+                            action="#{newConceptMBean.addRelationship(cc.attrs.relationshipDefinition, concept)}"
+                            update="@(.tablas)"
                             icon="fa fa-plus"
                             title="Agregar"
                             disabled="#{newConceptMBean.limitRelationship(cc.attrs.relationshipDefinition)}"
@@ -85,6 +86,7 @@
         <div class="ui-g">
             <p:spacer></p:spacer>
             <p:dataTable id="tableRelationship" draggableRows="true" style="margin: 10px;"
+                         styleClass="tablas"
                          value="#{newConceptMBean.concept.getRelationshipsByRelationDefinition(cc.attrs.relationshipDefinition)}"
                          var="rel">
                 <p:column headerText="ID">
@@ -105,7 +107,7 @@
                 <p:column headerText="Eliminar" style="width:60px;text-align: center;">
                     <p:commandButton icon="fa fa-trash" title="Eliminar"
                                      action="#{newConceptMBean.removeRelationship(cc.attrs.relationshipDefinition,rel)}"
-                                     update=":#{cc.clientId}:tableRelationship,:#{cc.clientId}:tableConcept"
+                                     update="@(.tablas)"
                                      process="@this">
                     </p:commandButton>
                 </p:column>
@@ -162,9 +164,10 @@
             <div class="ui-g-12 ui-md-6 ui-lg-1">
                 <p:commandButton
                         id="addRelationship"
+                        styleClass="tablas2"
                         process="@this"
                         action="#{newConceptMBean.addRelationshipAutocomplete(cc.attrs.relationshipDefinition)}"
-                        update=":#{cc.clientId}:tableRelationship2,:#{cc.clientId}:addRelationship"
+                        update="@(.tablas2)"
                         icon="fa fa-plus"
                         title="Agregar"
                         disabled="#{newConceptMBean.limitRelationship(cc.attrs.relationshipDefinition)}"
@@ -176,7 +179,9 @@
 
         <div class="ui-g">
             <p:spacer></p:spacer>
-            <p:dataTable id="tableRelationship2" draggableRows="true" style="margin: 10px;"
+            <p:dataTable id="tableRelationship2"
+                         styleClass="tablas2"
+                         draggableRows="true" style="margin: 10px;"
                          value="#{newConceptMBean.concept.getRelationshipsByRelationDefinition(cc.attrs.relationshipDefinition)}"
                          var="rel">
                 <p:column headerText="ID">
@@ -197,7 +202,7 @@
                 <p:column headerText="Eliminar" style="width:60px;text-align: center;">
                     <p:commandButton icon="fa fa-trash" title="Eliminar"
                                      action="#{newConceptMBean.removeRelationship(cc.attrs.relationshipDefinition,rel)}"
-                                     update=":#{cc.clientId}:tableRelationship2,:#{cc.clientId}:addRelationship"
+                                     update="@(.tablas2)"
                                      process="@this">
                     </p:commandButton>
                 </p:column>
@@ -218,6 +223,7 @@
             <div class="ui-g-12 ui-md-6 ui-lg-6">
                 <p:outputLabel value="#{cc.attrs.relationshipDefinition.name}: " for="findConceptSMTK"/>
                 <p:autoComplete forceSelection="true"
+                                styleClass="concept"
                                 id="findConceptSMTK" scrollHeight="200" size="5" style="width: 85%;"
                                 inputStyle="width: 85%;"
                                 completeMethod="#{smtkBean.getConceptSearchInput}"
@@ -238,7 +244,7 @@
 
                     <p:ajax update="id2panel" event="itemSelect"
                             listener="#{newConceptMBean.addOrChangeRelationship(cc.attrs.relationshipDefinition,newConceptMBean.conceptSelected)}"
-                            process="@this, :#{cc.clientId}:findConceptSMTK"/>
+                            process="@this, @(.concept)"/>
 
                     <f:attribute name="targetDef" value="#{cc.attrs.targetDefinition}"></f:attribute>
                 </p:autoComplete>
@@ -255,7 +261,7 @@
             <div class="ui-g-12 ui-md-6 ui-lg-1">
                 <p:commandButton icon="fa fa-trash" title="Eliminar"
                                  action="#{newConceptMBean.removeRelationship(cc.attrs.relationshipDefinition,newConceptMBean.concept.getRelationshipsByRelationDefinition(cc.attrs.relationshipDefinition).get(0))}"
-                                 update="id2panel"
+                                 update="@(.concept)"
                                  rendered="#{newConceptMBean.concept.getRelationshipsByRelationDefinition(cc.attrs.relationshipDefinition).size()!=0}"
                                  process="@this">
                 </p:commandButton>

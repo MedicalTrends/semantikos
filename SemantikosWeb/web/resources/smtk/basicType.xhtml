@@ -94,6 +94,7 @@
     </p:panel>
     <p:panel
          id="basicTypeCollection"
+         styleClass="basic"
          widgetVar="panelBasicTypeCollection#{cc.attrs.relationshipDefinition.id}"
          rendered="#{cc.attrs.relationshipDefinition.multiplicity.collection}">
             <div class="ui-g">
@@ -105,14 +106,17 @@
                             id="addRelationshipButton"
                             value="Agregar"
                             style="float: right"
-                            process="#{cc.clientId}:basicTypeCollection"
-                            update="#{cc.clientId}:basicTypeCollection"
+                            process="@(.basic)"
+                            update="@(.basic)"
                             action="#{newConceptMBean.addRelationship(cc.attrs.relationshipDefinition)}"
                             disabled="#{cc.attrs.relationshipDefinition.multiplicity.isUpperBoundaryReached(cc.attrs.concept.getRelationshipsByRelationDefinition(cc.attrs.relationshipDefinition).size())}">
                     </p:commandButton>
                 </div>
             </div>
-        <ui:repeat value="#{cc.attrs.concept.getRelationshipsByRelationDefinition(cc.attrs.relationshipDefinition)}"
+        <p:repeat  value="#{cc.attrs.concept.getRelationshipsByRelationDefinition(cc.attrs.relationshipDefinition)}"
+                   offset="0"
+                   size="#{cc.attrs.concept.getRelationshipsByRelationDefinition(cc.attrs.relationshipDefinition).size()}"
+                   step="1"
                    var="relationship"
                    varStatus="var">
             <div class="ui-g">
@@ -177,8 +181,8 @@
                     </p:calendar>
                     <p:commandButton
                             icon="fa fa-trash" title="Eliminar"
-                            process="#{cc.clientId}:basicTypeCollection"
-                            update="#{cc.clientId}:basicTypeCollection"
+                            process="@this"
+                            update="@(.basic)"
                             immediate="true"
                             styleClass="ui-datepicker-trigger ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only"
                             actionListener="#{newConceptMBean.removeRelationship(cc.attrs.relationshipDefinition, relationship)}"
@@ -191,7 +195,7 @@
                 <div class="ui-g-12 ui-md-6 ui-lg-6">
                 </div>
             </div>
-        </ui:repeat>
+        </p:repeat>
     </p:panel>
 
     <h:outputStylesheet id="customCSS">

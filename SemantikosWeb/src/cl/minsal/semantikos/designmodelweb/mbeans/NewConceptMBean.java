@@ -126,10 +126,10 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         context.execute("PF('dialogNameConcept').show();");
 
-        category = categoryManager.getCategoryById(1);
+        //category = categoryManager.getCategoryById(1);
         //category = categoryManager.getCategoryById(105590001);
 
-        //category = categoryManager.getCategoryById(71388002);
+        category = categoryManager.getCategoryById(71388002);
                 //descriptionManager.getAllTypes();
                 //DescriptionTypeFactory.getInstance().getDescriptionTypes();
 
@@ -344,8 +344,6 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
      * @param target
      */
     public void addRelationship(RelationshipDefinition relationshipDefinition, Target target){
-
-        HelperTableRecord record = (HelperTableRecord) target;
 
         Relationship relationship= new Relationship(relationshipDefinition);
         relationship.setTarget(target);
