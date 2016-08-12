@@ -11,6 +11,9 @@ import org.slf4j.LoggerFactory;
 import javax.validation.constraints.NotNull;
 
 /**
+ * Este componente es responsable de almacenar las reglas de negocio relacionadas a la persistencia de conceptos.
+ * Para esto, recupera reglas de nego
+ *
  * @author Andrés Farías
  */
 public class ConceptCreationBusinessRuleContainer implements BusinessRulesContainer {
@@ -20,7 +23,7 @@ public class ConceptCreationBusinessRuleContainer implements BusinessRulesContai
     protected static final String CATEGORY_FARMACOS_SUSTANCIAS_NAME = "Fármacos - Sustancias";
     protected static final String CATEGORY_FARMACOS_MEDICAMENTO_BASICO_NAME = "Fármacos - Medicamento Básico";
     protected static final String CATEGORY_FARMACOS_MEDICAMENTO_CLINICO_NAME = "Fármacos – Medicamento Clínico";
-    protected static final String CATEGORY_FARMACOS_MEDICAMENTO_CLINICO_CON_ENVASE_NAME= "Fármacos – Medicamento Clínico con Envase";
+    protected static final String CATEGORY_FARMACOS_MEDICAMENTO_CLINICO_CON_ENVASE_NAME = "Fármacos – Medicamento Clínico con Envase";
 
     private Profile designerProfile = createProfile("Diseñador");
     private Profile modelerProfile = createProfile("Modelador");

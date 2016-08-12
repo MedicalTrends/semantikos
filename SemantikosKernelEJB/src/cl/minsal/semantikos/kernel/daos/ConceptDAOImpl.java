@@ -6,7 +6,6 @@ import cl.minsal.semantikos.model.Category;
 import cl.minsal.semantikos.model.ConceptSMTK;
 import cl.minsal.semantikos.model.Description;
 import cl.minsal.semantikos.model.State;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -72,7 +71,7 @@ public class ConceptDAOImpl implements ConceptDAO {
         st.setName(String.valueOf(state));
         List<Description> descriptions = descriptionDAO.getDescriptionsByConceptID(id);
 
-        return new ConceptSMTK(id, conceptId, objectCategory, check, consult, st, completelyDefined, published, descriptions);
+        return new ConceptSMTK(id, conceptId, objectCategory, check, consult, st, completelyDefined, published, descriptions.toArray(new Description[descriptions.size()]));
     }
 
     @Override
@@ -106,7 +105,7 @@ public class ConceptDAOImpl implements ConceptDAO {
     }
 
     @Override
-    public List<ConceptSMTK> getConceptByCategory( Long[] categories, Long[] states, int pageSize, int pageNumber) {
+    public List<ConceptSMTK> getConceptByCategory(Long[] categories, Long[] states, int pageSize, int pageNumber) {
 
         List<ConceptSMTK> concepts = new ArrayList<>();
         ConnectionBD connect = new ConnectionBD();
@@ -182,6 +181,7 @@ public class ConceptDAOImpl implements ConceptDAO {
 
         CallableStatement call;
 
+        // TODO: TryWithResources
 
         try (Connection connection = connect.getConnection();) {
 
@@ -231,9 +231,7 @@ public class ConceptDAOImpl implements ConceptDAO {
                 State st = new State();
                 st.setName(String.valueOf(state));
                 List<Description> descriptions = descriptionDAO.getDescriptionsByConceptID(id);
-                concepts.add(new ConceptSMTK(id, conceptId, objectCategory, check, consult, st, completelyDefined, published, descriptions));
-
-
+                concepts.add(new ConceptSMTK(id, conceptId, objectCategory, check, consult, st, completelyDefined, published, descriptions.toArray(new Description[descriptions.size()])));
             }
             rs.close();
 
@@ -304,7 +302,7 @@ public class ConceptDAOImpl implements ConceptDAO {
     }
 
     @Override
-    public int getCountFindConceptID( String Pattern, Long[] category, Long[] states) {
+    public int getCountFindConceptID(String Pattern, Long[] category, Long[] states) {
         ConnectionBD connect = new ConnectionBD();
         int count = 0;
 

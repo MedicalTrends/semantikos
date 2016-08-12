@@ -4,8 +4,8 @@ import cl.minsal.semantikos.model.exceptions.BusinessRuleException;
 import cl.minsal.semantikos.model.relationships.Relationship;
 import cl.minsal.semantikos.model.relationships.RelationshipDefinition;
 import cl.minsal.semantikos.model.relationships.Target;
-import com.sun.istack.internal.NotNull;
 
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -33,7 +33,7 @@ public class ConceptSMTK implements Target {
     private boolean isToBeReviewed;
 
     /** Si debe ser consultado? */
-    private boolean isToBeConsultated;
+    private boolean isToBeConsulted;
 
     /** El estado en que se encuentra el objeto */
     private State state;
@@ -45,56 +45,56 @@ public class ConceptSMTK implements Target {
     private boolean isPublished;
 
     /** Otros descriptores */
-    private List<Description> descriptions = new ArrayList<Description>();
+    private List<Description> descriptions;
 
     /** Relaciones * */
-    private List<Relationship> relationships = new ArrayList<>();
+    private List<Relationship> relationships;
 
-    public ConceptSMTK(long id, long conceptID, Category category, boolean isToBeReviewed, boolean isToBeConsultated, State state, boolean isFullyDefined, boolean isPublished, List<Description> descriptions) {
-        this.id = id;
-        this.conceptID = conceptID;
-        this.category = category;
-        this.isToBeReviewed = isToBeReviewed;
-        this.isToBeConsultated = isToBeConsultated;
-        this.state = state;
-        this.isFullyDefined = isFullyDefined;
-        this.isPublished = isPublished;
-        this.descriptions = descriptions;
-    }
+    /** The concept's labels */
+    private List<Label> labels;
 
     /**
      * El constructor privado con las inicializaciones de los campos por defecto.
-     * TODO: Crear el test unitario para validar los estados iniciales por defecto.
      */
     public ConceptSMTK() {
 
         /* El concepto parte con su estado inicial */
         this.state = ConceptStateMachine.getInstance().getInitialState();
 
-        this.descriptions = new ArrayList<Description>();
+        this.descriptions = new ArrayList<>();
+        this.relationships = new ArrayList<>();
+        this.labels = new ArrayList<>();
 
         this.isFullyDefined = false;
         this.isPublished = false;
-        this.isToBeConsultated = false;
+        this.isToBeConsulted = false;
         this.isToBeReviewed = false;
-    }
-
-    public ConceptSMTK(Category category, @NotNull Description... descriptions) {
-        this();
-
-        this.descriptions.addAll(Arrays.asList(descriptions));
-        this.category = category;
-    }
-
-    public ConceptSMTK(Category category, State state, Description... descriptions) {
-        this(category, descriptions);
-
-        this.state = state;
     }
 
     public ConceptSMTK(Category category) {
         this();
         this.category = category;
+    }
+
+    public ConceptSMTK(Category category, @NotNull Description... descriptions) {
+        this(category);
+        this.descriptions.addAll(Arrays.asList(descriptions));
+    }
+
+    public ConceptSMTK(Category category, State state, Description... descriptions) {
+        this(category, descriptions);
+        this.state = state;
+    }
+
+    public ConceptSMTK(long id, long conceptID, Category category, boolean isToBeReviewed, boolean isToBeConsulted, State state, boolean isFullyDefined, boolean isPublished, Description... descriptions) {
+        this(category, state, descriptions);
+
+        this.id = id;
+        this.conceptID = conceptID;
+        this.isToBeReviewed = isToBeReviewed;
+        this.isToBeConsulted = isToBeConsulted;
+        this.isFullyDefined = isFullyDefined;
+        this.isPublished = isPublished;
     }
 
     public List<Description> getDescriptions() {
@@ -171,12 +171,12 @@ public class ConceptSMTK implements Target {
         this.isToBeReviewed = toBeReviewed;
     }
 
-    public boolean isToBeConsultated() {
-        return isToBeConsultated;
+    public boolean isToBeConsulted() {
+        return isToBeConsulted;
     }
 
-    public void setToBeConsultated(boolean toBeConsultated) {
-        this.isToBeConsultated = toBeConsultated;
+    public void setToBeConsulted(boolean toBeConsulted) {
+        this.isToBeConsulted = toBeConsulted;
     }
 
     public boolean isFullyDefined() {
@@ -197,12 +197,39 @@ public class ConceptSMTK implements Target {
         this.isPublished = published;
     }
 
+    public List<Label> getLabels() {
+        return labels;
+    }
 
+    /**
+     * Este método es responsable de agregar una etiqueta al concepto.
+     *
+     * @param label La etiqueta a ser agregada.
+     *
+     * @return <code>true</code> si se agrega y <code>false</code> si no.
+     */
+    public boolean addLabel(@NotNull Label label) {
+        return this.labels.add(label);
+    }
+
+    /**
+     * Este método es responsable de agregar una etiqueta al concepto.
+     *
+     * @param description La descripción a ser agregada.
+     */
     public void addDescription(Description description) {
-
-        description.setId(descriptions.size() + 1);
         this.descriptions.add(description);
+    }
 
+    /**
+     * Este método es responsable de agregar una etiqueta al concepto.
+     *
+     * @param label La etiqueta a eliminar.
+     *
+     * @return <code>true</code> si se elimina y <code>false</code> si no.
+     */
+    public boolean removeLabel(@NotNull Label label) {
+        return this.labels.remove(label);
     }
 
     public void removeDescription(Description description) {
