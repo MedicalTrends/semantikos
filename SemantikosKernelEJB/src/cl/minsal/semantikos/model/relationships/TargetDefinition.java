@@ -14,6 +14,12 @@ public interface TargetDefinition {
      */
     public boolean isBasicType();
 
+    /**
+     * Este método es responsable de determinar si el target type es de tipo SMTK o no.
+     *
+     * @return <code>true</code> si es de tipo SMTK y <code>false</code> si no.
+     */
+
     public boolean isSMTKType();
 
     /**
