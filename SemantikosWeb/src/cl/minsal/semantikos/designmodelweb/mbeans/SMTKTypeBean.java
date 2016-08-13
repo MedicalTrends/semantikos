@@ -91,7 +91,7 @@ public class SMTKTypeBean implements Serializable {
         if (patron != null) {
             if (patron.length() > 2) {
                 categoryArr[0] = cD.getIdCategory();
-                conceptSearchList=conceptManager.findConceptByConceptIDOrDescriptionCategoryPageNumber(patron, categoryArr, 0, 20);
+                conceptSearchList=conceptManager.findConceptByConceptIDOrDescriptionCategoryPageNumber(patron, categoryArr, 0, 30);
                 return conceptSearchList;
             }
         }

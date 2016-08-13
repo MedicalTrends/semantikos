@@ -18,7 +18,7 @@
 
     <p:panel id="panelSMTK"
              style="margin:20px;"
-             rendered="#{cc.attrs.relationshipDefinition.multiplicity.upperBoundary!=1}">
+             rendered="#{cc.attrs.relationshipDefinition.multiplicity.upperBoundary==1000}">
 
         <h3>#{cc.attrs.relationshipDefinition.name}</h3>
 
@@ -86,6 +86,7 @@
         <div class="ui-g">
             <p:spacer></p:spacer>
             <p:dataTable id="tableRelationship" draggableRows="true" style="margin: 10px;"
+                         emptyMessage="No existen relaciones, se debe agregar al menos: #{cc.attrs.relationshipDefinition.multiplicity.lowerBoundary}."
                          styleClass="tablas"
                          value="#{newConceptMBean.concept.getRelationshipsByRelationDefinition(cc.attrs.relationshipDefinition)}"
                          var="rel">
@@ -118,8 +119,9 @@
     </p:panel>
 
     <p:panel id="panelSMTK2"
+             styleClass="tablas2"
              style="margin:20px;"
-             rendered="#{cc.attrs.relationshipDefinition.multiplicity.upperBoundary==-10}">
+             rendered="#{cc.attrs.relationshipDefinition.multiplicity.upperBoundary!=1}">
         <h3>#{cc.attrs.relationshipDefinition.name}</h3>
 
 
@@ -131,6 +133,7 @@
                                 completeMethod="#{smtkBean.getConceptSearchInput}"
                                 converter="conceptConverter"
                                 var="concept"
+                                disabled="#{newConceptMBean.limitRelationship(cc.attrs.relationshipDefinition)}"
                                 value="#{newConceptMBean.conceptSelected}"
                                 itemLabel="#{concept.descriptionFavorite.term}" itemValue="#{concept}"
                 >
@@ -142,18 +145,9 @@
                     <p:column>
                         <h:outputText value="#{concept.descriptionFavorite.term}"/>
                     </p:column>
-                    <p:column style="width:60px;text-align: center;">
-                        <p:commandButton
-                                process="@this"
-                                action="#{newConceptMBean.addRelationship(cc.attrs.relationshipDefinition,newConceptMBean.conceptSelected)}"
-                                update=":#{cc.clientId}:tableRelationship2,:#{cc.clientId}:addRelationship"
-                                icon="fa fa-plus"
-                                title="Agregar"
-                                disabled="#{newConceptMBean.limitRelationship(cc.attrs.relationshipDefinition)}"
-                        >
-
-                        </p:commandButton>
-                    </p:column>
+                    <p:ajax update="@(.tablas2)" event="itemSelect"
+                            listener="#{newConceptMBean.addRelationship(cc.attrs.relationshipDefinition,newConceptMBean.conceptSelected)}"
+                            process="@this"/>
 
                     <f:attribute name="targetDef" value="#{cc.attrs.targetDefinition}"></f:attribute>
                 </p:autoComplete>
@@ -162,24 +156,15 @@
 
             </div>
             <div class="ui-g-12 ui-md-6 ui-lg-1">
-                <p:commandButton
-                        id="addRelationship"
-                        styleClass="tablas2"
-                        process="@this"
-                        action="#{newConceptMBean.addRelationshipAutocomplete(cc.attrs.relationshipDefinition)}"
-                        update="@(.tablas2)"
-                        icon="fa fa-plus"
-                        title="Agregar"
-                        disabled="#{newConceptMBean.limitRelationship(cc.attrs.relationshipDefinition)}"
-                >
 
-                </p:commandButton>
+
             </div>
         </div>
 
         <div class="ui-g">
             <p:spacer></p:spacer>
-            <p:dataTable id="tableRelationship2"
+            <p:dataTable emptyMessage="No existen relaciones, se debe agregar al menos: #{cc.attrs.relationshipDefinition.multiplicity.lowerBoundary}."
+                         id="tableRelationship2"
                          styleClass="tablas2"
                          draggableRows="true" style="margin: 10px;"
                          value="#{newConceptMBean.concept.getRelationshipsByRelationDefinition(cc.attrs.relationshipDefinition)}"
@@ -214,6 +199,7 @@
 
 
     <p:panel id="id2panel"
+             styleClass="concept"
              style="margin:20px;"
              rendered="#{cc.attrs.relationshipDefinition.multiplicity.upperBoundary==1}">
 
@@ -221,9 +207,14 @@
         <div class="ui-g">
 
             <div class="ui-g-12 ui-md-6 ui-lg-6">
-                <p:outputLabel value="#{cc.attrs.relationshipDefinition.name}: " for="findConceptSMTK"/>
-                <p:autoComplete forceSelection="true"
-                                styleClass="concept"
+                <p:panel  style="border: hidden; width: 100%;"
+                          rendered="#{newConceptMBean.concept.getRelationshipsByRelationDefinition(cc.attrs.relationshipDefinition).size() == 0}">
+                <p:outputLabel rendered="#{cc.attrs.relationshipDefinition.multiplicity.optional}"  value="#{cc.attrs.relationshipDefinition.name}: " for="findConceptSMTK"/>
+
+                <p:outputLabel rendered="#{!cc.attrs.relationshipDefinition.multiplicity.optional}" value="#{cc.attrs.relationshipDefinition.name}: (*)" for="findConceptSMTK"/>
+
+                <p:autoComplete emptyMessage="No se encontraron conceptos relacionados"
+                                forceSelection="true"
                                 id="findConceptSMTK" scrollHeight="200" size="5" style="width: 85%;"
                                 inputStyle="width: 85%;"
                                 completeMethod="#{smtkBean.getConceptSearchInput}"
@@ -231,7 +222,7 @@
                                 var="concept"
                                 value="#{newConceptMBean.conceptSelected}"
                                 itemLabel="#{concept.descriptionFavorite.term}" itemValue="#{concept}"
-                                disabled="#{newConceptMBean.concept.getRelationshipsByRelationDefinition(cc.attrs.relationshipDefinition).size()!=0}"
+                                rendered="#{newConceptMBean.concept.getRelationshipsByRelationDefinition(cc.attrs.relationshipDefinition).size()==0}"
                 >
 
                     <p:column>
@@ -242,21 +233,27 @@
                         <h:outputText value="#{concept.descriptionFavorite.term}"/>
                     </p:column>
 
-                    <p:ajax update="id2panel" event="itemSelect"
+                    <p:ajax update="@(.concept)" event="itemSelect"
                             listener="#{newConceptMBean.addOrChangeRelationship(cc.attrs.relationshipDefinition,newConceptMBean.conceptSelected)}"
-                            process="@this, @(.concept)"/>
+                            process="@this"/>
 
                     <f:attribute name="targetDef" value="#{cc.attrs.targetDefinition}"></f:attribute>
                 </p:autoComplete>
 
-            </div>
-            <div class="ui-g-12 ui-md-6 ui-lg-3">
-                <p:panel  style="border: hidden; padding-bottom: 10px;"
-                         rendered="#{newConceptMBean.concept.getRelationshipsByRelationDefinition(cc.attrs.relationshipDefinition).size() != 0}">
-                    <p:outputLabel value="Item seleccionado: " for="itemSelected"></p:outputLabel>
-                    <p:inputText disabled="true" id="itemSelected"
+                </p:panel>
+
+                <p:panel  style="border: hidden; width: 100%;"
+                          rendered="#{newConceptMBean.concept.getRelationshipsByRelationDefinition(cc.attrs.relationshipDefinition).size() != 0}">
+                    <p:outputLabel rendered="#{cc.attrs.relationshipDefinition.multiplicity.optional}"  value="#{cc.attrs.relationshipDefinition.name}: " for="itemSelected"/>
+
+                    <p:outputLabel rendered="#{!cc.attrs.relationshipDefinition.multiplicity.optional}" value="#{cc.attrs.relationshipDefinition.name}: (*)" for="itemSelected"/>
+
+
+
+                    <p:inputText style="width: 72%;" disabled="true" id="itemSelected"
                                  value="#{newConceptMBean.concept.getRelationshipsByRelationDefinition(cc.attrs.relationshipDefinition).get(0).target.descriptionFavorite.term}"></p:inputText>
                 </p:panel>
+
             </div>
             <div class="ui-g-12 ui-md-6 ui-lg-1">
                 <p:commandButton icon="fa fa-trash" title="Eliminar"
@@ -266,7 +263,8 @@
                                  process="@this">
                 </p:commandButton>
             </div>
-            <div class="ui-g-12 ui-md-6 ui-lg-2">
+            <div class="ui-g-12 ui-md-6 ui-lg-5">
+
             </div>
 
         </div>

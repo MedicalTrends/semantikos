@@ -24,7 +24,7 @@
                 <div class="ui-g-12 ui-md-6 ui-lg-5">
                     <p:selectManyCheckbox id="check" layout="responsive" columns="2" style="width:60%">
                         <f:selectItem itemLabel="Revisar" itemValue="#{newConceptMBean.concept.toBeReviewed}"/>
-                        <f:selectItem itemLabel="Consultar" itemValue="#{newConceptMBean.concept.toBeConsultated}"/>
+                        <f:selectItem itemLabel="Consultar" itemValue="#{newConceptMBean.concept.toBeConsulted}"/>
                     </p:selectManyCheckbox>
                 </div>
                 <div class="ui-g-12 ui-md-6 ui-lg-3">
@@ -79,9 +79,11 @@
 
             <p:panel id="toggleable" header="Otros Descriptores" toggleable="true" toggleSpeed="500" closeSpeed="500"
                      widgetVar="panel" style="margin-bottom:20px">
+
+                <p:fieldset legend="Agregar descripción" toggleable="true" collapsed="true">
                 <div class="ui-g">
                     <div class="ui-g-12 ui-md-6 ui-lg-1">
-                        <p:outputLabel for="otherTermino" value="Termino (*)"/>
+                        <p:outputLabel for="otherTermino" value="Termino"/>
                     </div>
 
                     <div class="ui-g-12 ui-md-6 ui-lg-5">
@@ -104,10 +106,13 @@
                     </div>
                     <div class="ui-g-12 ui-md-6 ui-lg-1">
                         <p:commandButton value="Agregar" id="btn" action="#{newConceptMBean.addDescription}"
-                                         update="otherDescriptions"
+                                         update="otherDescriptions,growl"
                                          style="float: right"/>
                     </div>
                 </div>
+
+                </p:fieldset>
+                <p:spacer></p:spacer>
                 <div class="ui-g">
                     <p:dataTable id="otherDescriptions"
                                  var="description"
@@ -129,11 +134,11 @@
                             </div>
                         </p:column>
 
-                        <p:column headerText="Término">
+                        <p:column headerText="Término" >
                             <div style="text-align: center;">
                                 <p:cellEditor>
-                                    <f:facet name="output"><h:outputText value="#{description.term}"/></f:facet>
-                                    <f:facet name="input"><p:inputText id="otrasTermino" value="#{description.term}"
+                                    <f:facet  name="output"><h:outputText value="#{description.term}"/></f:facet>
+                                    <f:facet  name="input"><p:inputText id="otrasTermino" value="#{description.term}"
                                                                        style="width:100%"/></f:facet>
                                 </p:cellEditor>
                             </div>
@@ -221,16 +226,16 @@
             <p:panel id="atributos" header="Atributos" toggleable="true" toggleSpeed="500" closeSpeed="500"
                      widgetVar="panelAtributos" style="margin-bottom:20px" >
 
-                <h:dataTable value="#{newConceptMBean.category.relationshipDefinitions}"
-                             style="width: 100%"
-                             var="relationshipDefinition">
+            <h:dataTable style="width: 100%;" value="#{newConceptMBean.category.relationshipDefinitions}"
+                         var="relationshipDefinition">
 
                     <h:column>
 
-                        <smtk:smtkType
-                                rendered="#{relationshipDefinition.targetDefinition.SMTKType}"
-                                targetDefinition="#{relationshipDefinition.targetDefinition}"
-                                relationshipDefinition="#{relationshipDefinition}" />
+
+
+                        <smtk:smtkType rendered="#{relationshipDefinition.targetDefinition.SMTKType}"
+                                       targetDefinition="#{relationshipDefinition.targetDefinition}"
+                                       relationshipDefinition="#{relationshipDefinition}" />
 
                         <smtk:helperTableType
                                 rendered="#{relationshipDefinition.targetDefinition.helperTable}"
@@ -242,8 +247,9 @@
                                 targetDefinition="#{relationshipDefinition.targetDefinition}"
                                 relationshipDefinition="#{relationshipDefinition}"
                                 concept="#{newConceptMBean.concept}"
-                                rendered="#{relationshipDefinition.targetDefinition.basicType}"
-                                />
+                                rendered="#{relationshipDefinition.targetDefinition.basicType}" />
+
+
 
                     </h:column>
 
@@ -253,7 +259,7 @@
         </p:panel>
 
 
-            <p:commandButton actionListener="#{newConceptMBean.saveConcept}" value="Guardar" type="submit" update="growl"
+            <p:commandButton actionListener="#{newConceptMBean.saveConcept}" value="Guardar" type="submit" update="growl, mainForm"
 
             />
 
