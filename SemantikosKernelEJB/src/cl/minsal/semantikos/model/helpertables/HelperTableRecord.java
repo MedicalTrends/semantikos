@@ -100,4 +100,29 @@ public class HelperTableRecord implements Target {
 
         return this.fields.get(columnName);
     }
+
+    // Métodos para soportar conversión automática
+    @Override
+    public boolean equals(Object other) {
+        return (other instanceof HelperTableRecord) && ( String.valueOf(id) != null )
+                ? String.valueOf(id).equals(String.valueOf(((HelperTableRecord) other).id))
+                : (other == this);
+    }
+
+    @Override
+    public int hashCode() {
+        return (String.valueOf(id) != null)
+                ? (this.getClass().hashCode() + String.valueOf(getFields().get("id")).hashCode())
+                : super.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        if(this.getFields()==null)
+            return "null";
+        else
+            return String.format("%s[id=%d]", getClass().getSimpleName(), new Long(this.getFields().get("id")));
+    }
+
+
 }
