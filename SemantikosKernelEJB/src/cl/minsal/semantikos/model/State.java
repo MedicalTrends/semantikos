@@ -3,14 +3,24 @@ package cl.minsal.semantikos.model;
 import java.util.List;
 
 /**
- * Created by andres on 7/12/16.
+ * @author: Diego Soto
  */
 public class State {
 
+    /** Identificador único de la base de datos */
+    private long id;
+
     private String name;
+
     private StateMachine stateMachine;
 
-    //private List<Transition> transitions;
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;

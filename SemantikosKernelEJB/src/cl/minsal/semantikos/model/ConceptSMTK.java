@@ -18,13 +18,13 @@ import java.util.List;
 public class ConceptSMTK implements Target {
 
     /** El valor que posee un CONCEPT_ID que no ha sido definido */
-    public static final long CONCEPT_ID_UNDEFINED = -1;
+    public static final String CONCEPT_ID_UNDEFINED = "-1";
 
     /** El famoso ConceptID */
     private long id;
 
     /** El valor de negocio del concept_id */
-    private long conceptID = CONCEPT_ID_UNDEFINED;
+    private String conceptID = CONCEPT_ID_UNDEFINED;
 
     /** La categoría del concepto */
     private Category category;
@@ -86,7 +86,7 @@ public class ConceptSMTK implements Target {
         this.state = state;
     }
 
-    public ConceptSMTK(long id, long conceptID, Category category, boolean isToBeReviewed, boolean isToBeConsulted, State state, boolean isFullyDefined, boolean isPublished, Description... descriptions) {
+    public ConceptSMTK(long id, String conceptID, Category category, boolean isToBeReviewed, boolean isToBeConsulted, State state, boolean isFullyDefined, boolean isPublished, Description... descriptions) {
         this(category, state, descriptions);
 
         this.id = id;
@@ -150,11 +150,11 @@ public class ConceptSMTK implements Target {
         this.id = id;
     }
 
-    public long getConceptID() {
+    public String getConceptID() {
         return conceptID;
     }
 
-    public void setConceptID(long conceptID) {
+    public void setConceptID(String conceptID) {
         this.conceptID = conceptID;
     }
 
