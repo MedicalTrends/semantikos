@@ -1,39 +1,41 @@
 package cl.minsal.semantikos.kernel.components;
 
 import cl.minsal.semantikos.kernel.daos.ConceptDAO;
-import cl.minsal.semantikos.model.Category;
 import cl.minsal.semantikos.model.ConceptSMTK;
 import cl.minsal.semantikos.model.Description;
-import cl.minsal.semantikos.model.State;
+import cl.minsal.semantikos.model.User;
+import cl.minsal.semantikos.model.businessrules.BusinessRulesContainer;
+import cl.minsal.semantikos.model.businessrules.ConceptCreationBusinessRuleContainer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.validation.constraints.NotNull;
 import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
 /**
- * Created by stk-des01 on 01-06-16.
+ * @author Andrés Farías
  */
 @Stateless
 public class ConceptManagerImpl implements ConceptManagerInterface {
 
+    /** El logger de la clase */
+    private static final Logger logger = LoggerFactory.getLogger(ConceptManagerImpl.class);
 
     @EJB
-    ConceptDAO conceptDAO;
+    private ConceptDAO conceptDAO;
 
     @EJB
-    DescriptionManagerInterface descriptionManager;
+    private DescriptionManagerInterface descriptionManager;
 
     @EJB
-    StateMachineManagerInterface stateMachineManager;
+    private StateMachineManagerInterface stateMachineManager;
 
-    /*
-    @EJB
-    StateManagerInterface stateManager;
-    */
-
+    // TODO: Terminar esto.
     @Override
     public ArrayList<Description> findDescriptionForPattern(String pattern) {
 
@@ -68,6 +70,7 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
         return null;
     }
 
+    // TODO: Terminar esto.
     @Override
     public String addConcept(String idCategory, boolean isValid) {
         String idConcepto = null;
@@ -236,6 +239,21 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
         }
         return conceptDAO.getAllConceptCount(null, categories, states);
 
+    }
+
+    @Override
+    public void persist(@NotNull ConceptSMTK conceptSMTK, User user) {
+        logger.debug("El concepto " + conceptSMTK + " será persistido.");
+
+        /* Precondiciones: Reglas de negocio para la persistencia */
+        BusinessRulesContainer brm = new ConceptCreationBusinessRuleContainer();
+        brm.apply(conceptSMTK, user);
+
+    }
+
+    @Override
+    public ConceptSMTK merge(ConceptSMTK conceptSMTK) {
+        return null;
     }
 
 

@@ -1,10 +1,11 @@
 package cl.minsal.semantikos.kernel.components;
 
-import cl.minsal.semantikos.model.Category;
 import cl.minsal.semantikos.model.ConceptSMTK;
 import cl.minsal.semantikos.model.Description;
+import cl.minsal.semantikos.model.User;
 
 import javax.ejb.Local;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,6 +32,7 @@ public interface ConceptManagerInterface {
      * Este método es responsable de recuperar el concepto con id (de BD)
      *
      * @param id El identificador de BD del concepto.
+     *
      * @return Un concepto fresco de tipo <code>ConceptSMTK</code>.
      */
     public ConceptSMTK getConceptByID(long id);
@@ -53,5 +55,19 @@ public interface ConceptManagerInterface {
 
     public int getAllConceptCount(String pattern, Long[] categories);
 
+    /**
+     * Este método es responsable de persistir un concepto que no se encuentra persistido.
+     *
+     * @param conceptSMTK El concepto a persistir.
+     */
+    void persist(@NotNull ConceptSMTK conceptSMTK, User user);
 
+    /**
+     * Este método es responsable de actualizar el estado de la entidad en la base de datos.
+     *
+     * @param conceptSMTK El concepto cuyo estado se actualizará en la base de datos.
+     *
+     * @return Una copia fresca del objeto actualizado.
+     */
+    public ConceptSMTK merge(ConceptSMTK conceptSMTK);
 }
