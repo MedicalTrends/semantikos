@@ -2,7 +2,7 @@ package cl.minsal.semantikos.designmodelweb.auth;
 
 import cl.minsal.semantikos.designmodelweb.Constants;
 import cl.minsal.semantikos.kernel.auth.AuthenticationManagerBean;
-import cl.minsal.semantikos.model.User;
+import cl.minsal.semantikos.model.IUser;
 import cl.minsal.semantikos.kernel.config.ConfigurationBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,7 +37,7 @@ public class AuthenticationBean {
     private String username;
     private String password;
 
-    private User loggedUser;
+    private IUser loggedUser;
 
 
     public boolean isLoggedIn() {
@@ -82,7 +82,7 @@ public class AuthenticationBean {
         }
     }
 
-    private boolean canLogin(User loggedUser) {
+    private boolean canLogin(IUser loggedUser) {
         return !(loggedUser == null || loggedUser.getUsername() == null);
     }
 
@@ -125,18 +125,18 @@ public class AuthenticationBean {
         this.password = password;
     }
 
-    public User getLoggedUser() {
+    public IUser getLoggedUser() {
         return loggedUser;
     }
 
-    public void setLoggedUser(User loggedUser) {
+    public void setLoggedUser(IUser loggedUser) {
         this.loggedUser = loggedUser;
     }
 
 
 
 
-    public void createUser(User u){
+    public void createUser(IUser u){
 
     }
 

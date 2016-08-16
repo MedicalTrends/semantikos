@@ -1,5 +1,6 @@
 package cl.minsal.semantikos.model;
 
+import cl.minsal.semantikos.model.businessrules.ConceptStateBusinessRulesContainer;
 import cl.minsal.semantikos.model.exceptions.BusinessRuleException;
 import cl.minsal.semantikos.model.relationships.Relationship;
 import cl.minsal.semantikos.model.relationships.RelationshipDefinition;
@@ -196,7 +197,10 @@ public class ConceptSMTK implements Target {
 
     public void setFullyDefined(boolean fullyDefined) {
 
-        // TODO: Implementar las reglas de negocio invocando al Concept Manager.
+        /* Antes de asignarle la propiedad, ser verifica si cumple las reglas de negocio */
+        new ConceptStateBusinessRulesContainer().apply(this, UserNull.getInstance());
+
+        /* Como se han validado las reglas de negocio, se realiza la asignación */
         this.isFullyDefined = fullyDefined;
     }
 

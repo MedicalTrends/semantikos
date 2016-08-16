@@ -1,7 +1,7 @@
 package cl.minsal.semantikos.kernel.auth;
 
 import cl.minsal.semantikos.kernel.daos.AuthDAO;
-import cl.minsal.semantikos.model.User;
+import cl.minsal.semantikos.model.IUser;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -18,7 +18,7 @@ public class UserManager {
     @EJB
     AuthDAO authDAO;
 
-    public List<User> getAllUsers() {
+    public List<IUser> getAllUsers() {
 
         return authDAO.getAllUsers();
 

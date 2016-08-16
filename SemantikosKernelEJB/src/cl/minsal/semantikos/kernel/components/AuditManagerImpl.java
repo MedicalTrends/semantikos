@@ -1,7 +1,7 @@
 package cl.minsal.semantikos.kernel.components;
 
 import cl.minsal.semantikos.model.ConceptSMTK;
-import cl.minsal.semantikos.model.User;
+import cl.minsal.semantikos.model.IUser;
 
 import javax.ejb.Stateless;
 
@@ -12,7 +12,7 @@ import javax.ejb.Stateless;
 public class AuditManagerImpl implements AuditManagerInterface {
 
     @Override
-    public void recordNewConcept(ConceptSMTK conceptSMTK, User user) {
+    public void recordNewConcept(ConceptSMTK conceptSMTK, IUser IUser) {
         // TODO: Implement this.
     }
 }

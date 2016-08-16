@@ -1,5 +1,6 @@
 package cl.minsal.semantikos.kernel.auth;
 
+import cl.minsal.semantikos.model.IUser;
 import cl.minsal.semantikos.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,7 +24,7 @@ public class DummyAuthenticationBean extends AuthenticationMethod{
 
     }
 
-    public User getUserDetails(String username) {
+    public IUser getUserDetails(String username) {
 
         if("bpadmin".equals(username) )
             return makeDummyAdminUser();
@@ -31,7 +32,7 @@ public class DummyAuthenticationBean extends AuthenticationMethod{
         return null;
     }
 
-    private User makeDummyAdminUser() {
+    private IUser makeDummyAdminUser() {
         User user = new User();
 
         user.setUsername("bpadmin");

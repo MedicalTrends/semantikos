@@ -2,7 +2,7 @@ package cl.minsal.semantikos.kernel.components;
 
 import cl.minsal.semantikos.model.ConceptSMTK;
 import cl.minsal.semantikos.model.Description;
-import cl.minsal.semantikos.model.User;
+import cl.minsal.semantikos.model.IUser;
 
 import javax.ejb.Local;
 import javax.validation.constraints.NotNull;
@@ -60,7 +60,7 @@ public interface ConceptManagerInterface {
      *
      * @param conceptSMTK El concepto a persistir.
      */
-    void persist(@NotNull ConceptSMTK conceptSMTK, User user);
+    void persist(@NotNull ConceptSMTK conceptSMTK, IUser user);
 
     /**
      * Este método es responsable de actualizar el estado de la entidad en la base de datos.

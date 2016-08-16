@@ -1,6 +1,7 @@
 package cl.minsal.semantikos.designmodelweb.auth;
 
 import cl.minsal.semantikos.kernel.auth.UserManager;
+import cl.minsal.semantikos.model.IUser;
 import cl.minsal.semantikos.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,18 +24,18 @@ public class UsersBean {
     @EJB
     UserManager userManager;
 
-    User selectedUser;
+    IUser selectedUser;
 
-    public User getSelectedUser() {
+    public IUser getSelectedUser() {
         return selectedUser;
     }
 
-    public void setSelectedUser(User selectedUser) {
+    public void setSelectedUser(IUser selectedUser) {
         this.selectedUser = selectedUser;
     }
 
 
-    public List<User> getAllUsers(){
+    public List<IUser> getAllUsers(){
 
         logger.info("buscando usuarios");
 

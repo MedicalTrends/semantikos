@@ -1,14 +1,20 @@
 package cl.minsal.semantikos.model;
 
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * TODO: Falta inicializar, con el estado base para este diagrama
+ * Esta clase representa una máquina de estado.
+ * @author Andrés Farías
  */
 public class StateMachine {
 
+    /** El estado inicial de la máquina de estados */
     private State initialState;
+
+    /** Las transiciones definidas para esta máquina de estado */
+    private List<Transition> transitions;
 
     public List<Transition> getTransitions() {
         return transitions;
@@ -18,21 +24,22 @@ public class StateMachine {
         this.transitions = transitions;
     }
 
-    private List<Transition> transitions;
-
     public State getInitialState() {
         return initialState;
     }
 
     /**
-     * TODO: Escribir la doc.
-     * @param aSourceState
-     * @return
+     * Este método retorna las transiciones que parten desde un estado dado.
+     *
+     * @param aSourceState El estado origen de las transiciones solicitadas.
+     *
+     * @return Una <code>List</code> de transiciones que parten desde el estado <code>aSourceState</code>.
      */
-    public List<Transition> getTransitions(State aSourceState){
+    public List<Transition> getTransitionsFrom(@NotNull State aSourceState) {
 
         List<Transition> results = new ArrayList<Transition>();
         for (Transition transition : transitions) {
+            /* Se filtran aquellas transiciones que parten desde el estado <code>aSourceState</code> */
             if (transition.getSourceState().equals(aSourceState))
                 results.add(transition);
         }
@@ -40,8 +47,15 @@ public class StateMachine {
         return results;
     }
 
-    public List<State> getTargetStates(State aSourceState){
-
+    /**
+     * Este método es responsable de listar los estados a los cuales es posible llegar, en un paso, desde el estado
+     * <code>aSourceState</code>.
+     *
+     * @param aSourceState El estado inicial desde el cual salen transiciones que llegan a los estados solicitados.
+     *
+     * @return Una lista de los estados a los que se llega en una transición desde el estado <code>aSourceState</code>.
+     */
+    public List<State> getTargetStates(State aSourceState) {
 
         List<State> results = new ArrayList<State>();
         for (Transition transition : transitions) {
@@ -58,20 +72,17 @@ public class StateMachine {
      * @param sourceState El estado desde el cual se realiza la transición
      * @param targetState El etado al cual se quiere llegar.
      *
-     *                    @return <code>true</code> si la transición se realiza y <code>false</code> si no
+     * @return <code>true</code> si la transición se realiza y <code>false</code> si no
+     *
      * @throws IllegalStateException Lanzado si la maquina se encuentra en un estado que no le pertenece.
      */
     public boolean transit(State sourceState, State targetState) throws IllegalStateException {
 
-
-        for (Transition transition : getTransitions(sourceState)) {
-
-            if(transition.getTargetState().equals(targetState))
+        for (Transition transition : getTransitionsFrom(sourceState)) {
+            if (transition.getTargetState().equals(targetState))
                 return true;
-
         }
 
         return false;
-
     }
 }

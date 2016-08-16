@@ -1,7 +1,7 @@
 package cl.minsal.semantikos.kernel.components;
 
 import cl.minsal.semantikos.model.ConceptSMTK;
-import cl.minsal.semantikos.model.User;
+import cl.minsal.semantikos.model.IUser;
 
 import javax.ejb.Local;
 
@@ -20,7 +20,7 @@ public interface AuditManagerInterface {
      * TODO: Revisar esta situación con Análisis.
      *
      * @param conceptSMTK El concepto que se creo.
-     * @param user        El usuario que creó el concepto.
+     * @param IUser        El usuario que creó el concepto.
      */
-    public void recordNewConcept(ConceptSMTK conceptSMTK, User user);
+    public void recordNewConcept(ConceptSMTK conceptSMTK, IUser IUser);
 }

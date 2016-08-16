@@ -3,7 +3,7 @@ package cl.minsal.semantikos.kernel.components;
 import cl.minsal.semantikos.kernel.daos.ConceptDAO;
 import cl.minsal.semantikos.model.ConceptSMTK;
 import cl.minsal.semantikos.model.Description;
-import cl.minsal.semantikos.model.User;
+import cl.minsal.semantikos.model.IUser;
 import cl.minsal.semantikos.model.businessrules.BusinessRulesContainer;
 import cl.minsal.semantikos.model.businessrules.ConceptCreationBusinessRuleContainer;
 import org.slf4j.Logger;
@@ -245,7 +245,7 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
     }
 
     @Override
-    public void persist(@NotNull ConceptSMTK conceptSMTK, User user) {
+    public void persist(@NotNull ConceptSMTK conceptSMTK, IUser user) {
         logger.debug("El concepto " + conceptSMTK + " será persistido.");
 
         /* Precondiciones: Reglas de negocio para la persistencia */

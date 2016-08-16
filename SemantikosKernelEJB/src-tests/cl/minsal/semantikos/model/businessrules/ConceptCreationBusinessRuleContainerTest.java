@@ -18,52 +18,52 @@ public class ConceptCreationBusinessRuleContainerTest {
     private Category catFarMedBas = createCategory(CATEGORY_FARMACOS_MEDICAMENTO_BASICO_NAME);
     private Category catFarMedCli = createCategory(CATEGORY_FARMACOS_MEDICAMENTO_CLINICO_NAME);
 
-    private User userDesigner = createUserProfile(DESIGNER_PROFILE_NAME);
-    private User userModeler = createUserProfile(MODELER_PROFILE_NAME);
-    private User userAdmin = createUserProfile(ADMIN_PROFILE_NAME);
+    private IUser IUserDesigner = createUserProfile(DESIGNER_PROFILE_NAME);
+    private IUser IUserModeler = createUserProfile(MODELER_PROFILE_NAME);
+    private IUser IUserAdmin = createUserProfile(ADMIN_PROFILE_NAME);
 
     @Test(expected = BusinessRuleException.class)
     public void testApply_FarmSubs_Designer() throws Exception {
         ConceptSMTK conceptSMTK = new ConceptSMTK(catFarSus);
-        conceptCreationBRC.apply(conceptSMTK, userDesigner);
+        conceptCreationBRC.apply(conceptSMTK, IUserDesigner);
     }
 
     @Test(expected = BusinessRuleException.class)
     public void testApply_FarmSubst_Modeler() throws Exception {
         ConceptSMTK conceptSMTK = new ConceptSMTK(catFarSus);
-        conceptCreationBRC.apply(conceptSMTK, userModeler);
+        conceptCreationBRC.apply(conceptSMTK, IUserModeler);
     }
 
     @Test
     public void testApply_FarmsSubs() throws Exception {
         ConceptSMTK conceptSMTK = createBasicConceptSMTK(catFarSus);
-        conceptCreationBRC.apply(conceptSMTK, userDesigner);
+        conceptCreationBRC.apply(conceptSMTK, IUserDesigner);
     }
 
     @Test
     public void testApply_FarmsMedBas() throws Exception {
         ConceptSMTK conceptSMTK = createBasicConceptSMTK(catFarMedBas);
-        conceptCreationBRC.apply(conceptSMTK, userDesigner);
+        conceptCreationBRC.apply(conceptSMTK, IUserDesigner);
     }
 
     @Test(expected = BusinessRuleException.class)
     public void testApply_FarmsMedBas_Modeler() throws Exception {
         ConceptSMTK conceptSMTK = new ConceptSMTK(catFarMedBas);
 
-        conceptCreationBRC.apply(conceptSMTK, userModeler);
+        conceptCreationBRC.apply(conceptSMTK, IUserModeler);
     }
 
     @Test(expected = BusinessRuleException.class)
     public void testApply_FarmsMedCli_Designer() throws Exception {
         ConceptSMTK conceptSMTK = new ConceptSMTK(catFarMedBas);
-        conceptCreationBRC.apply(conceptSMTK, userDesigner);
+        conceptCreationBRC.apply(conceptSMTK, IUserDesigner);
     }
 
     @Test(expected = BusinessRuleException.class)
     public void testApply_FarmsMedCli_Modeler() throws Exception {
         ConceptSMTK conceptSMTK = new ConceptSMTK(catFarMedBas);
 
-        conceptCreationBRC.apply(conceptSMTK, userModeler);
+        conceptCreationBRC.apply(conceptSMTK, IUserModeler);
     }
 
     /**
@@ -74,7 +74,7 @@ public class ConceptCreationBusinessRuleContainerTest {
     @Test
     public void testBR001_01() throws Exception {
         ConceptSMTK conceptSMTK = new ConceptSMTK(catFarSus);
-        conceptCreationBRC.br001creationRights(conceptSMTK, userDesigner);
+        conceptCreationBRC.br001creationRights(conceptSMTK, IUserDesigner);
     }
 
     /**
@@ -84,7 +84,7 @@ public class ConceptCreationBusinessRuleContainerTest {
      */
     @Test
     public void testBR001_02() throws Exception {
-        conceptCreationBRC.br001creationRights(new ConceptSMTK(), userModeler);
+        conceptCreationBRC.br001creationRights(new ConceptSMTK(), IUserModeler);
     }
 
     /**
@@ -94,7 +94,7 @@ public class ConceptCreationBusinessRuleContainerTest {
     @Test(expected = BusinessRuleException.class)
     public void testBR001_03() {
         /* perfil Admin no debe poder crear conceptos */
-        conceptCreationBRC.br001creationRights(new ConceptSMTK(catFarSus), userAdmin);
+        conceptCreationBRC.br001creationRights(new ConceptSMTK(catFarSus), IUserAdmin);
     }
 
     /**
@@ -104,7 +104,7 @@ public class ConceptCreationBusinessRuleContainerTest {
      */
     @Test
     public void testBR002_01() throws Exception {
-        conceptCreationBRC.br002creationRights(new ConceptSMTK(catFarMedBas), userDesigner);
+        conceptCreationBRC.br002creationRights(new ConceptSMTK(catFarMedBas), IUserDesigner);
     }
 
     /**
@@ -114,7 +114,7 @@ public class ConceptCreationBusinessRuleContainerTest {
      */
     @Test
     public void testBR002_02() throws Exception {
-        conceptCreationBRC.br002creationRights(new ConceptSMTK(catFarMedBas), userModeler);
+        conceptCreationBRC.br002creationRights(new ConceptSMTK(catFarMedBas), IUserModeler);
     }
 
     /**
@@ -125,7 +125,7 @@ public class ConceptCreationBusinessRuleContainerTest {
      */
     @Test(expected = BusinessRuleException.class)
     public void testBR002_03() throws Exception {
-        conceptCreationBRC.br002creationRights(new ConceptSMTK(catFarMedBas), userAdmin);
+        conceptCreationBRC.br002creationRights(new ConceptSMTK(catFarMedBas), IUserAdmin);
     }
 
     /**
@@ -136,7 +136,7 @@ public class ConceptCreationBusinessRuleContainerTest {
      */
     @Test
     public void testBR003_01() throws Exception {
-        conceptCreationBRC.br003creationRights(new ConceptSMTK(catFarMedCli), userDesigner);
+        conceptCreationBRC.br003creationRights(new ConceptSMTK(catFarMedCli), IUserDesigner);
     }
 
     /**
@@ -147,7 +147,7 @@ public class ConceptCreationBusinessRuleContainerTest {
      */
     @Test
     public void testBR003_02() throws Exception {
-        conceptCreationBRC.br003creationRights(new ConceptSMTK(catFarMedCli), userModeler);
+        conceptCreationBRC.br003creationRights(new ConceptSMTK(catFarMedCli), IUserModeler);
     }
 
     /**
@@ -158,13 +158,13 @@ public class ConceptCreationBusinessRuleContainerTest {
      */
     @Test(expected = BusinessRuleException.class)
     public void testBR003_03() throws Exception {
-        conceptCreationBRC.br003creationRights(new ConceptSMTK(catFarMedCli), userAdmin);
+        conceptCreationBRC.br003creationRights(new ConceptSMTK(catFarMedCli), IUserAdmin);
     }
 
     @Test
     public void testBR003_04() throws Exception {
         ConceptSMTK conceptSMTK = createBasicConceptSMTK(catFarMedCli);
-        conceptCreationBRC.apply(conceptSMTK, userDesigner);
+        conceptCreationBRC.apply(conceptSMTK, IUserDesigner);
     }
 
     private ConceptSMTK createBasicConceptSMTK(Category category) {
@@ -192,7 +192,7 @@ public class ConceptCreationBusinessRuleContainerTest {
      *
      * @return Un usuario fresco de perfil diseñador.
      */
-    private User createUserProfile(String profileName) {
+    private IUser createUserProfile(String profileName) {
         User user = new User();
         user.setName(profileName);
         Profile profile = new Profile();

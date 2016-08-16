@@ -1,22 +1,13 @@
 package cl.minsal.semantikos.kernel.daos;
 
-import cl.minsal.semantikos.kernel.util.ConnectionBD;
-import cl.minsal.semantikos.kernel.util.StringUtils;
-import cl.minsal.semantikos.model.Category;
+import cl.minsal.semantikos.model.IUser;
 import cl.minsal.semantikos.model.User;
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import java.io.IOException;
 import java.math.BigInteger;
-import java.sql.CallableStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,18 +22,18 @@ public class AuthDAO {
     @PersistenceContext(unitName = "SEMANTIKOS_PU")
     EntityManager em;
 
-    public User getUserById(int id) {
+    public IUser getUserById(int id) {
 
         Query q = em.createNativeQuery("Select * from semantikos.user u where u.user_id = ? ");
 
         q.setParameter(1,id);
 
-        User user = makeUserFromResult((Object[]) q.getSingleResult());
+        IUser user = makeUserFromResult((Object[]) q.getSingleResult());
 
                 return user;
     }
 
-    private User makeUserFromResult(Object[] row) {
+    private IUser makeUserFromResult(Object[] row) {
 
         User u = new User();
 
@@ -61,21 +52,21 @@ public class AuthDAO {
     }
 
 
-    public void createUser(User u) throws UserExistsException{
+    public void createUser(IUser u) throws UserExistsException{
 
         em.createNativeQuery("insert into semantikos.user ");
 
 
     }
 
-    public List<User> getAllUsers() {
+    public List<IUser> getAllUsers() {
 
-        ArrayList<User> users = new ArrayList<>();
+        ArrayList<IUser> users = new ArrayList<>();
 
         Query q = em.createNativeQuery("Select * from semantikos.smtk_user");
 
         for (Object row : q.getResultList()) {
-            User user = makeUserFromResult((Object[]) row);
+            IUser user = makeUserFromResult((Object[]) row);
             users.add(user);
         }
 
