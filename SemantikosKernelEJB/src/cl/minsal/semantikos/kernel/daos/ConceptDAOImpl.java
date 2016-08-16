@@ -390,4 +390,43 @@ public class ConceptDAOImpl implements ConceptDAO {
 
         return conceptSMTK;
     }
+
+    @Override
+    public long createConcept(String conceptid, boolean isReview, boolean isConsultated, long stateConcept, boolean isFullyDefinied, boolean isPublished) {
+
+        ConnectionBD connect = new ConnectionBD();
+        long idConcept;
+        String sql = "{call semantikos.create_concept(?,?,?,?,?,?)}";
+
+        try (Connection connection = connect.getConnection();
+             CallableStatement call = connection.prepareCall(sql)) {
+
+            call.setString(1, conceptid);
+            call.setBoolean(2,isReview);
+            call.setBoolean(3,isConsultated);
+            call.setLong(4, stateConcept);
+            call.setBoolean(5, isFullyDefinied);
+            call.setBoolean(6,isPublished);
+            call.execute();
+
+            ResultSet rs = call.getResultSet();
+
+            if (rs.next()) {
+                idConcept = rs.getLong(1);
+                if(idConcept==-1){
+                    String errorMsg = "El concepto no fue creado, conceptID: " + conceptid;
+                    logger.error(errorMsg);
+                    throw new IllegalArgumentException(errorMsg);
+                }
+            } else {
+                String errorMsg = "El concepto no fue creado, conceptID: " + conceptid;
+                logger.error(errorMsg);
+                throw new IllegalArgumentException(errorMsg);
+            }
+            rs.close();
+        } catch (SQLException e) {
+            throw new EJBException(e);
+        }
+        return idConcept;
+    }
 }
