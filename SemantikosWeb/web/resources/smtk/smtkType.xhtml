@@ -5,6 +5,7 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:composite="http://java.sun.com/jsf/composite"
+      xmlns:smtk="http://java.sun.com/jsf/composite/smtk"
       xmlns:p="http://primefaces.org/ui"
       xmlns:c="http://java.sun.com/jsp/jstl/core">
 
@@ -152,23 +153,7 @@
 
             </div>
             <div class="ui-g-12 ui-md-6 ui-lg-3">
-                <div class="ui-messages ui-widget ui-corner-all ui-messages-info" style="margin: 0px">
-                        <span class="ui-messages-icon fa fa-info-circle">
-                        </span>
-                    <p:outputLabel rendered="#{cc.attrs.relationshipDefinition.multiplicity.lowerBoundary!=0}">
-                            <span class="ui-messages-detail">
-                                <c:if test="#{cc.attrs.relationshipDefinition.multiplicity.lowerBoundary==1}">
-                                    #{cc.attrs.relationshipDefinition.multiplicity.lowerBoundary} elemento es requerido
-
-                                </c:if>
-                                <c:if test="#{cc.attrs.relationshipDefinition.multiplicity.lowerBoundary!=1}">
-                                    #{cc.attrs.relationshipDefinition.multiplicity.lowerBoundary} elementos son requeridos
-
-                                </c:if>
-                            </span>
-                    </p:outputLabel>
-                </div>
-
+                <smtk:info relationshipDefinition="#{cc.attrs.relationshipDefinition}" />
             </div>
         </div>
 

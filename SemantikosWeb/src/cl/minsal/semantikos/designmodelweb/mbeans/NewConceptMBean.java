@@ -23,8 +23,10 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.component.UIColumn;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ComponentSystemEvent;
 import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -132,10 +134,10 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         context.execute("PF('dialogNameConcept').show();");
 
-        category = categoryManager.getCategoryById(1);
+        //category = categoryManager.getCategoryById(1);
         //category = categoryManager.getCategoryById(105590001);
 
-        //category = categoryManager.getCategoryById(71388002);
+        category = categoryManager.getCategoryById(71388002);
                 //descriptionManager.getAllTypes();
                 //DescriptionTypeFactory.getInstance().getDescriptionTypes();
 
@@ -449,6 +451,32 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         conceptSelected=null;
     }
 
+    public void validateRelationships(ComponentSystemEvent event) {
+
+        System.out.println("validateRelationships");
+
+        FacesContext fc = FacesContext.getCurrentInstance();
+
+        UIComponent components = event.getComponent();
+
+        for (RelationshipDefinition relationshipDefinition : category.getRelationshipDefinitions()) {
+
+            //if(concept.getRelationshipsByRelationDefinition(relationshipDefinition).size()<relationshipDefinition.getMultiplicity().getLowerBoundary()){
+                UIColumn component = (UIColumn) components.findComponent(String.valueOf(relationshipDefinition.getId())+relationshipDefinition.getTargetDefinition().toString());
+
+                //component.
+                Map<String, Object> attrMap = component.getAttributes();
+                String className = (String)attrMap.get("styleClass");
+
+                System.out.println(className);
+            //}
+
+
+        }
+
+    }
+
+
     /**
      * Este metodo revisa que las relaciones cumplan el lower_boundary del
      * relationship definition, en caso de no cumplir la condicion se retorna falso.
@@ -512,6 +540,7 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
 
     public void saveConcept(){
 
+
         FacesContext context = FacesContext.getCurrentInstance();
 
         if(FSN!=null || FSN.length()>0) {
@@ -532,7 +561,7 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         }
 
 
-
+        //System.out.println("se va a guardar el concepto");
 
     }
 

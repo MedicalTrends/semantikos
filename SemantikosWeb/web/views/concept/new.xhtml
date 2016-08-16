@@ -15,6 +15,8 @@
             <p:growl id="growl" showDetail="true" showSummary="true"/>
             <p:growl id="editMsgs" showDetail="true"/>
             <!--p:messages autoUpdate="true"></p:messages-->
+            <!-- register a PostValidateEvent -->
+            <!--f:event listener="#{newConceptMBean.validateRelationships()}" type="postValidate" /-->
             <h3>Responsive</h3>
 
             <div class="ui-g">
@@ -231,9 +233,8 @@
 
                     <h:column>
 
-
-
-                        <smtk:smtkType rendered="#{relationshipDefinition.targetDefinition.SMTKType}"
+                        <smtk:smtkType
+                                       rendered="#{relationshipDefinition.targetDefinition.SMTKType}"
                                        targetDefinition="#{relationshipDefinition.targetDefinition}"
                                        relationshipDefinition="#{relationshipDefinition}" />
 
@@ -248,8 +249,6 @@
                                 relationshipDefinition="#{relationshipDefinition}"
                                 concept="#{newConceptMBean.concept}"
                                 rendered="#{relationshipDefinition.targetDefinition.basicType}" />
-
-
 
                     </h:column>
 

@@ -127,6 +127,17 @@ public class ConceptSMTK implements Target {
         return someRelationships;
     }
 
+    /**
+     * Este método determina si existen instancias de relaciones asociadas a una definición de relación
+     *
+     * @param relationshipDefinition El tipo de relación al que pertenecen las relaciones a retornar.
+     *
+     * @return Una <code>java.util.List</code> de relaciones de tipo <code>relationshipDefinition</code>.
+     */
+    public boolean hasRelationships(RelationshipDefinition relationshipDefinition){
+        return !getRelationshipsByRelationDefinition(relationshipDefinition).isEmpty();
+    }
+
     public void setRelationships(List<Relationship> relationships) {
         this.relationships = relationships;
     }
