@@ -392,7 +392,7 @@ public class ConceptDAOImpl implements ConceptDAO {
     }
 
     @Override
-    public long createConcept(String conceptid, boolean isReview, boolean isConsultated, long stateConcept, boolean isFullyDefinied, boolean isPublished) {
+    public long persist(String conceptid, boolean isReview, boolean isConsultated, long stateConcept, boolean isFullyDefinied, boolean isPublished) {
 
         ConnectionBD connect = new ConnectionBD();
         long idConcept;
@@ -402,7 +402,7 @@ public class ConceptDAOImpl implements ConceptDAO {
              CallableStatement call = connection.prepareCall(sql)) {
 
             call.setString(1, conceptid);
-            call.setBoolean(2,isReview);
+            call.setBoolean(2, isReview);
             call.setBoolean(3,isConsultated);
             call.setLong(4, stateConcept);
             call.setBoolean(5, isFullyDefinied);

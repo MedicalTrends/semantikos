@@ -66,5 +66,5 @@ public interface ConceptDAO {
 
     public ConceptSMTK getConceptByID(long id);
 
-    public long createConcept (String conceptid, boolean isReview, boolean isConsultated, long stateConcept, boolean isFullyDefinied, boolean isPublished);
+    public long persist(String conceptid, boolean isReview, boolean isConsultated, long stateConcept, boolean isFullyDefinied, boolean isPublished);
 }
