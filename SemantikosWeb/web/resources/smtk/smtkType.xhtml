@@ -33,11 +33,7 @@
                 </p:inputText>
             </div>
             <div class="ui-g-12 ui-md-6 ui-lg-3">
-                <p:commandButton value="Info" type="button" onclick="PF('dlg1').show();"/>
-                <p:dialog header="Informacion" widgetVar="dlg1" minHeight="40">
-                    <h:outputText
-                            value="Se requiere  #{cc.attrs.relationshipDefinition.multiplicity.lowerBoundary} relacion(es)"/>
-                </p:dialog>
+
             </div>
             <div class="ui-g-12 ui-md-6 ui-lg-3">
             </div>
@@ -152,11 +148,26 @@
                     <f:attribute name="targetDef" value="#{cc.attrs.targetDefinition}"></f:attribute>
                 </p:autoComplete>
             </div>
-            <div class="ui-g-12 ui-md-6 ui-lg-6">
+            <div class="ui-g-12 ui-md-6 ui-lg-4">
 
             </div>
-            <div class="ui-g-12 ui-md-6 ui-lg-1">
+            <div class="ui-g-12 ui-md-6 ui-lg-3">
+                <div class="ui-messages ui-widget ui-corner-all ui-messages-info" style="margin: 0px">
+                        <span class="ui-messages-icon fa fa-info-circle">
+                        </span>
+                    <p:outputLabel rendered="#{cc.attrs.relationshipDefinition.multiplicity.lowerBoundary!=0}">
+                            <span class="ui-messages-detail">
+                                <c:if test="#{cc.attrs.relationshipDefinition.multiplicity.lowerBoundary==1}">
+                                    #{cc.attrs.relationshipDefinition.multiplicity.lowerBoundary} elemento es requerido
 
+                                </c:if>
+                                <c:if test="#{cc.attrs.relationshipDefinition.multiplicity.lowerBoundary!=1}">
+                                    #{cc.attrs.relationshipDefinition.multiplicity.lowerBoundary} elementos son requeridos
+
+                                </c:if>
+                            </span>
+                    </p:outputLabel>
+                </div>
 
             </div>
         </div>
