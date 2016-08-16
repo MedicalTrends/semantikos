@@ -292,8 +292,6 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
 
 
 
-
-
     public ConceptSMTK getTargetForRD(RelationshipDefinition relationshipDefinition, ConceptSMTK conceptSel){
         if(targetSelected==null){
             targetSelected= new HashMap<Long, ConceptSMTK>();
@@ -345,12 +343,7 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
 
         }
 
-
-
-
     }
-
-
 
 
     /**
@@ -526,6 +519,20 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         concept.setCategory(category);
         concept.setState(initialState);
 
+        // Agregar las relaciones si existen
+
+        for (RelationshipDefinition relationshipDefinition : category.getRelationshipDefinitions()) {
+            //Evaluar la multiplicidad de la relación
+            for (int i = 0; i < Math.max(relationshipDefinition.getMultiplicity().getLowerBoundary(),1); ++i) {
+                Relationship relationship = new Relationship(relationshipDefinition);
+                if (!relationshipDefinition.getTargetDefinition().isSMTKType()) {
+                    //relationshipDefinition.addRelationship(relationship);
+                    concept.addRelationship(relationship);
+                }
+
+            }
+
+        }
 
 
         return concept;
@@ -542,6 +549,7 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
 
 
         FacesContext context = FacesContext.getCurrentInstance();
+
 
         if(FSN!=null || FSN.length()>0) {
             addDescriptionToConcept(FSN, descriptionManager.getTypeFSN(), true);
