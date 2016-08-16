@@ -12,7 +12,7 @@
 <composite:interface>
     <composite:attribute name="relationshipDefinition" type="cl.minsal.semantikos.model.relationships.RelationshipDefinition" />
     <composite:attribute name="targetDefinition" type="cl.minsal.semantikos.model.basictypes.BasicTypeDefinition" />
-    <composite:attribute name="concept" type="cl.minsal.semantikos.model.ConceptSMTK" />
+    <composite:attribute name="concept" type="cl.minsal.semantikos.model.ConceptSMTKWeb" />
     <composite:attribute name="componentId" type="java.lang.String" />
 </composite:interface>
 <composite:implementation>
@@ -110,7 +110,6 @@
                                  rendered="#{cc.attrs.targetDefinition.hasDomain}"
                                  >
                     <p:ajax event="itemSelect"
-                            listener="#{newConceptMBean.addOrChangeRelationship(cc.attrs.relationshipDefinition,value)}"
                             process="@this" />
                     <f:selectItem itemLabel="Seleccione"
                                   itemValue=""
@@ -129,7 +128,6 @@
                                decimalSeparator=","
                                thousandSeparator="."
                                rendered="#{cc.attrs.targetDefinition.integer}">
-                    <p:ajax listener="#{newConceptMBean.addOrChangeRelationship(cc.attrs.relationshipDefinition,value)}" />
                 </p:inputNumber>
 
                 <p:inputNumber id="basicTypeValue3"
@@ -141,7 +139,6 @@
                                thousandSeparator="."
                                decimalPlaces="2"
                                rendered="#{cc.attrs.targetDefinition.float}">
-                    <p:ajax listener="#{newConceptMBean.addOrChangeRelationship(cc.attrs.relationshipDefinition,value)}" />
                 </p:inputNumber>
                 <p:inputText id="basicTypeValue4"
                              value="#{cc.attrs.concept.getRelationshipsByRelationDefinition(cc.attrs.relationshipDefinition).get(0).target.value}"
@@ -149,7 +146,6 @@
                              minValue="#{cc.attrs.targetDefinition.interval.lowerBoundary}"
                              maxValue="#{cc.attrs.targetDefinition.interval.upperBoundary}"
                              rendered="#{cc.attrs.targetDefinition.string}">
-                    <p:ajax listener="#{newConceptMBean.addOrChangeRelationship(cc.attrs.relationshipDefinition,value)}" />
                 </p:inputText>
                 <p:calendar id="basicTypeValue5"
                             value="#{cc.attrs.concept.getRelationshipsByRelationDefinition(cc.attrs.relationshipDefinition).get(0).target.value}"
@@ -158,7 +154,6 @@
                             mindate="#{cc.attrs.targetDefinition.interval.lowerBoundary}"
                             maxdate="#{cc.attrs.targetDefinition.interval.upperBoundary}"
                             rendered="#{cc.attrs.targetDefinition.date}">
-                    <p:ajax listener="#{newConceptMBean.addOrChangeRelationship(cc.attrs.relationshipDefinition,value)}" />
                 </p:calendar>
             </div>
             <div class="ui-g-12 ui-md-6 ui-lg-1">
