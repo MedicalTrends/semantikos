@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.ejb.EJB;
+import javax.ejb.EJBException;
 import javax.ejb.Stateless;
 import javax.validation.constraints.NotNull;
 import java.text.Normalizer;
@@ -34,6 +35,9 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
 
     @EJB
     private StateMachineManagerInterface stateMachineManager;
+
+    @EJB
+    private AuditManagerInterface auditManager;
 
     // TODO: Terminar esto.
     @Override
@@ -125,7 +129,6 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
 
     /**
      * Este método es responsable de sincronizar el concepto respecto a la base de datos,
-     * @param concept
      */
     private void refresh(ConceptSMTK concept) {
 
@@ -137,7 +140,7 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
     }
 
     @Override
-    public List<ConceptSMTK> findConceptByPatternCategoryPageNumber( String pattern, Long[] categories, int pageNumber, int pageSize) {
+    public List<ConceptSMTK> findConceptByPatternCategoryPageNumber(String pattern, Long[] categories, int pageNumber, int pageSize) {
 
         // FIXME: Cambiar estados en duro a variables?
         Long[] states = {(long) 3, (long) 4};
@@ -147,7 +150,7 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
 
         /* El patron se separa en varios palabras: pattern.split(pattern) */
         return conceptDAO.getConceptByPatternCategory(pattern.split(pattern), categories, states, pageSize, pageNumber);
-     }
+    }
 
     @Override
     public List<ConceptSMTK> findConceptByConceptIDOrDescriptionCategoryPageNumber(String patter, Long[] categories, int pageNumber, int pageSize) {
@@ -248,6 +251,17 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
         /* Precondiciones: Reglas de negocio para la persistencia */
         BusinessRulesContainer brm = new ConceptCreationBusinessRuleContainer();
         brm.apply(conceptSMTK, user);
+
+        /* En este momento se está listo para persistir el concepto */
+        try {
+            conceptDAO.persist(conceptSMTK);
+        } catch (EJBException ejbException) {
+            String errorMsg = "No se pudo persistir el concepto " + conceptSMTK.toString();
+            logger.error(errorMsg, ejbException);
+        }
+
+        /* Se deja registro en la auditoría */
+        auditManager.recordNewConcept(conceptSMTK, user);
 
     }
 

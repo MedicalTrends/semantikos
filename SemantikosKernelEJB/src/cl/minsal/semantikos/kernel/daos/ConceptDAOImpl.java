@@ -6,6 +6,7 @@ import cl.minsal.semantikos.model.Category;
 import cl.minsal.semantikos.model.ConceptSMTK;
 import cl.minsal.semantikos.model.Description;
 import cl.minsal.semantikos.model.State;
+import cl.minsal.semantikos.model.relationships.Relationship;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,6 +38,10 @@ public class ConceptDAOImpl implements ConceptDAO {
     @EJB
     private DescriptionDAO descriptionDAO;
 
+    /** El DAO para manejar relaciones del concepto */
+    @EJB
+    private RelationshipDAO relationshipDAO;
+
 
     /**
      * Este método es responsable de crear un concepto SMTK a partir de un resultset.
@@ -57,7 +62,8 @@ public class ConceptDAOImpl implements ConceptDAO {
         long state;
         boolean completelyDefined;
         boolean published;
-        long conceptId;
+        String conceptId;
+
         id = Long.valueOf(resultSet.getString("id"));
         idCategory = Long.valueOf(resultSet.getString("id_category"));
         objectCategory = categoryDAO.getCategoryById(idCategory);
@@ -66,7 +72,7 @@ public class ConceptDAOImpl implements ConceptDAO {
         state = Long.valueOf(resultSet.getString("id_state_concept"));
         completelyDefined = Boolean.parseBoolean(resultSet.getString("is_fully_defined"));
         published = Boolean.parseBoolean(resultSet.getString("is_published"));
-        conceptId = Long.valueOf(resultSet.getString("conceptid"));
+        conceptId = resultSet.getString("conceptid");
         State st = new State();
         st.setName(String.valueOf(state));
         List<Description> descriptions = descriptionDAO.getDescriptionsByConceptID(id);
@@ -182,7 +188,6 @@ public class ConceptDAOImpl implements ConceptDAO {
         CallableStatement call;
 
         // TODO: TryWithResources
-
         try (Connection connection = connect.getConnection();) {
 
             Array ArrayStates = connection.createArrayOf("bigint", states);
@@ -202,36 +207,12 @@ public class ConceptDAOImpl implements ConceptDAO {
                 call.setInt(3, pageSize);
                 call.setArray(4, ArrayStates);
             }
-
-
             call.execute();
 
             ResultSet rs = call.getResultSet();
-
             concepts = new ArrayList<>();
-
             while (rs.next()) {
-                id = Long.valueOf(rs.getString("id"));
-                conceptId = Long.valueOf(rs.getString("conceptid"));
-                idCategory = Long.valueOf(rs.getString("id_category"));
-
-                if (objectCategory != null) {
-                    if (objectCategory.getIdCategory() != idCategory) {
-                        objectCategory = categoryDAO.getCategoryById(idCategory);
-                    }
-                } else {
-                    objectCategory = categoryDAO.getCategoryById(idCategory);
-                }
-
-                check = Boolean.parseBoolean(rs.getString("is_to_be_reviewed"));
-                consult = Boolean.parseBoolean(rs.getString("is_to_be_consultated"));
-                state = Long.valueOf(rs.getString("id_state_concept"));
-                completelyDefined = Boolean.parseBoolean(rs.getString("is_fully_defined"));
-                published = Boolean.parseBoolean(rs.getString("is_published"));
-                State st = new State();
-                st.setName(String.valueOf(state));
-                List<Description> descriptions = descriptionDAO.getDescriptionsByConceptID(id);
-                concepts.add(new ConceptSMTK(id, conceptId, objectCategory, check, consult, st, completelyDefined, published, descriptions.toArray(new Description[descriptions.size()])));
+                concepts.add(createConceptSMTKFromResultSet(rs));
             }
             rs.close();
 
@@ -392,41 +373,55 @@ public class ConceptDAOImpl implements ConceptDAO {
     }
 
     @Override
-    public long persist(String conceptid, boolean isReview, boolean isConsultated, long stateConcept, boolean isFullyDefinied, boolean isPublished) {
+    //TODO: Revisar transaccionalidad de estas tres acciones
+    public void persist(ConceptSMTK conceptSMTK) {
 
+        /* Primero se persisten los atributos básicos del concepto */
+        persistConceptBasicInfo(conceptSMTK);
+
+        /* Luego se persisten sus descripciones */
+        for (Description description : conceptSMTK.getDescriptions()) {
+            descriptionDAO.persist(description, conceptSMTK);
+        }
+
+        /* Y finalmente se persisten sus relaciones */
+        for (Relationship relationship : conceptSMTK.getRelationships()) {
+            relationshipDAO.persist(relationship);
+        }
+    }
+
+    private void persistConceptBasicInfo(ConceptSMTK conceptSMTK) {
         ConnectionBD connect = new ConnectionBD();
-        long idConcept;
+        long id;
         String sql = "{call semantikos.create_concept(?,?,?,?,?,?)}";
 
         try (Connection connection = connect.getConnection();
              CallableStatement call = connection.prepareCall(sql)) {
 
-            call.setString(1, conceptid);
-            call.setBoolean(2, isReview);
-            call.setBoolean(3,isConsultated);
-            call.setLong(4, stateConcept);
-            call.setBoolean(5, isFullyDefinied);
-            call.setBoolean(6,isPublished);
+            call.setString(1, conceptSMTK.getConceptID());
+            call.setBoolean(2, conceptSMTK.isToBeReviewed());
+            call.setBoolean(3, conceptSMTK.isToBeConsulted());
+            call.setLong(4, conceptSMTK.getState().getId());
+            call.setBoolean(5, conceptSMTK.isFullyDefined());
+            call.setBoolean(6, conceptSMTK.isPublished());
             call.execute();
 
             ResultSet rs = call.getResultSet();
 
             if (rs.next()) {
-                idConcept = rs.getLong(1);
-                if(idConcept==-1){
-                    String errorMsg = "El concepto no fue creado, conceptID: " + conceptid;
-                    logger.error(errorMsg);
-                    throw new IllegalArgumentException(errorMsg);
-                }
+                /* Se recupera el ID del concepto persistido */
+                id = rs.getLong(1);
+                conceptSMTK.setId(id);
             } else {
-                String errorMsg = "El concepto no fue creado, conceptID: " + conceptid;
+                String errorMsg = "El concepto no fue creado por una razon desconocida. Alertar al area de desarrollo sobre esto";
                 logger.error(errorMsg);
-                throw new IllegalArgumentException(errorMsg);
+                throw new EJBException(errorMsg);
             }
             rs.close();
         } catch (SQLException e) {
-            throw new EJBException(e);
+            String errorMsg = "El concepto " + conceptSMTK.toString() + " no fue persistido.";
+            logger.error(errorMsg, e);
+            throw new EJBException(errorMsg, e);
         }
-        return idConcept;
     }
 }

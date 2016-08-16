@@ -11,9 +11,6 @@ import java.sql.Timestamp;
  */
 public class Relationship {
 
-    /** ID en la base de datos */
-    private long idRelationship;
-
     /** El concepto origen de esta relación */
     private ConceptSMTK sourceConcept;
 
@@ -26,6 +23,9 @@ public class Relationship {
     /** La relación es Vigente (valida) hasta la fecha... */
     private Timestamp validityUntil;
 
+    /** Identificador único de la base de datos */
+    private long id;
+
     /**
      * Este es el constructor mínimo con el cual se crean las Relaciones
      *
@@ -33,16 +33,18 @@ public class Relationship {
      */
     public Relationship(RelationshipDefinition relationshipDefinition) {
         this.relationshipDefinition = relationshipDefinition;
+        this.id = -1;
 
         /* Caso tipo básico */
-        if(relationshipDefinition.getTargetDefinition().isBasicType()) {
+        if (relationshipDefinition.getTargetDefinition().isBasicType()) {
             this.target = new BasicTypeValue<>();
         }
+
         // TODO: Finish this.
-        if(relationshipDefinition.getTargetDefinition().isHelperTable())
+        if (relationshipDefinition.getTargetDefinition().isHelperTable())
             //this.target = new HelperTableRecord();
-        if(relationshipDefinition.getTargetDefinition().isSMTKType())
-            this.target = new ConceptSMTK();
+            if (relationshipDefinition.getTargetDefinition().isSMTKType())
+                this.target = new ConceptSMTK();
     }
 
     /**
@@ -52,19 +54,10 @@ public class Relationship {
      */
     public Relationship(long id, ConceptSMTK sourceConcept, RelationshipDefinition relationshipDefinition, Target target, Timestamp validityUntil) {
         this(relationshipDefinition);
-        this.idRelationship = id;
         this.sourceConcept = sourceConcept;
         this.relationshipDefinition = relationshipDefinition;
         this.target = target;
         this.validityUntil = validityUntil;
-    }
-
-    public long getIdRelationship() {
-        return idRelationship;
-    }
-
-    public void setIdRelationship(long idRelationship) {
-        this.idRelationship = idRelationship;
     }
 
     public ConceptSMTK getSourceConcept() {
@@ -106,14 +99,18 @@ public class Relationship {
      */
     public boolean isConsistent() {
 
-        if (this.relationshipDefinition.getTargetDefinition().isBasicType()){
+        if (this.relationshipDefinition.getTargetDefinition().isBasicType()) {
             return (this.target instanceof BasicTypeValue);
         }
 
-        if (this.relationshipDefinition.getTargetDefinition().isHelperTable()){
-            return (this.target instanceof HelperTableRecord);
-        }
+        return this.relationshipDefinition.getTargetDefinition().isHelperTable() && (this.target instanceof HelperTableRecord);
+    }
 
-        return false;
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public long getId() {
+        return id;
     }
 }

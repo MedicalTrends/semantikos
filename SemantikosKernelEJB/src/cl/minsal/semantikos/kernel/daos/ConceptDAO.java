@@ -66,5 +66,10 @@ public interface ConceptDAO {
 
     public ConceptSMTK getConceptByID(long id);
 
-    public long persist(String conceptid, boolean isReview, boolean isConsultated, long stateConcept, boolean isFullyDefinied, boolean isPublished);
+    /**
+     * Este método es responsable persistir la entidad Concepto SMTK en la base de datos.
+     *
+     * @param conceptSMTK El concepto que será persistido.
+     */
+    public void persist(ConceptSMTK conceptSMTK);
 }

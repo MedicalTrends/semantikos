@@ -1,11 +1,18 @@
 package cl.minsal.semantikos.kernel.daos;
 
+import cl.minsal.semantikos.model.relationships.Relationship;
+
 import javax.ejb.Local;
 
 /**
- * Created by des01c7 on 16-08-16.
+ * @author Andrés Farías
  */
 @Local
 public interface RelationshipDAO {
-    public long createRelationship(long idSource, long idTarget, long idRelationshipDefinition);
+
+    /**
+     * Este método es responsable de persistir una relación asociada a un concepto.
+     * @param relationship La relación que se desea persistir.
+     */
+    public void persist(Relationship relationship);
 }

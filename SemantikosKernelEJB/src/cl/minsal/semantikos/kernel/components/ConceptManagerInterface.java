@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by stk-des01 on 01-06-16.
+ * @author Andrés Farías
  */
 @Local
 public interface ConceptManagerInterface {

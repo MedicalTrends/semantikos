@@ -1,7 +1,5 @@
 package cl.minsal.semantikos.model.basictypes;
 
-import cl.minsal.semantikos.kernel.daos.CategoryDAOImpl;
-import cl.minsal.semantikos.model.ConceptSMTK;
 import cl.minsal.semantikos.model.relationships.Target;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,7 +8,12 @@ import org.slf4j.LoggerFactory;
  *
  */
 public class BasicTypeValue<T extends Comparable> implements Target {
-    static final Logger LOGGER = LoggerFactory.getLogger(BasicTypeValue.class);
+
+    private static final Logger logger = LoggerFactory.getLogger(BasicTypeValue.class);
+
+    /** Identificador único de la base de datos */
+    private long id;
+
     private BasicTypeDefinition basicTypeDefinition;
 
     private T value;
@@ -22,6 +25,15 @@ public class BasicTypeValue<T extends Comparable> implements Target {
     }
     */
 
+    @Override
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
     public T getValue() {
         return value;
     }
@@ -29,7 +41,7 @@ public class BasicTypeValue<T extends Comparable> implements Target {
     public void setValue(T value)
 
     {
-        LOGGER.debug("seteando valor de target valor={}",value);
+        logger.debug("seteando valor de target valor={}", value);
         this.value = value;
     }
 
