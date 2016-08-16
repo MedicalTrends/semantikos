@@ -35,8 +35,6 @@ public class DescriptionDAOImpl implements DescriptionDAO {
 
     @PostConstruct
     private void init() {
-        logger.warn("********* EJB inicio");
-        System.out.println("****************");
         this.refreshDescriptionTypes();
     }
 
@@ -177,7 +175,7 @@ public class DescriptionDAOImpl implements DescriptionDAO {
 
         ConnectionBD connect = new ConnectionBD();
 
-        String sql = "{call semantikos.create_concept(?,?,?,?,?,?)}";
+        String sql = "{call semantikos.create_description(?,?,?,?,?,?,?,?,?)}";
 
         try (Connection connection = connect.getConnection();
              CallableStatement call = connection.prepareCall(sql)) {
