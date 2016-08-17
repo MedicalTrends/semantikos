@@ -49,7 +49,7 @@ public class TargetDAOImpl implements TargetDAO {
                 if(target==-1){
                     String errorMsg = "El target no fue creado";
                     logger.error(errorMsg);
-                    throw new IllegalArgumentException(errorMsg);
+                    throw new EJBException(errorMsg);
                 }
             } else {
                 String errorMsg = "El target no fue creado";

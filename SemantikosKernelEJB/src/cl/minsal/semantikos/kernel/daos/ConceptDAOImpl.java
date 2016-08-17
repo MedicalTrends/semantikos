@@ -380,30 +380,33 @@ public class ConceptDAOImpl implements ConceptDAO {
         persistConceptBasicInfo(conceptSMTK);
 
         /* Luego se persisten sus descripciones */
+
         for (Description description : conceptSMTK.getDescriptions()) {
             descriptionDAO.persist(description, conceptSMTK);
         }
 
+
         /* Y finalmente se persisten sus relaciones */
-        for (Relationship relationship : conceptSMTK.getRelationships()) {
+        /*for (Relationship relationship : conceptSMTK.getRelationships()) {
             relationshipDAO.persist(relationship);
-        }
+        }*/
     }
 
     private void persistConceptBasicInfo(ConceptSMTK conceptSMTK) {
         ConnectionBD connect = new ConnectionBD();
         long id;
-        String sql = "{call semantikos.create_concept(?,?,?,?,?,?)}";
+        String sql = "{call semantikos.create_concept(?,?,?,?,?,?,?)}";
 
         try (Connection connection = connect.getConnection();
              CallableStatement call = connection.prepareCall(sql)) {
 
             call.setString(1, conceptSMTK.getConceptID());
-            call.setBoolean(2, conceptSMTK.isToBeReviewed());
-            call.setBoolean(3, conceptSMTK.isToBeConsulted());
-            call.setLong(4, conceptSMTK.getState().getId());
-            call.setBoolean(5, conceptSMTK.isFullyDefined());
-            call.setBoolean(6, conceptSMTK.isPublished());
+            call.setLong(2,conceptSMTK.getCategory().getIdCategory());
+            call.setBoolean(3, conceptSMTK.isToBeReviewed());
+            call.setBoolean(4, conceptSMTK.isToBeConsulted());
+            call.setLong(5, conceptSMTK.getState().getId());
+            call.setBoolean(6, conceptSMTK.isFullyDefined());
+            call.setBoolean(7, conceptSMTK.isPublished());
             call.execute();
 
             ResultSet rs = call.getResultSet();

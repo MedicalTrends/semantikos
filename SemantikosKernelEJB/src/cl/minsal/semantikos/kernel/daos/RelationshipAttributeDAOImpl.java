@@ -41,7 +41,7 @@ public class RelationshipAttributeDAOImpl implements RelationshipAttributeDAO {
                 if(idRelationShipAttribute==-1){
                     String errorMsg = "La relacion no fue creada";
                     logger.error(errorMsg);
-                    throw new IllegalArgumentException(errorMsg);
+                    throw new EJBException(errorMsg);
                 }
             } else {
                 String errorMsg = "La relacion no fue creada";

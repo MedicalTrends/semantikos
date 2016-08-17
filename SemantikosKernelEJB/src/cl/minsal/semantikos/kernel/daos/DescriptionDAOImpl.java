@@ -173,7 +173,7 @@ public class DescriptionDAOImpl implements DescriptionDAO {
     public void persist(Description description, ConceptSMTK conceptSMTK) {
 
         ConnectionBD connect = new ConnectionBD();
-        String sql = "{call semantikos.create_description(?,?,?,?,?,?,?,?,?)}";
+        String sql = "{call semantikos.create_description(?,?,?,?,?,?,?,?,?,?,?)}";
         try (Connection connection = connect.getConnection();
              CallableStatement call = connection.prepareCall(sql)) {
 
@@ -185,7 +185,9 @@ public class DescriptionDAOImpl implements DescriptionDAO {
             call.setBoolean(6, description.isActive());
             call.setBoolean(7, description.isPublished());
             call.setLong(8, description.getState().getId());
-            call.setLong(9, conceptSMTK.getId());
+            call.setLong(9,1); // ID USUARIO **************************************************************
+            call.setLong(10,0); //La descripcion inicia con uso en cero
+            call.setLong(11, conceptSMTK.getId());
 
             call.execute();
 

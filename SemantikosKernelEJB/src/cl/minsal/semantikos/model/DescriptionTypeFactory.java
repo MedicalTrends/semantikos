@@ -14,7 +14,7 @@ public class DescriptionTypeFactory {
 
     public static final DescriptionType TYPELESS_DESCRIPTION_TYPE = new DescriptionType(-1, "Sin Tipo", "El tipo de descripcion sin tipo :).");
 
-    public static final String FAVOURITE_DESCRIPTION_TYPE_NAME = "Preferido";
+    public static final String FAVOURITE_DESCRIPTION_TYPE_NAME = "preferido";
 
     /** La lista de descripciones */
     private List<DescriptionType> descriptionTypes;
@@ -59,7 +59,7 @@ public class DescriptionTypeFactory {
      */
     public DescriptionType getFavoriteDescriptionType() {
         if (descriptionTypesByName.containsKey(FAVOURITE_DESCRIPTION_TYPE_NAME)) {
-            return this.descriptionTypesByName.get(FAVOURITE_DESCRIPTION_TYPE_NAME.toUpperCase());
+            return this.descriptionTypesByName.get(FAVOURITE_DESCRIPTION_TYPE_NAME);
         } else {
             return new DescriptionType(-1, FAVOURITE_DESCRIPTION_TYPE_NAME, "Descripción Preferida (por defecto)");
         }
