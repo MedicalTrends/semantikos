@@ -11,6 +11,8 @@ import java.util.List;
 @Local
 public interface ConceptDAO {
 
+    public static final long NON_PERSISTED_ID = -1;
+
     /**
      * Este método es responsable de recuperar todos los conceptos, sin considerar su categoría, que posean un cierto
      * estado interno.

@@ -135,7 +135,7 @@ public class ConceptSMTK implements Target {
      *
      * @return Una <code>java.util.List</code> de relaciones de tipo <code>relationshipDefinition</code>.
      */
-    public boolean hasRelationships(RelationshipDefinition relationshipDefinition){
+    public boolean hasRelationships(RelationshipDefinition relationshipDefinition) {
         return !getRelationshipsByRelationDefinition(relationshipDefinition).isEmpty();
     }
 
@@ -251,10 +251,13 @@ public class ConceptSMTK implements Target {
         this.descriptions.remove(description);
     }
 
+    /**
+     * Este método es responsable de agregar una relación a un concepto.
+     *
+     * @param relationship La relación que es agregada.
+     */
     public void addRelationship(Relationship relationship) {
-
         this.relationships.add(relationship);
-
     }
 
     /**

@@ -4,7 +4,10 @@ import cl.minsal.semantikos.model.ConceptSMTK;
 import cl.minsal.semantikos.model.basictypes.BasicTypeValue;
 import cl.minsal.semantikos.model.helpertables.HelperTableRecord;
 
+import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
+
+import static cl.minsal.semantikos.kernel.daos.ConceptDAO.NON_PERSISTED_ID;
 
 /**
  * @author Andrés Farías
@@ -29,34 +32,38 @@ public class Relationship {
     /**
      * Este es el constructor mínimo con el cual se crean las Relaciones
      *
-     * @param relationshipDefinition Definición de la relación
+     * @param sourceConcept          El concepto origen de la relación.
+     * @param target                 El valor de la relación (destino)
+     * @param relationshipDefinition Definición de la relación.
      */
-    public Relationship(RelationshipDefinition relationshipDefinition) {
+    public Relationship(ConceptSMTK sourceConcept, Target target, RelationshipDefinition relationshipDefinition) {
+
+        /* No está persistido originalmente */
+        this.id = NON_PERSISTED_ID;
+
+        this.sourceConcept = sourceConcept;
+        this.target = target;
         this.relationshipDefinition = relationshipDefinition;
-        this.id = -1;
-
-        /* Caso tipo básico */
-        if (relationshipDefinition.getTargetDefinition().isBasicType()) {
-            this.target = new BasicTypeValue<>();
-        }
-
-        // TODO: Finish this.
-        if (relationshipDefinition.getTargetDefinition().isHelperTable())
-            //this.target = new HelperTableRecord();
-            if (relationshipDefinition.getTargetDefinition().isSMTKType())
-                this.target = new ConceptSMTK();
     }
 
     /**
      * Igual al constructor mínimo, pero permite inicializar con el ID.
      *
-     * @param id El identificador único.
+     * @param id                     Identificador único de la relación.
+     * @param sourceConcept          El concepto origen de la relación.
+     * @param target                 El valor de la relación (destino)
+     * @param relationshipDefinition Definición de la relación.
+     * @param validityUntil          Fecha de vigencia hasta. Normalmente nulo si está vigente.
      */
-    public Relationship(long id, ConceptSMTK sourceConcept, RelationshipDefinition relationshipDefinition, Target target, Timestamp validityUntil) {
-        this(relationshipDefinition);
-        this.sourceConcept = sourceConcept;
-        this.relationshipDefinition = relationshipDefinition;
-        this.target = target;
+    public Relationship(@NotNull long id, @NotNull ConceptSMTK sourceConcept, @NotNull Target target,
+                        @NotNull RelationshipDefinition relationshipDefinition, @NotNull Timestamp validityUntil) {
+        this(sourceConcept, target, relationshipDefinition);
+
+        /* Basic ID validation */
+        if (id < 0) {
+            throw new IllegalArgumentException("El ID de una relación no puede ser negativo o cero.");
+        }
+        this.id = id;
         this.validityUntil = validityUntil;
     }
 
@@ -98,12 +105,33 @@ public class Relationship {
      * @return <code>true</code> si la relación es consistente con su definición o <code>false</code> si no.
      */
     public boolean isConsistent() {
+        return isConsistent(this.relationshipDefinition, this.target);
+    }
 
-        if (this.relationshipDefinition.getTargetDefinition().isBasicType()) {
-            return (this.target instanceof BasicTypeValue);
+    /**
+     * Este método es responsable de determinar si la relación tiene un valor consistente con su definición.
+     *
+     * @param relationshipDefinition La definición de la relación.
+     * @param target                 El valor destino de la relación.
+     *
+     * @return <code>true</code> si la relación es consistente con su definición o <code>false</code> si no.
+     */
+    private static boolean isConsistent(RelationshipDefinition relationshipDefinition, Target target) {
+        if (relationshipDefinition.getTargetDefinition().isBasicType()) {
+            return (target instanceof BasicTypeValue);
         }
 
-        return this.relationshipDefinition.getTargetDefinition().isHelperTable() && (this.target instanceof HelperTableRecord);
+        return relationshipDefinition.getTargetDefinition().isHelperTable() && (target instanceof HelperTableRecord);
+    }
+
+    /**
+     * Este método es responsable de determinar si la relación está bien definida, es decir, si posee un valor de
+     * target y que éste es consistente con el Target Definition.
+     *
+     * @return <code>true</code> si está bien definida y <code>false</code> sino.
+     */
+    public boolean isWellDefined() {
+        return target != null && this.isConsistent();
     }
 
     public void setId(long id) {

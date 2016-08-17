@@ -18,7 +18,6 @@ import java.sql.SQLException;
 @Stateless
 public class RelationshipDAOImpl implements RelationshipDAO {
 
-
     /** El logger para esta clase */
     private static final Logger logger = LoggerFactory.getLogger(RelationshipDAOImpl.class);
 
