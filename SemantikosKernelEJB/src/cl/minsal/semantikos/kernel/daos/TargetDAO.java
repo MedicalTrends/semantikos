@@ -1,10 +1,23 @@
 package cl.minsal.semantikos.kernel.daos;
 
+import cl.minsal.semantikos.model.relationships.Target;
+
+import javax.ejb.Local;
 import java.sql.Timestamp;
 
 /**
- * Created by des01c7 on 16-08-16.
+ * @author Andrés Farías
  */
+@Local
 public interface TargetDAO {
-    public long createTarget(float floatValue, Timestamp dateValue, String stringValue, boolean booleanValue, int intValue, long idAuxiliary, long idExtern, long idConceptSCT, long idConceptSMTK, long targetType );
+    public long createTarget(float floatValue, Timestamp dateValue, String stringValue, boolean booleanValue, int intValue, long idAuxiliary, long idExtern, long idConceptSCT, long idConceptSMTK, long targetType);
+
+    /**
+     * Este método es responsable de recuperar un Target a partir de su ID.
+     *
+     * @param idTarget Identificador único del Target.
+     *
+     * @return Un objeto fresco (ConceptoSMTK, fila de una Tabla Auxiliar, Concepto CST) que es el valor concreto.
+     */
+    public Target getTargetByID(long idTarget);
 }

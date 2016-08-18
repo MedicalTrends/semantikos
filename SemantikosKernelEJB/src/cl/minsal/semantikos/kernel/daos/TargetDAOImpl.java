@@ -1,15 +1,22 @@
 package cl.minsal.semantikos.kernel.daos;
 
 import cl.minsal.semantikos.kernel.util.ConnectionBD;
+import cl.minsal.semantikos.model.relationships.RelationshipDefinition;
+import cl.minsal.semantikos.model.relationships.Target;
+import cl.minsal.semantikos.model.relationships.TargetFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.ejb.EJB;
 import javax.ejb.EJBException;
+import javax.ejb.Stateless;
 import java.sql.*;
+import java.util.List;
 
 /**
- * Created by des01c7 on 16-08-16.
+ * @author Diego Soto
  */
+@Stateless
 public class TargetDAOImpl implements TargetDAO {
 
     /**
@@ -17,6 +24,8 @@ public class TargetDAOImpl implements TargetDAO {
      */
     private static final Logger logger = LoggerFactory.getLogger(TargetDAOImpl.class);
 
+    @EJB
+    private TargetFactory targetFactory;
 
     @Override
     public long createTarget(float floatValue, Timestamp dateValue, String stringValue, boolean booleanValue, int intValue, long idAuxiliary, long idExtern, long idConceptSCT, long idConceptSMTK, long targetType) {
@@ -61,6 +70,39 @@ public class TargetDAOImpl implements TargetDAO {
             throw new EJBException(e);
         }
 
+
+        return target;
+    }
+
+    @Override
+    public Target getTargetByID(long idTarget) {
+
+        Target target;
+        ConnectionBD connect = new ConnectionBD();
+        String sqlQuery = "{call semantikos.get_target_by_id(?)}";
+        try (Connection connection = connect.getConnection();
+             CallableStatement call = connection.prepareCall(sqlQuery)) {
+
+            /* Se invoca la consulta para recuperar las relaciones */
+            call.setLong(1, idTarget);
+            call.execute();
+
+            /* Cada Fila del ResultSet trae una relación */
+            ResultSet rs = call.getResultSet();
+            if (rs.next()) {
+                String jsonResult = rs.getString(1);
+                target = targetFactory.createTargetFromJSON(jsonResult);
+            }else {
+                String errorMsg = "Un error imposible acaba de ocurrir";
+                logger.error(errorMsg);
+                throw new EJBException(errorMsg);
+            }
+            rs.close();
+        } catch (SQLException e) {
+            String errorMsg = "Erro al invocar get_relationship_definitions_by_category(" + idTarget + ")";
+            logger.error(errorMsg, e);
+            throw new EJBException(errorMsg, e);
+        }
 
         return target;
     }

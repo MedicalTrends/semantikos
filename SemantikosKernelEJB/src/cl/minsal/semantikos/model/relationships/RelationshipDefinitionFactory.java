@@ -66,64 +66,65 @@ public class RelationshipDefinitionFactory {
         return relationshipDefinitions;
     }
 
-    private class RelationshipDefinitionDTO {
+}
 
-        protected long id;
-        protected long idTargetDefinition;
-        protected String name;
-        protected String description;
-        protected int lowerBoundary;
-        protected int upperBoundary;
+class RelationshipDefinitionDTO {
 
-        public RelationshipDefinitionDTO() {
-        }
+    protected long id;
+    protected long idTargetDefinition;
+    protected String name;
+    protected String description;
+    protected int lowerBoundary;
+    protected int upperBoundary;
 
-        public long getId() {
-            return id;
-        }
+    public RelationshipDefinitionDTO() {
+    }
 
-        public void setId(long id) {
-            this.id = id;
-        }
+    public long getId() {
+        return id;
+    }
 
-        public long getIdTargetDefinition() {
-            return idTargetDefinition;
-        }
+    public void setId(long id) {
+        this.id = id;
+    }
 
-        public void setIdTargetDefinition(long idTargetDefinition) {
-            this.idTargetDefinition = idTargetDefinition;
-        }
+    public long getIdTargetDefinition() {
+        return idTargetDefinition;
+    }
 
-        public String getName() {
-            return name;
-        }
+    public void setIdTargetDefinition(long idTargetDefinition) {
+        this.idTargetDefinition = idTargetDefinition;
+    }
 
-        public void setName(String name) {
-            this.name = name;
-        }
+    public String getName() {
+        return name;
+    }
 
-        public String getDescription() {
-            return description;
-        }
+    public void setName(String name) {
+        this.name = name;
+    }
 
-        public void setDescription(String description) {
-            this.description = description;
-        }
+    public String getDescription() {
+        return description;
+    }
 
-        public int getLowerBoundary() {
-            return lowerBoundary;
-        }
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-        public void setLowerBoundary(int lowerBoundary) {
-            this.lowerBoundary = lowerBoundary;
-        }
+    public int getLowerBoundary() {
+        return lowerBoundary;
+    }
 
-        public int getUpperBoundary() {
-            return upperBoundary;
-        }
+    public void setLowerBoundary(int lowerBoundary) {
+        this.lowerBoundary = lowerBoundary;
+    }
 
-        public void setUpperBoundary(int upperBoundary) {
-            this.upperBoundary = upperBoundary;
-        }
+    public int getUpperBoundary() {
+        return upperBoundary;
+    }
+
+    public void setUpperBoundary(int upperBoundary) {
+        this.upperBoundary = upperBoundary;
     }
 }

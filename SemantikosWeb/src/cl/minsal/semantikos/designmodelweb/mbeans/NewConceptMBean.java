@@ -75,7 +75,7 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
     private DescriptionType otherDescriptionType;
 
     // Placeholder para los target de las relaciones
-    private BasicTypeValue basicTypeValue = new BasicTypeValue();
+    private BasicTypeValue basicTypeValue;
 
     private HelperTableRecord selectedHelperTableRecord = new HelperTableRecord();
 
@@ -84,7 +84,6 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
     private ConceptSMTK conceptSelected;
 
     private Map<Long, ConceptSMTK> targetSelected;
-
 
     public ConceptSMTK getConceptSMTK() {
         return conceptSMTK;

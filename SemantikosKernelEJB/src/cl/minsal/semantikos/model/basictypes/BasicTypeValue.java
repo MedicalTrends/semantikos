@@ -14,16 +14,12 @@ public class BasicTypeValue<T extends Comparable> implements Target {
     /** Identificador único de la base de datos */
     private long id;
 
-    private BasicTypeDefinition basicTypeDefinition;
-
     private T value;
 
-    /*
-    public BasicTypeValue() {
-        this.basicTypeDefinition = basicTypeDefinition;
+    public BasicTypeValue(T value) {
         this.value = value;
+        this.id = -1;
     }
-    */
 
     @Override
     public long getId() {

@@ -2,6 +2,7 @@ package cl.minsal.semantikos.kernel.daos;
 
 import cl.minsal.semantikos.model.helpertables.HelperTable;
 import cl.minsal.semantikos.model.helpertables.HelperTableRecord;
+import cl.minsal.semantikos.model.relationships.Target;
 
 import javax.ejb.Local;
 import java.util.List;
@@ -54,4 +55,11 @@ public interface HelperTableDAO {
      * @return Una lista de registros (en forma de mappings) de la tabla indicada.
      */
     public List<HelperTableRecord> getAllRecords(HelperTable helperTable);
+
+    /**
+     * Este método es responsable de recuperar un registro desde una tabla auxiliar/plana.
+     * @param idHelperTableRecord El ID del HelperTableRecord.
+     * @return Un registro (<code>HelperTableRecord</code>).
+     */
+    public HelperTableRecord getHelperTableRecordFromId(long idHelperTableRecord);
 }

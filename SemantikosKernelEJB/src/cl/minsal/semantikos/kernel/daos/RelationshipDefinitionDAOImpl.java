@@ -47,10 +47,9 @@ public class RelationshipDefinitionDAOImpl implements RelationshipDefinitionDAO 
         List<RelationshipDefinition> relationshipDefinitions;
 
         ConnectionBD connect = new ConnectionBD();
-        String GET_RELATIONSHIP_DEFINITIONS_BY_ID_CATEGORY = "{call semantikos.get_relationship_definitions_by_category(?)}";
-
+        String sqlQuery = "{call semantikos.get_relationship_definitions_by_category(?)}";
         try (Connection connection = connect.getConnection();
-             CallableStatement call = connection.prepareCall(GET_RELATIONSHIP_DEFINITIONS_BY_ID_CATEGORY)) {
+             CallableStatement call = connection.prepareCall(sqlQuery)) {
 
             /* Se invoca la consulta para recuperar las relaciones */
             call.setLong(1, idCategory);

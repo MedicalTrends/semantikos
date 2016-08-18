@@ -1,10 +1,7 @@
 package cl.minsal.semantikos.model.relationships;
 
 import cl.minsal.semantikos.kernel.components.ConceptManagerInterface;
-import cl.minsal.semantikos.kernel.daos.BasicTypeDAO;
-import cl.minsal.semantikos.kernel.daos.ConceptSCTDAO;
-import cl.minsal.semantikos.kernel.daos.RelationshipDAO;
-import cl.minsal.semantikos.kernel.daos.RelationshipDefinitionDAO;
+import cl.minsal.semantikos.kernel.daos.*;
 import cl.minsal.semantikos.model.ConceptSMTK;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
@@ -44,19 +41,29 @@ public class RelationshipFactory {
     @EJB
     private RelationshipDefinitionDAO relationshipDefinitionDAO;
 
+    @EJB
+    private TargetDAO targetDAO;
+
+
     public Relationship createFromJSON(String jsonExpression) throws EJBException {
 
         /* Transformar el JSON a DTO primero */
         RelationshipDTO relationshipDTO = parseRelationshipFromJSON(jsonExpression);
 
-        //FIXME
-    return null;
+        long id = relationshipDTO.id;
+        ConceptSMTK sourceConcept = conceptDAO.getConceptByID(relationshipDTO.getIdSourceConcept());
+        Target target = targetDAO.getTargetByID(relationshipDTO.idTarget);
+        RelationshipDefinition relationshipDefinition = relationshipDefinitionDAO.getRelationshipDefinitionByID(relationshipDTO.idRelationshipDefinition);
+
+        return new Relationship(id, sourceConcept, target, relationshipDefinition, relationshipDTO.validityUntil);
     }
 
     /**
-     * Este método es responsable de parsear UN
-     * @param jsonExpression
-     * @return
+     * Este método es responsable de parsear UN RelationshipDTO desde una expresión JSON.
+     *
+     * @param jsonExpression La expresión que contiene un RelationshipDTO.
+     *
+     * @return Un objeto fresco DTO de Relationship.
      */
     private RelationshipDTO parseRelationshipFromJSON(String jsonExpression) {
         ObjectMapper mapper = new ObjectMapper();
@@ -121,9 +128,10 @@ public class RelationshipFactory {
 
         } else if (relationshipDefinition.getTargetDefinition().isSMTKType()) {
         } else if (relationshipDefinition.getTargetDefinition().isSnomedCTType()) {
-        } else if (relationshipDefinition.getTargetDefinition().isCrossMapType()){}
+        } else if (relationshipDefinition.getTargetDefinition().isCrossMapType()) {
+        }
 
-            //FIXME: Esto esta malo. Reparar.
+        //FIXME: Esto esta malo. Reparar.
 
 
         //TODO: revisar si estoo esta bien
