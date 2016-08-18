@@ -53,6 +53,11 @@ public class RelationshipFactory {
     return null;
     }
 
+    /**
+     * Este método es responsable de parsear UN
+     * @param jsonExpression
+     * @return
+     */
     private RelationshipDTO parseRelationshipFromJSON(String jsonExpression) {
         ObjectMapper mapper = new ObjectMapper();
         RelationshipDTO relationshipDTO;
