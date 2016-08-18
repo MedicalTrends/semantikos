@@ -39,7 +39,10 @@ public class ConceptSMTK implements Target {
     /** El estado en que se encuentra el objeto */
     private State state;
 
-    /** Este campo establece si el concepto está completamente definido */
+    /**
+     * Este campo establece si el concepto está completamente definido o si es primitivo. Por defecto, el concepto se
+     * considera primitivo
+     */
     private boolean isFullyDefined;
 
     /** Determina si el concepto está publicado o no */
@@ -195,6 +198,9 @@ public class ConceptSMTK implements Target {
         return isFullyDefined;
     }
 
+    /**
+     * Este método es responsable de establecer si un concepto es completamente definido.
+     */
     public void setFullyDefined(boolean fullyDefined) {
 
         /* Antes de asignarle la propiedad, ser verifica si cumple las reglas de negocio */

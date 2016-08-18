@@ -14,6 +14,9 @@ import static cl.minsal.semantikos.kernel.daos.ConceptDAO.NON_PERSISTED_ID;
  */
 public class Relationship {
 
+    /** Identificador único de la base de datos */
+    private long id;
+
     /** El concepto origen de esta relación */
     private ConceptSMTK sourceConcept;
 
@@ -25,9 +28,6 @@ public class Relationship {
 
     /** La relación es Vigente (valida) hasta la fecha... */
     private Timestamp validityUntil;
-
-    /** Identificador único de la base de datos */
-    private long id;
 
     /**
      * Este es el constructor mínimo con el cual se crean las Relaciones
@@ -56,7 +56,7 @@ public class Relationship {
      * @param validityUntil          Fecha de vigencia hasta. Normalmente nulo si está vigente.
      */
     public Relationship(@NotNull long id, @NotNull ConceptSMTK sourceConcept, @NotNull Target target,
-                        @NotNull RelationshipDefinition relationshipDefinition, @NotNull Timestamp validityUntil) {
+                        @NotNull RelationshipDefinition relationshipDefinition, Timestamp validityUntil) {
         this(sourceConcept, target, relationshipDefinition);
 
         /* Basic ID validation */
@@ -65,6 +65,11 @@ public class Relationship {
         }
         this.id = id;
         this.validityUntil = validityUntil;
+    }
+
+    //FIXME
+    public Relationship(RelationshipDefinition relationshipDefinition) {
+
     }
 
     public ConceptSMTK getSourceConcept() {

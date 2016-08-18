@@ -132,4 +132,14 @@ public class Category implements TargetDefinition {
     public boolean isHelperTable() {
         return false;
     }
+
+    @Override
+    public boolean isSnomedCTType() {
+        return false;
+    }
+
+    @Override
+    public boolean isCrossMapType() {
+        return false;
+    }
 }

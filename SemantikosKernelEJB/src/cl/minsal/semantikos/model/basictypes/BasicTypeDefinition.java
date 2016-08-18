@@ -19,7 +19,7 @@ public class BasicTypeDefinition<T extends Comparable> implements TargetDefiniti
     /** Nombre del tipo */
     private String name;
 
-    /** Descripcion del tipo: "¿Es pedible?" */
+    /** Descripción del tipo: "¿Es pedible?" */
     private String description;
 
     /** El dominio de valores posibles */
@@ -178,6 +178,16 @@ public class BasicTypeDefinition<T extends Comparable> implements TargetDefiniti
 
     @Override
     public boolean isHelperTable() {
+        return false;
+    }
+
+    @Override
+    public boolean isSnomedCTType() {
+        return false;
+    }
+
+    @Override
+    public boolean isCrossMapType() {
         return false;
     }
 

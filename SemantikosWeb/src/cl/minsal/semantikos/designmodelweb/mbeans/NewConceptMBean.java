@@ -1,15 +1,12 @@
 package cl.minsal.semantikos.designmodelweb.mbeans;
 
 import cl.minsal.semantikos.kernel.components.*;
-import cl.minsal.semantikos.kernel.components.ConceptManagerInterface;
-import cl.minsal.semantikos.kernel.components.DescriptionManagerInterface;
 import cl.minsal.semantikos.model.*;
 import cl.minsal.semantikos.model.basictypes.BasicTypeValue;
 import cl.minsal.semantikos.model.helpertables.HelperTableRecord;
 import cl.minsal.semantikos.model.relationships.Relationship;
 import cl.minsal.semantikos.model.relationships.RelationshipDefinition;
 import cl.minsal.semantikos.model.relationships.Target;
-import org.omnifaces.util.Ajax;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.CellEditEvent;
 import org.primefaces.event.RowEditEvent;
@@ -36,7 +33,7 @@ import java.util.*;
  * Created by diego on 26/06/2016.
  */
 
-@ManagedBean(name="newConceptMBean")
+@ManagedBean(name = "newConceptMBean")
 @ViewScoped
 public class NewConceptMBean<T extends Comparable> implements Serializable {
 
@@ -57,7 +54,7 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
     @EJB
     HelperTableManagerInterface helperTableManager;
 
-    @ManagedProperty(value="#{smtkBean}")
+    @ManagedProperty(value = "#{smtkBean}")
     private SMTKTypeBean smtkTypeBean;
 
     public User user;
@@ -68,8 +65,6 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
     private List<DescriptionType> descriptionTypes = new ArrayList<DescriptionType>();
     private List<State> descriptionStates = new ArrayList<State>();
     private List<Description> selectedDescriptions = new ArrayList<Description>();
-
-
 
 
     // Placeholder para las descripciones
@@ -88,7 +83,7 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
 
     private ConceptSMTK conceptSelected;
 
-    private Map<Long,ConceptSMTK> targetSelected;
+    private Map<Long, ConceptSMTK> targetSelected;
 
 
     public ConceptSMTK getConceptSMTK() {
@@ -107,9 +102,7 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
     private String favoriteDescription;
 
 
-
     //Inicializacion del Bean
-
 
 
     @PostConstruct
@@ -121,7 +114,7 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         user.setIdUser(1);
         user.setUsername("amauro");
         user.setPassword("amauro");
-        Profile designerProfile= new Profile();
+        Profile designerProfile = new Profile();
         designerProfile.setName("designerProfile");
         designerProfile.setDescription("designerProfile");
         user.getProfiles().add(designerProfile);
@@ -138,14 +131,13 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         //category = categoryManager.getCategoryById(105590001);
 
         //category = categoryManager.getCategoryById(71388002);
-                //descriptionManager.getAllTypes();
-                //DescriptionTypeFactory.getInstance().getDescriptionTypes();
+        //descriptionManager.getAllTypes();
+        //DescriptionTypeFactory.getInstance().getDescriptionTypes();
 
-        descriptionTypes= descriptionManager.getAllTypes();
+        descriptionTypes = descriptionManager.getAllTypes();
         //concept = new ConceptSMTK(category, new Description("electrocardiograma de urgencia", descriptionTypes.get(0)));
 
     }
-
 
 
     // Getter and Setter
@@ -280,34 +272,29 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
     }
 
 
-
-
     //      Methods
 
-    public void createConcept(){
+    public void createConcept() {
         concept = newConcept(category, favoriteDescription);
         RequestContext context = RequestContext.getCurrentInstance();
         context.execute("PF('dialogNameConcept').hide();");
     }
 
 
-
-    public ConceptSMTK getTargetForRD(RelationshipDefinition relationshipDefinition, ConceptSMTK conceptSel){
-        if(targetSelected==null){
-            targetSelected= new HashMap<Long, ConceptSMTK>();
+    public ConceptSMTK getTargetForRD(RelationshipDefinition relationshipDefinition, ConceptSMTK conceptSel) {
+        if (targetSelected == null) {
+            targetSelected = new HashMap<Long, ConceptSMTK>();
         }
 
-        if(!targetSelected.containsKey(relationshipDefinition.getId())){
-            targetSelected.put(relationshipDefinition.getId(),conceptSel);
+        if (!targetSelected.containsKey(relationshipDefinition.getId())) {
+            targetSelected.put(relationshipDefinition.getId(), conceptSel);
         }
         return targetSelected.get(relationshipDefinition.getId());
     }
 
 
-
     /**
      * Este método es el encargado de remover una descripción específica de la lista de descripciones del concepto.
-     * @param item
      */
 
     public void removeItem(Description item) {
@@ -320,26 +307,26 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
 
     public void addDescription() {
         FacesContext context = FacesContext.getCurrentInstance();
-        if(otherTermino!=null ){
-            if(otherTermino.length()>0){
-                if(otherDescriptionType!=null){
+        if (otherTermino != null) {
+            if (otherTermino.length() > 0) {
+                if (otherDescriptionType != null) {
                     Description description = new Description(otherTermino, otherDescriptionType);
                     description.setCaseSensitive(otherSensibilidad);
                     description.setState(concept.getState());
                     concept.addDescription(description);
                     otherTermino = "";
-                }else{
-                    context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error",  "No se ha seleccionado el tipo de descripción") );
+                } else {
+                    context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se ha seleccionado el tipo de descripción"));
                 }
 
-            }else{
-                context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error",  "No se ha ingresado el término a la descripción") );
+            } else {
+                context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se ha ingresado el término a la descripción"));
                 context.getAttributes();
             }
 
-        }else{
+        } else {
 
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error",  "No se ha ingresado el término a la descripción") );
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se ha ingresado el término a la descripción"));
 
         }
 
@@ -347,12 +334,12 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
 
 
     /**
-     * Este método es el encargado de agregar relaciones al concepto recibiendo como parámetro un Relationship Definition
-     * @param relationshipDefinition
+     * Este método es el encargado de agregar relaciones al concepto recibiendo como parámetro un Relationship
+     * Definition
      */
-    public void addRelationship(RelationshipDefinition relationshipDefinition){
+    public void addRelationship(RelationshipDefinition relationshipDefinition) {
 
-        Relationship relationship= new Relationship(relationshipDefinition);
+        Relationship relationship = new Relationship(relationshipDefinition);
         this.concept.addRelationship(relationship);
 
     }
@@ -360,19 +347,17 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
 
     /**
      * Este método es el encargado de agregar una nuva relacion con los parémetros que se indican.
-     * @param relationshipDefinition
-     * @param target
      */
-    public void addRelationship(RelationshipDefinition relationshipDefinition, Target target){
+    public void addRelationship(RelationshipDefinition relationshipDefinition, Target target) {
 
-        Relationship relationship= new Relationship(relationshipDefinition);
+        Relationship relationship = new Relationship(relationshipDefinition);
         relationship.setTarget(target);
         this.concept.addRelationship(relationship);
-        conceptSelected=null;
+        conceptSelected = null;
     }
 
 
-    public void addDescriptionToConcept(String term, DescriptionType descriptionType,boolean caseSensitive){
+    public void addDescriptionToConcept(String term, DescriptionType descriptionType, boolean caseSensitive) {
         Description description = new Description(term, descriptionType);
         description.setCaseSensitive(caseSensitive);
         description.setState(concept.getState());
@@ -380,68 +365,51 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
     }
 
     /**
-     * Este método es el responsable de retornar verdadero en caso que se cumpla el UpperBoundary de la multiplicidad, para asi desactivar
-     * la opcion de agregar más relaciones en la vista. En el caso que se retorne falso este seguira activo el boton en la presentación.
+     * Este método es el responsable de retornar verdadero en caso que se cumpla el UpperBoundary de la multiplicidad,
+     * para asi desactivar
+     * la opción de agregar más relaciones en la vista. En el caso que se retorne falso este seguirá activo el boton en
+     * la presentación.
      *
-     * @param relationshipD
      * @return
      */
-    public boolean limitRelationship(RelationshipDefinition relationshipD){
-        if(relationshipD.getMultiplicity().getUpperBoundary()!=0){
-            if(concept.getRelationshipsByRelationDefinition(relationshipD).size()==relationshipD.getMultiplicity().getUpperBoundary()){
+    public boolean limitRelationship(RelationshipDefinition relationshipD) {
+        if (relationshipD.getMultiplicity().getUpperBoundary() != 0) {
+            if (concept.getRelationshipsByRelationDefinition(relationshipD).size() == relationshipD.getMultiplicity().getUpperBoundary()) {
                 return true;
             }
         }
         return false;
     }
 
-
-    public void setRelationship(RelationshipDefinition rd, Relationship relationship){
-
-        LOGGER.debug("setRelationship, Target ={} ",relationship.getTarget());
-
-        int index = concept.getRelationships().indexOf(relationship);
-        concept.getRelationships().set(index, relationship);
-
-        for (Relationship r : rd.getRelationships()) {
-            BasicTypeValue basicTypeValue = (BasicTypeValue) r.getTarget();
-        }
-
-    }
-
     /**
      * Este método es el encargado de remover una relación específica del concepto.
-     * @param rd
-     * @param r
      */
-    public void removeRelationship(RelationshipDefinition rd, Relationship r){
+    public void removeRelationship(RelationshipDefinition rd, Relationship r) {
         concept.getRelationships().remove(r);
     }
 
     /**
      * Este método se encarga de agregar o cambiar la relación para el caso de multiplicidad 1.
-     * @param relationshipDefinition
-     * @param target
      */
-    public void addOrChangeRelationship(RelationshipDefinition relationshipDefinition, Target target){
+    public void addOrChangeRelationship(RelationshipDefinition relationshipDefinition, Target target) {
 
         boolean isRelationshipFound = false;
 
         for (Relationship relationship : concept.getRelationships()) {
-            if(relationship.getRelationshipDefinition().equals(relationshipDefinition)) {
+            if (relationship.getRelationshipDefinition().equals(relationshipDefinition)) {
                 relationship.setTarget(target);
                 isRelationshipFound = true;
                 break;
             }
         }
 
-        if(!isRelationshipFound) {
+        if (!isRelationshipFound) {
             Relationship newRelationship = new Relationship(relationshipDefinition);
             newRelationship.setTarget(target);
             concept.addRelationship(newRelationship);
         }
 
-        conceptSelected=null;
+        conceptSelected = null;
     }
 
     public void validateRelationships(ComponentSystemEvent event) {
@@ -455,13 +423,13 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         for (RelationshipDefinition relationshipDefinition : category.getRelationshipDefinitions()) {
 
             //if(concept.getRelationshipsByRelationDefinition(relationshipDefinition).size()<relationshipDefinition.getMultiplicity().getLowerBoundary()){
-                UIColumn component = (UIColumn) components.findComponent(String.valueOf(relationshipDefinition.getId())+relationshipDefinition.getTargetDefinition().toString());
+            UIColumn component = (UIColumn) components.findComponent(String.valueOf(relationshipDefinition.getId()) + relationshipDefinition.getTargetDefinition().toString());
 
-                //component.
-                Map<String, Object> attrMap = component.getAttributes();
-                String className = (String)attrMap.get("styleClass");
+            //component.
+            Map<String, Object> attrMap = component.getAttributes();
+            String className = (String) attrMap.get("styleClass");
 
-                System.out.println(className);
+            System.out.println(className);
             //}
 
 
@@ -476,9 +444,9 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
      *
      * @return
      */
-    public boolean validateRelationships(){
+    public boolean validateRelationships() {
         for (int i = 0; i < category.getRelationshipDefinitions().size(); i++) {
-            if(!(concept.getRelationshipsByRelationDefinition(category.getRelationshipDefinitions().get(i)).size()>=category.getRelationshipDefinitions().get(i).getMultiplicity().getLowerBoundary())){
+            if (!(concept.getRelationshipsByRelationDefinition(category.getRelationshipDefinitions().get(i)).size() >= category.getRelationshipDefinitions().get(i).getMultiplicity().getLowerBoundary())) {
                 return false;
             }
         }
@@ -504,7 +472,7 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         Object oldValue = event.getOldValue();
         Object newValue = event.getNewValue();
 
-        if(newValue != null && !newValue.equals(oldValue)) {
+        if (newValue != null && !newValue.equals(oldValue)) {
             FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Cell Changed", "Old: " + oldValue + ", New:" + newValue);
             FacesContext.getCurrentInstance().addMessage(null, msg);
         }
@@ -524,7 +492,7 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
 
         for (RelationshipDefinition relationshipDefinition : category.getRelationshipDefinitions()) {
             //Evaluar la multiplicidad de la relación
-            for (int i = 0; i < Math.max(relationshipDefinition.getMultiplicity().getLowerBoundary(),1); ++i) {
+            for (int i = 0; i < Math.max(relationshipDefinition.getMultiplicity().getLowerBoundary(), 1); ++i) {
                 Relationship relationship = new Relationship(relationshipDefinition);
                 if (!relationshipDefinition.getTargetDefinition().isSMTKType()) {
                     //relationshipDefinition.addRelationship(relationship);
@@ -546,27 +514,27 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
     }
 
 
-    public void saveConcept(){
+    public void saveConcept() {
 
 
         FacesContext context = FacesContext.getCurrentInstance();
 
 
-        if(FSN!=null || FSN.length()>0) {
+        if (FSN != null || FSN.length() > 0) {
             addDescriptionToConcept(FSN, descriptionManager.getTypeFSN(), true);
 
             if (!validateRelationships()) {
-                context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error",  "Las relaciones no cumplen con el minimo requerido") );
+                context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Las relaciones no cumplen con el minimo requerido"));
 
-            }else{
+            } else {
 
-                conceptManager.persist(concept,user);
-                context.addMessage(null, new FacesMessage("Successful",  "Concepto guardado ") );
+                conceptManager.persist(concept, user);
+                context.addMessage(null, new FacesMessage("Successful", "Concepto guardado "));
             }
 
-        }else{
+        } else {
 
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error",  "Falta el FSN al concepto") );
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Falta el FSN al concepto"));
         }
 
 
