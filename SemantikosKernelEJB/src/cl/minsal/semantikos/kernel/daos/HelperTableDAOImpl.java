@@ -147,7 +147,7 @@ public class HelperTableDAOImpl implements HelperTableDAO {
 
         ConnectionBD connectionBD = new ConnectionBD();
 
-        String selectRecord = "{call semantikos.get_all_records_from_helper_table(?)}";
+        String selectRecord = "{call semantikos.get_record_by_id_auxiliary(?)}";
         HelperTableRecord recordFromJSON;
         try (Connection connection = connectionBD.getConnection();
              CallableStatement call = connection.prepareCall(selectRecord)) {
