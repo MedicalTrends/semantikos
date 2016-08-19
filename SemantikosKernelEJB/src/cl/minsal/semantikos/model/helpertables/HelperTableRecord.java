@@ -1,6 +1,7 @@
 package cl.minsal.semantikos.model.helpertables;
 
 import cl.minsal.semantikos.model.relationships.Target;
+import cl.minsal.semantikos.model.relationships.TargetType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,7 +27,7 @@ public class HelperTableRecord implements Target {
     private Map<String, String> fields;
 
     /**
-     * Este constructor permite crear un objeto no persitido (aun) con valores para un registro de una tabla auxiliar.
+     * Este constructor permite crear un objeto no persistido (aun) con valores para un registro de una tabla auxiliar.
      *
      * @param helperTable La tabla auxiliar a la que pertenece el registro.
      * @param fields      Los valores del registro.
@@ -41,7 +42,6 @@ public class HelperTableRecord implements Target {
      * El constructor básico que requiere ambos campos.
      *
      * @param helperTable La tabla auxiliar en cuestión.
-     * @param id La llave primaria del registro de la tabla auxiliar.
      * @param id          La llave primaria del registro de la tabla auxiliar.
      */
     public HelperTableRecord(HelperTable helperTable, long id) {
@@ -50,7 +50,7 @@ public class HelperTableRecord implements Target {
     }
 
     /**
-     * Este constructor vacio se provee para JSON.
+     * Este constructor vacío se provee para JSON.
      */
     public HelperTableRecord() {
         this(HelperTableFactory.getInstance().getHelperTableATC(), -1);
@@ -58,6 +58,11 @@ public class HelperTableRecord implements Target {
 
     public long getId() {
         return id;
+    }
+
+    @Override
+    public TargetType getTargetType() {
+        return TargetType.HelperTable;
     }
 
     public void setId(long id) {
@@ -92,7 +97,7 @@ public class HelperTableRecord implements Target {
     public String getValueColumn(String columnName) throws IllegalArgumentException {
 
         /* Si la columna no existe es lanzada la excepción */
-        if (this.fields.containsKey(columnName)){
+        if (this.fields.containsKey(columnName)) {
             String messageError = "Se solicita columan que no existe: " + columnName;
             logger.error(messageError);
             throw new IllegalArgumentException(messageError);
@@ -104,7 +109,7 @@ public class HelperTableRecord implements Target {
     // Métodos para soportar conversión automática
     @Override
     public boolean equals(Object other) {
-        return (other instanceof HelperTableRecord) && ( String.valueOf(id) != null )
+        return (other instanceof HelperTableRecord) && (String.valueOf(id) != null)
                 ? String.valueOf(id).equals(String.valueOf(((HelperTableRecord) other).id))
                 : (other == this);
     }
@@ -118,7 +123,7 @@ public class HelperTableRecord implements Target {
 
     @Override
     public String toString() {
-        if(this.getFields()==null)
+        if (this.getFields() == null)
             return "null";
         else
             return String.format("%s[id=%d]", getClass().getSimpleName(), new Long(this.getFields().get("id")));

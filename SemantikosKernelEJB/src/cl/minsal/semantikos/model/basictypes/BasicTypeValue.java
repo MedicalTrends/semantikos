@@ -1,6 +1,7 @@
 package cl.minsal.semantikos.model.basictypes;
 
 import cl.minsal.semantikos.model.relationships.Target;
+import cl.minsal.semantikos.model.relationships.TargetType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,6 +25,11 @@ public class BasicTypeValue<T extends Comparable> implements Target {
     @Override
     public long getId() {
         return id;
+    }
+
+    @Override
+    public TargetType getTargetType() {
+        return TargetType.BasicType;
     }
 
     public void setId(long id) {

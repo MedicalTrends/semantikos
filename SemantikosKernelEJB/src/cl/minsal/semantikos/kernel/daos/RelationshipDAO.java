@@ -1,5 +1,7 @@
 package cl.minsal.semantikos.kernel.daos;
 
+import cl.minsal.semantikos.model.relationships.RelationshipDefinition;
+import cl.minsal.semantikos.model.relationships.Target;
 import cl.minsal.semantikos.model.snomedct.ConceptSCT;
 import cl.minsal.semantikos.model.relationships.Relationship;
 
@@ -37,4 +39,6 @@ public interface RelationshipDAO {
      * @return Un relación fresca creada desde la base de datos.
      */
     Relationship getRelationshipByID(long idRelationship);
+
+    public List<Relationship> getRelationshipsLike(RelationshipDefinition relationshipDefinition, Target target);
 }

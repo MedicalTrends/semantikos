@@ -2,7 +2,9 @@ package cl.minsal.semantikos.kernel.daos;
 
 import cl.minsal.semantikos.kernel.util.ConnectionBD;
 import cl.minsal.semantikos.model.relationships.Relationship;
+import cl.minsal.semantikos.model.relationships.RelationshipDefinition;
 import cl.minsal.semantikos.model.relationships.RelationshipFactory;
+import cl.minsal.semantikos.model.relationships.Target;
 import cl.minsal.semantikos.model.snomedct.ConceptSCT;
 import cl.minsal.semantikos.model.snomedct.ConceptSCTFactory;
 import org.slf4j.Logger;
@@ -15,6 +17,7 @@ import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -120,8 +123,37 @@ public class RelationshipDAOImpl implements RelationshipDAO {
         return relationshipFactory.createFromJSON(resultJSON);
     }
 
-}
+    @Override
+    public List<Relationship> getRelationshipsLike(RelationshipDefinition relationshipDefinition, Target target) {
 
-class RelationshipDTO {
+        ConnectionBD connect = new ConnectionBD();
+        String sql = "{call semantikos.get_relationships_by_definition_and_id(?, ?)}";
+        String resultJSON;
+        try (Connection connection = connect.getConnection();
+             CallableStatement call = connection.prepareCall(sql)) {
+
+            call.setLong(1, relationshipDefinition.getId());
+            call.setLong(1, target.getId());
+            call.execute();
+
+            ResultSet rs = call.getResultSet();
+            if (rs.next()) {
+                resultJSON = rs.getString(1);
+                if (resultJSON == null) {
+                    return Collections.emptyList();
+                }
+            } else {
+                String errorMsg = "La relación no fue creada. Esta es una situación imposible. Contactar a Desarrollo";
+                logger.error(errorMsg);
+                throw new IllegalArgumentException(errorMsg);
+            }
+            rs.close();
+        } catch (SQLException e) {
+            throw new EJBException(e);
+        }
+
+        return relationshipFactory.createRelationshipsFromJSON(resultJSON);
+    }
+
 }
 

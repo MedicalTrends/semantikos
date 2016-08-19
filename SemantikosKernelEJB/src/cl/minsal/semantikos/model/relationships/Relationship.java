@@ -146,4 +146,28 @@ public class Relationship {
     public long getId() {
         return id;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Relationship that = (Relationship) o;
+
+        if (relationshipDefinition != null ? !relationshipDefinition.equals(that.relationshipDefinition) : that.relationshipDefinition != null)
+            return false;
+        if (target != null ? !target.equals(that.target) : that.target != null) return false;
+        if (validityUntil != null ? !validityUntil.equals(that.validityUntil) : that.validityUntil != null)
+            return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = relationshipDefinition != null ? relationshipDefinition.hashCode() : 0;
+        result = 31 * result + (target != null ? target.hashCode() : 0);
+        result = 31 * result + (validityUntil != null ? validityUntil.hashCode() : 0);
+        return result;
+    }
 }

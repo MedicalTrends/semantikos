@@ -43,10 +43,3 @@ public interface TargetDefinition {
      */
     public boolean isCrossMapType();
 }
-
-enum TargetDefinitionType {
-    BASIC_TYPE,
-    SMTK,
-    HELPER_TYPE,
-    SCT
-}

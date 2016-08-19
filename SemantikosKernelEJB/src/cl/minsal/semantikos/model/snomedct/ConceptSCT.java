@@ -1,6 +1,7 @@
 package cl.minsal.semantikos.model.snomedct;
 
 import cl.minsal.semantikos.model.relationships.Target;
+import cl.minsal.semantikos.model.relationships.TargetType;
 
 import java.sql.Timestamp;
 
@@ -56,5 +57,10 @@ public class ConceptSCT implements Target {
 	@Override
 	public long getId() {
 		return id;
+	}
+
+	@Override
+	public TargetType getTargetType() {
+		return TargetType.SnomedCT;
 	}
 }

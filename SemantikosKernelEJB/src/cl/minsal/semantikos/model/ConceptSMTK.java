@@ -5,6 +5,7 @@ import cl.minsal.semantikos.model.exceptions.BusinessRuleException;
 import cl.minsal.semantikos.model.relationships.Relationship;
 import cl.minsal.semantikos.model.relationships.RelationshipDefinition;
 import cl.minsal.semantikos.model.relationships.Target;
+import cl.minsal.semantikos.model.relationships.TargetType;
 
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
@@ -148,6 +149,11 @@ public class ConceptSMTK implements Target {
 
     public long getId() {
         return id;
+    }
+
+    @Override
+    public TargetType getTargetType() {
+        return TargetType.SMTK;
     }
 
     public void setId(long id) {
@@ -359,5 +365,59 @@ public class ConceptSMTK implements Target {
         }
 
         return this.category.equals(category);
+    }
+
+    /**
+     * Este método es responsable de entregar una lista con todas las relaciones que tienen como destino un cierto tipo
+     * de objeto: conceptos SMTK, conceptos Snomed CT, Tablas Auxiliares, Terminologías externas, etc.
+     *
+     * @param targetType El tipo de destino al cual apuntan las relaciones.
+     *
+     * @return Una lista con todas las relaciones de este concepto que tienen como destino un objeto del tipo de destino
+     * <code>targetType</code>.
+     */
+    public List<Relationship> getRelationshipsTo(TargetType targetType) {
+
+        List<Relationship> sctRelations = new ArrayList<>();
+        for (Relationship relationship : relationships) {
+            if (relationship.getTarget().getTargetType().equals(targetType)) {
+                sctRelations.add(relationship);
+            }
+        }
+
+        return sctRelations;
+    }
+
+    /**
+     * Este método es responsable de determinar si <code>this</code> concepto posee al menos las mismas
+     * <code>relationships</code>. El contener quiere decir que el concepto tiene relaciones con el mismo
+     * RelationshipDefinition y con el mismo destino (<code>Target</code>).
+     *
+     * @param relationships Las relaciones que se desea evaluar si están contenidas en el concepto fuente.
+     *
+     * @return <code>true</code> si el concepto contiene estas relaciones y <code>false</code> sino.
+     */
+    public boolean contains(List<Relationship> relationships) {
+
+        for (Relationship relationship : relationships) {
+            if (!this.contains(relationship)) {
+                return false;
+            }
+        }
+
+        /* En este punto todas las relaciones tienen una equivalente */
+        return true;
+    }
+
+    /**
+     * Este método es responsable de validar si este Concepto posee una relación del mismo tipo de relación (mismo
+     * <code>RelationshipDefinition</code>) y cuyo destino es el mismo igualmente.
+     *
+     * @param relationship La relación que se desea determinar si el concepto posee una equivalente.
+     *
+     * @return <code>true</code> si contiene una relación asi y <code>false</code> sino.
+     */
+    protected boolean contains(Relationship relationship) {
+        return this.relationships.contains(relationship);
     }
 }

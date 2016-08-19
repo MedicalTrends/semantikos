@@ -10,6 +10,7 @@ import cl.minsal.semantikos.model.snomedct.ConceptSCT;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -55,5 +56,10 @@ public class RelationshipManagerImpl implements RelationshipManager {
     // TODO: Terminar esto
     public Relationship updateRelationProperties(int idRelation, boolean isActive) {
         return null;
+    }
+
+    @Override
+    public List<Relationship> getRelationshipsLike(RelationshipDefinition relationshipDefinition, Target target) {
+        return relationshipDAO.getRelationshipsLike(relationshipDefinition, target);
     }
 }

@@ -6,6 +6,7 @@ import java.util.List;
  * @author Andrés Farías
  */
 public interface IUser {
+
     long getIdUser();
 
     String getUsername();
