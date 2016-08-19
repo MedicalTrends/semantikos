@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static cl.minsal.semantikos.kernel.util.StringUtils.underScoreToCamelCaseJSON;
+import static java.util.Collections.emptyList;
 
 /**
  * @author Andrés Farías
@@ -27,11 +28,24 @@ public class RelationshipAttributeDefinitionFactory {
     @EJB
     private TargetDefinitionDAO targetDefinitionDAO;
 
+    /**
+     * Este método es responsable de crear una entidad <code>RelationshipAttributeDefinition</code> a partir de una
+     * expresión JSON.
+     *
+     * @param jsonExpression La expresión JSON a partir de la cual se crea la entidad.
+     *
+     * @return La entidad fresca creada a partir del JSON.
+     */
     public List<RelationshipAttributeDefinition> createFromJSON(String jsonExpression) {
 
-        ObjectMapper mapper = new ObjectMapper();
+        /* Si la expresión JSON es nula, se retorna una lista vacía */
+        if (jsonExpression == null) {
+            return emptyList();
+        }
+
         RelationshipAttributeDefinitionDTO[] relationshipAttributeDefinitionDTOs;
         try {
+            ObjectMapper mapper = new ObjectMapper();
             relationshipAttributeDefinitionDTOs = mapper.readValue(underScoreToCamelCaseJSON(jsonExpression), RelationshipAttributeDefinitionDTO[].class);
         } catch (IOException e) {
             String errorMsg = "Error al parsear un JSON.";
