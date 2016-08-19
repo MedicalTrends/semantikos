@@ -2,10 +2,7 @@ package cl.minsal.semantikos.kernel.daos;
 
 
 import cl.minsal.semantikos.kernel.util.ConnectionBD;
-import cl.minsal.semantikos.model.Category;
-import cl.minsal.semantikos.model.ConceptSMTK;
-import cl.minsal.semantikos.model.Description;
-import cl.minsal.semantikos.model.State;
+import cl.minsal.semantikos.model.*;
 import cl.minsal.semantikos.model.relationships.Relationship;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -374,16 +371,16 @@ public class ConceptDAOImpl implements ConceptDAO {
 
     @Override
     //TODO: Revisar transaccionalidad de estas tres acciones
-    public void persist(ConceptSMTK conceptSMTK) {
+    public void persist(ConceptSMTK conceptSMTK, IUser user) {
 
         /* Primero se persisten los atributos básicos del concepto */
         persistConceptBasicInfo(conceptSMTK);
 
         /* Luego se persisten sus descripciones */
 
-        /*for (Description description : conceptSMTK.getDescriptions()) {
-            descriptionDAO.persist(description, conceptSMTK);
-        }*/
+        for (Description description : conceptSMTK.getDescriptions()) {
+            descriptionDAO.persist(description, conceptSMTK,user);
+        }
 
 
         /* Y finalmente se persisten sus relaciones */

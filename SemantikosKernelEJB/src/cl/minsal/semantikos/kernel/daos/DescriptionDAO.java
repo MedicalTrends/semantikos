@@ -1,9 +1,6 @@
 package cl.minsal.semantikos.kernel.daos;
 
-import cl.minsal.semantikos.model.ConceptSMTK;
-import cl.minsal.semantikos.model.Description;
-import cl.minsal.semantikos.model.DescriptionType;
-import cl.minsal.semantikos.model.DescriptionTypeFactory;
+import cl.minsal.semantikos.model.*;
 
 import javax.ejb.Local;
 import java.util.List;
@@ -42,5 +39,5 @@ public interface DescriptionDAO {
      * @param description La descripción a persistir.
      * @param conceptSMTK El concepto al que está asociada la descripción.
      */
-    public void persist(Description description, ConceptSMTK conceptSMTK);
+    public void persist(Description description, ConceptSMTK conceptSMTK, IUser user);
 }
