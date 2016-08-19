@@ -29,7 +29,7 @@ public class BasicTypeDefinitionDAOImpl implements BasicTypeDefinitionDAO {
     @Override
     public BasicTypeDefinition getBasicTypeDefinitionById(long idBasicTypeDefinition) {
         ConnectionBD connect = new ConnectionBD();
-        String sqlQuery = "{call semantikos.get_basic_type_def_by_id(?)}";
+        String sqlQuery = "{call semantikos.get_basic_type_type_definition_by_id(?)}";
 
         BasicTypeDefinition basicTypeDefinition;
         try (Connection connection = connect.getConnection();

@@ -381,15 +381,15 @@ public class ConceptDAOImpl implements ConceptDAO {
 
         /* Luego se persisten sus descripciones */
 
-        for (Description description : conceptSMTK.getDescriptions()) {
+        /*for (Description description : conceptSMTK.getDescriptions()) {
             descriptionDAO.persist(description, conceptSMTK);
-        }
+        }*/
 
 
         /* Y finalmente se persisten sus relaciones */
-        /*for (Relationship relationship : conceptSMTK.getRelationships()) {
+        for (Relationship relationship : conceptSMTK.getRelationships()) {
             relationshipDAO.persist(relationship);
-        }*/
+        }
     }
 
     private void persistConceptBasicInfo(ConceptSMTK conceptSMTK) {
