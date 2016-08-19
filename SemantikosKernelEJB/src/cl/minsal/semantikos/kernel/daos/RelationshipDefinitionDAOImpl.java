@@ -15,6 +15,7 @@ import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Collections;
 import java.util.List;
 
 import static java.util.Collections.emptyList;
@@ -58,7 +59,12 @@ public class RelationshipDefinitionDAOImpl implements RelationshipDefinitionDAO 
             /* Cada Fila del ResultSet trae una relación */
             ResultSet rs = call.getResultSet();
             if (rs.next()) {
-                relationshipDefinitions = relationshipDefinitionFactory.createRelDefinitionsFromJSON(rs.getString(1));
+                if(rs.getString(1)!=null){
+                    relationshipDefinitions = relationshipDefinitionFactory.createRelDefinitionsFromJSON(rs.getString(1));
+                }else{
+                    return emptyList();
+                }
+
             } else {
                 String errorMsg = "Un error imposible acaba de ocurrir";
                 logger.error(errorMsg);

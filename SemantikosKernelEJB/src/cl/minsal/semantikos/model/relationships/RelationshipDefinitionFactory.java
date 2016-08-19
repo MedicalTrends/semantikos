@@ -44,6 +44,7 @@ public class RelationshipDefinitionFactory {
         ObjectMapper mapper = new ObjectMapper();
         RelationshipDefinitionDTO[] relationshipDefinitionDTOs;
         try {
+
             relationshipDefinitionDTOs = mapper.readValue(underScoreToCamelCaseJSON(jsonExpression), RelationshipDefinitionDTO[].class);
         } catch (IOException e) {
             String errorMsg = "No se pudo parsear el RelationshipDefinition desde un JSON.";
