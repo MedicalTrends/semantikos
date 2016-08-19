@@ -11,7 +11,7 @@
 <composite:interface >
     <composite:attribute name="relationshipDefinition" type="cl.minsal.semantikos.model.relationships.RelationshipDefinition" />
     <composite:attribute name="targetDefinition" type="cl.minsal.semantikos.model.helpertables.HelperTable" />
-    <composite:attribute name="concept" type="cl.minsal.semantikos.model.ConceptSMTK" />
+    <composite:attribute name="concept" type="cl.minsal.semantikos.model.ConceptSMTKWeb" />
 </composite:interface>
 <composite:implementation>
     <!-- Multiplicidad 1 y Nueva relacion -->
@@ -67,7 +67,6 @@
                              reflow="true"
                              rowKey="#{helperTableRecord.fields.id}"
                 >
-                    <p:ajax event="rowSelect" listener="#{newConceptMBean.addOrChangeRelationship(cc.attrs.relationshipDefinition,newConceptMBean.selectedHelperTableRecord)}" />
                     <p:columns value="#{cc.attrs.targetDefinition.showableColumns}"
                                var="column"
                                sortBy="#{helperTableRecord.fields[column.columnName]}"

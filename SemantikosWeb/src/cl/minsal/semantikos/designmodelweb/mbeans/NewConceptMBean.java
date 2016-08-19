@@ -342,8 +342,7 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
 
         Target target = new BasicTypeValue(null);
 
-        Relationship relationship = new Relationship(relationshipDefinition);
-        relationship.setTarget(target);
+        Relationship relationship = new Relationship(this.concept,target,relationshipDefinition);
         this.concept.addRelationship(relationship);
 
     }
@@ -354,8 +353,7 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
      */
     public void addRelationship(RelationshipDefinition relationshipDefinition, Target target) {
 
-        Relationship relationship = new Relationship(relationshipDefinition);
-        relationship.setTarget(target);
+        Relationship relationship = new Relationship(this.concept,target,relationshipDefinition);
         this.concept.addRelationship(relationship);
         conceptSelected = null;
     }
@@ -409,8 +407,7 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         }
 
         if (!isRelationshipFound) {
-            Relationship newRelationship = new Relationship(relationshipDefinition);
-            newRelationship.setTarget(target);
+            Relationship newRelationship = new Relationship(this.concept,target,relationshipDefinition);
             concept.addRelationship(newRelationship);
         }
 
@@ -428,7 +425,7 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         for (RelationshipDefinition relationshipDefinition : category.getRelationshipDefinitions()) {
 
             //if(concept.getRelationshipsByRelationDefinition(relationshipDefinition).size()<relationshipDefinition.getMultiplicity().getLowerBoundary()){
-            UIColumn component = (UIColumn) components.findComponent(String.valueOf(relationshipDefinition.getId()) + relationshipDefinition.getTargetDefinition().toString());
+            UIColumn component = (UIColumn) components.findComponent(String.valueOf(relationshipDefinition.getId())+"_basic");
 
             //component.
             Map<String, Object> attrMap = component.getAttributes();
@@ -489,6 +486,8 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         Description favouriteDescription = new Description(term, descriptionManager.getTypeFavorite());
         State initialState = stateMachineManager.getConceptStateMachine().getInitialState();
         favouriteDescription.setState(initialState);
+        favouriteDescription.setCaseSensitive(false);
+        favouriteDescription.setDescriptionId(descriptionManager.generateDescriptionId());
         ConceptSMTKWeb concept = new ConceptSMTKWeb(category, favouriteDescription, initialState);
         concept.setCategory(category);
         concept.setState(initialState);
@@ -522,7 +521,6 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
 
     public void saveConcept() {
 
-
         FacesContext context = FacesContext.getCurrentInstance();
 
 
@@ -542,7 +540,6 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
 
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Falta el FSN al concepto"));
         }
-
 
         //System.out.println("se va a guardar el concepto");
 

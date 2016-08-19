@@ -16,7 +16,7 @@
             <p:growl id="editMsgs" showDetail="true"/>
             <!--p:messages autoUpdate="true"></p:messages-->
             <!-- register a PostValidateEvent -->
-            <!--f:event listener="#{newConceptMBean.validateRelationships()}" type="postValidate" /-->
+            <f:event listener="#{newConceptMBean.validateRelationships()}" type="postValidate" />
             <h3>Responsive</h3>
 
             <div class="ui-g">
@@ -228,15 +228,15 @@
             <p:panel id="atributos" header="Atributos" toggleable="true" toggleSpeed="500" closeSpeed="500"
                      widgetVar="panelAtributos" style="margin-bottom:20px" >
 
-            <h:dataTable style="width: 100%;" value="#{newConceptMBean.category.relationshipDefinitions}"
+                <h:dataTable style="width: 100%;" value="#{newConceptMBean.category.relationshipDefinitions}"
                          var="relationshipDefinition">
 
                     <h:column>
 
                         <smtk:smtkType
-                                       rendered="#{relationshipDefinition.targetDefinition.SMTKType}"
-                                       targetDefinition="#{relationshipDefinition.targetDefinition}"
-                                       relationshipDefinition="#{relationshipDefinition}" />
+                                rendered="#{relationshipDefinition.targetDefinition.SMTKType}"
+                                targetDefinition="#{relationshipDefinition.targetDefinition}"
+                                relationshipDefinition="#{relationshipDefinition}" />
 
                         <smtk:helperTableType
                                 rendered="#{relationshipDefinition.targetDefinition.helperTable}"
@@ -255,7 +255,7 @@
                 </h:dataTable>
 
 
-        </p:panel>
+            </p:panel>
 
 
             <p:commandButton actionListener="#{newConceptMBean.saveConcept}" value="Guardar" type="submit" update="growl, mainForm"
