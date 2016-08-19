@@ -2,7 +2,6 @@ package cl.minsal.semantikos.kernel.daos;
 
 
 import cl.minsal.semantikos.kernel.util.ConnectionBD;
-import cl.minsal.semantikos.model.Multiplicity;
 import cl.minsal.semantikos.model.helpertables.HelperTableFactory;
 import cl.minsal.semantikos.model.relationships.*;
 import org.slf4j.Logger;
@@ -16,8 +15,9 @@ import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
+
+import static java.util.Collections.emptyList;
 
 /**
  * @author Andrés Farías
@@ -59,7 +59,7 @@ public class RelationshipDefinitionDAOImpl implements RelationshipDefinitionDAO 
             ResultSet rs = call.getResultSet();
             if (rs.next()) {
                 relationshipDefinitions = relationshipDefinitionFactory.createRelDefinitionsFromJSON(rs.getString(1));
-            }else {
+            } else {
                 String errorMsg = "Un error imposible acaba de ocurrir";
                 logger.error(errorMsg);
                 throw new EJBException(errorMsg);
@@ -81,9 +81,9 @@ public class RelationshipDefinitionDAOImpl implements RelationshipDefinitionDAO 
     }
 
     /**
-     *Este método es responsable de recuperar la definición de los atributos
-     * @param relationshipDefinition
-     * @return
+     * Este método es responsable de recuperar la definición de los atributos
+     *
+     * @return Una lista de Definición de Atributos.
      */
     private List<RelationshipAttributeDefinition> getRelationshipAttributeDefinitionsByRelationshipDefinition(RelationshipDefinition relationshipDefinition) {
 
@@ -99,14 +99,16 @@ public class RelationshipDefinitionDAOImpl implements RelationshipDefinitionDAO 
             call.execute();
 
             ResultSet resultSet = call.getResultSet();
-            if (resultSet.next()) {
-                RelationshipAttributeDefinitionFactory factory = new RelationshipAttributeDefinitionFactory();
-                relationshipAttributeDefinitions = factory.createFromJSON(resultSet.getString(1));
-            } else {
-                throw new EJBException("Un error improbable al recibir la respuesta de la base de datos.");
-            }
+            resultSet.next();
+            String jsonExpression = resultSet.getString(1);
             resultSet.close();
 
+            if (jsonExpression == null) {
+                return emptyList();
+            } else {
+                RelationshipAttributeDefinitionFactory factory = new RelationshipAttributeDefinitionFactory();
+                relationshipAttributeDefinitions = factory.createFromJSON(jsonExpression);
+            }
         } catch (SQLException e) {
             String errorMsg = "Erro al invocar get_relationship_definition_by_id(" + id + ")";
             logger.error(errorMsg, e);
