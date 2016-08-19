@@ -8,6 +8,7 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * TODO: REFACTOR THIS!!!
@@ -107,5 +108,10 @@ public class DescriptionManagerImpl implements DescriptionManagerInterface {
     @Override
     public List<Description> getDescriptionsOf(ConceptSMTK concept) {
         return descriptionDAO.getDescriptionsByConceptID(concept.getId());
+    }
+
+    @Override
+    public String generateDescriptionId() {
+        return UUID.randomUUID().toString();
     }
 }

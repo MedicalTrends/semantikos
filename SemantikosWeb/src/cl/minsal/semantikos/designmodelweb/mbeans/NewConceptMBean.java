@@ -31,6 +31,7 @@ import java.util.*;
 
 /**
  * Created by diego on 26/06/2016.
+ * Created by diego on 26/06/2016.
  */
 
 @ManagedBean(name = "newConceptMBean")
@@ -126,8 +127,8 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         context.execute("PF('dialogNameConcept').show();");
 
-        category = categoryManager.getCategoryById(1);
-        //category = categoryManager.getCategoryById(105590001);
+        //category = categoryManager.getCategoryById(1);
+        category = categoryManager.getCategoryById(105590001);
 
         //category = categoryManager.getCategoryById(71388002);
         //descriptionManager.getAllTypes();
@@ -338,7 +339,10 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
      */
     public void addRelationship(RelationshipDefinition relationshipDefinition) {
 
+        Target target = new BasicTypeValue(null);
+
         Relationship relationship = new Relationship(relationshipDefinition);
+        relationship.setTarget(target);
         this.concept.addRelationship(relationship);
 
     }
@@ -488,7 +492,7 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         concept.setState(initialState);
 
         // Agregar las relaciones si existen
-
+        /*
         for (RelationshipDefinition relationshipDefinition : category.getRelationshipDefinitions()) {
             //Evaluar la multiplicidad de la relación
             for (int i = 0; i < Math.max(relationshipDefinition.getMultiplicity().getLowerBoundary(), 1); ++i) {
@@ -501,6 +505,7 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
             }
 
         }
+        */
 
 
         return concept;

@@ -36,4 +36,11 @@ public interface DescriptionManagerInterface {
      * @return Un objeto <code>java.util.List</code> con las descripciones del concepto <code>concept</code>.
      */
     List<Description> getDescriptionsOf(ConceptSMTK concept);
+
+    /**
+     * Este método es responsable de generar un description id
+     *
+     * @return Un objeto <code>java.util.List</code> con las descripciones del concepto <code>concept</code>.
+     */
+    public String generateDescriptionId();
 }
