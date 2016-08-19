@@ -313,6 +313,7 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
                     Description description = new Description(otherTermino, otherDescriptionType);
                     description.setCaseSensitive(otherSensibilidad);
                     description.setState(concept.getState());
+                    description.setDescriptionId(descriptionManager.generateDescriptionId());
                     concept.addDescription(description);
                     otherTermino = "";
                 } else {
