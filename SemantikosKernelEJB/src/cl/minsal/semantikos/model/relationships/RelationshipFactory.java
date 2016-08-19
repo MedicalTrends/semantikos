@@ -12,6 +12,7 @@ import javax.ejb.EJBException;
 import javax.ejb.Singleton;
 import java.io.IOException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -85,15 +86,15 @@ public class RelationshipFactory {
     }
 
     /**
-     * Este método es responsable de parsear una expresion JSON a una lista de Relaciones.
+     * Este método es responsable de parsear una expresión JSON a una lista de Relaciones.
      *
-     * @param jsonExpression La expresion JSON del tipo:
+     * @param jsonExpression La expresión JSON del tipo:
      *
      * @return Una lista de relaciones creadas a partir de la expresión.
      */
     public List<Relationship> createRelationshipsFromJSON(String jsonExpression) {
 
-        /* Se parsea la expresion JSON */
+        /* Se parsea la expresión JSON */
         ObjectMapper mapper = new ObjectMapper();
         RelationshipDTO[] relationshipDTOs;
         try {
@@ -105,14 +106,13 @@ public class RelationshipFactory {
         }
 
         /* Y se recuperan las entidades relacionadas */
+        List<Relationship> relationships = new ArrayList<>();
         for (RelationshipDTO relationshipDTO : relationshipDTOs) {
-            Relationship relationship = createRelationshipFromDTO(relationshipDTO);
+            relationships.add(createRelationshipFromDTO(relationshipDTO));
         }
 
         /* Se retorna como una lista */
-        //FIXME
-        Relationship relationships = null;
-        return Arrays.asList(relationships);
+        return relationships;
     }
 
     /**
