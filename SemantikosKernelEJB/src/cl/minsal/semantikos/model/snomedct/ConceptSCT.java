@@ -26,6 +26,9 @@ public class ConceptSCT implements Target {
 	/** TODO: Averiguar qué es esto */
 	private long definitionStatusID;
 
+	public ConceptSCT() {
+	}
+
 	public ConceptSCT(long id, Timestamp effectiveTime, boolean isActive, long moduleID, long definitionStatusID) {
 		this.id = id;
 		this.effectiveTime = effectiveTime;

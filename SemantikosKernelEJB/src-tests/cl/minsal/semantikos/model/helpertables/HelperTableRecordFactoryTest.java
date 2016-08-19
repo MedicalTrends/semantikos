@@ -85,7 +85,7 @@ public class HelperTableRecordFactoryTest {
     }
 
     private String createJSONRocord02() {
-        String json = "{\"tableName\":\"helper_table_atc\",\"fields\":{\"id\":1,\"codigo_atc\":\"atc1\",\"descripcion_atc\":\"Esta es una descripción ATC\",\"is_valid\":null}}";
+        String json = "{\"tableName\":\"helper_table_atc\",\"fields\":{\"id\":1,\"codigo_atc\":\"atc1\",\"descripcion_atc\":\"Esta es una descripción ATC\",\"is_valid\":true}}";
         System.out.println(json);
         return json;
     }

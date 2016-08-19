@@ -39,10 +39,16 @@ public class RelationshipFactory {
     private RelationshipDAO relationshipDAO;
 
     @EJB
-    private RelationshipDefinitionDAO relationshipDefinitionDAO;
+    private RelationshipDefinitionDAO relDefDAO;
 
     @EJB
     private TargetDAO targetDAO;
+
+    @EJB
+    private HelperTableDAO helperTableDAO;
+
+    @EJB
+    private CrossMapDAO crossmapDAO;
 
 
     public Relationship createFromJSON(String jsonExpression) throws EJBException {
@@ -53,7 +59,7 @@ public class RelationshipFactory {
         long id = relationshipDTO.id;
         ConceptSMTK sourceConcept = conceptDAO.getConceptByID(relationshipDTO.getIdSourceConcept());
         Target target = targetDAO.getTargetByID(relationshipDTO.idTarget);
-        RelationshipDefinition relationshipDefinition = relationshipDefinitionDAO.getRelationshipDefinitionByID(relationshipDTO.idRelationshipDefinition);
+        RelationshipDefinition relationshipDefinition = relDefDAO.getRelationshipDefinitionByID(relationshipDTO.idRelationshipDefinition);
 
         return new Relationship(id, sourceConcept, target, relationshipDefinition, relationshipDTO.validityUntil);
     }
@@ -104,12 +110,14 @@ public class RelationshipFactory {
         }
 
         /* Se retorna como una lista */
+        //FIXME
         Relationship relationships = null;
         return Arrays.asList(relationships);
     }
 
     /**
-     * Este método es responsable de crear la entidad completa a partir del DTO.
+     * Este método es responsable de crear la entidad Relación completa a partir del DTO.
+     * <p>Se crea la relación a partir de esos datos: concepto origen, definición de relación y target.</p>
      *
      * @param relationshipDTO El DTO a partir del cual se crea la relación.
      *
@@ -117,24 +125,49 @@ public class RelationshipFactory {
      */
     private Relationship createRelationshipFromDTO(RelationshipDTO relationshipDTO) {
 
-        /* Se crea la relación a partir de esos datos */
+        /* Concepto origen */
         ConceptSMTK sourceConceptSMTK = conceptDAO.getConceptByID(relationshipDTO.idSourceConcept);
-        RelationshipDefinition relationshipDefinition = relationshipDefinitionDAO.getRelationshipDefinitionByID(relationshipDTO.idRelationshipDefinition);
 
-        Target target = null;
+        /* Definición de la relación */
+        long idRelationshipDefinition = relationshipDTO.idRelationshipDefinition;
+        RelationshipDefinition relationshipDefinition = relDefDAO.getRelationshipDefinitionByID(idRelationshipDefinition);
+
+        /* El target que puede ser básico, smtk, tablas, crossmaps o snomed-ct */
+        Target target;
+        long idTarget = relationshipDTO.idTarget;
+
+        /* El target puede ser Tipo Básico */
         if (relationshipDefinition.getTargetDefinition().isBasicType()) {
-            target = basicTypeDAO.getBasicTypeValueByID(relationshipDTO.idTarget);
-        } else if (relationshipDefinition.getTargetDefinition().isHelperTable()) {
-
-        } else if (relationshipDefinition.getTargetDefinition().isSMTKType()) {
-        } else if (relationshipDefinition.getTargetDefinition().isSnomedCTType()) {
-        } else if (relationshipDefinition.getTargetDefinition().isCrossMapType()) {
+            target = basicTypeDAO.getBasicTypeValueByID(idTarget);
         }
 
-        //FIXME: Esto esta malo. Reparar.
+        /* El target puede ser a un registro de una tabla auxiliar */
+        else if (relationshipDefinition.getTargetDefinition().isHelperTable()) {
+            target = helperTableDAO.getHelperTableRecordFromId(idTarget);
+        }
 
+        /* El target puede ser un concepto SMTK */
+        else if (relationshipDefinition.getTargetDefinition().isSMTKType()) {
+            target = conceptDAO.getConceptByID(idTarget);
+        }
 
-        //TODO: revisar si estoo esta bien
+        /* El target puede ser un concepto Snomed CT */
+        else if (relationshipDefinition.getTargetDefinition().isSnomedCTType()) {
+            target = conceptSCTDAO.getConceptCSTByID(idTarget);
+        }
+
+        /* Y sino, puede ser crossmap */
+        else if (relationshipDefinition.getTargetDefinition().isCrossMapType()) {
+            target = crossmapDAO.getCrossMapByID(idTarget);
+        }
+
+        /* Sino, hay un nuevo tipo de target que no está siendo gestionado */
+        else {
+            String msg = "Un tipo no manejado de Target se ha recibido.";
+            logger.error(msg);
+            throw new EJBException(msg);
+        }
+
         return new Relationship(relationshipDTO.getId(), sourceConceptSMTK, target, relationshipDefinition, relationshipDTO.validityUntil);
     }
 
