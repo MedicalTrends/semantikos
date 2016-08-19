@@ -83,7 +83,7 @@ public class RelationshipDefinitionDAOImpl implements RelationshipDefinitionDAO 
     private List<RelationshipAttributeDefinition> getRelationshipAttributeDefinitionsByRelationshipDefinition(RelationshipDefinition relationshipDefinition) {
 
         ConnectionBD connect = new ConnectionBD();
-        String sqlQuery = "{call semantikos.get_relationship_attribute_definitions_by_id(?)}";
+        String sqlQuery = "{call semantikos.get_relationship_attribute_definitions_json_by_id(?)}";
         List<RelationshipAttributeDefinition> relationshipAttributeDefinitions;
         long id = relationshipDefinition.getId();
         try (Connection connection = connect.getConnection();

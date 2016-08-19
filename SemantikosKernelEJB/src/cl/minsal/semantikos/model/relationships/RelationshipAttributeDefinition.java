@@ -8,9 +8,11 @@ public class RelationshipAttributeDefinition {
     private long idRelationAttributeDefinition;
     private Long idRelationshipDefinition;
     private Long idTargetDefinition;
-    private String nombre;
-    private String multiplicityFrom;
-    private String multiplicityTo;
+    private String name;
+    private String lowerBoundary;
+    private String upperBoundary;
+
+    //TODO: terminar funcion postgresql y atributos del objeto
 
     public long getIdRelationAttributeDefinition() {
         return idRelationAttributeDefinition;
@@ -36,28 +38,28 @@ public class RelationshipAttributeDefinition {
         this.idTargetDefinition = idTargetDefinition;
     }
 
-    public String getNombre() {
-        return nombre;
+    public String getName() {
+        return name;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getMultiplicityFrom() {
-        return multiplicityFrom;
+    public String getLowerBoundary() {
+        return lowerBoundary;
     }
 
-    public void setMultiplicityFrom(String multiplicityFrom) {
-        this.multiplicityFrom = multiplicityFrom;
+    public void setLowerBoundary(String lowerBoundary) {
+        this.lowerBoundary = lowerBoundary;
     }
 
-    public String getMultiplicityTo() {
-        return multiplicityTo;
+    public String getUpperBoundary() {
+        return upperBoundary;
     }
 
-    public void setMultiplicityTo(String multiplicityTo) {
-        this.multiplicityTo = multiplicityTo;
+    public void setUpperBoundary(String upperBoundary) {
+        this.upperBoundary = upperBoundary;
     }
 
     @Override
@@ -72,10 +74,10 @@ public class RelationshipAttributeDefinition {
             return false;
         if (idTargetDefinition != null ? !idTargetDefinition.equals(that.idTargetDefinition) : that.idTargetDefinition != null)
             return false;
-        if (nombre != null ? !nombre.equals(that.nombre) : that.nombre != null) return false;
-        if (multiplicityFrom != null ? !multiplicityFrom.equals(that.multiplicityFrom) : that.multiplicityFrom != null)
+        if (name != null ? !name.equals(that.name) : that.name != null) return false;
+        if (lowerBoundary != null ? !lowerBoundary.equals(that.lowerBoundary) : that.lowerBoundary != null)
             return false;
-        if (multiplicityTo != null ? !multiplicityTo.equals(that.multiplicityTo) : that.multiplicityTo != null)
+        if (upperBoundary != null ? !upperBoundary.equals(that.upperBoundary) : that.upperBoundary != null)
             return false;
 
         return true;
@@ -86,9 +88,9 @@ public class RelationshipAttributeDefinition {
         int result = (int) (idRelationAttributeDefinition ^ (idRelationAttributeDefinition >>> 32));
         result = 31 * result + (idRelationshipDefinition != null ? idRelationshipDefinition.hashCode() : 0);
         result = 31 * result + (idTargetDefinition != null ? idTargetDefinition.hashCode() : 0);
-        result = 31 * result + (nombre != null ? nombre.hashCode() : 0);
-        result = 31 * result + (multiplicityFrom != null ? multiplicityFrom.hashCode() : 0);
-        result = 31 * result + (multiplicityTo != null ? multiplicityTo.hashCode() : 0);
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (lowerBoundary != null ? lowerBoundary.hashCode() : 0);
+        result = 31 * result + (upperBoundary != null ? upperBoundary.hashCode() : 0);
         return result;
     }
 }
