@@ -1,10 +1,7 @@
 package cl.minsal.semantikos.kernel.daos;
 
 import cl.minsal.semantikos.kernel.util.ConnectionBD;
-import cl.minsal.semantikos.model.ConceptSMTK;
-import cl.minsal.semantikos.model.Description;
-import cl.minsal.semantikos.model.DescriptionType;
-import cl.minsal.semantikos.model.DescriptionTypeFactory;
+import cl.minsal.semantikos.model.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -170,7 +167,7 @@ public class DescriptionDAOImpl implements DescriptionDAO {
     }
 
     @Override
-    public void persist(Description description, ConceptSMTK conceptSMTK) {
+    public void persist(Description description, ConceptSMTK conceptSMTK, IUser user) {
 
         ConnectionBD connect = new ConnectionBD();
         String sql = "{call semantikos.create_description(?,?,?,?,?,?,?,?,?,?,?)}";
@@ -185,7 +182,7 @@ public class DescriptionDAOImpl implements DescriptionDAO {
             call.setBoolean(6, description.isActive());
             call.setBoolean(7, description.isPublished());
             call.setLong(8, description.getState().getId());
-            call.setLong(9,1); // ID USUARIO **************************************************************
+            call.setLong(9,user.getIdUser());
             call.setLong(10,0); //La descripcion inicia con uso en cero
             call.setLong(11, conceptSMTK.getId());
 

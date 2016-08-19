@@ -1,6 +1,7 @@
 package cl.minsal.semantikos.kernel.daos;
 
 import cl.minsal.semantikos.model.ConceptSMTK;
+import cl.minsal.semantikos.model.IUser;
 
 import javax.ejb.Local;
 import java.util.List;
@@ -73,5 +74,5 @@ public interface ConceptDAO {
      *
      * @param conceptSMTK El concepto que será persistido.
      */
-    public void persist(ConceptSMTK conceptSMTK);
+    public void persist(ConceptSMTK conceptSMTK, IUser user);
 }

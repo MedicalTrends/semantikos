@@ -254,7 +254,7 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
 
         /* En este momento se está listo para persistir el concepto */
         try {
-            conceptDAO.persist(conceptSMTK);
+            conceptDAO.persist(conceptSMTK,user);
         } catch (EJBException ejbException) {
             String errorMsg = "No se pudo persistir el concepto " + conceptSMTK.toString();
             logger.error(errorMsg, ejbException);
