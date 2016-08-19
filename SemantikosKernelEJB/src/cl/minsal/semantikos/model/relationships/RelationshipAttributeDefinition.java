@@ -1,41 +1,45 @@
 package cl.minsal.semantikos.model.relationships;
 
+import cl.minsal.semantikos.model.Multiplicity;
+
 /**
- * Created by root on 08-07-16.
+ * @author Andrés Farías
  */
 public class RelationshipAttributeDefinition {
 
-    private long idRelationAttributeDefinition;
-    private Long idRelationshipDefinition;
-    private Long idTargetDefinition;
+    /** Identificador único de la entidad */
+    private long id;
+
+    /** El valor del atributo de la relación */
+    private TargetDefinition target;
+
+    /** Nombre del atributo */
     private String name;
-    private String lowerBoundary;
-    private String upperBoundary;
 
-    //TODO: terminar funcion postgresql y atributos del objeto
+    /** Multiplicidad */
+    private Multiplicity multiplicity;
 
-    public long getIdRelationAttributeDefinition() {
-        return idRelationAttributeDefinition;
+    public RelationshipAttributeDefinition(long id, TargetDefinition target, String name, Multiplicity multiplicity) {
+        this.id = id;
+        this.target = target;
+        this.name = name;
+        this.multiplicity = multiplicity;
     }
 
-    public void setIdRelationAttributeDefinition(long idRelationAttributeDefinition) {
-        this.idRelationAttributeDefinition = idRelationAttributeDefinition;
+    public long getId() {
+        return id;
     }
 
-    public Long getIdRelationshipDefinition() {
-        return idRelationshipDefinition;
+    public void setId(long id) {
+        this.id = id;
     }
 
-    public void setIdRelationshipDefinition(Long idRelationshipDefinition) {
-        this.idRelationshipDefinition = idRelationshipDefinition;
+    public TargetDefinition getTarget() {
+        return target;
     }
 
-    public Long getIdTargetDefinition() {
-        return idTargetDefinition;
-    }
-
-    public void setIdTargetDefinition(Long idTargetDefinition) {
-        this.idTargetDefinition = idTargetDefinition;
+    public void setTarget(TargetDefinition target) {
+        this.target = target;
     }
 
     public String getName() {
@@ -46,51 +50,11 @@ public class RelationshipAttributeDefinition {
         this.name = name;
     }
 
-    public String getLowerBoundary() {
-        return lowerBoundary;
+    public Multiplicity getMultiplicity() {
+        return multiplicity;
     }
 
-    public void setLowerBoundary(String lowerBoundary) {
-        this.lowerBoundary = lowerBoundary;
-    }
-
-    public String getUpperBoundary() {
-        return upperBoundary;
-    }
-
-    public void setUpperBoundary(String upperBoundary) {
-        this.upperBoundary = upperBoundary;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        RelationshipAttributeDefinition that = (RelationshipAttributeDefinition) o;
-
-        if (idRelationAttributeDefinition != that.idRelationAttributeDefinition) return false;
-        if (idRelationshipDefinition != null ? !idRelationshipDefinition.equals(that.idRelationshipDefinition) : that.idRelationshipDefinition != null)
-            return false;
-        if (idTargetDefinition != null ? !idTargetDefinition.equals(that.idTargetDefinition) : that.idTargetDefinition != null)
-            return false;
-        if (name != null ? !name.equals(that.name) : that.name != null) return false;
-        if (lowerBoundary != null ? !lowerBoundary.equals(that.lowerBoundary) : that.lowerBoundary != null)
-            return false;
-        if (upperBoundary != null ? !upperBoundary.equals(that.upperBoundary) : that.upperBoundary != null)
-            return false;
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = (int) (idRelationAttributeDefinition ^ (idRelationAttributeDefinition >>> 32));
-        result = 31 * result + (idRelationshipDefinition != null ? idRelationshipDefinition.hashCode() : 0);
-        result = 31 * result + (idTargetDefinition != null ? idTargetDefinition.hashCode() : 0);
-        result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (lowerBoundary != null ? lowerBoundary.hashCode() : 0);
-        result = 31 * result + (upperBoundary != null ? upperBoundary.hashCode() : 0);
-        return result;
+    public void setMultiplicity(Multiplicity multiplicity) {
+        this.multiplicity = multiplicity;
     }
 }

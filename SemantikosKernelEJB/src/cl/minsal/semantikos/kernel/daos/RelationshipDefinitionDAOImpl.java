@@ -80,6 +80,11 @@ public class RelationshipDefinitionDAOImpl implements RelationshipDefinitionDAO 
 
     }
 
+    /**
+     *Este método es responsable de recuperar la definición de los atributos
+     * @param relationshipDefinition
+     * @return
+     */
     private List<RelationshipAttributeDefinition> getRelationshipAttributeDefinitionsByRelationshipDefinition(RelationshipDefinition relationshipDefinition) {
 
         ConnectionBD connect = new ConnectionBD();
@@ -89,13 +94,14 @@ public class RelationshipDefinitionDAOImpl implements RelationshipDefinitionDAO 
         try (Connection connection = connect.getConnection();
              CallableStatement call = connection.prepareCall(sqlQuery)) {
 
-            /* Se invoca la consulta para recuperar los atributos de esta relacion */
+            /* Se invoca la consulta para recuperar los atributos de esta relación */
             call.setLong(1, id);
             call.execute();
 
             ResultSet resultSet = call.getResultSet();
             if (resultSet.next()) {
-                relationshipAttributeDefinitions = new RelationshipAttributeDefinitionFactory().createFromJSON(resultSet.getString(1));
+                RelationshipAttributeDefinitionFactory factory = new RelationshipAttributeDefinitionFactory();
+                relationshipAttributeDefinitions = factory.createFromJSON(resultSet.getString(1));
             } else {
                 throw new EJBException("Un error improbable al recibir la respuesta de la base de datos.");
             }
