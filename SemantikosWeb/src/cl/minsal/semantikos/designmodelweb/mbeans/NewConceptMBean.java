@@ -75,8 +75,8 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
 
     private DescriptionType otherDescriptionType;
 
-    // Placeholder para los target de las relaciones
-    private BasicTypeValue basicTypeValue = new BasicTypeValue("");
+    // Placeholders para los target de las relaciones
+    private BasicTypeValue basicTypeValue = new BasicTypeValue(null);
 
     private HelperTableRecord selectedHelperTableRecord = new HelperTableRecord();
 
@@ -85,6 +85,7 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
     private ConceptSMTK conceptSelected;
 
     private Map<Long, ConceptSMTK> targetSelected;
+    ////////////////////////////////////////////////////
 
     public ConceptSMTK getConceptSMTK() {
         return conceptSMTK;
@@ -128,9 +129,9 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         context.execute("PF('dialogNameConcept').show();");
 
         //category = categoryManager.getCategoryById(1);
-        //category = categoryManager.getCategoryById(105590001);
+        category = categoryManager.getCategoryById(105590001);
 
-        category = categoryManager.getCategoryById(71388002);
+        //category = categoryManager.getCategoryById(71388002);
         //descriptionManager.getAllTypes();
         //DescriptionTypeFactory.getInstance().getDescriptionTypes();
 
@@ -336,7 +337,7 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
 
     /**
      * Este método es el encargado de agregar relaciones al concepto recibiendo como parámetro un Relationship
-     * Definition
+     * Definition. Este método es utilizado por el componente BasicType, el cual agrega relaciones sin valor
      */
     public void addRelationship(RelationshipDefinition relationshipDefinition) {
 

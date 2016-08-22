@@ -71,7 +71,7 @@ public class RelationshipDAOImpl implements RelationshipDAO {
     @Override
     public void update(Relationship relationship) {
 
-        long idTarget= targetDAO.persist(relationship.getTarget(),relationship.getRelationshipDefinition().getTargetDefinition());
+        long idTarget= targetDAO.update(relationship.getTarget(),relationship.getRelationshipDefinition().getTargetDefinition());
 
         ConnectionBD connect = new ConnectionBD();
         String sql = "{call semantikos.get_relationships_with_concept_sct(?)}";
