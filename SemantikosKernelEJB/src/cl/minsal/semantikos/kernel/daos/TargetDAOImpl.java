@@ -4,8 +4,6 @@ import cl.minsal.semantikos.kernel.util.ConnectionBD;
 import cl.minsal.semantikos.model.ConceptSMTK;
 import cl.minsal.semantikos.model.basictypes.BasicTypeDefinition;
 import cl.minsal.semantikos.model.basictypes.BasicTypeValue;
-import cl.minsal.semantikos.model.helpertables.HelperTable;
-import cl.minsal.semantikos.model.relationships.RelationshipDefinition;
 import cl.minsal.semantikos.model.relationships.Target;
 import cl.minsal.semantikos.model.relationships.TargetDefinition;
 import cl.minsal.semantikos.model.relationships.TargetFactory;
@@ -17,7 +15,6 @@ import javax.ejb.EJBException;
 import javax.ejb.Stateless;
 import javax.persistence.metamodel.BasicType;
 import java.sql.*;
-import java.util.List;
 
 /**
  * @author Diego Soto
@@ -46,14 +43,14 @@ public class TargetDAOImpl implements TargetDAO {
 
             call.setFloat(1, floatValue);
             call.setTimestamp(2, dateValue);
-            call.setString(3,stringValue);
-            call.setBoolean(4,booleanValue);
-            call.setInt(5,intValue);
-            call.setFloat(6,idAuxiliary);
-            call.setFloat(7,idExtern);
-            call.setFloat(8,idConceptSCT);
-            call.setFloat(9,idConceptSMTK);
-            call.setFloat(10,targetType);
+            call.setString(3, stringValue);
+            call.setBoolean(4, booleanValue);
+            call.setInt(5, intValue);
+            call.setFloat(6, idAuxiliary);
+            call.setFloat(7, idExtern);
+            call.setFloat(8, idConceptSCT);
+            call.setFloat(9, idConceptSMTK);
+            call.setFloat(10, targetType);
 
             call.execute();
 
@@ -61,7 +58,7 @@ public class TargetDAOImpl implements TargetDAO {
 
             if (rs.next()) {
                 target = rs.getLong(1);
-                if(target==-1){
+                if (target == -1) {
                     String errorMsg = "El target no fue creado";
                     logger.error(errorMsg);
                     throw new EJBException(errorMsg);
@@ -98,7 +95,7 @@ public class TargetDAOImpl implements TargetDAO {
             if (rs.next()) {
                 String jsonResult = rs.getString(1);
                 target = targetFactory.createTargetFromJSON(jsonResult);
-            }else {
+            } else {
                 String errorMsg = "Un error imposible acaba de ocurrir";
                 logger.error(errorMsg);
                 throw new EJBException(errorMsg);
@@ -118,41 +115,40 @@ public class TargetDAOImpl implements TargetDAO {
 
         ConnectionBD connect = new ConnectionBD();
         String sql = "{call semantikos.create_target(?,?,?,?,?,?,?,?,?,?)}";
-        long idTarget=-1;
+        long idTarget = -1;
 
         try (Connection connection = connect.getConnection();
              CallableStatement call = connection.prepareCall(sql)) {
 
+            /* Almacenar el tipo básico */
+            if (targetDefinition.isBasicType()) {
 
-            if(targetDefinition.isBasicType()){
-
-                BasicTypeDefinition basicTypeDefinition = (BasicTypeDefinition)targetDefinition;
-
+                BasicTypeDefinition basicTypeDefinition = (BasicTypeDefinition) targetDefinition;
                 BasicTypeValue basicType = (BasicTypeValue) target;
 
-                if(basicTypeDefinition.isDate()){
+                if (basicTypeDefinition.isDate()) {
                     call.setTimestamp(2, (Timestamp) basicType.getValue());
                 }
-                if(basicTypeDefinition.isFloat()){
-                    call.setFloat(1, (Float) basicType.getValue() );
+                if (basicTypeDefinition.isFloat()) {
+                    call.setFloat(1, (Float) basicType.getValue());
                 }
-                if(basicTypeDefinition.isInteger()){
+                if (basicTypeDefinition.isInteger()) {
                     call.setInt(5, (Integer) basicType.getValue());
                 }
-                if(basicTypeDefinition.isString()){
-                    call.setString(3,(String) basicType.getValue());
+                if (basicTypeDefinition.isString()) {
+                    call.setString(3, (String) basicType.getValue());
                 }
 
-                call.setNull(4,1);
+                call.setNull(4, 1);
 
             }
 
-            if(targetDefinition.isSMTKType()){
-                call.setFloat(9,((ConceptSMTK)target).getId());
+            if (targetDefinition.isSMTKType()) {
+                call.setFloat(9, ((ConceptSMTK) target).getId());
             }
 
-            if(targetDefinition.isHelperTable()){
-               // call.setFloat(6,(HelperTable));
+            if (targetDefinition.isHelperTable()) {
+                // call.setFloat(6,(HelperTable));
                 //TODO: pendiente
             }
 
@@ -166,7 +162,7 @@ public class TargetDAOImpl implements TargetDAO {
             ResultSet rs = call.getResultSet();
 
             if (rs.next()) {
-                idTarget=  rs.getLong(1);
+                idTarget = rs.getLong(1);
             }
             rs.close();
 
@@ -174,5 +170,13 @@ public class TargetDAOImpl implements TargetDAO {
             throw new EJBException(e);
         }
         return idTarget;
+    }
+
+    public long persist(BasicType target, TargetDefinition targetDefinition) {
+        System.out.println("Paso por aca!");
+        int i = 0;
+        i++;
+        System.out.println(i);
+        return 0;
     }
 }
