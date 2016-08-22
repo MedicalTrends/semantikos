@@ -389,11 +389,6 @@ public class ConceptDAOImpl implements ConceptDAO {
             descriptionDAO.persist(description, conceptSMTK,user);
         }
 
-        for (Relationship relationship : conceptSMTK.getRelationships()) {
-            targetDAO.persist(relationship.getTarget(),relationship.getRelationshipDefinition().getTargetDefinition());
-        }
-
-
         /* Y finalmente se persisten sus relaciones */
         for (Relationship relationship : conceptSMTK.getRelationships()) {
             relationshipDAO.persist(relationship);

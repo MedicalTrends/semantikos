@@ -70,7 +70,7 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
         } catch (SQLException | ClassNotFoundException e) {
             System.out.println(e.toString());
         }
-*/
+        */
 
         return null;
     }
@@ -79,8 +79,6 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
     @Override
     public String addConcept(String idCategory, boolean isValid) {
         String idConcepto = null;
-
-
 
 /*
         try {
