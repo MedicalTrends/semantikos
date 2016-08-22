@@ -10,7 +10,7 @@ import java.util.List;
 public enum TargetType {
 
     BasicType(1, "SCT", "Snomed CT"),
-    SMTK(3, "SCT", "Snomed CT"),
+    SMTK(2, "SCT", "Snomed CT"),
     SnomedCT(3, "SCT", "Snomed CT"),
     HelperTable(4, "Helper Table", ""),
     CrossMap(5, "CrossMap", "Relaciones a terminologías externas");
