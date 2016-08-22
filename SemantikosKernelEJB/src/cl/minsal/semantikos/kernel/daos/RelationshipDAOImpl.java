@@ -44,12 +44,12 @@ public class RelationshipDAOImpl implements RelationshipDAO {
         long idTarget= targetDAO.persist(relationship.getTarget(),relationship.getRelationshipDefinition().getTargetDefinition());
 
         ConnectionBD connect = new ConnectionBD();
-        String sql = "{call semantikos.get_relationships_with_concept_sct(?)}";
+        String sql = "{call semantikos.create_relationship(?,?,?)}";
         try (Connection connection = connect.getConnection();
              CallableStatement call = connection.prepareCall(sql)) {
 
             call.setLong(1, relationship.getSourceConcept().getId());
-            call.setLong(2, relationship.getTarget().getId());
+            call.setLong(2, idTarget);
             call.setLong(3, relationship.getRelationshipDefinition().getId());
             call.execute();
 
