@@ -172,6 +172,67 @@ public class TargetDAOImpl implements TargetDAO {
         return idTarget;
     }
 
+    @Override
+    public long update(Target target, TargetDefinition targetDefinition) {
+        ConnectionBD connect = new ConnectionBD();
+        String sql = "{call semantikos.update_target(?,?,?,?,?,?,?,?,?,?)}";
+        long idTarget = -1;
+
+        try (Connection connection = connect.getConnection();
+             CallableStatement call = connection.prepareCall(sql)) {
+
+            /* Almacenar el tipo básico */
+            if (targetDefinition.isBasicType()) {
+
+                BasicTypeDefinition basicTypeDefinition = (BasicTypeDefinition) targetDefinition;
+                BasicTypeValue basicType = (BasicTypeValue) target;
+
+                if (basicTypeDefinition.isDate()) {
+                    call.setTimestamp(2, (Timestamp) basicType.getValue());
+                }
+                if (basicTypeDefinition.isFloat()) {
+                    call.setFloat(1, (Float) basicType.getValue());
+                }
+                if (basicTypeDefinition.isInteger()) {
+                    call.setInt(5, (Integer) basicType.getValue());
+                }
+                if (basicTypeDefinition.isString()) {
+                    call.setString(3, (String) basicType.getValue());
+                }
+
+                call.setNull(4, 1);
+
+            }
+
+            if (targetDefinition.isSMTKType()) {
+                call.setFloat(9, ((ConceptSMTK) target).getId());
+            }
+
+            if (targetDefinition.isHelperTable()) {
+                // call.setFloat(6,(HelperTable));
+                //TODO: pendiente
+            }
+
+            /*
+            call.setFloat(7,idExtern);
+            call.setFloat(8,idConceptSCT);
+            call.setFloat(10,targetType);
+            */
+            call.execute();
+
+            ResultSet rs = call.getResultSet();
+
+            if (rs.next()) {
+                idTarget = rs.getLong(1);
+            }
+            rs.close();
+
+        } catch (SQLException e) {
+            throw new EJBException(e);
+        }
+        return idTarget;
+    }
+
     public long persist(BasicType target, TargetDefinition targetDefinition) {
         System.out.println("Paso por aca!");
         int i = 0;

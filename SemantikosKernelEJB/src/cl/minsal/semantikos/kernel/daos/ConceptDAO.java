@@ -75,4 +75,12 @@ public interface ConceptDAO {
      * @param conceptSMTK El concepto que será persistido.
      */
     public void persist(ConceptSMTK conceptSMTK, IUser user);
+
+    /**
+     * Este método es responsable de actualizar la entidad Concepto SMTK en la base de datos.
+     *
+     * @param oldConceptSMTK El concepto antiguo u original. Previo a la edición
+     * @param newConceptSMTK El concepto nuevo, resultado de la edición.*
+     */
+    public void update(ConceptSMTK oldConceptSMTK, ConceptSMTK newConceptSMTK, IUser user);
 }

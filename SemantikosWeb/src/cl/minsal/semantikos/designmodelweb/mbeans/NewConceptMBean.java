@@ -76,7 +76,7 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
     private DescriptionType otherDescriptionType;
 
     // Placeholder para los target de las relaciones
-    private BasicTypeValue basicTypeValue;
+    private BasicTypeValue basicTypeValue = new BasicTypeValue("");
 
     private HelperTableRecord selectedHelperTableRecord = new HelperTableRecord();
 
@@ -127,10 +127,10 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         context.execute("PF('dialogNameConcept').show();");
 
-        category = categoryManager.getCategoryById(1);
+        //category = categoryManager.getCategoryById(1);
         //category = categoryManager.getCategoryById(105590001);
 
-        //category = categoryManager.getCategoryById(71388002);
+        category = categoryManager.getCategoryById(71388002);
         //descriptionManager.getAllTypes();
         //DescriptionTypeFactory.getInstance().getDescriptionTypes();
 
@@ -494,22 +494,6 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         concept.setId(-1);
         concept.setConceptID(conceptManager.generateConceptId());
 
-        // Agregar las relaciones si existen
-        /*
-        for (RelationshipDefinition relationshipDefinition : category.getRelationshipDefinitions()) {
-            //Evaluar la multiplicidad de la relación
-            for (int i = 0; i < Math.max(relationshipDefinition.getMultiplicity().getLowerBoundary(), 1); ++i) {
-                Relationship relationship = new Relationship(relationshipDefinition);
-                if (!relationshipDefinition.getTargetDefinition().isSMTKType()) {
-                    //relationshipDefinition.addRelationship(relationship);
-                    concept.addRelationship(relationship);
-                }
-
-            }
-
-        }
-        */
-
 
         return concept;
     }
@@ -542,8 +526,6 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
 
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Falta el FSN al concepto"));
         }
-
-        //System.out.println("se va a guardar el concepto");
 
     }
 

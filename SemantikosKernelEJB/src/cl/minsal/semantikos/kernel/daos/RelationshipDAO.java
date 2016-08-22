@@ -22,6 +22,13 @@ public interface RelationshipDAO {
     public void persist(Relationship relationship);
 
     /**
+     * Este método es responsable de actualizar una relación asociada a un concepto.
+     *
+     * @param relationship La relación que se desea actualizar.
+     */
+    public void update(Relationship relationship);
+
+    /**
      * Este método es responsable de obtener todas las relaciones que tienen como target un concepto SNOMED CT en
      * particular.
      *

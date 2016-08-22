@@ -14,7 +14,11 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
+
+import org.apache.commons.collections4.*;
 
 /**
  * Created by des01c7 on 13-07-16.
@@ -393,6 +397,29 @@ public class ConceptDAOImpl implements ConceptDAO {
         /* Y finalmente se persisten sus relaciones */
         for (Relationship relationship : conceptSMTK.getRelationships()) {
             relationshipDAO.persist(relationship);
+        }
+    }
+
+    @Override
+    public void update(ConceptSMTK oldConceptSMTK, ConceptSMTK newConceptSMTK, IUser user) {
+
+        List<Relationship> toUpdate = (List<Relationship>) CollectionUtils.intersection(oldConceptSMTK.getRelationships(), newConceptSMTK.getRelationships());
+
+        List<Relationship> toPersist = (List<Relationship>) CollectionUtils.subtract(newConceptSMTK.getRelationships(), oldConceptSMTK.getRelationships());
+
+        List<Relationship> toDelete = (List<Relationship>) CollectionUtils.subtract(oldConceptSMTK.getRelationships(), newConceptSMTK.getRelationships());
+
+        for (Relationship relationship : toUpdate) {
+            //relationshipDAO.update(relationship);
+        }
+
+        for (Relationship relationship: toPersist){
+            relationshipDAO.persist(relationship);
+        }
+
+        for (Relationship relationship : toDelete) {
+            //relationshipDAO.delete(relationship);
+
         }
     }
 
