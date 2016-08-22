@@ -143,19 +143,19 @@ public class TargetDAOImpl implements TargetDAO {
             if (targetDefinition.isBasicType()) {
 
                 BasicTypeDefinition basicTypeDefinition = (BasicTypeDefinition) targetDefinition;
-                BasicTypeValue basicType = (BasicTypeValue) target;
+                BasicTypeValue value = (BasicTypeValue) target;
 
-                if (basicTypeDefinition.isDate()) {
-                    call.setTimestamp(2, (Timestamp) basicType.getValue());
+                if (value.isDate()) {
+                    call.setTimestamp(2, (Timestamp) value.getValue());
                 }
-                if (basicTypeDefinition.isFloat()) {
-                    call.setFloat(1, (Float) basicType.getValue());
+                if (value.isFloat()) {
+                    call.setFloat(1, (Float) value.getValue());
                 }
-                if (basicTypeDefinition.isInteger()) {
-                    call.setInt(5, (Integer) basicType.getValue());
+                if (value.isInteger()) {
+                    call.setInt(5, (Integer) value.getValue());
                 }
-                if (basicTypeDefinition.isString()) {
-                    call.setString(3, (String) basicType.getValue());
+                if (value.isString()) {
+                    call.setString(3, (String) value.getValue());
                 }
 
                 call.setNull(4, 1);

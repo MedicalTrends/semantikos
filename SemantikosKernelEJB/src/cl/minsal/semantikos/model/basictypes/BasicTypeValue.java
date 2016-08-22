@@ -2,8 +2,11 @@ package cl.minsal.semantikos.model.basictypes;
 
 import cl.minsal.semantikos.model.relationships.Target;
 import cl.minsal.semantikos.model.relationships.TargetType;
+import org.omg.CORBA.INTERNAL;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.sql.Timestamp;
 
 /**
  *
@@ -74,4 +77,19 @@ public class BasicTypeValue<T extends Comparable> implements Target {
         return value.toString();
     }
 
+    public boolean isDate() {
+        return this.value.getClass().equals(Timestamp.class);
+    }
+
+    public boolean isFloat() {
+        return this.value.getClass().equals(Float.class) || this.value.getClass().equals(Double.class);
+    }
+
+    public boolean isInteger() {
+        return this.value.getClass().equals(Integer.class);
+    }
+
+    public boolean isString() {
+        return this.value.getClass().equals(String.class);
+    }
 }
