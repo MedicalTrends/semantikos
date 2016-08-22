@@ -1,6 +1,8 @@
 package cl.minsal.semantikos.kernel.daos;
 
+import cl.minsal.semantikos.model.relationships.Relationship;
 import cl.minsal.semantikos.model.relationships.Target;
+import cl.minsal.semantikos.model.relationships.TargetDefinition;
 
 import javax.ejb.Local;
 import java.sql.Timestamp;
@@ -20,4 +22,6 @@ public interface TargetDAO {
      * @return Un objeto fresco (ConceptoSMTK, fila de una Tabla Auxiliar, Concepto CST) que es el valor concreto.
      */
     public Target getTargetByID(long idTarget);
+
+    public long persist(Target target, TargetDefinition targetDefinition);
 }

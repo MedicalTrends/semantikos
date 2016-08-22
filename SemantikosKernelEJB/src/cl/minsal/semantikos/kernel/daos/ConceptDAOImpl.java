@@ -39,6 +39,9 @@ public class ConceptDAOImpl implements ConceptDAO {
     @EJB
     private RelationshipDAO relationshipDAO;
 
+    @EJB
+    private TargetDAO targetDAO;
+
 
     /**
      * Este método es responsable de crear un concepto SMTK a partir de un resultset.
