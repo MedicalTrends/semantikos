@@ -278,7 +278,7 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
      */
     private void validatesIsNotPersistent(ConceptSMTK conceptSMTK) throws EJBException {
         long id = conceptSMTK.getId();
-        if (id <= 0) {
+        if (id != conceptDAO.NON_PERSISTED_ID) {
             throw new EJBException("El concepto ya se encuentra persistido. ID=" + id);
         }
     }
