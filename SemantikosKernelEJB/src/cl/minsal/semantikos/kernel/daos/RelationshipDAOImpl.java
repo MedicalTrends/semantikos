@@ -69,6 +69,37 @@ public class RelationshipDAOImpl implements RelationshipDAO {
     }
 
     @Override
+    public void update(Relationship relationship) {
+
+        long idTarget= targetDAO.update(relationship.getTarget(),relationship.getRelationshipDefinition().getTargetDefinition());
+
+        ConnectionBD connect = new ConnectionBD();
+        String sql = "{call semantikos.get_relationships_with_concept_sct(?)}";
+        try (Connection connection = connect.getConnection();
+             CallableStatement call = connection.prepareCall(sql)) {
+
+            call.setLong(1, relationship.getSourceConcept().getId());
+            call.setLong(2, relationship.getTarget().getId());
+            call.setLong(3, relationship.getRelationshipDefinition().getId());
+            call.execute();
+
+            ResultSet rs = call.getResultSet();
+
+            if (rs.next()) {
+                relationship.setId(rs.getLong(1));
+            } else {
+                String errorMsg = "La relacion no fue creada. Esta es una situación imposible. Contactar a Desarrollo";
+                logger.error(errorMsg);
+                throw new IllegalArgumentException(errorMsg);
+            }
+            rs.close();
+        } catch (SQLException e) {
+            throw new EJBException(e);
+        }
+
+    }
+
+    @Override
     public List<Relationship> getRelationshipsToCSTConcept(ConceptSCT destinyConceptSCT) {
 
         long idDestinyConceptSCT = destinyConceptSCT.getId();
