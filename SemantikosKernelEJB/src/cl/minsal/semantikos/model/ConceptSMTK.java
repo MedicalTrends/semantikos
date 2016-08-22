@@ -1,5 +1,6 @@
 package cl.minsal.semantikos.model;
 
+import cl.minsal.semantikos.kernel.daos.ConceptDAO;
 import cl.minsal.semantikos.model.businessrules.ConceptStateBusinessRulesContainer;
 import cl.minsal.semantikos.model.exceptions.BusinessRuleException;
 import cl.minsal.semantikos.model.relationships.Relationship;
@@ -62,6 +63,8 @@ public class ConceptSMTK implements Target {
      * El constructor privado con las inicializaciones de los campos por defecto.
      */
     public ConceptSMTK() {
+        /* El identificador de persistencia por defecto (no persistido) */
+        this.id = ConceptDAO.NON_PERSISTED_ID;
 
         /* El concepto parte con su estado inicial */
         this.state = ConceptStateMachine.getInstance().getInitialState();
