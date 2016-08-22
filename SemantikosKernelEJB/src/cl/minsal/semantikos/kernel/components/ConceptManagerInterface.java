@@ -70,4 +70,11 @@ public interface ConceptManagerInterface {
      * @return Una copia fresca del objeto actualizado.
      */
     public ConceptSMTK merge(ConceptSMTK conceptSMTK);
+
+    /**
+     * Método encargado de generar el concept ID
+     * @return retorna un String con el Concept ID generado
+     */
+    public String generateConceptId();
+
 }

@@ -491,6 +491,7 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         ConceptSMTKWeb concept = new ConceptSMTKWeb(category, favouriteDescription, initialState);
         concept.setCategory(category);
         concept.setState(initialState);
+        concept.setConceptID(conceptManager.generateConceptId());
 
         // Agregar las relaciones si existen
         /*

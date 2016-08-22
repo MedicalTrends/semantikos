@@ -17,6 +17,7 @@ import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
+import java.util.UUID;
 
 /**
  * @author Andrés Farías
@@ -270,6 +271,10 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
         return null;
     }
 
+    @Override
+    public String generateConceptId() {
+        return UUID.randomUUID().toString();
+    }
 
     private List<String> patternToList(String pattern) {
         StringTokenizer st;
