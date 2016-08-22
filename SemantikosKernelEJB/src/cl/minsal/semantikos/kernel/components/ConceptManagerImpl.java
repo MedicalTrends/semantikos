@@ -248,13 +248,16 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
     public void persist(@NotNull ConceptSMTK conceptSMTK, IUser user) {
         logger.debug("El concepto " + conceptSMTK + " será persistido.");
 
-        /* Precondiciones: Reglas de negocio para la persistencia */
+        /* Pre-condición técnica: el concepto no debe estar persistido */
+        validatesIsNotPersistent(conceptSMTK);
+
+        /* Pre-condiciones: Reglas de negocio para la persistencia */
         BusinessRulesContainer brm = new ConceptCreationBusinessRuleContainer();
         brm.apply(conceptSMTK, user);
 
         /* En este momento se está listo para persistir el concepto */
         try {
-            conceptDAO.persist(conceptSMTK,user);
+            conceptDAO.persist(conceptSMTK, user);
         } catch (EJBException ejbException) {
             String errorMsg = "No se pudo persistir el concepto " + conceptSMTK.toString();
             logger.error(errorMsg, ejbException);
@@ -265,8 +268,24 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
 
     }
 
+    /**
+     * Este método es responsable de validar que el concepto no se encuentre persistido.
+     *
+     * @param conceptSMTK El concepto sobre el cual se realiza la validación de persistencia.
+     *
+     * @throws javax.ejb.EJBException Se arroja si el concepto tiene un ID de persistencia.
+     */
+    private void validatesIsNotPersistent(ConceptSMTK conceptSMTK) throws EJBException {
+        long id = conceptSMTK.getId();
+        if (id <= 0) {
+            throw new EJBException("El concepto ya se encuentra persistido. ID=" + id);
+        }
+    }
+
     @Override
     public ConceptSMTK merge(ConceptSMTK conceptSMTK) {
+
+        // TODO: Por Implementar
         return null;
     }
 
