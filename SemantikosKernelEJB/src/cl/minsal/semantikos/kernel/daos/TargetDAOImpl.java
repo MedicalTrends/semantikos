@@ -143,8 +143,6 @@ public class TargetDAOImpl implements TargetDAO {
                     call.setString(3,(String) basicType.getValue());
                 }
 
-
-
                 call.setNull(4,1);
 
             }
@@ -158,11 +156,9 @@ public class TargetDAOImpl implements TargetDAO {
                 //TODO: pendiente
             }
 
-
 /*
             call.setFloat(7,idExtern);
             call.setFloat(8,idConceptSCT);
-
             call.setFloat(10,targetType);
 */
             call.execute();
