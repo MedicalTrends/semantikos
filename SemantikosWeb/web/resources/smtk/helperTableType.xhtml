@@ -53,32 +53,35 @@
              widgetVar="panelHelperTableTypeSimple#{cc.attrs.relationshipDefinition.id}"
              rendered="#{cc.attrs.relationshipDefinition.multiplicity.simple and cc.attrs.concept.hasRelationships(cc.attrs.relationshipDefinition)}">
 
-        <div class="ui-g">
-            <div class="ui-g-12 ui-md-6 ui-lg-2">
-                <p:outputLabel for="helperTableRecordsSimple" value="#{cc.attrs.relationshipDefinition.name}"/>
-                <p:outputLabel value=" *" rendered="#{!cc.attrs.relationshipDefinition.multiplicity.optional}" />
+        <ui:repeat value="#{cc.attrs.concept.getRelationshipsByRelationDefinition(cc.attrs.relationshipDefinition)}"
+                   var="relationship"
+                   varStatus="var">
+            <div class="ui-g">
+                <div class="ui-g-12 ui-md-6 ui-lg-2">
+                    <p:outputLabel for="helperTableRecordsSimple2" value="#{cc.attrs.relationshipDefinition.name}"/>
+                </div>
+                <div class="ui-g-12 ui-md-6 ui-lg-10">
+                    <p:dataTable id="helperTableRecordsSimple2"
+                                 var="helperTableRecord"
+                                 value="#{newConceptMBean.helperTableManager.getAllRecords(cc.attrs.targetDefinition)}"
+                                 selection="#{relationship.target}"
+                                 reflow="true"
+                                 rowKey="#{helperTableRecord.fields.id}"
+                    >
+                        <p:column selectionMode="single" style="width:16px;text-align:center"/>
+                        <p:columns value="#{cc.attrs.targetDefinition.showableColumns}"
+                                   var="column"
+                                   sortBy="#{helperTableRecord.fields[column.columnName]}"
+                                   rendered="#{column.columnName!='id'}">
+                            <f:facet name="header">
+                                <h:outputText value="#{column.columnName}" />
+                            </f:facet>
+                            <h:outputText value="#{helperTableRecord.fields.get(column.columnName)}" />
+                        </p:columns>
+                    </p:dataTable>
+                </div>
             </div>
-            <div class="ui-g-12 ui-md-6 ui-lg-10">
-                <p:dataTable id="helperTableRecordsSimple2"
-                             var="helperTableRecord"
-                             value="#{newConceptMBean.helperTableManager.getAllRecords(cc.attrs.targetDefinition)}"
-                             selection="#{cc.attrs.concept.getRelationshipsByRelationDefinition(cc.attrs.relationshipDefinition).get(0).target}"
-                             selectionMode="single"
-                             reflow="true"
-                             rowKey="#{helperTableRecord.fields.id}"
-                >
-                    <p:columns value="#{cc.attrs.targetDefinition.showableColumns}"
-                               var="column"
-                               sortBy="#{helperTableRecord.fields[column.columnName]}"
-                               rendered="#{column.columnName!='id'}">
-                        <f:facet name="header">
-                            <h:outputText value="#{column.columnName}" />
-                        </f:facet>
-                        <h:outputText value="#{helperTableRecord.fields.get(column.columnName)}" />
-                    </p:columns>
-                </p:dataTable>
-            </div>
-        </div>
+        </ui:repeat>
     </p:panel>
 
     <!-- Multiplicidad N-->
