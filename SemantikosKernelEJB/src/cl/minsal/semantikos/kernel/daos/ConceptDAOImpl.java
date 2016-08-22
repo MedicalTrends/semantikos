@@ -39,6 +39,9 @@ public class ConceptDAOImpl implements ConceptDAO {
     @EJB
     private RelationshipDAO relationshipDAO;
 
+    @EJB
+    private TargetDAO targetDAO;
+
 
     /**
      * Este método es responsable de crear un concepto SMTK a partir de un resultset.
@@ -380,6 +383,10 @@ public class ConceptDAOImpl implements ConceptDAO {
 
         for (Description description : conceptSMTK.getDescriptions()) {
             descriptionDAO.persist(description, conceptSMTK,user);
+        }
+
+        for (Relationship relationship : conceptSMTK.getRelationships()) {
+            targetDAO.persist(relationship.getTarget(),relationship.getRelationshipDefinition().getTargetDefinition());
         }
 
 

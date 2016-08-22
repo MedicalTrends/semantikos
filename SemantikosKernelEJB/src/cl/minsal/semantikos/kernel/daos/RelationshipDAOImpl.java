@@ -35,8 +35,13 @@ public class RelationshipDAOImpl implements RelationshipDAO {
     @EJB
     private RelationshipFactory relationshipFactory;
 
+    @EJB
+    private TargetDAO targetDAO;
+
     @Override
     public void persist(Relationship relationship) {
+
+        long idTarget= targetDAO.persist(relationship.getTarget(),relationship.getRelationshipDefinition().getTargetDefinition());
 
         ConnectionBD connect = new ConnectionBD();
         String sql = "{call semantikos.get_relationships_with_concept_sct(?)}";
