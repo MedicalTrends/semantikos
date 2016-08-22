@@ -1,7 +1,6 @@
 package cl.minsal.semantikos.kernel.daos;
 
 import cl.minsal.semantikos.kernel.util.ConnectionBD;
-import cl.minsal.semantikos.model.ConceptSMTK;
 import cl.minsal.semantikos.model.basictypes.BasicTypeDefinition;
 import cl.minsal.semantikos.model.basictypes.BasicTypeValue;
 import cl.minsal.semantikos.model.relationships.Target;
@@ -15,6 +14,9 @@ import javax.ejb.EJBException;
 import javax.ejb.Stateless;
 import javax.persistence.metamodel.BasicType;
 import java.sql.*;
+
+import static cl.minsal.semantikos.model.relationships.TargetType.*;
+import static java.sql.Types.*;
 
 /**
  * @author Diego Soto
@@ -114,55 +116,58 @@ public class TargetDAOImpl implements TargetDAO {
     public long persist(Target target, TargetDefinition targetDefinition) {
 
         ConnectionBD connect = new ConnectionBD();
+        /*
+         * Parámetros de la función:
+         *   1: Valor flotante tipo básico.
+         *   2: Valor Timestamp tipo básico.
+         *   3: Valor String tipo básico.
+         *   4: Valor Booleano tipo básico.
+         *   5: Valor entero tipo básico.
+         *   6: ID helper table record.
+         *   7: id helper Ext
+         *   8: ID SCT
+         *   9: Concept SMTK
+         */
         String sql = "{call semantikos.create_target(?,?,?,?,?,?,?,?,?,?)}";
-        long idTarget = -1;
+        long idTarget;
 
         try (Connection connection = connect.getConnection();
              CallableStatement call = connection.prepareCall(sql)) {
 
+            /* Se fijan de los argumentos por defecto */
+            setDefaultValuesForCreateTargetFunction(call);
+
             /* Almacenar el tipo básico */
             if (targetDefinition.isBasicType()) {
-
-                BasicTypeDefinition basicTypeDefinition = (BasicTypeDefinition) targetDefinition;
-                BasicTypeValue basicType = (BasicTypeValue) target;
-
-                if (basicTypeDefinition.isDate()) {
-                    call.setTimestamp(2, (Timestamp) basicType.getValue());
-                }
-                if (basicTypeDefinition.isFloat()) {
-                    call.setFloat(1, (Float) basicType.getValue());
-                }
-                if (basicTypeDefinition.isInteger()) {
-                    call.setInt(5, (Integer) basicType.getValue());
-                }
-                if (basicTypeDefinition.isString()) {
-                    call.setString(3, (String) basicType.getValue());
-                }
-
-                call.setNull(4, 1);
-
+                setTargetCall((BasicTypeValue) target, (BasicTypeDefinition) targetDefinition, call);
+                call.setLong(10, BasicType.getIdTargetType());
             }
 
-            if (targetDefinition.isSMTKType()) {
-                call.setFloat(9, ((ConceptSMTK) target).getId());
+            /* Almacenar concepto SMTK */
+            else if (targetDefinition.isSMTKType()) {
+                call.setLong(9, target.getId());
+                call.setLong(10, SMTK.getIdTargetType());
             }
 
-            if (targetDefinition.isHelperTable()) {
-                // call.setFloat(6,(HelperTable));
-                //TODO: pendiente
+            /* Almacenar registro Tabla auxiliar */
+            else if (targetDefinition.isHelperTable()) {
+                call.setLong(6, target.getId());
+                call.setLong(10, HelperTable.getIdTargetType());
             }
 
-/*
-            call.setFloat(7,idExtern);
-            call.setFloat(8,idConceptSCT);
-            call.setFloat(10,targetType);
-*/
+            /* Almacenar concepto SCT */
+            else if (targetDefinition.isSnomedCTType()) {
+                call.setLong(8, target.getId());
+                call.setLong(10, SnomedCT.getIdTargetType());
+            }
+
+
             call.execute();
-
             ResultSet rs = call.getResultSet();
-
             if (rs.next()) {
                 idTarget = rs.getLong(1);
+            } else {
+                throw new EJBException("No se obtuvo respuesta de la base de datos, ni una excepción.");
             }
             rs.close();
 
@@ -170,6 +175,41 @@ public class TargetDAOImpl implements TargetDAO {
             throw new EJBException(e);
         }
         return idTarget;
+    }
+
+    private void setTargetCall(BasicTypeValue target, BasicTypeDefinition targetDefinition, CallableStatement call) throws SQLException {
+
+        if (targetDefinition.isDate()) {
+            call.setTimestamp(2, (Timestamp) target.getValue());
+        } else if (targetDefinition.isFloat()) {
+            call.setFloat(1, (Float) target.getValue());
+        } else if (targetDefinition.isInteger()) {
+            call.setInt(5, (Integer) target.getValue());
+        } else if (targetDefinition.isString()) {
+            call.setString(3, (String) target.getValue());
+        } else if (targetDefinition.isBasicType()) {
+            call.setBoolean(4, (Boolean) target.getValue());
+        } else {
+            throw new EJBException("Tipo Básico no conocido.");
+        }
+    }
+
+    /**
+     * Este método es responsable de fijar los valores por defectos NULOS de la función crear concepto.
+     *
+     * @throws SQLException
+     */
+    private void setDefaultValuesForCreateTargetFunction(CallableStatement call) throws SQLException {
+        call.setNull(1, FLOAT);
+        call.setNull(2, TIMESTAMP);
+        call.setNull(3, VARCHAR);
+        call.setNull(4, BOOLEAN);
+        call.setNull(5, INTEGER);
+        call.setNull(6, INTEGER);
+        call.setNull(7, INTEGER);
+        call.setNull(8, INTEGER);
+        call.setNull(9, INTEGER);
+        call.setNull(10, INTEGER);
     }
 
     public long persist(BasicType target, TargetDefinition targetDefinition) {
