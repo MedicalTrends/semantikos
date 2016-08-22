@@ -200,7 +200,7 @@ public class TargetDAOImpl implements TargetDAO {
      * @throws SQLException
      */
     private void setDefaultValuesForCreateTargetFunction(CallableStatement call) throws SQLException {
-        call.setNull(1, FLOAT);
+        call.setNull(1, REAL);
         call.setNull(2, TIMESTAMP);
         call.setNull(3, VARCHAR);
         call.setNull(4, BOOLEAN);
@@ -212,11 +212,4 @@ public class TargetDAOImpl implements TargetDAO {
         call.setNull(10, INTEGER);
     }
 
-    public long persist(BasicType target, TargetDefinition targetDefinition) {
-        System.out.println("Paso por aca!");
-        int i = 0;
-        i++;
-        System.out.println(i);
-        return 0;
-    }
 }
