@@ -132,15 +132,16 @@ public class TargetDAOImpl implements TargetDAO {
 
     private void setTargetCall(BasicTypeValue target, BasicTypeDefinition targetDefinition, CallableStatement call) throws SQLException {
 
-        if (targetDefinition.isDate()) {
+
+        if (target.getValue().getClass().equals(Timestamp.class)) {
             call.setTimestamp(2, (Timestamp) target.getValue());
-        } else if (targetDefinition.isFloat()) {
+        } else if (target.getValue().getClass().equals(Float.class) || target.getValue().getClass().equals(Double.class)) {
             call.setFloat(1, (Float) target.getValue());
-        } else if (targetDefinition.isInteger()) {
+        } else if (target.getValue().getClass().equals(Integer.class)) {
             call.setInt(5, (Integer) target.getValue());
-        } else if (targetDefinition.isString()) {
+        } else if (target.getValue().getClass().equals(String.class)) {
             call.setString(3, (String) target.getValue());
-        } else if (targetDefinition.isBasicType()) {
+        } else if (target.getValue().getClass().equals(Boolean.class)) {
             call.setBoolean(4, (Boolean) target.getValue());
         } else {
             throw new EJBException("Tipo Básico no conocido.");

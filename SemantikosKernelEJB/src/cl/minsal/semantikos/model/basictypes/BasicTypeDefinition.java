@@ -73,11 +73,6 @@ public class BasicTypeDefinition<T extends Comparable> implements TargetDefiniti
         this.description = description;
     }
 
-    @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-    @JsonSubTypes({
-            @JsonSubTypes.Type(value = String[].class, name="String[]"),
-            @JsonSubTypes.Type(Integer[].class)
-    })
     public List<T> getDomain() {
         return domain;
     }
@@ -90,10 +85,10 @@ public class BasicTypeDefinition<T extends Comparable> implements TargetDefiniti
         this.interval = interval;
     }
 
+
     public void setDomain(List<T> domain) {
         this.domain = domain;
     }
-
 
     public boolean addToDomain(T anElement) {
         return domain.add(anElement);
@@ -117,53 +112,16 @@ public class BasicTypeDefinition<T extends Comparable> implements TargetDefiniti
         return this.domain.contains(anElement);
     }
 
-    public boolean isIntervalType(){
-        if(this.interval != null)
-            return true;
-        else
-            return false;
-    }
+    /**
+     * Este método es responsable de indicar si el tipo tiene valores concretos o discretos.
+     *
+     * @return <code>true</code> si es un dominio discreto de valores y <code>false</code> sino (dominio continuo).
+     */
+    public boolean isDiscreteDomain() {
 
-    public boolean isHasDomain(){
-        return !this.domain.isEmpty();
-    }
+        /* Si el tipo tiene un dominio discreto (no vacío), y no tiene un intervalo definido, entonces es discreto */
+        return !this.domain.isEmpty() && this.interval.isEmpty();
 
-    public boolean isInteger() {
-        return ((this.interval.lowerBoundary instanceof java.lang.Long || this.interval.upperBoundary instanceof java.lang.Long) && this.domain.isEmpty());
-    }
-
-    public boolean isString() {
-        return ((this.interval.lowerBoundary instanceof java.lang.String || this.interval.upperBoundary instanceof java.lang.String) && this.domain.isEmpty());
-    }
-
-    public boolean isDate() {
-        return ((this.interval.lowerBoundary instanceof java.util.Date || this.interval.upperBoundary instanceof java.util.Date) && this.domain.isEmpty()) ;
-    }
-
-    public boolean isFloat() {
-        //System.out.println("isFloat="+(this.interval.lowerBoundary instanceof java.lang.Float || this.interval.upperBoundary instanceof java.lang.Float));
-        return ((this.interval.lowerBoundary instanceof java.lang.Float || this.interval.upperBoundary instanceof java.lang.Float) && this.domain.isEmpty());
-    }
-
-
-    public String typeOf(){
-        if(this.domain != null){
-            if (this.domain.get(0) instanceof java.lang.Integer)
-                return "Integer";
-            if (this.domain.get(0) instanceof java.lang.String)
-                return "String";
-            if (this.domain.get(0) instanceof java.util.Date)
-                return "Date";
-        }
-        if(this.interval != null) {
-            if (this.interval.lowerBoundary instanceof java.lang.Integer)
-                return "Integer";
-            if (this.interval.lowerBoundary instanceof java.lang.String)
-                return "String";
-            if (this.interval.lowerBoundary instanceof java.util.Date)
-                return "Date";
-        }
-        return "";
     }
 
     @Override
@@ -189,9 +147,5 @@ public class BasicTypeDefinition<T extends Comparable> implements TargetDefiniti
     @Override
     public boolean isCrossMapType() {
         return false;
-    }
-
-    public List<String> asString(){
-        return (List<String>)domain;
     }
 }
