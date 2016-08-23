@@ -9,11 +9,12 @@ import java.util.List;
  * @author Andrés Farías on 8/23/16.
  */
 @Local
-public class AuditDAO {
+public interface AuditDAO {
 
-    public List<ChangeType> getAllChangeTypes() {
-
-        //TODO: Gustavo
-        return null;
-    }
+    /**
+     * Este método es responsable de obtener y agrupar en una lista todos los tipos de cambios existentes.
+     *
+     * @return Una <code>List</code> con los tipos de cambio.
+     */
+    public List<ChangeType> getAllChangeTypes();
 }
