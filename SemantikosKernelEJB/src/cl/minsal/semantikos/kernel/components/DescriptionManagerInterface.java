@@ -20,6 +20,10 @@ public interface DescriptionManagerInterface {
 
     public String getIdDescription(String tipoDescription);
 
+    /**
+     * Método encargado de obtener todos los tipos de descripciones
+     * @return Lista de tipos de descripciones
+     */
     public List<DescriptionType> getAllTypes();
 
     public List<Description> findDescriptionsByConcept(int idConcept);

@@ -24,7 +24,7 @@ public interface ConceptDAO {
      *
      * @return
      */
-    public List<ConceptSMTK> getAllConcepts(Long[] states, int pageSize, int pageNumber);
+    public List<ConceptSMTK> getConceptsBy(Long[] states, int pageSize, int pageNumber);
 
     /**
      * Este método es responsable de recuperar los conceptos que coincidan con un cierto patrón (<code>pattern</code>)
@@ -38,7 +38,7 @@ public interface ConceptDAO {
      *
      * @return Una lista de <code>ConceptSMTK</code> que cumplen los criterios de búsqueda.
      */
-    public List<ConceptSMTK> getConceptByPatternCategory(String[] pattern, Long[] categories, Long[] states, int pageSize, int pageNumber);
+    public List<ConceptSMTK> getConceptBy(String[] pattern, Long[] categories, Long[] states, int pageSize, int pageNumber);
 
     /**
      * Este método es responsable de recuperar los conceptos que pertenecen a un conjunto de categorías.
@@ -50,13 +50,16 @@ public interface ConceptDAO {
      *
      * @return Una lista de <code>ConceptSMTK</code> que cumplen los criterios de búsqueda.
      */
-    public List<ConceptSMTK> getConceptByCategory(Long[] categories, Long[] states, int pageSize, int pageNumber);
+    public List<ConceptSMTK> getConceptBy(Long[] categories, Long[] states, int pageSize, int pageNumber);
 
-    public List<ConceptSMTK> getConceptByPatternOrConceptIDAndCategory(String PatternOrID, Long[] Category, int pageNumber, int pageSize, Long[] states);
+    public List<ConceptSMTK> getConceptBy(String [] pattern, Long[] states, int pageSize, int pageNumber);
 
-    public int getAllConceptCount(String[] Pattern, Long[] category, Long[] states);
 
-    public int getCountFindConceptID(String Pattern, Long[] category, Long[] states);
+    public List<ConceptSMTK> getConceptBy(String PatternOrConceptId, Long[] Category, int pageNumber, int pageSize, Long[] states);
+
+    public int countConceptBy(String[] Pattern, Long[] category, Long[] states);
+
+    public int countConceptBy(String Pattern, Long[] category, Long[] states);
 
     /**
      * Este método es responsable de recuperar el concepto con DESCRIPTION_ID.

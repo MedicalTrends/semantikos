@@ -15,18 +15,16 @@ import java.util.List;
 @Local
 public interface ConceptManagerInterface {
 
-    public ArrayList<Description> findDescriptionForPattern(String pattern);
 
-    public String addConcept(String idCategory, boolean isValid);
 
     /**
      * Este método es responsable de recuperar el concepto con DESCRIPTION_ID.
      *
-     * @param descriptionID El DESCRIPTION_ID (valor de negocio) del concepto que se desea recuperar.
+     * @param conceptId El DESCRIPTION_ID (valor de negocio) del concepto que se desea recuperar.
      *
      * @return Un objeto fresco de tipo <code>ConceptSMTK</code> con el Concepto solicitado.
      */
-    public ConceptSMTK getConceptByCONCEPT_ID(String descriptionID);
+    public ConceptSMTK getConceptByCONCEPT_ID(String conceptId);
 
     /**
      * Este método es responsable de recuperar el concepto con id (de BD)
@@ -37,13 +35,11 @@ public interface ConceptManagerInterface {
      */
     public ConceptSMTK getConceptByID(long id);
 
-    public List<ConceptSMTK> findConceptByPatternCategoryPageNumber(String pattern, Long[] category, int pageNumber, int pageSize);
-
     /**
      * Este método es responsable de buscar conceptos cuyo CONCEPT_ID o en descripciones de términos de conceptos, y
      * entregar los resultados de manera paginada.
      *
-     * @param patter     El patrón de búsqueda.
+     * @param patternOrConceptID     El patrón de búsqueda.
      * @param categories Las categorías a las que pertenecen los conceptos sobre los cuales se realiza la búsqueda.
      * @param pageNumber El número de página que se desea obtener.
      * @param pageSize   La cantidad de resultados por página.
@@ -51,9 +47,25 @@ public interface ConceptManagerInterface {
      * @return Una lista de conceptos (correspondiendo a la página solicitada), sin ningún orden particular, de los
      * conceptos que corresponden al criterio de búsqueda.
      */
-    public List<ConceptSMTK> findConceptByConceptIDOrDescriptionCategoryPageNumber(String patter, Long[] categories, int pageNumber, int pageSize);
+    public List<ConceptSMTK> findConceptBy(String patternOrConceptID, Long[] categories, int pageNumber, int pageSize);
 
-    public int getAllConceptCount(String pattern, Long[] categories);
+    /**
+     * Método encargado de realizar la búsqueda de conceptos por patron, en caso de no encontrar un "Perfect Match" por la cadena de texto entregada,
+     * realiza un truncate match, el que consiste en cortar cada palabra de la cadena de texto en las tres primeras letras para luego realizar la búsqueda
+     * nuevamente
+     * @param pattern cadena de texto
+     * @return retorna lista de conceptos
+     */
+    public List<ConceptSMTK> findConceptBy(String pattern);
+
+    /**
+     * Este método se encarga de entregar la cantidad de conceptos según patron y categoría
+     * @param pattern patrón de búsqueda
+     * @param categories arreglo de idś de categorías
+     * @return retorna un entero con la cantidad
+     *
+     */
+    public int countConceptBy(String pattern, Long[] categories);
 
     /**
      * Este método es responsable de persistir un concepto que no se encuentra persistido. Esta acción, de
@@ -88,5 +100,10 @@ public interface ConceptManagerInterface {
      * @return retorna un String con el Concept ID generado
      */
     public String generateConceptId();
+
+    public String addConcept(String idCategory, boolean isValid);
+
+    public ArrayList<Description> findDescriptionForPattern(String pattern);
+
 
 }

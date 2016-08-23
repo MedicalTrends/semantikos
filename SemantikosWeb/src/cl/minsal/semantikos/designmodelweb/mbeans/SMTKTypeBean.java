@@ -3,7 +3,6 @@ package cl.minsal.semantikos.designmodelweb.mbeans;
 import cl.minsal.semantikos.kernel.components.ConceptManagerInterface;
 import cl.minsal.semantikos.model.Category;
 import cl.minsal.semantikos.model.ConceptSMTK;
-import cl.minsal.semantikos.model.relationships.RelationshipDefinition;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
 
@@ -69,8 +68,8 @@ public class SMTKTypeBean implements Serializable {
                     List<ConceptSMTK> conceptSMTKs;
                     Long[] categoryArr = new Long[1];
                     categoryArr[0] = targetDefinition.getIdCategory();
-                    conceptSMTKs = conceptManager.findConceptByConceptIDOrDescriptionCategoryPageNumber(pattern, categoryArr, first, pageSize);
-                    this.setRowCount(conceptManager.getAllConceptCount(pattern, categoryArr));
+                    conceptSMTKs = conceptManager.findConceptBy(pattern, categoryArr, first, pageSize);
+                    this.setRowCount(conceptManager.countConceptBy(pattern, categoryArr));
                     return conceptSMTKs;
                 }
             };
@@ -91,7 +90,7 @@ public class SMTKTypeBean implements Serializable {
         if (patron != null) {
             if (patron.length() > 2) {
                 categoryArr[0] = cD.getIdCategory();
-                conceptSearchList=conceptManager.findConceptByConceptIDOrDescriptionCategoryPageNumber(patron, categoryArr, 0, 30);
+                conceptSearchList=conceptManager.findConceptBy(patron, categoryArr, 0, 30);
                 return conceptSearchList;
             }
         }

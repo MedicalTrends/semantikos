@@ -35,11 +35,16 @@ public interface CategoryManagerInterface {
      */
     public List<RelationshipDefinition> getCategoryMetaData(int id);
 
+
     public List<RelationshipDefinition> getAllDescription();
 
+    /**
+     * Método encagado de recuperar todas las categorías existentes.
+     * @return Lista de categorías
+     */
     public List<Category> getCategories();
 
-    public int addCategory(Category category);
+    public int persistCategory(Category category);
 
     public void addAttribute(RelationshipDefinition attributeCategory, int idCategory);
 
