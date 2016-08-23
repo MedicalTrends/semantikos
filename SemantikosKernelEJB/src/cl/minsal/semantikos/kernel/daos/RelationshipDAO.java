@@ -22,11 +22,11 @@ public interface RelationshipDAO {
     public void persist(Relationship relationship);
 
     /**
-     * Este método es responsable de actualizar una relación asociada a un concepto.
+     * Este método es responsable de dejar como no vigente una relación asociada a un concepto.
      *
      * @param relationship La relación que se desea actualizar.
      */
-    public void update(Relationship relationship);
+    public void invalidate(Relationship relationship);
 
     /**
      * Este método es responsable de obtener todas las relaciones que tienen como target un concepto SNOMED CT en
@@ -48,4 +48,14 @@ public interface RelationshipDAO {
     Relationship getRelationshipByID(long idRelationship);
 
     public List<Relationship> getRelationshipsLike(RelationshipDefinition relationshipDefinition, Target target);
+
+    /**
+     * Este método es responsable de obtener todas las relaciones que tienen como definicion un relationshipDefinition en
+     * particular.
+     *
+     * @param relationshipDefinition La definición de relacion a la cual apuntan las relaciones que se desea buscar.
+     *
+     * @return Todas las relaciones que tienen como  definicion un relationshipDefinition <code>relationshipDefinition</code>
+     */
+    public List<Relationship> getRelationshipsByRelationshipDefinition(RelationshipDefinition relationshipDefinition);
 }

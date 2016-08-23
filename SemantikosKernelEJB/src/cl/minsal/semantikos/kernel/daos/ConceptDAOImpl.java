@@ -4,6 +4,7 @@ package cl.minsal.semantikos.kernel.daos;
 import cl.minsal.semantikos.kernel.util.ConnectionBD;
 import cl.minsal.semantikos.model.*;
 import cl.minsal.semantikos.model.relationships.Relationship;
+import cl.minsal.semantikos.model.relationships.RelationshipDefinition;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -390,6 +391,18 @@ public class ConceptDAOImpl implements ConceptDAO {
             ResultSet rs = call.getResultSet();
             if (rs.next()) {
                 conceptSMTK = createConceptSMTKFromResultSet(rs);
+                //Se agrega lógica para obtener las relaciones de este concepto
+                /*
+                for (RelationshipDefinition relationshipDefinition : conceptSMTK.getCategory().getRelationshipDefinitions()) {
+                    List<Relationship> relationships =relationshipDAO.getRelationshipsByRelationshipDefinition(relationshipDefinition);
+
+                    for (Relationship relationship : relationships) {
+                        relationship.setRelationshipDefinition(relationshipDefinition);
+                        conceptSMTK.addRelationship(relationship);
+                    }
+                }
+                */
+                ////////////////////////////////////////////////////////////////
             } else {
                 String errorMsg = "No existe un concepto con CONCEPT_ID=" + id;
                 logger.error(errorMsg);
@@ -401,6 +414,11 @@ public class ConceptDAOImpl implements ConceptDAO {
         }
 
         return conceptSMTK;
+    }
+
+    @Override
+    public ConceptSMTK getConceptBy(Category category, long id) {
+        return null;
     }
 
     @Override

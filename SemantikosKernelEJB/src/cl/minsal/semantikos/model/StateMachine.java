@@ -61,9 +61,9 @@ public class StateMachine {
      *
      * @return Una lista de los estados a los que se llega en una transición desde el estado <code>aSourceState</code>.
      */
-    public List<State> getTargetStates(State aSourceState) {
+    public List<IState> getTargetStates(State aSourceState) {
 
-        List<State> results = new ArrayList<State>();
+        List<IState> results = new ArrayList<IState>();
         for (Transition transition : transitions) {
             if (transition.getSourceState().equals(aSourceState))
                 results.add(transition.getTargetState());

@@ -280,16 +280,17 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
 
     public void createConcept() {
         concept = newConcept(category, favoriteDescription);
+        //concept = getConceptById(80602);
         RequestContext context = RequestContext.getCurrentInstance();
         context.execute("PF('dialogNameConcept').hide();");
     }
 
     //Este método es responsable de pasarle un concepto a la vista, dado el id del concepto
     //(llamado desde la vista cuando se desea editar un concepto)
-    public void getConceptById(long conceptId) {
-        concept = conceptManager.getConceptByID(conceptId);
+    public ConceptSMTK getConceptById(long conceptId) {
         // Se clona el concepto para respaldar su estado previo a la edición
-        originalConcept = concept;
+        originalConcept = conceptManager.getConceptByID(conceptId);
+        return originalConcept;
     }
 
 

@@ -143,7 +143,9 @@ public class RelationshipDefinitionDAOImpl implements RelationshipDefinitionDAO 
 
             ResultSet rs = call.getResultSet();
             if (rs.next()) {
-                String jsonResult = rs.getString("id_relationship_definition");
+                // TODO: Se comenta esto puesto que arroja un error PSQL al referenciar una columna que no existe (FIXME)
+                //String jsonResult = rs.getString("id_relationship_definition");
+                String jsonResult = rs.getString(1);
                 relationshipDefinition = relationshipDefinitionFactory.createFromJSON(jsonResult);
             } else {
                 String errorMsg = "No se obtuvo ningún resultado de invocar get_relationship_definition_by_id(" + idRelationshipDefinition + ")";

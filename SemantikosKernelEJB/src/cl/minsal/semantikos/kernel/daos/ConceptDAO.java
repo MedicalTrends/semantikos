@@ -1,5 +1,6 @@
 package cl.minsal.semantikos.kernel.daos;
 
+import cl.minsal.semantikos.model.Category;
 import cl.minsal.semantikos.model.ConceptSMTK;
 import cl.minsal.semantikos.model.IUser;
 
@@ -71,6 +72,8 @@ public interface ConceptDAO {
     public ConceptSMTK getConceptByCONCEPT_ID(String conceptID);
 
     public ConceptSMTK getConceptByID(long id);
+
+    public ConceptSMTK getConceptBy(Category category, long id);
 
     /**
      * Este método es responsable persistir la entidad Concepto SMTK en la base de datos.
