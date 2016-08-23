@@ -214,7 +214,7 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
     @Override
     public void update(@NotNull ConceptSMTK oldConceptSMTK, @NotNull ConceptSMTK newConceptSMTK, IUser user) {
 
-        logger.debug("El concepto " + newConceptSMTK + " será persistido.");
+        logger.debug("El concepto " + newConceptSMTK + " será actualizado.");
 
         /* Pre-condición técnica: el concepto debe estar persistido */
         validatesIsPersistent(newConceptSMTK);
