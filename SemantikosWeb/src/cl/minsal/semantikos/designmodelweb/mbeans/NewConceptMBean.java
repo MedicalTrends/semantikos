@@ -121,8 +121,6 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         user.getProfiles().add(designerProfile);
 
 
-        /////////////////////////////////////////////
-
         // Iniciar cuadro de dialogo
 
         RequestContext context = RequestContext.getCurrentInstance();
@@ -130,10 +128,8 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
 
         category = categoryManager.getCategoryById(1);
         //category = categoryManager.getCategoryById(105590001);
-
         //category = categoryManager.getCategoryById(71388002);
-        //descriptionManager.getAllTypes();
-        //DescriptionTypeFactory.getInstance().getDescriptionTypes();
+
 
         descriptionTypes = descriptionManager.getAllTypes();
         //concept = new ConceptSMTK(category, new Description("electrocardiograma de urgencia", descriptionTypes.get(0)));
