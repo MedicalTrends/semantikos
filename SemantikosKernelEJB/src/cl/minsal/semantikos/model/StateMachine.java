@@ -6,12 +6,13 @@ import java.util.List;
 
 /**
  * Esta clase representa una máquina de estado.
+ *
  * @author Andrés Farías
  */
 public class StateMachine {
 
     /** El estado inicial de la máquina de estados */
-    private State initialState;
+    private IState initialState = NullState.getInstance();
 
     /** Las transiciones definidas para esta máquina de estado */
     private List<Transition> transitions;
@@ -24,7 +25,12 @@ public class StateMachine {
         this.transitions = transitions;
     }
 
-    public State getInitialState() {
+    /**
+     * Este método es responsable de retornar el estado inicial de esta máquina de destados.
+     *
+     * @return El estado (<code>IState</code>) inicial de esta máquina de estados.
+     */
+    public IState getInitialState() {
         return initialState;
     }
 

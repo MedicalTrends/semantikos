@@ -1,7 +1,7 @@
 package cl.minsal.semantikos.model;
 
 /**
- * Created by root on 08-07-16.
+ * @author Andrés Farías on 08-07-16.
  */
 public class Description {
 
@@ -30,7 +30,7 @@ public class Description {
     private DescriptionType descriptionType;
 
     // El estado del descriptor
-    private State state;
+    private IState state;
 
     /**
      *
@@ -129,11 +129,11 @@ public class Description {
         this.descriptionType = descriptionType;
     }
 
-    public State getState() {
+    public IState getState() {
         return state;
     }
 
-    public void setState(State state) {
+    public void setState(IState state) {
         this.state = state;
     }
 

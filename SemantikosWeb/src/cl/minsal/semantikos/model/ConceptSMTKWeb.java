@@ -8,7 +8,7 @@ import java.util.List;
  */
 public class ConceptSMTKWeb extends ConceptSMTK {
 
-    public ConceptSMTKWeb(Category category, Description favouriteDescription, State initialState) {
+    public ConceptSMTKWeb(Category category, Description favouriteDescription, IState initialState) {
         super(category, initialState, favouriteDescription);
     }
 
