@@ -12,7 +12,12 @@ import javax.ejb.Stateless;
 public class AuditManagerImpl implements AuditManagerInterface {
 
     @Override
-    public void recordNewConcept(ConceptSMTK conceptSMTK, IUser IUser) {
+    public void recordNewConcept(ConceptSMTK conceptSMTK, IUser user) {
+        // TODO: Implement this.
+    }
+
+    @Override
+    public void recordUpdateConcept(ConceptSMTK conceptSMTK, IUser user) {
         // TODO: Implement this.
     }
 }

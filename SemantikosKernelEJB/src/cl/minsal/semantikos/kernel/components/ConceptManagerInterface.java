@@ -56,11 +56,22 @@ public interface ConceptManagerInterface {
     public int getAllConceptCount(String pattern, Long[] categories);
 
     /**
-     * Este método es responsable de persistir un concepto que no se encuentra persistido.
+     * Este método es responsable de persistir un concepto que no se encuentra persistido. Esta acción, de
+     * persistencia,
+     * queda registrado como una actividad de auditoría.
      *
      * @param conceptSMTK El concepto a persistir.
      */
     void persist(@NotNull ConceptSMTK conceptSMTK, IUser user);
+
+    /**
+     * Este método es responsable de persistir las modificaciones realizadas sobre el concepto. Esta acción, de
+     * persistencia,
+     * queda registrado como una actividad de auditoría.
+     *
+     * @param conceptSMTK El concepto a persistir.
+     */
+    void update(@NotNull ConceptSMTK conceptSMTK, IUser user);
 
     /**
      * Este método es responsable de actualizar el estado de la entidad en la base de datos.
@@ -73,6 +84,7 @@ public interface ConceptManagerInterface {
 
     /**
      * Método encargado de generar el concept ID
+     *
      * @return retorna un String con el Concept ID generado
      */
     public String generateConceptId();
