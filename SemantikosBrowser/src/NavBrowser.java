@@ -6,17 +6,14 @@ import cl.minsal.semantikos.model.Category;
 import cl.minsal.semantikos.model.ConceptSMTK;
 import cl.minsal.semantikos.model.Description;
 import org.primefaces.model.LazyDataModel;
-import org.primefaces.model.SortMeta;
 import org.primefaces.model.SortOrder;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.StringTokenizer;
 
 
 @ManagedBean
@@ -60,9 +57,9 @@ public class NavBrowser {
             @Override
             public List<ConceptSMTK> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
                 List<ConceptSMTK> conceptSMTKs=null;
-
-                    conceptSMTKs = conceptManager.findConceptByConceptIDOrDescriptionCategoryPageNumber(pattern, selectedCategories, first, pageSize);
-                    this.setRowCount(conceptManager.getAllConceptCount(pattern, selectedCategories));
+                    selectedCategories= (selectedCategories==null)? new Long[0]:selectedCategories;
+                    conceptSMTKs = conceptManager.findConceptBy(pattern, selectedCategories, first, pageSize);
+                    this.setRowCount(conceptManager.countConceptBy(pattern, selectedCategories));
 
 
                 return conceptSMTKs;

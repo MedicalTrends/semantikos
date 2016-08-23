@@ -39,7 +39,7 @@ public class ConceptSMTK implements Target {
     private boolean isToBeConsulted;
 
     /** El estado en que se encuentra el objeto */
-    private State state;
+    private IState state;
 
     /**
      * Este campo establece si el concepto está completamente definido o si es primitivo. Por defecto, el concepto se
@@ -51,13 +51,13 @@ public class ConceptSMTK implements Target {
     private boolean isPublished;
 
     /** Otros descriptores */
-    private List<Description> descriptions;
+    private List<Description> descriptions= new ArrayList<>();
 
     /** Relaciones * */
-    private List<Relationship> relationships;
+    private List<Relationship> relationships = new ArrayList<>();
 
     /** The concept's labels */
-    private List<Label> labels;
+    private List<Label> labels = new ArrayList<>();
 
     /**
      * El constructor privado con las inicializaciones de los campos por defecto.
@@ -68,10 +68,6 @@ public class ConceptSMTK implements Target {
 
         /* El concepto parte con su estado inicial */
         this.state = ConceptStateMachine.getInstance().getInitialState();
-
-        this.descriptions = new ArrayList<>();
-        this.relationships = new ArrayList<>();
-        this.labels = new ArrayList<>();
 
         this.isFullyDefined = false;
         this.isPublished = false;
@@ -89,7 +85,7 @@ public class ConceptSMTK implements Target {
         this.descriptions.addAll(Arrays.asList(descriptions));
     }
 
-    public ConceptSMTK(Category category, State state, Description... descriptions) {
+    public ConceptSMTK(Category category, IState state, Description... descriptions) {
         this(category, descriptions);
         this.state = state;
     }
@@ -171,11 +167,11 @@ public class ConceptSMTK implements Target {
         this.conceptID = conceptID;
     }
 
-    public State getState() {
+    public IState getState() {
         return state;
     }
 
-    public void setState(State state) {
+    public void setState(IState state) {
         this.state = state;
     }
 
@@ -422,5 +418,15 @@ public class ConceptSMTK implements Target {
      */
     protected boolean contains(Relationship relationship) {
         return this.relationships.contains(relationship);
+    }
+
+    /**
+     * Este método es responsable de determinar si el Concepto se encuentra en un estado <em>modelado</em>. Para esto,
+     * se considera que se encuentra en este estado si está en un estado que comienza con la palabra "MODELADO".
+     *
+     * @return <code>true</code> si se encuentra en un estado <em>Modelado</em> y <code>false</code> sino.
+     */
+    public boolean isModeled() {
+        return this.state.getName().toLowerCase().startsWith("modelado");
     }
 }

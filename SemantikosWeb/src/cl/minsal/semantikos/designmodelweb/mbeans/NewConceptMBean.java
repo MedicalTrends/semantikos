@@ -62,9 +62,6 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
 
     private ConceptSMTK concept;
 
-    // Variable usada como respaldo del estado original del concepto, usado para la edición
-    private ConceptSMTK originalConcept;
-
     private Category category;
     private List<DescriptionType> descriptionTypes = new ArrayList<DescriptionType>();
     private List<State> descriptionStates = new ArrayList<State>();
@@ -131,10 +128,10 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         context.execute("PF('dialogNameConcept').show();");
 
-        //category = categoryManager.getCategoryById(1);
+        category = categoryManager.getCategoryById(1);
         //category = categoryManager.getCategoryById(105590001);
 
-        category = categoryManager.getCategoryById(71388002);
+        //category = categoryManager.getCategoryById(71388002);
         //descriptionManager.getAllTypes();
         //DescriptionTypeFactory.getInstance().getDescriptionTypes();
 
@@ -282,14 +279,6 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         concept = newConcept(category, favoriteDescription);
         RequestContext context = RequestContext.getCurrentInstance();
         context.execute("PF('dialogNameConcept').hide();");
-    }
-
-    //Este método es responsable de pasarle un concepto a la vista, dado el id del concepto
-    //(llamado desde la vista cuando se desea editar un concepto)
-    public void getConceptById(long conceptId) {
-        concept = conceptManager.getConceptByID(conceptId);
-        // Se clona el concepto para respaldar su estado previo a la edición
-        originalConcept = concept;
     }
 
 
@@ -496,7 +485,7 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
 
         /* Valores iniciales para el concepto */
         Description favouriteDescription = new Description(term, descriptionManager.getTypeFavorite());
-        State initialState = stateMachineManager.getConceptStateMachine().getInitialState();
+        IState initialState = stateMachineManager.getConceptStateMachine().getInitialState();
         favouriteDescription.setState(initialState);
         favouriteDescription.setCaseSensitive(false);
         favouriteDescription.setDescriptionId(descriptionManager.generateDescriptionId());
@@ -529,11 +518,8 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
                 context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Las relaciones no cumplen con el minimo requerido"));
 
             } else {
-                // Si el concepto original fue respaldado, significa que sufrio modificacion, luego se actualiza el concepto
-                if(originalConcept != null)
-                    conceptManager.update(originalConcept, concept, user);
-                else // Si el concepto original no fue respaldado, significa que es un concepto nuevo, luego se persiste
-                    conceptManager.persist(concept, user);
+
+                conceptManager.persist(concept, user);
                 context.addMessage(null, new FacesMessage("Successful", "Concepto guardado "));
             }
 
