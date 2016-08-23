@@ -49,9 +49,22 @@ public interface ConceptManagerInterface {
      */
     public List<ConceptSMTK> findConceptBy(String patternOrConceptID, Long[] categories, int pageNumber, int pageSize);
 
+    /**
+     * Método encargado de realizar la búsqueda de conceptos por patron, en caso de no encontrar un "Perfect Match" por la cadena de texto entregada,
+     * realiza un truncate match, el que consiste en cortar cada palabra de la cadena de texto en las tres primeras letras para luego realizar la búsqueda
+     * nuevamente
+     * @param pattern cadena de texto
+     * @return retorna lista de conceptos
+     */
     public List<ConceptSMTK> findConceptBy(String pattern);
 
-
+    /**
+     * Este método se encarga de entregar la cantidad de conceptos según patron y categoría
+     * @param pattern patrón de búsqueda
+     * @param categories arreglo de idś de categorías
+     * @return retorna un entero con la cantidad
+     *
+     */
     public int countConceptBy(String pattern, Long[] categories);
 
     /**

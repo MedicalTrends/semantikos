@@ -12,11 +12,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by des01c7 on 01-07-16.
+ * @author Francisco Méndez on 01-07-16.
  */
 
 @Stateless
-public class AuthDAO {
+public class  AuthDAO {
 
 
     @PersistenceContext(unitName = "SEMANTIKOS_PU")
