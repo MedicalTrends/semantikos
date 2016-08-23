@@ -42,6 +42,10 @@ public class RelationshipDefinitionDAOImpl implements RelationshipDefinitionDAO 
     @EJB
     private RelationshipDefinitionFactory relationshipDefinitionFactory;
 
+    @EJB
+    private RelationshipAttributeDefinitionFactory factory;
+
+
     @Override
     public List<RelationshipDefinition> getRelationshipDefinitionsByCategory(long idCategory) {
 
@@ -112,7 +116,6 @@ public class RelationshipDefinitionDAOImpl implements RelationshipDefinitionDAO 
             if (jsonExpression == null) {
                 return emptyList();
             } else {
-                RelationshipAttributeDefinitionFactory factory = new RelationshipAttributeDefinitionFactory();
                 relationshipAttributeDefinitions = factory.createFromJSON(jsonExpression);
             }
         } catch (SQLException e) {
