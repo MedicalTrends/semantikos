@@ -6,10 +6,20 @@ import cl.minsal.semantikos.model.helpertables.HelperTableRecord;
 
 import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
+import java.util.List;
 
 import static cl.minsal.semantikos.kernel.daos.ConceptDAO.NON_PERSISTED_ID;
 
 /**
+ * <p>Una Relación es una asociación con significado entre 2 cosas.</p>
+ * <p>
+ * En el Modelo General de Terminologías los Conceptos pueden estar relacionados entre sí o con otras entidades,
+ * entonces, una Relación es una asociación entre un Concepto Origen y un Objeto Destino.</p>
+ * <p>Cada Relación agrega información sobre el Concepto Origen.</p>
+ * Hay 2 Tipos de Relaciones:
+ * •	Definitorias
+ * •	De Atributos
+ *
  * @author Andrés Farías
  */
 public class Relationship {

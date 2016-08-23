@@ -3,10 +3,7 @@ package cl.minsal.semantikos.model;
 import cl.minsal.semantikos.kernel.daos.ConceptDAO;
 import cl.minsal.semantikos.model.businessrules.ConceptStateBusinessRulesContainer;
 import cl.minsal.semantikos.model.exceptions.BusinessRuleException;
-import cl.minsal.semantikos.model.relationships.Relationship;
-import cl.minsal.semantikos.model.relationships.RelationshipDefinition;
-import cl.minsal.semantikos.model.relationships.Target;
-import cl.minsal.semantikos.model.relationships.TargetType;
+import cl.minsal.semantikos.model.relationships.*;
 
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
@@ -129,6 +126,28 @@ public class ConceptSMTK implements Target {
             }
         }
         return someRelationships;
+    }
+
+    /**
+     * Este método es responsable de retornar una lista con todas las relaciones de atributos. A saber: -->STMK, -->Tipo
+     * Básico, -->Tabla Auxiliar
+     *
+     * @return Una lista de todas las relaciones de atributos.
+     */
+    public List<Relationship> getAttributeRelationships() {
+
+        /* Se recorren las relaciones del concepto */
+        List<Relationship> attributeRelationships = new ArrayList<>();
+        for (Relationship relationship : relationships) {
+            TargetDefinition targetDefinition = relationship.getRelationshipDefinition().getTargetDefinition();
+
+            /* Sólo se agregan las relaciones de tipo atributo */
+            if (targetDefinition.isSMTKType() || targetDefinition.isBasicType() || targetDefinition.isHelperTable()){
+                attributeRelationships.add(relationship);
+            }
+        }
+
+        return attributeRelationships;
     }
 
     /**
