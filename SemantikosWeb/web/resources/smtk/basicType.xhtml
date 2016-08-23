@@ -19,6 +19,7 @@
     <p:panel
             id="basicTypeSimple"
             rendered="#{cc.attrs.relationshipDefinition.multiplicity.simple and not cc.attrs.concept.hasRelationships(cc.attrs.relationshipDefinition)}"
+            styleClass="relationshipDefinition"
             widgetVar="panelBasicTypeSimple#{cc.attrs.relationshipDefinition.id}">
             <div class="ui-g">
                 <div class="ui-g-12 ui-md-6 ui-lg-2">
@@ -32,6 +33,7 @@
                                      var="value1"
                                      converter="omnifaces.SelectItemsConverter"
                                      rendered="#{cc.attrs.targetDefinition.hasDomain}"
+                                     styleClass="relationships"
                                      >
                         <p:ajax event="itemSelect"
                                 listener="#{newConceptMBean.addOrChangeRelationship(cc.attrs.relationshipDefinition,newConceptMBean.basicTypeValue)}"
@@ -52,7 +54,9 @@
                                    decimalPlaces="0"
                                    decimalSeparator=","
                                    thousandSeparator="."
-                                   rendered="#{cc.attrs.targetDefinition.integer}">
+                                   rendered="#{cc.attrs.targetDefinition.integer}"
+                                   styleClass="relationships"
+                                   >
                         <p:ajax listener="#{newConceptMBean.addOrChangeRelationship(cc.attrs.relationshipDefinition,newConceptMBean.basicTypeValue)}" />
                     </p:inputNumber>
 
@@ -64,7 +68,9 @@
                                    decimalSeparator=","
                                    thousandSeparator="."
                                    decimalPlaces="2"
-                                   rendered="#{cc.attrs.targetDefinition.float}">
+                                   rendered="#{cc.attrs.targetDefinition.float}"
+                                   styleClass="relationships"
+                                   >
                         <p:ajax listener="#{newConceptMBean.addOrChangeRelationship(cc.attrs.relationshipDefinition,newConceptMBean.basicTypeValue)}" />
                     </p:inputNumber>
                     <p:inputText id="basicTypeValue14"
@@ -72,7 +78,9 @@
                                  var="value"
                                  minValue="#{cc.attrs.targetDefinition.interval.lowerBoundary}"
                                  maxValue="#{cc.attrs.targetDefinition.interval.upperBoundary}"
-                                 rendered="#{cc.attrs.targetDefinition.string}">
+                                 rendered="#{cc.attrs.targetDefinition.string}"
+                                 styleClass="relationships"
+                                 >
                         <p:ajax listener="#{newConceptMBean.addOrChangeRelationship(cc.attrs.relationshipDefinition,newConceptMBean.basicTypeValue)}" />
                     </p:inputText>
                     <p:calendar id="basicTypeValue15"
@@ -81,7 +89,9 @@
                                 showOn="button"
                                 mindate="#{cc.attrs.targetDefinition.interval.lowerBoundary}"
                                 maxdate="#{cc.attrs.targetDefinition.interval.upperBoundary}"
-                                rendered="#{cc.attrs.targetDefinition.date}">
+                                rendered="#{cc.attrs.targetDefinition.date}"
+                                styleClass="relationships"
+                                >
                         <p:ajax listener="#{newConceptMBean.addOrChangeRelationship(cc.attrs.relationshipDefinition,newConceptMBean.basicTypeValue)}" />
                     </p:calendar>
                 </div>
@@ -94,7 +104,7 @@
     <!-- Multiplicidad N-->
     <p:panel
          id="basicTypeCollection"
-         styleClass="basic#{cc.attrs.relationshipDefinition.id}"
+         styleClass="relationshipDefinitions basic#{cc.attrs.relationshipDefinition.id}"
          widgetVar="panelBasicTypeCollection#{cc.attrs.relationshipDefinition.id}"
          rendered="#{cc.attrs.relationshipDefinition.multiplicity.collection}">
             <div class="ui-g">
@@ -135,6 +145,7 @@
                                      var="value1"
                                      converter="omnifaces.SelectItemsConverter"
                                      rendered="#{cc.attrs.targetDefinition.hasDomain}"
+                                     styleClass="relationships"
                                      >
                         <f:selectItem itemLabel="Seleccione"
                                       itemValue=""
@@ -152,7 +163,9 @@
                                    decimalPlaces="0"
                                    decimalSeparator=","
                                    thousandSeparator="."
-                                   rendered="#{cc.attrs.targetDefinition.integer}">
+                                   rendered="#{cc.attrs.targetDefinition.integer}"
+                                   styleClass="relationships"
+                                   >
                     </p:inputNumber>
                     <p:inputNumber id="basicTypeValue8"
                                    value="#{relationship.target.value}"
@@ -162,14 +175,18 @@
                                    decimalSeparator=","
                                    thousandSeparator="."
                                    decimalPlaces="2"
-                                   rendered="#{cc.attrs.targetDefinition.float}">
+                                   rendered="#{cc.attrs.targetDefinition.float}"
+                                   styleClass="relationships"
+                                   >
                     </p:inputNumber>
                     <p:inputText id="basicTypeValue9"
                                  value="#{relationship.target.value}"
                                  var="value"
                                  minValue="#{cc.attrs.targetDefinition.interval.lowerBoundary}"
                                  maxValue="#{cc.attrs.targetDefinition.interval.upperBoundary}"
-                                 rendered="#{cc.attrs.targetDefinition.string}">
+                                 rendered="#{cc.attrs.targetDefinition.string}"
+                                 styleClass="relationships"
+                                 >
                     </p:inputText>
                     <p:calendar id="basicTypeValue10"
                                 value="#{relationship.target.value}"
@@ -177,7 +194,9 @@
                                 showOn="button"
                                 mindate="#{cc.attrs.targetDefinition.interval.lowerBoundary}"
                                 maxdate="#{cc.attrs.targetDefinition.interval.upperBoundary}"
-                                rendered="#{cc.attrs.targetDefinition.date}">
+                                rendered="#{cc.attrs.targetDefinition.date}"
+                                styleClass="relationships"
+                                >
                     </p:calendar>
                     <p:commandButton
                             icon="fa fa-trash" title="Eliminar"

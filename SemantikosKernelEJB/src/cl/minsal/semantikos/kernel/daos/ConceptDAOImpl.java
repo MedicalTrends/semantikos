@@ -402,18 +402,11 @@ public class ConceptDAOImpl implements ConceptDAO {
         //updateConceptBasicInfo(newConceptSMTK);
 
         /* Luego se actualizan sus descripciones */
-        // En base a los conjuntos de descripciones antiguas y nuevas, se obtienen 3 conjuntos:
-        // 1.- descriptionsToUpdate = descripcionesNuevas ∩ descripcionesAntiguas (descripciones que permanecen)
-        // 2.- descriptionsToPersist = descripcionesNuevas - descripcionesAntiguas (nuevas descripciones)
-        // 3.- descriptionsToDelete = descripcionesAntiguas - descripcionesNuevas (descripciones removidas)
-
-        Collection<Description> descriptionsToUpdate = CollectionUtils.intersection(oldConceptSMTK.getDescriptions(), newConceptSMTK.getDescriptions());
+        // En base a los conjuntos de descripciones originales y descripciones nuevas, se obtienen 2 conjuntos:
+        // 1.- descriptionsToPersist = descripcionesNuevas - descripcionesOriginales (nuevas descripciones)
+        // 2.- descriptionsToDelete = descripcionesOriginales - descripcionesNuevas (descripciones removidas)
         Collection<Description> descriptionsToPersist = CollectionUtils.subtract(newConceptSMTK.getDescriptions(), oldConceptSMTK.getDescriptions());
         Collection<Description> descriptionsToDelete = CollectionUtils.subtract(oldConceptSMTK.getDescriptions(), newConceptSMTK.getDescriptions());
-
-        for (Description description : descriptionsToUpdate) {
-            //relationshipDAO.update(description);
-        }
 
         for (Description description: descriptionsToPersist){
             descriptionDAO.persist(description, newConceptSMTK, user);
@@ -424,18 +417,11 @@ public class ConceptDAOImpl implements ConceptDAO {
         }
 
         /* Y finalmente se actualizan sus relaciones */
-        // En base a los conjuntos de relaciones antiguas y nuevas, se obtienen 3 conjuntos:
-        // 1.- relationsToUpdate = relacionesNuevas ∩ relacionesAntiguas (relaciones que permanecen y cuyo valor de target eventualmente fue modificado)
-        // 2.- relationsToPersist = relacionesNuevas - relacionesAntiguas (nuevas relaciones)
-        // 3.- relationsToDelete = relacionesAntiguas - relacionesNuevas (descripciones removidas)
-
-        List<Relationship> relationsToUpdate = (List<Relationship>) CollectionUtils.intersection(oldConceptSMTK.getRelationships(), newConceptSMTK.getRelationships());
-        List<Relationship> relationsToPersist = (List<Relationship>) CollectionUtils.subtract(newConceptSMTK.getRelationships(), oldConceptSMTK.getRelationships());
-        List<Relationship> relationsToDelete = (List<Relationship>) CollectionUtils.subtract(oldConceptSMTK.getRelationships(), newConceptSMTK.getRelationships());
-
-        for (Relationship relationship : relationsToUpdate) {
-            //relationshipDAO.update(relationship);
-        }
+        // En base a los conjuntos de relaciones originales y relaciones nuevas, se obtienen 2 conjuntos:
+        // 1.- relationsToPersist = relacionesNuevas - relacionesOriginales (nuevas relaciones)
+        // 2.- relationsToDelete = relacionesOriginales - relacionesNuevas (descripciones removidas)
+        Collection<Relationship> relationsToPersist = CollectionUtils.subtract(newConceptSMTK.getRelationships(), oldConceptSMTK.getRelationships());
+        Collection<Relationship> relationsToDelete = CollectionUtils.subtract(oldConceptSMTK.getRelationships(), newConceptSMTK.getRelationships());
 
         for (Relationship relationship: relationsToPersist){
             relationshipDAO.persist(relationship);

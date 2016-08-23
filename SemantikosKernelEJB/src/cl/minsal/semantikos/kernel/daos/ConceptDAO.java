@@ -79,8 +79,8 @@ public interface ConceptDAO {
     /**
      * Este método es responsable de actualizar la entidad Concepto SMTK en la base de datos.
      *
-     * @param oldConceptSMTK El concepto antiguo u original. Previo a la edición
-     * @param newConceptSMTK El concepto nuevo, resultado de la edición.*
+     * @param oldConceptSMTK El concepto en su estado original, previo a las modificaciones
+     * @param newConceptSMTK El concepto nuevo, resultado de las modificaciones.*
      */
     public void update(ConceptSMTK oldConceptSMTK, ConceptSMTK newConceptSMTK, IUser user);
 }

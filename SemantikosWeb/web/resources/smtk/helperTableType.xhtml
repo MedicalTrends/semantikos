@@ -16,6 +16,7 @@
 <composite:implementation>
     <!-- Multiplicidad 1 y Nueva relacion -->
     <p:panel id="helperTableTypeSimple"
+             styleClass="relationshipDefinitions"
              widgetVar="panelHelperTableTypeSimple#{cc.attrs.relationshipDefinition.id}"
              rendered="#{cc.attrs.relationshipDefinition.multiplicity.simple and not cc.attrs.concept.hasRelationships(cc.attrs.relationshipDefinition)}">
 
@@ -32,6 +33,7 @@
                              selectionMode="single"
                              reflow="true"
                              rowKey="#{helperTableRecord.fields.id}"
+                             styleClass="relationships"
                 >
                     <p:ajax event="rowSelect" listener="#{newConceptMBean.addOrChangeRelationship(cc.attrs.relationshipDefinition,newConceptMBean.selectedHelperTableRecord)}" />
                     <p:columns value="#{cc.attrs.targetDefinition.showableColumns}"
@@ -50,6 +52,7 @@
 
     <!-- Multiplicidad 1 y relacion existente -->
     <p:panel id="helperTableTypeSimple2"
+             styleClass="relationshipDefinitions"
              widgetVar="panelHelperTableTypeSimple#{cc.attrs.relationshipDefinition.id}"
              rendered="#{cc.attrs.relationshipDefinition.multiplicity.simple and cc.attrs.concept.hasRelationships(cc.attrs.relationshipDefinition)}">
 
@@ -67,6 +70,7 @@
                                  selection="#{relationship.target}"
                                  reflow="true"
                                  rowKey="#{helperTableRecord.fields.id}"
+                                 styleClass="relationships"
                     >
                         <p:column selectionMode="single" style="width:16px;text-align:center"/>
                         <p:columns value="#{cc.attrs.targetDefinition.showableColumns}"
@@ -86,7 +90,7 @@
 
     <!-- Multiplicidad N-->
     <p:panel id="helperTableTypeCollection"
-             styleClass="helper#{cc.attrs.relationshipDefinition.id}"
+             styleClass="relationshipDefinitions helper#{cc.attrs.relationshipDefinition.id}"
              rendered="#{cc.attrs.relationshipDefinition.multiplicity.collection}">
 
         <div class="ui-g">
@@ -96,10 +100,10 @@
             </div>
             <div class="ui-g-12 ui-md-6 ui-lg-10">
                 <p:dataTable id="helperTableRecordsCollection"
-                             styleClass="tablas"
                              var="helperTableRecord"
                              value="#{newConceptMBean.helperTableManager.getAllRecords(cc.attrs.targetDefinition)}"
-                             reflow="true">
+                             reflow="true"
+                             >
                     <p:columns value="#{cc.attrs.targetDefinition.showableColumns}"
                                var="column"
                                columnIndexVar="colIndex"
@@ -118,7 +122,8 @@
                                 update="@(.helper#{cc.attrs.relationshipDefinition.id})"
                                 action="#{newConceptMBean.addRelationship(cc.attrs.relationshipDefinition,helperTableRecord)}"
                                 icon="fa fa-plus"
-                                title="Agregar"/>
+                                title="Agregar"
+                        />
                     </p:column>
                 </p:dataTable>
                 <p:spacer></p:spacer>
@@ -147,6 +152,7 @@
                                 process="@this"
                                 immediate="true"
                                 actionListener="#{newConceptMBean.removeRelationship(cc.attrs.relationshipDefinition, relationship)}"
+                                styleClass="relationships"
                         />
                     </p:column>
                 </p:dataTable>

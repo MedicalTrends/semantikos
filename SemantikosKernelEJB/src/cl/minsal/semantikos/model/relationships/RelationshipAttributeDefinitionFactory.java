@@ -6,9 +6,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.ejb.EJB;
-import javax.ejb.EJBException;
-import javax.ejb.Singleton;
+import javax.annotation.PostConstruct;
+import javax.ejb.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +19,7 @@ import static java.util.Collections.emptyList;
  * @author Andrés Farías
  */
 @Singleton
+@Startup
 public class RelationshipAttributeDefinitionFactory {
 
     /** El logger para esta clase */
@@ -27,6 +27,13 @@ public class RelationshipAttributeDefinitionFactory {
 
     @EJB
     private TargetDefinitionDAO targetDefinitionDAO;
+
+    @PostConstruct
+    public void init() {
+        //if(stateMachineDAO == null)
+
+        targetDefinitionDAO.getTargetDefinitionById(1);
+    }
 
     /**
      * Este método es responsable de crear una entidad <code>RelationshipAttributeDefinition</code> a partir de una
@@ -67,7 +74,6 @@ public class RelationshipAttributeDefinitionFactory {
     private List<RelationshipAttributeDefinition> createFromDTO(RelationshipAttributeDefinitionDTO[] relationshipAttributeDefinitionDTOs) {
         List<RelationshipAttributeDefinition> attributes = new ArrayList<>();
         for (RelationshipAttributeDefinitionDTO attributeDTO : relationshipAttributeDefinitionDTOs) {
-
             /* Se recuperan las entidades relacionadas */
             TargetDefinition targetDefinition = targetDefinitionDAO.getTargetDefinitionById(attributeDTO.getIdTargetDefinition());
             Multiplicity multiplicity = new Multiplicity(attributeDTO.getLowerBoundary(), attributeDTO.getUpperBoundary());
