@@ -485,7 +485,7 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
 
         /* Valores iniciales para el concepto */
         Description favouriteDescription = new Description(term, descriptionManager.getTypeFavorite());
-        State initialState = stateMachineManager.getConceptStateMachine().getInitialState();
+        IState initialState = stateMachineManager.getConceptStateMachine().getInitialState();
         favouriteDescription.setState(initialState);
         favouriteDescription.setCaseSensitive(false);
         favouriteDescription.setDescriptionId(descriptionManager.generateDescriptionId());

@@ -1,12 +1,16 @@
 package cl.minsal.semantikos.model;
 
 /**
- * Created by andres on 7/12/16.
+ * @author Andrés Farías
  */
 public class ConceptStateMachine extends StateMachine {
 
     /** The singleton object for this class */
-    private static ConceptStateMachine singletonInstance;
+    private static ConceptStateMachine singletonInstance = new ConceptStateMachine();
+
+    private ConceptStateMachine() {
+
+    }
 
     /**
      * The method for obtaining the only instance of the class.
@@ -14,17 +18,6 @@ public class ConceptStateMachine extends StateMachine {
      * @return The singleton object.
      */
     public static ConceptStateMachine getInstance() {
-
-
-        if(singletonInstance == null)
-            singletonInstance = new ConceptStateMachine();
-
         return ConceptStateMachine.singletonInstance;
     }
-
-    /*
-    private ConceptStateMachine() {
-        this.singletonInstance = new ConceptStateMachine();
-    }
-    */
 }

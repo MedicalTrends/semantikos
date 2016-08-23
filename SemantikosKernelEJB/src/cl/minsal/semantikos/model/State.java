@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * @author: Diego Soto
  */
-public class State {
+public class State implements IState {
 
     /** Identificador único de la base de datos */
     private long id;

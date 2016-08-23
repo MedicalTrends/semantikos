@@ -196,7 +196,19 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
 
         /* Se deja registro en la auditoría */
         auditManager.recordNewConcept(conceptSMTK, user);
+        logger.debug("El concepto " + conceptSMTK + " fue persistido.");
+    }
 
+    @Override
+    public void update(@NotNull ConceptSMTK conceptSMTK, IUser user) {
+
+        // TODO: Agregar validaciones pre-update
+        // TODO: Aplicar reglas de negocio (crear clase)
+        // TODO: Invocar el DAO para hacer el update, quizás por cada uno...
+
+        /* Se deja registro en la auditoría */
+        auditManager.recordUpdateConcept(conceptSMTK, user);
+        logger.debug("El concepto " + conceptSMTK + " fue actualizado.");
     }
 
     /**
