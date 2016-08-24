@@ -23,6 +23,7 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.component.UIColumn;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIForm;
+import javax.faces.component.UIPanel;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ComponentSystemEvent;
 import java.io.Serializable;
@@ -447,18 +448,23 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         conceptSelected = null;
     }
 
-    public void validateRelationships(ComponentSystemEvent event) {
+    public void postValidate(ComponentSystemEvent event) {
 
-        System.out.println("validateRelationships");
+        System.out.println("postValidate");
 
         FacesContext fc = FacesContext.getCurrentInstance();
 
         UIComponent components = event.getComponent();
 
-        UIForm mainForm = (UIForm) components.findComponent("mainForm");
+        Iterator<UIComponent> children = components.getFacetsAndChildren();
 
-        for (UIComponent uiComponent : mainForm.getChildren()) {
-            System.out.println("uiComponent.getId()="+uiComponent.getId());
+        if (children != null) {
+            UIComponent child = null;
+
+            while (children.hasNext()) {
+                child = (UIComponent) children.next();
+                System.out.println("child.getId()="+child.getId());
+            }
         }
 
         for (RelationshipDefinition relationshipDefinition : category.getRelationshipDefinitions()) {
@@ -501,12 +507,12 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
 
     public void onRowEdit(RowEditEvent event) {
 
-        System.out.println("onRowEdit");
         Description description = (Description) event.getObject();
         // Si la descripción está persistida, se agrega una nueva descripción y se deja la original como inválida
         if(description.getId() != NON_PERSISTED_ID){
             Description newDescription = description;
             newDescription.setId(NON_PERSISTED_ID);
+            //TODO: Setear estos atributos cuando la clase Description esté actualizada
             //description.setValidityUntil(new Timestamp(System.currentTimeMillis()));
             //description.setToBeUpdated(true);
             concept.addDescription(newDescription);
@@ -560,7 +566,6 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
 
         FacesContext context = FacesContext.getCurrentInstance();
 
-
         if (FSN != null || FSN.length() > 0) {
             addDescriptionToConcept(FSN, descriptionManager.getTypeFSN(), true);
 
@@ -580,7 +585,6 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
 
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Falta el FSN al concepto"));
         }
-
     }
 
 

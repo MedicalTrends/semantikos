@@ -16,7 +16,7 @@
             <p:growl id="editMsgs" showDetail="true"/>
             <!--p:messages autoUpdate="true"></p:messages-->
             <!-- register a PostValidateEvent -->
-            <f:event listener="#{newConceptMBean.validateRelationships()}" type="postValidate" />
+            <!--f:event listener="#{newConceptMBean.postValidate}" type="postValidate" /-->
             <h3>Responsive</h3>
 
             <div class="ui-g">
@@ -119,12 +119,12 @@
                     <p:dataTable id="otherDescriptions"
                                  var="description"
                                  value="#{newConceptMBean.concept.descriptions}"
+                                 resizableColumns="true"
                                  editable="true"
                                  selection="#{newConceptMBean.selectedDescriptions}"
                                  rowKey="#{description.id}"
                                  reflow="true">
 
-                        <p:ajax event="rowEditInit" listener="#{newConceptMBean.onEditInit}" update=":mainForm:editMsgs" />
                         <p:ajax event="rowEdit" listener="#{newConceptMBean.onRowEdit}" update=":mainForm:editMsgs"/>
                         <p:ajax event="rowEditCancel" listener="#{newConceptMBean.onRowCancel}" update=":mainForm:editMsgs"/>
 
@@ -236,7 +236,8 @@
                         <smtk:smtkType
                                 rendered="#{relationshipDefinition.targetDefinition.SMTKType}"
                                 targetDefinition="#{relationshipDefinition.targetDefinition}"
-                                relationshipDefinition="#{relationshipDefinition}" />
+                                relationshipDefinition="#{relationshipDefinition}"
+                                concept="#{newConceptMBean.concept}"/>
 
                         <smtk:helperTableType
                                 rendered="#{relationshipDefinition.targetDefinition.helperTable}"
