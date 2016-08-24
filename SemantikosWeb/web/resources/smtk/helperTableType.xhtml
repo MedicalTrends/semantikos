@@ -11,11 +11,11 @@
 <composite:interface >
     <composite:attribute name="relationshipDefinition" type="cl.minsal.semantikos.model.relationships.RelationshipDefinition" />
     <composite:attribute name="targetDefinition" type="cl.minsal.semantikos.model.helpertables.HelperTable" />
-    <composite:attribute name="concept" type="cl.minsal.semantikos.model.ConceptSMTKWeb" />
+    <composite:attribute name="concept" type="cl.minsal.semantikos.model.ConceptSMTK" />
 </composite:interface>
 <composite:implementation>
     <!-- Multiplicidad 1 y Nueva relacion -->
-    <p:panel id="helperTableTypeSimple"
+    <p:panel id="helperTableTypeSimpleNew"
              styleClass="relationshipDefinitions"
              widgetVar="panelHelperTableTypeSimple#{cc.attrs.relationshipDefinition.id}"
              rendered="#{cc.attrs.relationshipDefinition.multiplicity.simple and not cc.attrs.concept.hasRelationships(cc.attrs.relationshipDefinition)}">
@@ -51,7 +51,7 @@
     </p:panel>
 
     <!-- Multiplicidad 1 y relacion existente -->
-    <p:panel id="helperTableTypeSimple2"
+    <p:panel id="helperTableTypeSimple"
              styleClass="relationshipDefinitions"
              widgetVar="panelHelperTableTypeSimple#{cc.attrs.relationshipDefinition.id}"
              rendered="#{cc.attrs.relationshipDefinition.multiplicity.simple and cc.attrs.concept.hasRelationships(cc.attrs.relationshipDefinition)}">

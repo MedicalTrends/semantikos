@@ -278,8 +278,8 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
     //      Methods
 
     public void createConcept() {
-        concept = newConcept(category, favoriteDescription);
-        //concept = getConceptById(80602);
+        //concept = newConcept(category, favoriteDescription);
+        concept = getConceptById(80602);
         RequestContext context = RequestContext.getCurrentInstance();
         context.execute("PF('dialogNameConcept').hide();");
     }
@@ -287,7 +287,10 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
     //Este método es responsable de pasarle un concepto a la vista, dado el id del concepto
     //(llamado desde la vista cuando se desea editar un concepto)
     public ConceptSMTK getConceptById(long conceptId) {
-        return conceptManager.getConceptByID(conceptId);
+        ConceptSMTK conceptSMTK = conceptManager.getConceptByID(conceptId);
+        conceptSMTK.setRelationships(conceptManager.loadRelationships(conceptSMTK));
+        category = conceptSMTK.getCategory();
+        return conceptSMTK;
     }
 
 
@@ -423,7 +426,7 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
                     relationship.setTarget(target);
                 }
                 else{
-                    // Si la relación está persistida, se agrega una nueva relación y se deja la original como inválida
+                    // Si la relación está persistida, se agrega una nueva relación (clon de la original) y se deja la original como inválida
                     Relationship newRelationship = relationship;
                     newRelationship.setId(NON_PERSISTED_ID);
                     newRelationship.setTarget(target);
@@ -504,17 +507,12 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         if(description.getId() != NON_PERSISTED_ID){
             Description newDescription = description;
             newDescription.setId(NON_PERSISTED_ID);
-            //oldDescription.setValidityUntil(new Timestamp(System.currentTimeMillis()));
-            //oldDescription.setToBeUpdated(true);
+            //description.setValidityUntil(new Timestamp(System.currentTimeMillis()));
+            //description.setToBeUpdated(true);
             concept.addDescription(newDescription);
         }
         //FacesMessage msg = new FacesMessage("Description Edited", ((Description) event.getObject()).getTerm());
         //FacesContext.getCurrentInstance().addMessage(null, msg);
-    }
-
-    public void onEditInit(RowEditEvent event) {
-        oldDescription = (Description)event.getObject();
-        System.out.println("onEditInit: " + event.getObject());
     }
 
     public void onRowCancel(RowEditEvent event) {

@@ -85,7 +85,7 @@
             <p:dataTable id="tableRelationship" draggableRows="true" style="margin: 10px;"
                          emptyMessage="No existen relaciones, se debe agregar al menos: #{cc.attrs.relationshipDefinition.multiplicity.lowerBoundary}."
                          styleClass="tablas"
-                         value="#{newConceptMBean.concept.getRelationshipsByRelationDefinition(cc.attrs.relationshipDefinition)}"
+                         value="#{newConceptMBean.concept.getValidRelationshipsByRelationDefinition(cc.attrs.relationshipDefinition)}"
                          var="rel">
                 <p:column headerText="ID">
                     <h:outputText value="#{rel.target.id}"/>
@@ -120,7 +120,6 @@
              style="margin:20px;"
              rendered="#{cc.attrs.relationshipDefinition.multiplicity.upperBoundary!=1}">
         <h3>#{cc.attrs.relationshipDefinition.name}</h3>
-
 
         <div class="ui-g">
 
@@ -163,7 +162,7 @@
                          id="tableRelationship2"
                          styleClass="tablas2"
                          draggableRows="true" style="margin: 10px;"
-                         value="#{newConceptMBean.concept.getRelationshipsByRelationDefinition(cc.attrs.relationshipDefinition)}"
+                         value="#{newConceptMBean.concept.getValidRelationshipsByRelationDefinition(cc.attrs.relationshipDefinition)}"
                          var="rel">
                 <p:column headerText="ID">
                     <h:outputText value="#{rel.target.id}"/>
@@ -193,12 +192,10 @@
 
     </p:panel>
 
-
     <p:panel id="id2panel"
              styleClass="concept"
              style="margin:20px;"
              rendered="#{cc.attrs.relationshipDefinition.multiplicity.upperBoundary==1}">
-
 
         <div class="ui-g">
 
@@ -247,7 +244,7 @@
 
 
                     <p:inputText style="width: 72%;" disabled="true" id="itemSelected"
-                                 value="#{newConceptMBean.concept.getRelationshipsByRelationDefinition(cc.attrs.relationshipDefinition).get(0).target.descriptionFavorite.term}"></p:inputText>
+                                 value="#{newConceptMBean.concept.getValidRelationshipsByRelationDefinition(cc.attrs.relationshipDefinition).get(0).target.descriptionFavorite.term}"></p:inputText>
                 </p:panel>
 
             </div>

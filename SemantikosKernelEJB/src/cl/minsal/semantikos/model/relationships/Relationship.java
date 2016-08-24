@@ -40,6 +40,8 @@ public class Relationship implements AuditableEntity {
     /** La relación es Vigente (valida) hasta la fecha... */
     private Timestamp validityUntil;
 
+    private boolean toBeUpdated;
+
     /**
      * Este es el constructor mínimo con el cual se crean las Relaciones
      *
@@ -108,6 +110,14 @@ public class Relationship implements AuditableEntity {
 
     public void setTarget(Target target) {
         this.target = target;
+    }
+
+    public boolean isToBeUpdated() {
+        return toBeUpdated;
+    }
+
+    public void setToBeUpdated(boolean toBeUpdated) {
+        this.toBeUpdated = toBeUpdated;
     }
 
     /**
