@@ -1,6 +1,7 @@
 package cl.minsal.semantikos.model;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -8,20 +9,38 @@ import java.util.List;
  */
 public class User implements IUser {
 
-    long idUser;
-    String username;
-    String name;
-    String lastName;
-    String secondLastName;
-    String email;
+    private long idUser;
+    private String username;
+    private String name;
+    private String lastName;
+    private String secondLastName;
+    private String email;
 
-    String password;
-    String passwordHash;
-    String passwordSalt;
+    private String rut;
 
-    List<Profile> profiles;
-    List<Permission> permissions;
-    List<Group> groups;
+    private String password;
+    private String passwordHash;
+    private String passwordSalt;
+
+    private List<Profile> profiles;
+    private List<Permission> permissions;
+    private List<Group> groups;
+
+    private Date lastLogin;
+    private Date lastPasswordChange;
+    private boolean locked;
+    private int failedLoginAttempts;
+
+    private String lastPasswordHash1;
+    private String lastPasswordSalt1;
+    private String lastPasswordHash2;
+    private String lastPasswordSalt2;
+    private String lastPasswordHash3;
+    private String lastPasswordSalt3;
+    private String lastPasswordHash4;
+    private String lastPasswordSalt4;
+
+
 
     /**
      * Constructor base para inicializar los objetos que lo requieren.
@@ -145,6 +164,110 @@ public class User implements IUser {
 
     public void setPasswordSalt(String passwordSalt) {
         this.passwordSalt = passwordSalt;
+    }
+
+    public Date getLastLogin() {
+        return lastLogin;
+    }
+
+    public void setLastLogin(Date lastLogin) {
+        this.lastLogin = lastLogin;
+    }
+
+    public Date getLastPasswordChange() {
+        return lastPasswordChange;
+    }
+
+    public void setLastPasswordChange(Date lastPasswordChange) {
+        this.lastPasswordChange = lastPasswordChange;
+    }
+
+    public String getRut() {
+        return rut;
+    }
+
+    public void setRut(String rut) {
+        this.rut = rut;
+    }
+
+    public boolean isLocked() {
+        return locked;
+    }
+
+    public void setLocked(boolean locked) {
+        this.locked = locked;
+    }
+
+    public int getFailedLoginAttempts() {
+        return failedLoginAttempts;
+    }
+
+    public void setFailedLoginAttempts(int failedLoginAttempts) {
+        this.failedLoginAttempts = failedLoginAttempts;
+    }
+
+    public String getLastPasswordHash1() {
+        return lastPasswordHash1;
+    }
+
+    public void setLastPasswordHash1(String lastPasswordHash1) {
+        this.lastPasswordHash1 = lastPasswordHash1;
+    }
+
+    public String getLastPasswordSalt1() {
+        return lastPasswordSalt1;
+    }
+
+    public void setLastPasswordSalt1(String lastPasswordSalt1) {
+        this.lastPasswordSalt1 = lastPasswordSalt1;
+    }
+
+    public String getLastPasswordHash2() {
+        return lastPasswordHash2;
+    }
+
+    public void setLastPasswordHash2(String lastPasswordHash2) {
+        this.lastPasswordHash2 = lastPasswordHash2;
+    }
+
+    public String getLastPasswordSalt2() {
+        return lastPasswordSalt2;
+    }
+
+    public void setLastPasswordSalt2(String lastPasswordSalt2) {
+        this.lastPasswordSalt2 = lastPasswordSalt2;
+    }
+
+    public String getLastPasswordHash3() {
+        return lastPasswordHash3;
+    }
+
+    public void setLastPasswordHash3(String lastPasswordHash3) {
+        this.lastPasswordHash3 = lastPasswordHash3;
+    }
+
+    public String getLastPasswordSalt3() {
+        return lastPasswordSalt3;
+    }
+
+    public void setLastPasswordSalt3(String lastPasswordSalt3) {
+        this.lastPasswordSalt3 = lastPasswordSalt3;
+    }
+
+    public String getLastPasswordHash4() {
+        return lastPasswordHash4;
+    }
+
+    public void setLastPasswordHash4(String lastPasswordHash4) {
+        this.lastPasswordHash4 = lastPasswordHash4;
+    }
+
+    public String getLastPasswordSalt4() {
+        return lastPasswordSalt4;
+    }
+
+    public void setLastPasswordSalt4(String lastPasswordSalt4) {
+        this.lastPasswordSalt4 = lastPasswordSalt4;
     }
 
     @Override

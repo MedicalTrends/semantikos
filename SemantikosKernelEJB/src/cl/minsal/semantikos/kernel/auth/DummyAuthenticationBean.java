@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.ejb.Stateless;
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -16,7 +17,7 @@ public class DummyAuthenticationBean extends AuthenticationMethod{
 
     static private final Logger logger = LoggerFactory.getLogger(DummyAuthenticationBean.class);
 
-    public boolean authenticate(String username, String password) {
+    public boolean authenticate(String username, String password, HttpServletRequest request) {
         if("bpadmin".equals(username) && "bpadmin".equals(password))
             return true;
 
@@ -55,4 +56,11 @@ public class DummyAuthenticationBean extends AuthenticationMethod{
     public List<String> getUsersInGroup(String group) {
         return null;
     }
+
+    @Override
+    public void setUserPassword(String username, String password) throws PasswordChangeException {
+
+    }
+
+
 }
