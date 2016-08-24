@@ -1,6 +1,7 @@
 package cl.minsal.semantikos.kernel.daos;
 
-import cl.minsal.semantikos.model.ChangeType;
+import cl.minsal.semantikos.model.audit.AuditActionType;
+import cl.minsal.semantikos.model.audit.ConceptAuditAction;
 
 import javax.ejb.Local;
 import java.util.List;
@@ -12,9 +13,16 @@ import java.util.List;
 public interface AuditDAO {
 
     /**
-     * Este método es responsable de obtener y agrupar en una lista todos los tipos de cambios existentes.
+     * Este método es responsable de recuperar y retornar en una lista los últimos <code>numberOfChanges</code> cambios
+     * que ha tenido un concepto.
      *
-     * @return Una <code>List</code> con los tipos de cambio.
+     * @param idConcept     El ID del concepto cuyos cambios se desean recuperar.
+     * @param numberOfChanges La cantidad de cambios que se desea recuperar (ordenados de más reciente a menos
+     *                        reciente).
+     * @param changes         Indica si se desean las acciones auditables registradas que son cambios
+     *
+     * @return Una lista con los últimos <code>numberOfChanges</code> realizados sobre el concepto
+     * <code>conceptSMTK</code>
      */
-    public List<ChangeType> getAllChangeTypes();
+    List<ConceptAuditAction> getConceptAuditActions(long idConcept, int numberOfChanges, boolean changes);
 }

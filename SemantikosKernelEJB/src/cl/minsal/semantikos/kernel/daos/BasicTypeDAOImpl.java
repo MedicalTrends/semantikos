@@ -12,6 +12,8 @@ public class BasicTypeDAOImpl implements BasicTypeDAO {
 
     @Override
     public BasicTypeValue getBasicTypeValueByID(long idBasicValue) {
+
+        //TODO: UH?
         return null;
     }
 }

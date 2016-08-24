@@ -1,12 +1,14 @@
 package cl.minsal.semantikos.kernel.components;
 
 import cl.minsal.semantikos.kernel.daos.AuditDAO;
-import cl.minsal.semantikos.model.ChangeType;
+import cl.minsal.semantikos.model.audit.AuditActionType;
 import cl.minsal.semantikos.model.ConceptSMTK;
 import cl.minsal.semantikos.model.IUser;
+import cl.minsal.semantikos.model.audit.ConceptAuditAction;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -29,7 +31,12 @@ public class AuditManagerImpl implements AuditManagerInterface {
     }
 
     @Override
-    public List<ChangeType> getAllChangeTypes() {
-        return auditDAO.getAllChangeTypes();
+    public List<AuditActionType> getAllAuditActionTypes() {
+        return Arrays.asList(AuditActionType.values());
+    }
+
+    @Override
+    public List<ConceptAuditAction> getConceptAuditActions(ConceptSMTK conceptSMTK, int numberOfChanges, boolean changes) {
+        return auditDAO.getConceptAuditActions(conceptSMTK.getId(), numberOfChanges, changes);
     }
 }

@@ -1,5 +1,6 @@
 package cl.minsal.semantikos.model;
 
+import cl.minsal.semantikos.model.audit.AuditableEntity;
 import cl.minsal.semantikos.model.relationships.RelationshipDefinition;
 import cl.minsal.semantikos.model.relationships.TargetDefinition;
 
@@ -7,11 +8,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by root on 08-07-16.
+ * Una categoría puede ser el sujeto de una acción de auditoría.
  */
 
-public class Category implements TargetDefinition {
+public class Category implements TargetDefinition, AuditableEntity {
+
+    /** Identificador único de la categoría */
     private long idCategory;
+
     private String name;
     private String nameAbreviated;
     private boolean restriction;
@@ -85,12 +89,12 @@ public class Category implements TargetDefinition {
         this.relationshipDefinitions = relationshipDefinitions;
     }
 
-    public List<RelationshipDefinition> getRelationshipDefinitionsOfTypeCollection(){
+    public List<RelationshipDefinition> getRelationshipDefinitionsOfTypeCollection() {
 
         List<RelationshipDefinition> relationshipDefinitions = new ArrayList<>();
 
         for (RelationshipDefinition relationshipDefinition : relationshipDefinitions) {
-            if(relationshipDefinition.getMultiplicity().getUpperBoundary()==0)
+            if (relationshipDefinition.getMultiplicity().getUpperBoundary() == 0)
                 relationshipDefinitions.add(relationshipDefinition);
         }
 
@@ -114,7 +118,7 @@ public class Category implements TargetDefinition {
         return name != null ? name.hashCode() : 0;
     }
 
-    public boolean isHasRelationshipDefinitions(){
+    public boolean isHasRelationshipDefinitions() {
         return !relationshipDefinitions.isEmpty();
     }
 

@@ -68,7 +68,7 @@ public class DescriptionDAOImpl implements DescriptionDAO {
 
     // TODO: Implementar este método
     @Override
-    public List<Description> getDescriptionBy(int id) {
+    public Description getDescriptionBy(long id) {
         return null;
     }
 
