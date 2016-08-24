@@ -40,7 +40,6 @@ public class Relationship implements AuditableEntity {
     /** La relación es Vigente (valida) hasta la fecha... */
     private Timestamp validityUntil;
 
-
     /**
      * Este es el constructor mínimo con el cual se crean las Relaciones
      *
@@ -77,11 +76,6 @@ public class Relationship implements AuditableEntity {
         }
         this.id = id;
         this.validityUntil = validityUntil;
-    }
-
-    //FIXME
-    public Relationship(RelationshipDefinition relationshipDefinition) {
-
     }
 
     public ConceptSMTK getSourceConcept() {
