@@ -22,6 +22,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.component.UIColumn;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIForm;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ComponentSystemEvent;
 import java.io.Serializable;
@@ -77,6 +78,8 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
     private boolean otherSensibilidad;
 
     private DescriptionType otherDescriptionType;
+
+    private Description oldDescription;
 
     // Placeholders para los target de las relaciones
     private BasicTypeValue basicTypeValue = new BasicTypeValue(null);
@@ -304,14 +307,13 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
      * Este método es el encargado de remover una descripción específica de la lista de descripciones del concepto.
      */
 
-    public void removeItem(Description item) {
-        concept.getDescriptions().remove(item);
+    public void removeDescription(Description description) {
+        concept.getDescriptions().remove(description);
     }
 
     /**
      * Este método es el encargado de agregar descripciones al concepto
      */
-
     public void addDescription() {
         FacesContext context = FacesContext.getCurrentInstance();
         if (otherTermino != null) {
@@ -343,7 +345,7 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
 
     /**
      * Este método es el encargado de agregar relaciones al concepto recibiendo como parámetro un Relationship
-     * Definition. Este método es utilizado por el componente BasicType, el cual agrega relaciones sin valor
+     * Definition. Este método es utilizado por el componente BasicType, el cual agrega relaciones con target sin valor
      */
     public void addRelationship(RelationshipDefinition relationshipDefinition) {
 
@@ -401,7 +403,8 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         }
         // Si la relacion esta persistida, se deja como inválida
         else{
-            concept.getRelationships().get(concept.getRelationships().indexOf(r)).setValidityUntil((Timestamp) Calendar.getInstance().getTime());
+            r.setValidityUntil(new Timestamp(System.currentTimeMillis()));
+            r.setToBeUpdated(true);
         }
     }
 
@@ -424,7 +427,8 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
                     Relationship newRelationship = relationship;
                     newRelationship.setId(NON_PERSISTED_ID);
                     newRelationship.setTarget(target);
-                    relationship.setValidityUntil((Timestamp) Calendar.getInstance().getTime());
+                    relationship.setValidityUntil(new Timestamp(System.currentTimeMillis()));
+                    relationship.setToBeUpdated(true);
                     concept.addRelationship(newRelationship);
                 }
                 isRelationshipFound = true;
@@ -447,6 +451,12 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         FacesContext fc = FacesContext.getCurrentInstance();
 
         UIComponent components = event.getComponent();
+
+        UIForm mainForm = (UIForm) components.findComponent("mainForm");
+
+        for (UIComponent uiComponent : mainForm.getChildren()) {
+            System.out.println("uiComponent.getId()="+uiComponent.getId());
+        }
 
         for (RelationshipDefinition relationshipDefinition : category.getRelationshipDefinitions()) {
 
@@ -487,11 +497,28 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
     }
 
     public void onRowEdit(RowEditEvent event) {
-        FacesMessage msg = new FacesMessage("Description Edited", ((Description) event.getObject()).getTerm());
-        FacesContext.getCurrentInstance().addMessage(null, msg);
+
+        System.out.println("onRowEdit");
+        Description description = (Description) event.getObject();
+        // Si la descripción está persistida, se agrega una nueva descripción y se deja la original como inválida
+        if(description.getId() != NON_PERSISTED_ID){
+            Description newDescription = description;
+            newDescription.setId(NON_PERSISTED_ID);
+            //oldDescription.setValidityUntil(new Timestamp(System.currentTimeMillis()));
+            //oldDescription.setToBeUpdated(true);
+            concept.addDescription(newDescription);
+        }
+        //FacesMessage msg = new FacesMessage("Description Edited", ((Description) event.getObject()).getTerm());
+        //FacesContext.getCurrentInstance().addMessage(null, msg);
+    }
+
+    public void onEditInit(RowEditEvent event) {
+        oldDescription = (Description)event.getObject();
+        System.out.println("onEditInit: " + event.getObject());
     }
 
     public void onRowCancel(RowEditEvent event) {
+        oldDescription = null;
         FacesMessage msg = new FacesMessage("Edit Cancelled", ((Description) event.getObject()).getTerm());
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }

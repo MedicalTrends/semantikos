@@ -124,13 +124,13 @@
                                  rowKey="#{description.id}"
                                  reflow="true">
 
+                        <p:ajax event="rowEditInit" listener="#{newConceptMBean.onEditInit}" update=":mainForm:editMsgs" />
                         <p:ajax event="rowEdit" listener="#{newConceptMBean.onRowEdit}" update=":mainForm:editMsgs"/>
-                        <p:ajax event="rowEditCancel" listener="#{newConceptMBean.onRowCancel}"
-                                update=":mainForm:editMsgs"/>
+                        <p:ajax event="rowEditCancel" listener="#{newConceptMBean.onRowCancel}" update=":mainForm:editMsgs"/>
 
                         <p:column selectionMode="multiple" style="width:16px;text-align:center"/>
 
-                        <p:column headerText="Set/DescId" style="width:5%">
+                        <p:column headerText="DescId" style="width:5%">
                             <div style="text-align: center;">
                                 <h:outputText value="-"/>
                             </div>
@@ -212,13 +212,13 @@
                         </p:column>
 
                         <p:column headerText="Acción" style="width:5%">
-                            <p:commandLink actionListener="#{newConceptMBean.removeItem(description)}" ajax="true"
+                            <p:commandLink actionListener="#{newConceptMBean.removeDescription(description)}" ajax="true"
                                            update="otherDescriptions" style="float: right">
                                 <h:graphicImage  style="width: 15px; height: 15px"
                                                  name="images/trash-blue.png"
                                 />
                             </p:commandLink>
-                            <p:rowEditor style="display: inline"/>
+                            <p:rowEditor style="display: inline" />
                         </p:column>
                     </p:dataTable>
                 </div>

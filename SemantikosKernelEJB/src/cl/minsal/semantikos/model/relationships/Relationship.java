@@ -40,6 +40,7 @@ public class Relationship implements AuditableEntity {
     /** La relación es Vigente (valida) hasta la fecha... */
     private Timestamp validityUntil;
 
+    private boolean toBeUpdated;
 
     /**
      * Este es el constructor mínimo con el cual se crean las Relaciones
@@ -52,6 +53,7 @@ public class Relationship implements AuditableEntity {
 
         /* No está persistido originalmente */
         this.id = NON_PERSISTED_ID;
+        this.toBeUpdated = false;
 
         this.sourceConcept = sourceConcept;
         this.target = target;
@@ -77,11 +79,6 @@ public class Relationship implements AuditableEntity {
         }
         this.id = id;
         this.validityUntil = validityUntil;
-    }
-
-    //FIXME
-    public Relationship(RelationshipDefinition relationshipDefinition) {
-
     }
 
     public ConceptSMTK getSourceConcept() {
@@ -157,6 +154,14 @@ public class Relationship implements AuditableEntity {
 
     public long getId() {
         return id;
+    }
+
+    public boolean isToBeUpdated() {
+        return toBeUpdated;
+    }
+
+    public void setToBeUpdated(boolean toBeUpdated) {
+        this.toBeUpdated = toBeUpdated;
     }
 
     @Override
