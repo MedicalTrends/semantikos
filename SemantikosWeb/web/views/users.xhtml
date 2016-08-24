@@ -178,11 +178,31 @@
                                         <br />
 
                                         <p:commandButton value="Desbloquear Usuario" action="#{users.unlockUser()}" disabled="#{not users.selectedUser.locked}"  rendered="#{users.selectedUser != null}" />
-                                        <p:commandButton value="Cambiar Password Usuario" rendered="#{users.selectedUser != null}" />
+                                        <p:commandButton value="Cambiar Password Usuario" rendered="#{users.selectedUser != null}" oncomplete="PF('passwordChangeDialog').show()" update=":form:pcdialog"  />
 
 
                                     </h:panelGroup>
                                 </p:dialog>
+
+                                <p:dialog id="pcdialog" height="200" width="600" header="Cambiar Password Usuario" widgetVar="passwordChangeDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="true" responsive="true" >
+
+                                    <p:panelGrid id="passwordChangeGrid" columns="2" styleClass="Wid100" >
+                                        <f:facet name="header">
+                                            Datos Basicos
+                                        </f:facet>
+                                        <p:outputLabel for="input-user-new-pass-1" value="Nuevo Password:" style="font-weight: bold"/>
+                                        <p:inputText id="input-user-new-pass-1" value="#{users.newPass1}"  styleClass="Wid90" />
+
+                                        <p:outputLabel for="input-user-new-pass-2" value="Confirme Password" style="font-weight: bold"/>
+                                        <p:inputText id="input-user-new-pass-2" value="#{users.newPass2}"  styleClass="Wid90" />
+
+                                    </p:panelGrid>
+
+                                    <p:commandButton process="pcdialog" value="Cambiar Password Usuario" rendered="#{users.selectedUser != null}" action="#{users.changePass}" oncomplete="PF('passwordChangeDialog').hide()"  />
+
+                                </p:dialog>
+
+
                             </h:form>
                         </div>
                     </div>

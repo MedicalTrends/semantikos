@@ -1,5 +1,7 @@
 package cl.minsal.semantikos.designmodelweb.auth;
 
+import cl.minsal.semantikos.kernel.auth.AuthenticationManagerBean;
+import cl.minsal.semantikos.kernel.auth.PasswordChangeException;
 import cl.minsal.semantikos.kernel.auth.UserManager;
 import cl.minsal.semantikos.model.Profile;
 import cl.minsal.semantikos.model.User;
@@ -26,6 +28,9 @@ public class UsersBean {
     @EJB
     UserManager userManager;
 
+    @EJB
+    AuthenticationManagerBean authenticationManagerBean;
+
     User selectedUser;
 
     List<User> allUsers;
@@ -33,6 +38,26 @@ public class UsersBean {
     List<Profile> allProfiles;
 
     DualListModel<Profile> selectedUserProfileModel;
+
+
+    String newPass1;
+    String newPass2;
+
+    public String getNewPass2() {
+        return newPass2;
+    }
+
+    public void setNewPass2(String newPass2) {
+        this.newPass2 = newPass2;
+    }
+
+    public String getNewPass1() {
+        return newPass1;
+    }
+
+    public void setNewPass1(String newPass1) {
+        this.newPass1 = newPass1;
+    }
 
     public User getSelectedUser() {
         return selectedUser;
@@ -94,4 +119,15 @@ public class UsersBean {
     public void setSelectedUserProfileModel(DualListModel<Profile> selectedUserProfileModel) {
         this.selectedUserProfileModel = selectedUserProfileModel;
     }
+
+
+
+    public void changePass(){
+        try {
+            authenticationManagerBean.setUserPassword(selectedUser.getUsername(),newPass1);
+        } catch (PasswordChangeException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

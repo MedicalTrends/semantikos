@@ -38,4 +38,6 @@ public class UserManager {
 
         return authDAO.getAllProfiles();
     }
+
+
 }

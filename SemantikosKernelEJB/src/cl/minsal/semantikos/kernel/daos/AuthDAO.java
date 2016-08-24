@@ -36,7 +36,7 @@ public class AuthDAO {
 
     public User getUserById(long id) {
 
-        Query q = em.createNativeQuery("Select * from semantikos.smtk_user u where u.id_user = ? ");
+        Query q = em.createNativeQuery("Select * from semantikos.smtk_user u where u.id = ? ");
 
         q.setParameter(1,id);
 
@@ -54,9 +54,29 @@ public class AuthDAO {
     }
 
 
+    public User getUserByUsername(String username) {
+
+        Query q = em.createNativeQuery("Select * from semantikos.smtk_user u where u.username = ? ");
+
+        q.setParameter(1,username);
+
+
+        Object sresult = q.getSingleResult();
+
+        if (sresult ==null)
+            return null;
+
+        User user = makeUserFromResult((Object[]) sresult);
+
+        user.setProfiles(getUserProfiles(user.getIdUser()));
+
+        return user;
+    }
+
+
     public List<Profile> getUserProfiles(Long userId){
 
-        Query q = em.createNativeQuery("Select p.* from semantikos.smtk_profiles p, semantikos.smtk_user_profile up where up.id_user = ? and up.id_profile = p.id_profile ");
+        Query q = em.createNativeQuery("Select p.* from semantikos.smtk_profile p, semantikos.smtk_user_profile up where up.id_user = ? and up.id_profile = p.id ");
 
         q.setParameter(1,userId);
 
@@ -138,7 +158,7 @@ public class AuthDAO {
 
     public void createUser(User user) throws UserExistsException{
 
-        Query q = em.createNativeQuery("INSERT INTO semantikos.smtk_user (id_user, username, password_hash, password_salt, name, last_name, second_last_name, email, locked, failed_login_attempts, last_login, last_password_change, last_password_hash1, last_password_hash2, last_password_hash3, last_password_hash4, last_password_salt1, last_password_salt2, last_password_salt3, last_password_salt4, rut) " +
+        Query q = em.createNativeQuery("INSERT INTO semantikos.smtk_user (id, username, password_hash, password_salt, name, last_name, second_last_name, email, locked, failed_login_attempts, last_login, last_password_change, last_password_hash1, last_password_hash2, last_password_hash3, last_password_hash4, last_password_salt1, last_password_salt2, last_password_salt3, last_password_salt4, rut) " +
                 "VALUES (DEFAULT, ?, ?, ?, ?, ?, ?, ?, DEFAULT, DEFAULT, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
         q.executeUpdate();
@@ -154,7 +174,7 @@ public class AuthDAO {
                 "second_last_name = ?, " +
                 "email = ?, " +
                 "rut= ?  " +
-                "where id_user = ?");
+                "where id = ?");
 
         q.setParameter(1,user.getName());
         q.setParameter(2,user.getLastName());
@@ -172,7 +192,7 @@ public class AuthDAO {
     public List<Profile> getAllProfiles() {
         ArrayList<Profile> profiles = new ArrayList<>();
 
-        Query q = em.createNativeQuery("Select * from semantikos.smtk_profiles");
+        Query q = em.createNativeQuery("Select * from semantikos.smtk_profile");
 
         for (Object row : q.getResultList()) {
             Profile profile = makeProfileFromResult((Object[]) row);
@@ -182,6 +202,30 @@ public class AuthDAO {
 
 
         return profiles;
+    }
+
+    public void updateUserPasswords(User user) {
+
+
+        Query q = em.createNativeQuery("UPDATE semantikos.smtk_user " +
+                "set last_password_change = ?, " +
+                "password_hash = ?, " +
+                "last_password_hash1 = ?, " +
+                "last_password_hash2 = ?, " +
+                "last_password_hash3 = ?, " +
+                "last_password_hash4= ?  " +
+                "where id = ?");
+
+        q.setParameter(1,user.getLastPasswordChange());
+        q.setParameter(2,user.getPasswordHash());
+        q.setParameter(3,user.getLastPasswordHash1());
+        q.setParameter(4,user.getLastPasswordHash2());
+        q.setParameter(5,user.getLastPasswordHash3());
+        q.setParameter(6,user.getLastPasswordHash4());
+        q.setParameter(7,user.getIdUser());
+
+        q.executeUpdate();
+
     }
 
 

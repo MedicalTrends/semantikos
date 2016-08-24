@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -20,9 +21,13 @@ public class AuthenticationManagerBean{
     @EJB(name = "DummyAuthenticationEJB")
     DummyAuthenticationBean dummyAuthenticationBean;
 
-    public boolean authenticate(String username, String password){
 
-        return getAuthenticationMethod().authenticate(username,password);
+    @EJB(name = "JbossSecurutyDomainAuthenticationEJB")
+    JbossSecurutyDomainAuthenticationBean jbossSecurutyDomainAuthenticationBean;
+
+    public boolean authenticate(String username, String password, HttpServletRequest request){
+
+        return getAuthenticationMethod().authenticate(username,password,request);
     }
 
     public User getUserDetails(String username){
@@ -44,6 +49,14 @@ public class AuthenticationManagerBean{
 
     //TODO retornar dianamicamente dependiendo de alguna deteccion del ambiente?
     private AuthenticationMethod getAuthenticationMethod(){
-        return dummyAuthenticationBean;
+
+        //return dummyAuthenticationBean;
+        return jbossSecurutyDomainAuthenticationBean;
+    }
+
+
+
+    public void setUserPassword(String username, String password) throws PasswordChangeException {
+        getAuthenticationMethod().setUserPassword(username,password);
     }
 }
