@@ -77,14 +77,6 @@ public interface ConceptManagerInterface {
     void persist(@NotNull ConceptSMTK conceptSMTK, IUser user);
 
     /**
-     * Este método es responsable de actualizar un concepto que se encuentra persistido, y que ha sufrido modificaciones
-     *
-     * @param oldConceptSMTK El concepto en su estado original, previo a las modificaciones
-     * @param newConceptSMTK El concepto nuevo, resultado de las modificaciones.*
-     */
-    void update(@NotNull ConceptSMTK oldConceptSMTK, @NotNull ConceptSMTK newConceptSMTK, IUser user);
-
-    /**
      * Este método es responsable de persistir las modificaciones realizadas sobre el concepto. Esta acción, de
      * persistencia,
      * queda registrado como una actividad de auditoría.

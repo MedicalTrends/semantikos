@@ -1,5 +1,6 @@
 package cl.minsal.semantikos.model.basictypes;
 
+import cl.minsal.semantikos.model.relationships.BasicTypeType;
 import cl.minsal.semantikos.model.relationships.TargetDefinition;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -27,6 +28,9 @@ public class BasicTypeDefinition<T extends Comparable> implements TargetDefiniti
 
     private Interval<T> interval;
 
+    /** El tipo concreto de esta definición **/
+    private BasicTypeType type;
+
     public BasicTypeDefinition() {
     }
 
@@ -34,8 +38,12 @@ public class BasicTypeDefinition<T extends Comparable> implements TargetDefiniti
         this(-1, name, description);
     }
 
+    public BasicTypeDefinition(String name, String description, BasicTypeType type) {
+        this(-1, name, description, type);
+    }
+
     /**
-     * The full constructor available for building a Basic Type with all its attributes and the ID.
+     * The minimal constructor available for building a Basic Type with all its attributes and the ID.
      *
      * @param id          The basic type unique ID.
      * @param name        The basic type name.
@@ -47,6 +55,23 @@ public class BasicTypeDefinition<T extends Comparable> implements TargetDefiniti
         this.description = description;
         this.domain = new ArrayList<T>();
         this.interval = new EmptyInterval<>();
+    }
+
+    /**
+     * The full constructor available for building a Basic Type with all its attributes and the ID.
+     *
+     * @param id          The basic type unique ID.
+     * @param name        The basic type name.
+     * @param description The description about this basic type.
+     * @param type        The concrete type about this definition
+     */
+    public BasicTypeDefinition(long id, String name, String description, BasicTypeType type) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.domain = new ArrayList<T>();
+        this.interval = new EmptyInterval<>();
+        this.type = type;
     }
 
     public long getId() {
@@ -122,6 +147,14 @@ public class BasicTypeDefinition<T extends Comparable> implements TargetDefiniti
         /* Si el tipo tiene un dominio discreto (no vacío), y no tiene un intervalo definido, entonces es discreto */
         return !this.domain.isEmpty() && this.interval.isEmpty();
 
+    }
+
+    public BasicTypeType getType() {
+        return type;
+    }
+
+    public void setType(BasicTypeType type) {
+        this.type = type;
     }
 
     @Override

@@ -32,7 +32,7 @@
                                      value="#{newConceptMBean.basicTypeValue.value}"
                                      var="value1"
                                      converter="omnifaces.SelectItemsConverter"
-                                     rendered="#{cc.attrs.targetDefinition.hasDomain}"
+                                     rendered="#{cc.attrs.targetDefinition.discreteDomain}"
                                      styleClass="relationships"
                                      >
                         <p:ajax event="itemSelect"
@@ -54,7 +54,7 @@
                                    decimalPlaces="0"
                                    decimalSeparator=","
                                    thousandSeparator="."
-                                   rendered="#{cc.attrs.targetDefinition.integer}"
+                                   rendered="#{cc.attrs.targetDefinition.type.typeName=='int' and not cc.attrs.targetDefinition.discreteDomain}"
                                    styleClass="relationships"
                                    >
                         <p:ajax listener="#{newConceptMBean.addOrChangeRelationship(cc.attrs.relationshipDefinition,newConceptMBean.basicTypeValue)}" />
@@ -68,7 +68,7 @@
                                    decimalSeparator=","
                                    thousandSeparator="."
                                    decimalPlaces="2"
-                                   rendered="#{cc.attrs.targetDefinition.float}"
+                                   rendered="#{cc.attrs.targetDefinition.type.typeName=='float' and not cc.attrs.targetDefinition.discreteDomain}"
                                    styleClass="relationships"
                                    >
                         <p:ajax listener="#{newConceptMBean.addOrChangeRelationship(cc.attrs.relationshipDefinition,newConceptMBean.basicTypeValue)}" />
@@ -78,7 +78,7 @@
                                  var="value"
                                  minValue="#{cc.attrs.targetDefinition.interval.lowerBoundary}"
                                  maxValue="#{cc.attrs.targetDefinition.interval.upperBoundary}"
-                                 rendered="#{cc.attrs.targetDefinition.string}"
+                                 rendered="#{cc.attrs.targetDefinition.type.typeName=='string' and not cc.attrs.targetDefinition.discreteDomain}"
                                  styleClass="relationships"
                                  >
                         <p:ajax listener="#{newConceptMBean.addOrChangeRelationship(cc.attrs.relationshipDefinition,newConceptMBean.basicTypeValue)}" />
@@ -89,7 +89,7 @@
                                 showOn="button"
                                 mindate="#{cc.attrs.targetDefinition.interval.lowerBoundary}"
                                 maxdate="#{cc.attrs.targetDefinition.interval.upperBoundary}"
-                                rendered="#{cc.attrs.targetDefinition.date}"
+                                rendered="#{cc.attrs.targetDefinition.type.typeName=='date' and not cc.attrs.targetDefinition.discreteDomain}"
                                 styleClass="relationships"
                                 >
                         <p:ajax listener="#{newConceptMBean.addOrChangeRelationship(cc.attrs.relationshipDefinition,newConceptMBean.basicTypeValue)}" />
@@ -128,9 +128,9 @@
                     <smtk:info relationshipDefinition="#{cc.attrs.relationshipDefinition}" />
                 </div>
             </div>
-        <p:repeat  value="#{cc.attrs.concept.getRelationshipsByRelationDefinition(cc.attrs.relationshipDefinition)}"
+        <p:repeat  value="#{cc.attrs.concept.getValidRelationshipsByRelationDefinition(cc.attrs.relationshipDefinition)}"
                    offset="0"
-                   size="#{cc.attrs.concept.getRelationshipsByRelationDefinition(cc.attrs.relationshipDefinition).size()}"
+                   size="#{cc.attrs.concept.getValidRelationshipsByRelationDefinition(cc.attrs.relationshipDefinition).size()}"
                    step="1"
                    var="relationship"
                    varStatus="var">
@@ -144,7 +144,7 @@
                                      value="#{relationship.target.value}"
                                      var="value1"
                                      converter="omnifaces.SelectItemsConverter"
-                                     rendered="#{cc.attrs.targetDefinition.hasDomain}"
+                                     rendered="#{cc.attrs.targetDefinition.discreteDomain}"
                                      styleClass="relationships"
                                      >
                         <f:selectItem itemLabel="Seleccione"
@@ -163,7 +163,7 @@
                                    decimalPlaces="0"
                                    decimalSeparator=","
                                    thousandSeparator="."
-                                   rendered="#{cc.attrs.targetDefinition.integer}"
+                                   rendered="#{cc.attrs.targetDefinition.type.typeName=='int' and not cc.attrs.targetDefinition.discreteDomain}"
                                    styleClass="relationships"
                                    >
                     </p:inputNumber>
@@ -175,7 +175,7 @@
                                    decimalSeparator=","
                                    thousandSeparator="."
                                    decimalPlaces="2"
-                                   rendered="#{cc.attrs.targetDefinition.float}"
+                                   rendered="#{cc.attrs.targetDefinition.type.typeName=='float' and not cc.attrs.targetDefinition.discreteDomain}"
                                    styleClass="relationships"
                                    >
                     </p:inputNumber>
@@ -184,7 +184,7 @@
                                  var="value"
                                  minValue="#{cc.attrs.targetDefinition.interval.lowerBoundary}"
                                  maxValue="#{cc.attrs.targetDefinition.interval.upperBoundary}"
-                                 rendered="#{cc.attrs.targetDefinition.string}"
+                                 rendered="#{cc.attrs.targetDefinition.type.typeName=='string' and not cc.attrs.targetDefinition.discreteDomain}"
                                  styleClass="relationships"
                                  >
                     </p:inputText>
@@ -194,7 +194,7 @@
                                 showOn="button"
                                 mindate="#{cc.attrs.targetDefinition.interval.lowerBoundary}"
                                 maxdate="#{cc.attrs.targetDefinition.interval.upperBoundary}"
-                                rendered="#{cc.attrs.targetDefinition.date}"
+                                rendered="#{cc.attrs.targetDefinition.type.typeName=='date' and not cc.attrs.targetDefinition.discreteDomain}"
                                 styleClass="relationships"
                                 >
                     </p:calendar>

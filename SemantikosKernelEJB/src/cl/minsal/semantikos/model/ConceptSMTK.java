@@ -8,6 +8,7 @@ import cl.minsal.semantikos.model.relationships.*;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -122,6 +123,25 @@ public class ConceptSMTK implements Target {
         List<Relationship> someRelationships = new ArrayList<>();
         for (Relationship relationship : relationships) {
             if (relationship.getRelationshipDefinition().equals(relationshipDefinition)) {
+                someRelationships.add(relationship);
+            }
+        }
+        return someRelationships;
+    }
+
+    /**
+     * Este método es responsable de retornar todas las relaciones válidas de este concepto y que son de un cierto tipo de
+     * relación.
+     *
+     * @param relationshipDefinition El tipo de relación al que pertenecen las relaciones a retornar.
+     *
+     * @return Una <code>java.util.List</code> de relaciones de tipo <code>relationshipDefinition</code>.
+     */
+    public List<Relationship> getValidRelationshipsByRelationDefinition(RelationshipDefinition relationshipDefinition) {
+        List<Relationship> someRelationships = new ArrayList<>();
+        for (Relationship relationship : relationships) {
+            if (relationship.getRelationshipDefinition().equals(relationshipDefinition) &&
+                relationship.getValidityUntil().after(Calendar.getInstance().getTime())) {
                 someRelationships.add(relationship);
             }
         }

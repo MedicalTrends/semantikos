@@ -211,30 +211,6 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
         logger.debug("El concepto " + conceptSMTK + " fue actualizado.");
     }
 
-    @Override
-    public void update(@NotNull ConceptSMTK oldConceptSMTK, @NotNull ConceptSMTK newConceptSMTK, IUser user) {
-
-        logger.debug("El concepto " + newConceptSMTK + " será actualizado.");
-
-        /* Pre-condición técnica: el concepto debe estar persistido */
-        validatesIsPersistent(newConceptSMTK);
-
-        /* Pre-condiciones: Reglas de negocio para la persistencia */
-        BusinessRulesContainer brm = new ConceptCreationBusinessRuleContainer();
-        brm.apply(newConceptSMTK, user);
-
-        /* En este momento se está listo para persistir el concepto */
-        try {
-            conceptDAO.update(oldConceptSMTK, newConceptSMTK, user);
-        } catch (EJBException ejbException) {
-            String errorMsg = "No se pudo actualizar el concepto " + newConceptSMTK.toString();
-            logger.error(errorMsg, ejbException);
-        }
-
-        /* Se deja registro en la auditoría */
-        auditManager.recordNewConcept(newConceptSMTK, user);
-    }
-
     /**
      * Este método es responsable de validar que el concepto no se encuentre persistido.
      *

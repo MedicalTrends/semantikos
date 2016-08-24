@@ -56,7 +56,7 @@
              widgetVar="panelHelperTableTypeSimple#{cc.attrs.relationshipDefinition.id}"
              rendered="#{cc.attrs.relationshipDefinition.multiplicity.simple and cc.attrs.concept.hasRelationships(cc.attrs.relationshipDefinition)}">
 
-        <ui:repeat value="#{cc.attrs.concept.getRelationshipsByRelationDefinition(cc.attrs.relationshipDefinition)}"
+        <ui:repeat value="#{cc.attrs.concept.getValidRelationshipsByRelationDefinition(cc.attrs.relationshipDefinition)}"
                    var="relationship"
                    varStatus="var">
             <div class="ui-g">
@@ -130,7 +130,7 @@
                 <p:dataTable id="collectionValues12"
                              styleClass="tablas"
                              var="relationship"
-                             value="#{cc.attrs.concept.getRelationshipsByRelationDefinition(cc.attrs.relationshipDefinition)}"
+                             value="#{cc.attrs.concept.getValidRelationshipsByRelationDefinition(cc.attrs.relationshipDefinition)}"
                              style="width: 100%"
                              reflow="true">
                     <p:columns value="#{cc.attrs.targetDefinition.showableColumns}"

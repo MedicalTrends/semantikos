@@ -25,9 +25,12 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ComponentSystemEvent;
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+
+import static cl.minsal.semantikos.kernel.daos.ConceptDAO.NON_PERSISTED_ID;
 
 /**
  * Created by diego on 26/06/2016.
@@ -61,9 +64,6 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
     public User user;
 
     private ConceptSMTK concept;
-
-    // Variable usada como respaldo del estado original del concepto, usado para la edición
-    private ConceptSMTK originalConcept;
 
     private Category category;
     private List<DescriptionType> descriptionTypes = new ArrayList<DescriptionType>();
@@ -129,8 +129,8 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         context.execute("PF('dialogNameConcept').show();");
 
-        category = categoryManager.getCategoryById(1);
-        //category = categoryManager.getCategoryById(105590001);
+        //category = categoryManager.getCategoryById(1);
+        category = categoryManager.getCategoryById(105590001);
         //category = categoryManager.getCategoryById(71388002);
 
 
@@ -285,8 +285,7 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
     //(llamado desde la vista cuando se desea editar un concepto)
     public ConceptSMTK getConceptById(long conceptId) {
         // Se clona el concepto para respaldar su estado previo a la edición
-        originalConcept = conceptManager.getConceptByID(conceptId);
-        return originalConcept;
+        return conceptManager.getConceptByID(conceptId);
     }
 
 
@@ -397,7 +396,14 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
      * Este método es el encargado de remover una relación específica del concepto.
      */
     public void removeRelationship(RelationshipDefinition rd, Relationship r) {
-        concept.getRelationships().remove(r);
+        // Si la relacion no esta persistida, se remueve
+        if(r.getId() == NON_PERSISTED_ID) {
+            concept.getRelationships().remove(r);
+        }
+        // Si la relacion esta persistida, se deja como inválida
+        else{
+            concept.getRelationships().get(concept.getRelationships().indexOf(r)).setValidityUntil((Timestamp) Calendar.getInstance().getTime());
+        }
     }
 
     /**
@@ -407,14 +413,26 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
 
         boolean isRelationshipFound = false;
 
+        // Se busca la relación
         for (Relationship relationship : concept.getRelationships()) {
             if (relationship.getRelationshipDefinition().equals(relationshipDefinition)) {
-                relationship.setTarget(target);
+                // Si la relación no está persistida, se modifica el target
+                if(relationship.getId() == NON_PERSISTED_ID) {
+                    relationship.setTarget(target);
+                }
+                else{
+                    // Si la relación está persistida, se agrega una nueva relación y se deja la original como inválida
+                    Relationship newRelationship = relationship;
+                    newRelationship.setId(NON_PERSISTED_ID);
+                    newRelationship.setTarget(target);
+                    relationship.setValidityUntil((Timestamp) Calendar.getInstance().getTime());
+                    concept.addRelationship(newRelationship);
+                }
                 isRelationshipFound = true;
                 break;
             }
         }
-
+        // Si no se encuentra la relación, se crea una nueva
         if (!isRelationshipFound) {
             Relationship newRelationship = new Relationship(this.concept,target,relationshipDefinition);
             concept.addRelationship(newRelationship);
@@ -526,11 +544,11 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
                 context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Las relaciones no cumplen con el minimo requerido"));
 
             } else {
-                // Si el concepto original fue respaldado, significa que sufrio modificacion, luego se actualiza el concepto
-                if(originalConcept != null)
-                    conceptManager.update(originalConcept, concept, user);
-                else // Si el concepto original no fue respaldado, significa que es un concepto nuevo, luego se persiste
+                // Si el concepto no está persistido, persistirlo
+                if(concept.getId() == NON_PERSISTED_ID)
                     conceptManager.persist(concept, user);
+                else // Si el concepto está persistido, actualizarlo
+                    conceptManager.update(concept, user);
                 context.addMessage(null, new FacesMessage("Successful", "Concepto guardado "));
             }
 

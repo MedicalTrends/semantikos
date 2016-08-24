@@ -1,5 +1,6 @@
 package cl.minsal.semantikos.model.basictypes;
 
+import cl.minsal.semantikos.model.relationships.BasicTypeType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -7,9 +8,11 @@ import org.slf4j.LoggerFactory;
 import javax.ejb.EJBException;
 import javax.ejb.Singleton;
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.Arrays;
 
 import static cl.minsal.semantikos.kernel.util.StringUtils.underScoreToCamelCaseJSON;
+import static cl.minsal.semantikos.model.relationships.BasicTypeType.STRING_TYPE;
 import static java.util.Arrays.asList;
 
 /**
@@ -21,12 +24,7 @@ public class BasicTypeDefinitionFactory {
     /** El logger para esta clase */
     private static final Logger logger = LoggerFactory.getLogger(BasicTypeDefinitionFactory.class);
 
-    private static final int STRING_TYPE = 1;
-    private static final int BOOLEAN_TYPE = 2;
-    private static final int INT_TYPE = 3;
-    private static final int FLOAT_TYPE = 4;
-
-    /**
+     /**
      * Crea un BasicTypeDefinition en su forma básica: sin dominio ni intervalos
      *
      * @param jsonResult El JSON a partir del cual se crea el dominio.
@@ -50,22 +48,24 @@ public class BasicTypeDefinitionFactory {
         long idBasicType = basicTypeDefinitionDTO.id;
         String nameBasicType = basicTypeDefinitionDTO.name;
         String descriptionBasicType = basicTypeDefinitionDTO.description;
+        BasicTypeType basicTypeType = BasicTypeType.valueOf(basicTypeDefinitionDTO.idType);
 
-        switch ((int) basicTypeDefinitionDTO.idType) {
+        switch (basicTypeType) {
 
             case STRING_TYPE:
                 BasicTypeDefinition<String> stringBasicTypeDefinition;
-                stringBasicTypeDefinition = new BasicTypeDefinition<>(idBasicType, nameBasicType, descriptionBasicType);
+                stringBasicTypeDefinition = new BasicTypeDefinition<>(idBasicType, nameBasicType, descriptionBasicType, basicTypeType);
                 stringBasicTypeDefinition.setDomain(asList(basicTypeDefinitionDTO.getDomain()));
                 return stringBasicTypeDefinition;
 
             case BOOLEAN_TYPE:
-                return new BasicTypeDefinition<Boolean>(idBasicType, nameBasicType, descriptionBasicType);
-            case INT_TYPE:
-                return new BasicTypeDefinition<Integer>(idBasicType, nameBasicType, descriptionBasicType);
+                return new BasicTypeDefinition<Boolean>(idBasicType, nameBasicType, descriptionBasicType, basicTypeType);
+            case INTEGER_TYPE:
+                return new BasicTypeDefinition<Integer>(idBasicType, nameBasicType, descriptionBasicType, basicTypeType);
             case FLOAT_TYPE:
-                return new BasicTypeDefinition<Float>(idBasicType, nameBasicType, descriptionBasicType);
-
+                return new BasicTypeDefinition<Float>(idBasicType, nameBasicType, descriptionBasicType, basicTypeType);
+            case DATE_TYPE:
+                return new BasicTypeDefinition<Timestamp>(idBasicType, nameBasicType, descriptionBasicType, basicTypeType);
             default:
                 throw new IllegalArgumentException("TODO");
         }

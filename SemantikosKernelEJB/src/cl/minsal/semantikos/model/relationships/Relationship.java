@@ -39,6 +39,7 @@ public class Relationship {
     /** La relación es Vigente (valida) hasta la fecha... */
     private Timestamp validityUntil;
 
+
     /**
      * Este es el constructor mínimo con el cual se crean las Relaciones
      *
