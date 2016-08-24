@@ -13,6 +13,7 @@ import javax.ejb.Singleton;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static cl.minsal.semantikos.kernel.util.StringUtils.underScoreToCamelCaseJSON;
@@ -92,6 +93,11 @@ public class RelationshipFactory {
      * @return Una lista de relaciones creadas a partir de la expresión.
      */
     public List<Relationship> createRelationshipsFromJSON(String jsonExpression) {
+
+        /* Si JSON es nulo, se retorna una lista vacía */
+        if (jsonExpression == null){
+            return Collections.emptyList();
+        }
 
         /* Se parsea la expresión JSON */
         ObjectMapper mapper = new ObjectMapper();

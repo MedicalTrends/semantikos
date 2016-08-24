@@ -6,6 +6,7 @@ import cl.minsal.semantikos.model.Description;
 import cl.minsal.semantikos.model.IUser;
 import cl.minsal.semantikos.model.businessrules.BusinessRulesContainer;
 import cl.minsal.semantikos.model.businessrules.ConceptCreationBusinessRuleContainer;
+import cl.minsal.semantikos.model.relationships.Relationship;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,7 +41,8 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
     @EJB
     private AuditManagerInterface auditManager;
 
-
+    @EJB
+    private RelationshipManager relationshipManager;
 
     @Override
     public ConceptSMTK getConceptByCONCEPT_ID(String conceptId) {
@@ -48,8 +50,8 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
         /* Se recupera el concepto base (sus atributos) sin sus relaciones ni descripciones */
         ConceptSMTK concept = this.conceptDAO.getConceptByCONCEPT_ID(conceptId);
 
-        /* Se completa el objeto con sus relaciones (relaciones y descripciones por el momento) faltantes. */
-        this.refresh(concept);
+        /* Se cargan las descripciones del concepto */
+        concept.setDescriptions(descriptionManager.getDescriptionsOf(concept));
 
         return concept;
     }
@@ -57,20 +59,13 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
     @Override
     public ConceptSMTK getConceptByID(long id) {
 
-        // TODO: Repetir lo que se hace en getConceptByCONCEPT_ID
-        return this.conceptDAO.getConceptByID(id);
-    }
+        /* Se recupera el concepto base (sus atributos) sin sus relaciones ni descripciones */
+        ConceptSMTK conceptSMTK = this.conceptDAO.getConceptByID(id);
 
-    /**
-     * Este método es responsable de sincronizar el concepto respecto a la base de datos,
-     */
-    private void refresh(ConceptSMTK concept) {
+        /* Se cargan las descripciones del concepto */
+        conceptSMTK.setDescriptions(descriptionManager.getDescriptionsOf(conceptSMTK));
 
-        /* Se refrescan las descripciones primero */
-        List<Description> descriptions = this.descriptionManager.getDescriptionsOf(concept);
-        concept.setDescriptions(descriptions);
-
-        // TODO: Continuar.jajaja
+        return conceptSMTK;
     }
 
     @Override
@@ -285,6 +280,18 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
         */
 
         return null;
+    }
+
+    @Override
+    public List<Description> getDescriptionsBy(ConceptSMTK concept) {
+        return descriptionManager.getDescriptionsOf(concept);
+    }
+
+    @Override
+    public List<Relationship> loadRelationships(ConceptSMTK concept) {
+
+        List<Relationship> relationships = relationshipManager.getRelationshipsBySourceConcept(concept);
+        return relationships;
     }
 
     // TODO: Terminar esto.
