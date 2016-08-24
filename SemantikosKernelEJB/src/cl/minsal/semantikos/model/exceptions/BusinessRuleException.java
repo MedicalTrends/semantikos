@@ -1,12 +1,22 @@
 package cl.minsal.semantikos.model.exceptions;
 
-import com.sun.javafx.beans.annotations.NonNull;
+
+import cl.minsal.semantikos.model.ConceptSMTK;
 
 /**
- * Created by andres on 8/5/16.
+ * @author Andrés Farias
  */
 public class BusinessRuleException extends RuntimeException{
-    public BusinessRuleException(@NonNull String errorMessage) {
+
+    /* El concepto que ha violado la regla de negocio */
+    private ConceptSMTK conceptSMTK;
+
+    public BusinessRuleException(String errorMessage) {
         super(errorMessage);
+    }
+
+    public BusinessRuleException(ConceptSMTK conceptSMTK, String errorMessage) {
+        this(errorMessage);
+        this.conceptSMTK = conceptSMTK;
     }
 }

@@ -26,7 +26,7 @@ public class RelationshipDefinitionTest {
         RelationshipDefinition relationshipDefinition = new RelationshipDefinition("Codigo ATC", "Código ATC asociado a un medicamento.", multiplicity, targetDefinition);
 
         /* Ahora tratar de crear una relación de este tipo */
-        Relationship relationship = new Relationship(relationshipDefinition);
+        Relationship relationship = null; //FIXME: new Relationship(relationshipDefinition);
         HelperTable helperTableATC = HelperTableFactory.getInstance().getHelperTableATC();
         relationship.setTarget(new HelperTableRecord(helperTableATC, (long)1));
 

@@ -1,6 +1,8 @@
 package cl.minsal.semantikos.kernel.daos;
 
+import cl.minsal.semantikos.model.Category;
 import cl.minsal.semantikos.model.ConceptSMTK;
+import cl.minsal.semantikos.model.IUser;
 
 import javax.ejb.Local;
 import java.util.List;
@@ -10,6 +12,8 @@ import java.util.List;
  */
 @Local
 public interface ConceptDAO {
+
+    public static final long NON_PERSISTED_ID = -1;
 
     /**
      * Este método es responsable de recuperar todos los conceptos, sin considerar su categoría, que posean un cierto
@@ -21,7 +25,7 @@ public interface ConceptDAO {
      *
      * @return
      */
-    public List<ConceptSMTK> getAllConcepts(Long[] states, int pageSize, int pageNumber);
+    public List<ConceptSMTK> getConceptsBy(Long[] states, int pageSize, int pageNumber);
 
     /**
      * Este método es responsable de recuperar los conceptos que coincidan con un cierto patrón (<code>pattern</code>)
@@ -35,7 +39,7 @@ public interface ConceptDAO {
      *
      * @return Una lista de <code>ConceptSMTK</code> que cumplen los criterios de búsqueda.
      */
-    public List<ConceptSMTK> getConceptByPatternCategory(String[] pattern, Long[] categories, Long[] states, int pageSize, int pageNumber);
+    public List<ConceptSMTK> getConceptBy(String[] pattern, Long[] categories, Long[] states, int pageSize, int pageNumber);
 
     /**
      * Este método es responsable de recuperar los conceptos que pertenecen a un conjunto de categorías.
@@ -47,13 +51,16 @@ public interface ConceptDAO {
      *
      * @return Una lista de <code>ConceptSMTK</code> que cumplen los criterios de búsqueda.
      */
-    public List<ConceptSMTK> getConceptByCategory(Long[] categories, Long[] states, int pageSize, int pageNumber);
+    public List<ConceptSMTK> getConceptBy(Long[] categories, Long[] states, int pageSize, int pageNumber);
 
-    public List<ConceptSMTK> getConceptByPatternOrConceptIDAndCategory(String PatternOrID, Long[] Category, int pageNumber, int pageSize, Long[] states);
+    public List<ConceptSMTK> getConceptBy(String [] pattern, Long[] states, int pageSize, int pageNumber);
 
-    public int getAllConceptCount(String[] Pattern, Long[] category, Long[] states);
 
-    public int getCountFindConceptID(String Pattern, Long[] category, Long[] states);
+    public List<ConceptSMTK> getConceptBy(String PatternOrConceptId, Long[] Category, int pageNumber, int pageSize, Long[] states);
+
+    public int countConceptBy(String[] Pattern, Long[] category, Long[] states);
+
+    public int countConceptBy(String Pattern, Long[] category, Long[] states);
 
     /**
      * Este método es responsable de recuperar el concepto con DESCRIPTION_ID.
@@ -65,4 +72,14 @@ public interface ConceptDAO {
     public ConceptSMTK getConceptByCONCEPT_ID(String conceptID);
 
     public ConceptSMTK getConceptByID(long id);
+
+    public ConceptSMTK getConceptBy(Category category, long id);
+
+    /**
+     * Este método es responsable persistir la entidad Concepto SMTK en la base de datos.
+     *
+     * @param conceptSMTK El concepto que será persistido.
+     */
+    public void persist(ConceptSMTK conceptSMTK, IUser user);
+
 }

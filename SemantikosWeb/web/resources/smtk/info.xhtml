@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:composite="http://java.sun.com/jsf/composite"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+<composite:interface>
+    <composite:attribute name="relationshipDefinition" type="cl.minsal.semantikos.model.relationships.RelationshipDefinition"/>
+</composite:interface>
+
+<composite:implementation>
+    
+    <p:panel style="margin: 0px; border: 0px" rendered="#{cc.attrs.relationshipDefinition.multiplicity.lowerBoundary!=0}">
+        <div class="ui-messages ui-widget ui-corner-all ui-messages-info" style="margin: 0px">
+            <span class="ui-messages-icon fa fa-info-circle">
+            </span>
+            <p:outputLabel>
+                    <span class="ui-messages-detail">
+                        <c:if test="#{cc.attrs.relationshipDefinition.multiplicity.lowerBoundary==1}">
+                            #{cc.attrs.relationshipDefinition.multiplicity.lowerBoundary} elemento es requerido
+
+                        </c:if>
+                        <c:if test="#{cc.attrs.relationshipDefinition.multiplicity.lowerBoundary!=1}">
+                            #{cc.attrs.relationshipDefinition.multiplicity.lowerBoundary} elementos son requeridos
+
+                        </c:if>
+                    </span>
+            </p:outputLabel>
+        </div>
+    </p:panel>
+
+</composite:implementation>
+</html>

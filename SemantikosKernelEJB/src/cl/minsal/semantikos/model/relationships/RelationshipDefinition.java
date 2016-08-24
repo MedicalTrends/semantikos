@@ -2,11 +2,10 @@ package cl.minsal.semantikos.model.relationships;
 
 import cl.minsal.semantikos.model.Multiplicity;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by stk-des01 on 27-05-16.
+ * @author Diego Soto on 27-05-16.
  */
 public class RelationshipDefinition {
 
@@ -22,9 +21,6 @@ public class RelationshipDefinition {
     /** El tipo del objeto destino de la relación */
     private TargetDefinition targetDefinition;
 
-    /** El tipo del objeto destino de la relación */
-    private List<Relationship> relationships;
-
     /** Multiplicidad de la relación */
     private Multiplicity multiplicity;
 
@@ -37,8 +33,8 @@ public class RelationshipDefinition {
     /**
      * Este es el constructor mínimo con el cual se crean las RelacionesDefinitions.
      *
-     * @param name             Nombre de la relacion.
-     * @param description      Su descripcion.
+     * @param name             Nombre de la relación.
+     * @param description      Su descripción.
      * @param multiplicity     La multiplicidad.
      * @param targetDefinition El tipo de target.
      */
@@ -55,14 +51,13 @@ public class RelationshipDefinition {
      *
      * @param id               El identificador único.
      * @param name             El nombre de la relación.
-     * @param description      Su descripcion.
+     * @param description      Su descripción.
      * @param multiplicity     La multiplicidad.
      * @param targetDefinition El tipo de target.
      */
     public RelationshipDefinition(long id, String name, String description, TargetDefinition targetDefinition, Multiplicity multiplicity) {
         this(name, description, multiplicity, targetDefinition);
         this.id = id;
-        relationships= new ArrayList<>();
     }
 
     public int getIdCategoryDes() {
@@ -151,24 +146,6 @@ public class RelationshipDefinition {
         this.relationshipAttributeDefinitions = relationshipAttributeDefinitions;
     }
 
-    public List<Relationship> getRelationships() {
-        return relationships;
-    }
-
-    public void setRelationships(List<Relationship> relationships) {
-        this.relationships = relationships;
-    }
-
-    public void addRelationship(Relationship relationship) {
-
-        //relationship.setIdRelationship(relationships.size()+1);
-        this.relationships.add(relationship);
-
-    }
-
-    public Relationship getRelationship() { return relationships.get(0); }
-
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -180,8 +157,9 @@ public class RelationshipDefinition {
 
     }
 
+
     @Override
-    public int hashCode() {
-        return (int) (id ^ (id >>> 32));
+    public String toString() {
+        return "id: " + id + ". [" + super.toString() + "]";
     }
 }

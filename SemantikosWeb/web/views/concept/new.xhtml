@@ -11,9 +11,12 @@
 
         <p:panel id="createEdit">
         <h:form id="mainForm" rendered="#{newConceptMBean.concept!=null}">
+
             <p:growl id="growl" showDetail="true" showSummary="true"/>
             <p:growl id="editMsgs" showDetail="true"/>
             <!--p:messages autoUpdate="true"></p:messages-->
+            <!-- register a PostValidateEvent -->
+            <f:event listener="#{newConceptMBean.validateRelationships()}" type="postValidate" />
             <h3>Responsive</h3>
 
             <div class="ui-g">
@@ -23,7 +26,7 @@
                 <div class="ui-g-12 ui-md-6 ui-lg-5">
                     <p:selectManyCheckbox id="check" layout="responsive" columns="2" style="width:60%">
                         <f:selectItem itemLabel="Revisar" itemValue="#{newConceptMBean.concept.toBeReviewed}"/>
-                        <f:selectItem itemLabel="Consultar" itemValue="#{newConceptMBean.concept.toBeConsultated}"/>
+                        <f:selectItem itemLabel="Consultar" itemValue="#{newConceptMBean.concept.toBeConsulted}"/>
                     </p:selectManyCheckbox>
                 </div>
                 <div class="ui-g-12 ui-md-6 ui-lg-3">
@@ -37,9 +40,9 @@
                     <p:outputLabel for="FSN" value="FSN"/>
                 </div>
                 <div class="ui-g-12 ui-md-6 ui-lg-5">
-                    <p:inputText id="FSN"  disabled="true"
+                    <p:inputText id="FSN" name="FSN"
                                  required="true"
-                                 style="width:90%" />
+                                 style="width:90%" value="#{newConceptMBean.FSN}"/>
                     <p:message for="FSN" display="tooltip" ></p:message>
                 </div>
                 <div class="ui-g-12 ui-md-6 ui-lg-3">
@@ -60,7 +63,7 @@
                     <p:outputLabel for="preferido" value="Preferido"/>
                 </div>
                 <div class="ui-g-12 ui-md-6 ui-lg-5">
-                    <p:inputText id="preferido" value="#{newConceptMBean.concept.descriptionFavorite.term}"
+                    <p:inputText id="preferido" onkeyup="autogenerate(this)"  value="#{newConceptMBean.concept.descriptionFavorite.term}"
                                  required="true"
                                  style="width:90%"/>
                 </div>
@@ -78,9 +81,11 @@
 
             <p:panel id="toggleable" header="Otros Descriptores" toggleable="true" toggleSpeed="500" closeSpeed="500"
                      widgetVar="panel" style="margin-bottom:20px">
+
+                <p:fieldset legend="Agregar descripción" toggleable="true" collapsed="true">
                 <div class="ui-g">
                     <div class="ui-g-12 ui-md-6 ui-lg-1">
-                        <p:outputLabel for="otherTermino" value="Termino (*)"/>
+                        <p:outputLabel for="otherTermino" value="Termino"/>
                     </div>
 
                     <div class="ui-g-12 ui-md-6 ui-lg-5">
@@ -103,10 +108,13 @@
                     </div>
                     <div class="ui-g-12 ui-md-6 ui-lg-1">
                         <p:commandButton value="Agregar" id="btn" action="#{newConceptMBean.addDescription}"
-                                         update="otherDescriptions" styleClass="ui-priority-primary"
+                                         update="otherDescriptions,growl"
                                          style="float: right"/>
                     </div>
                 </div>
+
+                </p:fieldset>
+                <p:spacer></p:spacer>
                 <div class="ui-g">
                     <p:dataTable id="otherDescriptions"
                                  var="description"
@@ -116,23 +124,23 @@
                                  rowKey="#{description.id}"
                                  reflow="true">
 
+                        <p:ajax event="rowEditInit" listener="#{newConceptMBean.onEditInit}" update=":mainForm:editMsgs" />
                         <p:ajax event="rowEdit" listener="#{newConceptMBean.onRowEdit}" update=":mainForm:editMsgs"/>
-                        <p:ajax event="rowEditCancel" listener="#{newConceptMBean.onRowCancel}"
-                                update=":mainForm:editMsgs"/>
+                        <p:ajax event="rowEditCancel" listener="#{newConceptMBean.onRowCancel}" update=":mainForm:editMsgs"/>
 
                         <p:column selectionMode="multiple" style="width:16px;text-align:center"/>
 
-                        <p:column headerText="Set/DescId" style="width:5%">
+                        <p:column headerText="DescId" style="width:5%">
                             <div style="text-align: center;">
                                 <h:outputText value="-"/>
                             </div>
                         </p:column>
 
-                        <p:column headerText="Término">
+                        <p:column headerText="Término" >
                             <div style="text-align: center;">
                                 <p:cellEditor>
-                                    <f:facet name="output"><h:outputText value="#{description.term}"/></f:facet>
-                                    <f:facet name="input"><p:inputText id="otrasTermino" value="#{description.term}"
+                                    <f:facet  name="output"><h:outputText value="#{description.term}"/></f:facet>
+                                    <f:facet  name="input"><p:inputText id="otrasTermino" value="#{description.term}"
                                                                        style="width:100%"/></f:facet>
                                 </p:cellEditor>
                             </div>
@@ -204,13 +212,13 @@
                         </p:column>
 
                         <p:column headerText="Acción" style="width:5%">
-                            <p:commandLink actionListener="#{newConceptMBean.removeItem(description)}" ajax="true"
+                            <p:commandLink actionListener="#{newConceptMBean.removeDescription(description)}" ajax="true"
                                            update="otherDescriptions" style="float: right">
                                 <h:graphicImage  style="width: 15px; height: 15px"
                                                  name="images/trash-blue.png"
                                 />
                             </p:commandLink>
-                            <p:rowEditor style="display: inline"/>
+                            <p:rowEditor style="display: inline" />
                         </p:column>
                     </p:dataTable>
                 </div>
@@ -220,30 +228,39 @@
             <p:panel id="atributos" header="Atributos" toggleable="true" toggleSpeed="500" closeSpeed="500"
                      widgetVar="panelAtributos" style="margin-bottom:20px" >
 
-            <h:dataTable style="width: 100%;" value="#{newConceptMBean.category.relationshipDefinitions}"
+                <h:dataTable style="width: 100%;" value="#{newConceptMBean.category.relationshipDefinitions}"
                          var="relationshipDefinition">
 
-                <h:column>
-                    <smtk:basicType
-                            targetDefinition="#{relationshipDefinition.targetDefinition}"
-                            relationshipDefinition="#{relationshipDefinition}"
-                            concept="#{newConceptMBean.concept}"
-                            rendered="#{relationshipDefinition.targetDefinition.basicType}"
+                    <h:column>
 
-                    />
-                    <smtk:smtkType targetDefinition="#{relationshipDefinition.targetDefinition}"
-                                   relationshipDefinition="#{relationshipDefinition}"
-                                   rendered="#{relationshipDefinition.targetDefinition.SMTKType}"
-                    />
-                    <smtk:helperTableType relationshipDefinition="#{relationshipDefinition}"
-                                          targetDefinition="#{relationshipDefinition.targetDefinition}"
-                                          concept="#{newConceptMBean.concept}"
-                                          rendered="#{relationshipDefinition.targetDefinition.helperTable}"
-                    />
+                        <smtk:smtkType
+                                rendered="#{relationshipDefinition.targetDefinition.SMTKType}"
+                                targetDefinition="#{relationshipDefinition.targetDefinition}"
+                                relationshipDefinition="#{relationshipDefinition}" />
 
-                </h:column>
-            </h:dataTable>
-        </p:panel>
+                        <smtk:helperTableType
+                                rendered="#{relationshipDefinition.targetDefinition.helperTable}"
+                                relationshipDefinition="#{relationshipDefinition}"
+                                targetDefinition="#{relationshipDefinition.targetDefinition}"
+                                concept="#{newConceptMBean.concept}"  />
+
+                        <smtk:basicType
+                                targetDefinition="#{relationshipDefinition.targetDefinition}"
+                                relationshipDefinition="#{relationshipDefinition}"
+                                concept="#{newConceptMBean.concept}"
+                                rendered="#{relationshipDefinition.targetDefinition.basicType}" />
+
+                    </h:column>
+
+                </h:dataTable>
+
+
+            </p:panel>
+
+
+            <p:commandButton actionListener="#{newConceptMBean.saveConcept}" value="Guardar" type="submit" update="growl, mainForm"
+
+            />
 
         </h:form>
 
@@ -267,13 +284,31 @@
                     </div>
                 </div>
                 <p:commandButton actionListener="#{newConceptMBean.createConcept}" update=":createEdit"
-                                 value="Siguiente"
+                                 value="Siguiente" onclick="loadAutogenerate()"
 
                 />
 
             </h:form>
         </p:confirmDialog>
         </p:panel>
+
+
+        <script type="text/javascript">
+
+            function loadAutogenerate(){
+
+                setTimeout(function() {
+                    autogenerate(document.getElementById('initialForm:NameConcept'));
+                }, 1000);
+            }
+             function autogenerate(favorite){
+                 categoryName= "#{newConceptMBean.category.name}";
+                 document.getElementById('mainForm:FSN').value=favorite.value+' ('+categoryName+')';
+
+
+             }
+
+        </script>
 
     </ui:define>
 

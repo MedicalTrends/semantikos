@@ -1,26 +1,43 @@
 package cl.minsal.semantikos.model.basictypes;
 
-import cl.minsal.semantikos.kernel.daos.CategoryDAOImpl;
-import cl.minsal.semantikos.model.ConceptSMTK;
 import cl.minsal.semantikos.model.relationships.Target;
+import cl.minsal.semantikos.model.relationships.TargetType;
+import org.omg.CORBA.INTERNAL;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.sql.Timestamp;
 
 /**
  *
  */
 public class BasicTypeValue<T extends Comparable> implements Target {
-    static final Logger LOGGER = LoggerFactory.getLogger(BasicTypeValue.class);
-    private BasicTypeDefinition basicTypeDefinition;
+
+    private static final Logger logger = LoggerFactory.getLogger(BasicTypeValue.class);
+
+    /** Identificador único de la base de datos */
+    private long id;
 
     private T value;
 
-    /*
-    public BasicTypeValue() {
-        this.basicTypeDefinition = basicTypeDefinition;
+    public BasicTypeValue(T value) {
         this.value = value;
+        this.id = -1;
     }
-    */
+
+    @Override
+    public long getId() {
+        return id;
+    }
+
+    @Override
+    public TargetType getTargetType() {
+        return TargetType.BasicType;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 
     public T getValue() {
         return value;
@@ -29,7 +46,7 @@ public class BasicTypeValue<T extends Comparable> implements Target {
     public void setValue(T value)
 
     {
-        LOGGER.debug("seteando valor de target valor={}",value);
+        logger.debug("seteando valor de target valor={}", value);
         this.value = value;
     }
 
@@ -60,4 +77,19 @@ public class BasicTypeValue<T extends Comparable> implements Target {
         return value.toString();
     }
 
+    public boolean isDate() {
+        return this.value.getClass().equals(Timestamp.class);
+    }
+
+    public boolean isFloat() {
+        return this.value.getClass().equals(Float.class) || this.value.getClass().equals(Double.class);
+    }
+
+    public boolean isInteger() {
+        return this.value.getClass().equals(Integer.class);
+    }
+
+    public boolean isString() {
+        return this.value.getClass().equals(String.class);
+    }
 }

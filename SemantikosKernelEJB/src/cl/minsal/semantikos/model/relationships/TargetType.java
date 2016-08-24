@@ -5,12 +5,28 @@ import cl.minsal.semantikos.model.basictypes.BasicTypeDefinition;
 import java.util.List;
 
 /**
- * Created by root on 08-07-16.
+ * @author Andrés Farías
  */
-public class TargetType {
+public enum TargetType {
+
+    BasicType(1, "SCT", "Snomed CT"),
+    SMTK(2, "SCT", "Snomed CT"),
+    SnomedCT(3, "SCT", "Snomed CT"),
+    HelperTable(4, "Helper Table", ""),
+    CrossMap(5, "CrossMap", "Relaciones a terminologías externas");
+
+
+    TargetType(long idTargetType, String nombre, String description) {
+        this.idTargetType = idTargetType;
+        this.nombre = nombre;
+        this.description = description;
+    }
+
     private long idTargetType;
+
     private String nombre;
-    private String descripcion;
+
+    private String description;
 
     private List<TargetDefinition> targetDefinitions;
 
@@ -32,12 +48,12 @@ public class TargetType {
         this.nombre = nombre;
     }
 
-    public String getDescripcion() {
-        return descripcion;
+    public String getDescription() {
+        return description;
     }
 
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public List<TargetDefinition> getTargetDefinitions() {
@@ -54,27 +70,5 @@ public class TargetType {
 
     public void setBasicTypeDefinitions(List<BasicTypeDefinition> basicTypeDefinitions) {
         this.basicTypeDefinitions = basicTypeDefinitions;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        TargetType that = (TargetType) o;
-
-        if (idTargetType != that.idTargetType) return false;
-        if (nombre != null ? !nombre.equals(that.nombre) : that.nombre != null) return false;
-        if (descripcion != null ? !descripcion.equals(that.descripcion) : that.descripcion != null) return false;
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = (int) (idTargetType ^ (idTargetType >>> 32));
-        result = 31 * result + (nombre != null ? nombre.hashCode() : 0);
-        result = 31 * result + (descripcion != null ? descripcion.hashCode() : 0);
-        return result;
     }
 }

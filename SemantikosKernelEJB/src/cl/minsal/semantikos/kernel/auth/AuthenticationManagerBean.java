@@ -1,6 +1,6 @@
 package cl.minsal.semantikos.kernel.auth;
 
-import cl.minsal.semantikos.model.User;
+import cl.minsal.semantikos.model.IUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,7 +30,7 @@ public class AuthenticationManagerBean{
         return getAuthenticationMethod().authenticate(username,password,request);
     }
 
-    public User getUserDetails(String username){
+    public IUser getUserDetails(String username){
         return getAuthenticationMethod().getUserDetails(username);
     }
 

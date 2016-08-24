@@ -1,7 +1,7 @@
 package cl.minsal.semantikos.designmodelweb.auth;
 
 import cl.minsal.semantikos.designmodelweb.Constants;
-import cl.minsal.semantikos.model.User;
+import cl.minsal.semantikos.model.IUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -45,7 +45,7 @@ public class AuthenticationFilter implements Filter{
             return false;
 
         AuthenticationBean auth = (AuthenticationBean) req.getSession().getAttribute("authenticationBean");
-        User u = auth.getLoggedUser();
+        IUser u = auth.getLoggedUser();
 
         if ( u == null )
             return false;
@@ -53,7 +53,7 @@ public class AuthenticationFilter implements Filter{
         return checkPermission(u,req.getRequestURI());
     }
 
-    private boolean checkPermission(User u, String requestURI) {
+    private boolean checkPermission(IUser u, String requestURI) {
         return true;
     } // TODO: Ver permisos segun rol?
 

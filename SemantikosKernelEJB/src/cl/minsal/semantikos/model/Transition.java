@@ -7,8 +7,8 @@ public class Transition {
 
     private long id;
 
-    private State sourceState;
-    private State targetState;
+    private IState sourceState;
+    private IState targetState;
 
     public long getId() {
         return id;
@@ -18,19 +18,19 @@ public class Transition {
         this.id = id;
     }
 
-    public State getSourceState() {
+    public IState getSourceState() {
         return sourceState;
     }
 
-    public void setSourceState(State sourceState) {
+    public void setSourceState(IState sourceState) {
         this.sourceState = sourceState;
     }
 
-    public State getTargetState() {
+    public IState getTargetState() {
         return targetState;
     }
 
-    public void setTargetState(State targetState) {
+    public void setTargetState(IState targetState) {
         this.targetState = targetState;
     }
 }

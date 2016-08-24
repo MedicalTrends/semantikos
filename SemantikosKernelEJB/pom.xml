@@ -32,6 +32,13 @@
         <version>1.4</version>
     </dependency>
 
+    <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-collections4 -->
+    <dependency>
+        <groupId>org.apache.commons</groupId>
+        <artifactId>commons-collections4</artifactId>
+        <version>4.0</version>
+    </dependency>
+
     <dependency>
         <groupId>javax.ejb</groupId>
         <artifactId>javax.ejb-api</artifactId>
@@ -72,6 +79,7 @@
         <artifactId>postgresql</artifactId>
         <version>9.1-901-1.jdbc4</version>
     </dependency>
+
     <dependency>
         <groupId>junit</groupId>
         <artifactId>junit</artifactId>
@@ -79,7 +87,13 @@
         <scope>test</scope>
     </dependency>
 
-
+    <!-- Clases para validaciones básicas tipo @NotNull -->
+    <dependency>
+        <groupId>javax.validation</groupId>
+        <artifactId>validation-api</artifactId>
+        <version>1.0.0.GA</version>
+        <scope>provided</scope>
+    </dependency>
 </dependencies>
 
 <build>

@@ -5,9 +5,9 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Created by BluePrints Developer on 19-05-2016.
+ * @author Francisco Mendez
  */
-public class User {
+public class User implements IUser {
 
     private long idUser;
     private String username;
@@ -42,7 +42,16 @@ public class User {
 
 
 
+    /**
+     * Constructor base para inicializar los objetos que lo requieren.
+     */
+    public User() {
+        this.profiles = new ArrayList<>();
+        this.permissions = new ArrayList<>();
+        this.groups = new ArrayList<>();
+    }
 
+    @Override
     public long getIdUser() {
         return idUser;
     }
@@ -51,6 +60,7 @@ public class User {
         this.idUser = idUser;
     }
 
+    @Override
     public String getUsername() {
         return username;
     }
@@ -59,6 +69,7 @@ public class User {
         this.username = username;
     }
 
+    @Override
     public String getName() {
         return name;
     }
@@ -67,6 +78,7 @@ public class User {
         this.name = name;
     }
 
+    @Override
     public String getEmail() {
         return email;
     }
@@ -75,9 +87,10 @@ public class User {
         this.email = email;
     }
 
+    @Override
     public List<Profile> getProfiles() {
-        if(profiles==null)
-            profiles= new ArrayList<Profile>();
+        if (profiles == null)
+            profiles = new ArrayList<Profile>();
         return profiles;
     }
 
@@ -85,9 +98,10 @@ public class User {
         this.profiles = profiles;
     }
 
+    @Override
     public List<Group> getGroups() {
-        if(groups==null)
-            groups= new ArrayList<Group>();
+        if (groups == null)
+            groups = new ArrayList<Group>();
         return groups;
     }
 
@@ -96,9 +110,10 @@ public class User {
     }
 
 
+    @Override
     public List<Permission> getPermissions() {
-        if(permissions==null)
-            permissions= new ArrayList<Permission>();
+        if (permissions == null)
+            permissions = new ArrayList<Permission>();
         return permissions;
     }
 
@@ -106,6 +121,7 @@ public class User {
         this.permissions = permissions;
     }
 
+    @Override
     public String getLastName() {
         return lastName;
     }
@@ -114,6 +130,7 @@ public class User {
         this.lastName = lastName;
     }
 
+    @Override
     public String getSecondLastName() {
         return secondLastName;
     }
@@ -122,6 +139,7 @@ public class User {
         this.secondLastName = secondLastName;
     }
 
+    @Override
     public String getPassword() {
         return password;
     }
@@ -130,6 +148,7 @@ public class User {
         this.password = password;
     }
 
+    @Override
     public String getPasswordHash() {
         return passwordHash;
     }
@@ -138,6 +157,7 @@ public class User {
         this.passwordHash = passwordHash;
     }
 
+    @Override
     public String getPasswordSalt() {
         return passwordSalt;
     }
@@ -252,7 +272,7 @@ public class User {
 
     @Override
     public boolean equals(Object other) {
-        return (other instanceof User) && ( String.valueOf(idUser) != null )
+        return (other instanceof IUser) && (String.valueOf(idUser) != null)
                 ? String.valueOf(idUser).equals(String.valueOf(((User) other).idUser))
                 : (other == this);
     }
@@ -268,5 +288,21 @@ public class User {
     public String toString() {
         //return String.format("ExampleEntity[%d, %s]", idDescriptionType, glosa);
         return getUsername();
+    }
+
+    /**
+     * Este método es responsable de agregar un perfil al usuario. No es buena práctica devolver el objeto de la
+     * estructura interna para hacerlo directamente.
+     *
+     * @return <code>true</code> si se agregó el perfile y <code>false</code> sino.
+     */
+    @Override
+    public boolean addProfile(Profile aProfile) {
+        return this.profiles.add(aProfile);
+    }
+
+    @Override
+    public boolean isNullUser() {
+        return false;
     }
 }

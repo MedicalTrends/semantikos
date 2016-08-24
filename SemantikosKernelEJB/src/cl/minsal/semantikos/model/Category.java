@@ -1,5 +1,6 @@
 package cl.minsal.semantikos.model;
 
+import cl.minsal.semantikos.model.audit.AuditableEntity;
 import cl.minsal.semantikos.model.relationships.RelationshipDefinition;
 import cl.minsal.semantikos.model.relationships.TargetDefinition;
 
@@ -7,11 +8,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by root on 08-07-16.
+ * Una categoría puede ser el sujeto de una acción de auditoría.
  */
 
-public class Category implements TargetDefinition {
+public class Category implements TargetDefinition, AuditableEntity {
+
+    /** Identificador único de la categoría */
     private long idCategory;
+
     private String name;
     private String nameAbreviated;
     private boolean restriction;
@@ -85,52 +89,36 @@ public class Category implements TargetDefinition {
         this.relationshipDefinitions = relationshipDefinitions;
     }
 
-    public List<RelationshipDefinition> getRelationshipDefinitionsOfTypeCollection(){
+    public List<RelationshipDefinition> getRelationshipDefinitionsOfTypeCollection() {
 
         List<RelationshipDefinition> relationshipDefinitions = new ArrayList<>();
 
         for (RelationshipDefinition relationshipDefinition : relationshipDefinitions) {
-            if(relationshipDefinition.getMultiplicity().getUpperBoundary()==0)
+            if (relationshipDefinition.getMultiplicity().getUpperBoundary() == 0)
                 relationshipDefinitions.add(relationshipDefinition);
         }
 
         return relationshipDefinitions;
     }
 
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Category that = (Category) o;
+        Category category = (Category) o;
 
-        if (idCategory != that.idCategory) return false;
-        if (restriction != that.restriction) return false;
-        if (isValid != that.isValid) return false;
-        if (name != null ? !name.equals(that.name) : that.name != null) return false;
-        if (nameAbreviated != null ? !nameAbreviated.equals(that.nameAbreviated) : that.nameAbreviated != null)
-            return false;
-        if (tagSemantikos != null ? !tagSemantikos.equals(that.tagSemantikos) : that.tagSemantikos != null)
-            return false;
-        if (color != null ? !color.equals(that.color) : that.color != null) return false;
+        if (name != null ? !name.equals(category.name) : category.name != null) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result = (int) (idCategory ^ (idCategory >>> 32));
-        result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (nameAbreviated != null ? nameAbreviated.hashCode() : 0);
-        result = 31 * result + (restriction ? 1 : 0);
-        result = 31 * result + (tagSemantikos != null ? tagSemantikos.hashCode() : 0);
-        result = 31 * result + (isValid ? 1 : 0);
-        result = 31 * result + (color != null ? color.hashCode() : 0);
-        return result;
+        return name != null ? name.hashCode() : 0;
     }
 
-    public boolean isHasRelationshipDefinitions(){
+    public boolean isHasRelationshipDefinitions() {
         return !relationshipDefinitions.isEmpty();
     }
 
@@ -145,5 +133,17 @@ public class Category implements TargetDefinition {
     }
 
     @Override
-    public boolean isHelperTable() { return false; }
+    public boolean isHelperTable() {
+        return false;
+    }
+
+    @Override
+    public boolean isSnomedCTType() {
+        return false;
+    }
+
+    @Override
+    public boolean isCrossMapType() {
+        return false;
+    }
 }

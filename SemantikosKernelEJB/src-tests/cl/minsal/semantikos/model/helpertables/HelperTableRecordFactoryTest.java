@@ -59,18 +59,35 @@ public class HelperTableRecordFactoryTest {
 
     @Test
     public void transformJSON2SingleRecord() throws Exception {
-        String jsonRocord = createJSONRocord();
-        HelperTableRecord recordFromJSON = this.helperTableRecordFactory.createRecordFromJSON(jsonRocord);
+        String jsonRecord = createJSONRocord();
+        HelperTableRecord recordFromJSON = this.helperTableRecordFactory.createRecordFromJSON(jsonRecord);
         assertEquals(3, recordFromJSON.getFields().size());
     }
 
+    @Test
+    public void transformJSON2SingleRecord02() throws Exception {
+        String jsonRocord = createJSONRocord02();
+        HelperTableRecord recordFromJSON = this.helperTableRecordFactory.createRecordFromJSON(jsonRocord);
+        assertEquals(4, recordFromJSON.getFields().size());
+    }
+
     private String createJSONRocords() {
-        return "{\"tableName\":\"helper_table_atc\",\"records\":[{\"id\":1,\"codigo_atc\":\"atc1\",\"descripcion_atc\":\"Esta es una descripción ATC\"}, \n" +
+        String json = "{\"tableName\":\"helper_table_atc\",\"records\":[{\"id\":1,\"codigo_atc\":\"atc1\",\"descripcion_atc\":\"Esta es una descripción ATC\"}, \n" +
                 " {\"id\":2,\"codigo_atc\":\"atc2\",\"descripcion_atc\":\"Esta es otra descripción ATC\"}]}";
+        System.out.println(json);
+        return json;
     }
 
     private String createJSONRocord() {
-        return "{\"tableName\":\"helper_table_atc\",\"fields\":{\"id\":1,\"codigo_atc\":\"atc1\",\"descripcion_atc\":\"Esta es una descripción ATC\"}}";
+        String json = "{\"tableName\":\"helper_table_atc\",\"fields\":{\"id\":1,\"codigo_atc\":\"atc1\",\"descripcion_atc\":\"Esta es una descripción ATC\"}}";
+        System.out.println(json);
+        return json;
+    }
+
+    private String createJSONRocord02() {
+        String json = "{\"tableName\":\"helper_table_atc\",\"fields\":{\"id\":1,\"codigo_atc\":\"atc1\",\"descripcion_atc\":\"Esta es una descripción ATC\",\"is_valid\":true}}";
+        System.out.println(json);
+        return json;
     }
 
     private JSONHelperTableRecord createDummyRecord() {

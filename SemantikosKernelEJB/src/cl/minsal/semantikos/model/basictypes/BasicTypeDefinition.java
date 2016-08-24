@@ -1,5 +1,6 @@
 package cl.minsal.semantikos.model.basictypes;
 
+import cl.minsal.semantikos.model.relationships.BasicTypeType;
 import cl.minsal.semantikos.model.relationships.TargetDefinition;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -19,13 +20,16 @@ public class BasicTypeDefinition<T extends Comparable> implements TargetDefiniti
     /** Nombre del tipo */
     private String name;
 
-    /** Descripcion del tipo: "¿Es pedible?" */
+    /** Descripción del tipo: "¿Es pedible?" */
     private String description;
 
     /** El dominio de valores posibles */
     private List<T> domain;
 
     private Interval<T> interval;
+
+    /** El tipo concreto de esta definición **/
+    private BasicTypeType type;
 
     public BasicTypeDefinition() {
     }
@@ -34,8 +38,12 @@ public class BasicTypeDefinition<T extends Comparable> implements TargetDefiniti
         this(-1, name, description);
     }
 
+    public BasicTypeDefinition(String name, String description, BasicTypeType type) {
+        this(-1, name, description, type);
+    }
+
     /**
-     * The full constructor available for building a Basic Type with all its attributes and the ID.
+     * The minimal constructor available for building a Basic Type with all its attributes and the ID.
      *
      * @param id          The basic type unique ID.
      * @param name        The basic type name.
@@ -47,6 +55,23 @@ public class BasicTypeDefinition<T extends Comparable> implements TargetDefiniti
         this.description = description;
         this.domain = new ArrayList<T>();
         this.interval = new EmptyInterval<>();
+    }
+
+    /**
+     * The full constructor available for building a Basic Type with all its attributes and the ID.
+     *
+     * @param id          The basic type unique ID.
+     * @param name        The basic type name.
+     * @param description The description about this basic type.
+     * @param type        The concrete type about this definition
+     */
+    public BasicTypeDefinition(long id, String name, String description, BasicTypeType type) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.domain = new ArrayList<T>();
+        this.interval = new EmptyInterval<>();
+        this.type = type;
     }
 
     public long getId() {
@@ -73,11 +98,6 @@ public class BasicTypeDefinition<T extends Comparable> implements TargetDefiniti
         this.description = description;
     }
 
-    @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-    @JsonSubTypes({
-            @JsonSubTypes.Type(value = String[].class, name="String[]"),
-            @JsonSubTypes.Type(Integer[].class)
-    })
     public List<T> getDomain() {
         return domain;
     }
@@ -90,10 +110,10 @@ public class BasicTypeDefinition<T extends Comparable> implements TargetDefiniti
         this.interval = interval;
     }
 
+
     public void setDomain(List<T> domain) {
         this.domain = domain;
     }
-
 
     public boolean addToDomain(T anElement) {
         return domain.add(anElement);
@@ -117,53 +137,24 @@ public class BasicTypeDefinition<T extends Comparable> implements TargetDefiniti
         return this.domain.contains(anElement);
     }
 
-    public boolean isIntervalType(){
-        if(this.interval != null)
-            return true;
-        else
-            return false;
+    /**
+     * Este método es responsable de indicar si el tipo tiene valores concretos o discretos.
+     *
+     * @return <code>true</code> si es un dominio discreto de valores y <code>false</code> sino (dominio continuo).
+     */
+    public boolean isDiscreteDomain() {
+
+        /* Si el tipo tiene un dominio discreto (no vacío), y no tiene un intervalo definido, entonces es discreto */
+        return !this.domain.isEmpty() && this.interval.isEmpty();
+
     }
 
-    public boolean isHasDomain(){
-        return !this.domain.isEmpty();
+    public BasicTypeType getType() {
+        return type;
     }
 
-    public boolean isInteger() {
-        return ((this.interval.lowerBoundary instanceof java.lang.Long || this.interval.upperBoundary instanceof java.lang.Long) && this.domain.isEmpty());
-    }
-
-    public boolean isString() {
-        return ((this.interval.lowerBoundary instanceof java.lang.String || this.interval.upperBoundary instanceof java.lang.String) && this.domain.isEmpty());
-    }
-
-    public boolean isDate() {
-        return ((this.interval.lowerBoundary instanceof java.util.Date || this.interval.upperBoundary instanceof java.util.Date) && this.domain.isEmpty()) ;
-    }
-
-    public boolean isFloat() {
-        //System.out.println("isFloat="+(this.interval.lowerBoundary instanceof java.lang.Float || this.interval.upperBoundary instanceof java.lang.Float));
-        return ((this.interval.lowerBoundary instanceof java.lang.Float || this.interval.upperBoundary instanceof java.lang.Float) && this.domain.isEmpty());
-    }
-
-
-    public String typeOf(){
-        if(this.domain != null){
-            if (this.domain.get(0) instanceof java.lang.Integer)
-                return "Integer";
-            if (this.domain.get(0) instanceof java.lang.String)
-                return "String";
-            if (this.domain.get(0) instanceof java.util.Date)
-                return "Date";
-        }
-        if(this.interval != null) {
-            if (this.interval.lowerBoundary instanceof java.lang.Integer)
-                return "Integer";
-            if (this.interval.lowerBoundary instanceof java.lang.String)
-                return "String";
-            if (this.interval.lowerBoundary instanceof java.util.Date)
-                return "Date";
-        }
-        return "";
+    public void setType(BasicTypeType type) {
+        this.type = type;
     }
 
     @Override
@@ -181,7 +172,13 @@ public class BasicTypeDefinition<T extends Comparable> implements TargetDefiniti
         return false;
     }
 
-    public List<String> asString(){
-        return (List<String>)domain;
+    @Override
+    public boolean isSnomedCTType() {
+        return false;
+    }
+
+    @Override
+    public boolean isCrossMapType() {
+        return false;
     }
 }

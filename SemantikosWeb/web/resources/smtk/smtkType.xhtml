@@ -5,7 +5,9 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:composite="http://java.sun.com/jsf/composite"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:smtk="http://java.sun.com/jsf/composite/smtk"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
 
 <composite:interface>
     <composite:attribute name="relationshipDefinition"
@@ -17,161 +19,74 @@
 
     <p:panel id="panelSMTK"
              style="margin:20px;"
-             rendered="#{cc.attrs.relationshipDefinition.multiplicity.upperBoundary!=1}">
-        <h3>#{cc.attrs.relationshipDefinition.name}</h3>
+             rendered="#{cc.attrs.relationshipDefinition.multiplicity.upperBoundary==1000}">
 
-
-            <div class="ui-g">
-
-                <div class="ui-g-12 ui-md-6 ui-lg-6">
-                    <p:inputText value="#{smtkBean.pattern}" style="width: 90%; margin: 10px;"
-                                 placeholder="Buscar...">
-                        <p:ajax event="keyup"
-                                update=":#{cc.clientId}:tableConcept"/>
-                    </p:inputText>
-                </div>
-                <div class="ui-g-12 ui-md-6 ui-lg-3">
-                    <p:commandButton value="Info" type="button" onclick="PF('dlg1').show();" />
-                    <p:dialog header="Informacion" widgetVar="dlg1" minHeight="40">
-                        <h:outputText value="Se requiere  #{cc.attrs.relationshipDefinition.multiplicity.lowerBoundary} relacion(es)" />
-                    </p:dialog>
-                </div>
-                <div class="ui-g-12 ui-md-6 ui-lg-3">
-                </div>
-            </div>
-
-
-            <div class="ui-g">
-
-                <p:dataTable id="tableConcept"
-                             value="#{smtkBean.getConceptSearchForRDId(cc.attrs.relationshipDefinition.id,cc.attrs.targetDefinition)}"
-                             var="concept"
-                             rows="3"
-                             paginator="true" dynamic="true"
-                             lazy="true"
-                             paginatorTemplate=" {CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "
-                             emptyMessage="No se han encontrado conceptos con los criterios utilizados"
-                             style="margin: 10px;"
-                >
-
-
-                    <p:column headerText="ID">
-                        <h:outputText value="#{concept.id}"/>
-                    </p:column>
-
-                    <p:column headerText="Descripcion">
-                        <h:outputText value="#{concept.descriptionFavorite.term}"/>
-                    </p:column>
-                    <p:column headerText="Agregar" style="width:60px;text-align: center;">
-                        <p:commandButton
-                                process="@this"
-                                action="#{newConceptMBean.addRelationship(cc.attrs.relationshipDefinition)}"
-                                update=":#{cc.clientId}:tableRelationship,:#{cc.clientId}:tableConcept"
-                                icon="fa fa-plus"
-                                title="Agregar"
-                                disabled="#{newConceptMBean.limitRelationship(cc.attrs.relationshipDefinition)}"
-                        >
-
-                        </p:commandButton>
-                    </p:column>
-
-                </p:dataTable>
-
-            </div>
-
-            <div class="ui-g">
-                <p:spacer></p:spacer>
-                <p:dataTable id="tableRelationship" draggableRows="true" style="margin: 10px;" value="#{newConceptMBean.concept.getRelationshipsByRelationDefinition(cc.attrs.relationshipDefinition)}" var="rel">
-                    <p:column headerText="ID">
-                        <h:outputText value="#{rel.target.id}"/>
-                    </p:column>
-
-                    <p:column headerText="Descripción">
-                        <h:outputText value="#{rel.target.descriptionFavorite.term}"/>
-                    </p:column>
-
-                    <p:column headerText="Orden">
-
-                    </p:column>
-
-                    <p:column headerText="Estado">
-                        <h:outputText value="#{rel.target.state}"/>
-                    </p:column>
-                    <p:column headerText="Eliminar" style="width:60px;text-align: center;">
-                        <p:commandButton icon="fa fa-trash" title="Eliminar"
-                                         action="#{newConceptMBean.removeRelationship(cc.attrs.relationshipDefinition,rel)}"
-                                         update=":#{cc.clientId}:tableRelationship,:#{cc.clientId}:tableConcept"
-                                         process="@this">
-                        </p:commandButton>
-                    </p:column>
-                </p:dataTable>
-
-            </div>
-
-    </p:panel>
-
-    <p:panel id="panelSMTK2"
-             style="margin:20px;"
-             rendered="#{cc.attrs.relationshipDefinition.multiplicity.upperBoundary==-10}">
         <h3>#{cc.attrs.relationshipDefinition.name}</h3>
 
 
         <div class="ui-g">
 
-            <div class="ui-g-12 ui-md-6 ui-lg-5">
-                <p:autoComplete id="findConceptSMTK2" scrollHeight="200" size="5" style="width: 80%;"
-                                inputStyle="width: 80%;"
-                                completeMethod="#{smtkBean.getConceptSearchInput}"
-                                converter="conceptConverter"
-                                var="concept"
-                                value="#{newConceptMBean.conceptSelected}"
-                                itemLabel="#{concept.descriptionFavorite.term}" itemValue="#{concept}"
-                >
-
-                    <p:column>
-                        <h:outputText value="#{concept.descriptionFavorite.id}" />
-                    </p:column>
-
-                    <p:column>
-                        <h:outputText value="#{concept.descriptionFavorite.term}" />
-                    </p:column>
-                    <p:column  style="width:60px;text-align: center;">
-                        <p:commandButton
-                                process="@this"
-                                action="#{newConceptMBean.addRelationship(cc.attrs.relationshipDefinition,newConceptMBean.conceptSelected)}"
-                                update=":#{cc.clientId}:tableRelationship2,:#{cc.clientId}:addRelationship"
-                                icon="fa fa-plus"
-                                title="Agregar"
-                                disabled="#{newConceptMBean.limitRelationship(cc.attrs.relationshipDefinition)}"
-                        >
-
-                        </p:commandButton>
-                    </p:column>
-
-                    <f:attribute name="targetDef" value="#{cc.attrs.targetDefinition}"></f:attribute>
-                </p:autoComplete>
-            </div>
             <div class="ui-g-12 ui-md-6 ui-lg-6">
+                <p:inputText value="#{smtkBean.pattern}" style="width: 90%; margin: 10px;"
+                             placeholder="Buscar...">
+                    <p:ajax event="keyup"
+                            update="@(.tablas)"/>
+                </p:inputText>
+            </div>
+            <div class="ui-g-12 ui-md-6 ui-lg-3">
 
             </div>
-            <div class="ui-g-12 ui-md-6 ui-lg-1">
-                <p:commandButton
-                        id="addRelationship"
-                        process="@this"
-                        action="#{newConceptMBean.addRelationshipAutocomplete(cc.attrs.relationshipDefinition)}"
-                        update=":#{cc.clientId}:tableRelationship2,:#{cc.clientId}:addRelationship"
-                        icon="fa fa-plus"
-                        title="Agregar"
-                        disabled="#{newConceptMBean.limitRelationship(cc.attrs.relationshipDefinition)}"
-                >
-
-                </p:commandButton>
+            <div class="ui-g-12 ui-md-6 ui-lg-3">
             </div>
+        </div>
+
+
+        <div class="ui-g">
+
+            <p:dataTable id="tableConcept"
+                         styleClass="tablas"
+                         value="#{smtkBean.getConceptSearchForRDId(cc.attrs.relationshipDefinition.id,cc.attrs.targetDefinition)}"
+                         var="concept"
+                         rows="3"
+                         paginator="true" dynamic="true"
+                         lazy="true"
+                         paginatorTemplate=" {CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "
+                         emptyMessage="No se han encontrado conceptos con los criterios utilizados"
+                         style="margin: 10px;"
+            >
+
+
+                <p:column headerText="ID">
+                    <h:outputText value="#{concept.id}"/>
+                </p:column>
+
+                <p:column headerText="Descripcion">
+                    <h:outputText value="#{concept.descriptionFavorite.term}"/>
+                </p:column>
+                <p:column headerText="Agregar" style="width:60px;text-align: center;">
+                    <p:commandButton
+                            process="@this"
+                            action="#{newConceptMBean.addRelationship(cc.attrs.relationshipDefinition, concept)}"
+                            update="@(.tablas)"
+                            icon="fa fa-plus"
+                            title="Agregar"
+                            disabled="#{newConceptMBean.limitRelationship(cc.attrs.relationshipDefinition)}"
+                    >
+
+                    </p:commandButton>
+                </p:column>
+
+            </p:dataTable>
+
         </div>
 
         <div class="ui-g">
             <p:spacer></p:spacer>
-            <p:dataTable id="tableRelationship2" draggableRows="true" style="margin: 10px;" value="#{newConceptMBean.concept.getRelationshipsByRelationDefinition(cc.attrs.relationshipDefinition)}" var="rel">
+            <p:dataTable id="tableRelationship" draggableRows="true" style="margin: 10px;"
+                         emptyMessage="No existen relaciones, se debe agregar al menos: #{cc.attrs.relationshipDefinition.multiplicity.lowerBoundary}."
+                         styleClass="tablas"
+                         value="#{newConceptMBean.concept.getValidRelationshipsByRelationDefinition(cc.attrs.relationshipDefinition)}"
+                         var="rel">
                 <p:column headerText="ID">
                     <h:outputText value="#{rel.target.id}"/>
                 </p:column>
@@ -190,7 +105,7 @@
                 <p:column headerText="Eliminar" style="width:60px;text-align: center;">
                     <p:commandButton icon="fa fa-trash" title="Eliminar"
                                      action="#{newConceptMBean.removeRelationship(cc.attrs.relationshipDefinition,rel)}"
-                                     update=":#{cc.clientId}:tableRelationship2,:#{cc.clientId}:addRelationship"
+                                     update="@(.tablas)"
                                      process="@this">
                     </p:commandButton>
                 </p:column>
@@ -200,47 +115,152 @@
 
     </p:panel>
 
+    <p:panel id="panelSMTK2"
+             styleClass="tablas2"
+             style="margin:20px;"
+             rendered="#{cc.attrs.relationshipDefinition.multiplicity.upperBoundary!=1}">
+        <h3>#{cc.attrs.relationshipDefinition.name}</h3>
 
+        <div class="ui-g">
 
+            <div class="ui-g-12 ui-md-6 ui-lg-5">
+                <p:autoComplete id="findConceptSMTK2" scrollHeight="200" size="5" style="width: 80%;"
+                                inputStyle="width: 80%;"
+                                completeMethod="#{smtkBean.getConceptSearchInput}"
+                                converter="conceptConverter"
+                                var="concept"
+                                disabled="#{newConceptMBean.limitRelationship(cc.attrs.relationshipDefinition)}"
+                                value="#{newConceptMBean.conceptSelected}"
+                                itemLabel="#{concept.descriptionFavorite.term}" itemValue="#{concept}"
+                >
+
+                    <p:column>
+                        <h:outputText value="#{concept.descriptionFavorite.id}"/>
+                    </p:column>
+
+                    <p:column>
+                        <h:outputText value="#{concept.descriptionFavorite.term}"/>
+                    </p:column>
+                    <p:ajax update="@(.tablas2)" event="itemSelect"
+                            listener="#{newConceptMBean.addRelationship(cc.attrs.relationshipDefinition,newConceptMBean.conceptSelected)}"
+                            process="@this"/>
+
+                    <f:attribute name="targetDef" value="#{cc.attrs.targetDefinition}"></f:attribute>
+                </p:autoComplete>
+            </div>
+            <div class="ui-g-12 ui-md-6 ui-lg-4">
+
+            </div>
+            <div class="ui-g-12 ui-md-6 ui-lg-3">
+                <smtk:info relationshipDefinition="#{cc.attrs.relationshipDefinition}" />
+            </div>
+        </div>
+
+        <div class="ui-g">
+            <p:spacer></p:spacer>
+            <p:dataTable emptyMessage="No existen relaciones, se debe agregar al menos: #{cc.attrs.relationshipDefinition.multiplicity.lowerBoundary}."
+                         id="tableRelationship2"
+                         styleClass="tablas2"
+                         draggableRows="true" style="margin: 10px;"
+                         value="#{newConceptMBean.concept.getValidRelationshipsByRelationDefinition(cc.attrs.relationshipDefinition)}"
+                         var="rel">
+                <p:column headerText="ID">
+                    <h:outputText value="#{rel.target.id}"/>
+                </p:column>
+
+                <p:column headerText="Descripción">
+                    <h:outputText value="#{rel.target.descriptionFavorite.term}"/>
+                </p:column>
+
+                <p:column headerText="Orden">
+
+                </p:column>
+
+                <p:column headerText="Estado">
+                    <h:outputText value="#{rel.target.state}"/>
+                </p:column>
+                <p:column headerText="Eliminar" style="width:60px;text-align: center;">
+                    <p:commandButton icon="fa fa-trash" title="Eliminar"
+                                     action="#{newConceptMBean.removeRelationship(cc.attrs.relationshipDefinition,rel)}"
+                                     update="@(.tablas2)"
+                                     process="@this">
+                    </p:commandButton>
+                </p:column>
+            </p:dataTable>
+
+        </div>
+
+    </p:panel>
 
     <p:panel id="id2panel"
-             style="margin:10px; width: 100%;"
+             styleClass="concept"
+             style="margin:20px;"
              rendered="#{cc.attrs.relationshipDefinition.multiplicity.upperBoundary==1}">
 
+        <div class="ui-g">
 
-            <div class="ui-g">
+            <div class="ui-g-12 ui-md-6 ui-lg-6">
+                <p:panel  style="border: hidden; width: 100%;"
+                          rendered="#{newConceptMBean.concept.getRelationshipsByRelationDefinition(cc.attrs.relationshipDefinition).size() == 0}">
+                <p:outputLabel rendered="#{cc.attrs.relationshipDefinition.multiplicity.optional}"  value="#{cc.attrs.relationshipDefinition.name}: " for="findConceptSMTK"/>
 
-                <div class="ui-g-12 ui-md-6 ui-lg-6">
-                    <p:outputLabel value="#{cc.attrs.relationshipDefinition.name}: " for="findConceptSMTK"/>
-                    <p:autoComplete id="findConceptSMTK" scrollHeight="200" size="5" style="width: 80%;"
-                                    inputStyle="width: 80%;"
-                                    completeMethod="#{smtkBean.getConceptSearchInput}"
-                                    converter="conceptConverter"
-                                    var="concept"
-                                    value="#{newConceptMBean.conceptSelected}"
-                                    itemLabel="#{concept.descriptionFavorite.term}" itemValue="#{concept}"
-                                     >
+                <p:outputLabel rendered="#{!cc.attrs.relationshipDefinition.multiplicity.optional}" value="#{cc.attrs.relationshipDefinition.name}: (*)" for="findConceptSMTK"/>
 
-                        <p:column>
-                            <h:outputText value="#{concept.descriptionFavorite.id}" />
-                        </p:column>
+                <p:autoComplete emptyMessage="No se encontraron conceptos relacionados"
+                                forceSelection="true"
+                                id="findConceptSMTK" scrollHeight="200" size="5" style="width: 85%;"
+                                inputStyle="width: 85%;"
+                                completeMethod="#{smtkBean.getConceptSearchInput}"
+                                converter="conceptConverter"
+                                var="concept"
+                                value="#{newConceptMBean.conceptSelected}"
+                                itemLabel="#{concept.descriptionFavorite.term}" itemValue="#{concept}"
+                                rendered="#{newConceptMBean.concept.getRelationshipsByRelationDefinition(cc.attrs.relationshipDefinition).size()==0}"
+                >
 
-                        <p:column>
-                            <h:outputText value="#{concept.descriptionFavorite.term}" />
-                        </p:column>
+                    <p:column>
+                        <h:outputText value="#{concept.descriptionFavorite.id}"/>
+                    </p:column>
 
-                        <p:ajax event="itemSelect" listener="#{newConceptMBean.addOrChangeRelationship(cc.attrs.relationshipDefinition,concept)}" process="@this, :#{cc.clientId}:findConceptSMTK" />
+                    <p:column>
+                        <h:outputText value="#{concept.descriptionFavorite.term}"/>
+                    </p:column>
 
-                        <f:attribute name="targetDef" value="#{cc.attrs.targetDefinition}"></f:attribute>
-                    </p:autoComplete>
+                    <p:ajax update="@(.concept)" event="itemSelect"
+                            listener="#{newConceptMBean.addOrChangeRelationship(cc.attrs.relationshipDefinition,newConceptMBean.conceptSelected)}"
+                            process="@this"/>
 
-                </div>
-                <div class="ui-g-12 ui-md-6 ui-lg-3">
+                    <f:attribute name="targetDef" value="#{cc.attrs.targetDefinition}"></f:attribute>
+                </p:autoComplete>
 
-                </div>
-                <div class="ui-g-12 ui-md-6 ui-lg-3">
-                </div>
+                </p:panel>
+
+                <p:panel  style="border: hidden; width: 100%;"
+                          rendered="#{newConceptMBean.concept.getRelationshipsByRelationDefinition(cc.attrs.relationshipDefinition).size() != 0}">
+                    <p:outputLabel rendered="#{cc.attrs.relationshipDefinition.multiplicity.optional}"  value="#{cc.attrs.relationshipDefinition.name}: " for="itemSelected"/>
+
+                    <p:outputLabel rendered="#{!cc.attrs.relationshipDefinition.multiplicity.optional}" value="#{cc.attrs.relationshipDefinition.name}: (*)" for="itemSelected"/>
+
+
+
+                    <p:inputText style="width: 72%;" disabled="true" id="itemSelected"
+                                 value="#{newConceptMBean.concept.getValidRelationshipsByRelationDefinition(cc.attrs.relationshipDefinition).get(0).target.descriptionFavorite.term}"></p:inputText>
+                </p:panel>
+
             </div>
+            <div class="ui-g-12 ui-md-6 ui-lg-1">
+                <p:commandButton icon="fa fa-trash" title="Eliminar"
+                                 action="#{newConceptMBean.removeRelationship(cc.attrs.relationshipDefinition,newConceptMBean.concept.getRelationshipsByRelationDefinition(cc.attrs.relationshipDefinition).get(0))}"
+                                 update="@(.concept)"
+                                 rendered="#{newConceptMBean.concept.getRelationshipsByRelationDefinition(cc.attrs.relationshipDefinition).size()!=0}"
+                                 process="@this">
+                </p:commandButton>
+            </div>
+            <div class="ui-g-12 ui-md-6 ui-lg-5">
+
+            </div>
+
+        </div>
 
     </p:panel>
 

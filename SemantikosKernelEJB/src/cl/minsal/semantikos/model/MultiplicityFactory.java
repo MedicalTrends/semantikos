@@ -1,6 +1,5 @@
 package cl.minsal.semantikos.model;
 
-import com.sun.istack.internal.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,7 +41,7 @@ public class MultiplicityFactory {
         return new Multiplicity(theLowerBoundary, theUpperBoundary);
     }
 
-    protected int interpretLimit(@NotNull String lowerBoundary) {
+    protected int interpretLimit( String lowerBoundary) {
 
         if (lowerBoundary.equalsIgnoreCase("N") || lowerBoundary.equalsIgnoreCase("*")) {
             return 0;

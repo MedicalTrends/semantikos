@@ -135,6 +135,16 @@ public class HelperTable implements TargetDefinition {
         return true;
     }
 
+    @Override
+    public boolean isSnomedCTType() {
+        return false;
+    }
+
+    @Override
+    public boolean isCrossMapType() {
+        return false;
+    }
+
     /**
      * Este método es responsable de retornar el nombre de las columnas mostrables.
      *

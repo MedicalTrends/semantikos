@@ -1,7 +1,5 @@
 package cl.minsal.semantikos.model;
 
-import com.sun.javafx.beans.annotations.NonNull;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -16,7 +14,7 @@ public class DescriptionTypeFactory {
 
     public static final DescriptionType TYPELESS_DESCRIPTION_TYPE = new DescriptionType(-1, "Sin Tipo", "El tipo de descripcion sin tipo :).");
 
-    public static final String FAVOURITE_DESCRIPTION_TYPE_NAME = "Preferido";
+    public static final String FAVOURITE_DESCRIPTION_TYPE_NAME = "preferido";
 
     /** La lista de descripciones */
     private List<DescriptionType> descriptionTypes;
@@ -46,7 +44,12 @@ public class DescriptionTypeFactory {
      * @return Retorna una instancia de FSN.
      */
     public DescriptionType getFSNDescriptionType() {
-        return this.descriptionTypesByName.get("FSN");
+
+        if (descriptionTypesByName.containsKey("FSN")) {
+            return this.descriptionTypesByName.get("FSN");
+        }
+
+        return new DescriptionType(-1, "FSN", "Full Specified Name");
     }
 
     /**
@@ -56,7 +59,7 @@ public class DescriptionTypeFactory {
      */
     public DescriptionType getFavoriteDescriptionType() {
         if (descriptionTypesByName.containsKey(FAVOURITE_DESCRIPTION_TYPE_NAME)) {
-            return this.descriptionTypesByName.get(FAVOURITE_DESCRIPTION_TYPE_NAME.toUpperCase());
+            return this.descriptionTypesByName.get(FAVOURITE_DESCRIPTION_TYPE_NAME);
         } else {
             return new DescriptionType(-1, FAVOURITE_DESCRIPTION_TYPE_NAME, "Descripción Preferida (por defecto)");
         }
@@ -67,7 +70,7 @@ public class DescriptionTypeFactory {
      * los
      * mapas de tipo de descripciones.
      */
-    public void setDescriptionTypes(@NonNull List<DescriptionType> descriptionTypes) {
+    public void setDescriptionTypes( List<DescriptionType> descriptionTypes) {
 
         /* Se actualiza la lista */
         this.descriptionTypes = descriptionTypes;

@@ -14,6 +14,12 @@ public interface TargetDefinition {
      */
     public boolean isBasicType();
 
+    /**
+     * Este método es responsable de determinar si el target type es de tipo SMTK o no.
+     *
+     * @return <code>true</code> si es de tipo SMTK y <code>false</code> si no.
+     */
+
     public boolean isSMTKType();
 
     /**
@@ -23,4 +29,17 @@ public interface TargetDefinition {
      */
     public boolean isHelperTable();
 
+    /**
+     * Este método es responsable de determinar si el target type es de tipo Concept SCT o no.
+     *
+     * @return <code>true</code> si es de tipo Snomed CT y <code>false</code> si no.
+     */
+    public boolean isSnomedCTType();
+
+    /**
+     * Este método es responsable de determinar si el target type es de tipo CrossMap o no.
+     *
+     * @return <code>true</code> si es de tipo CrossMap y <code>false</code> si no.
+     */
+    public boolean isCrossMapType();
 }

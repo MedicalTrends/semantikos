@@ -5,9 +5,6 @@ import cl.minsal.semantikos.model.helpertables.HelperTable;
 import cl.minsal.semantikos.model.helpertables.HelperTableColumn;
 import cl.minsal.semantikos.model.helpertables.HelperTableRecord;
 import cl.minsal.semantikos.model.helpertables.HelperTableRecordFactory;
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,7 +12,10 @@ import javax.ejb.EJBException;
 import javax.ejb.Stateless;
 import java.io.IOException;
 import java.sql.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Andrés Farías
@@ -26,11 +26,14 @@ public class HelperTableDAOImpl implements HelperTableDAO {
     /** Logger de la clase */
     private static final Logger logger = LoggerFactory.getLogger(HelperTableDAOImpl.class);
 
-    /** Nombre de la columna de Vigencia */
-    public static final String IS_VALID_COLUMN_NAME = "is_valid";
-
     /** Nombre de la columna de ID */
     public static final String ID_COLUMN_NAME = "id";
+
+    private HelperTableRecordFactory helperTableRecordFactory;
+
+    public HelperTableDAOImpl() {
+        this.helperTableRecordFactory = HelperTableRecordFactory.getInstance();
+    }
 
     @Override
     public Map<String, String> getRecord(HelperTable helperTable, long idRecord) {
@@ -40,7 +43,7 @@ public class HelperTableDAOImpl implements HelperTableDAO {
 
         String selectRecord = "{call semantikos.get_record(?)}";
         try (Connection connection = connectionBD.getConnection();
-             CallableStatement callableStatement = connection.prepareCall(selectRecord);) {
+             CallableStatement callableStatement = connection.prepareCall(selectRecord)) {
 
             /* Se prepara y realiza la consulta */
             callableStatement.setLong(1, idRecord);
@@ -69,7 +72,7 @@ public class HelperTableDAOImpl implements HelperTableDAO {
         // TODO: Crear esta función y las tablas.
         String selectRecord = "{call semantikos.find_records_by_pattern(?,?)}";
         try (Connection connection = connectionBD.getConnection();
-             CallableStatement preparedStatement = connection.prepareCall(selectRecord);) {
+             CallableStatement preparedStatement = connection.prepareCall(selectRecord)) {
 
             /* Se prepara y realiza la consulta */
             preparedStatement.setString(1, helperTable.getTablaName());
@@ -106,7 +109,7 @@ public class HelperTableDAOImpl implements HelperTableDAO {
 
         String selectRecord = "{call semantikos.get_all_records_from_helper_table(?,?)}";
         try (Connection connection = connectionBD.getConnection();
-             CallableStatement call = connection.prepareCall(selectRecord);) {
+             CallableStatement call = connection.prepareCall(selectRecord)) {
 
             String[] columnsNames = helperTable.getShowableColumnsNames().toArray(new String[helperTable.getShowableColumnsNames().size()]);
             Array columnsNamesArray = connection.createArrayOf("text", columnsNames);
@@ -116,13 +119,12 @@ public class HelperTableDAOImpl implements HelperTableDAO {
             call.setArray(2, columnsNamesArray);
             call.execute();
 
-            ObjectMapper mapper = new ObjectMapper();
             ResultSet rs = call.getResultSet();
             while (rs.next()) {
-                String resultJSON = rs.getString(1);
-                //records = mapper.readValue(resultJSON.toUpperCase(), Object[].class);
-                helperTableRecords = HelperTableRecordFactory.getInstance().createRecordsFromJSON(resultJSON);
+                helperTableRecords = this.helperTableRecordFactory.createRecordsFromJSON(rs.getString(1));
             }
+
+            rs.close();
         } catch (SQLException e) {
             logger.error("Hubo un error al acceder a la base de datos.", e);
             throw new EJBException(e);
@@ -138,5 +140,37 @@ public class HelperTableDAOImpl implements HelperTableDAO {
     @Override
     public List<HelperTableRecord> getAllRecords(HelperTable helperTable) {
         return this.getAllRecords(helperTable, helperTable.getShowableColumnsNames().toArray(new String[helperTable.getShowableColumnsNames().size()]));
+    }
+
+    @Override
+    public HelperTableRecord getHelperTableRecordFromId(long idHelperTableRecord) {
+
+        ConnectionBD connectionBD = new ConnectionBD();
+
+        String selectRecord = "{call semantikos.get_record_by_id_auxiliary(?)}";
+        HelperTableRecord recordFromJSON;
+        try (Connection connection = connectionBD.getConnection();
+             CallableStatement call = connection.prepareCall(selectRecord)) {
+
+            /* Se prepara y realiza la consulta */
+            call.setLong(1, idHelperTableRecord);
+            call.execute();
+
+            ResultSet rs = call.getResultSet();
+            if (rs.next()) {
+                recordFromJSON = this.helperTableRecordFactory.createRecordFromJSON(rs.getString(1));
+            } else {
+                throw new EJBException("Error imposible en HelperTableDAOImpl");
+            }
+            rs.close();
+        } catch (SQLException e) {
+            logger.error("Hubo un error al acceder a la base de datos.", e);
+            throw new EJBException(e);
+        } catch (IOException e) {
+            logger.error("Hubo un error procesar los restulados con JSON.", e);
+            throw new EJBException(e);
+        }
+
+        return recordFromJSON;
     }
 }

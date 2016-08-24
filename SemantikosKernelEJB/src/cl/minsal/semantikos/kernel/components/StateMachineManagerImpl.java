@@ -6,12 +6,15 @@ import cl.minsal.semantikos.model.*;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.ejb.Singleton;
+import javax.ejb.Startup;
 import javax.ejb.Stateful;
 
 /**
  * Created by stk-des01 on 01-06-16.
  */
-@Stateful
+@Singleton
+@Startup
 public class StateMachineManagerImpl implements StateMachineManagerInterface {
 
     @EJB

@@ -6,7 +6,8 @@ import javax.ejb.Local;
 import java.util.List;
 
 /**
- * Created by des01c7 on 13-07-16.
+ * @author Andrés Farías / Gustavo Punucura.
+ *         TODO: Convertir esta clase a un eCache.
  */
 @Local
 public interface RelationshipDefinitionDAO {
@@ -19,4 +20,14 @@ public interface RelationshipDefinitionDAO {
      * @return Una lista con los atributos de la categoría.
      */
     public List<RelationshipDefinition> getRelationshipDefinitionsByCategory(long idCategory);
+
+    /**
+     * Este método es responsable de recuperar un objeto <code>RelationshipDefinition</code> desde la base de datos a
+     * partir de su identificador único <code>idRelationshipDefinition</code>.
+     *
+     * @param idRelationshipDefinition Identificador único del tipo de relación en la base de datos.
+     *
+     * @return Un objeto fresco que representa el tipo de relación.
+     */
+    RelationshipDefinition getRelationshipDefinitionByID(long idRelationshipDefinition);
 }

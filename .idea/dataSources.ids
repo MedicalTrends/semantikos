@@ -4288,4 +4288,7 @@ id_state_destination</columns>
       </argument>
     </database-model>
   </data-source>
+  <data-source name="Oracle - @192.168.0.237" uuid="63fd63db-eb69-4835-b586-6b2e4e850c8a">
+    <database-info product="" version="" jdbc-version="" driver-name="" driver-version=""/>
+  </data-source>
 </component>

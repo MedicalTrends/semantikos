@@ -18,10 +18,12 @@ public interface DescriptionManagerInterface {
 
     public void addDescriptionToConcept(String idConcept, String description, String type);
 
-    public ArrayList<TypeDescription> getAllTypeDescription();
-
     public String getIdDescription(String tipoDescription);
 
+    /**
+     * Método encargado de obtener todos los tipos de descripciones
+     * @return Lista de tipos de descripciones
+     */
     public List<DescriptionType> getAllTypes();
 
     public List<Description> findDescriptionsByConcept(int idConcept);
@@ -38,4 +40,11 @@ public interface DescriptionManagerInterface {
      * @return Un objeto <code>java.util.List</code> con las descripciones del concepto <code>concept</code>.
      */
     List<Description> getDescriptionsOf(ConceptSMTK concept);
+
+    /**
+     * Este método es responsable de generar un description id
+     *
+     * @return Un objeto <code>java.util.List</code> con las descripciones del concepto <code>concept</code>.
+     */
+    public String generateDescriptionId();
 }

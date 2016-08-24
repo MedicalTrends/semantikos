@@ -8,6 +8,7 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * TODO: REFACTOR THIS!!!
@@ -44,10 +45,7 @@ public class DescriptionManagerImpl implements DescriptionManagerInterface {
 
     }
 
-    @Override
-    public ArrayList<TypeDescription> getAllTypeDescription() {
-        return null;
-    }
+
 
     @Override
     public String getIdDescription(String tipoDescription) {
@@ -77,12 +75,9 @@ public class DescriptionManagerImpl implements DescriptionManagerInterface {
 
     @Override
     public List<DescriptionType> getAllTypes() {
-        /*
-          DescriptionDAOImpl descriptionDAO= new DescriptionDAOImpl();
-        System.out.println("descriptionDAO.getDescriptionTypes().size()="+descriptionDAO.getDescriptionTypes().size());
-        return descriptionDAO.getDescriptionTypes();
-        * */
-        return descriptionDAO.getDescriptionTypes();
+
+        return DescriptionTypeFactory.getInstance().getDescriptionTypes();
+
     }
 
     @Override
@@ -113,5 +108,10 @@ public class DescriptionManagerImpl implements DescriptionManagerInterface {
     @Override
     public List<Description> getDescriptionsOf(ConceptSMTK concept) {
         return descriptionDAO.getDescriptionsByConceptID(concept.getId());
+    }
+
+    @Override
+    public String generateDescriptionId() {
+        return UUID.randomUUID().toString();
     }
 }

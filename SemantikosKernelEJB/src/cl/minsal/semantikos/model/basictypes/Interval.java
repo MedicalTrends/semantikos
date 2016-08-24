@@ -1,7 +1,9 @@
 package cl.minsal.semantikos.model.basictypes;
 
+import javax.validation.constraints.NotNull;
+
 /**
- * Esta clase representa un intervalo de elementos ordenables (comparables).
+ * Esta clase representa un intervalo de elementos comparables.
  */
 public abstract class Interval<T extends Comparable> {
 
@@ -14,7 +16,7 @@ public abstract class Interval<T extends Comparable> {
     protected Interval() {
     }
 
-    protected Interval(T bottomBoundary, T upperBoundary) {
+    protected Interval(@NotNull T bottomBoundary, @NotNull T upperBoundary) {
         this.lowerBoundary = bottomBoundary;
         this.upperBoundary = upperBoundary;
     }
@@ -43,4 +45,13 @@ public abstract class Interval<T extends Comparable> {
      * @return <code>true</code> if it belongs to the interval and <code>false</code> otherwise.
      */
     public abstract boolean contains(T anElement);
+
+    /**
+     * Este método es responsable de indicar si el intervalo es nulo, vacío o no definido.
+     *
+     * @return <code>true</code> si el intervalo es vacío, y <code>false</code> sino.
+     */
+    public boolean isEmpty() {
+        return (lowerBoundary == null) && (upperBoundary == null);
+    }
 }
