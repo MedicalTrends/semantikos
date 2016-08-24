@@ -284,7 +284,6 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
     //Este método es responsable de pasarle un concepto a la vista, dado el id del concepto
     //(llamado desde la vista cuando se desea editar un concepto)
     public ConceptSMTK getConceptById(long conceptId) {
-        // Se clona el concepto para respaldar su estado previo a la edición
         return conceptManager.getConceptByID(conceptId);
     }
 

@@ -141,8 +141,8 @@ public class ConceptSMTK implements Target, AuditableEntity {
     public List<Relationship> getValidRelationshipsByRelationDefinition(RelationshipDefinition relationshipDefinition) {
         List<Relationship> someRelationships = new ArrayList<>();
         for (Relationship relationship : relationships) {
-            if (relationship.getRelationshipDefinition().equals(relationshipDefinition) &&
-                relationship.getValidityUntil().after(Calendar.getInstance().getTime())) {
+            if (  relationship.getRelationshipDefinition().equals(relationshipDefinition) &&
+                ( relationship.getValidityUntil() == null || relationship.getValidityUntil().after(Calendar.getInstance().getTime() ))) {
                 someRelationships.add(relationship);
             }
         }
