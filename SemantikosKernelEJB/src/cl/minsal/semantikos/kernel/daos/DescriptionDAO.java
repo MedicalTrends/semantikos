@@ -14,16 +14,16 @@ public interface DescriptionDAO {
 
     public List<DescriptionType> getDescriptionTypes();
 
-    public List<Description> getDescriptionBy(int id);
+    public Description getDescriptionBy(long id);
 
     /**
      * Este método es responsable de recuperar todas las descripciones de un concepto a partir de su ID.
      *
-     * @param id El ID del concepto cuyas descripciones se desea recuperar.
+     * @param idConcept El ID del concepto cuyas descripciones se desea recuperar.
      *
      * @return La lista de las descripciones del concepto cuyo ID fue dado.
      */
-    public List<Description> getDescriptionsByConceptID(long id);
+    public List<Description> getDescriptionsByConceptID(long idConcept);
 
     /**
      * Este método es responsable de retornar un Factory.

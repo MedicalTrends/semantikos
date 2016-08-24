@@ -1,6 +1,7 @@
 package cl.minsal.semantikos.model.relationships;
 
 import cl.minsal.semantikos.model.ConceptSMTK;
+import cl.minsal.semantikos.model.audit.AuditableEntity;
 import cl.minsal.semantikos.model.basictypes.BasicTypeValue;
 import cl.minsal.semantikos.model.helpertables.HelperTableRecord;
 
@@ -22,7 +23,7 @@ import static cl.minsal.semantikos.kernel.daos.ConceptDAO.NON_PERSISTED_ID;
  *
  * @author Andrés Farías
  */
-public class Relationship {
+public class Relationship implements AuditableEntity {
 
     /** Identificador único de la base de datos */
     private long id;

@@ -37,7 +37,6 @@ public class AuditManagerImpl implements AuditManagerInterface {
 
     @Override
     public List<ConceptAuditAction> getConceptAuditActions(ConceptSMTK conceptSMTK, int numberOfChanges, boolean changes) {
-        // TODO: Farias
-        return null;
+        return auditDAO.getConceptAuditActions(conceptSMTK.getId(), numberOfChanges, changes);
     }
 }

@@ -1,6 +1,7 @@
 package cl.minsal.semantikos.model;
 
 import cl.minsal.semantikos.kernel.daos.ConceptDAO;
+import cl.minsal.semantikos.model.audit.AuditableEntity;
 import cl.minsal.semantikos.model.businessrules.ConceptStateBusinessRulesContainer;
 import cl.minsal.semantikos.model.exceptions.BusinessRuleException;
 import cl.minsal.semantikos.model.relationships.*;
@@ -15,7 +16,7 @@ import java.util.List;
  *
  * @author Diego Soto.
  */
-public class ConceptSMTK implements Target {
+public class ConceptSMTK implements Target, AuditableEntity {
 
     /** El valor que posee un CONCEPT_ID que no ha sido definido */
     public static final String CONCEPT_ID_UNDEFINED = "-1";

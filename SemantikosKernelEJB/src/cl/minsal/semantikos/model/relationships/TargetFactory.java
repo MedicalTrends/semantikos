@@ -58,7 +58,7 @@ public class TargetFactory {
         long idConceptSct = targetDTO.getIdConceptSct();
         long idConceptStk = targetDTO.getIdConceptStk();
 
-        /* Se evalua caso a caso. Helper Tables: */
+        /* Se evalúa caso a caso. Helper Tables: */
         if (idHelperTableRecord > 0) {
             target = helperTableDAO.getHelperTableRecordFromId(idHelperTableRecord);
         } else if (idConceptSct > 0) {

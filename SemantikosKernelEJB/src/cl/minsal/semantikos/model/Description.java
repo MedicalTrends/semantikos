@@ -1,9 +1,11 @@
 package cl.minsal.semantikos.model;
 
+import cl.minsal.semantikos.model.audit.AuditableEntity;
+
 /**
  * @author Andrés Farías on 08-07-16.
  */
-public class Description {
+public class Description implements AuditableEntity {
 
     /** ID en la base de datos */
     private long id;

@@ -2,11 +2,10 @@ package cl.minsal.semantikos.model.relationships;
 
 import cl.minsal.semantikos.model.Multiplicity;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by stk-des01 on 27-05-16.
+ * @author Diego Soto on 27-05-16.
  */
 public class RelationshipDefinition {
 
@@ -34,8 +33,8 @@ public class RelationshipDefinition {
     /**
      * Este es el constructor mínimo con el cual se crean las RelacionesDefinitions.
      *
-     * @param name             Nombre de la relacion.
-     * @param description      Su descripcion.
+     * @param name             Nombre de la relación.
+     * @param description      Su descripción.
      * @param multiplicity     La multiplicidad.
      * @param targetDefinition El tipo de target.
      */
@@ -52,7 +51,7 @@ public class RelationshipDefinition {
      *
      * @param id               El identificador único.
      * @param name             El nombre de la relación.
-     * @param description      Su descripcion.
+     * @param description      Su descripción.
      * @param multiplicity     La multiplicidad.
      * @param targetDefinition El tipo de target.
      */
@@ -160,7 +159,7 @@ public class RelationshipDefinition {
 
 
     @Override
-    public String toString(){
-        return "id: " + id + ". ["+super.toString()+"]";
+    public String toString() {
+        return "id: " + id + ". [" + super.toString() + "]";
     }
 }

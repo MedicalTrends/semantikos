@@ -5,9 +5,9 @@ package cl.minsal.semantikos.model.audit;
  */
 public enum AuditActionType {
 
-    CONCEPT_CREATION (1, "Creación de Concepto", false),
+    CONCEPT_CREATION(1, "Creación de Concepto", false),
     CONCEPT_PUBLICATION(2, "Publicación de Concepto", true),
-    CONCEPT_FAVOURITE_DESCRIPTION_CHANGE(3,"Cambio en descripción preferida de un Concepto",  true),
+    CONCEPT_FAVOURITE_DESCRIPTION_CHANGE(3, "Cambio en descripción preferida de un Concepto", true),
     CONCEPT_DESCRIPTION_ADDITION(4, "Descripción agregada a concepto", true),
     CONCEPT_DESCRIPTION_REMOVAL(5, "Descripción eliminada a concepto", true),
     CONCEPT_CATEGORY_CHANGE(6, "Cambio de categoría de Concepto", true),
@@ -50,5 +50,22 @@ public enum AuditActionType {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    /**
+     * Este método es responsable de retornar el AuditActionType asociado al ID <code>idAuditActionType</code>.
+     *
+     * @param idAuditActionType El identificador del AuditActionType.
+     *
+     * @return El objeto que representa la acción de auditoría.
+     */
+    public static AuditActionType valueOf(long idAuditActionType) {
+        for (AuditActionType auditActionType : values()) {
+            if (auditActionType.getId() == idAuditActionType) {
+                return auditActionType;
+            }
+        }
+
+        throw new IllegalArgumentException("No hay un tipo de acción con ID=" + idAuditActionType);
     }
 }
