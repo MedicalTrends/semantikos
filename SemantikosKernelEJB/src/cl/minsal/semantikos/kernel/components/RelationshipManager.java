@@ -87,4 +87,13 @@ public interface RelationshipManager {
      * @return Una lista de relaciones del tipo indicado que apuntan al <code>target</code> indicado.
      */
     public List<Relationship> getRelationshipsLike(RelationshipDefinition relationshipDefinition, Target target);
+
+    /**
+     * Este método es responsable de recuperar todas las relaciones del <code>concepto</code>.
+     *
+     * @param concept El concepto cuyas relaciones son recuperadas.
+     *
+     * @return Una lista de relaciones asociadas al concepto.
+     */
+    List<Relationship> getRelationshipsBySourceConcept(ConceptSMTK concept);
 }

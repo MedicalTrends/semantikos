@@ -17,6 +17,7 @@ import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -181,9 +182,6 @@ public class RelationshipDAOImpl implements RelationshipDAO {
             ResultSet rs = call.getResultSet();
             if (rs.next()) {
                 resultJSON = rs.getString(1);
-                if (resultJSON == null) {
-                    return Collections.emptyList();
-                }
             } else {
                 String errorMsg = "La relación no fue creada. Esta es una situación imposible. Contactar a Desarrollo";
                 logger.error(errorMsg);
@@ -199,6 +197,7 @@ public class RelationshipDAOImpl implements RelationshipDAO {
 
     @Override
     public List<Relationship> getRelationshipsByRelationshipDefinition(RelationshipDefinition relationshipDefinition) {
+
         ConnectionBD connect = new ConnectionBD();
         String sql = "{call semantikos.get_relationships_by_definition(?)}";
         String resultJSON;
@@ -216,6 +215,34 @@ public class RelationshipDAOImpl implements RelationshipDAO {
                 }
             } else {
                 String errorMsg = "La relación no fue creada. Esta es una situación imposible. Contactar a Desarrollo";
+                logger.error(errorMsg);
+                throw new IllegalArgumentException(errorMsg);
+            }
+            rs.close();
+        } catch (SQLException e) {
+            throw new EJBException(e);
+        }
+
+        return relationshipFactory.createRelationshipsFromJSON(resultJSON);
+    }
+
+    @Override
+    public List<Relationship> getRelationshipsBySourceConcept(long idConcept) {
+
+        ConnectionBD connect = new ConnectionBD();
+        String sql = "{call semantikos.get_relationships_by_source_concept_id(?)}";
+        String resultJSON;
+        try (Connection connection = connect.getConnection();
+             CallableStatement call = connection.prepareCall(sql)) {
+
+            call.setLong(1, idConcept);
+            call.execute();
+
+            ResultSet rs = call.getResultSet();
+            if (rs.next()) {
+                resultJSON = rs.getString(1);
+            } else {
+                String errorMsg = "No se obtuvo respuesta desde la base de datos.";
                 logger.error(errorMsg);
                 throw new IllegalArgumentException(errorMsg);
             }

@@ -82,7 +82,8 @@ public class ConceptDAOImpl implements ConceptDAO {
         st.setName(String.valueOf(state));
         List<Description> descriptions = descriptionDAO.getDescriptionsByConceptID(id);
 
-        return new ConceptSMTK(id, conceptId, objectCategory, check, consult, st, completelyDefined, published, descriptions.toArray(new Description[descriptions.size()]));
+        Description[] theDescriptions = descriptions.toArray(new Description[descriptions.size()]);
+        return new ConceptSMTK(id, conceptId, objectCategory, check, consult, st, completelyDefined, published, theDescriptions);
     }
 
     @Override

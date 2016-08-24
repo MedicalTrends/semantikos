@@ -1,9 +1,9 @@
 package cl.minsal.semantikos.kernel.daos;
 
+import cl.minsal.semantikos.model.relationships.Relationship;
 import cl.minsal.semantikos.model.relationships.RelationshipDefinition;
 import cl.minsal.semantikos.model.relationships.Target;
 import cl.minsal.semantikos.model.snomedct.ConceptSCT;
-import cl.minsal.semantikos.model.relationships.Relationship;
 
 import javax.ejb.Local;
 import java.util.List;
@@ -50,12 +50,24 @@ public interface RelationshipDAO {
     public List<Relationship> getRelationshipsLike(RelationshipDefinition relationshipDefinition, Target target);
 
     /**
-     * Este método es responsable de obtener todas las relaciones que tienen como definicion un relationshipDefinition en
+     * Este método es responsable de obtener todas las relaciones que tienen como definicion un relationshipDefinition
+     * en
      * particular.
      *
      * @param relationshipDefinition La definición de relacion a la cual apuntan las relaciones que se desea buscar.
      *
-     * @return Todas las relaciones que tienen como  definicion un relationshipDefinition <code>relationshipDefinition</code>
+     * @return Todas las relaciones que tienen como  definicion un relationshipDefinition
+     * <code>relationshipDefinition</code>
      */
     public List<Relationship> getRelationshipsByRelationshipDefinition(RelationshipDefinition relationshipDefinition);
+
+    /**
+     * Este método es responsable de recuperar las relaciones donde el concepto de origen coincide con el
+     * <code>idConcept</code> dado como argumento.
+     *
+     * @param idConcept El id del concepto cuyas relaciones se quiere recuperar.
+     *
+     * @return Una lista con las relaciones del concepto.
+     */
+    List<Relationship> getRelationshipsBySourceConcept(long idConcept);
 }

@@ -50,10 +50,16 @@ public class ConceptSMTK implements Target, AuditableEntity {
     private boolean isPublished;
 
     /** Otros descriptores */
-    private List<Description> descriptions= new ArrayList<>();
+    private List<Description> descriptions = new ArrayList<>();
 
-    /** Relaciones * */
+    /**
+     * Relaciones. Las relaciones se cargan de manera perezosa. Para no almacenar una lista nula (y así evitar
+     * NullPointerException) se maneja también un booleano que indica si las relaciones fueron o no cargadas.
+     */
     private List<Relationship> relationships = new ArrayList<>();
+
+    /* Relaciones cargadas */
+    private boolean relationshipsLoaded = false;
 
     /** The concept's labels */
     private List<Label> labels = new ArrayList<>();
@@ -66,6 +72,7 @@ public class ConceptSMTK implements Target, AuditableEntity {
         this.id = ConceptDAO.NON_PERSISTED_ID;
 
         /* El concepto parte con su estado inicial */
+        // TODO: Cambiar esto a un campo.
         this.state = ConceptStateMachine.getInstance().getInitialState();
 
         this.isFullyDefined = false;
@@ -131,7 +138,8 @@ public class ConceptSMTK implements Target, AuditableEntity {
     }
 
     /**
-     * Este método es responsable de retornar todas las relaciones válidas de este concepto y que son de un cierto tipo de
+     * Este método es responsable de retornar todas las relaciones válidas de este concepto y que son de un cierto tipo
+     * de
      * relación.
      *
      * @param relationshipDefinition El tipo de relación al que pertenecen las relaciones a retornar.
@@ -141,8 +149,8 @@ public class ConceptSMTK implements Target, AuditableEntity {
     public List<Relationship> getValidRelationshipsByRelationDefinition(RelationshipDefinition relationshipDefinition) {
         List<Relationship> someRelationships = new ArrayList<>();
         for (Relationship relationship : relationships) {
-            if (  relationship.getRelationshipDefinition().equals(relationshipDefinition) &&
-                ( relationship.getValidityUntil() == null || relationship.getValidityUntil().after(Calendar.getInstance().getTime() ))) {
+            if (relationship.getRelationshipDefinition().equals(relationshipDefinition) &&
+                    (relationship.getValidityUntil() == null || relationship.getValidityUntil().after(Calendar.getInstance().getTime()))) {
                 someRelationships.add(relationship);
             }
         }
@@ -150,7 +158,8 @@ public class ConceptSMTK implements Target, AuditableEntity {
     }
 
     /**
-     * Este método es responsable de retornar una lista con todas las relaciones de atributos. A saber: -->STMK, -->Tipo
+     * Este método es responsable de retornar una lista con todas las relaciones de atributos. A saber: -->STMK,
+     * -->Tipo
      * Básico, -->Tabla Auxiliar
      *
      * @return Una lista de todas las relaciones de atributos.
@@ -163,7 +172,7 @@ public class ConceptSMTK implements Target, AuditableEntity {
             TargetDefinition targetDefinition = relationship.getRelationshipDefinition().getTargetDefinition();
 
             /* Sólo se agregan las relaciones de tipo atributo */
-            if (targetDefinition.isSMTKType() || targetDefinition.isBasicType() || targetDefinition.isHelperTable()){
+            if (targetDefinition.isSMTKType() || targetDefinition.isBasicType() || targetDefinition.isHelperTable()) {
                 attributeRelationships.add(relationship);
             }
         }
@@ -184,6 +193,7 @@ public class ConceptSMTK implements Target, AuditableEntity {
 
     public void setRelationships(List<Relationship> relationships) {
         this.relationships = relationships;
+        this.relationshipsLoaded = true;
     }
 
     public long getId() {
@@ -308,7 +318,7 @@ public class ConceptSMTK implements Target, AuditableEntity {
      * @param relationship La relación que es agregada.
      */
     public void addRelationship(Relationship relationship) {
-        this.relationships.add(relationship);
+        this.getRelationships().add(relationship);
     }
 
     /**
@@ -418,7 +428,7 @@ public class ConceptSMTK implements Target, AuditableEntity {
     public List<Relationship> getRelationshipsTo(TargetType targetType) {
 
         List<Relationship> sctRelations = new ArrayList<>();
-        for (Relationship relationship : relationships) {
+        for (Relationship relationship : this.getRelationships()) {
             if (relationship.getTarget().getTargetType().equals(targetType)) {
                 sctRelations.add(relationship);
             }
@@ -457,7 +467,7 @@ public class ConceptSMTK implements Target, AuditableEntity {
      * @return <code>true</code> si contiene una relación asi y <code>false</code> sino.
      */
     protected boolean contains(Relationship relationship) {
-        return this.relationships.contains(relationship);
+        return this.getRelationships().contains(relationship);
     }
 
     /**

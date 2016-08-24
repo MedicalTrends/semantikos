@@ -67,6 +67,8 @@ public class Description implements AuditableEntity {
         this(-1, "NULL", descriptionType, term, false, false, false, false);
     }
 
+
+
     public long getId() {
         return id;
     }
