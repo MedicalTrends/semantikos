@@ -31,7 +31,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-import static cl.minsal.semantikos.kernel.daos.ConceptDAO.NON_PERSISTED_ID;
+import static cl.minsal.semantikos.kernel.daos.DAO.NON_PERSISTED_ID;
 
 /**
  * Created by diego on 26/06/2016.

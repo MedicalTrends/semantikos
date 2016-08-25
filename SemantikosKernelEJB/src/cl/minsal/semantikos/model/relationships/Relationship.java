@@ -1,5 +1,6 @@
 package cl.minsal.semantikos.model.relationships;
 
+import cl.minsal.semantikos.kernel.daos.DAO;
 import cl.minsal.semantikos.model.ConceptSMTK;
 import cl.minsal.semantikos.model.audit.AuditableEntity;
 import cl.minsal.semantikos.model.basictypes.BasicTypeValue;
@@ -7,9 +8,8 @@ import cl.minsal.semantikos.model.helpertables.HelperTableRecord;
 
 import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
-import java.util.List;
 
-import static cl.minsal.semantikos.kernel.daos.ConceptDAO.NON_PERSISTED_ID;
+import static cl.minsal.semantikos.kernel.daos.DAO.NON_PERSISTED_ID;
 
 /**
  * <p>Una Relación es una asociación con significado entre 2 cosas.</p>
@@ -40,7 +40,8 @@ public class Relationship implements AuditableEntity {
     /** La relación es Vigente (valida) hasta la fecha... */
     private Timestamp validityUntil;
 
-    private boolean toBeUpdated;
+    /** Indica si ha sufrido modificaciones que requieran un update */
+    private boolean toBeUpdated = false;
 
     /**
      * Este es el constructor mínimo con el cual se crean las Relaciones
@@ -170,9 +171,11 @@ public class Relationship implements AuditableEntity {
 
         Relationship that = (Relationship) o;
 
-        if (relationshipDefinition != null ? !relationshipDefinition.equals(that.relationshipDefinition) : that.relationshipDefinition != null)
-            return false;
-        if (target != null ? !target.equals(that.target) : that.target != null) return false;
+        if (id != that.id) return false;
+        if (toBeUpdated != that.toBeUpdated) return false;
+        if (!relationshipDefinition.equals(that.relationshipDefinition)) return false;
+        if (!sourceConcept.equals(that.sourceConcept)) return false;
+        if (!target.equals(that.target)) return false;
         if (validityUntil != null ? !validityUntil.equals(that.validityUntil) : that.validityUntil != null)
             return false;
 
@@ -181,9 +184,22 @@ public class Relationship implements AuditableEntity {
 
     @Override
     public int hashCode() {
-        int result = relationshipDefinition != null ? relationshipDefinition.hashCode() : 0;
-        result = 31 * result + (target != null ? target.hashCode() : 0);
+        int result = (int) (id ^ (id >>> 32));
+        result = 31 * result + sourceConcept.hashCode();
+        result = 31 * result + relationshipDefinition.hashCode();
+        result = 31 * result + target.hashCode();
         result = 31 * result + (validityUntil != null ? validityUntil.hashCode() : 0);
+        result = 31 * result + (toBeUpdated ? 1 : 0);
         return result;
+    }
+
+    /**
+     * Este método es responsable de determinar si esta instancia tiene un ID de bdd distinto de nulo, y por ende se
+     * entiende que se encuentra persistido.
+     *
+     * @return <code>true</code> si está persistida y <code>false</code>.
+     */
+    public boolean isPersisted() {
+        return this.id != DAO.NON_PERSISTED_ID;
     }
 }

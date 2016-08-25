@@ -4,10 +4,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import static cl.minsal.semantikos.kernel.daos.DAO.NON_PERSISTED_ID;
+
 /**
  * @author Francisco Mendez
  */
 public class User implements IUser {
+
+    private static User dummyUser = new User(NON_PERSISTED_ID, "dummy", "Usuario de Prueba", true);
 
     private long idUser;
     private String username;
@@ -41,7 +45,6 @@ public class User implements IUser {
     private String lastPasswordSalt4;
 
 
-
     /**
      * Constructor base para inicializar los objetos que lo requieren.
      */
@@ -49,6 +52,13 @@ public class User implements IUser {
         this.profiles = new ArrayList<>();
         this.permissions = new ArrayList<>();
         this.groups = new ArrayList<>();
+    }
+
+    private User(long idUser, String username, String name, boolean locked) {
+        this.idUser = idUser;
+        this.username = username;
+        this.name = name;
+        this.locked = locked;
     }
 
     @Override
@@ -304,5 +314,14 @@ public class User implements IUser {
     @Override
     public boolean isNullUser() {
         return false;
+    }
+
+    /**
+     * Este método es responsable de retornar la instancia del usuario de pruebas.
+     *
+     * @return El usuario de pruebas.
+     */
+    public static User getDummyUser() {
+        return dummyUser;
     }
 }

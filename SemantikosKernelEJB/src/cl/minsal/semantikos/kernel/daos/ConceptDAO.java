@@ -13,7 +13,6 @@ import java.util.List;
 @Local
 public interface ConceptDAO {
 
-    public static final long NON_PERSISTED_ID = -1;
 
     /**
      * Este método es responsable de recuperar todos los conceptos, sin considerar su categoría, que posean un cierto
@@ -53,7 +52,7 @@ public interface ConceptDAO {
      */
     public List<ConceptSMTK> getConceptBy(Long[] categories, Long[] states, int pageSize, int pageNumber);
 
-    public List<ConceptSMTK> getConceptBy(String [] pattern, Long[] states, int pageSize, int pageNumber);
+    public List<ConceptSMTK> getConceptBy(String[] pattern, Long[] states, int pageSize, int pageNumber);
 
 
     public List<ConceptSMTK> getConceptBy(String PatternOrConceptId, Long[] Category, int pageNumber, int pageSize, Long[] states);
@@ -82,4 +81,10 @@ public interface ConceptDAO {
      */
     public void persist(ConceptSMTK conceptSMTK, IUser user);
 
+    /**
+     * Este método es responsable de actualizar la información base de un concepto (no sus relaciones o descripciones).
+     *
+     * @param conceptSMTK El concepto cuya información básica se actualizará.
+     */
+    public void update(ConceptSMTK conceptSMTK);
 }

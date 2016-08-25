@@ -95,6 +95,7 @@ class ConceptAuditActionDTO {
      */
     private long idAuditableEntity;
 
+    /** El ID de la entidad auditada. */
     private long idAuditEntityType;
 
     public ConceptAuditActionDTO() {
@@ -169,7 +170,7 @@ enum AuditableEntityType {
 
     public static AuditableEntityType valueOf(long idAuditEntityType) {
         for (AuditableEntityType auditableEntityType : values()) {
-            if (auditableEntityType.id == idAuditEntityType){
+            if (auditableEntityType.id == idAuditEntityType) {
                 return auditableEntityType;
             }
         }

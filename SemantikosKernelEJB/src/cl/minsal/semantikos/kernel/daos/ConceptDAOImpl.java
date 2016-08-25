@@ -4,7 +4,6 @@ package cl.minsal.semantikos.kernel.daos;
 import cl.minsal.semantikos.kernel.util.ConnectionBD;
 import cl.minsal.semantikos.model.*;
 import cl.minsal.semantikos.model.relationships.Relationship;
-import cl.minsal.semantikos.model.relationships.RelationshipDefinition;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,11 +14,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
-
-import org.apache.commons.collections4.*;
 
 /**
  * Created by des01c7 on 13-07-16.
@@ -432,12 +427,58 @@ public class ConceptDAOImpl implements ConceptDAO {
         /* Luego se persisten sus descripciones */
 
         for (Description description : conceptSMTK.getDescriptions()) {
-            descriptionDAO.persist(description, conceptSMTK,user);
+            descriptionDAO.persist(description, conceptSMTK);
         }
 
         /* Y finalmente se persisten sus relaciones */
         for (Relationship relationship : conceptSMTK.getRelationships()) {
             relationshipDAO.persist(relationship);
+        }
+    }
+
+    @Override
+    public void update(ConceptSMTK conceptSMTK) {
+
+        logger.info("Actualizando información básica de concepto: " + conceptSMTK.toString());
+        ConnectionBD connect = new ConnectionBD();
+        int updated;
+        String sql = "{call semantikos.update_concept(?,?,?,?,?,?,?)}";
+
+        try (Connection connection = connect.getConnection();
+             CallableStatement call = connection.prepareCall(sql)) {
+
+            call.setLong(1, conceptSMTK.getId());
+            call.setString(2, conceptSMTK.getConceptID());
+            call.setLong(2,conceptSMTK.getCategory().getIdCategory());
+            call.setBoolean(3, conceptSMTK.isToBeReviewed());
+            call.setBoolean(4, conceptSMTK.isToBeConsulted());
+            call.setLong(5, conceptSMTK.getState().getId());
+            call.setBoolean(6, conceptSMTK.isFullyDefined());
+            call.setBoolean(7, conceptSMTK.isPublished());
+            call.execute();
+
+            ResultSet rs = call.getResultSet();
+            if (rs.next()) {
+                /* Se recupera el ID del concepto persistido */
+                updated = rs.getInt(1);
+            } else {
+                String errorMsg = "El concepto no fue creado por una razón desconocida. Alertar al area de desarrollo sobre esto";
+                logger.error(errorMsg);
+                throw new EJBException(errorMsg);
+            }
+            rs.close();
+        } catch (SQLException e) {
+            String errorMsg = "El concepto " + conceptSMTK.toString() + " no fue actualizado.";
+            logger.error(errorMsg, e);
+            throw new EJBException(errorMsg, e);
+        }
+
+        if (updated == 0){
+            logger.info("Información de concepto (CONCEPT_ID=" + conceptSMTK.getConceptID() + ") actualizada exitosamente.");
+        } else {
+            String errorMsg = "Información de concepto (CONCEPT_ID=" + conceptSMTK.getConceptID() + ") no fue actualizada.";
+            logger.error(errorMsg);
+            throw new EJBException(errorMsg);
         }
     }
 

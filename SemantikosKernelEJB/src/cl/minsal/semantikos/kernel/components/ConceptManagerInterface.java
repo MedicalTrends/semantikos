@@ -107,10 +107,6 @@ public interface ConceptManagerInterface {
      */
     public String generateConceptId();
 
-    public String addConcept(String idCategory, boolean isValid);
-
-    public ArrayList<Description> findDescriptionForPattern(String pattern);
-
     /**
      * Este método es responsable de recuperar todas las descripciones (vigentes) del concepto.
      *
@@ -128,4 +124,6 @@ public interface ConceptManagerInterface {
      * @return La lista de relaciones actualizadas (que ya están asociadas al objeto <code>concepto</code>.
      */
     public List<Relationship> loadRelationships(ConceptSMTK concept);
+
+
 }
