@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.naming.AuthenticationException;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
@@ -25,9 +26,9 @@ public class AuthenticationManagerBean{
     @EJB(name = "JbossSecurutyDomainAuthenticationEJB")
     JbossSecurutyDomainAuthenticationBean jbossSecurutyDomainAuthenticationBean;
 
-    public boolean authenticate(String username, String password, HttpServletRequest request){
+    public void authenticate(String username, String password, HttpServletRequest request) throws AuthenticationException{
 
-        return getAuthenticationMethod().authenticate(username,password,request);
+        getAuthenticationMethod().authenticate(username,password,request);
     }
 
     public IUser getUserDetails(String username){
