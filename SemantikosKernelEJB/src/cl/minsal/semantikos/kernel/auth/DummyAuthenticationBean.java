@@ -25,7 +25,7 @@ public class DummyAuthenticationBean extends AuthenticationMethod{
 
     }
 
-    public IUser getUserDetails(String username) {
+    public User getUserDetails(String username) {
 
         if("bpadmin".equals(username) )
             return makeDummyAdminUser();
@@ -33,7 +33,7 @@ public class DummyAuthenticationBean extends AuthenticationMethod{
         return null;
     }
 
-    private IUser makeDummyAdminUser() {
+    private User makeDummyAdminUser() {
         User user = new User();
 
         user.setUsername("bpadmin");
