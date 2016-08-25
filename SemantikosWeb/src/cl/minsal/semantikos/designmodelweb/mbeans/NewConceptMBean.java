@@ -80,8 +80,6 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
 
     private DescriptionType otherDescriptionType;
 
-    private Description oldDescription;
-
     // Placeholders para los target de las relaciones
     private BasicTypeValue basicTypeValue = new BasicTypeValue(null);
 
@@ -401,14 +399,15 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
      * Este método es el encargado de remover una relación específica del concepto.
      */
     public void removeRelationship(RelationshipDefinition rd, Relationship r) {
-        // Si la relacion no esta persistida, se remueve
-        if(r.getId() == NON_PERSISTED_ID) {
-            concept.getRelationships().remove(r);
-        }
+
         // Si la relacion esta persistida, se deja como inválida
-        else{
+        if(r.isPersisted()) {
             r.setValidityUntil(new Timestamp(System.currentTimeMillis()));
             r.setToBeUpdated(true);
+        }
+        // Si la relacion no esta persistida, se remueve del concepto
+        else{
+            concept.getRelationships().remove(r);
         }
     }
 
@@ -422,18 +421,18 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         // Se busca la relación
         for (Relationship relationship : concept.getRelationships()) {
             if (relationship.getRelationshipDefinition().equals(relationshipDefinition)) {
-                // Si la relación no está persistida, se modifica el target
-                if(relationship.getId() == NON_PERSISTED_ID) {
-                    relationship.setTarget(target);
-                }
-                else{
-                    // Si la relación está persistida, se agrega una nueva relación (clon de la original) y se deja la original como inválida
+                // Si la relación está persistida, se agrega una nueva relación (clon de la original) y se deja la original como inválida
+                if(relationship.isPersisted()) {
                     Relationship newRelationship = relationship;
                     newRelationship.setId(NON_PERSISTED_ID);
                     newRelationship.setTarget(target);
                     relationship.setValidityUntil(new Timestamp(System.currentTimeMillis()));
                     relationship.setToBeUpdated(true);
                     concept.addRelationship(newRelationship);
+                }
+                // Si la relación no está persistida, se modifica su target
+                else{
+                    relationship.setTarget(target);
                 }
                 isRelationshipFound = true;
                 break;
@@ -509,7 +508,7 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
 
         Description description = (Description) event.getObject();
         // Si la descripción está persistida, se agrega una nueva descripción y se deja la original como inválida
-        if(description.getId() != NON_PERSISTED_ID){
+        if(description.isPersisted()){
             Description newDescription = description;
             newDescription.setId(NON_PERSISTED_ID);
             //TODO: Setear estos atributos cuando la clase Description esté actualizada
@@ -522,7 +521,6 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
     }
 
     public void onRowCancel(RowEditEvent event) {
-        oldDescription = null;
         FacesMessage msg = new FacesMessage("Edit Cancelled", ((Description) event.getObject()).getTerm());
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
@@ -573,11 +571,14 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
                 context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Las relaciones no cumplen con el minimo requerido"));
 
             } else {
-                // Si el concepto no está persistido, persistirlo
-                if(concept.getId() == NON_PERSISTED_ID)
-                    conceptManager.persist(concept, user);
-                else // Si el concepto está persistido, actualizarlo
+                // Si el concepto está persistido, actualizarlo
+                if(concept.isPersisted()) {
                     conceptManager.update(concept, user);
+                }
+                // Si el concepto no está persistido, persistirlo
+                else {
+                    conceptManager.persist(concept, user);
+                }
                 context.addMessage(null, new FacesMessage("Successful", "Concepto guardado "));
             }
 

@@ -12,6 +12,8 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
+import static cl.minsal.semantikos.kernel.daos.ConceptDAO.NON_PERSISTED_ID;
+
 /**
  * Esta clase representa al Concepto Semantikos.
  *
@@ -69,7 +71,7 @@ public class ConceptSMTK implements Target, AuditableEntity {
      */
     public ConceptSMTK() {
         /* El identificador de persistencia por defecto (no persistido) */
-        this.id = ConceptDAO.NON_PERSISTED_ID;
+        this.id = NON_PERSISTED_ID;
 
         /* El concepto parte con su estado inicial */
         // TODO: Cambiar esto a un campo.
@@ -185,10 +187,18 @@ public class ConceptSMTK implements Target, AuditableEntity {
      *
      * @param relationshipDefinition El tipo de relación al que pertenecen las relaciones a retornar.
      *
-     * @return Una <code>java.util.List</code> de relaciones de tipo <code>relationshipDefinition</code>.
+     * @return Un <code>java.lang.boolean</code>
      */
     public boolean hasRelationships(RelationshipDefinition relationshipDefinition) {
         return !getRelationshipsByRelationDefinition(relationshipDefinition).isEmpty();
+    }
+
+    /**
+     * Este método determina si este concepto SMTK está persistido o no
+     * @return Un <code>java.lang.boolean</code>
+     */
+    public boolean isPersisted(){
+        return (this.id != NON_PERSISTED_ID);
     }
 
     public void setRelationships(List<Relationship> relationships) {

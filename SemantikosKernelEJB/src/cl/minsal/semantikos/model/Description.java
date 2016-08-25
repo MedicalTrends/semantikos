@@ -2,6 +2,8 @@ package cl.minsal.semantikos.model;
 
 import cl.minsal.semantikos.model.audit.AuditableEntity;
 
+import static cl.minsal.semantikos.kernel.daos.ConceptDAO.NON_PERSISTED_ID;
+
 /**
  * @author Andrés Farías on 08-07-16.
  */
@@ -67,7 +69,13 @@ public class Description implements AuditableEntity {
         this(-1, "NULL", descriptionType, term, false, false, false, false);
     }
 
-
+    /**
+     * Este método determina si esta descrición está persistida o no
+     * @return Un <code>java.lang.boolean</code>
+     */
+    public boolean isPersisted(){
+        return (this.id != NON_PERSISTED_ID);
+    }
 
     public long getId() {
         return id;
