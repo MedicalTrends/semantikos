@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.naming.AuthenticationException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
@@ -24,18 +25,59 @@ public class JbossSecurutyDomainAuthenticationBean extends AuthenticationMethod{
     public static final String BASE64_ENCODING = "BASE64";
     public static final String BASE16_ENCODING = "HEX";
 
+    public static final int MAX_FAILED_LOGIN_ATTEMPTS =5;
+
+
     @EJB
     AuthDAO authDAO;
 
-    public boolean authenticate(String username, String password, HttpServletRequest request) {
+    public void authenticate(String username, String password, HttpServletRequest request) throws AuthenticationException {
+
+        User user = authDAO.getUserByUsername(username);
+
+
+
+        if(user ==null)
+            throw new AuthenticationException("Usuario no existe");
+
+        if(user.isLocked())
+            throw new AuthenticationException("Usuario bloqueado. Contacte al administrador");
+
+
         try{
+
+            //si ya esta logueado debo desloguearlo para evitar exception
+            if(request.getUserPrincipal()!= null){
+                request.logout();
+            }
+
+            //login programatico que resuelve jboss
             request.login(username,password);
-            return true;
+
         }catch (ServletException e){
+
+            //aumenta en 1 los intentos fallidos y si son mas que el maximo bloquea a usuario
+            failLogin(user);
+
             logger.debug("Error de login",e);
+            throw  (AuthenticationException)new AuthenticationException("Error de autenticacion: "+e.getMessage()).initCause(e);
+
         }
 
-        return false;
+        authDAO.markLogin(username);
+
+
+    }
+
+    private void failLogin(User user) {
+
+
+        authDAO.markLoginFail(user.getUsername());
+
+
+        if(user.getFailedLoginAttempts()+1 == MAX_FAILED_LOGIN_ATTEMPTS)
+            authDAO.lockUser(user.getUsername());
+
     }
 
     public User getUserDetails(String username) {
