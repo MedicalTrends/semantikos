@@ -39,7 +39,7 @@ public class AuditDAOImpl implements AuditDAO {
             /* Se invoca la consulta para recuperar las relaciones */
             call.setLong(1, idConcept);
             call.setInt(2, numberOfChanges);
-            call.setBoolean(2, changes);
+            call.setBoolean(3, changes);
             call.execute();
 
             ResultSet rs = call.getResultSet();

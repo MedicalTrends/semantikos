@@ -32,4 +32,44 @@ public class ConceptAuditAction {
         this.user = user;
         this.auditableEntity = auditableEntity;
     }
+
+    public ConceptSMTK getSubjectConcept() {
+        return subjectConcept;
+    }
+
+    public void setSubjectConcept(ConceptSMTK subjectConcept) {
+        this.subjectConcept = subjectConcept;
+    }
+
+    public AuditActionType getAuditActionType() {
+        return auditActionType;
+    }
+
+    public void setAuditActionType(AuditActionType auditActionType) {
+        this.auditActionType = auditActionType;
+    }
+
+    public Timestamp getActionDate() {
+        return actionDate;
+    }
+
+    public void setActionDate(Timestamp actionDate) {
+        this.actionDate = actionDate;
+    }
+
+    public IUser getUser() {
+        return user;
+    }
+
+    public void setUser(IUser user) {
+        this.user = user;
+    }
+
+    public AuditableEntity getAuditableEntity() {
+        return auditableEntity;
+    }
+
+    public void setAuditableEntity(AuditableEntity auditableEntity) {
+        this.auditableEntity = auditableEntity;
+    }
 }

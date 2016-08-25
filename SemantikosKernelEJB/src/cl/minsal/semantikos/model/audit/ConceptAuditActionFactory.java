@@ -4,6 +4,7 @@ import cl.minsal.semantikos.kernel.daos.AuthDAO;
 import cl.minsal.semantikos.kernel.daos.ConceptDAO;
 import cl.minsal.semantikos.model.ConceptSMTK;
 import cl.minsal.semantikos.model.IUser;
+import cl.minsal.semantikos.model.User;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -63,7 +64,7 @@ public class ConceptAuditActionFactory {
 
             ConceptSMTK concept = conceptDAO.getConceptByID(auditActionDTO.getIdConcept());
             AuditActionType auditActionType = AuditActionType.valueOf(auditActionDTO.getIdActionType());
-            IUser user = userDAO.getUserById((int) auditActionDTO.getIdUser());
+            User user = userDAO.getUserById((int) auditActionDTO.getIdUser());
             AuditableEntityType auditableEntityType = AuditableEntityType.valueOf(auditActionDTO.getIdAuditEntityType());
             AuditableEntity auditableEntityByID = auditableEntityFactory.findAuditableEntityByID(auditActionDTO.getIdAuditableEntity(), auditableEntityType);
 
