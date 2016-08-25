@@ -65,6 +65,12 @@ public class ConceptSMTK implements Target, AuditableEntity {
     private List<Label> labels = new ArrayList<>();
 
     /**
+     * Lista de etiquetas
+     */
+    private List<Tag> tags= new ArrayList<>();
+
+
+    /**
      * El constructor privado con las inicializaciones de los campos por defecto.
      */
     public ConceptSMTK() {
@@ -251,6 +257,14 @@ public class ConceptSMTK implements Target, AuditableEntity {
 
     public boolean isFullyDefined() {
         return isFullyDefined;
+    }
+
+    public List<Tag> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<Tag> tags) {
+        this.tags = tags;
     }
 
     /**

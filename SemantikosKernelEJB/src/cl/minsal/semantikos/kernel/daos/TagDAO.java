@@ -36,6 +36,11 @@ public interface TagDAO {
      */
     public List<Tag> findTagBy(String NameTag);
 
-
+    /**
+     * Este metodo se encarga de anidar un etiqueta padre con su hijo en la base de datos
+     * @param tagPattern
+     * @param tagChild
+     */
+    public void linkTagToTag(Tag tagPattern, Tag tagChild);
 
 }

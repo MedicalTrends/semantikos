@@ -29,5 +29,10 @@ public class TagDAOImpl implements TagDAO{
         return null;
     }
 
+    @Override
+    public void linkTagToTag(Tag tagPattern, Tag tagChild) {
+
+    }
+
 
 }
