@@ -22,36 +22,56 @@ public class ConceptSCT implements Target {
 	private boolean isActive;
 
 	/** TODO: Averiguar qué es esto */
-	private long moduleID;
+	private long moduleId;
 
 	/** TODO: Averiguar qué es esto */
-	private long definitionStatusID;
+	private long definitionStatusId;
 
 	public ConceptSCT() {
 	}
 
-	public ConceptSCT(long id, Timestamp effectiveTime, boolean isActive, long moduleID, long definitionStatusID) {
+	public ConceptSCT(long id, Timestamp effectiveTime, boolean isActive, long moduleId, long definitionStatusId) {
 		this.id = id;
 		this.effectiveTime = effectiveTime;
 		this.isActive = isActive;
-		this.moduleID = moduleID;
-		this.definitionStatusID = definitionStatusID;
+		this.moduleId = moduleId;
+		this.definitionStatusId = definitionStatusId;
+	}
+
+	public void setId(long id) {
+		this.id = id;
 	}
 
 	public Timestamp getEffectiveTime() {
 		return effectiveTime;
 	}
 
+	public void setEffectiveTime(Timestamp effectiveTime) {
+		this.effectiveTime = effectiveTime;
+	}
+
 	public boolean isActive() {
 		return isActive;
 	}
 
-	public long getModuleID() {
-		return moduleID;
+	public void setActive(boolean active) {
+		isActive = active;
 	}
 
-	public long getDefinitionStatusID() {
-		return definitionStatusID;
+	public long getModuleId() {
+		return moduleId;
+	}
+
+	public void setModuleId(long moduleId) {
+		this.moduleId = moduleId;
+	}
+
+	public long getDefinitionStatusId() {
+		return definitionStatusId;
+	}
+
+	public void setDefinitionStatusId(long definitionStatusId) {
+		this.definitionStatusId = definitionStatusId;
 	}
 
 	@Override
@@ -63,4 +83,5 @@ public class ConceptSCT implements Target {
 	public TargetType getTargetType() {
 		return TargetType.SnomedCT;
 	}
+
 }

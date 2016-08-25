@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.ejb.Stateless;
+import javax.naming.AuthenticationException;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
@@ -17,15 +18,15 @@ public class DummyAuthenticationBean extends AuthenticationMethod{
 
     static private final Logger logger = LoggerFactory.getLogger(DummyAuthenticationBean.class);
 
-    public boolean authenticate(String username, String password, HttpServletRequest request) {
+    public  void authenticate(String username, String password, HttpServletRequest request) throws AuthenticationException{
         if("bpadmin".equals(username) && "bpadmin".equals(password))
-            return true;
+            return ;
 
-        return false;
+        throw new AuthenticationException("Usuario y/o Contraseña incorrecta");
 
     }
 
-    public IUser getUserDetails(String username) {
+    public User getUserDetails(String username) {
 
         if("bpadmin".equals(username) )
             return makeDummyAdminUser();
@@ -33,7 +34,7 @@ public class DummyAuthenticationBean extends AuthenticationMethod{
         return null;
     }
 
-    private IUser makeDummyAdminUser() {
+    private User makeDummyAdminUser() {
         User user = new User();
 
         user.setUsername("bpadmin");

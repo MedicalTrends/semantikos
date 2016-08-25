@@ -228,6 +228,41 @@ public class AuthDAO {
 
     }
 
+    public void markLogin(String username) {
+
+        Query q = em.createNativeQuery("UPDATE semantikos.smtk_user " +
+                "set last_login = ? " +
+                "where username = ?");
+
+        q.setParameter(1,new Date());
+        q.setParameter(2,username);
+
+        q.executeUpdate();
+
+    }
+
+    public void markLoginFail(String username) {
+        Query q = em.createNativeQuery("UPDATE semantikos.smtk_user " +
+                "set failed_login_attempts = failed_login_attempts+1 " +
+                "where username = ?");
+
+
+        q.setParameter(1,username);
+
+        q.executeUpdate();
+    }
+
+    public void lockUser(String username) {
+        Query q = em.createNativeQuery("UPDATE semantikos.smtk_user " +
+                "set locked = true " +
+                "where username = ?");
+
+
+        q.setParameter(1,username);
+
+        q.executeUpdate();
+    }
+
 
     private class UserExistsException extends Exception {
     }

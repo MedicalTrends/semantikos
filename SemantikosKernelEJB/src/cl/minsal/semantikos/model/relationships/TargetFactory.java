@@ -101,7 +101,7 @@ class TargetDTO {
     private Float floatValue;
     private Timestamp dateValue;
     private String stringValue;
-    private boolean booleanValue;
+    private Boolean booleanValue;
     private Integer intValue;
     private long idAuxiliary;
     private long idExtern;
