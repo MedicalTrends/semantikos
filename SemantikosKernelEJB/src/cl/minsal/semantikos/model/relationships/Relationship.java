@@ -40,6 +40,7 @@ public class Relationship implements AuditableEntity {
     /** La relación es Vigente (valida) hasta la fecha... */
     private Timestamp validityUntil;
 
+    /** La relación debe ser actualizada */
     private boolean toBeUpdated;
 
     /**

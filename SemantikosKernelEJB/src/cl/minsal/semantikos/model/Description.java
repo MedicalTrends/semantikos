@@ -2,6 +2,8 @@ package cl.minsal.semantikos.model;
 
 import cl.minsal.semantikos.model.audit.AuditableEntity;
 
+import java.sql.Timestamp;
+
 import static cl.minsal.semantikos.kernel.daos.ConceptDAO.NON_PERSISTED_ID;
 
 /**
@@ -35,6 +37,12 @@ public class Description implements AuditableEntity {
 
     // El estado del descriptor
     private IState state;
+
+    /** La descripción es Vigente (valida) hasta la fecha... */
+    private Timestamp validityUntil;
+
+    /** La descripción debe ser actualizada */
+    private boolean toBeUpdated;
 
     /**
      *
@@ -147,6 +155,22 @@ public class Description implements AuditableEntity {
 
     public void setState(IState state) {
         this.state = state;
+    }
+
+    public Timestamp getValidityUntil() {
+        return validityUntil;
+    }
+
+    public void setValidityUntil(Timestamp validityUntil) {
+        this.validityUntil = validityUntil;
+    }
+
+    public boolean isToBeUpdated() {
+        return toBeUpdated;
+    }
+
+    public void setToBeUpdated(boolean toBeUpdated) {
+        this.toBeUpdated = toBeUpdated;
     }
 
 }

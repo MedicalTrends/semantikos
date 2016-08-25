@@ -15,19 +15,15 @@
             <p:growl id="growl" showDetail="true" showSummary="true"/>
             <p:growl id="editMsgs" showDetail="true"/>
             <!--p:messages autoUpdate="true"></p:messages-->
-            <!-- register a PostValidateEvent -->
-            <!--f:event listener="#{newConceptMBean.postValidate}" type="postValidate" /-->
             <h3>Responsive</h3>
 
             <div class="ui-g">
                 <div class="ui-g-12 ui-md-6 ui-lg-1">
-                    <p:outputLabel for="check" value="Indicadores"/>
+                    <p:outputLabel for="toBeReviewedCheck" value="Indicadores"/>
                 </div>
                 <div class="ui-g-12 ui-md-6 ui-lg-5">
-                    <p:selectManyCheckbox id="check" layout="responsive" columns="2" style="width:60%">
-                        <f:selectItem itemLabel="Revisar" itemValue="#{newConceptMBean.concept.toBeReviewed}"/>
-                        <f:selectItem itemLabel="Consultar" itemValue="#{newConceptMBean.concept.toBeConsulted}"/>
-                    </p:selectManyCheckbox>
+                    <p:selectBooleanCheckbox id="toBeReviewedCheck" itemLabel="Revisar" value="#{newConceptMBean.concept.toBeReviewed}" style="width:40%" />
+                    <p:selectBooleanCheckbox id="toBeConsultatedCheck" itemLabel="Consultar" value="#{newConceptMBean.concept.toBeConsulted}" style="width:40%" />
                 </div>
                 <div class="ui-g-12 ui-md-6 ui-lg-3">
                 </div>
@@ -79,7 +75,7 @@
                 </div>
             </div>
 
-            <p:panel id="toggleable" header="Otros Descriptores" toggleable="true" toggleSpeed="500" closeSpeed="500"
+            <p:panel id="otherDescriptionsPanel" header="Otros Descriptores" toggleable="true" toggleSpeed="500" closeSpeed="500"
                      widgetVar="panel" style="margin-bottom:20px">
 
                 <p:fieldset legend="Agregar descripción" toggleable="true" collapsed="true">
@@ -108,7 +104,7 @@
                     </div>
                     <div class="ui-g-12 ui-md-6 ui-lg-1">
                         <p:commandButton value="Agregar" id="btn" action="#{newConceptMBean.addDescription}"
-                                         update="otherDescriptions,growl"
+                                         update="otherDescriptionsPanel"
                                          style="float: right"/>
                     </div>
                 </div>
@@ -118,8 +114,7 @@
                 <div class="ui-g">
                     <p:dataTable id="otherDescriptions"
                                  var="description"
-                                 value="#{newConceptMBean.concept.descriptions}"
-                                 resizableColumns="true"
+                                 value="#{newConceptMBean.concept.getDescriptionsButFSNandFavorite()}"
                                  editable="true"
                                  selection="#{newConceptMBean.selectedDescriptions}"
                                  rowKey="#{description.id}"

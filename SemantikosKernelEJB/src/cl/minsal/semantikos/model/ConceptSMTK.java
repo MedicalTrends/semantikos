@@ -98,7 +98,7 @@ public class ConceptSMTK implements Target, AuditableEntity {
         this.state = state;
     }
 
-    public ConceptSMTK(long id, String conceptID, Category category, boolean isToBeReviewed, boolean isToBeConsulted, State state, boolean isFullyDefined, boolean isPublished, Description... descriptions) {
+    public ConceptSMTK(long id, String conceptID, Category category, boolean isToBeReviewed, boolean isToBeConsulted, IState state, boolean isFullyDefined, boolean isPublished, Description... descriptions) {
         this(category, state, descriptions);
 
         this.id = id;
@@ -107,6 +107,21 @@ public class ConceptSMTK implements Target, AuditableEntity {
         this.isToBeConsulted = isToBeConsulted;
         this.isFullyDefined = isFullyDefined;
         this.isPublished = isPublished;
+    }
+
+    /*
+    Constructor canónico para un concepto smtk
+     * @param conceptID El conceptID (identificador de negocio) de este concepto
+     * @param category La categoría a la cual pertenece este concepto
+     * @param isToBeReviewed ¿Es para ser revisado?
+     * @param isToBeConsultated ¿Es para ser consultado?
+     * @param state El estado de este concepto
+     * @param isFullyDefined ¿Completamente definido?
+     * @param isPublished ¿Publicado?
+     * @param descriptions Las descripciones para este concepto
+     */
+    public ConceptSMTK(String conceptID, Category category, boolean isToBeReviewed, boolean isToBeConsulted, IState state, boolean isFullyDefined, boolean isPublished, Description... descriptions) {
+        this(NON_PERSISTED_ID, conceptID, category, isToBeReviewed, isToBeConsulted, state, isFullyDefined, isPublished, descriptions);
     }
 
     public List<Description> getDescriptions() {
