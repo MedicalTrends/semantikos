@@ -119,7 +119,7 @@ public class TagDAOImpl implements TagDAO {
         try (Connection connection = connect.getConnection();
              CallableStatement call = connection.prepareCall("{call semantikos.find_tag_by_pattern(?)}")) {
 
-            call.setArray(1, connect.getConnection().createArrayOf("text",namePattern));
+            call.setArray(1, connect.getConnection().createArrayOf("text", namePattern));
             call.execute();
 
             ResultSet rs = call.getResultSet();
@@ -160,7 +160,7 @@ public class TagDAOImpl implements TagDAO {
 
     @Override
     public List<Tag> getAllTags() {
-        
+
         ConnectionBD connect = new ConnectionBD();
 
         String json;
@@ -259,8 +259,31 @@ public class TagDAOImpl implements TagDAO {
 
     @Override
     public Tag findTagByID(long id) {
-        return null;
+        ConnectionBD connect = new ConnectionBD();
+
+        String json;
+        try (Connection connection = connect.getConnection();
+             CallableStatement call = connection.prepareCall("{call semantikos.find_tags_by_parent(?)}")) {
+
+            call.setLong(1, id);
+            call.execute();
+
+            ResultSet rs = call.getResultSet();
+            if (rs.next()) {
+                json = rs.getString(1);
+            } else {
+                String errorMsg = "Error imposible!";
+                logger.error(errorMsg);
+                throw new EJBException(errorMsg);
+            }
+            rs.close();
+
+        } catch (SQLException e) {
+            String errorMsg = "Error al buscar los hijos del tag con ID=" + id;
+            logger.error(errorMsg, e);
+            throw new EJBException(errorMsg, e);
+        }
+
+        return tagFactory.createTagFromJSON(json);
     }
-
-
 }

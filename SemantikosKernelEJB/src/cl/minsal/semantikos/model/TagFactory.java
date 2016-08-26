@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import javax.ejb.EJB;
 import javax.ejb.EJBException;
 import javax.ejb.Singleton;
+import javax.validation.constraints.NotNull;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -89,6 +90,31 @@ public class TagFactory {
         return new Tag(tagDTO.getId(), tagDTO.getName(), tagDTO.getBackgroundColor(), tagDTO.getLetterColor(), children, parentTag);
     }
 
+    /**
+     * Este método es responsable de crear un objeto Tag a partir de una expresión JSON de la forma:
+     * <code>{"id":1,"name":"tag etiqueta ","letter_color":null,"background_color":null,"id_parent_tag":null},
+     * {"id":2,"name":"tag update","letter_color":null,"background_color":null,"id_parent_tag":null}</code>
+     *
+     * @param jsonExpression La expresión JSon a partir de la cual se crea el Tag.
+     *
+     * @return El objeto Tag.
+     */
+    public Tag createTagFromJSON(@NotNull String jsonExpression) {
+
+        /* Se parsea la expresión JSON */
+        ObjectMapper mapper = new ObjectMapper();
+        TagDTO tagDTO;
+        try {
+            tagDTO = mapper.readValue(underScoreToCamelCaseJSON(jsonExpression), TagDTO.class);
+        } catch (IOException e) {
+            String errorMsg = "Error when parsing a JSON a Relationships";
+            logger.error(errorMsg, e);
+            throw new EJBException(errorMsg, e);
+        }
+
+        /* Se retorna como una lista */
+        return createTagFromDTO(tagDTO);
+    }
 }
 
 class TagDTO {
