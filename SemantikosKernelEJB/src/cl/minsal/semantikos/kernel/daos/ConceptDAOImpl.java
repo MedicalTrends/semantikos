@@ -436,7 +436,9 @@ public class ConceptDAOImpl implements ConceptDAO {
         published = Boolean.parseBoolean(resultSet.getString("is_published"));
         conceptId = resultSet.getString("conceptid");
         State st = new State();
-        st.setName(String.valueOf(state));
+        //TODO: Se deja el estado en duro - Despues esto cambiará a variable dummy para el estado
+        st.setId(6);
+        st.setName(String.valueOf("Borrador"));
         List<Description> descriptions = descriptionDAO.getDescriptionsByConceptID(id);
 
         Description[] theDescriptions = descriptions.toArray(new Description[descriptions.size()]);
@@ -467,26 +469,26 @@ public class ConceptDAOImpl implements ConceptDAO {
 
         logger.info("Actualizando información básica de concepto: " + conceptSMTK.toString());
         ConnectionBD connect = new ConnectionBD();
-        int updated;
-        String sql = "{call semantikos.update_concept(?,?,?,?,?,?,?)}";
+        long updated;
+        String sql = "{call semantikos.update_concept(?,?,?,?,?,?,?,?)}";
 
         try (Connection connection = connect.getConnection();
              CallableStatement call = connection.prepareCall(sql)) {
 
             call.setLong(1, conceptSMTK.getId());
             call.setString(2, conceptSMTK.getConceptID());
-            call.setLong(2, conceptSMTK.getCategory().getIdCategory());
-            call.setBoolean(3, conceptSMTK.isToBeReviewed());
-            call.setBoolean(4, conceptSMTK.isToBeConsulted());
-            call.setLong(5, conceptSMTK.getState().getId());
-            call.setBoolean(6, conceptSMTK.isFullyDefined());
-            call.setBoolean(7, conceptSMTK.isPublished());
+            call.setLong(3, conceptSMTK.getCategory().getIdCategory());
+            call.setBoolean(4, conceptSMTK.isToBeReviewed());
+            call.setBoolean(5, conceptSMTK.isToBeConsulted());
+            call.setLong(6, conceptSMTK.getState().getId());
+            call.setBoolean(7, conceptSMTK.isFullyDefined());
+            call.setBoolean(8, conceptSMTK.isPublished());
             call.execute();
 
             ResultSet rs = call.getResultSet();
             if (rs.next()) {
                 /* Se recupera el ID del concepto persistido */
-                updated = rs.getInt(1);
+                updated = rs.getLong(1);
             } else {
                 String errorMsg = "El concepto no fue creado por una razón desconocida. Alertar al area de desarrollo sobre esto";
                 logger.error(errorMsg);
@@ -499,7 +501,7 @@ public class ConceptDAOImpl implements ConceptDAO {
             throw new EJBException(errorMsg, e);
         }
 
-        if (updated == 0) {
+        if (updated != 0) {
             logger.info("Información de concepto (CONCEPT_ID=" + conceptSMTK.getConceptID() + ") actualizada exitosamente.");
         } else {
             String errorMsg = "Información de concepto (CONCEPT_ID=" + conceptSMTK.getConceptID() + ") no fue actualizada.";

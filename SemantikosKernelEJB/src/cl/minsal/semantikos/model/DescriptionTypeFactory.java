@@ -14,7 +14,7 @@ public class DescriptionTypeFactory {
 
     public static final DescriptionType TYPELESS_DESCRIPTION_TYPE = new DescriptionType(-1, "Sin Tipo", "El tipo de descripcion sin tipo :).");
 
-    public static final String FAVOURITE_DESCRIPTION_TYPE_NAME = "preferido";
+    public static final String FAVOURITE_DESCRIPTION_TYPE_NAME = "preferida";
 
     /** La lista de descripciones */
     private List<DescriptionType> descriptionTypes;

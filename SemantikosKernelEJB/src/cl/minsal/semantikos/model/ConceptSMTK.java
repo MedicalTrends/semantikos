@@ -373,7 +373,7 @@ public class ConceptSMTK implements Target, AuditableEntity {
      */
     public Description getDescriptionFavorite() {
         for (Description description : descriptions) {
-            if (description.getDescriptionType().getName().equalsIgnoreCase("preferido")) {
+            if (description.getDescriptionType().getName().equalsIgnoreCase("preferida")) {
                 return description;
             }
         }

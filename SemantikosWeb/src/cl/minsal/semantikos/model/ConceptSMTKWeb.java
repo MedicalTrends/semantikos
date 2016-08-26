@@ -123,11 +123,18 @@ public class ConceptSMTKWeb extends ConceptSMTK {
 
     public boolean prepareForUpdate(){
         getRelationships().clear();
+        Relationship relationship;
         for (RelationshipWeb rWeb : relationshipsWeb) {
-            if(rWeb.isPersisted())
-                this.addRelationship(new Relationship(rWeb.getId(), rWeb.getSourceConcept(), rWeb.getTarget(), rWeb.getRelationshipDefinition(), rWeb.getValidityUntil()));
-            else
-                this.addRelationship(new Relationship(rWeb.getSourceConcept(), rWeb.getTarget(), rWeb.getRelationshipDefinition()));
+            if(rWeb.isPersisted()) {
+                relationship = new Relationship(rWeb.getId(), rWeb.getSourceConcept(), rWeb.getTarget(), rWeb.getRelationshipDefinition(), rWeb.getValidityUntil());
+                relationship.setToBeUpdated(rWeb.isToBeUpdated());
+                this.addRelationship(relationship);
+            }
+            else {
+                relationship = new Relationship(rWeb.getSourceConcept(), rWeb.getTarget(), rWeb.getRelationshipDefinition());
+                relationship.setToBeUpdated(rWeb.isToBeUpdated());
+                this.addRelationship(relationship);
+            }
         }
         return true;
     }
