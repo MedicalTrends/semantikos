@@ -11,7 +11,7 @@ import java.util.List;
  */
 public abstract class AuthenticationMethod {
 
-    public abstract void authenticate(String username, String password, HttpServletRequest request) throws AuthenticationException;
+    public abstract boolean authenticate(String username, String password, HttpServletRequest request) throws AuthenticationException;
     public abstract IUser getUserDetails(String username);
     public abstract boolean hasRole(String username,String role);
     public abstract boolean isInGroup(String username,String group);

@@ -25,7 +25,6 @@ public class ConceptCreationBusinessRuleContainer implements BusinessRulesContai
     private Profile designerProfile = createProfile("Diseñador");
     private Profile modelerProfile = createProfile("Modelador");
 
-    @Override
     public void apply(@NotNull ConceptSMTK conceptSMTK, IUser IUser) throws BusinessRuleException {
 
         /* Reglas que aplican para todas las categorías */

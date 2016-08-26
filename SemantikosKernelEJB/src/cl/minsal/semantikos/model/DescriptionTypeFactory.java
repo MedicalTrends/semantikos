@@ -100,4 +100,19 @@ public class DescriptionTypeFactory {
 
         throw new IllegalArgumentException("DescriptionType con ID=" + idDescriptionType + " no existe.");
     }
+
+    public List<DescriptionType> getDescriptionTypesButFSNandFavorite() {
+
+        List<DescriptionType> otherDescriptionTypes = new ArrayList<DescriptionType>();
+        DescriptionType fsnType = DescriptionTypeFactory.getInstance().getFSNDescriptionType();
+        DescriptionType favoriteType = DescriptionTypeFactory.getInstance().getFavoriteDescriptionType();
+
+        for (DescriptionType descriptionType : getDescriptionTypes()) {
+            if (!descriptionType.equals(fsnType) && !descriptionType.equals(favoriteType)) {
+                otherDescriptionTypes.add(descriptionType);
+            }
+        }
+
+        return otherDescriptionTypes;
+    }
 }

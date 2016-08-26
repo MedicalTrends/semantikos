@@ -21,7 +21,6 @@ public class ConceptStateBusinessRulesContainer implements BusinessRulesContaine
     @EJB
     private RelationshipManager relationshipManager;
 
-    @Override
     public void apply(ConceptSMTK conceptSMTK, IUser IUser) throws BusinessRuleException {
 
         if (conceptSMTK.isFullyDefined()) {
@@ -51,7 +50,7 @@ public class ConceptStateBusinessRulesContainer implements BusinessRulesContaine
                 ConceptSMTK candidateConcept = relationshipCandidate.getSourceConcept();
 
                 /* Si el concepto candidato (el origen de la relación) posee las mismas relaciones SCT, entonces no es completamente definido */
-                if (candidateConcept.contains(sctRelationships)){
+                if (candidateConcept.contains(sctRelationships)) {
                     throw new BusinessRuleException("El concepto no es completamente definido.");
                 }
             }

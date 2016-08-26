@@ -12,7 +12,7 @@
 <composite:interface>
     <composite:attribute name="relationshipDefinition" type="cl.minsal.semantikos.model.relationships.RelationshipDefinition" />
     <composite:attribute name="targetDefinition" type="cl.minsal.semantikos.model.basictypes.BasicTypeDefinition" />
-    <composite:attribute name="concept" type="cl.minsal.semantikos.model.ConceptSMTK" />
+    <composite:attribute name="concept" type="cl.minsal.semantikos.model.ConceptSMTKWeb" />
 </composite:interface>
 <composite:implementation>
     <!-- Multiplicidad 1 y Nueva relacion -->
@@ -128,9 +128,9 @@
                     <smtk:info relationshipDefinition="#{cc.attrs.relationshipDefinition}" />
                 </div>
             </div>
-        <p:repeat  value="#{cc.attrs.concept.getValidRelationshipsByRelationDefinition(cc.attrs.relationshipDefinition)}"
+        <p:repeat  value="#{cc.attrs.concept.getValidRelationshipsWebByRelationDefinition(cc.attrs.relationshipDefinition)}"
                    offset="0"
-                   size="#{cc.attrs.concept.getValidRelationshipsByRelationDefinition(cc.attrs.relationshipDefinition).size()}"
+                   size="#{cc.attrs.concept.getValidRelationshipsWebByRelationDefinition(cc.attrs.relationshipDefinition).size()}"
                    step="1"
                    var="relationship"
                    varStatus="var">

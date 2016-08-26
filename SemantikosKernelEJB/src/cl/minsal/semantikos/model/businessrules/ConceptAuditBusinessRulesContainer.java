@@ -9,7 +9,6 @@ import cl.minsal.semantikos.model.exceptions.BusinessRuleException;
  */
 public class ConceptAuditBusinessRulesContainer implements BusinessRulesContainer {
 
-    @Override
     public void apply(ConceptSMTK conceptSMTK, IUser IUser) throws BusinessRuleException {
 
         /* Se valida primero que el concepto cumpla las condiciones para ser auditado */

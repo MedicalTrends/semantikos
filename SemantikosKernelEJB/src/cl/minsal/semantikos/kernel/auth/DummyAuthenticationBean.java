@@ -18,12 +18,11 @@ public class DummyAuthenticationBean extends AuthenticationMethod{
 
     static private final Logger logger = LoggerFactory.getLogger(DummyAuthenticationBean.class);
 
-    public  void authenticate(String username, String password, HttpServletRequest request) throws AuthenticationException{
+    public boolean authenticate(String username, String password, HttpServletRequest request) throws AuthenticationException{
         if("bpadmin".equals(username) && "bpadmin".equals(password))
-            return ;
+            return true;
 
         throw new AuthenticationException("Usuario y/o Contraseña incorrecta");
-
     }
 
     public User getUserDetails(String username) {

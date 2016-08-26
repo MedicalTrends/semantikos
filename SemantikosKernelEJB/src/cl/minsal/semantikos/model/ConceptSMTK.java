@@ -1,7 +1,7 @@
 package cl.minsal.semantikos.model;
 
-import cl.minsal.semantikos.kernel.daos.ConceptDAO;
 import cl.minsal.semantikos.model.audit.AuditableEntity;
+import cl.minsal.semantikos.model.businessrules.ConceptEditionBusinessRuleContainer;
 import cl.minsal.semantikos.model.businessrules.ConceptStateBusinessRulesContainer;
 import cl.minsal.semantikos.model.exceptions.BusinessRuleException;
 import cl.minsal.semantikos.model.relationships.*;
@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
+
+import static cl.minsal.semantikos.kernel.daos.DAO.NON_PERSISTED_ID;
 
 /**
  * Esta clase representa al Concepto Semantikos.
@@ -65,11 +67,17 @@ public class ConceptSMTK implements Target, AuditableEntity {
     private List<Label> labels = new ArrayList<>();
 
     /**
+     * Lista de etiquetas
+     */
+    private List<Tag> tags= new ArrayList<>();
+
+
+    /**
      * El constructor privado con las inicializaciones de los campos por defecto.
      */
     public ConceptSMTK() {
         /* El identificador de persistencia por defecto (no persistido) */
-        this.id = ConceptDAO.NON_PERSISTED_ID;
+        this.id = NON_PERSISTED_ID;
 
         /* El concepto parte con su estado inicial */
         // TODO: Cambiar esto a un campo.
@@ -96,7 +104,7 @@ public class ConceptSMTK implements Target, AuditableEntity {
         this.state = state;
     }
 
-    public ConceptSMTK(long id, String conceptID, Category category, boolean isToBeReviewed, boolean isToBeConsulted, State state, boolean isFullyDefined, boolean isPublished, Description... descriptions) {
+    public ConceptSMTK(long id, String conceptID, Category category, boolean isToBeReviewed, boolean isToBeConsulted, IState state, boolean isFullyDefined, boolean isPublished, Description... descriptions) {
         this(category, state, descriptions);
 
         this.id = id;
@@ -105,6 +113,21 @@ public class ConceptSMTK implements Target, AuditableEntity {
         this.isToBeConsulted = isToBeConsulted;
         this.isFullyDefined = isFullyDefined;
         this.isPublished = isPublished;
+    }
+
+    /*
+    Constructor canónico para un concepto smtk
+     * @param conceptID El conceptID (identificador de negocio) de este concepto
+     * @param category La categoría a la cual pertenece este concepto
+     * @param isToBeReviewed ¿Es para ser revisado?
+     * @param isToBeConsultated ¿Es para ser consultado?
+     * @param state El estado de este concepto
+     * @param isFullyDefined ¿Completamente definido?
+     * @param isPublished ¿Publicado?
+     * @param descriptions Las descripciones para este concepto
+     */
+    public ConceptSMTK(String conceptID, Category category, boolean isToBeReviewed, boolean isToBeConsulted, IState state, boolean isFullyDefined, boolean isPublished, Description... descriptions) {
+        this(NON_PERSISTED_ID, conceptID, category, isToBeReviewed, isToBeConsulted, state, isFullyDefined, isPublished, descriptions);
     }
 
     public List<Description> getDescriptions() {
@@ -185,10 +208,18 @@ public class ConceptSMTK implements Target, AuditableEntity {
      *
      * @param relationshipDefinition El tipo de relación al que pertenecen las relaciones a retornar.
      *
-     * @return Una <code>java.util.List</code> de relaciones de tipo <code>relationshipDefinition</code>.
+     * @return Un <code>java.lang.boolean</code>
      */
     public boolean hasRelationships(RelationshipDefinition relationshipDefinition) {
         return !getRelationshipsByRelationDefinition(relationshipDefinition).isEmpty();
+    }
+
+    /**
+     * Este método determina si este concepto SMTK está persistido o no
+     * @return Un <code>java.lang.boolean</code>
+     */
+    public boolean isPersisted(){
+        return (this.id != NON_PERSISTED_ID);
     }
 
     public void setRelationships(List<Relationship> relationships) {
@@ -214,6 +245,7 @@ public class ConceptSMTK implements Target, AuditableEntity {
     }
 
     public void setConceptID(String conceptID) {
+        new ConceptEditionBusinessRuleContainer().apply(this, User.getDummyUser());
         this.conceptID = conceptID;
     }
 
@@ -251,6 +283,14 @@ public class ConceptSMTK implements Target, AuditableEntity {
 
     public boolean isFullyDefined() {
         return isFullyDefined;
+    }
+
+    public List<Tag> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<Tag> tags) {
+        this.tags = tags;
     }
 
     /**
@@ -478,5 +518,28 @@ public class ConceptSMTK implements Target, AuditableEntity {
      */
     public boolean isModeled() {
         return this.state.getName().toLowerCase().startsWith("modelado");
+    }
+
+    /**
+     * Este método es responsable de buscar y retornar, de existir, una descripción con un cierto DESCRIPTION_ID y con
+     * una validez dada.
+     *
+     * @param descriptionId El DESCRIPTION_ID.
+     * @param isActive      Si la descripción buscada debe encontrarse vigente o no.
+     *
+     * @return La descripción que cumple esto.
+     *
+     * @throws IllegalArgumentException Lanzada si no existe estrictamente una (osea cero o más de una) que satisfaga
+     *                                  las condiciones.
+     */
+    public Description getDescriptionByDescriptionID(String descriptionId, boolean isActive) throws IllegalArgumentException {
+
+        for (Description description : descriptions) {
+            if (description.getDescriptionId().equalsIgnoreCase(descriptionId) && description.isActive() == isActive) {
+                return description;
+            }
+        }
+
+        throw new IllegalArgumentException("No existe una descripción con las características deseadas");
     }
 }

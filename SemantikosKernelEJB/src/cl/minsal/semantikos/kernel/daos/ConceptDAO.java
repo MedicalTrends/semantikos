@@ -3,6 +3,7 @@ package cl.minsal.semantikos.kernel.daos;
 import cl.minsal.semantikos.model.Category;
 import cl.minsal.semantikos.model.ConceptSMTK;
 import cl.minsal.semantikos.model.IUser;
+import cl.minsal.semantikos.model.Tag;
 
 import javax.ejb.Local;
 import java.util.List;
@@ -13,7 +14,6 @@ import java.util.List;
 @Local
 public interface ConceptDAO {
 
-    public static final long NON_PERSISTED_ID = -1;
 
     /**
      * Este método es responsable de recuperar todos los conceptos, sin considerar su categoría, que posean un cierto
@@ -53,7 +53,7 @@ public interface ConceptDAO {
      */
     public List<ConceptSMTK> getConceptBy(Long[] categories, Long[] states, int pageSize, int pageNumber);
 
-    public List<ConceptSMTK> getConceptBy(String [] pattern, Long[] states, int pageSize, int pageNumber);
+    public List<ConceptSMTK> getConceptBy(String[] pattern, Long[] states, int pageSize, int pageNumber);
 
 
     public List<ConceptSMTK> getConceptBy(String PatternOrConceptId, Long[] Category, int pageNumber, int pageSize, Long[] states);
@@ -61,6 +61,15 @@ public interface ConceptDAO {
     public int countConceptBy(String[] Pattern, Long[] category, Long[] states);
 
     public int countConceptBy(String Pattern, Long[] category, Long[] states);
+
+    /**
+     * Este método es responsable de recuperar todos los objetos que están asociados a un Tag.
+     *
+     * @param tag El tag del cual los conceptos que están asociados se desean recuperar.
+     *
+     * @return Una lista de conceptos, donde cada uno se encuentra asociado al Tag <code>tag</code>.
+     */
+    List<ConceptSMTK> findConceptsByTag(Tag tag);
 
     /**
      * Este método es responsable de recuperar el concepto con DESCRIPTION_ID.
@@ -82,4 +91,10 @@ public interface ConceptDAO {
      */
     public void persist(ConceptSMTK conceptSMTK, IUser user);
 
+    /**
+     * Este método es responsable de actualizar la información base de un concepto (no sus relaciones o descripciones).
+     *
+     * @param conceptSMTK El concepto cuya información básica se actualizará.
+     */
+    public void update(ConceptSMTK conceptSMTK);
 }
