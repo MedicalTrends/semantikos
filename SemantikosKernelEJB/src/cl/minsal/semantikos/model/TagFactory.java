@@ -83,47 +83,64 @@ public class TagFactory {
      */
     private Tag createTagFromDTO(TagDTO tagDTO) {
 
-        Tag parentTag = tagDAO.findTagByID(tagDTO.getId_parent_tag());
+        Tag parentTag = tagDAO.findTagByID(tagDTO.getIdParentTag());
         List<Tag> children = tagDAO.getChildrenOf(tagDTO.getId());
 
-        return new Tag(tagDTO.getId(), tagDTO.getName(), tagDTO.getBackground_color(), tagDTO.getLetter_color(), children, parentTag);
+        return new Tag(tagDTO.getId(), tagDTO.getName(), tagDTO.getBackgroundColor(), tagDTO.getLetterColor(), children, parentTag);
     }
 
 }
 
 class TagDTO {
 
-    private final long id;
-    private final String name;
-    private final String letter_color;
-    private final String background_color;
-    private final long id_parent_tag;
+    private long id;
+    private String name;
+    private String letterColor;
+    private String backgroundColor;
+    private long idParentTag;
 
-    public TagDTO(long id, String name, String letter_color, String background_color, long id_parent_tag) {
-        this.id = id;
-        this.name = name;
-        this.letter_color = letter_color;
-        this.background_color = background_color;
-        this.id_parent_tag = id_parent_tag;
+    public TagDTO(){
+
     }
+
 
     public long getId() {
         return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getName() {
         return name;
     }
 
-    public String getLetter_color() {
-        return letter_color;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getBackground_color() {
-        return background_color;
+    public String getLetterColor() {
+        return letterColor;
     }
 
-    public long getId_parent_tag() {
-        return id_parent_tag;
+    public void setLetterColor(String letterColor) {
+        this.letterColor = letterColor;
+    }
+
+    public String getBackgroundColor() {
+        return backgroundColor;
+    }
+
+    public void setBackgroundColor(String backgroundColor) {
+        this.backgroundColor = backgroundColor;
+    }
+
+    public long getIdParentTag() {
+        return idParentTag;
+    }
+
+    public void setIdParentTag(long idParentTag) {
+        this.idParentTag = idParentTag;
     }
 }
