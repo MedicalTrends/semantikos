@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by des01c7 on 13-07-16.
+ * @author Gustavo Punucura
  */
 
 @Stateless

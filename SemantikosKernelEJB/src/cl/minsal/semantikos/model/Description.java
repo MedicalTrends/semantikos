@@ -78,6 +78,14 @@ public class Description implements AuditableEntity {
         this(-1, "NULL", descriptionType, term, false, false, false, false, null);
     }
 
+    /**
+     * Este método determina si esta descrición está persistida o no
+     * @return Un <code>java.lang.boolean</code>
+     */
+    public boolean isPersisted(){
+        return (this.id != NON_PERSISTED_ID);
+    }
+
     public long getId() {
         return id;
     }
@@ -148,6 +156,22 @@ public class Description implements AuditableEntity {
 
     public void setState(IState state) {
         this.state = state;
+    }
+
+    public Timestamp getValidityUntil() {
+        return validityUntil;
+    }
+
+    public void setValidityUntil(Timestamp validityUntil) {
+        this.validityUntil = validityUntil;
+    }
+
+    public boolean isToBeUpdated() {
+        return toBeUpdated;
+    }
+
+    public void setToBeUpdated(boolean toBeUpdated) {
+        this.toBeUpdated = toBeUpdated;
     }
 
     public boolean isToBeUpdated() {

@@ -6,13 +6,14 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:composite="http://java.sun.com/jsf/composite"
       xmlns:smtk="http://java.sun.com/jsf/composite/smtk"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"
       xmlns:c="http://java.sun.com/jsp/jstl/core">
 
 <composite:interface>
-    <composite:attribute name="relationshipDefinition"
-                         type="cl.minsal.semantikos.model.relationships.RelationshipDefinition"/>
+    <composite:attribute name="relationshipDefinition" type="cl.minsal.semantikos.model.relationships.RelationshipDefinition"/>
     <composite:attribute name="targetDefinition" type="cl.minsal.semantikos.model.Category"/>
+    <composite:attribute name="concept" type="cl.minsal.semantikos.model.ConceptSMTKWeb" />
 </composite:interface>
 
 <composite:implementation>
@@ -85,7 +86,7 @@
             <p:dataTable id="tableRelationship" draggableRows="true" style="margin: 10px;"
                          emptyMessage="No existen relaciones, se debe agregar al menos: #{cc.attrs.relationshipDefinition.multiplicity.lowerBoundary}."
                          styleClass="tablas"
-                         value="#{newConceptMBean.concept.getValidRelationshipsByRelationDefinition(cc.attrs.relationshipDefinition)}"
+                         value="#{newConceptMBean.concept.getValidRelationshipsWebByRelationDefinition(cc.attrs.relationshipDefinition)}"
                          var="rel">
                 <p:column headerText="ID">
                     <h:outputText value="#{rel.target.id}"/>
@@ -131,8 +132,8 @@
                                 var="concept"
                                 disabled="#{newConceptMBean.limitRelationship(cc.attrs.relationshipDefinition)}"
                                 value="#{newConceptMBean.conceptSelected}"
-                                itemLabel="#{concept.descriptionFavorite.term}" itemValue="#{concept}"
-                >
+                                itemLabel="#{concept.descriptionFavorite.term}"
+                                itemValue="#{concept}">
 
                     <p:column>
                         <h:outputText value="#{concept.descriptionFavorite.id}"/>
@@ -162,7 +163,7 @@
                          id="tableRelationship2"
                          styleClass="tablas2"
                          draggableRows="true" style="margin: 10px;"
-                         value="#{newConceptMBean.concept.getValidRelationshipsByRelationDefinition(cc.attrs.relationshipDefinition)}"
+                         value="#{newConceptMBean.concept.getValidRelationshipsWebByRelationDefinition(cc.attrs.relationshipDefinition)}"
                          var="rel">
                 <p:column headerText="ID">
                     <h:outputText value="#{rel.target.id}"/>
@@ -195,13 +196,13 @@
     <p:panel id="id2panel"
              styleClass="concept"
              style="margin:20px;"
-             rendered="#{cc.attrs.relationshipDefinition.multiplicity.upperBoundary==1}">
+             rendered="#{cc.attrs.relationshipDefinition.multiplicity.simple}">
 
         <div class="ui-g">
 
             <div class="ui-g-12 ui-md-6 ui-lg-6">
                 <p:panel  style="border: hidden; width: 100%;"
-                          rendered="#{newConceptMBean.concept.getRelationshipsByRelationDefinition(cc.attrs.relationshipDefinition).size() == 0}">
+                          rendered="#{!cc.attrs.concept.hasRelationships(cc.attrs.relationshipDefinition)}">
                 <p:outputLabel rendered="#{cc.attrs.relationshipDefinition.multiplicity.optional}"  value="#{cc.attrs.relationshipDefinition.name}: " for="findConceptSMTK"/>
 
                 <p:outputLabel rendered="#{!cc.attrs.relationshipDefinition.multiplicity.optional}" value="#{cc.attrs.relationshipDefinition.name}: (*)" for="findConceptSMTK"/>
@@ -215,8 +216,7 @@
                                 var="concept"
                                 value="#{newConceptMBean.conceptSelected}"
                                 itemLabel="#{concept.descriptionFavorite.term}" itemValue="#{concept}"
-                                rendered="#{newConceptMBean.concept.getRelationshipsByRelationDefinition(cc.attrs.relationshipDefinition).size()==0}"
-                >
+                                rendered="#{newConceptMBean.concept.getRelationshipsByRelationDefinition(cc.attrs.relationshipDefinition).size()==0}">
 
                     <p:column>
                         <h:outputText value="#{concept.descriptionFavorite.id}"/>
@@ -235,26 +235,29 @@
 
                 </p:panel>
 
-                <p:panel  style="border: hidden; width: 100%;"
-                          rendered="#{newConceptMBean.concept.getRelationshipsByRelationDefinition(cc.attrs.relationshipDefinition).size() != 0}">
-                    <p:outputLabel rendered="#{cc.attrs.relationshipDefinition.multiplicity.optional}"  value="#{cc.attrs.relationshipDefinition.name}: " for="itemSelected"/>
+                <p:panel  style="border: hidden; width: 100%;" rendered="#{cc.attrs.concept.hasRelationships(cc.attrs.relationshipDefinition)}">
+                    <ui:repeat value="#{cc.attrs.concept.getValidRelationshipsWebByRelationDefinition(cc.attrs.relationshipDefinition)}"
+                               var="relationship"
+                               varStatus="var">
+                        <p:outputLabel rendered="#{cc.attrs.relationshipDefinition.multiplicity.optional}"  value="#{cc.attrs.relationshipDefinition.name}: " for="itemSelected"/>
+                        <p:outputLabel rendered="#{!cc.attrs.relationshipDefinition.multiplicity.optional}" value="#{cc.attrs.relationshipDefinition.name}: (*)" for="itemSelected"/>
 
-                    <p:outputLabel rendered="#{!cc.attrs.relationshipDefinition.multiplicity.optional}" value="#{cc.attrs.relationshipDefinition.name}: (*)" for="itemSelected"/>
-
-
-
-                    <p:inputText style="width: 72%;" disabled="true" id="itemSelected"
-                                 value="#{newConceptMBean.concept.getValidRelationshipsByRelationDefinition(cc.attrs.relationshipDefinition).get(0).target.descriptionFavorite.term}"></p:inputText>
+                        <p:inputText style="width: 72%;" disabled="true" id="itemSelected" value="#{relationship.target.descriptionFavorite.term}" />
+                    </ui:repeat>
                 </p:panel>
 
             </div>
             <div class="ui-g-12 ui-md-6 ui-lg-1">
-                <p:commandButton icon="fa fa-trash" title="Eliminar"
-                                 action="#{newConceptMBean.removeRelationship(cc.attrs.relationshipDefinition,newConceptMBean.concept.getRelationshipsByRelationDefinition(cc.attrs.relationshipDefinition).get(0))}"
-                                 update="@(.concept)"
-                                 rendered="#{newConceptMBean.concept.getRelationshipsByRelationDefinition(cc.attrs.relationshipDefinition).size()!=0}"
-                                 process="@this">
-                </p:commandButton>
+                <ui:repeat value="#{cc.attrs.concept.getValidRelationshipsWebByRelationDefinition(cc.attrs.relationshipDefinition)}"
+                           var="relationship"
+                           varStatus="var">
+                    <p:commandButton icon="fa fa-trash" title="Eliminar"
+                                     action="#{newConceptMBean.removeRelationship(cc.attrs.relationshipDefinition,relationship)}"
+                                     update="@(.concept)"
+                                     rendered="#{newConceptMBean.concept.getRelationshipsByRelationDefinition(cc.attrs.relationshipDefinition).size()!=0}"
+                                     process="@this">
+                    </p:commandButton>
+                </ui:repeat>
             </div>
             <div class="ui-g-12 ui-md-6 ui-lg-5">
 
