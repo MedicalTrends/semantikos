@@ -3,11 +3,13 @@ package cl.minsal.semantikos.kernel.components;
 import cl.minsal.semantikos.model.ConceptSMTK;
 import cl.minsal.semantikos.model.Tag;
 
+import javax.ejb.Stateless;
 import java.util.List;
 
 /**
  * @author Andrés Farías on 8/26/16.
  */
+@Stateless
 public class TagManagerImpl implements TagManager {
 
     @Override
