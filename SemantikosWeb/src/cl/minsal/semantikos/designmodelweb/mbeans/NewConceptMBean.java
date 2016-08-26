@@ -128,8 +128,8 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         context.execute("PF('dialogNameConcept').show();");
 
-        //category = categoryManager.getCategoryById(1);
-        category = categoryManager.getCategoryById(105590001);
+        category = categoryManager.getCategoryById(1);
+        //category = categoryManager.getCategoryById(105590001);
         //category = categoryManager.getCategoryById(71388002);
 
 
@@ -274,8 +274,8 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
 
     //      Methods
     public void createConcept() {
-        //concept = newConcept(category, favoriteDescription);
-        concept = getConceptById(80602);
+        concept = newConcept(category, favoriteDescription);
+        //concept = getConceptById(80602);
         RequestContext context = RequestContext.getCurrentInstance();
         context.execute("PF('dialogNameConcept').hide();");
     }

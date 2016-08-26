@@ -9,7 +9,9 @@ import org.slf4j.LoggerFactory;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.StringTokenizer;
 
 /**
  * @author Andrés Farías on 8/26/16.
@@ -46,7 +48,9 @@ public class TagManagerImpl implements TagManager {
     public List<Tag> findTagByNamePattern(String pattern) {
         logger.debug("Buscando tags por patrón: " + pattern);
 
-        List<Tag> tagsBy = tagDAO.findTagsBy(pattern);
+
+        String[] patterns = patternToArray(pattern);
+        List<Tag> tagsBy = tagDAO.findTagsBy(patterns);
         logger.debug(tagsBy.size() + " tags encontrados por patrón: " + pattern);
 
         return tagsBy;
@@ -108,4 +112,23 @@ public class TagManagerImpl implements TagManager {
         tagDAO.linkTagToTag(parent, child);
         logger.debug("Se asociaron Tags:" + parent + " --> " + child);
     }
+
+
+    private String[] patternToArray(String pattern) {
+        if (pattern != null) {
+            StringTokenizer st;
+            String token;
+            st = new StringTokenizer(pattern, " ");
+            ArrayList<String> listPattern = new ArrayList<>();
+
+            while (st.hasMoreTokens()) {
+                token = st.nextToken();
+                listPattern.add(token.trim());
+
+            }
+            return listPattern.toArray(new String[listPattern.size()]);
+        }
+        return new String[0];
+    }
+
 }

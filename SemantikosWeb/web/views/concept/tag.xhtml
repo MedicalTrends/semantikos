@@ -1,0 +1,94 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://java.sun.com/jsf/core"
+                template="/WEB-INF/template/template.xhtml">
+
+    <ui:define name="content">
+        <p:panel id="findConcept">
+            <h:form>
+
+
+
+                <div class="ui-g">
+
+                    <div class="ui-g-12 ui-md-6 ui-lg-3">
+                        <h:outputLabel for="name" value="Nombre Tag:" style="font-weight:bold"/>
+                        <p:inputText id="name" value="#{tagBean.nameTag}" required="true" label="Name"/>
+                    </div>
+                    <div class="ui-g-12 ui-md-6 ui-lg-2">
+                        <h:panelGrid columns="2" cellpadding="5" style="margin-left: 20px">
+                            <h:outputText value="Color Fondo: " />
+                            <p:colorPicker value="#{tagBean.colorBackground}" />
+
+
+                        <p:dialog modal="true" widgetVar="dlg" showEffect="fade" hideEffect="fade" header="Seleccione un color de fondo" resizable="false">
+                            <h:panelGrid id="grid" columns="2" cellpadding="5">
+                                <h:outputText value="Popup color: " />
+                                <h:outputText value="#{tagBean.colorBackground}" style="background-color: \##{tagBean.colorBackground}" />
+                            </h:panelGrid>
+                        </p:dialog>
+                        </h:panelGrid>
+
+                    </div>
+                    <div class="ui-g-12 ui-md-6 ui-lg-2">
+                        <h:panelGrid columns="2" cellpadding="5" style="margin-left: 20px">
+                            <h:outputText value="Color Texto: " />
+                            <p:colorPicker value="#{tagBean.colorText}" />
+
+
+                        <p:dialog modal="true" widgetVar="dlg" showEffect="fade" hideEffect="fade" header="Seleccione un color de letra" resizable="false">
+                            <h:panelGrid id="grid2" columns="2" cellpadding="5">
+                                <h:outputText value="Popup color: " />
+                                <h:outputText value="#{tagBean.colorText}" style="background-color: \##{tagBean.colorText}" />
+                            </h:panelGrid>
+                        </p:dialog>
+                        </h:panelGrid>
+
+                    </div>
+                    <div class="ui-g-12 ui-md-6 ui-lg-5">
+                        <p:commandButton value="Crear Tag"></p:commandButton>
+                    </div>
+                </div>
+
+
+                <div class="ui-g">
+
+                    <div class="ui-g-12 ui-md-6 ui-lg-6">
+                        <p:autoComplete id="inputFindTag" scrollHeight="200" size="5" style="width: 80%;"
+                                        inputStyle="width: 80%;"
+                                        converter="tagConverter" var="tag"
+                                        value="#{tagBean.tagSelected}"
+                                        completeMethod="#{tagBean.findTagByName}"
+                                        itemLabel="#{tag.name}" itemValue="#{tag}"
+                                        emptyMessage="No se encontraron tags relacionados"
+                        >
+                        </p:autoComplete>
+                    </div>
+                    <div class="ui-g-12 ui-md-6 ui-lg-6">
+
+                        <p:selectOneMenu id="tagslist" value="#{tagBean.tag}" >
+
+                            <f:selectItems value="#{tagBean.tagList}" var="tag" itemLabel="#{tag.name}" itemValue="#{tag}"/>
+                            <p:column style="width:10%">
+                                <h:outputText value="#{tag.name}" />
+                            </p:column>
+                        </p:selectOneMenu>
+                    </div>
+                </div>
+
+
+                <div class="ui-g">
+
+                    <p:dataTable>
+
+
+                    </p:dataTable>
+                </div>
+
+            </h:form>
+        </p:panel>
+    </ui:define>
+
+</ui:composition>

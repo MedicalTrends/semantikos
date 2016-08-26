@@ -36,7 +36,7 @@ public interface TagDAO {
      *
      * @return Una lista de TAGS que contienen
      */
-    public List<Tag> findTagsBy(String namePattern);
+    public List<Tag> findTagsBy(String[] namePattern);
 
     /**
      * Este metodo se encarga de anidar un etiqueta padre con su hijo en la base de datos
