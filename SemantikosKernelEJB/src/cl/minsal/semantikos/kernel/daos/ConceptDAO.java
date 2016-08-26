@@ -3,6 +3,7 @@ package cl.minsal.semantikos.kernel.daos;
 import cl.minsal.semantikos.model.Category;
 import cl.minsal.semantikos.model.ConceptSMTK;
 import cl.minsal.semantikos.model.IUser;
+import cl.minsal.semantikos.model.Tag;
 
 import javax.ejb.Local;
 import java.util.List;
@@ -60,6 +61,15 @@ public interface ConceptDAO {
     public int countConceptBy(String[] Pattern, Long[] category, Long[] states);
 
     public int countConceptBy(String Pattern, Long[] category, Long[] states);
+
+    /**
+     * Este método es responsable de recuperar todos los objetos que están asociados a un Tag.
+     *
+     * @param tag El tag del cual los conceptos que están asociados se desean recuperar.
+     *
+     * @return Una lista de conceptos, donde cada uno se encuentra asociado al Tag <code>tag</code>.
+     */
+    List<ConceptSMTK> findConceptsByTag(Tag tag);
 
     /**
      * Este método es responsable de recuperar el concepto con DESCRIPTION_ID.

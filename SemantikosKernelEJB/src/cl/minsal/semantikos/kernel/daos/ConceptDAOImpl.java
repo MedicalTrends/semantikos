@@ -43,44 +43,6 @@ public class ConceptDAOImpl implements ConceptDAO {
     private TargetDAO targetDAO;
 
 
-    /**
-     * Este método es responsable de crear un concepto SMTK a partir de un resultset.
-     *
-     * @param resultSet El resultset a partir del cual se obtienen los conceptos.
-     *
-     * @return La lista de conceptos contenidos en el ResultSet.
-     *
-     * @throws SQLException Se arroja si hay un problema SQL.
-     */
-    private ConceptSMTK createConceptSMTKFromResultSet(ResultSet resultSet) throws SQLException {
-
-        long id;
-        long idCategory;
-        Category objectCategory;
-        boolean check;
-        boolean consult;
-        long state;
-        boolean completelyDefined;
-        boolean published;
-        String conceptId;
-
-        id = Long.valueOf(resultSet.getString("id"));
-        idCategory = Long.valueOf(resultSet.getString("id_category"));
-        objectCategory = categoryDAO.getCategoryById(idCategory);
-        check = Boolean.parseBoolean(resultSet.getString("is_to_be_reviewed"));
-        consult = Boolean.parseBoolean(resultSet.getString("is_to_be_consultated"));
-        state = Long.valueOf(resultSet.getString("id_state_concept"));
-        completelyDefined = Boolean.parseBoolean(resultSet.getString("is_fully_defined"));
-        published = Boolean.parseBoolean(resultSet.getString("is_published"));
-        conceptId = resultSet.getString("conceptid");
-        State st = new State();
-        st.setName(String.valueOf(state));
-        List<Description> descriptions = descriptionDAO.getDescriptionsByConceptID(id);
-
-        Description[] theDescriptions = descriptions.toArray(new Description[descriptions.size()]);
-        return new ConceptSMTK(id, conceptId, objectCategory, check, consult, st, completelyDefined, published, theDescriptions);
-    }
-
     @Override
     public List<ConceptSMTK> getConceptsBy(Long[] states, int pageSize, int pageNumber) {
 
@@ -418,6 +380,70 @@ public class ConceptDAOImpl implements ConceptDAO {
     }
 
     @Override
+    public List<ConceptSMTK> findConceptsByTag(Tag tag) {
+
+        List<ConceptSMTK> concepts = new ArrayList<>();
+        ConnectionBD connect = new ConnectionBD();
+        try (Connection connection = connect.getConnection();
+             CallableStatement call = connection.prepareCall("{call semantikos.find_concepts_by_tag(?)}")) {
+
+            call.setLong(1, tag.getId());
+            call.execute();
+
+            ResultSet rs = call.getResultSet();
+            while (rs.next()) {
+                ConceptSMTK conceptSMTKFromResultSet = createConceptSMTKFromResultSet(rs);
+                concepts.add(conceptSMTKFromResultSet);
+            }
+            rs.close();
+        } catch (SQLException e) {
+            String errorMgs = "Error al buscar conceptos por Tag[" + tag + "]";
+            logger.error(errorMgs, e);
+            throw new EJBException(errorMgs, e);
+        }
+
+        return concepts;
+    }
+
+    /**
+     * Este método es responsable de crear un concepto SMTK a partir de un resultset.
+     *
+     * @param resultSet El resultset a partir del cual se obtienen los conceptos.
+     *
+     * @return La lista de conceptos contenidos en el ResultSet.
+     *
+     * @throws SQLException Se arroja si hay un problema SQL.
+     */
+    private ConceptSMTK createConceptSMTKFromResultSet(ResultSet resultSet) throws SQLException {
+
+        long id;
+        long idCategory;
+        Category objectCategory;
+        boolean check;
+        boolean consult;
+        long state;
+        boolean completelyDefined;
+        boolean published;
+        String conceptId;
+
+        id = Long.valueOf(resultSet.getString("id"));
+        idCategory = Long.valueOf(resultSet.getString("id_category"));
+        objectCategory = categoryDAO.getCategoryById(idCategory);
+        check = Boolean.parseBoolean(resultSet.getString("is_to_be_reviewed"));
+        consult = Boolean.parseBoolean(resultSet.getString("is_to_be_consultated"));
+        state = Long.valueOf(resultSet.getString("id_state_concept"));
+        completelyDefined = Boolean.parseBoolean(resultSet.getString("is_fully_defined"));
+        published = Boolean.parseBoolean(resultSet.getString("is_published"));
+        conceptId = resultSet.getString("conceptid");
+        State st = new State();
+        st.setName(String.valueOf(state));
+        List<Description> descriptions = descriptionDAO.getDescriptionsByConceptID(id);
+
+        Description[] theDescriptions = descriptions.toArray(new Description[descriptions.size()]);
+        return new ConceptSMTK(id, conceptId, objectCategory, check, consult, st, completelyDefined, published, theDescriptions);
+    }
+
+    @Override
     //TODO: Revisar transaccionalidad de estas tres acciones
     public void persist(ConceptSMTK conceptSMTK, IUser user) {
 
@@ -449,7 +475,7 @@ public class ConceptDAOImpl implements ConceptDAO {
 
             call.setLong(1, conceptSMTK.getId());
             call.setString(2, conceptSMTK.getConceptID());
-            call.setLong(2,conceptSMTK.getCategory().getIdCategory());
+            call.setLong(2, conceptSMTK.getCategory().getIdCategory());
             call.setBoolean(3, conceptSMTK.isToBeReviewed());
             call.setBoolean(4, conceptSMTK.isToBeConsulted());
             call.setLong(5, conceptSMTK.getState().getId());
@@ -473,7 +499,7 @@ public class ConceptDAOImpl implements ConceptDAO {
             throw new EJBException(errorMsg, e);
         }
 
-        if (updated == 0){
+        if (updated == 0) {
             logger.info("Información de concepto (CONCEPT_ID=" + conceptSMTK.getConceptID() + ") actualizada exitosamente.");
         } else {
             String errorMsg = "Información de concepto (CONCEPT_ID=" + conceptSMTK.getConceptID() + ") no fue actualizada.";
@@ -492,7 +518,7 @@ public class ConceptDAOImpl implements ConceptDAO {
              CallableStatement call = connection.prepareCall(sql)) {
 
             call.setString(1, conceptSMTK.getConceptID());
-            call.setLong(2,conceptSMTK.getCategory().getIdCategory());
+            call.setLong(2, conceptSMTK.getCategory().getIdCategory());
             call.setBoolean(3, conceptSMTK.isToBeReviewed());
             call.setBoolean(4, conceptSMTK.isToBeConsulted());
             call.setLong(5, conceptSMTK.getState().getId());
