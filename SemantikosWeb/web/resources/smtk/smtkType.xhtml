@@ -129,6 +129,7 @@
                                 inputStyle="width: 80%;"
                                 completeMethod="#{smtkBean.getConceptSearchInput}"
                                 converter="conceptConverter"
+                                validator="#{newConceptMBean.validateRelationships}"
                                 var="concept"
                                 disabled="#{newConceptMBean.limitRelationship(cc.attrs.relationshipDefinition)}"
                                 value="#{newConceptMBean.conceptSelected}"

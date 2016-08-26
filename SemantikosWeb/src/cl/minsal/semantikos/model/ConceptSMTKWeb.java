@@ -3,6 +3,7 @@ package cl.minsal.semantikos.model;
 import cl.minsal.semantikos.model.relationships.Relationship;
 import cl.minsal.semantikos.model.relationships.RelationshipDefinition;
 
+import javax.validation.ConstraintValidatorContext;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -14,13 +15,6 @@ import java.util.List;
 public class ConceptSMTKWeb extends ConceptSMTK {
 
     List<RelationshipWeb> relationshipsWeb = new ArrayList<RelationshipWeb>();;
-
-    public ConceptSMTKWeb(Category category, Description favouriteDescription, IState initialState) {
-        super(category, initialState, favouriteDescription);
-        for (Relationship relationship : this.getRelationships()) {
-            this.addRelationshipWeb(new RelationshipWeb(relationship, false));
-        }
-    }
 
     public ConceptSMTKWeb(String conceptID, Category category, boolean isToBeReviewed, boolean isToBeConsulted, IState state, boolean isFullyDefined, boolean isPublished, Description... descriptions) {
         super(conceptID, category, isToBeReviewed, isToBeConsulted, state, isFullyDefined, isPublished, descriptions);
@@ -100,7 +94,10 @@ public class ConceptSMTKWeb extends ConceptSMTK {
     public void setRelationshipsWeb(List<Relationship> relationships) {
         //this.setRelationships(relationships);
         for (Relationship relationship : relationships) {
-            this.addRelationshipWeb(new RelationshipWeb(relationship, false));
+            if(relationship.isPersisted())
+                this.addRelationshipWeb(new RelationshipWeb(relationship.getId(), relationship, false));
+            else
+                this.addRelationshipWeb(new RelationshipWeb(relationship, false));
         }
     }
 
@@ -122,6 +119,41 @@ public class ConceptSMTKWeb extends ConceptSMTK {
     public void removeRelationshipWeb(RelationshipWeb relationshipWeb) {
         super.getRelationships().remove(relationshipWeb);
         this.getRelationshipsWeb().remove(relationshipWeb);
+    }
+
+    public boolean prepareForUpdate(){
+        getRelationships().clear();
+        for (RelationshipWeb rWeb : relationshipsWeb) {
+            if(rWeb.isPersisted())
+                this.addRelationship(new Relationship(rWeb.getId(), rWeb.getSourceConcept(), rWeb.getTarget(), rWeb.getRelationshipDefinition(), rWeb.getValidityUntil()));
+            else
+                this.addRelationship(new Relationship(rWeb.getSourceConcept(), rWeb.getTarget(), rWeb.getRelationshipDefinition()));
+        }
+        return true;
+    }
+
+    /**
+     * Este metodo revisa que las relaciones cumplan el lower_boundary del
+     * relationship definition, en caso de no cumplir la condicion se retorna falso.
+     *
+     * @return
+     */
+    public boolean isValid() {
+
+        for (RelationshipDefinition relationshipDef : this.getCategory().getRelationshipDefinitions()) {
+
+            List<RelationshipWeb> relationships= this.getValidRelationshipsWebByRelationDefinition(relationshipDef);
+
+            if(relationships.size()<relationshipDef.getMultiplicity().getLowerBoundary())
+                return false;
+            /*
+            for (Relationship relationship : relationships) {
+                if(relationship.getTarget().)
+            }
+            */
+        }
+
+        return true;
     }
 
     @Override
