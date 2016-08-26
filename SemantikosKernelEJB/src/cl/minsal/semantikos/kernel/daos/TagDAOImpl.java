@@ -119,7 +119,7 @@ public class TagDAOImpl implements TagDAO {
         try (Connection connection = connect.getConnection();
              CallableStatement call = connection.prepareCall("{call semantikos.find_tag_by_pattern(?)}")) {
 
-            call.setArray(1, connect.getConnection().createArrayOf("text",namePattern));
+            call.setArray(1, connect.getConnection().createArrayOf("text", namePattern));
             call.execute();
 
             ResultSet rs = call.getResultSet();
@@ -143,11 +143,24 @@ public class TagDAOImpl implements TagDAO {
 
     @Override
     public void linkTagToTag(Tag tagPattern, Tag tagChild) {
+        ConnectionBD connect = new ConnectionBD();
 
+        try (Connection connection = connect.getConnection();
+             CallableStatement call = connection.prepareCall("{call semantikos.link_parent_tag_to_child_tag(?,?)}")) {
+
+            call.setLong(1, tagPattern.getId());
+            call.setLong(2, tagChild.getId());
+            call.execute();
+        } catch (SQLException e) {
+            String errorMsg = "Error al asociar el tag " + tagChild + " al padre " + tagPattern;
+            logger.error(errorMsg, e);
+            throw new EJBException(errorMsg, e);
+        }
     }
 
     @Override
     public List<Tag> getAllTags() {
+
         ConnectionBD connect = new ConnectionBD();
 
         String json;
@@ -209,18 +222,68 @@ public class TagDAOImpl implements TagDAO {
 
     @Override
     public void assignTag(ConceptSMTK conceptSMTK, Tag tag) {
+        ConnectionBD connect = new ConnectionBD();
 
+        logger.error("Asociando el tag " + tag + " al concepto " + conceptSMTK);
+        try (Connection connection = connect.getConnection();
+             CallableStatement call = connection.prepareCall("{call semantikos.assign_concept_to_tag(?,?)}")) {
+
+            call.setLong(1, conceptSMTK.getId());
+            call.setLong(2, tag.getId());
+            call.execute();
+        } catch (SQLException e) {
+            String errorMsg = "Error al asociar el tag " + tag + " al concepto " + conceptSMTK;
+            logger.error(errorMsg, e);
+            throw new EJBException(errorMsg, e);
+        }
     }
 
     @Override
     public void unassignTag(ConceptSMTK conceptSMTK, Tag tag) {
+        ConnectionBD connect = new ConnectionBD();
+
+        logger.error("Desasociando el tag " + tag + " al concepto " + conceptSMTK);
+        try (Connection connection = connect.getConnection();
+             CallableStatement call = connection.prepareCall("{call semantikos.assign_concept_to_tag(?,?)}")) {
+
+            call.setLong(1, conceptSMTK.getId());
+            call.setLong(2, tag.getId());
+            call.execute();
+        } catch (SQLException e) {
+            String errorMsg = "Error al asociar el tag " + tag + " al concepto " + conceptSMTK;
+            logger.error(errorMsg, e);
+            throw new EJBException(errorMsg, e);
+        }
 
     }
 
     @Override
     public Tag findTagByID(long id) {
-        return null;
+        ConnectionBD connect = new ConnectionBD();
+
+        String json;
+        try (Connection connection = connect.getConnection();
+             CallableStatement call = connection.prepareCall("{call semantikos.find_tags_by_parent(?)}")) {
+
+            call.setLong(1, id);
+            call.execute();
+
+            ResultSet rs = call.getResultSet();
+            if (rs.next()) {
+                json = rs.getString(1);
+            } else {
+                String errorMsg = "Error imposible!";
+                logger.error(errorMsg);
+                throw new EJBException(errorMsg);
+            }
+            rs.close();
+
+        } catch (SQLException e) {
+            String errorMsg = "Error al buscar los hijos del tag con ID=" + id;
+            logger.error(errorMsg, e);
+            throw new EJBException(errorMsg, e);
+        }
+
+        return tagFactory.createTagFromJSON(json);
     }
-
-
 }

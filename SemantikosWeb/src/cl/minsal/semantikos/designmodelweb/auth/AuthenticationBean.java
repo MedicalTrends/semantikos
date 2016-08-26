@@ -13,6 +13,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.naming.AuthenticationException;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
@@ -58,8 +59,11 @@ public class AuthenticationBean {
 
         try {
             //valida user y pass
-            if(!authenticationManager.authenticate(username,password,request)){
-                facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Datos Incorrectos!", "Nombre de usuario y/o contraseña incorrecta."));
+            try{
+                authenticationManager.authenticate(username,password,request);
+            }
+            catch (AuthenticationException e){
+                facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Ingreso fallido", e.getMessage()));
                 return;
             }
 
