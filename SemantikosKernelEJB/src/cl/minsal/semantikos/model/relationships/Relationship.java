@@ -147,14 +147,6 @@ public class Relationship implements AuditableEntity {
     }
 
     /**
-     * Este método determina si esta relación está persistido o no
-     * @return Un <code>java.lang.boolean</code>
-     */
-    public boolean isPersisted(){
-        return (this.id != NON_PERSISTED_ID);
-    }
-
-    /**
      * Este método es responsable de determinar si la relación está bien definida, es decir, si posee un valor de
      * target y que éste es consistente con el Target Definition.
      *

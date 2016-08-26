@@ -1,5 +1,6 @@
 package cl.minsal.semantikos.model;
 
+import cl.minsal.semantikos.kernel.daos.DAO;
 import cl.minsal.semantikos.model.audit.AuditableEntity;
 
 import java.sql.Timestamp;
@@ -83,7 +84,7 @@ public class Description implements AuditableEntity {
      * @return Un <code>java.lang.boolean</code>
      */
     public boolean isPersisted(){
-        return (this.id != NON_PERSISTED_ID);
+        return (this.id != DAO.NON_PERSISTED_ID);
     }
 
     public long getId() {
@@ -156,22 +157,6 @@ public class Description implements AuditableEntity {
 
     public void setState(IState state) {
         this.state = state;
-    }
-
-    public Timestamp getValidityUntil() {
-        return validityUntil;
-    }
-
-    public void setValidityUntil(Timestamp validityUntil) {
-        this.validityUntil = validityUntil;
-    }
-
-    public boolean isToBeUpdated() {
-        return toBeUpdated;
-    }
-
-    public void setToBeUpdated(boolean toBeUpdated) {
-        this.toBeUpdated = toBeUpdated;
     }
 
     public boolean isToBeUpdated() {

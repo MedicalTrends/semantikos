@@ -31,7 +31,7 @@ public class JbossSecurutyDomainAuthenticationBean extends AuthenticationMethod{
     @EJB
     AuthDAO authDAO;
 
-    public void authenticate(String username, String password, HttpServletRequest request) throws AuthenticationException {
+    public boolean authenticate(String username, String password, HttpServletRequest request) throws AuthenticationException {
 
         User user = authDAO.getUserByUsername(username);
 
@@ -65,8 +65,7 @@ public class JbossSecurutyDomainAuthenticationBean extends AuthenticationMethod{
         }
 
         authDAO.markLogin(username);
-
-
+        return true;
     }
 
     private void failLogin(User user) {

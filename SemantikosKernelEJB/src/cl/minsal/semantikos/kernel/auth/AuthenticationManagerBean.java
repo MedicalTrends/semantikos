@@ -26,9 +26,9 @@ public class AuthenticationManagerBean{
     @EJB(name = "JbossSecurutyDomainAuthenticationEJB")
     JbossSecurutyDomainAuthenticationBean jbossSecurutyDomainAuthenticationBean;
 
-    public void authenticate(String username, String password, HttpServletRequest request) throws AuthenticationException{
+    public boolean authenticate(String username, String password, HttpServletRequest request) throws AuthenticationException{
 
-        getAuthenticationMethod().authenticate(username,password,request);
+        return getAuthenticationMethod().authenticate(username,password,request);
     }
 
     public IUser getUserDetails(String username){
