@@ -1,11 +1,15 @@
 package cl.minsal.semantikos.model;
 
+import java.sql.Array;
 import java.util.List;
 
 /**
  * @author Gustavo Punucura
  */
 public class Tag {
+
+    /** Identificador único del Tag en la BDD */
+    private long id;
 
     private String name;
     private String colorBackground;
@@ -14,7 +18,8 @@ public class Tag {
     private Tag parentTag;
 
 
-    public Tag(String name, String colorBackground, String colorLetter, List<Tag> childTag, Tag parentTag) {
+    public Tag(long id, String name, String colorBackground, String colorLetter, List<Tag> childTag, Tag parentTag) {
+        this.id = id;
         this.name = name;
         this.colorBackground = colorBackground;
         this.colorLetter = colorLetter;
@@ -60,5 +65,13 @@ public class Tag {
 
     public void setColorLetter(String colorLetter) {
         this.colorLetter = colorLetter;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 }
