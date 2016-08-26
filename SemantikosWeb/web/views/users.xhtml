@@ -15,6 +15,9 @@
                             <h2 class="TexAlCenter BigTopic">Administracion de Usuarios</h2>
 
                             <h:form id="form">
+
+                                <p:commandButton action="#{users.newUser}"  update=":form:user-edit" oncomplete="PF('editDialog').show()" icon="fa fa-plus" title="Crear Nuevo Usuario" />
+
                                 <p:dataTable id="singleDT" var="user" value="#{users.allUsers}" rowKey="#{user.idUser}"
                                              rows="10" paginator="true" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                              rowsPerPageTemplate="10,50,100" emptyMessage="No hay usuarios en la Base de Datos" reflow="true">

@@ -158,8 +158,22 @@ public class AuthDAO {
 
     public void createUser(User user) throws UserExistsException{
 
-        Query q = em.createNativeQuery("INSERT INTO semantikos.smtk_user (id, username, password_hash, password_salt, name, last_name, second_last_name, email, locked, failed_login_attempts, last_login, last_password_change, last_password_hash1, last_password_hash2, last_password_hash3, last_password_hash4, last_password_salt1, last_password_salt2, last_password_salt3, last_password_salt4, rut) " +
-                "VALUES (DEFAULT, ?, ?, ?, ?, ?, ?, ?, DEFAULT, DEFAULT, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        if(getUserByUsername(user.getUsername())!= null)
+            throw new UserExistsException();
+
+
+        Query q = em.createNativeQuery("INSERT INTO semantikos.smtk_user (id, username, name, last_name, second_last_name, email, locked, failed_login_attempts, rut) " +
+                "                                                 VALUES (DEFAULT, ?  , ?   , ?        , ?               , ?    , ?     , ?                    , ? )");
+
+
+        q.setParameter(1,user.getUsername());
+        q.setParameter(2,user.getName());
+        q.setParameter(3,user.getLastName());
+        q.setParameter(4,user.getSecondLastName());
+        q.setParameter(5,user.getEmail());
+        q.setParameter(6,false);
+        q.setParameter(7,0);
+        q.setParameter(8,user.getRut());
 
         q.executeUpdate();
 
@@ -296,6 +310,6 @@ public class AuthDAO {
     }
 
 
-    private class UserExistsException extends Exception {
+    public class UserExistsException extends Exception {
     }
 }

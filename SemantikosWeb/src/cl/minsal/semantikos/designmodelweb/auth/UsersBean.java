@@ -100,6 +100,7 @@ public class UsersBean {
 
     public void newUser(){
         setSelectedUser( new User());
+        getSelectedUser().setIdUser(-1);
     }
 
     public void saveUser(){
@@ -107,7 +108,11 @@ public class UsersBean {
         try {
             selectedUser.setProfiles(selectedUserProfileModel.getTarget());
 
-            userManager.updateUser(selectedUser);
+
+            if(selectedUser.getIdUser() == -1)
+                userManager.createUser(selectedUser);
+            else
+                userManager.updateUser(selectedUser);
 
 
         }catch (Exception e){
