@@ -48,7 +48,16 @@ public interface TagDAO {
      *
      * @return Una lista <code>List</code> de Tags.
      */
-    List<Tag> getAllTags();
+    public List<Tag> getAllTags();
+
+    /**
+     * Este método es responsable de recuperar todos los hijos de un Tag.
+     *
+     * @param idParent El ID del Tag cuyos hijos se desea recuperar.
+     *
+     * @return Una lista de Tags que son hijos del Tag cuyo identificador es <code>idParent</code>.
+     */
+    public List<Tag> getChildrenOf(long idParent);
 
     /**
      * Este método es responsable de asociar un Tag a un Concepto.
