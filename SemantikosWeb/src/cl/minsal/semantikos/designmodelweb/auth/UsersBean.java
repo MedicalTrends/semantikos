@@ -105,8 +105,13 @@ public class UsersBean {
     public void saveUser(){
 
         try {
+            selectedUser.setProfiles(selectedUserProfileModel.getTarget());
+
             userManager.updateUser(selectedUser);
+
+
         }catch (Exception e){
+            logger.error("error al actualizar usuario",e);
 
         }
     }

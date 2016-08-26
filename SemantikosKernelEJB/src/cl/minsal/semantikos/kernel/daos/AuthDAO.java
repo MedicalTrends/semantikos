@@ -187,6 +187,28 @@ public class AuthDAO {
 
 
 
+        Query q2 = em.createNativeQuery("delete from semantikos.smtk_user_profile where id_user = ?");
+        q2.setParameter(1,user.getIdUser());
+        q2.executeUpdate();
+
+
+        for (Profile p: user.getProfiles()) {
+
+            addProfileToUser(user,p);
+
+        }
+
+
+
+    }
+
+    private void addProfileToUser(User user, Profile p) {
+        Query q = em.createNativeQuery("INSERT INTO semantikos.smtk_user_profile (id_user, id_profile) VALUES (?, ?)");
+
+        q.setParameter(1,user.getIdUser());
+        q.setParameter(2,p.getIdProfile());
+
+        q.executeUpdate();
     }
 
     public List<Profile> getAllProfiles() {
@@ -213,7 +235,12 @@ public class AuthDAO {
                 "last_password_hash1 = ?, " +
                 "last_password_hash2 = ?, " +
                 "last_password_hash3 = ?, " +
-                "last_password_hash4= ?  " +
+                "last_password_hash4 = ?, " +
+                "password_salt = ?, " +
+                "last_password_salt1 = ?, " +
+                "last_password_salt2 = ?, " +
+                "last_password_salt3 = ?, " +
+                "last_password_salt4 = ?, " +
                 "where id = ?");
 
         q.setParameter(1,user.getLastPasswordChange());
@@ -222,7 +249,12 @@ public class AuthDAO {
         q.setParameter(4,user.getLastPasswordHash2());
         q.setParameter(5,user.getLastPasswordHash3());
         q.setParameter(6,user.getLastPasswordHash4());
-        q.setParameter(7,user.getIdUser());
+        q.setParameter(7,user.getPasswordSalt());
+        q.setParameter(8,user.getLastPasswordSalt1());
+        q.setParameter(9,user.getLastPasswordSalt2());
+        q.setParameter(10,user.getLastPasswordSalt3());
+        q.setParameter(11,user.getLastPasswordSalt4());
+        q.setParameter(12,user.getIdUser());
 
         q.executeUpdate();
 
