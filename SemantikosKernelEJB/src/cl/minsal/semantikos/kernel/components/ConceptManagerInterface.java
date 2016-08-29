@@ -17,6 +17,23 @@ public interface ConceptManagerInterface {
 
 
     /**
+     * Este método es responsable de persistir un concepto que no se encuentra persistido. Esta acción, de
+     * persistencia,
+     * queda registrado como una actividad de auditoría.
+     *
+     * @param conceptSMTK El concepto a persistir.
+     * @param user        El usuario que persiste el concepto.
+     */
+    public void persist(@NotNull ConceptSMTK conceptSMTK, User user);
+
+    /**
+     * Este método es responsable de cambiar el estado de publicación del concepto.
+     * @param conceptSMTK El concepto cuyo estado de publicación ha cambiado.
+     * @param user El usuario que realizó el cambio.
+     */
+    public void publish(@NotNull ConceptSMTK conceptSMTK, User user);
+
+    /**
      * Este método es responsable de recuperar el concepto con DESCRIPTION_ID.
      *
      * @param conceptId El DESCRIPTION_ID (valor de negocio) del concepto que se desea recuperar.
@@ -71,26 +88,6 @@ public interface ConceptManagerInterface {
      * @return retorna un entero con la cantidad
      */
     public int countConceptBy(String pattern, Long[] categories);
-
-    /**
-     * Este método es responsable de persistir un concepto que no se encuentra persistido. Esta acción, de
-     * persistencia,
-     * queda registrado como una actividad de auditoría.
-     *
-     * @param conceptSMTK El concepto a persistir.
-     * @param user        El usuario que persiste el concepto.
-     */
-    void persist(@NotNull ConceptSMTK conceptSMTK, User user);
-
-    /**
-     * Este método es responsable de persistir las modificaciones realizadas sobre el concepto. Esta acción, de
-     * persistencia,
-     * queda registrado como una actividad de auditoría.
-     *
-     * @param conceptSMTK El concepto a actualizar.
-     * @param user        El usuario que actualiza el concepto.
-     */
-    void update(@NotNull ConceptSMTK conceptSMTK, User user);
 
     /**
      * Este método es responsable de actualizar el estado de la entidad en la base de datos.

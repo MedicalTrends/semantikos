@@ -7,7 +7,6 @@ import cl.minsal.semantikos.model.ConceptSMTK;
 import cl.minsal.semantikos.model.Description;
 import cl.minsal.semantikos.model.User;
 import cl.minsal.semantikos.model.businessrules.ConceptCreationBusinessRuleContainer;
-import cl.minsal.semantikos.model.businessrules.ConceptEditionBusinessRuleContainer;
 import cl.minsal.semantikos.model.businessrules.DescriptionEditionBR;
 import cl.minsal.semantikos.model.businessrules.RelationshipEditionBR;
 import cl.minsal.semantikos.model.relationships.Relationship;
@@ -196,33 +195,8 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
     }
 
     @Override
-    public void update(@NotNull ConceptSMTK conceptSMTK, User user) {
-
-        /* Pre-condición técnica: el concepto no debe estar persistido */
-        validatesIsPersistent(conceptSMTK);
-
-        /* Pre-condiciones: Reglas de negocio para la persistencia */
-        new ConceptEditionBusinessRuleContainer().apply(conceptSMTK, user);
-
-        /* Se actualiza la información base del concepto. En esta actualización se revisa si ha cambiado el objeto
-         * respecto a su estado de publicación
-         */
-        if (conceptSMTK.isJustPublished()) {
-            auditManager.recordConceptPublished(conceptSMTK, user);
-        }
-        conceptDAO.update(conceptSMTK);
-
-        /* Y luego actualizar las descripciones (siguiendo las reglas de negocio) */
-        updateDescriptions(conceptSMTK);
-
-        /* Y luego las relaciones marcadas como modificadas y creadas */
-        updateRelationships(conceptSMTK);
-
-        // TODO: Invocar el DAO para hacer el update, quizás por cada uno...
-
-        /* Se deja registro en la auditoría */
-        auditManager.recordUpdateConcept(conceptSMTK, user);
-        logger.debug("El concepto " + conceptSMTK + " fue actualizado.");
+    public void publish(@NotNull ConceptSMTK conceptSMTK, User user) {
+        conceptSMTK.setPublished(true);
     }
 
     /**
@@ -305,8 +279,9 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
      * </p>
      *
      * @param conceptSMTK El concepto cuyas descripciones se quieren actualizar.
+     * @param user
      */
-    private void updateDescriptions(ConceptSMTK conceptSMTK) {
+    private void updateDescriptions(ConceptSMTK conceptSMTK, User user) {
 
         List<Description> descriptions = conceptSMTK.getDescriptions();
         for (Description description : descriptions) {
@@ -323,7 +298,7 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
 
                 /* Y se actualizan */
                 descriptionDAO.invalidate(original);
-                descriptionDAO.persist(changed, conceptSMTK);
+                descriptionDAO.persist(changed, conceptSMTK, user);
             }
         }
     }

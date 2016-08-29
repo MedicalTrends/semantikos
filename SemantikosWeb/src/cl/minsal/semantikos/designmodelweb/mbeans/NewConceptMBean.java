@@ -518,7 +518,7 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
 
         FacesContext context = FacesContext.getCurrentInstance();
 
-        if (FSN != null || FSN.length() > 0) {
+        if (FSN != null && FSN.length() > 0) {
             addDescriptionToConcept(FSN, descriptionManager.getTypeFSN(), true);
 
             if (!concept.isValid()) {
@@ -528,8 +528,8 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
                 // Si el concepto está persistido, actualizarlo
                 if(concept.isPersisted()) {
                     // Se prepara para la actualización
-                    if(concept.prepareForUpdate())
-                        conceptManager.update(concept, user);
+                    //if(concept.prepareForUpdate())
+                        //conceptManager.update(concept, user);
                 }
                 // Si el concepto no está persistido, persistirlo
                 else {
