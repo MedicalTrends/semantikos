@@ -9,7 +9,7 @@ import static cl.minsal.semantikos.kernel.daos.DAO.NON_PERSISTED_ID;
 /**
  * @author Francisco Mendez
  */
-public class User implements IUser {
+public class User {
 
     private static User dummyUser = new User(NON_PERSISTED_ID, "dummy", "Usuario de Prueba", true);
 
@@ -61,7 +61,6 @@ public class User implements IUser {
         this.locked = locked;
     }
 
-    @Override
     public long getIdUser() {
         return idUser;
     }
@@ -70,7 +69,6 @@ public class User implements IUser {
         this.idUser = idUser;
     }
 
-    @Override
     public String getUsername() {
         return username;
     }
@@ -79,7 +77,6 @@ public class User implements IUser {
         this.username = username;
     }
 
-    @Override
     public String getName() {
         return name;
     }
@@ -88,7 +85,6 @@ public class User implements IUser {
         this.name = name;
     }
 
-    @Override
     public String getEmail() {
         return email;
     }
@@ -97,7 +93,6 @@ public class User implements IUser {
         this.email = email;
     }
 
-    @Override
     public List<Profile> getProfiles() {
         if (profiles == null)
             profiles = new ArrayList<Profile>();
@@ -108,7 +103,6 @@ public class User implements IUser {
         this.profiles = profiles;
     }
 
-    @Override
     public List<Group> getGroups() {
         if (groups == null)
             groups = new ArrayList<Group>();
@@ -119,8 +113,6 @@ public class User implements IUser {
         this.groups = groups;
     }
 
-
-    @Override
     public List<Permission> getPermissions() {
         if (permissions == null)
             permissions = new ArrayList<Permission>();
@@ -131,7 +123,6 @@ public class User implements IUser {
         this.permissions = permissions;
     }
 
-    @Override
     public String getLastName() {
         return lastName;
     }
@@ -140,7 +131,6 @@ public class User implements IUser {
         this.lastName = lastName;
     }
 
-    @Override
     public String getSecondLastName() {
         return secondLastName;
     }
@@ -149,7 +139,6 @@ public class User implements IUser {
         this.secondLastName = secondLastName;
     }
 
-    @Override
     public String getPassword() {
         return password;
     }
@@ -158,7 +147,6 @@ public class User implements IUser {
         this.password = password;
     }
 
-    @Override
     public String getPasswordHash() {
         return passwordHash;
     }
@@ -167,7 +155,6 @@ public class User implements IUser {
         this.passwordHash = passwordHash;
     }
 
-    @Override
     public String getPasswordSalt() {
         return passwordSalt;
     }
@@ -282,7 +269,7 @@ public class User implements IUser {
 
     @Override
     public boolean equals(Object other) {
-        return (other instanceof IUser) && (String.valueOf(idUser) != null)
+        return (other instanceof User) && (String.valueOf(idUser) != null)
                 ? String.valueOf(idUser).equals(String.valueOf(((User) other).idUser))
                 : (other == this);
     }
@@ -306,12 +293,10 @@ public class User implements IUser {
      *
      * @return <code>true</code> si se agregó el perfile y <code>false</code> sino.
      */
-    @Override
     public boolean addProfile(Profile aProfile) {
         return this.profiles.add(aProfile);
     }
 
-    @Override
     public boolean isNullUser() {
         return false;
     }

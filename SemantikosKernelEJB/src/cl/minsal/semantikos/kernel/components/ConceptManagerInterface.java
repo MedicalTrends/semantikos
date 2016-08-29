@@ -2,12 +2,11 @@ package cl.minsal.semantikos.kernel.components;
 
 import cl.minsal.semantikos.model.ConceptSMTK;
 import cl.minsal.semantikos.model.Description;
-import cl.minsal.semantikos.model.IUser;
+import cl.minsal.semantikos.model.User;
 import cl.minsal.semantikos.model.relationships.Relationship;
 
 import javax.ejb.Local;
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -16,6 +15,23 @@ import java.util.List;
 @Local
 public interface ConceptManagerInterface {
 
+
+    /**
+     * Este método es responsable de persistir un concepto que no se encuentra persistido. Esta acción, de
+     * persistencia,
+     * queda registrado como una actividad de auditoría.
+     *
+     * @param conceptSMTK El concepto a persistir.
+     * @param user        El usuario que persiste el concepto.
+     */
+    public void persist(@NotNull ConceptSMTK conceptSMTK, User user);
+
+    /**
+     * Este método es responsable de cambiar el estado de publicación del concepto.
+     * @param conceptSMTK El concepto cuyo estado de publicación ha cambiado.
+     * @param user El usuario que realizó el cambio.
+     */
+    public void publish(@NotNull ConceptSMTK conceptSMTK, User user);
 
     /**
      * Este método es responsable de recuperar el concepto con DESCRIPTION_ID.
@@ -72,24 +88,6 @@ public interface ConceptManagerInterface {
      * @return retorna un entero con la cantidad
      */
     public int countConceptBy(String pattern, Long[] categories);
-
-    /**
-     * Este método es responsable de persistir un concepto que no se encuentra persistido. Esta acción, de
-     * persistencia,
-     * queda registrado como una actividad de auditoría.
-     *
-     * @param conceptSMTK El concepto a persistir.
-     */
-    void persist(@NotNull ConceptSMTK conceptSMTK, IUser user);
-
-    /**
-     * Este método es responsable de persistir las modificaciones realizadas sobre el concepto. Esta acción, de
-     * persistencia,
-     * queda registrado como una actividad de auditoría.
-     *
-     * @param conceptSMTK El concepto a persistir.
-     */
-    void update(@NotNull ConceptSMTK conceptSMTK, IUser user);
 
     /**
      * Este método es responsable de actualizar el estado de la entidad en la base de datos.

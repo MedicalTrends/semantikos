@@ -1,6 +1,10 @@
 package cl.minsal.semantikos.kernel.daos;
 
 import cl.minsal.semantikos.kernel.util.ConnectionBD;
+import cl.minsal.semantikos.model.ConceptSMTK;
+import cl.minsal.semantikos.model.User;
+import cl.minsal.semantikos.model.audit.AuditActionType;
+import cl.minsal.semantikos.model.audit.AuditableEntity;
 import cl.minsal.semantikos.model.audit.ConceptAuditAction;
 import cl.minsal.semantikos.model.audit.ConceptAuditActionFactory;
 import org.slf4j.Logger;
@@ -9,10 +13,7 @@ import org.slf4j.LoggerFactory;
 import javax.ejb.EJB;
 import javax.ejb.EJBException;
 import javax.ejb.Stateless;
-import java.sql.CallableStatement;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.List;
 
 /**
@@ -60,5 +61,42 @@ public class AuditDAOImpl implements AuditDAO {
         }
 
         return auditActions;
+    }
+
+    @Override
+    public void recordAuditAction(ConceptAuditAction conceptAuditAction) {
+
+        logger.debug("Registrando información de Auditoría: " + conceptAuditAction);
+        ConnectionBD connect = new ConnectionBD();
+        /*
+         * param 1: La fecha en que se realiza (Timestamp).
+         * param 2: El usuario que realiza la acción (id_user).
+         * param 3: concepto en el que se realiza la acción.
+         * param 4: El tipo de acción que realiza
+         * param 5: La entidad en la que se realizó la acción..
+         */
+        String sqlQuery = "{call semantikos.create_concept_audit_actions(?,?,?,?,?)}";
+        try (Connection connection = connect.getConnection();
+             CallableStatement call = connection.prepareCall(sqlQuery)) {
+
+            /* Se invoca la consulta para recuperar las relaciones */
+            Timestamp actionDate = conceptAuditAction.getActionDate();
+            User user = conceptAuditAction.getUser();
+            ConceptSMTK subjectConcept = conceptAuditAction.getSubjectConcept();
+            AuditActionType auditActionType = conceptAuditAction.getAuditActionType();
+            AuditableEntity auditableEntity = conceptAuditAction.getAuditableEntity();
+
+            call.setTimestamp(1, actionDate);
+            call.setLong(2, user.getIdUser());
+            call.setLong(3, subjectConcept.getId());
+            call.setLong(4, auditActionType.getId());
+            call.setLong(5, auditableEntity.getId());
+            call.execute();
+
+        } catch (SQLException e) {
+            String errorMsg = "Error al registrar en el log.";
+            logger.error(errorMsg);
+            throw new EJBException(errorMsg, e);
+        }
     }
 }

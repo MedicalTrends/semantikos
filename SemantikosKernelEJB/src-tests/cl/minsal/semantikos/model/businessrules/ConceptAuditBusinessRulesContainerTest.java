@@ -1,11 +1,9 @@
 package cl.minsal.semantikos.model.businessrules;
 
 import cl.minsal.semantikos.model.ConceptSMTK;
-import cl.minsal.semantikos.model.UserNull;
+import cl.minsal.semantikos.model.User;
 import cl.minsal.semantikos.model.exceptions.BusinessRuleException;
 import org.junit.Test;
-
-import static org.junit.Assert.*;
 
 public class ConceptAuditBusinessRulesContainerTest {
 
@@ -13,6 +11,6 @@ public class ConceptAuditBusinessRulesContainerTest {
     public void testApplyNotModeled() throws Exception {
         ConceptSMTK conceptSMTK = new ConceptSMTK();
 
-        new ConceptAuditBusinessRulesContainer().apply(conceptSMTK, UserNull.getInstance());
+        new ConceptAuditBusinessRulesContainer().apply(conceptSMTK, User.getDummyUser());
     }
 }

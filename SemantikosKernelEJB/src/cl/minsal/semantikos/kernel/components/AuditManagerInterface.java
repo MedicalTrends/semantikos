@@ -1,7 +1,8 @@
 package cl.minsal.semantikos.kernel.components;
 
 import cl.minsal.semantikos.model.ConceptSMTK;
-import cl.minsal.semantikos.model.IUser;
+import cl.minsal.semantikos.model.Description;
+import cl.minsal.semantikos.model.User;
 import cl.minsal.semantikos.model.audit.AuditActionType;
 import cl.minsal.semantikos.model.audit.ConceptAuditAction;
 
@@ -24,7 +25,7 @@ public interface AuditManagerInterface {
      * @param conceptSMTK El concepto que se creo.
      * @param user        El usuario que creó el concepto.
      */
-    public void recordNewConcept(ConceptSMTK conceptSMTK, IUser user);
+    public void recordNewConcept(ConceptSMTK conceptSMTK, User user);
 
     /**
      * Este método es responsable de registrar en el log de auditoría la actualización del concepto, por el usuario.
@@ -35,7 +36,34 @@ public interface AuditManagerInterface {
      * @param conceptSMTK El concepto que se creo.
      * @param user        El usuario que creó el concepto.
      */
-    public void recordUpdateConcept(ConceptSMTK conceptSMTK, IUser user);
+    public void recordUpdateConcept(ConceptSMTK conceptSMTK, User user);
+
+    /**
+     * Este método es responsable de registrar en el log de auditoría la el traslado de un concepto.
+     *
+     * @param sourceConcept El concepto en donde se encuentra la descripción inicialmente.
+     * @param targetConcept El concepto al cual se quiere mover la descripción.
+     * @param description   La descripción que se desea trasladar.
+     */
+    public void recordDescriptionMovement(ConceptSMTK sourceConcept, ConceptSMTK targetConcept, Description description /* TODO: Agregar el usuario */);
+
+    /**
+     * Este método es responsable de registrar en el log de auditoría la el traslado de un concepto.
+     *
+     * @param sourceConcept El concepto en donde se encuentra la descripción inicialmente.
+     * @param user          El usuario que publicó el concepto.
+     */
+    public void recordConceptPublished(ConceptSMTK sourceConcept, User user);
+
+    /**
+     * Este método es responsable de registrar en el historial el cambio de la descripción
+     * <code>originalDescription</code>.
+     *
+     * @param conceptSMTK         El concepto al cual pertenece la descripción actualizada.
+     * @param originalDescription La descripción original, sin el cambio.
+     * @param user                El usuario que realizó la actualización.
+     */
+    public void recordFavouriteDescriptionUpdate(ConceptSMTK conceptSMTK, Description originalDescription, User user);
 
     /**
      * Este método es responsable de obtener y agrupar en una lista todos los tipos de cambios existentes.

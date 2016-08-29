@@ -12,8 +12,6 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
-import static cl.minsal.semantikos.kernel.daos.DAO.NON_PERSISTED_ID;
-
 /**
  * Esta clase representa al Concepto Semantikos.
  *
@@ -69,8 +67,12 @@ public class ConceptSMTK implements Target, AuditableEntity {
     /**
      * Lista de etiquetas
      */
-    private List<Tag> tags= new ArrayList<>();
+    private List<Tag> tags = new ArrayList<>();
 
+    /**
+     * Este método es responsable de determinar si el estado de publicación del concepto cambio recientemente.
+     */
+    private boolean justPublished = false;
 
     /**
      * El constructor privado con las inicializaciones de los campos por defecto.
@@ -216,9 +218,10 @@ public class ConceptSMTK implements Target, AuditableEntity {
 
     /**
      * Este método determina si este concepto SMTK está persistido o no
+     *
      * @return Un <code>java.lang.boolean</code>
      */
-    public boolean isPersisted(){
+    public boolean isPersisted() {
         return (this.id != NON_PERSISTED_ID);
     }
 
@@ -299,7 +302,7 @@ public class ConceptSMTK implements Target, AuditableEntity {
     public void setFullyDefined(boolean fullyDefined) {
 
         /* Antes de asignarle la propiedad, ser verifica si cumple las reglas de negocio */
-        new ConceptStateBusinessRulesContainer().apply(this, UserNull.getInstance());
+        new ConceptStateBusinessRulesContainer().apply(this, User.getDummyUser());
 
         /* Como se han validado las reglas de negocio, se realiza la asignación */
         this.isFullyDefined = fullyDefined;
@@ -310,6 +313,12 @@ public class ConceptSMTK implements Target, AuditableEntity {
     }
 
     public void setPublished(boolean published) {
+
+        /* Si no estaba publicada se marca como "recién publicada" */
+        if (!this.isPublished && published) {
+            this.justPublished = true;
+        }
+
         this.isPublished = published;
     }
 
@@ -373,7 +382,7 @@ public class ConceptSMTK implements Target, AuditableEntity {
      */
     public Description getDescriptionFavorite() {
         for (Description description : descriptions) {
-            if (description.getDescriptionType().getName().equalsIgnoreCase("preferido")) {
+            if (description.getDescriptionType().getName().equalsIgnoreCase("preferida")) {
                 return description;
             }
         }
@@ -541,5 +550,15 @@ public class ConceptSMTK implements Target, AuditableEntity {
         }
 
         throw new IllegalArgumentException("No existe una descripción con las características deseadas");
+    }
+
+    /**
+     * Este método es responsable de indicar si el el concepto sufrió un cambio en su estado de publicación: de no
+     * publicado a publicado.
+     *
+     * @return <code>true</code> si fue recién publicado y <code>false</code> sino.
+     */
+    public boolean isJustPublished() {
+        return justPublished;
     }
 }

@@ -2,7 +2,7 @@ package cl.minsal.semantikos.model.businessrules;
 
 import cl.minsal.semantikos.kernel.components.RelationshipManager;
 import cl.minsal.semantikos.model.ConceptSMTK;
-import cl.minsal.semantikos.model.IUser;
+import cl.minsal.semantikos.model.User;
 import cl.minsal.semantikos.model.exceptions.BusinessRuleException;
 import cl.minsal.semantikos.model.relationships.Relationship;
 
@@ -21,7 +21,7 @@ public class ConceptStateBusinessRulesContainer implements BusinessRulesContaine
     @EJB
     private RelationshipManager relationshipManager;
 
-    public void apply(ConceptSMTK conceptSMTK, IUser IUser) throws BusinessRuleException {
+    public void apply(ConceptSMTK conceptSMTK, User user) throws BusinessRuleException {
 
         if (conceptSMTK.isFullyDefined()) {
             validateIsFullyDefined(conceptSMTK);

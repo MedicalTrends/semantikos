@@ -5,9 +5,8 @@ import cl.minsal.semantikos.kernel.daos.DescriptionDAO;
 import cl.minsal.semantikos.kernel.daos.RelationshipDAO;
 import cl.minsal.semantikos.model.ConceptSMTK;
 import cl.minsal.semantikos.model.Description;
-import cl.minsal.semantikos.model.IUser;
+import cl.minsal.semantikos.model.User;
 import cl.minsal.semantikos.model.businessrules.ConceptCreationBusinessRuleContainer;
-import cl.minsal.semantikos.model.businessrules.ConceptEditionBusinessRuleContainer;
 import cl.minsal.semantikos.model.businessrules.DescriptionEditionBR;
 import cl.minsal.semantikos.model.businessrules.RelationshipEditionBR;
 import cl.minsal.semantikos.model.relationships.Relationship;
@@ -18,7 +17,6 @@ import javax.ejb.EJB;
 import javax.ejb.EJBException;
 import javax.ejb.Stateless;
 import javax.validation.constraints.NotNull;
-import java.sql.Timestamp;
 import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.List;
@@ -179,7 +177,7 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
     }
 
     @Override
-    public void persist(@NotNull ConceptSMTK conceptSMTK, IUser user) {
+    public void persist(@NotNull ConceptSMTK conceptSMTK, User user) {
         logger.debug("El concepto " + conceptSMTK + " será persistido.");
 
         /* Pre-condición técnica: el concepto no debe estar persistido */
@@ -197,28 +195,10 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
     }
 
     @Override
-    public void update(@NotNull ConceptSMTK conceptSMTK, IUser user) {
-
-        /* Pre-condición técnica: el concepto no debe estar persistido */
-        validatesIsPersistent(conceptSMTK);
-
-        /* Pre-condiciones: Reglas de negocio para la persistencia */
-        new ConceptEditionBusinessRuleContainer().apply(conceptSMTK, user);
-
-        /* Se actualiza la información base del concepto */
+    public void publish(@NotNull ConceptSMTK conceptSMTK, User user) {
+        conceptSMTK.setPublished(true);
         conceptDAO.update(conceptSMTK);
-
-        /* Y luego actualizar las descripciones (siguiendo las reglas de negocio) */
-        updateDescriptions(conceptSMTK);
-
-        /* Y luego las relaciones marcadas como modificadas y creadas */
-        updateRelationships(conceptSMTK);
-
-        // TODO: Invocar el DAO para hacer el update, quizás por cada uno...
-
-        /* Se deja registro en la auditoría */
-        auditManager.recordUpdateConcept(conceptSMTK, user);
-        logger.debug("El concepto " + conceptSMTK + " fue actualizado.");
+        auditManager.recordConceptPublished(conceptSMTK, user);
     }
 
     /**
@@ -262,7 +242,8 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
     }
 
     /**
-     * Este método es responsable de ubicar una relación <em>editada</em> a partir de otra relación. La relación editada
+     * Este método es responsable de ubicar una relación <em>editada</em> a partir de otra relación. La relación
+     * editada
      * es idéntica en ID pero no está marcada para ser editada.
      *
      * @param conceptSMTK El concepto con las relaciones en donde se busca la editada.
@@ -282,45 +263,6 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
         }
 
         throw new EJBException("No se encontró la relación editada de la relación " + original);
-    }
-
-    /**
-     * Este método es responsable de aplicar las actualizaciones. Para actualizar una descripción se revisan las
-     * marcadas para actualizar. La descripción <em>original</em> tiene un campo que indica que debe ser actualizado
-     * <code>isToBeUpdated</code>. Para cada una debe existir otra descripción con el mismo DESCRIPTION_ID que tiene
-     * los
-     * cambios, pero que no es persistente.
-     *
-     * <p>
-     * Este método itera sobre las descripciones marcadas para ser actualizadas, busca su par, y si existe:
-     * <ul>
-     * <li>Aplica reglas de negocio para validar que esté en orden</li>
-     * <li>y deja inválida la original, y persiste la nueva.</li>
-     * </ul>
-     * </p>
-     *
-     * @param conceptSMTK El concepto cuyas descripciones se quieren actualizar.
-     */
-    private void updateDescriptions(ConceptSMTK conceptSMTK) {
-
-        List<Description> descriptions = conceptSMTK.getDescriptions();
-        for (Description description : descriptions) {
-
-            Description original = description;
-            /* Se buscan las descripciones a actualizar */
-            if (description.isToBeUpdated()) {
-
-                /* Una vez encontrada se busca a su hermana que tiene los nuevos valores */
-                Description changed = conceptSMTK.getDescriptionByDescriptionID(original.getDescriptionId(), true);
-
-                /* Se aplican las reglas de negocio */
-                new DescriptionEditionBR().applyRules(original, changed);
-
-                /* Y se actualizan */
-                descriptionDAO.invalidate(original);
-                descriptionDAO.persist(changed, conceptSMTK);
-            }
-        }
     }
 
     /**

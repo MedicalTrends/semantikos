@@ -1,9 +1,6 @@
 package cl.minsal.semantikos.kernel.daos;
 
-import cl.minsal.semantikos.model.ConceptSMTK;
-import cl.minsal.semantikos.model.Description;
-import cl.minsal.semantikos.model.DescriptionType;
-import cl.minsal.semantikos.model.DescriptionTypeFactory;
+import cl.minsal.semantikos.model.*;
 
 import javax.ejb.Local;
 import java.util.List;
@@ -38,11 +35,11 @@ public interface DescriptionDAO {
     /**
      * Este método es responsable de persistir una descripción en la BDD. Luego de ser persistida, la descripción es
      * actualizada con su nuevo Identificador único.
-     *
-     * @param description La descripción a persistir.
+     *  @param description La descripción a persistir.
      * @param conceptSMTK El concepto al que está asociada la descripción.
+     * @param user
      */
-    public void persist(Description description, ConceptSMTK conceptSMTK);
+    public void persist(Description description, ConceptSMTK conceptSMTK, User user);
 
     /**
      * Este método es responsable de persistir y asociar a un concepto todas las descripciones que no están
@@ -54,9 +51,10 @@ public interface DescriptionDAO {
      *                     ignoradas y ningún cambio en ellas es realizado.
      * @param conceptSMTK  El concepto al cual se asocian las descripciones que se persisten.
      *
+     * @param user
      * @return La lista de descripciones persistidas.
      */
-    public List<Description> persistNonPersistent(List<Description> descriptions, ConceptSMTK conceptSMTK);
+    public List<Description> persistNonPersistent(List<Description> descriptions, ConceptSMTK conceptSMTK, User user);
 
     /**
      * Este método es responsable de invalidar la descripción.

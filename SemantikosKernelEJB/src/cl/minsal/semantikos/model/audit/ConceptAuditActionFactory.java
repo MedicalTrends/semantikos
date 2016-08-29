@@ -3,7 +3,6 @@ package cl.minsal.semantikos.model.audit;
 import cl.minsal.semantikos.kernel.daos.AuthDAO;
 import cl.minsal.semantikos.kernel.daos.ConceptDAO;
 import cl.minsal.semantikos.model.ConceptSMTK;
-import cl.minsal.semantikos.model.IUser;
 import cl.minsal.semantikos.model.User;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;

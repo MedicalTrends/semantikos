@@ -1,10 +1,7 @@
 package cl.minsal.semantikos.kernel.daos;
 
 import cl.minsal.semantikos.kernel.util.ConnectionBD;
-import cl.minsal.semantikos.model.ConceptSMTK;
-import cl.minsal.semantikos.model.Description;
-import cl.minsal.semantikos.model.DescriptionType;
-import cl.minsal.semantikos.model.DescriptionTypeFactory;
+import cl.minsal.semantikos.model.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -159,9 +156,21 @@ public class DescriptionDAOImpl implements DescriptionDAO {
     }
 
     @Override
-    public void persist(Description description, ConceptSMTK conceptSMTK) {
+    public void persist(Description description, ConceptSMTK conceptSMTK, User user) {
 
         ConnectionBD connect = new ConnectionBD();
+        /*
+         * param1: ID
+          * param 2: DesType ID
+          * param 3: Term
+          * param 4: case
+          * param 5: auto-generado
+          * param 6: activo
+          * param 7: published
+          * param 8: estado
+          * param 9: id user
+          * param 9: id concepto
+         */
         String sql = "{call semantikos.create_description(?,?,?,?,?,?,?,?,?)}";
         try (Connection connection = connect.getConnection();
              CallableStatement call = connection.prepareCall(sql)) {
@@ -174,7 +183,8 @@ public class DescriptionDAOImpl implements DescriptionDAO {
             call.setBoolean(6, description.isActive());
             call.setBoolean(7, description.isPublished());
             call.setLong(8, description.getState().getId());
-            call.setLong(9, conceptSMTK.getId());
+            call.setLong(9, user.getIdUser());
+            call.setLong(10, conceptSMTK.getId());
             call.execute();
 
             ResultSet rs = call.getResultSet();
@@ -235,12 +245,12 @@ public class DescriptionDAOImpl implements DescriptionDAO {
     }
 
     @Override
-    public List<Description> persistNonPersistent(List<Description> descriptions, ConceptSMTK conceptSMTK) {
+    public List<Description> persistNonPersistent(List<Description> descriptions, ConceptSMTK conceptSMTK, User user) {
         List<Description> persistedDescriptions = new ArrayList<>();
 
         for (Description description : descriptions) {
             if (!isPersistent(description)) {
-                this.persist(description, conceptSMTK);
+                this.persist(description, conceptSMTK, user);
                 persistedDescriptions.add(description);
             }
         }

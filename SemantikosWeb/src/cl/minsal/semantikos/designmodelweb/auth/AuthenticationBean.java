@@ -2,8 +2,8 @@ package cl.minsal.semantikos.designmodelweb.auth;
 
 import cl.minsal.semantikos.designmodelweb.Constants;
 import cl.minsal.semantikos.kernel.auth.AuthenticationManagerBean;
-import cl.minsal.semantikos.model.IUser;
 import cl.minsal.semantikos.kernel.config.ConfigurationBean;
+import cl.minsal.semantikos.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,7 +39,7 @@ public class AuthenticationBean {
     private String username;
     private String password;
 
-    private IUser loggedUser;
+    private User loggedUser;
 
 
     public boolean isLoggedIn() {
@@ -71,7 +71,7 @@ public class AuthenticationBean {
             password=null;
 
 
-            //poner datos de usuario en sesion
+            //poner datos de usuario en sesión
             loggedUser = authenticationManager.getUserDetails(username);
             ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
             context.getSessionMap().put(AUTH_KEY, username);
@@ -91,7 +91,7 @@ public class AuthenticationBean {
         }
     }
 
-    private boolean canLogin(IUser loggedUser) {
+    private boolean canLogin(User loggedUser) {
         return !(loggedUser == null || loggedUser.getUsername() == null);
     }
 
@@ -110,7 +110,6 @@ public class AuthenticationBean {
         } catch (IOException e) {
             logger.error("Error en logout", e);
         }
-
     }
 
     public void testException() {
@@ -134,21 +133,15 @@ public class AuthenticationBean {
         this.password = password;
     }
 
-    public IUser getLoggedUser() {
+    public User getLoggedUser() {
         return loggedUser;
     }
 
-    public void setLoggedUser(IUser loggedUser) {
+    public void setLoggedUser(User loggedUser) {
         this.loggedUser = loggedUser;
     }
 
-
-
-
-    public void createUser(IUser u){
-
+    public void createUser(User u){
+        // TODO: ???
     }
-
-
-
 }
