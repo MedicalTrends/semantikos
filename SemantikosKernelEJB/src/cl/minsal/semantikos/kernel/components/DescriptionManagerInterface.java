@@ -39,6 +39,17 @@ public interface DescriptionManagerInterface {
     public Description bindDescriptionToConcept(ConceptSMTK concept, Description description, User user);
 
     /**
+     * Este método es responsable de des-asociar (eliminar) una descripción de un concepto.
+     *
+     * @param concept     El concepto al cual se agrega la descripción.
+     * @param description La descripción que será asociada al concepto. Esta puede o no estar persistida.
+     * @param user        El usuario que agrega el término
+     *
+     * @return La descripción creada a partir del término dado.
+     */
+    public Description unbindDescriptionToConcept(ConceptSMTK concept, Description description, User user);
+
+    /**
      * Este método es responsable de actualizar la descripción de un concepto.
      *
      * @param conceptSMTK      El concepto al cual se realiza la actualización de una descripción.

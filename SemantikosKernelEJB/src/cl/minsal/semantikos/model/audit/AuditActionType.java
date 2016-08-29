@@ -9,7 +9,7 @@ public enum AuditActionType {
     CONCEPT_PUBLICATION(2, "Publicación de Concepto", true),
     CONCEPT_FAVOURITE_DESCRIPTION_CHANGE(3, "Cambio en descripción preferida de un Concepto", true),
     CONCEPT_DESCRIPTION_BINDING(4, "Descripción agregada a concepto", true),
-    CONCEPT_DESCRIPTION_UNBINDING(5, "Descripción eliminada a concepto", true), //TODO: DAO, Manager, Hooks
+    CONCEPT_DESCRIPTION_UNBINDING(5, "Descripción eliminada a concepto", true),
     CONCEPT_CATEGORY_CHANGE(6, "Cambio de categoría de Concepto", true), //TODO: DAO, Manager, Hooks
     CONCEPT_ATTRIBUTE_CHANGE(7, "Cambio de atributo de un concepto", true), //TODO: DAO, Manager, Hooks
     CONCEPT_RELATIONSHIP_CREATION(8, "Nueva relación de un concepto", false), //TODO: DAO, Manager, Hooks
