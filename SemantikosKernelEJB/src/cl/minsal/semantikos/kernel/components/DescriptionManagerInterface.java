@@ -15,7 +15,28 @@ import java.util.List;
 @Local
 public interface DescriptionManagerInterface {
 
-    public void addDescriptionToConcept(String idConcept, String description, String type);
+    /**
+     * Este método es responsable de asociar (agregar) una descripción a un concepto.
+     *
+     * @param concept El concepto al cual se agrega la descripción.
+     * @param term    El término de la descripción.
+     * @param type    El tipo de la descripción.
+     * @param user    El usuario que agrega el término
+     *
+     * @return La descripción creada a partir del término dado.
+     */
+    public Description bindDescriptionToConcept(ConceptSMTK concept, String term, DescriptionType type, User user);
+
+    /**
+     * Este método es responsable de asociar (agregar) una descripción a un concepto.
+     *
+     * @param concept     El concepto al cual se agrega la descripción.
+     * @param description La descripción que será asociada al concepto. Esta puede o no estar persistida.
+     * @param user        El usuario que agrega el término
+     *
+     * @return La descripción creada a partir del término dado.
+     */
+    public Description bindDescriptionToConcept(ConceptSMTK concept, Description description, User user);
 
     /**
      * Este método es responsable de actualizar la descripción de un concepto.

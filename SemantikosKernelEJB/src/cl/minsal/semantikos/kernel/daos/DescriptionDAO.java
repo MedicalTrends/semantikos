@@ -35,11 +35,12 @@ public interface DescriptionDAO {
     /**
      * Este método es responsable de persistir una descripción en la BDD. Luego de ser persistida, la descripción es
      * actualizada con su nuevo Identificador único.
-     *  @param description La descripción a persistir.
+     *
+     * @param description La descripción a persistir.
      * @param conceptSMTK El concepto al que está asociada la descripción.
-     * @param user
+     * @param user        El usuario que persiste la descripción.
      */
-    public void persist(Description description, ConceptSMTK conceptSMTK, User user);
+    public Description persist(Description description, ConceptSMTK conceptSMTK, User user);
 
     /**
      * Este método es responsable de persistir y asociar a un concepto todas las descripciones que no están
@@ -50,8 +51,8 @@ public interface DescriptionDAO {
      *                     descripciones que ya se encuentran persistidas. Estas descripciones persistentes son
      *                     ignoradas y ningún cambio en ellas es realizado.
      * @param conceptSMTK  El concepto al cual se asocian las descripciones que se persisten.
+     * @param user         El usuario que realiza la acción.
      *
-     * @param user
      * @return La lista de descripciones persistidas.
      */
     public List<Description> persistNonPersistent(List<Description> descriptions, ConceptSMTK conceptSMTK, User user);

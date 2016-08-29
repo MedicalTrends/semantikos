@@ -156,20 +156,20 @@ public class DescriptionDAOImpl implements DescriptionDAO {
     }
 
     @Override
-    public void persist(Description description, ConceptSMTK conceptSMTK, User user) {
+    public Description persist(Description description, ConceptSMTK conceptSMTK, User user) {
 
         ConnectionBD connect = new ConnectionBD();
         /*
          * param1: ID
-          * param 2: DesType ID
-          * param 3: Term
-          * param 4: case
-          * param 5: auto-generado
-          * param 6: activo
-          * param 7: published
-          * param 8: estado
-          * param 9: id user
-          * param 9: id concepto
+         * param 2: DesType ID
+         * param 3: Term
+         * param 4: case
+         * param 5: auto-generado
+         * param 6: activo
+         * param 7: published
+         * param 8: estado
+         * param 9: id user
+         * param 9: id concepto
          */
         String sql = "{call semantikos.create_description(?,?,?,?,?,?,?,?,?)}";
         try (Connection connection = connect.getConnection();
@@ -200,12 +200,16 @@ public class DescriptionDAOImpl implements DescriptionDAO {
         } catch (SQLException e) {
             throw new EJBException(e);
         }
+
+        return description;
     }
 
     @Override
     public void invalidate(Description description) {
         description.setActive(false);
         description.setValidityUntil(new Timestamp(System.currentTimeMillis()));
+
+        this.update(description);
     }
 
     @Override

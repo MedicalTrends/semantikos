@@ -11,7 +11,7 @@ import java.util.List;
  * Una categoría puede ser el sujeto de una acción de auditoría.
  */
 
-public class Category implements TargetDefinition, AuditableEntity {
+public class Category extends PersistentEntity implements TargetDefinition, AuditableEntity {
 
     /** Identificador único de la categoría */
     private long idCategory;

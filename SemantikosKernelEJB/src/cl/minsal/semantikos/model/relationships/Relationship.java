@@ -2,14 +2,13 @@ package cl.minsal.semantikos.model.relationships;
 
 import cl.minsal.semantikos.kernel.daos.DAO;
 import cl.minsal.semantikos.model.ConceptSMTK;
+import cl.minsal.semantikos.model.PersistentEntity;
 import cl.minsal.semantikos.model.audit.AuditableEntity;
 import cl.minsal.semantikos.model.basictypes.BasicTypeValue;
 import cl.minsal.semantikos.model.helpertables.HelperTableRecord;
 
 import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
-
-import static cl.minsal.semantikos.kernel.daos.DAO.NON_PERSISTED_ID;
 
 /**
  * <p>Una Relación es una asociación con significado entre 2 cosas.</p>
@@ -23,7 +22,7 @@ import static cl.minsal.semantikos.kernel.daos.DAO.NON_PERSISTED_ID;
  *
  * @author Andrés Farías
  */
-public class Relationship implements AuditableEntity {
+public class Relationship extends PersistentEntity implements AuditableEntity {
 
     /** Identificador único de la base de datos */
     private long id;

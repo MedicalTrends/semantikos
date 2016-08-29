@@ -526,7 +526,7 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
 
             } else {
                 // Si el concepto está persistido, actualizarlo
-                if(concept.isPersisted()) {
+                if(concept.isPersistent()) {
                     // Se prepara para la actualización
                     //if(concept.prepareForUpdate())
                         //conceptManager.update(concept, user);

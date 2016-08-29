@@ -17,7 +17,7 @@ import java.util.List;
  *
  * @author Diego Soto.
  */
-public class ConceptSMTK implements Target, AuditableEntity {
+public class ConceptSMTK extends PersistentEntity implements Target, AuditableEntity {
 
     /** El valor que posee un CONCEPT_ID que no ha sido definido */
     public static final String CONCEPT_ID_UNDEFINED = "-1";
@@ -214,15 +214,6 @@ public class ConceptSMTK implements Target, AuditableEntity {
      */
     public boolean hasRelationships(RelationshipDefinition relationshipDefinition) {
         return !getRelationshipsByRelationDefinition(relationshipDefinition).isEmpty();
-    }
-
-    /**
-     * Este método determina si este concepto SMTK está persistido o no
-     *
-     * @return Un <code>java.lang.boolean</code>
-     */
-    public boolean isPersisted() {
-        return (this.id != NON_PERSISTED_ID);
     }
 
     public void setRelationships(List<Relationship> relationships) {

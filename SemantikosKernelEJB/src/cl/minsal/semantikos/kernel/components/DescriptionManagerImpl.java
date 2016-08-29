@@ -3,6 +3,8 @@ package cl.minsal.semantikos.kernel.components;
 
 import cl.minsal.semantikos.kernel.daos.DescriptionDAO;
 import cl.minsal.semantikos.model.*;
+import cl.minsal.semantikos.model.businessrules.DescriptionBindingBR;
+import cl.minsal.semantikos.model.businessrules.DescriptionCreationBR;
 import cl.minsal.semantikos.model.businessrules.DescriptionEditionBR;
 import cl.minsal.semantikos.model.businessrules.DescriptionMovementBR;
 
@@ -26,25 +28,41 @@ public class DescriptionManagerImpl implements DescriptionManagerInterface {
     @EJB
     private AuditManagerInterface auditManager;
 
+    /* El conjunto de reglas de negocio para validar creación de descripciones */
+    private DescriptionCreationBR descriptionCreationBR = new DescriptionCreationBR();
+
     @Override
-    public void addDescriptionToConcept(String idConcept, String description, String type) {
-/*
-        try {
-            Class.forName(driver);
-            Connection conne = (Connection) DriverManager.getConnection(ruta, user, password);
-            CallableStatement call = conne.prepareCall("{call add_descripcion_concepto(?,?,?)}");
+    public Description bindDescriptionToConcept(ConceptSMTK concept, String term, DescriptionType descriptionType, User user) {
 
-            call.setInt(1, Integer.parseInt(idConcept));
-            call.setString(2, description);
-            call.setInt(3,Integer.parseInt(type));
+        /* Se aplican las reglas de negocio para crear la Descripción*/
+        descriptionCreationBR.applyRules(concept, term, descriptionType, user);
 
-            call.execute();
-            conne.close();
-        } catch (SQLException | ClassNotFoundException e) {
-            System.out.println(e.toString());
+        /* Se crea la descripción */
+        Description description = new Description(term, descriptionType);
+
+        /* Se aplican las reglas de negocio para crear la Descripción y se persiste y asocia al concepto */
+        new DescriptionBindingBR().applyRules(concept, description, user);
+        descriptionDAO.persist(description, concept, user);
+
+        /* Se retorna la descripción persistida */
+        return description;
+    }
+
+    @Override
+    public Description bindDescriptionToConcept(ConceptSMTK concept, Description description, User user) {
+
+        /* Si la descripción no se encontraba persistida, se persiste primero */
+        if (!description.isPersistent()){
+            descriptionCreationBR.applyRules(concept, description.getTerm(), description.getDescriptionType(), user);
+            descriptionDAO.persist(description, concept, user);
         }
-*/
 
+        /* Se aplican las reglas de negocio para crear la Descripción y se persiste y asocia al concepto */
+        new DescriptionBindingBR().applyRules(concept, description, user);
+        descriptionDAO.persist(description, concept, user);
+
+        /* Se retorna la descripción persistida */
+        return description;
     }
 
     @Override
