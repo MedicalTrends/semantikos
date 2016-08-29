@@ -18,7 +18,6 @@ import javax.ejb.EJB;
 import javax.ejb.EJBException;
 import javax.ejb.Stateless;
 import javax.validation.constraints.NotNull;
-import java.sql.Timestamp;
 import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.List;
@@ -205,7 +204,12 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
         /* Pre-condiciones: Reglas de negocio para la persistencia */
         new ConceptEditionBusinessRuleContainer().apply(conceptSMTK, user);
 
-        /* Se actualiza la información base del concepto */
+        /* Se actualiza la información base del concepto. En esta actualización se revisa si ha cambiado el objeto
+         * respecto a su estado de publicación
+         */
+        if (conceptSMTK.isJustPublished()) {
+            auditManager.recordConceptPublished();
+        }
         conceptDAO.update(conceptSMTK);
 
         /* Y luego actualizar las descripciones (siguiendo las reglas de negocio) */
@@ -262,7 +266,8 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
     }
 
     /**
-     * Este método es responsable de ubicar una relación <em>editada</em> a partir de otra relación. La relación editada
+     * Este método es responsable de ubicar una relación <em>editada</em> a partir de otra relación. La relación
+     * editada
      * es idéntica en ID pero no está marcada para ser editada.
      *
      * @param conceptSMTK El concepto con las relaciones en donde se busca la editada.

@@ -3,6 +3,7 @@ package cl.minsal.semantikos.kernel.components;
 import cl.minsal.semantikos.model.ConceptSMTK;
 import cl.minsal.semantikos.model.Description;
 import cl.minsal.semantikos.model.IUser;
+import cl.minsal.semantikos.model.User;
 import cl.minsal.semantikos.model.audit.AuditActionType;
 import cl.minsal.semantikos.model.audit.ConceptAuditAction;
 
@@ -45,7 +46,15 @@ public interface AuditManagerInterface {
      * @param targetConcept El concepto al cual se quiere mover la descripción.
      * @param description   La descripción que se desea trasladar.
      */
-    public void recordDescriptionMovement(ConceptSMTK sourceConcept, ConceptSMTK targetConcept, Description description);
+    public void recordDescriptionMovement(ConceptSMTK sourceConcept, ConceptSMTK targetConcept, Description description /* TODO: Agregar el usuario */);
+
+    /**
+     * Este método es responsable de registrar en el log de auditoría la el traslado de un concepto.
+     *
+     * @param sourceConcept El concepto en donde se encuentra la descripción inicialmente.
+     * @param user          El usuario que publicó el concepto.
+     */
+    public void recordConceptPublished(ConceptSMTK sourceConcept, User user);
 
     /**
      * Este método es responsable de obtener y agrupar en una lista todos los tipos de cambios existentes.

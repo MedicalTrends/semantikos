@@ -5,7 +5,7 @@ package cl.minsal.semantikos.model.audit;
  */
 public enum AuditActionType {
 
-    CONCEPT_CREATION(1, "Creación de Concepto", false), //TODO: Manager, Hooks
+    CONCEPT_CREATION(1, "Creación de Concepto", false),
     CONCEPT_PUBLICATION(2, "Publicación de Concepto", true), //TODO: DAO, Manager, Hooks
     CONCEPT_FAVOURITE_DESCRIPTION_CHANGE(3, "Cambio en descripción preferida de un Concepto", true), //TODO: DAO, Manager, Hooks
     CONCEPT_DESCRIPTION_ADDITION(4, "Descripción agregada a concepto", true), //TODO: DAO, Manager, Hooks
