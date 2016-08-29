@@ -7,6 +7,6 @@ import cl.minsal.semantikos.model.relationships.Relationship;
  */
 public class RelationshipEditionBR implements BusinessRulesContainer {
     public void applyRules(Relationship original, Relationship updated) {
-
+        //TODO: Agregar las reglas de negocio.
     }
 }
