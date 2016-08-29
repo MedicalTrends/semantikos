@@ -171,7 +171,7 @@ public class DescriptionDAOImpl implements DescriptionDAO {
          * param 9: id user
          * param 9: id concepto
          */
-        String sql = "{call semantikos.create_description(?,?,?,?,?,?,?,?,?)}";
+        String sql = "{call semantikos.create_description(?,?,?,?,?,?,?,?,?,?)}";
         try (Connection connection = connect.getConnection();
              CallableStatement call = connection.prepareCall(sql)) {
 

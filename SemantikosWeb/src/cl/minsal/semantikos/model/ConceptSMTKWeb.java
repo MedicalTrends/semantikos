@@ -121,7 +121,7 @@ public class ConceptSMTKWeb extends ConceptSMTK {
         this.getRelationshipsWeb().remove(relationshipWeb);
     }
 
-    public boolean prepareForUpdate(){
+    public boolean prepareRelationships(){
         getRelationships().clear();
         Relationship relationship;
         for (RelationshipWeb rWeb : relationshipsWeb) {
@@ -161,6 +161,17 @@ public class ConceptSMTKWeb extends ConceptSMTK {
         }
 
         return true;
+    }
+
+    /**
+     * Este método determina si existen instancias de relaciones asociadas a una definición de relación
+     *
+     * @param relationshipDefinition El tipo de relación al que pertenecen las relaciones a retornar.
+     *
+     * @return Un <code>java.lang.boolean</code>
+     */
+    public boolean hasRelationships(RelationshipDefinition relationshipDefinition) {
+        return !getRelationshipsWebByRelationDefinition(relationshipDefinition).isEmpty();
     }
 
     @Override

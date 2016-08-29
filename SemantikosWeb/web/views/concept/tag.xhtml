@@ -7,15 +7,27 @@
 
     <ui:define name="content">
         <p:panel id="findConcept">
-            <h:form>
+            <h:form id="tags">
 
-
+                <p:panel id="create">
 
                 <div class="ui-g">
 
+                    <div class="ui-g-12 ui-md-6 ui-lg-4">
+                        <p:autoComplete id="parentTag" scrollHeight="200" size="5" style="width: 80%;"
+                                        inputStyle="width: 80%;"
+                                        converter="tagConverter" var="tag"
+                                        value="#{tagBean.parentTag}"
+                                        completeMethod="#{tagBean.findTagByName}"
+                                        itemLabel="#{tag.name}" itemValue="#{tag}"
+                                        emptyMessage="No se encontraron tags relacionados"
+                        >
+                        </p:autoComplete>
+                    </div>
+
                     <div class="ui-g-12 ui-md-6 ui-lg-3">
                         <h:outputLabel for="name" value="Nombre Tag:" style="font-weight:bold"/>
-                        <p:inputText id="name" value="#{tagBean.nameTag}" required="true" label="Name"/>
+                        <p:inputText id="name" value="#{tagBean.nameTag}"  label="Name"/>
                     </div>
                     <div class="ui-g-12 ui-md-6 ui-lg-2">
                         <h:panelGrid columns="2" cellpadding="5" style="margin-left: 20px">
@@ -47,11 +59,13 @@
                         </h:panelGrid>
 
                     </div>
-                    <div class="ui-g-12 ui-md-6 ui-lg-5">
-                        <p:commandButton value="Crear Tag"></p:commandButton>
+                    <div class="ui-g-12 ui-md-6 ui-lg-1">
+                        <p:commandButton value="Crear Tag" process="@this,create" actionListener="#{tagBean.createTag}" update="create">
+
+                        </p:commandButton>
                     </div>
                 </div>
-
+                </p:panel>
 
                 <div class="ui-g">
 

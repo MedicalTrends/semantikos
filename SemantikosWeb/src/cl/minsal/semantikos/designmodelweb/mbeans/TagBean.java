@@ -37,6 +37,8 @@ public class TagBean {
 
     private Tag tag;
 
+    private Tag parentTag;
+
 
 
     @EJB
@@ -130,6 +132,15 @@ public class TagBean {
     public void setTag(Tag tag) {
         this.tag = tag;
     }
+
+    public Tag getParentTag() {
+        return parentTag;
+    }
+
+    public void setParentTag(Tag parentTag) {
+        this.parentTag = parentTag;
+    }
+
     //Methods
 
     public List<Tag> findTagByName(String nameTag){
@@ -139,6 +150,18 @@ public class TagBean {
             return fingTagList;
         }
         return new ArrayList<Tag>();
+    }
+
+    public void  createTag(){
+        if(parentTag==null){
+            parentTag= new Tag(-1,null,null,null,null,null);
+        }
+        Tag tagCreate= new Tag(-1,nameTag,colorBackground,colorText,new ArrayList<Tag>(),parentTag);
+        tagManager.persist(tagCreate);
+        parentTag=null;
+        nameTag=null;
+        colorBackground=null;
+        colorText=null;
     }
 
 
