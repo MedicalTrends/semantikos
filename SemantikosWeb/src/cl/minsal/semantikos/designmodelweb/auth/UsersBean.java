@@ -99,8 +99,9 @@ public class UsersBean {
 
 
     public void newUser(){
-        setSelectedUser( new User());
-        getSelectedUser().setIdUser(-1);
+        selectedUser = new User();
+        selectedUser.setIdUser(-1);
+        updateAvailableProfiles(selectedUser);
     }
 
     public void saveUser(){

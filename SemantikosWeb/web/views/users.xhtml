@@ -123,10 +123,10 @@
                                 </p:dialog>
 
 
-                                <p:dialog height="500" width="600" header="Editar Usuario" widgetVar="editDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="true" responsive="true">
+                                <p:dialog id="user-edit-dialog" height="500" width="600" header="Editar Usuario" widgetVar="editDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="true" responsive="true">
                                     <h:panelGroup layout="block" id="user-edit" styleClass="Container100">
 
-                                        <p:panelGrid columns="2" styleClass="Wid100" >
+                                        <p:panelGrid columns="2" styleClass="Wid100" rendered="#{users.selectedUser.idUser != -1}">
                                             <f:facet name="header">
                                                 Datos Basicos
                                             </f:facet>
@@ -146,6 +146,11 @@
                                             <f:facet name="header">
                                                 Datos Usuario
                                             </f:facet>
+
+                                            <p:outputLabel for="input-username" value="Nombre de Usuario:"  rendered="#{users.selectedUser.idUser != -1}" />
+                                            <p:inputText id="input-username" value="#{users.selectedUser.username}" required="true" styleClass="Wid90" rendered="#{users.selectedUser.idUser != -1}" />
+                                            <p:message for="input-username" rendered="#{users.selectedUser.idUser != -1}"  />
+
                                             <p:outputLabel for="input-user-name" value="Nombre:"/>
                                             <p:inputText id="input-user-name" value="#{users.selectedUser.name}" required="true" styleClass="Wid90"/>
                                             <p:message for="input-user-name" />

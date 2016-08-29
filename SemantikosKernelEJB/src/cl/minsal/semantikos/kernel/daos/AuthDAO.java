@@ -56,6 +56,8 @@ public class AuthDAO {
 
     public User getUserByUsername(String username) {
 
+
+
         Query q = em.createNativeQuery("Select * from semantikos.smtk_user u where u.username = ? ");
 
         q.setParameter(1,username);
