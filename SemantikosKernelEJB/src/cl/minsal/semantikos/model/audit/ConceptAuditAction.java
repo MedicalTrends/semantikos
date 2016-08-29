@@ -1,7 +1,7 @@
 package cl.minsal.semantikos.model.audit;
 
 import cl.minsal.semantikos.model.ConceptSMTK;
-import cl.minsal.semantikos.model.IUser;
+import cl.minsal.semantikos.model.User;
 
 import java.sql.Timestamp;
 
@@ -20,12 +20,12 @@ public class ConceptAuditAction {
     private Timestamp actionDate;
 
     /** El usuario que realizó la acción */
-    private IUser user;
+    private User user;
 
     /** La entidad que fue el sujeto mismo de la acción: concepto, relación (atributo o SCT), descripción o categoría */
     private AuditableEntity auditableEntity;
 
-    public ConceptAuditAction(ConceptSMTK subjectConcept, AuditActionType auditActionType, Timestamp actionDate, IUser user, AuditableEntity auditableEntity) {
+    public ConceptAuditAction(ConceptSMTK subjectConcept, AuditActionType auditActionType, Timestamp actionDate, User user, AuditableEntity auditableEntity) {
         this.subjectConcept = subjectConcept;
         this.auditActionType = auditActionType;
         this.actionDate = actionDate;
@@ -57,11 +57,11 @@ public class ConceptAuditAction {
         this.actionDate = actionDate;
     }
 
-    public IUser getUser() {
+    public User getUser() {
         return user;
     }
 
-    public void setUser(IUser user) {
+    public void setUser(User user) {
         this.user = user;
     }
 

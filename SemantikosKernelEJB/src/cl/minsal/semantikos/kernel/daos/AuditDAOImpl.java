@@ -2,7 +2,7 @@ package cl.minsal.semantikos.kernel.daos;
 
 import cl.minsal.semantikos.kernel.util.ConnectionBD;
 import cl.minsal.semantikos.model.ConceptSMTK;
-import cl.minsal.semantikos.model.IUser;
+import cl.minsal.semantikos.model.User;
 import cl.minsal.semantikos.model.audit.AuditActionType;
 import cl.minsal.semantikos.model.audit.AuditableEntity;
 import cl.minsal.semantikos.model.audit.ConceptAuditAction;
@@ -81,7 +81,7 @@ public class AuditDAOImpl implements AuditDAO {
 
             /* Se invoca la consulta para recuperar las relaciones */
             Timestamp actionDate = conceptAuditAction.getActionDate();
-            IUser user = conceptAuditAction.getUser();
+            User user = conceptAuditAction.getUser();
             ConceptSMTK subjectConcept = conceptAuditAction.getSubjectConcept();
             AuditActionType auditActionType = conceptAuditAction.getAuditActionType();
             AuditableEntity auditableEntity = conceptAuditAction.getAuditableEntity();

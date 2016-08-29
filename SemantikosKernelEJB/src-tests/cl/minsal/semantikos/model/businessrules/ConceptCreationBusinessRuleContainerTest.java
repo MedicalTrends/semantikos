@@ -18,9 +18,9 @@ public class ConceptCreationBusinessRuleContainerTest {
     private Category catFarMedBas = createCategory(CATEGORY_FARMACOS_MEDICAMENTO_BASICO_NAME);
     private Category catFarMedCli = createCategory(CATEGORY_FARMACOS_MEDICAMENTO_CLINICO_NAME);
 
-    private IUser IUserDesigner = createUserProfile(DESIGNER_PROFILE_NAME);
-    private IUser IUserModeler = createUserProfile(MODELER_PROFILE_NAME);
-    private IUser IUserAdmin = createUserProfile(ADMIN_PROFILE_NAME);
+    private User IUserDesigner = createUserProfile(DESIGNER_PROFILE_NAME);
+    private User IUserModeler = createUserProfile(MODELER_PROFILE_NAME);
+    private User IUserAdmin = createUserProfile(ADMIN_PROFILE_NAME);
 
     @Test(expected = BusinessRuleException.class)
     public void testApply_FarmSubs_Designer() throws Exception {
@@ -192,7 +192,7 @@ public class ConceptCreationBusinessRuleContainerTest {
      *
      * @return Un usuario fresco de perfil diseñador.
      */
-    private IUser createUserProfile(String profileName) {
+    private User createUserProfile(String profileName) {
         User user = new User();
         user.setName(profileName);
         Profile profile = new Profile();

@@ -2,8 +2,8 @@ package cl.minsal.semantikos.kernel.daos;
 
 import cl.minsal.semantikos.model.Category;
 import cl.minsal.semantikos.model.ConceptSMTK;
-import cl.minsal.semantikos.model.IUser;
 import cl.minsal.semantikos.model.Tag;
+import cl.minsal.semantikos.model.User;
 
 import javax.ejb.Local;
 import java.util.List;
@@ -88,8 +88,9 @@ public interface ConceptDAO {
      * Este método es responsable persistir la entidad Concepto SMTK en la base de datos.
      *
      * @param conceptSMTK El concepto que será persistido.
+     * @param user        El usuario que se está persistiendo.
      */
-    public void persist(ConceptSMTK conceptSMTK, IUser user);
+    public void persist(ConceptSMTK conceptSMTK, User user);
 
     /**
      * Este método es responsable de actualizar la información base de un concepto (no sus relaciones o descripciones).

@@ -302,7 +302,7 @@ public class ConceptSMTK implements Target, AuditableEntity {
     public void setFullyDefined(boolean fullyDefined) {
 
         /* Antes de asignarle la propiedad, ser verifica si cumple las reglas de negocio */
-        new ConceptStateBusinessRulesContainer().apply(this, UserNull.getInstance());
+        new ConceptStateBusinessRulesContainer().apply(this, User.getDummyUser());
 
         /* Como se han validado las reglas de negocio, se realiza la asignación */
         this.isFullyDefined = fullyDefined;

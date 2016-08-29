@@ -2,12 +2,11 @@ package cl.minsal.semantikos.kernel.components;
 
 import cl.minsal.semantikos.model.ConceptSMTK;
 import cl.minsal.semantikos.model.Description;
-import cl.minsal.semantikos.model.IUser;
+import cl.minsal.semantikos.model.User;
 import cl.minsal.semantikos.model.relationships.Relationship;
 
 import javax.ejb.Local;
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -79,17 +78,19 @@ public interface ConceptManagerInterface {
      * queda registrado como una actividad de auditoría.
      *
      * @param conceptSMTK El concepto a persistir.
+     * @param user        El usuario que persiste el concepto.
      */
-    void persist(@NotNull ConceptSMTK conceptSMTK, IUser user);
+    void persist(@NotNull ConceptSMTK conceptSMTK, User user);
 
     /**
      * Este método es responsable de persistir las modificaciones realizadas sobre el concepto. Esta acción, de
      * persistencia,
      * queda registrado como una actividad de auditoría.
      *
-     * @param conceptSMTK El concepto a persistir.
+     * @param conceptSMTK El concepto a actualizar.
+     * @param user        El usuario que actualiza el concepto.
      */
-    void update(@NotNull ConceptSMTK conceptSMTK, IUser user);
+    void update(@NotNull ConceptSMTK conceptSMTK, User user);
 
     /**
      * Este método es responsable de actualizar el estado de la entidad en la base de datos.

@@ -447,7 +447,7 @@ public class ConceptDAOImpl implements ConceptDAO {
 
     @Override
     //TODO: Revisar transaccionalidad de estas tres acciones
-    public void persist(ConceptSMTK conceptSMTK, IUser user) {
+    public void persist(ConceptSMTK conceptSMTK, User user) {
 
         /* Primero se persisten los atributos básicos del concepto */
         persistConceptBasicInfo(conceptSMTK);

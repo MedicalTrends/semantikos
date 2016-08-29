@@ -2,7 +2,6 @@ package cl.minsal.semantikos.kernel.components;
 
 import cl.minsal.semantikos.model.ConceptSMTK;
 import cl.minsal.semantikos.model.Description;
-import cl.minsal.semantikos.model.IUser;
 import cl.minsal.semantikos.model.User;
 import cl.minsal.semantikos.model.audit.AuditActionType;
 import cl.minsal.semantikos.model.audit.ConceptAuditAction;
@@ -26,7 +25,7 @@ public interface AuditManagerInterface {
      * @param conceptSMTK El concepto que se creo.
      * @param user        El usuario que creó el concepto.
      */
-    public void recordNewConcept(ConceptSMTK conceptSMTK, IUser user);
+    public void recordNewConcept(ConceptSMTK conceptSMTK, User user);
 
     /**
      * Este método es responsable de registrar en el log de auditoría la actualización del concepto, por el usuario.
@@ -37,7 +36,7 @@ public interface AuditManagerInterface {
      * @param conceptSMTK El concepto que se creo.
      * @param user        El usuario que creó el concepto.
      */
-    public void recordUpdateConcept(ConceptSMTK conceptSMTK, IUser user);
+    public void recordUpdateConcept(ConceptSMTK conceptSMTK, User user);
 
     /**
      * Este método es responsable de registrar en el log de auditoría la el traslado de un concepto.

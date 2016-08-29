@@ -5,7 +5,7 @@ import cl.minsal.semantikos.kernel.daos.DescriptionDAO;
 import cl.minsal.semantikos.kernel.daos.RelationshipDAO;
 import cl.minsal.semantikos.model.ConceptSMTK;
 import cl.minsal.semantikos.model.Description;
-import cl.minsal.semantikos.model.IUser;
+import cl.minsal.semantikos.model.User;
 import cl.minsal.semantikos.model.businessrules.ConceptCreationBusinessRuleContainer;
 import cl.minsal.semantikos.model.businessrules.ConceptEditionBusinessRuleContainer;
 import cl.minsal.semantikos.model.businessrules.DescriptionEditionBR;
@@ -178,7 +178,7 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
     }
 
     @Override
-    public void persist(@NotNull ConceptSMTK conceptSMTK, IUser user) {
+    public void persist(@NotNull ConceptSMTK conceptSMTK, User user) {
         logger.debug("El concepto " + conceptSMTK + " será persistido.");
 
         /* Pre-condición técnica: el concepto no debe estar persistido */
@@ -196,7 +196,7 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
     }
 
     @Override
-    public void update(@NotNull ConceptSMTK conceptSMTK, IUser user) {
+    public void update(@NotNull ConceptSMTK conceptSMTK, User user) {
 
         /* Pre-condición técnica: el concepto no debe estar persistido */
         validatesIsPersistent(conceptSMTK);
@@ -208,7 +208,7 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
          * respecto a su estado de publicación
          */
         if (conceptSMTK.isJustPublished()) {
-            auditManager.recordConceptPublished();
+            auditManager.recordConceptPublished(conceptSMTK, user);
         }
         conceptDAO.update(conceptSMTK);
 

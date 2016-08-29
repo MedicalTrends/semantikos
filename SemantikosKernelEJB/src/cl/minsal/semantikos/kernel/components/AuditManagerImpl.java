@@ -3,7 +3,6 @@ package cl.minsal.semantikos.kernel.components;
 import cl.minsal.semantikos.kernel.daos.AuditDAO;
 import cl.minsal.semantikos.model.ConceptSMTK;
 import cl.minsal.semantikos.model.Description;
-import cl.minsal.semantikos.model.IUser;
 import cl.minsal.semantikos.model.User;
 import cl.minsal.semantikos.model.audit.AuditActionType;
 import cl.minsal.semantikos.model.audit.ConceptAuditAction;
@@ -27,14 +26,14 @@ public class AuditManagerImpl implements AuditManagerInterface {
     private AuditDAO auditDAO;
 
     @Override
-    public void recordNewConcept(ConceptSMTK conceptSMTK, IUser user) {
+    public void recordNewConcept(ConceptSMTK conceptSMTK, User user) {
         Timestamp actionDate = new Timestamp(System.currentTimeMillis());
         ConceptAuditAction conceptAuditAction = new ConceptAuditAction(conceptSMTK, CONCEPT_CREATION, actionDate, user, conceptSMTK);
         auditDAO.recordAuditAction(conceptAuditAction);
     }
 
     @Override
-    public void recordUpdateConcept(ConceptSMTK conceptSMTK, IUser user) {
+    public void recordUpdateConcept(ConceptSMTK conceptSMTK, User user) {
         // TODO: Implement this.
     }
 

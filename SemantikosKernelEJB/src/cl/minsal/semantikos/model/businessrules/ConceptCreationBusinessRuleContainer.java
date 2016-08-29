@@ -25,7 +25,7 @@ public class ConceptCreationBusinessRuleContainer implements BusinessRulesContai
     private Profile designerProfile = createProfile("Diseñador");
     private Profile modelerProfile = createProfile("Modelador");
 
-    public void apply(@NotNull ConceptSMTK conceptSMTK, IUser IUser) throws BusinessRuleException {
+    public void apply(@NotNull ConceptSMTK conceptSMTK, User IUser) throws BusinessRuleException {
 
         /* Reglas que aplican para todas las categorías */
         br101HasFSN(conceptSMTK);
@@ -62,7 +62,7 @@ public class ConceptCreationBusinessRuleContainer implements BusinessRulesContai
      * @param conceptSMTK El concepto a crear ser creado.
      * @param IUser        El usuario que realiza la acción.
      */
-    protected void br001creationRights(ConceptSMTK conceptSMTK, IUser IUser) {
+    protected void br001creationRights(ConceptSMTK conceptSMTK, User IUser) {
 
         /* Solo aplica a farmacos - sustancias */
         Category farmacosSustanciaCategory = new Category();
@@ -85,7 +85,7 @@ public class ConceptCreationBusinessRuleContainer implements BusinessRulesContai
      * @param conceptSMTK El concepto a crear ser creado.
      * @param IUser        El usuario que realiza la acción.
      */
-    protected void br002creationRights(ConceptSMTK conceptSMTK, IUser IUser) {
+    protected void br002creationRights(ConceptSMTK conceptSMTK, User IUser) {
 
         /* Solo aplica a farmacos - medicamento básico */
         Category farmacosMedicamentoBasicoCategory = new Category();
@@ -107,7 +107,7 @@ public class ConceptCreationBusinessRuleContainer implements BusinessRulesContai
      * @param conceptSMTK El concepto a crear ser creado.
      * @param IUser        El usuario que realiza la acción.
      */
-    protected void br003creationRights(ConceptSMTK conceptSMTK, IUser IUser) {
+    protected void br003creationRights(ConceptSMTK conceptSMTK, User IUser) {
 
         /* Solo aplica a farmacos - medicamento básico */
         Category farmMedClinic = new Category();
@@ -130,7 +130,7 @@ public class ConceptCreationBusinessRuleContainer implements BusinessRulesContai
      * @param conceptSMTK El concepto a crear ser creado.
      * @param IUser        El usuario que realiza la acción.
      */
-    protected void br004creationRights(ConceptSMTK conceptSMTK, IUser IUser) {
+    protected void br004creationRights(ConceptSMTK conceptSMTK, User IUser) {
 
         /* Solo aplica a Fármacos – Medicamento Clínico con Envase */
         Category farmMedClinicEnv = new Category();
