@@ -1,5 +1,6 @@
 package cl.minsal.semantikos.kernel.components;
 
+import cl.minsal.semantikos.model.Category;
 import cl.minsal.semantikos.model.ConceptSMTK;
 import cl.minsal.semantikos.model.Description;
 import cl.minsal.semantikos.model.User;
@@ -32,6 +33,14 @@ public interface ConceptManagerInterface {
      * @param user El usuario que realizó el cambio.
      */
     public void publish(@NotNull ConceptSMTK conceptSMTK, User user);
+
+    /**
+     * Este método es responsable de cambiar el concepto de una categoría a otra.
+     *  @param conceptSMTK El concepto cuya categoría se desea cambiar.
+     * @param targetCategory La categoría destino del concepto.
+     * @param user
+     */
+    public void changeCategory(@NotNull ConceptSMTK conceptSMTK, @NotNull Category targetCategory, User user);
 
     /**
      * Este método es responsable de recuperar el concepto con DESCRIPTION_ID.

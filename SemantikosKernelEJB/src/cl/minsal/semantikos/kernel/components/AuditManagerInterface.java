@@ -1,5 +1,6 @@
 package cl.minsal.semantikos.kernel.components;
 
+import cl.minsal.semantikos.model.Category;
 import cl.minsal.semantikos.model.ConceptSMTK;
 import cl.minsal.semantikos.model.Description;
 import cl.minsal.semantikos.model.User;
@@ -64,6 +65,14 @@ public interface AuditManagerInterface {
      * @param user                El usuario que realizó la actualización.
      */
     public void recordFavouriteDescriptionUpdate(ConceptSMTK conceptSMTK, Description originalDescription, User user);
+
+    /**
+     * Este método es responsable de registrar en el historial el cambio de categoría de un concepto.
+     * @param conceptSMTK El concepto cuya categoría cambia.
+     * @param originalCategory La categoría original, antes del cambio.
+     * @param user El usuario que realiza el cambio.
+     */
+    public void recordConceptCategoryChange(ConceptSMTK conceptSMTK, Category originalCategory, User user);
 
     /**
      * Este método es responsable de obtener y agrupar en una lista todos los tipos de cambios existentes.

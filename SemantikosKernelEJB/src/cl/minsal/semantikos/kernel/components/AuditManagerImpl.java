@@ -1,6 +1,7 @@
 package cl.minsal.semantikos.kernel.components;
 
 import cl.minsal.semantikos.kernel.daos.AuditDAO;
+import cl.minsal.semantikos.model.Category;
 import cl.minsal.semantikos.model.ConceptSMTK;
 import cl.minsal.semantikos.model.Description;
 import cl.minsal.semantikos.model.User;
@@ -13,9 +14,7 @@ import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.List;
 
-import static cl.minsal.semantikos.model.audit.AuditActionType.CONCEPT_CREATION;
-import static cl.minsal.semantikos.model.audit.AuditActionType.CONCEPT_FAVOURITE_DESCRIPTION_CHANGE;
-import static cl.minsal.semantikos.model.audit.AuditActionType.CONCEPT_PUBLICATION;
+import static cl.minsal.semantikos.model.audit.AuditActionType.*;
 
 /**
  * @author Andrés Farías
@@ -54,6 +53,13 @@ public class AuditManagerImpl implements AuditManagerInterface {
     public void recordFavouriteDescriptionUpdate(ConceptSMTK conceptSMTK, Description originalDescription, User user) {
         Timestamp actionDate = new Timestamp(System.currentTimeMillis());
         ConceptAuditAction auditAction = new ConceptAuditAction(conceptSMTK, CONCEPT_FAVOURITE_DESCRIPTION_CHANGE, actionDate, user, originalDescription);
+        auditDAO.recordAuditAction(auditAction);
+    }
+
+    @Override
+    public void recordConceptCategoryChange(ConceptSMTK conceptSMTK, Category originalCategory, User user) {
+        Timestamp actionDate = new Timestamp(System.currentTimeMillis());
+        ConceptAuditAction auditAction = new ConceptAuditAction(conceptSMTK, CONCEPT_CATEGORY_CHANGE, actionDate, user, originalCategory);
         auditDAO.recordAuditAction(auditAction);
     }
 
