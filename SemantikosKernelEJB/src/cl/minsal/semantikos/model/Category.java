@@ -25,7 +25,8 @@ public class Category implements TargetDefinition, AuditableEntity {
 
     private List<RelationshipDefinition> relationshipDefinitions;
 
-    public long getIdCategory() {
+    @Override
+    public long getId() {
         return idCategory;
     }
 

@@ -7,7 +7,7 @@ import java.util.List;
  */
 public interface IUser {
 
-    long getIdUser();
+    public long getIdUser();
 
     String getUsername();
 

@@ -5,13 +5,25 @@ package cl.minsal.semantikos.model;
  */
 public class DescriptionType {
 
-    /** Identificador unico */
+    /** Descripción Abreviada */
+    public static final DescriptionType ABREVIADA = new DescriptionType(4, "Abreviada", "Descripción de tipo abreviada");
+
+    /** Descripción tipo General */
+    public static final DescriptionType GENERAL = new DescriptionType(5, "General", "Descripción de tipo general");
+
+    /** Descripción tipo General */
+    public static final DescriptionType FSN = new DescriptionType(1, "FSN", "Descripción de tipo Full Specified Name");
+
+    /** Descripción tipo General */
+    public static final DescriptionType PREFERIDA = new DescriptionType(2, "PREFERIDA", "Descripción de tipo preferida");
+
+    /** Identificador único */
     private long id;
 
     /* Nombre del tipo de descripción */
     private String name;
 
-    /* Descripción (opcional) del tipo de descripcion */
+    /* Descripción (opcional) del tipo de descripción */
     private String description;
 
     /**
@@ -50,8 +62,6 @@ public class DescriptionType {
     public void setDescription(String description) {
         this.description = description;
     }
-
-
 
     @Override
     public String toString() {

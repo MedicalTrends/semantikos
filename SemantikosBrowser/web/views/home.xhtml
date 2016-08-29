@@ -23,7 +23,7 @@
                                                       value="#{navBrowser.selectedCategories}" label="Categorías"
                                                       filter="true" filterMatchMode="startsWith">
                                     <f:selectItems value="#{navBrowser.categories}" var="category"
-                                                   itemLabel="#{category.name}" itemValue="#{category.idCategory}"/>
+                                                   itemLabel="#{category.name}" itemValue="#{category.id}"/>
 
                                     <p:ajax event="toggleSelect" update="conceptTable" />
                                     <p:ajax update="conceptTable" />

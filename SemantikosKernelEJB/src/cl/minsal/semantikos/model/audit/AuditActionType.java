@@ -5,21 +5,21 @@ package cl.minsal.semantikos.model.audit;
  */
 public enum AuditActionType {
 
-    CONCEPT_CREATION(1, "Creación de Concepto", false),
-    CONCEPT_PUBLICATION(2, "Publicación de Concepto", true),
-    CONCEPT_FAVOURITE_DESCRIPTION_CHANGE(3, "Cambio en descripción preferida de un Concepto", true),
-    CONCEPT_DESCRIPTION_ADDITION(4, "Descripción agregada a concepto", true),
-    CONCEPT_DESCRIPTION_REMOVAL(5, "Descripción eliminada a concepto", true),
-    CONCEPT_CATEGORY_CHANGE(6, "Cambio de categoría de Concepto", true),
-    CONCEPT_ATTRIBUTE_CHANGE(7, "Cambio de atributo de un concepto", true),
-    CONCEPT_RELATIONSHIP_CREATION(8, "Nueva relación de un concepto", false),
-    CONCEPT_RELATIONSHIP_REMOVAL(9, "Eliminación de relación de un concepto", true),
-    CONCEPT_RELATIONSHIP_CROSSMAP_CREATION(10, "Nuevo CrossMap de un concepto", false),
-    CONCEPT_RELATIONSHIP_CROSSMAP_ELIMINATION(11, "Eliminación de CrossMap de un concepto", false),
-    CONCEPT_RELATIONSHIP_EXTERNAL_TERMINOLOGY_CREATION(12, "Nueva referencia a terminología externa en Concepto", false),
-    CONCEPT_RELATIONSHIP_EXTERNAL_TERMINOLOGY_ELIMINATION(13, "Eliminación de referencia a terminología externa en Concepto", false),
-    CONCEPT_RELATIONSHIP_REFSET_CREATION(14, "Nueva referencia a RefSet en Concepto", false),
-    CONCEPT_RELATIONSHIP_REFSET_ELIMINATION(15, "Referencia a RefSet eliminada en Concepto", false);
+    CONCEPT_CREATION(1, "Creación de Concepto", false), //TODO: Manager, Hooks
+    CONCEPT_PUBLICATION(2, "Publicación de Concepto", true), //TODO: DAO, Manager, Hooks
+    CONCEPT_FAVOURITE_DESCRIPTION_CHANGE(3, "Cambio en descripción preferida de un Concepto", true), //TODO: DAO, Manager, Hooks
+    CONCEPT_DESCRIPTION_ADDITION(4, "Descripción agregada a concepto", true), //TODO: DAO, Manager, Hooks
+    CONCEPT_DESCRIPTION_REMOVAL(5, "Descripción eliminada a concepto", true), //TODO: DAO, Manager, Hooks
+    CONCEPT_CATEGORY_CHANGE(6, "Cambio de categoría de Concepto", true), //TODO: DAO, Manager, Hooks
+    CONCEPT_ATTRIBUTE_CHANGE(7, "Cambio de atributo de un concepto", true), //TODO: DAO, Manager, Hooks
+    CONCEPT_RELATIONSHIP_CREATION(8, "Nueva relación de un concepto", false), //TODO: DAO, Manager, Hooks
+    CONCEPT_RELATIONSHIP_REMOVAL(9, "Eliminación de relación de un concepto", true), //TODO: DAO, Manager, Hooks
+    CONCEPT_RELATIONSHIP_CROSSMAP_CREATION(10, "Nuevo CrossMap de un concepto", false), //TODO: DAO, Manager, Hooks
+    CONCEPT_RELATIONSHIP_CROSSMAP_ELIMINATION(11, "Eliminación de CrossMap de un concepto", false), //TODO: DAO, Manager, Hooks
+    CONCEPT_RELATIONSHIP_EXTERNAL_TERMINOLOGY_CREATION(12, "Nueva referencia a terminología externa en Concepto", false), //TODO: DAO, Manager, Hooks
+    CONCEPT_RELATIONSHIP_EXTERNAL_TERMINOLOGY_ELIMINATION(13, "Eliminación de referencia a terminología externa en Concepto", false), //TODO: DAO, Manager, Hooks
+    CONCEPT_RELATIONSHIP_REFSET_CREATION(14, "Nueva referencia a RefSet en Concepto", false), //TODO: DAO, Manager, Hooks
+    CONCEPT_RELATIONSHIP_REFSET_ELIMINATION(15, "Referencia a RefSet eliminada en Concepto", false); //TODO: DAO, Manager, Hooks
 
     /** Identificador único de la base de datos */
     private long id;

@@ -477,7 +477,7 @@ public class ConceptDAOImpl implements ConceptDAO {
 
             call.setLong(1, conceptSMTK.getId());
             call.setString(2, conceptSMTK.getConceptID());
-            call.setLong(3, conceptSMTK.getCategory().getIdCategory());
+            call.setLong(3, conceptSMTK.getCategory().getId());
             call.setBoolean(4, conceptSMTK.isToBeReviewed());
             call.setBoolean(5, conceptSMTK.isToBeConsulted());
             call.setLong(6, conceptSMTK.getState().getId());
@@ -520,7 +520,7 @@ public class ConceptDAOImpl implements ConceptDAO {
              CallableStatement call = connection.prepareCall(sql)) {
 
             call.setString(1, conceptSMTK.getConceptID());
-            call.setLong(2, conceptSMTK.getCategory().getIdCategory());
+            call.setLong(2, conceptSMTK.getCategory().getId());
             call.setBoolean(3, conceptSMTK.isToBeReviewed());
             call.setBoolean(4, conceptSMTK.isToBeConsulted());
             call.setLong(5, conceptSMTK.getState().getId());
