@@ -56,6 +56,16 @@ public interface AuditManagerInterface {
     public void recordConceptPublished(ConceptSMTK sourceConcept, User user);
 
     /**
+     * Este método es responsable de registrar en el historial el cambio de la descripción
+     * <code>originalDescription</code>.
+     *
+     * @param conceptSMTK         El concepto al cual pertenece la descripción actualizada.
+     * @param originalDescription La descripción original, sin el cambio.
+     * @param user                El usuario que realizó la actualización.
+     */
+    public void recordFavouriteDescriptionUpdate(ConceptSMTK conceptSMTK, Description originalDescription, User user);
+
+    /**
      * Este método es responsable de obtener y agrupar en una lista todos los tipos de cambios existentes.
      *
      * @return Una <code>List</code> con los tipos de cambio.

@@ -14,6 +14,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static cl.minsal.semantikos.model.audit.AuditActionType.CONCEPT_CREATION;
+import static cl.minsal.semantikos.model.audit.AuditActionType.CONCEPT_FAVOURITE_DESCRIPTION_CHANGE;
 import static cl.minsal.semantikos.model.audit.AuditActionType.CONCEPT_PUBLICATION;
 
 /**
@@ -46,6 +47,13 @@ public class AuditManagerImpl implements AuditManagerInterface {
     public void recordConceptPublished(ConceptSMTK theConcept, User user) {
         Timestamp actionDate = new Timestamp(System.currentTimeMillis());
         ConceptAuditAction auditAction = new ConceptAuditAction(theConcept, CONCEPT_PUBLICATION, actionDate, user, theConcept);
+        auditDAO.recordAuditAction(auditAction);
+    }
+
+    @Override
+    public void recordFavouriteDescriptionUpdate(ConceptSMTK conceptSMTK, Description originalDescription, User user) {
+        Timestamp actionDate = new Timestamp(System.currentTimeMillis());
+        ConceptAuditAction auditAction = new ConceptAuditAction(conceptSMTK, CONCEPT_FAVOURITE_DESCRIPTION_CHANGE, actionDate, user, originalDescription);
         auditDAO.recordAuditAction(auditAction);
     }
 
