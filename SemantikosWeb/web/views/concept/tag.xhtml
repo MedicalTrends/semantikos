@@ -8,7 +8,8 @@
     <ui:define name="content">
         <p:panel id="findConcept">
             <h:form id="tags">
-
+                <p:spacer></p:spacer>
+                <h3>Crear tag</h3>
                 <p:panel id="create">
 
                 <div class="ui-g">
@@ -66,7 +67,9 @@
                     </div>
                 </div>
                 </p:panel>
-
+                <p:spacer></p:spacer>
+                <h3>Buscar tag por nombre</h3>
+                <p:spacer></p:spacer>
                 <div class="ui-g">
 
                     <div class="ui-g-12 ui-md-6 ui-lg-6">
@@ -82,6 +85,14 @@
                     </div>
                     <div class="ui-g-12 ui-md-6 ui-lg-6">
 
+                    </div>
+                </div>
+                <p:spacer></p:spacer>
+                <h3>Lista de tag </h3>
+                <p:spacer></p:spacer>
+                <div class="ui-g">
+
+                    <div class="ui-g-12 ui-md-6 ui-lg-6">
                         <p:selectOneMenu id="tagslist" value="#{tagBean.tag}" >
 
                             <f:selectItems value="#{tagBean.tagList}" var="tag" itemLabel="#{tag.name}" itemValue="#{tag}"/>
@@ -90,12 +101,40 @@
                             </p:column>
                         </p:selectOneMenu>
                     </div>
+                    <div class="ui-g-12 ui-md-6 ui-lg-6">
+
+
+                    </div>
                 </div>
+                <p:spacer></p:spacer>
 
-
+                <h3>Adminsitrar tag</h3>
+                <p:spacer></p:spacer>
                 <div class="ui-g">
 
-                    <p:dataTable>
+                    <p:dataTable
+                            emptyMessage="No existen tags."
+                            id="adminTag"
+                            style="margin: 10px;"
+                            value="#{tagBean.tagList}"
+                            var="tag">
+
+
+                        <p:column headerText="Nombre">
+                            <h:outputText value="#{tag.name}"/>
+                        </p:column>
+
+                        <p:column headerText="Color fondo" style="width:60px;text-align: center;">
+                            <p:colorPicker  value="#{tag.colorBackground}"></p:colorPicker>
+                        </p:column>
+                        <p:column headerText="Color Texto" style="width:60px;text-align: center;">
+                            <p:colorPicker  value="#{tag.colorLetter}"></p:colorPicker>
+                        </p:column>
+
+                        <p:column headerText="Agregar hijo" style="width:60px;text-align: center;">
+                            <p:commandButton icon="fa fa-plus" title="agregar" >
+                            </p:commandButton>
+                        </p:column>
 
 
                     </p:dataTable>
