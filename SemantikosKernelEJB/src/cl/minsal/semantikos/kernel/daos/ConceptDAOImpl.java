@@ -454,6 +454,7 @@ public class ConceptDAOImpl implements ConceptDAO {
 
         /* Luego se persisten sus descripciones */
 
+        // TODO: Sacar la persistencia de descripciones de aquí y llevarla al DAO. Simplificar esta persistencia.
         for (Description description : conceptSMTK.getDescriptions()) {
             descriptionDAO.persist(description, conceptSMTK, user);
         }

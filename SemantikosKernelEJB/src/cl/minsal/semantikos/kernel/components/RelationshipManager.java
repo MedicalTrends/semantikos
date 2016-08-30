@@ -29,8 +29,9 @@ public interface RelationshipManager {
      * @param target       El destino de la relación
      * @param relationType El tipo de relación que se quiere crear.
      * @param isValid      Determina si es vigente o no.
+     * @param user         El usuario que crea la Relación.
      */
-    public int createRelationship(ConceptSMTK origin, Target target, RelationshipDefinition relationType, boolean isValid);
+    public Relationship createRelationship(ConceptSMTK origin, Target target, RelationshipDefinition relationType, boolean isValid, User user);
 
     /**
      * Este método es responsable de buscar una relación, dadas su categoría de origen

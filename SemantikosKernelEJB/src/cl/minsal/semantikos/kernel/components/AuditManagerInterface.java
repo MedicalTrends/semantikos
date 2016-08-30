@@ -86,6 +86,14 @@ public interface AuditManagerInterface {
     public void recordAttributeChange(ConceptSMTK conceptSMTK, Relationship originalRelationship, User user);
 
     /**
+     * Este método es responsable de registrar en el historial las creación de una relación.
+     *
+     * @param relationship La relación que se ha persistido.
+     * @param user         El usuario responsable de la acción.
+     */
+    public void recordRelationshipCreation(Relationship relationship, User user);
+
+    /**
      * Este método es responsable de obtener y agrupar en una lista todos los tipos de cambios existentes.
      *
      * @return Una <code>List</code> con los tipos de cambio.
@@ -105,5 +113,4 @@ public interface AuditManagerInterface {
      * <code>conceptSMTK</code>
      */
     public List<ConceptAuditAction> getConceptAuditActions(ConceptSMTK conceptSMTK, int numberOfChanges, boolean changes);
-
 }

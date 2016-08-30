@@ -28,8 +28,7 @@ public class AuditManagerImpl implements AuditManagerInterface {
 
     @Override
     public void recordNewConcept(ConceptSMTK conceptSMTK, User user) {
-        Timestamp actionDate = now();
-        ConceptAuditAction conceptAuditAction = new ConceptAuditAction(conceptSMTK, CONCEPT_CREATION, actionDate, user, conceptSMTK);
+        ConceptAuditAction conceptAuditAction = new ConceptAuditAction(conceptSMTK, CONCEPT_CREATION, now(), user, conceptSMTK);
         auditDAO.recordAuditAction(conceptAuditAction);
     }
 
@@ -67,8 +66,10 @@ public class AuditManagerImpl implements AuditManagerInterface {
         auditDAO.recordAuditAction(auditAction);
     }
 
-    private Timestamp now() {
-        return new Timestamp(System.currentTimeMillis());
+    @Override
+    public void recordRelationshipCreation(Relationship relationship, User user) {
+        ConceptAuditAction auditAction = new ConceptAuditAction(relationship.getSourceConcept(), CONCEPT_RELATIONSHIP_CREATION, now(), user, relationship);
+        auditDAO.recordAuditAction(auditAction);
     }
 
     @Override
@@ -79,5 +80,9 @@ public class AuditManagerImpl implements AuditManagerInterface {
     @Override
     public List<ConceptAuditAction> getConceptAuditActions(ConceptSMTK conceptSMTK, int numberOfChanges, boolean changes) {
         return auditDAO.getConceptAuditActions(conceptSMTK.getId(), numberOfChanges, changes);
+    }
+
+    private Timestamp now() {
+        return new Timestamp(System.currentTimeMillis());
     }
 }
