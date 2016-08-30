@@ -12,8 +12,8 @@ public enum AuditActionType {
     CONCEPT_DESCRIPTION_UNBINDING(5, "Descripción eliminada a concepto", AuditActionNature.CHANGE),
     CONCEPT_CATEGORY_CHANGE(6, "Cambio de categoría de Concepto", AuditActionNature.CHANGE),
     CONCEPT_ATTRIBUTE_CHANGE(7, "Cambio de atributo de un concepto", AuditActionNature.CHANGE),
-    CONCEPT_RELATIONSHIP_CREATION(8, "Nueva relación de un concepto", AuditActionNature.CHANGE), //TODO: DAO, Manager, Hooks
-    CONCEPT_RELATIONSHIP_REMOVAL(9, "Eliminación de relación de un concepto", AuditActionNature.CHANGE), //TODO: DAO, Manager, Hooks
+    CONCEPT_RELATIONSHIP_CREATION(8, "Nueva relación de un concepto", AuditActionNature.CHANGE),
+    CONCEPT_RELATIONSHIP_REMOVAL(9, "Eliminación de relación de un concepto", AuditActionNature.CHANGE),
     CONCEPT_RELATIONSHIP_CROSSMAP_CREATION(10, "Nuevo CrossMap de un concepto", AuditActionNature.CREATION), //TODO: DAO, Manager, Hooks
     CONCEPT_RELATIONSHIP_CROSSMAP_ELIMINATION(11, "Eliminación de CrossMap de un concepto", AuditActionNature.REMOVAL), //TODO: DAO, Manager, Hooks
     CONCEPT_RELATIONSHIP_EXTERNAL_TERMINOLOGY_CREATION(12, "Nueva referencia a terminología externa en Concepto", AuditActionNature.CREATION), //TODO: DAO, Manager, Hooks

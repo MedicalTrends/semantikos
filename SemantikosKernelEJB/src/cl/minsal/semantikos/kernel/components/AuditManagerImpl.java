@@ -73,6 +73,12 @@ public class AuditManagerImpl implements AuditManagerInterface {
     }
 
     @Override
+    public void recordRelationshipRemoval(Relationship relationship, User user) {
+        ConceptAuditAction auditAction = new ConceptAuditAction(relationship.getSourceConcept(), CONCEPT_RELATIONSHIP_REMOVAL, now(), user, relationship);
+        auditDAO.recordAuditAction(auditAction);
+    }
+
+    @Override
     public List<AuditActionType> getAllAuditActionTypes() {
         return Arrays.asList(AuditActionType.values());
     }

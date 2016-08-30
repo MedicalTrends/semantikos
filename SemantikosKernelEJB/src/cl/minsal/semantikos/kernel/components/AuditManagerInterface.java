@@ -94,6 +94,14 @@ public interface AuditManagerInterface {
     public void recordRelationshipCreation(Relationship relationship, User user);
 
     /**
+     * Este método es responsable de registrar en el historial la eliminación de una relación.
+     *
+     * @param relationship La relación que se desea eliminar.
+     * @param user         El usuario que elimina la relación.
+     */
+    public void recordRelationshipRemoval(Relationship relationship, User user);
+
+    /**
      * Este método es responsable de obtener y agrupar en una lista todos los tipos de cambios existentes.
      *
      * @return Una <code>List</code> con los tipos de cambio.
