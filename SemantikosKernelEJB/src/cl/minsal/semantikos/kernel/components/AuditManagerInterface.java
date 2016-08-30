@@ -1,9 +1,6 @@
 package cl.minsal.semantikos.kernel.components;
 
-import cl.minsal.semantikos.model.Category;
-import cl.minsal.semantikos.model.ConceptSMTK;
-import cl.minsal.semantikos.model.Description;
-import cl.minsal.semantikos.model.User;
+import cl.minsal.semantikos.model.*;
 import cl.minsal.semantikos.model.audit.AuditActionType;
 import cl.minsal.semantikos.model.audit.ConceptAuditAction;
 import cl.minsal.semantikos.model.relationships.Relationship;
@@ -100,6 +97,14 @@ public interface AuditManagerInterface {
      * @param user         El usuario que elimina la relación.
      */
     public void recordRelationshipRemoval(Relationship relationship, User user);
+
+    /**
+     * Este método es responsable de registrar en el historial la creación de un CrossMap.
+     *
+     * @param crossMap El CrossMap que se desea eliminar.
+     * @param user     El usuario que elimina la relación.
+     */
+    public void recordCrossMapCreation(CrossMap crossMap, User user);
 
     /**
      * Este método es responsable de obtener y agrupar en una lista todos los tipos de cambios existentes.

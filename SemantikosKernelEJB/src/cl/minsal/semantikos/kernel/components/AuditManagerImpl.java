@@ -1,10 +1,7 @@
 package cl.minsal.semantikos.kernel.components;
 
 import cl.minsal.semantikos.kernel.daos.AuditDAO;
-import cl.minsal.semantikos.model.Category;
-import cl.minsal.semantikos.model.ConceptSMTK;
-import cl.minsal.semantikos.model.Description;
-import cl.minsal.semantikos.model.User;
+import cl.minsal.semantikos.model.*;
 import cl.minsal.semantikos.model.audit.AuditActionType;
 import cl.minsal.semantikos.model.audit.ConceptAuditAction;
 import cl.minsal.semantikos.model.relationships.Relationship;
@@ -75,6 +72,12 @@ public class AuditManagerImpl implements AuditManagerInterface {
     @Override
     public void recordRelationshipRemoval(Relationship relationship, User user) {
         ConceptAuditAction auditAction = new ConceptAuditAction(relationship.getSourceConcept(), CONCEPT_RELATIONSHIP_REMOVAL, now(), user, relationship);
+        auditDAO.recordAuditAction(auditAction);
+    }
+
+    @Override
+    public void recordCrossMapCreation(CrossMap crossMap, User user) {
+        ConceptAuditAction auditAction = new ConceptAuditAction(crossMap.getSourceConcept(), CONCEPT_RELATIONSHIP_REMOVAL, now(), user, crossMap);
         auditDAO.recordAuditAction(auditAction);
     }
 
