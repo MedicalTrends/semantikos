@@ -284,7 +284,6 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         this.selectedHelperTableRecord = selectedHelperTableRecord;
     }
 
-
     //      Methods
     public void createConcept() throws ParseException {
         category = categoryManager.getCategoryById(categorySelect);
@@ -300,8 +299,13 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
     public ConceptSMTKWeb newConcept(Category category, String term) {
 
         /* Valores iniciales para el concepto */
-        Description favouriteDescription = new Description(term, descriptionManager.getTypeFavorite());
+        Description fsn = new Description(term, descriptionManager.getTypeFSN());
         IState initialState = stateMachineManager.getConceptStateMachine().getInitialState();
+        fsn.setState(initialState);
+        fsn.setCaseSensitive(false);
+        fsn.setDescriptionId(descriptionManager.generateDescriptionId());
+
+        Description favouriteDescription = new Description(term, descriptionManager.getTypeFavorite());
         favouriteDescription.setState(initialState);
         favouriteDescription.setCaseSensitive(false);
         favouriteDescription.setDescriptionId(descriptionManager.generateDescriptionId());
@@ -570,6 +574,7 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
             }
             // Si el concepto no está persistido, persistirlo
             else {
+                concept.prepareDescriptions();
                 conceptManager.persist(concept, user);
             }
             context.addMessage(null, new FacesMessage("Successful", "Concepto guardado "));
