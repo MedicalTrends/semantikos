@@ -30,8 +30,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-import static cl.minsal.semantikos.kernel.daos.DAO.NON_PERSISTED_ID;
-
 /**
  * Created by diego on 26/06/2016.
  * Created by diego on 26/06/2016.
@@ -300,24 +298,20 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
 
         /* Valores iniciales para el concepto */
         Description fsn = new Description(term, descriptionManager.getTypeFSN());
-        IState initialState = stateMachineManager.getConceptStateMachine().getInitialState();
-        fsn.setState(initialState);
         fsn.setCaseSensitive(false);
         fsn.setDescriptionId(descriptionManager.generateDescriptionId());
 
         Description favouriteDescription = new Description(term, descriptionManager.getTypeFavorite());
-        favouriteDescription.setState(initialState);
         favouriteDescription.setCaseSensitive(false);
         favouriteDescription.setDescriptionId(descriptionManager.generateDescriptionId());
 
-        Description fsnDescription = new Description(term+" ("+category.getName()+")", descriptionManager.getTypeFSN());
+        Description fsnDescription = new Description(term + " (" + category.getName() + ")", descriptionManager.getTypeFSN());
 
-        fsnDescription.setState(initialState);
         fsnDescription.setCaseSensitive(false);
         fsnDescription.setDescriptionId(descriptionManager.generateDescriptionId());
 
-        Description[] descriptions= {favouriteDescription,fsnDescription};
-        return new ConceptSMTKWeb(conceptManager.generateConceptId(), category, true, true, initialState, false, false, descriptions);
+        Description[] descriptions = {favouriteDescription, fsnDescription};
+        return new ConceptSMTKWeb(conceptManager.generateConceptId(), category, true, true, false, false, false, descriptions);
     }
 
     //Este método es responsable de pasarle a la vista un concepto, dado el id del concepto
@@ -359,7 +353,7 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
 
         Target target = new BasicTypeValue(null);
 
-        Relationship relationship = new Relationship(this.concept,target,relationshipDefinition);
+        Relationship relationship = new Relationship(this.concept, target, relationshipDefinition);
         // Se utiliza el constructor mínimo (sin id)
         this.concept.addRelationshipWeb(new RelationshipWeb(relationship, false));
 
@@ -370,7 +364,7 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
      */
     public void addRelationship(RelationshipDefinition relationshipDefinition, Target target) {
 
-        Relationship relationship = new Relationship(this.concept,target,relationshipDefinition);
+        Relationship relationship = new Relationship(this.concept, target, relationshipDefinition);
         // Se utiliza el constructor mínimo (sin id)
         this.concept.addRelationshipWeb(new RelationshipWeb(relationship, false));
         conceptSelected = null;
@@ -390,7 +384,7 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
                 // 1.- Se deja la original como modificada
                 // 2.- se agrega una nueva relación (clon de la original) y
                 // 3.- se deja la original como inválida
-                if(relationshipWeb.isPersisted() && !relationshipWeb.hasBeenModified()) {
+                if (relationshipWeb.isPersisted() && !relationshipWeb.hasBeenModified()) {
                     relationshipWeb.setModified(true);
                     Relationship newRelationship = relationshipWeb;
                     newRelationship.setTarget(target);
@@ -400,7 +394,7 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
                     concept.addRelationshipWeb(new RelationshipWeb(newRelationship.getId(), newRelationship, false));
                 }
                 // Si la relación no está persistida o está persistida pero ya ha sido modificada, se modifica su target
-                else{
+                else {
                     relationshipWeb.setTarget(target);
                 }
                 isRelationshipFound = true;
@@ -409,7 +403,7 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         }
         // Si no se encuentra la relación, se crea una nueva
         if (!isRelationshipFound) {
-            Relationship newRelationship = new Relationship(this.concept,target,relationshipDefinition);
+            Relationship newRelationship = new Relationship(this.concept, target, relationshipDefinition);
             concept.addRelationshipWeb(new RelationshipWeb(newRelationship, false));
         }
 
@@ -424,14 +418,14 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         // Si la relacion esta persistida y no ha sido modificada:
         // 1.- Se deja la original como modificada
         // 2.- se deja la original como inválida
-        if(r.isPersisted() && !r.hasBeenModified()) {
+        if (r.isPersisted() && !r.hasBeenModified()) {
 
             r.setModified(true);
             r.setValidityUntil(new Timestamp(System.currentTimeMillis()));
             r.setToBeUpdated(true);
         }
         // Si la relacion no esta persistida o está persistida pero ya ha sido modificada, se remueve del concepto
-        else{
+        else {
             concept.removeRelationshipWeb(r);
         }
     }
@@ -446,7 +440,6 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
                 if (otherDescriptionType != null) {
                     Description description = new Description(otherTermino, otherDescriptionType);
                     description.setCaseSensitive(otherSensibilidad);
-                    description.setState(stateMachineManager.getConceptStateMachine().getInitialState());
                     description.setDescriptionId(descriptionManager.generateDescriptionId());
                     concept.addDescription(description);
                     concept.addDescriptionWeb(new DescriptionWeb(description, false));
@@ -472,13 +465,12 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
 
         Description description = new Description(term, descriptionType);
         description.setCaseSensitive(caseSensitive);
-        description.setState(concept.getState());
         description.setDescriptionId(descriptionManager.generateDescriptionId());
         concept.addDescription(description);
     }
 
-    public void editDescription(DescriptionWeb description){
-        if(description.isPersisted() && !description.hasBeenModified())
+    public void editDescription(DescriptionWeb description) {
+        if (description.isPersisted() && !description.hasBeenModified())
             concept.editDescription(description);
     }
 
@@ -511,7 +503,7 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
 
         //component.getParent().getAttributes().
 
-        if(!concept.isValid())
+        if (!concept.isValid())
             throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, msg, msg));
     }
 
@@ -523,11 +515,11 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
      */
     public void validateDescription(FacesContext context, UIComponent component, Object value) throws ValidatorException {
 
-        String msg = concept.validateDescription((DescriptionWeb)value);
+        String msg = concept.validateDescription((DescriptionWeb) value);
 
         //component.getParent().getAttributes().
 
-        if(!msg.equals(""))
+        if (!msg.equals(""))
             throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, msg, msg));
     }
 
@@ -563,14 +555,14 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
 
         } else {
             // Si el concepto está persistido, actualizarlo
-            if(concept.isPersistent()) {
+            if (concept.isPersistent()) {
                 concept.prepareRelationships();
-                for (Pair<DescriptionWeb,DescriptionWeb> descriptionWeb : concept.getDescriptionsForUpdate()) {
+                for (Pair<DescriptionWeb, DescriptionWeb> descriptionWeb : concept.getDescriptionsForUpdate()) {
                     //descriptionManager.updateDescription(descriptionWeb.getFirst(), descriptionWeb.getSecond());
                 }
                 // Se prepara para la actualización
                 //if(concept.prepareForUpdate())
-                    //conceptManager.update(concept, user);
+                //conceptManager.update(concept, user);
             }
             // Si el concepto no está persistido, persistirlo
             else {

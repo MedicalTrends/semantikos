@@ -34,8 +34,8 @@ public class ConceptSMTK extends PersistentEntity implements Target, AuditableEn
     /** Si debe ser consultado? */
     private boolean isToBeConsulted;
 
-    /** El estado en que se encuentra el objeto */
-    private IState state;
+    /** Si el concepto se encuentra modelado o no */
+    private boolean modeled;
 
     /**
      * Este campo establece si el concepto está completamente definido o si es primitivo. Por defecto, el concepto se
@@ -75,16 +75,16 @@ public class ConceptSMTK extends PersistentEntity implements Target, AuditableEn
         super(id);
 
         /* El concepto parte con su estado inicial */
-        // TODO: Cambiar esto a un campo.
-        this.state = ConceptStateMachine.getInstance().getInitialState();
         this.descriptions = new ArrayList<>();
 
+        this.modeled = false;
         this.isFullyDefined = false;
         this.isPublished = false;
         this.isToBeConsulted = false;
         this.isToBeReviewed = false;
 
         this.category = null;
+        this.relationshipsLoaded = false;
     }
 
     /**
@@ -93,7 +93,6 @@ public class ConceptSMTK extends PersistentEntity implements Target, AuditableEn
     public ConceptSMTK() {
         this(PersistentEntity.NON_PERSISTED_ID);
     }
-
 
     public ConceptSMTK(Category category) {
         this();
@@ -105,13 +104,13 @@ public class ConceptSMTK extends PersistentEntity implements Target, AuditableEn
         this.descriptions.addAll(Arrays.asList(descriptions));
     }
 
-    public ConceptSMTK(Category category, IState state, Description... descriptions) {
+    public ConceptSMTK(Category category, boolean modeled, Description... descriptions) {
         this(category, descriptions);
-        this.state = state;
+        this.modeled = modeled;
     }
 
-    public ConceptSMTK(long id, String conceptID, Category category, boolean isToBeReviewed, boolean isToBeConsulted, IState state, boolean isFullyDefined, boolean isPublished, Description... descriptions) {
-        this(category, state, descriptions);
+    public ConceptSMTK(long id, String conceptID, Category category, boolean isToBeReviewed, boolean isToBeConsulted, boolean modeled, boolean isFullyDefined, boolean isPublished, Description... descriptions) {
+        this(category, modeled, descriptions);
 
         this.setId(id);
 
@@ -133,8 +132,8 @@ public class ConceptSMTK extends PersistentEntity implements Target, AuditableEn
      * @param isPublished ¿Publicado?
      * @param descriptions Las descripciones para este concepto
      */
-    public ConceptSMTK(String conceptID, Category category, boolean isToBeReviewed, boolean isToBeConsulted, IState state, boolean isFullyDefined, boolean isPublished, Description... descriptions) {
-        this(NON_PERSISTED_ID, conceptID, category, isToBeReviewed, isToBeConsulted, state, isFullyDefined, isPublished, descriptions);
+    public ConceptSMTK(String conceptID, Category category, boolean isToBeReviewed, boolean isToBeConsulted, boolean modeled, boolean isFullyDefined, boolean isPublished, Description... descriptions) {
+        this(NON_PERSISTED_ID, conceptID, category, isToBeReviewed, isToBeConsulted, modeled, isFullyDefined, isPublished, descriptions);
     }
 
     public List<Description> getDescriptions() {
@@ -146,6 +145,11 @@ public class ConceptSMTK extends PersistentEntity implements Target, AuditableEn
     }
 
     public List<Relationship> getRelationships() {
+
+        if (!relationshipsLoaded) {
+            throw new BusinessRuleException("Las relaciones de este concepto no han sido cargadas aun.");
+        }
+
         return relationships;
     }
 
@@ -188,9 +192,11 @@ public class ConceptSMTK extends PersistentEntity implements Target, AuditableEn
     }
 
     /**
-     * Este método es responsable de retornar una lista con todas las relaciones de atributos. A saber: -->STMK,
+     * Este método es responsable de retornar una lista con todas las relaciones de atributos. A saber:
+     * -->SMTK,
      * -->Tipo
-     * Básico, -->Tabla Auxiliar
+     * -->Básico,
+     * -->Tabla Auxiliar
      *
      * @return Una lista de todas las relaciones de atributos.
      */
@@ -240,14 +246,6 @@ public class ConceptSMTK extends PersistentEntity implements Target, AuditableEn
         this.conceptID = conceptID;
     }
 
-    public IState getState() {
-        return state;
-    }
-
-    public void setState(IState state) {
-        this.state = state;
-    }
-
     public void setCategory(Category category) {
         this.category = category;
     }
@@ -290,7 +288,7 @@ public class ConceptSMTK extends PersistentEntity implements Target, AuditableEn
     public void setFullyDefined(boolean fullyDefined) {
 
         /* Antes de asignarle la propiedad, ser verifica si cumple las reglas de negocio */
-        new ConceptStateBusinessRulesContainer().apply(this, User.getDummyUser());
+        new ConceptStateBusinessRulesContainer().apply(this);
 
         /* Como se han validado las reglas de negocio, se realiza la asignación */
         this.isFullyDefined = fullyDefined;
@@ -507,14 +505,8 @@ public class ConceptSMTK extends PersistentEntity implements Target, AuditableEn
         return this.getRelationships().contains(relationship);
     }
 
-    /**
-     * Este método es responsable de determinar si el Concepto se encuentra en un estado <em>modelado</em>. Para esto,
-     * se considera que se encuentra en este estado si está en un estado que comienza con la palabra "MODELADO".
-     *
-     * @return <code>true</code> si se encuentra en un estado <em>Modelado</em> y <code>false</code> sino.
-     */
     public boolean isModeled() {
-        return this.state.getName().toLowerCase().startsWith("modelado");
+        return this.modeled;
     }
 
     /**

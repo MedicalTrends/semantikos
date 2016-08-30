@@ -5,7 +5,6 @@ import cl.minsal.semantikos.model.relationships.Relationship;
 import cl.minsal.semantikos.model.relationships.RelationshipDefinition;
 import cl.minsal.semantikos.util.Pair;
 
-import javax.validation.ConstraintValidatorContext;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -21,30 +20,28 @@ public class ConceptSMTKWeb extends ConceptSMTK {
     //Respaldo de descripciones web originales
     List<DescriptionWeb> descriptionsWebBackup = new ArrayList<DescriptionWeb>();
 
-    public ConceptSMTKWeb(String conceptID, Category category, boolean isToBeReviewed, boolean isToBeConsulted, IState state, boolean isFullyDefined, boolean isPublished, Description... descriptions) {
-        super(conceptID, category, isToBeReviewed, isToBeConsulted, state, isFullyDefined, isPublished, descriptions);
+    public ConceptSMTKWeb(String conceptID, Category category, boolean isToBeReviewed, boolean isToBeConsulted, boolean modeled, boolean isFullyDefined, boolean isPublished, Description... descriptions) {
+        super(conceptID, category, isToBeReviewed, isToBeConsulted, modeled, isFullyDefined, isPublished, descriptions);
         for (Relationship relationship : this.getRelationships()) {
-            if(relationship.isPersisted()) {
+            if (relationship.isPersisted()) {
                 this.addRelationshipWeb(new RelationshipWeb(relationship.getId(), relationship, false));
-            }
-            else {
+            } else {
                 this.addRelationshipWeb(new RelationshipWeb(relationship, false));
             }
         }
         for (Description description : this.getDescriptions()) {
-            if(description.isPersisted()) {
+            if (description.isPersisted()) {
                 this.addDescriptionWeb(new DescriptionWeb(description.getId(), description, false));
                 // Si la descripcion está persistida dejar en el respaldo las originales
                 this.descriptionsWebBackup.add(new DescriptionWeb(description.getId(), description, false));
-            }
-            else
+            } else
                 this.addDescriptionWeb(new DescriptionWeb(description, false));
         }
     }
 
     public ConceptSMTKWeb(ConceptSMTK conceptSMTK) {
-        this(conceptSMTK.getConceptID(), conceptSMTK.getCategory(), conceptSMTK.isToBeReviewed(), conceptSMTK.isToBeConsulted(), conceptSMTK.getState(),
-             conceptSMTK.isFullyDefined(), conceptSMTK.isPublished(), conceptSMTK.getDescriptions().toArray(new Description[conceptSMTK.getDescriptions().size()]));
+        this(conceptSMTK.getConceptID(), conceptSMTK.getCategory(), conceptSMTK.isToBeReviewed(), conceptSMTK.isToBeConsulted(), conceptSMTK.isModeled(),
+                conceptSMTK.isFullyDefined(), conceptSMTK.isPublished(), conceptSMTK.getDescriptions().toArray(new Description[conceptSMTK.getDescriptions().size()]));
         this.setId(conceptSMTK.getId());
     }
 
@@ -104,7 +101,7 @@ public class ConceptSMTKWeb extends ConceptSMTK {
         DescriptionType fsnType = DescriptionTypeFactory.getInstance().getFSNDescriptionType();
         DescriptionType favoriteType = DescriptionTypeFactory.getInstance().getFavoriteDescriptionType();
 
-        for ( DescriptionWeb description : descriptionsWeb) {
+        for (DescriptionWeb description : descriptionsWeb) {
             if (!description.getDescriptionType().equals(fsnType) && !description.getDescriptionType().equals(favoriteType) &&
                     (description.getValidityUntil() == null || description.getValidityUntil().after(Calendar.getInstance().getTime()))) {
                 otherDescriptions.add(description);
@@ -180,7 +177,7 @@ public class ConceptSMTKWeb extends ConceptSMTK {
     public void setRelationshipsWeb(List<Relationship> relationships) {
         //this.setRelationships(relationships);
         for (Relationship relationship : relationships) {
-            if(relationship.isPersisted())
+            if (relationship.isPersisted())
                 this.addRelationshipWeb(new RelationshipWeb(relationship.getId(), relationship, false));
             else
                 this.addRelationshipWeb(new RelationshipWeb(relationship, false));
@@ -198,7 +195,7 @@ public class ConceptSMTKWeb extends ConceptSMTK {
     }
 
 
-    public void addDescriptionWeb(DescriptionWeb descriptionWeb){
+    public void addDescriptionWeb(DescriptionWeb descriptionWeb) {
 
         this.descriptionsWeb.add(descriptionWeb);
     }
@@ -214,16 +211,15 @@ public class ConceptSMTKWeb extends ConceptSMTK {
         this.getRelationshipsWeb().remove(relationshipWeb);
     }
 
-    public boolean prepareRelationships(){
+    public boolean prepareRelationships() {
         getRelationships().clear();
         Relationship relationship;
         for (RelationshipWeb rWeb : relationshipsWeb) {
-            if(rWeb.isPersisted()) {
+            if (rWeb.isPersisted()) {
                 relationship = new Relationship(rWeb.getId(), rWeb.getSourceConcept(), rWeb.getTarget(), rWeb.getRelationshipDefinition(), rWeb.getValidityUntil());
                 relationship.setToBeUpdated(rWeb.isToBeUpdated());
                 this.addRelationship(relationship);
-            }
-            else {
+            } else {
                 relationship = new Relationship(rWeb.getSourceConcept(), rWeb.getTarget(), rWeb.getRelationshipDefinition());
                 relationship.setToBeUpdated(rWeb.isToBeUpdated());
                 this.addRelationship(relationship);
@@ -232,16 +228,15 @@ public class ConceptSMTKWeb extends ConceptSMTK {
         return true;
     }
 
-    public boolean prepareDescriptions(){
+    public boolean prepareDescriptions() {
         getDescriptions().clear();
         Description description;
         for (DescriptionWeb dWeb : descriptionsWeb) {
-            if(dWeb.isPersisted()) {
+            if (dWeb.isPersisted()) {
                 description = new Description(dWeb.getId(), dWeb.getDescriptionId(), dWeb.getDescriptionType(), dWeb.getTerm(), dWeb.isCaseSensitive(), dWeb.isAutogeneratedName(), dWeb.isActive(), dWeb.isPublished(), dWeb.getValidityUntil());
                 description.setToBeUpdated(dWeb.isToBeUpdated());
                 this.addDescription(description);
-            }
-            else {
+            } else {
                 description = new Description(dWeb.getDescriptionId(), dWeb.getDescriptionType(), dWeb.getTerm(), dWeb.isCaseSensitive(), dWeb.isAutogeneratedName(), dWeb.isActive(), dWeb.isPublished(), dWeb.getValidityUntil());
                 description.setToBeUpdated(dWeb.isToBeUpdated());
                 this.addDescription(description);
@@ -250,16 +245,16 @@ public class ConceptSMTKWeb extends ConceptSMTK {
         return true;
     }
 
-    public List<Pair<DescriptionWeb, DescriptionWeb>> getDescriptionsForUpdate(){
+    public List<Pair<DescriptionWeb, DescriptionWeb>> getDescriptionsForUpdate() {
 
-        List<Pair<DescriptionWeb, DescriptionWeb>> descriptionsForUpdate= new ArrayList<Pair<DescriptionWeb, DescriptionWeb>>();
+        List<Pair<DescriptionWeb, DescriptionWeb>> descriptionsForUpdate = new ArrayList<Pair<DescriptionWeb, DescriptionWeb>>();
 
         //Primero se buscan todas las descripciones persistidas originales
         for (DescriptionWeb oldDescriptionWeb : descriptionsWebBackup) {
             //Por cada descripción original se busca su descripcion vista correlacionada
-            for(DescriptionWeb newDescriptionWeb: descriptionsWeb){
+            for (DescriptionWeb newDescriptionWeb : descriptionsWeb) {
                 //Si la descripcion correlacionada sufrio alguna modificación agregar
-                if(oldDescriptionWeb.getId()==newDescriptionWeb.getId() && !oldDescriptionWeb.equals(newDescriptionWeb)){
+                if (oldDescriptionWeb.getId() == newDescriptionWeb.getId() && !oldDescriptionWeb.equals(newDescriptionWeb)) {
                     descriptionsForUpdate.add(new Pair(oldDescriptionWeb, newDescriptionWeb));
                 }
             }
@@ -277,9 +272,9 @@ public class ConceptSMTKWeb extends ConceptSMTK {
 
         for (RelationshipDefinition relationshipDef : this.getCategory().getRelationshipDefinitions()) {
 
-            List<RelationshipWeb> relationships= this.getValidRelationshipsWebByRelationDefinition(relationshipDef);
+            List<RelationshipWeb> relationships = this.getValidRelationshipsWebByRelationDefinition(relationshipDef);
 
-            if(relationships.size()<relationshipDef.getMultiplicity().getLowerBoundary())
+            if (relationships.size() < relationshipDef.getMultiplicity().getLowerBoundary())
                 return false;
             /*
             for (Relationship relationship : relationships) {
@@ -313,11 +308,11 @@ public class ConceptSMTKWeb extends ConceptSMTK {
         DescriptionWeb oldDescription = null;
         boolean isDescriptionFound = false;
 
-        if(description.isPersisted() && !description.hasBeenModified()){
+        if (description.isPersisted() && !description.hasBeenModified()) {
             //Buscar la descripción original en el respaldo de descripciones web
             for (DescriptionWeb descriptionWebBackup : descriptionsWebBackup) {
                 // Si existe una con el mismo id, dejarla como invalida y agregarla
-                if(descriptionWebBackup.getId()==description.getId()) {
+                if (descriptionWebBackup.getId() == description.getId()) {
                     //Setear la descripcion respaldada
                     oldDescription = descriptionWebBackup;
                     //Dejar la descripción inválida
@@ -331,15 +326,15 @@ public class ConceptSMTKWeb extends ConceptSMTK {
             }
 
             //Por ultimo, remover la descripción del backup (puesto que ya ha sido consolidada)
-            if(isDescriptionFound){
+            if (isDescriptionFound) {
                 descriptionsWebBackup.remove(oldDescription);
             }
         }
     }
 
     public String validateDescription(Description description) {
-        if(description.getDescriptionType().getName().equalsIgnoreCase("FSN")){
-            if(description==null || description.getTerm().length()==0){
+        if (description.getDescriptionType().getName().equalsIgnoreCase("FSN")) {
+            if (description == null || description.getTerm().length() == 0) {
                 return "Falta el FSN al concepto";
             }
         }

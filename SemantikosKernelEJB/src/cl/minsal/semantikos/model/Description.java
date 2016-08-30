@@ -37,7 +37,7 @@ public class Description extends PersistentEntity implements AuditableEntity {
     private DescriptionType descriptionType;
 
     /** El estado del descriptor */
-    private IState state;
+    private boolean modeled;
 
     /** Indica si ha sufrido modificaciones que requieran un update */
     private boolean toBeUpdated = false;
@@ -171,14 +171,6 @@ public class Description extends PersistentEntity implements AuditableEntity {
         this.descriptionType = descriptionType;
     }
 
-    public IState getState() {
-        return state;
-    }
-
-    public void setState(IState state) {
-        this.state = state;
-    }
-
     public boolean isToBeUpdated() {
         return toBeUpdated;
     }
@@ -201,5 +193,13 @@ public class Description extends PersistentEntity implements AuditableEntity {
 
     public void setUses(long uses) {
         this.uses = uses;
+    }
+
+    public boolean isModeled() {
+        return modeled;
+    }
+
+    public void setModeled(boolean modeled) {
+        this.modeled = modeled;
     }
 }

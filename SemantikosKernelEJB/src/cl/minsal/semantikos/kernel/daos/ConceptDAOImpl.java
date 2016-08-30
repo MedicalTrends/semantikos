@@ -421,7 +421,7 @@ public class ConceptDAOImpl implements ConceptDAO {
         Category objectCategory;
         boolean check;
         boolean consult;
-        long state;
+        boolean modeled;
         boolean completelyDefined;
         boolean published;
         String conceptId;
@@ -431,18 +431,18 @@ public class ConceptDAOImpl implements ConceptDAO {
         objectCategory = categoryDAO.getCategoryById(idCategory);
         check = Boolean.parseBoolean(resultSet.getString("is_to_be_reviewed"));
         consult = Boolean.parseBoolean(resultSet.getString("is_to_be_consultated"));
-        state = Long.valueOf(resultSet.getString("id_state_concept"));
+        modeled = Boolean.parseBoolean(resultSet.getString("is_modeled"));
         completelyDefined = Boolean.parseBoolean(resultSet.getString("is_fully_defined"));
         published = Boolean.parseBoolean(resultSet.getString("is_published"));
         conceptId = resultSet.getString("conceptid");
         State st = new State();
-        //TODO: Se deja el estado en duro - Despues esto cambiará a variable dummy para el estado
+        //TODO: Se deja el estado en duro - Después esto cambiará a variable dummy para el estado
         st.setId(6);
         st.setName(String.valueOf("Borrador"));
         List<Description> descriptions = descriptionDAO.getDescriptionsByConceptID(id);
 
         Description[] theDescriptions = descriptions.toArray(new Description[descriptions.size()]);
-        return new ConceptSMTK(id, conceptId, objectCategory, check, consult, st, completelyDefined, published, theDescriptions);
+        return new ConceptSMTK(id, conceptId, objectCategory, check, consult, modeled, completelyDefined, published, theDescriptions);
     }
 
     @Override
@@ -481,7 +481,7 @@ public class ConceptDAOImpl implements ConceptDAO {
             call.setLong(3, conceptSMTK.getCategory().getId());
             call.setBoolean(4, conceptSMTK.isToBeReviewed());
             call.setBoolean(5, conceptSMTK.isToBeConsulted());
-            call.setLong(6, conceptSMTK.getState().getId());
+            call.setBoolean(6, conceptSMTK.isModeled());
             call.setBoolean(7, conceptSMTK.isFullyDefined());
             call.setBoolean(8, conceptSMTK.isPublished());
             call.execute();
@@ -524,7 +524,7 @@ public class ConceptDAOImpl implements ConceptDAO {
             call.setLong(2, conceptSMTK.getCategory().getId());
             call.setBoolean(3, conceptSMTK.isToBeReviewed());
             call.setBoolean(4, conceptSMTK.isToBeConsulted());
-            call.setLong(5, conceptSMTK.getState().getId());
+            call.setBoolean(5, conceptSMTK.isModeled());
             call.setBoolean(6, conceptSMTK.isFullyDefined());
             call.setBoolean(7, conceptSMTK.isPublished());
             call.execute();
