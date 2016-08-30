@@ -4,6 +4,8 @@ package cl.minsal.semantikos.kernel.components;
 import cl.minsal.semantikos.kernel.daos.DescriptionDAO;
 import cl.minsal.semantikos.model.*;
 import cl.minsal.semantikos.model.businessrules.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -20,6 +22,8 @@ import static java.lang.System.currentTimeMillis;
  */
 @Stateless
 public class DescriptionManagerImpl implements DescriptionManagerInterface {
+
+    private static final Logger logger = LoggerFactory.getLogger(DescriptionManagerImpl.class);
 
     @EJB
     DescriptionDAO descriptionDAO;
@@ -87,6 +91,8 @@ public class DescriptionManagerImpl implements DescriptionManagerInterface {
 
     @Override
     public void updateDescription(@NotNull ConceptSMTK conceptSMTK, @NotNull Description initDescription, @NotNull Description finalDescription, @NotNull User user) {
+
+        logger.info("Se actualizan descripciones. \nOriginal: " + initDescription + "\nFinal: " + finalDescription);
 
         /* Se aplican las reglas de negocio */
         new DescriptionEditionBR().applyRules(initDescription, finalDescription);
