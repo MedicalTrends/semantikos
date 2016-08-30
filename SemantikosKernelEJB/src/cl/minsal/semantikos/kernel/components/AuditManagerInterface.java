@@ -39,12 +39,12 @@ public interface AuditManagerInterface {
 
     /**
      * Este método es responsable de registrar en el log de auditoría la el traslado de un concepto.
-     *
-     * @param sourceConcept El concepto en donde se encuentra la descripción inicialmente.
+     *  @param sourceConcept El concepto en donde se encuentra la descripción inicialmente.
      * @param targetConcept El concepto al cual se quiere mover la descripción.
      * @param description   La descripción que se desea trasladar.
+     * @param user
      */
-    public void recordDescriptionMovement(ConceptSMTK sourceConcept, ConceptSMTK targetConcept, Description description /* TODO: Agregar el usuario */);
+    public void recordDescriptionMovement(ConceptSMTK sourceConcept, ConceptSMTK targetConcept, Description description, /* TODO: Agregar el usuario */User user);
 
     /**
      * Este método es responsable de registrar en el log de auditoría la el traslado de un concepto.

@@ -4,6 +4,7 @@ import cl.minsal.semantikos.kernel.daos.AuditDAO;
 import cl.minsal.semantikos.model.*;
 import cl.minsal.semantikos.model.audit.AuditActionType;
 import cl.minsal.semantikos.model.audit.ConceptAuditAction;
+import cl.minsal.semantikos.model.businessrules.HistoryRecordBL;
 import cl.minsal.semantikos.model.relationships.Relationship;
 
 import javax.ejb.EJB;
@@ -25,58 +26,94 @@ public class AuditManagerImpl implements AuditManagerInterface {
 
     @Override
     public void recordNewConcept(ConceptSMTK conceptSMTK, User user) {
+
+        /* Se validan las reglas de negocio para realizar el registro */
+        new HistoryRecordBL().validate(conceptSMTK, user);
+
         ConceptAuditAction conceptAuditAction = new ConceptAuditAction(conceptSMTK, CONCEPT_CREATION, now(), user, conceptSMTK);
         auditDAO.recordAuditAction(conceptAuditAction);
     }
 
     @Override
     public void recordUpdateConcept(ConceptSMTK conceptSMTK, User user) {
+
+        /* Se validan las reglas de negocio para realizar el registro */
+        new HistoryRecordBL().validate(conceptSMTK, user);
+
         // TODO: Implement this.
     }
 
     @Override
-    public void recordDescriptionMovement(ConceptSMTK sourceConcept, ConceptSMTK targetConcept, Description description) {
+    public void recordDescriptionMovement(ConceptSMTK sourceConcept, ConceptSMTK targetConcept, Description description, User user) {
+
+        /* Se validan las reglas de negocio para realizar el registro */
+        new HistoryRecordBL().validate(sourceConcept, user);
+
         // TODO: Implement this.
     }
 
     @Override
-    public void recordConceptPublished(ConceptSMTK theConcept, User user) {
-        ConceptAuditAction auditAction = new ConceptAuditAction(theConcept, CONCEPT_PUBLICATION, now(), user, theConcept);
+    public void recordConceptPublished(ConceptSMTK conceptSMTK, User user) {
+
+        /* Se validan las reglas de negocio para realizar el registro */
+        new HistoryRecordBL().validate(conceptSMTK, user);
+
+        ConceptAuditAction auditAction = new ConceptAuditAction(conceptSMTK, CONCEPT_PUBLICATION, now(), user, conceptSMTK);
         auditDAO.recordAuditAction(auditAction);
     }
 
     @Override
     public void recordFavouriteDescriptionUpdate(ConceptSMTK conceptSMTK, Description originalDescription, User user) {
+
+        /* Se validan las reglas de negocio para realizar el registro */
+        new HistoryRecordBL().validate(conceptSMTK, user);
+
         ConceptAuditAction auditAction = new ConceptAuditAction(conceptSMTK, CONCEPT_FAVOURITE_DESCRIPTION_CHANGE, now(), user, originalDescription);
         auditDAO.recordAuditAction(auditAction);
     }
 
     @Override
     public void recordConceptCategoryChange(ConceptSMTK conceptSMTK, Category originalCategory, User user) {
+
+        /* Se validan las reglas de negocio para realizar el registro */
+        new HistoryRecordBL().validate(conceptSMTK, user);
+
         ConceptAuditAction auditAction = new ConceptAuditAction(conceptSMTK, CONCEPT_CATEGORY_CHANGE, now(), user, originalCategory);
         auditDAO.recordAuditAction(auditAction);
     }
 
     @Override
     public void recordAttributeChange(ConceptSMTK conceptSMTK, Relationship originalRelationship, User user) {
+        /* Se validan las reglas de negocio para realizar el registro */
+        new HistoryRecordBL().validate(conceptSMTK, user);
+
         ConceptAuditAction auditAction = new ConceptAuditAction(conceptSMTK, CONCEPT_ATTRIBUTE_CHANGE, now(), user, originalRelationship);
         auditDAO.recordAuditAction(auditAction);
     }
 
     @Override
     public void recordRelationshipCreation(Relationship relationship, User user) {
+        /* Se validan las reglas de negocio para realizar el registro */
+        new HistoryRecordBL().validate(relationship.getSourceConcept(), user);
+
         ConceptAuditAction auditAction = new ConceptAuditAction(relationship.getSourceConcept(), CONCEPT_RELATIONSHIP_CREATION, now(), user, relationship);
         auditDAO.recordAuditAction(auditAction);
     }
 
     @Override
     public void recordRelationshipRemoval(Relationship relationship, User user) {
+        /* Se validan las reglas de negocio para realizar el registro */
+        new HistoryRecordBL().validate(relationship.getSourceConcept(), user);
+
         ConceptAuditAction auditAction = new ConceptAuditAction(relationship.getSourceConcept(), CONCEPT_RELATIONSHIP_REMOVAL, now(), user, relationship);
         auditDAO.recordAuditAction(auditAction);
     }
 
     @Override
     public void recordCrossMapCreation(CrossMap crossMap, User user) {
+        /* Se validan las reglas de negocio para realizar el registro */
+        new HistoryRecordBL().validate(crossMap.getSourceConcept(), user);
+
         ConceptAuditAction auditAction = new ConceptAuditAction(crossMap.getSourceConcept(), CONCEPT_RELATIONSHIP_REMOVAL, now(), user, crossMap);
         auditDAO.recordAuditAction(auditAction);
     }

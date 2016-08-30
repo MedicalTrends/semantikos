@@ -41,8 +41,10 @@ public class RelationshipManagerImpl implements RelationshipManager {
         /* Se persiste la relación */
         relationshipDAO.persist(relationship);
 
-        /* Se registra en el historial */
-        auditManager.recordRelationshipCreation(relationship, user);
+        /* Se registra en el historial si el concepto fuente de la relación está modelado */
+        if (relationship.getSourceConcept().isModeled()) {
+            auditManager.recordRelationshipCreation(relationship, user);
+        }
 
         /* Se retorna persistida */
         return relationship;
@@ -58,8 +60,10 @@ public class RelationshipManagerImpl implements RelationshipManager {
         relationship.setValidityUntil(new Timestamp(currentTimeMillis()));
         relationshipDAO.invalidate(relationship);
 
-        /* Se registra en el historial la eliminación */
-        auditManager.recordRelationshipRemoval(relationship, user);
+        /* Se registra en el historial la eliminación (si el concepto asociado está modelado) */
+        if (relationship.getSourceConcept().isModeled()) {
+            auditManager.recordRelationshipRemoval(relationship, user);
+        }
 
         return relationship;
     }

@@ -25,7 +25,9 @@ public class CrossMapManagerImpl implements CrossMapManagerInterface {
         /* TODO: Se realiza la creación */
 
         /* Se registra en el historial */
-        auditManager.recordCrossMapCreation(crossMap, user);
+        if (crossMap.getSourceConcept().isModeled()) {
+            auditManager.recordCrossMapCreation(crossMap, user);
+        }
 
         /* Se retorna la instancia creada */
         return crossMap;

@@ -96,7 +96,7 @@ public class DescriptionManagerImpl implements DescriptionManagerInterface {
         descriptionDAO.persist(finalDescription, conceptSMTK, user);
 
         /* Registrar en el Historial si es preferida (Historial BR) */
-        if (initDescription.getDescriptionType().equals(PREFERIDA)) {
+        if (conceptSMTK.isModeled() && initDescription.getDescriptionType().equals(PREFERIDA)) {
             auditManager.recordFavouriteDescriptionUpdate(conceptSMTK, initDescription, user);
         }
     }
@@ -144,7 +144,7 @@ public class DescriptionManagerImpl implements DescriptionManagerInterface {
         new DescriptionMovementBR().apply(sourceConcept, targetConcept, description);
 
         /* Se registra en el Audit el traslado */
-        auditManager.recordDescriptionMovement(sourceConcept, targetConcept, description);
+        auditManager.recordDescriptionMovement(sourceConcept, targetConcept, description, );
 
     }
 
