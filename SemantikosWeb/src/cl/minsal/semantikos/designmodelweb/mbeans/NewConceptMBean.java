@@ -8,6 +8,7 @@ import cl.minsal.semantikos.model.relationships.Relationship;
 import cl.minsal.semantikos.model.relationships.RelationshipDefinition;
 import cl.minsal.semantikos.model.relationships.Target;
 import cl.minsal.semantikos.model.validations.RelationshipConstraint;
+import cl.minsal.semantikos.util.Pair;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.RowEditEvent;
 import org.primefaces.event.SelectEvent;
@@ -500,13 +501,11 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
      */
     public void validateDescription(FacesContext context, UIComponent component, Object value) throws ValidatorException {
 
-        String msg = "Falta agregar el FSN al concepto";
-
-        String term = (String)value;
+        String msg = concept.validateDescription((DescriptionWeb)value);
 
         //component.getParent().getAttributes().
 
-        if(term==null || term.length()==0)
+        if(!msg.equals(""))
             throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, msg, msg));
     }
 
@@ -543,8 +542,10 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         } else {
             // Si el concepto está persistido, actualizarlo
             if(concept.isPersistent()) {
-                concept.getDescriptionsForUpdate();
                 concept.prepareRelationships();
+                for (Pair<DescriptionWeb,DescriptionWeb> descriptionWeb : concept.getDescriptionsForUpdate()) {
+                    //descriptionManager.updateDescription(descriptionWeb.getFirst(), descriptionWeb.getSecond());
+                }
                 // Se prepara para la actualización
                 //if(concept.prepareForUpdate())
                     //conceptManager.update(concept, user);

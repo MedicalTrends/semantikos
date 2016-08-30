@@ -5,13 +5,17 @@ import cl.minsal.semantikos.kernel.daos.DAO;
 /**
  * @author Andrés Farías on 8/29/16.
  */
-public class PersistentEntity implements IPersistentEntity {
+public abstract class PersistentEntity implements IPersistentEntity {
 
     /** Constante para indicar un valor por defecto que indique NO persistencia */
     public static final long NON_PERSISTED_ID = DAO.NON_PERSISTED_ID;
 
     /** El identificador único de la entidad, inicialmente fijado en <code>NON_PERSISTED_ID</code>. */
     private long id = NON_PERSISTED_ID;
+
+    public PersistentEntity() {
+        this(NON_PERSISTED_ID);
+    }
 
     @Override
     public void setId(long id) {
@@ -31,5 +35,9 @@ public class PersistentEntity implements IPersistentEntity {
     @Override
     public boolean isPersistent() {
         return this.id != NON_PERSISTED_ID;
+    }
+
+    public PersistentEntity(long id) {
+        this.id = id;
     }
 }

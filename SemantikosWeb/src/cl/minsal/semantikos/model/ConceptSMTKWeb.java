@@ -18,18 +18,25 @@ public class ConceptSMTKWeb extends ConceptSMTK {
 
     List<RelationshipWeb> relationshipsWeb = new ArrayList<RelationshipWeb>();
     List<DescriptionWeb> descriptionsWeb = new ArrayList<DescriptionWeb>();
+    //Respaldo de descripciones web originales
+    List<DescriptionWeb> descriptionsWebBackup = new ArrayList<DescriptionWeb>();
 
     public ConceptSMTKWeb(String conceptID, Category category, boolean isToBeReviewed, boolean isToBeConsulted, IState state, boolean isFullyDefined, boolean isPublished, Description... descriptions) {
         super(conceptID, category, isToBeReviewed, isToBeConsulted, state, isFullyDefined, isPublished, descriptions);
         for (Relationship relationship : this.getRelationships()) {
-            if(relationship.isPersisted())
+            if(relationship.isPersisted()) {
                 this.addRelationshipWeb(new RelationshipWeb(relationship.getId(), relationship, false));
-            else
+            }
+            else {
                 this.addRelationshipWeb(new RelationshipWeb(relationship, false));
+            }
         }
         for (Description description : this.getDescriptions()) {
-            if(description.isPersisted())
+            if(description.isPersisted()) {
                 this.addDescriptionWeb(new DescriptionWeb(description.getId(), description, false));
+                // Si la descripcion está persistida dejar en el respaldo las originales
+                this.descriptionsWebBackup.add(new DescriptionWeb(description.getId(), description, false));
+            }
             else
                 this.addDescriptionWeb(new DescriptionWeb(description, false));
         }
@@ -54,7 +61,8 @@ public class ConceptSMTKWeb extends ConceptSMTK {
     public Description getValidDescriptionFSN() {
         for (DescriptionWeb description : descriptionsWeb) {
             DescriptionType descriptionType = description.getDescriptionType();
-            if (descriptionType.getName().equalsIgnoreCase("FSN")) {
+            if (descriptionType.getName().equalsIgnoreCase("FSN") &&
+                    (description.getValidityUntil() == null || description.getValidityUntil().after(Calendar.getInstance().getTime()))) {
                 return description;
             }
         }
@@ -75,7 +83,8 @@ public class ConceptSMTKWeb extends ConceptSMTK {
      */
     public Description getValidDescriptionFavorite() {
         for (DescriptionWeb description : descriptionsWeb) {
-            if (description.getDescriptionType().getName().equalsIgnoreCase("preferida")) {
+            if (description.getDescriptionType().getName().equalsIgnoreCase("preferida") &&
+                    (description.getValidityUntil() == null || description.getValidityUntil().after(Calendar.getInstance().getTime()))) {
                 return description;
             }
         }
@@ -96,7 +105,8 @@ public class ConceptSMTKWeb extends ConceptSMTK {
         DescriptionType favoriteType = DescriptionTypeFactory.getInstance().getFavoriteDescriptionType();
 
         for ( DescriptionWeb description : descriptionsWeb) {
-            if (!description.getDescriptionType().equals(fsnType) && !description.getDescriptionType().equals(favoriteType)) {
+            if (!description.getDescriptionType().equals(fsnType) && !description.getDescriptionType().equals(favoriteType) &&
+                    (description.getValidityUntil() == null || description.getValidityUntil().after(Calendar.getInstance().getTime()))) {
                 otherDescriptions.add(description);
             }
         }
@@ -226,14 +236,13 @@ public class ConceptSMTKWeb extends ConceptSMTK {
 
         List<Pair<DescriptionWeb, DescriptionWeb>> descriptionsForUpdate= new ArrayList<Pair<DescriptionWeb, DescriptionWeb>>();
 
-        //Primero se buscan todas las descripciones persistidas originales y que han sufrido modificaciones
-        for (DescriptionWeb oldDescriptionWeb : descriptionsWeb) {
-            if(oldDescriptionWeb.hasBeenModified()) {
-                //Por cada descripción original se busca su descripcion modificada correlacionada
-                for(DescriptionWeb newDescriptionWeb: descriptionsWeb){
-                    if(!newDescriptionWeb.hasBeenModified() && newDescriptionWeb.getId()==oldDescriptionWeb.getId()){
-                        descriptionsForUpdate.add(new Pair(oldDescriptionWeb, newDescriptionWeb));
-                    }
+        //Primero se buscan todas las descripciones persistidas originales
+        for (DescriptionWeb oldDescriptionWeb : descriptionsWebBackup) {
+            //Por cada descripción original se busca su descripcion vista correlacionada
+            for(DescriptionWeb newDescriptionWeb: descriptionsWeb){
+                //Si la descripcion correlacionada sufrio alguna modificación agregar
+                if(oldDescriptionWeb.getId()==newDescriptionWeb.getId() && !oldDescriptionWeb.equals(newDescriptionWeb)){
+                    descriptionsForUpdate.add(new Pair(oldDescriptionWeb, newDescriptionWeb));
                 }
             }
         }
@@ -283,23 +292,31 @@ public class ConceptSMTKWeb extends ConceptSMTK {
 
     public void editDescription(DescriptionWeb description) {
 
+        DescriptionWeb oldDescription = null;
+        boolean isDescriptionFound = false;
+
         if(description.isPersisted() && !description.hasBeenModified()){
-
-            boolean isDescriptionFound = false;
-
-            for (DescriptionWeb descriptionWeb : descriptionsWeb) {
-                if(descriptionWeb.equals(description)) {
-                    descriptionWeb.setModified(true);
-                    descriptionWeb.setToBeUpdated(true);
-                    descriptionWeb.setValidityUntil(new Timestamp(System.currentTimeMillis()));
+            //Buscar la descripción original en el respaldo de descripciones web
+            for (DescriptionWeb descriptionWebBackup : descriptionsWebBackup) {
+                // Si existe una con el mismo id, dejarla como invalida y agregarla
+                if(descriptionWebBackup.getId()==description.getId()) {
+                    //Setear la descripcion respaldada
+                    oldDescription = descriptionWebBackup;
+                    //Dejar la descripción inválida
+                    descriptionWebBackup.setModified(true);
+                    descriptionWebBackup.setToBeUpdated(true);
+                    descriptionWebBackup.setValidityUntil(new Timestamp(System.currentTimeMillis()));
+                    // Mover la descripción backup a la lista de descripciones web
+                    descriptionsWeb.add(descriptionWebBackup);
                     isDescriptionFound = true;
                 }
             }
 
-            if(isDescriptionFound)
-                descriptionsWeb.add(new DescriptionWeb(description, false));
+            //Por ultimo, remover la descripción del backup (puesto que ya ha sido consolidada)
+            if(isDescriptionFound){
+                descriptionsWebBackup.remove(oldDescription);
+            }
         }
-
     }
 
     public String validateDescription(Description description) {
