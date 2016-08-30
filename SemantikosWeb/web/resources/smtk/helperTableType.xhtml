@@ -23,7 +23,7 @@
         <div class="ui-g">
             <div class="ui-g-12 ui-md-6 ui-lg-2">
                 <p:outputLabel for="helperTableRecordsSimple" value="#{cc.attrs.relationshipDefinition.name}"/>
-                <p:outputLabel value=" *" rendered="#{!cc.attrs.relationshipDefinition.multiplicity.optional}" />
+                <p:outputLabel value=" *" rendered="#{not cc.attrs.relationshipDefinition.multiplicity.optional}" />
             </div>
             <div class="ui-g-12 ui-md-6 ui-lg-10">
                 <p:dataTable id="helperTableRecordsSimple"
@@ -96,7 +96,7 @@
         <div class="ui-g">
             <div class="ui-g-12 ui-md-6 ui-lg-2">
                 <p:outputLabel for="helperTableRecordsCollection" value="#{cc.attrs.relationshipDefinition.name}"/>
-                <p:outputLabel value=" *" rendered="#{!cc.attrs.relationshipDefinition.multiplicity.optional}" />
+                <p:outputLabel value=" *" rendered="#{not cc.attrs.relationshipDefinition.multiplicity.optional}" />
             </div>
             <div class="ui-g-12 ui-md-6 ui-lg-10">
                 <p:dataTable id="helperTableRecordsCollection"

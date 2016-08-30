@@ -327,37 +327,6 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         concept.getDescriptions().remove(description);
     }
 
-    /**
-     * Este método es el encargado de agregar descripciones al concepto
-     */
-    public void addDescription() {
-        FacesContext context = FacesContext.getCurrentInstance();
-        if (otherTermino != null) {
-            if (otherTermino.length() > 0) {
-                if (otherDescriptionType != null) {
-                    Description description = new Description(otherTermino, otherDescriptionType);
-                    description.setCaseSensitive(otherSensibilidad);
-                    description.setState(concept.getState());
-                    description.setDescriptionId(descriptionManager.generateDescriptionId());
-                    concept.addDescription(description);
-                    otherTermino = "";
-                } else {
-                    context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se ha seleccionado el tipo de descripción"));
-                }
-
-            } else {
-                context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se ha ingresado el término a la descripción"));
-                context.getAttributes();
-            }
-
-        } else {
-
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se ha ingresado el término a la descripción"));
-
-        }
-
-    }
-
 
     /**
      * Este método es el encargado de agregar relaciones al concepto recibiendo como parámetro un Relationship
@@ -433,6 +402,7 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         // 1.- Se deja la original como modificada
         // 2.- se deja la original como inválida
         if(r.isPersisted() && !r.hasBeenModified()) {
+
             r.setModified(true);
             r.setValidityUntil(new Timestamp(System.currentTimeMillis()));
             r.setToBeUpdated(true);
@@ -443,6 +413,38 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         }
     }
 
+    /**
+     * Este método es el encargado de agregar descripciones al concepto
+     */
+    public void addDescription() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        if (otherTermino != null) {
+            if (otherTermino.length() > 0) {
+                if (otherDescriptionType != null) {
+                    Description description = new Description(otherTermino, otherDescriptionType);
+                    description.setCaseSensitive(otherSensibilidad);
+                    description.setState(stateMachineManager.getConceptStateMachine().getInitialState());
+                    description.setDescriptionId(descriptionManager.generateDescriptionId());
+                    concept.addDescription(description);
+                    concept.addDescriptionWeb(new DescriptionWeb(description, false));
+                    otherTermino = "";
+                } else {
+                    context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se ha seleccionado el tipo de descripción"));
+                }
+
+            } else {
+                context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se ha ingresado el término a la descripción"));
+                context.getAttributes();
+            }
+
+        } else {
+
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se ha ingresado el término a la descripción"));
+
+        }
+
+    }
+
     public void addDescriptionToConcept(String term, DescriptionType descriptionType, boolean caseSensitive) {
 
         Description description = new Description(term, descriptionType);
@@ -450,6 +452,11 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         description.setState(concept.getState());
         description.setDescriptionId(descriptionManager.generateDescriptionId());
         concept.addDescription(description);
+    }
+
+    public void editDescription(DescriptionWeb description){
+        if(description.isPersisted() && !description.hasBeenModified())
+            concept.editDescription(description);
     }
 
     /**
@@ -479,7 +486,27 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
 
         String msg = "Error!!!!!!";
 
+        //component.getParent().getAttributes().
+
         if(!concept.isValid())
+            throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, msg, msg));
+    }
+
+    /**
+     * Este metodo revisa que las relaciones cumplan el lower_boundary del
+     * relationship definition, en caso de no cumplir la condicion se retorna falso.
+     *
+     * @return
+     */
+    public void validateDescription(FacesContext context, UIComponent component, Object value) throws ValidatorException {
+
+        String msg = "Falta agregar el FSN al concepto";
+
+        String term = (String)value;
+
+        //component.getParent().getAttributes().
+
+        if(term==null || term.length()==0)
             throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, msg, msg));
     }
 
@@ -490,17 +517,9 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
 
     public void onRowEdit(RowEditEvent event) {
 
-        Description description = (Description) event.getObject();
-        // Si la descripción está persistida, se agrega una nueva descripción y se deja la original como inválida
-        if(description.isPersisted()){
-            Description newDescription = description;
-            newDescription.setId(NON_PERSISTED_ID);
-            description.setValidityUntil(new Timestamp(System.currentTimeMillis()));
-            description.setToBeUpdated(true);
-            concept.addDescription(newDescription);
-        }
-        //FacesMessage msg = new FacesMessage("Description Edited", ((Description) event.getObject()).getTerm());
-        //FacesContext.getCurrentInstance().addMessage(null, msg);
+        DescriptionWeb description = (DescriptionWeb) event.getObject();
+
+        editDescription(description);
     }
 
     public void onRowCancel(RowEditEvent event) {
@@ -518,29 +537,25 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
 
         FacesContext context = FacesContext.getCurrentInstance();
 
-        if (FSN != null && FSN.length() > 0) {
-            addDescriptionToConcept(FSN, descriptionManager.getTypeFSN(), true);
+        if (!concept.isValid()) {
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Las relaciones no cumplen con el minimo requerido"));
 
-            if (!concept.isValid()) {
-                context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Las relaciones no cumplen con el minimo requerido"));
-
-            } else {
-                // Si el concepto está persistido, actualizarlo
-                if(concept.isPersistent()) {
-                    // Se prepara para la actualización
-                    //if(concept.prepareForUpdate())
-                        //conceptManager.update(concept, user);
-                }
-                // Si el concepto no está persistido, persistirlo
-                else {
-                    conceptManager.persist(concept, user);
-                }
-                context.addMessage(null, new FacesMessage("Successful", "Concepto guardado "));
-            }
         } else {
-
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Falta el FSN al concepto"));
+            // Si el concepto está persistido, actualizarlo
+            if(concept.isPersistent()) {
+                concept.getDescriptionsForUpdate();
+                concept.prepareForUpdate();
+                // Se prepara para la actualización
+                //if(concept.prepareForUpdate())
+                    //conceptManager.update(concept, user);
+            }
+            // Si el concepto no está persistido, persistirlo
+            else {
+                conceptManager.persist(concept, user);
+            }
+            context.addMessage(null, new FacesMessage("Successful", "Concepto guardado "));
         }
+
     }
 
 
