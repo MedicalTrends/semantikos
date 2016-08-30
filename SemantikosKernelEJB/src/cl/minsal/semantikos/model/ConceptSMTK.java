@@ -134,6 +134,9 @@ public class ConceptSMTK extends PersistentEntity implements Target, AuditableEn
      */
     public ConceptSMTK(String conceptID, Category category, boolean isToBeReviewed, boolean isToBeConsulted, boolean modeled, boolean isFullyDefined, boolean isPublished, Description... descriptions) {
         this(NON_PERSISTED_ID, conceptID, category, isToBeReviewed, isToBeConsulted, modeled, isFullyDefined, isPublished, descriptions);
+
+        /* Se indica que no se han cargado sus relaciones */
+        this.relationshipsLoaded = true;
     }
 
     public List<Description> getDescriptions() {
