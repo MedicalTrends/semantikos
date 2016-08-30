@@ -35,7 +35,7 @@ public interface RelationshipManager {
 
     /**
      * Este método es responsable de eliminar lógicamente una relación, dejándola no vigente, no desasociándola del
-     * concepto. TODO: Es asi la regla para eliminar?
+     * concepto.
      *
      * @param relationship La relación que se desea eliminar.
      * @param user         El usuario que realiza la eliminación de la relación.
@@ -53,7 +53,7 @@ public interface RelationshipManager {
      *                        tienen como origen un Concepto que pertenece a la categoría origen especificada,
      *                        y como destino un concepto que pertenece a la categoría destino especificada.
      */
-    public Relationship[] findRelationByCategories(Category sourceCategory, Category destinyCategory);
+    public List<Relationship> findRelationByCategories(Category sourceCategory, Category destinyCategory);
 
     /**
      * Este método es responsable de recuperar todas las relaciones que tienen como

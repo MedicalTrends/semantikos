@@ -69,9 +69,8 @@ public class RelationshipManagerImpl implements RelationshipManager {
     }
 
     @Override
-    public Relationship[] findRelationByCategories(Category sourceCategory, Category destinyCategory) {
-        // TODO: Terminar esto
-        return new Relationship[0];
+    public List<Relationship> findRelationByCategories(Category sourceCategory, Category destinyCategory) {
+        return relationshipDAO.getRelationshipByCategories(sourceCategory, destinyCategory);
     }
 
     @Override

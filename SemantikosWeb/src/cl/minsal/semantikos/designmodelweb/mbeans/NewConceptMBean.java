@@ -39,7 +39,7 @@ import java.util.*;
 @ViewScoped
 public class NewConceptMBean<T extends Comparable> implements Serializable {
 
-    static final Logger LOGGER = LoggerFactory.getLogger(NewConceptMBean.class);
+    static final Logger logger = LoggerFactory.getLogger(NewConceptMBean.class);
 
     @EJB
     ConceptManagerInterface conceptManager;
