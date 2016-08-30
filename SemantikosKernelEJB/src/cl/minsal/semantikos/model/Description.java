@@ -202,4 +202,26 @@ public class Description extends PersistentEntity implements AuditableEntity {
     public void setModeled(boolean modeled) {
         this.modeled = modeled;
     }
+
+    @Override
+    public String toString() {
+        return this.term;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Description that = (Description) o;
+
+        if (!descriptionID.equals(that.descriptionID)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return term.hashCode();
+    }
 }

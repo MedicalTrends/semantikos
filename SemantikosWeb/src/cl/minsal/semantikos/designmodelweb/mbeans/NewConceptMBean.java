@@ -265,8 +265,8 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
     //      Methods
     public void createConcept() throws ParseException {
         category = categoryManager.getCategoryById(categorySelect);
-        concept = newConcept(category, favoriteDescription);
-        //concept = getConceptById(80602);
+        //concept = newConcept(category, favoriteDescription);
+        concept = getConceptById(80602);
 
         RequestContext context = RequestContext.getCurrentInstance();
         context.execute("PF('dialogNameConcept').hide();");
@@ -467,7 +467,7 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
      */
     public void validateDescription(FacesContext context, UIComponent component, Object value) throws ValidatorException {
 
-        String msg = concept.validateDescription((DescriptionWeb) value);
+        String msg = concept.validateDescription((Description) value);
 
         //component.getParent().getAttributes().
 
@@ -481,10 +481,11 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
     }
 
     public void onRowEdit(RowEditEvent event) {
-
-        DescriptionWeb description = (DescriptionWeb) event.getObject();
+        /*
+        Description description = (Description) event.getObject();
 
         editDescription(description);
+        */
     }
 
     public void onRowCancel(RowEditEvent event) {

@@ -87,15 +87,15 @@
                 <p:column headerText="Estado">
                     <div style="text-align: center;">
                         <p:cellEditor>
-                            <f:facet name="output"><h:outputText value="#{description.state}"/></f:facet>
+                            <f:facet name="output">
+                                <h:outputText value="Borrador" rendered="#{not description.modeled}"/>
+                                <h:outputText value="Modelado" rendered="#{description.modeled}"/>
+                            </f:facet>
                             <f:facet name="input">
-                                <h:selectOneMenu value="#{description.state}"
-                                                 converter="omnifaces.SelectItemsConverter" style="width:100%">
+                                <h:selectOneMenu value="#{description.modeled}" style="width:100%">
                                     <f:selectItem itemLabel="Seleccione estado" itemValue=""/>
-                                    <f:selectItems
-                                            value="#{newConceptMBean.stateMachineManager.conceptStateMachine.getTargetStates(newConceptMBean.concept.state)}"
-                                            var="descriptionState" itemLabel="#{descriptionState.name}"
-                                            itemValue="#{descriptionState}"/>
+                                    <f:selectItem itemLabel="Borrador" itemValue="false"/>
+                                    <f:selectItem itemLabel="Modelado" itemValue="true"/>
                                 </h:selectOneMenu>
                             </f:facet>
                         </p:cellEditor>
