@@ -189,8 +189,10 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
         /* En este momento se está listo para persistir el concepto */
         conceptDAO.persist(conceptSMTK, user);
 
-        /* Se deja registro en la auditoría */
-        auditManager.recordNewConcept(conceptSMTK, user);
+        /* Se deja registro en la auditoría sólo para conceptos modelados */
+        if (conceptSMTK.isModeled()) {
+            auditManager.recordNewConcept(conceptSMTK, user);
+        }
         logger.debug("El concepto " + conceptSMTK + " fue persistido.");
     }
 
@@ -198,7 +200,10 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
     public void publish(@NotNull ConceptSMTK conceptSMTK, User user) {
         conceptSMTK.setPublished(true);
         conceptDAO.update(conceptSMTK);
-        auditManager.recordConceptPublished(conceptSMTK, user);
+
+        if (conceptSMTK.isModeled()) {
+            auditManager.recordConceptPublished(conceptSMTK, user);
+        }
     }
 
     @Override
@@ -210,8 +215,10 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
 
         /* Complex Logic here */
 
-        /* TODO: Registrar en el historial */
-        auditManager.recordConceptCategoryChange(conceptSMTK, originalCategory, user);
+        /* Se registra en el historial si el concepto está modelado */
+        if (conceptSMTK.isModeled()) {
+            auditManager.recordConceptCategoryChange(conceptSMTK, originalCategory, user);
+        }
     }
 
     /**

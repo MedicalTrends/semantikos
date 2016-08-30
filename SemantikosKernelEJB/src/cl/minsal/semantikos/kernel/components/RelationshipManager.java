@@ -29,8 +29,20 @@ public interface RelationshipManager {
      * @param target       El destino de la relación
      * @param relationType El tipo de relación que se quiere crear.
      * @param isValid      Determina si es vigente o no.
+     * @param user         El usuario que crea la Relación.
      */
-    public int createRelationship(ConceptSMTK origin, Target target, RelationshipDefinition relationType, boolean isValid);
+    public Relationship createRelationship(ConceptSMTK origin, Target target, RelationshipDefinition relationType, boolean isValid, User user);
+
+    /**
+     * Este método es responsable de eliminar lógicamente una relación, dejándola no vigente, no desasociándola del
+     * concepto. TODO: Es asi la regla para eliminar?
+     *
+     * @param relationship La relación que se desea eliminar.
+     * @param user         El usuario que realiza la eliminación de la relación.
+     *
+     * @return La relación eliminada, con sus campos de vigencia actualizados.
+     */
+    public Relationship removeRelationship(Relationship relationship, User user);
 
     /**
      * Este método es responsable de buscar una relación, dadas su categoría de origen

@@ -10,12 +10,13 @@ public enum AuditActionType {
     CONCEPT_FAVOURITE_DESCRIPTION_CHANGE(3, "Cambio en descripción preferida de un Concepto", AuditActionNature.CHANGE),
     CONCEPT_DESCRIPTION_BINDING(4, "Descripción agregada a concepto", AuditActionNature.CHANGE),
     CONCEPT_DESCRIPTION_UNBINDING(5, "Descripción eliminada a concepto", AuditActionNature.CHANGE),
+    CONCEPT_DESCRIPTION_MOVEMENT(16, "Descripción traslada a otro concepto", AuditActionNature.CHANGE),
     CONCEPT_CATEGORY_CHANGE(6, "Cambio de categoría de Concepto", AuditActionNature.CHANGE),
     CONCEPT_ATTRIBUTE_CHANGE(7, "Cambio de atributo de un concepto", AuditActionNature.CHANGE),
-    CONCEPT_RELATIONSHIP_CREATION(8, "Nueva relación de un concepto", AuditActionNature.CHANGE), //TODO: DAO, Manager, Hooks
-    CONCEPT_RELATIONSHIP_REMOVAL(9, "Eliminación de relación de un concepto", AuditActionNature.CHANGE), //TODO: DAO, Manager, Hooks
-    CONCEPT_RELATIONSHIP_CROSSMAP_CREATION(10, "Nuevo CrossMap de un concepto", AuditActionNature.CREATION), //TODO: DAO, Manager, Hooks
-    CONCEPT_RELATIONSHIP_CROSSMAP_ELIMINATION(11, "Eliminación de CrossMap de un concepto", AuditActionNature.REMOVAL), //TODO: DAO, Manager, Hooks
+    CONCEPT_RELATIONSHIP_CREATION(8, "Nueva relación de un concepto", AuditActionNature.CHANGE),
+    CONCEPT_RELATIONSHIP_REMOVAL(9, "Eliminación de relación de un concepto", AuditActionNature.CHANGE),
+    CONCEPT_RELATIONSHIP_CROSSMAP_CREATION(10, "Nuevo CrossMap de un concepto", AuditActionNature.CREATION),
+    CONCEPT_RELATIONSHIP_CROSSMAP_REMOVAL(11, "Eliminación de CrossMap de un concepto", AuditActionNature.REMOVAL),
     CONCEPT_RELATIONSHIP_EXTERNAL_TERMINOLOGY_CREATION(12, "Nueva referencia a terminología externa en Concepto", AuditActionNature.CREATION), //TODO: DAO, Manager, Hooks
     CONCEPT_RELATIONSHIP_EXTERNAL_TERMINOLOGY_ELIMINATION(13, "Eliminación de referencia a terminología externa en Concepto", AuditActionNature.REMOVAL), //TODO: DAO, Manager, Hooks
     CONCEPT_RELATIONSHIP_REFSET_CREATION(14, "Nueva referencia a RefSet en Concepto", AuditActionNature.CREATION), //TODO: DAO, Manager, Hooks

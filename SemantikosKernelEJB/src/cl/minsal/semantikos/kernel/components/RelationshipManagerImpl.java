@@ -5,6 +5,8 @@ import cl.minsal.semantikos.model.Category;
 import cl.minsal.semantikos.model.ConceptSMTK;
 import cl.minsal.semantikos.model.User;
 import cl.minsal.semantikos.model.businessrules.RelationshipEditionBR;
+import cl.minsal.semantikos.model.businessrules.RelationshipRemovalBR;
+import cl.minsal.semantikos.model.businessrules.RelelationshipCreationBR;
 import cl.minsal.semantikos.model.relationships.Relationship;
 import cl.minsal.semantikos.model.relationships.RelationshipDefinition;
 import cl.minsal.semantikos.model.relationships.Target;
@@ -16,7 +18,6 @@ import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 import java.util.List;
 
-import static cl.minsal.semantikos.model.DescriptionType.PREFERIDA;
 import static java.lang.System.currentTimeMillis;
 
 /**
@@ -33,9 +34,38 @@ public class RelationshipManagerImpl implements RelationshipManager {
     private AuditManagerInterface auditManager;
 
     @Override
-    public int createRelationship(ConceptSMTK origin, Target target, RelationshipDefinition relationType, boolean isValid) {
-        // TODO: Terminar esto
-        return 0;
+    public Relationship createRelationship(ConceptSMTK origin, Target target, RelationshipDefinition relationType, boolean isValid, User user) {
+        new RelelationshipCreationBR().applyRules(origin, target, relationType, isValid);
+        Relationship relationship = new Relationship(origin, target, relationType);
+
+        /* Se persiste la relación */
+        relationshipDAO.persist(relationship);
+
+        /* Se registra en el historial si el concepto fuente de la relación está modelado */
+        if (relationship.getSourceConcept().isModeled()) {
+            auditManager.recordRelationshipCreation(relationship, user);
+        }
+
+        /* Se retorna persistida */
+        return relationship;
+    }
+
+    @Override
+    public Relationship removeRelationship(Relationship relationship, User user) {
+
+        /* Primero se validan las reglas de negocio asociadas a la eliminación de un concepto */
+        new RelationshipRemovalBR().applyRules(relationship, user);
+
+        /* Luego se elimina la relación */
+        relationship.setValidityUntil(new Timestamp(currentTimeMillis()));
+        relationshipDAO.invalidate(relationship);
+
+        /* Se registra en el historial la eliminación (si el concepto asociado está modelado) */
+        if (relationship.getSourceConcept().isModeled()) {
+            auditManager.recordRelationshipRemoval(relationship, user);
+        }
+
+        return relationship;
     }
 
     @Override

@@ -71,9 +71,6 @@ public class RelationshipDAOImpl implements RelationshipDAO {
 
     @Override
     public void invalidate(Relationship relationship) {
-
-        long idRelationship;
-
         ConnectionBD connect = new ConnectionBD();
         String sql = "{call semantikos.invalidate_relationship(?)}";
 
@@ -82,27 +79,9 @@ public class RelationshipDAOImpl implements RelationshipDAO {
 
             call.setLong(1, relationship.getId());
             call.execute();
-
-            ResultSet rs = call.getResultSet();
-
-            if (rs.next()) {
-                relationship.setId(rs.getLong(1));
-                idRelationship = rs.getLong(1);
-                if(idRelationship==-1){
-                    String errorMsg = "La relacion no fue invalidada";
-                    logger.error(errorMsg);
-                    throw new EJBException(errorMsg);
-                }
-            } else {
-                String errorMsg = "La relacion no fue invalidada. Esta es una situación imposible. Contactar a Desarrollo";
-                logger.error(errorMsg);
-                throw new IllegalArgumentException(errorMsg);
-            }
-            rs.close();
         } catch (SQLException e) {
             throw new EJBException(e);
         }
-
     }
 
     @Override
