@@ -53,9 +53,6 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
     CategoryManagerInterface categoryManager;
 
     @EJB
-    StateMachineManagerInterface stateMachineManager;
-
-    @EJB
     HelperTableManagerInterface helperTableManager;
 
     @ManagedProperty(value = "#{smtkBean}")
@@ -68,7 +65,6 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
 
     private Category category;
     private List<DescriptionType> descriptionTypes = new ArrayList<DescriptionType>();
-    private List<State> descriptionStates = new ArrayList<State>();
     private List<Description> selectedDescriptions = new ArrayList<Description>();
 
 
@@ -210,28 +206,12 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         this.descriptionTypes = descriptionTypes;
     }
 
-    public List<State> getDescriptionStates() {
-        return descriptionStates;
-    }
-
-    public void setDescriptionStates(List<State> descriptionStates) {
-        this.descriptionStates = descriptionStates;
-    }
-
     public List<Description> getSelectedDescriptions() {
         return selectedDescriptions;
     }
 
     public void setSelectedDescriptions(List<Description> selectedDescriptions) {
         this.selectedDescriptions = selectedDescriptions;
-    }
-
-    public StateMachineManagerInterface getStateMachineManager() {
-        return stateMachineManager;
-    }
-
-    public void setStateMachineManager(StateMachineManagerInterface stateMachineManager) {
-        this.stateMachineManager = stateMachineManager;
     }
 
     public ConceptSMTK getConceptSelected() {

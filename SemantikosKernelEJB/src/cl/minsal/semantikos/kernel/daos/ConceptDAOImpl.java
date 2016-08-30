@@ -435,10 +435,7 @@ public class ConceptDAOImpl implements ConceptDAO {
         completelyDefined = Boolean.parseBoolean(resultSet.getString("is_fully_defined"));
         published = Boolean.parseBoolean(resultSet.getString("is_published"));
         conceptId = resultSet.getString("conceptid");
-        State st = new State();
         //TODO: Se deja el estado en duro - Después esto cambiará a variable dummy para el estado
-        st.setId(6);
-        st.setName(String.valueOf("Borrador"));
         List<Description> descriptions = descriptionDAO.getDescriptionsByConceptID(id);
 
         Description[] theDescriptions = descriptions.toArray(new Description[descriptions.size()]);
