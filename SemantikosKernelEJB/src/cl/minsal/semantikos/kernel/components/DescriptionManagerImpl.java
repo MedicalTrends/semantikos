@@ -3,18 +3,17 @@ package cl.minsal.semantikos.kernel.components;
 
 import cl.minsal.semantikos.kernel.daos.DescriptionDAO;
 import cl.minsal.semantikos.model.*;
-import cl.minsal.semantikos.model.businessrules.DescriptionBindingBR;
-import cl.minsal.semantikos.model.businessrules.DescriptionCreationBR;
-import cl.minsal.semantikos.model.businessrules.DescriptionEditionBR;
-import cl.minsal.semantikos.model.businessrules.DescriptionMovementBR;
+import cl.minsal.semantikos.model.businessrules.*;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.validation.constraints.NotNull;
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.UUID;
 
 import static cl.minsal.semantikos.model.DescriptionType.PREFERIDA;
+import static java.lang.System.currentTimeMillis;
 
 /**
  * @author Andrés Farías
@@ -62,6 +61,27 @@ public class DescriptionManagerImpl implements DescriptionManagerInterface {
         descriptionDAO.persist(description, concept, user);
 
         /* Se retorna la descripción persistida */
+        return description;
+    }
+
+    @Override
+    public Description unbindDescriptionToConcept(ConceptSMTK concept, Description description, User user) {
+
+        /* Si la descripción no se encontraba persistida, se persiste primero */
+        if (!description.isPersistent()){
+            return description;
+        }
+
+        /* Se validan las reglas de negocio para eliminar una descripción */
+        DescriptionUnbindingBR descriptionUnbindingBR = new DescriptionUnbindingBR();
+        descriptionUnbindingBR.applyRules(concept, description, user);
+
+        /* Se establece la fecha de vigencia y se actualiza la descripción */
+        description.setActive(false);
+        description.setValidityUntil(new Timestamp(currentTimeMillis()));
+        descriptionDAO.update(description);
+
+        /* Se retorna la descripción actualizada */
         return description;
     }
 

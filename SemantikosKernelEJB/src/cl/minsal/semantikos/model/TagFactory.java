@@ -59,6 +59,31 @@ public class TagFactory {
         return createTagFromDTOs(tagsDTO);
     }
 
+    public List<Tag> createChildrenTagsFromJSON(Tag parent, String jsonExpression) {
+
+        /* Si JSON es nulo, se retorna una lista vacía */
+        if (jsonExpression == null) {
+            return Collections.emptyList();
+        }
+
+        /* Se parsea la expresión JSON */
+        ObjectMapper mapper = new ObjectMapper();
+        TagDTO[] tagsDTO;
+        try {
+            tagsDTO = mapper.readValue(underScoreToCamelCaseJSON(jsonExpression), TagDTO[].class);
+        } catch (IOException e) {
+            String errorMsg = "Error when parsing a JSON a Relationships";
+            logger.error(errorMsg, e);
+            throw new EJBException(errorMsg, e);
+        }
+
+        /* Se retorna como una lista */
+        return createChildrenTagFromDTOs(parent,tagsDTO);
+    }
+
+
+
+
     /**
      * Este método es responsable de transformar el arreglo de DTO's a objetos del modelo.
      *
@@ -75,6 +100,17 @@ public class TagFactory {
         return tags;
     }
 
+    private List<Tag> createChildrenTagFromDTOs(Tag parent,TagDTO[] tagsDTO) {
+        List<Tag> tags = new ArrayList<>();
+        for (TagDTO tagDTO : tagsDTO) {
+            tags.add(createTagChildren(parent,tagDTO));
+        }
+
+        return tags;
+    }
+
+
+
     /**
      * Este método es responsable de crear un objeto de negocio <code>Tag</code> a partir de un DTO.
      *
@@ -85,9 +121,20 @@ public class TagFactory {
     private Tag createTagFromDTO(TagDTO tagDTO) {
 
         Tag parentTag = tagDAO.findTagByID(tagDTO.getIdParentTag());
-        List<Tag> children = tagDAO.getChildrenOf(tagDTO.getId());
+        List<Tag> children;
+        Tag tag = new Tag(tagDTO.getId(), tagDTO.getName(), tagDTO.getBackgroundColor(), tagDTO.getLetterColor(), null, parentTag);
+        children = tagDAO.getChildrenOf(tag);
+        tag.setChildTag(children);
 
-        return new Tag(tagDTO.getId(), tagDTO.getName(), tagDTO.getBackgroundColor(), tagDTO.getLetterColor(), children, parentTag);
+        return tag;
+    }
+
+    private Tag createTagChildren(Tag tagParent, TagDTO tagChild){
+
+        Tag tag =new Tag(tagChild.getId(), tagChild.getName(), tagChild.getBackgroundColor(), tagChild.getLetterColor(), null, tagParent);
+        List<Tag> children = tagDAO.getChildrenOf(tag);
+        tag.setChildTag(children);
+        return tag;
     }
 
     /**

@@ -3,12 +3,14 @@ package cl.minsal.semantikos.kernel.components;
 
 import cl.minsal.semantikos.model.Category;
 import cl.minsal.semantikos.model.ConceptSMTK;
+import cl.minsal.semantikos.model.User;
 import cl.minsal.semantikos.model.relationships.Relationship;
 import cl.minsal.semantikos.model.relationships.RelationshipDefinition;
 import cl.minsal.semantikos.model.relationships.Target;
 import cl.minsal.semantikos.model.snomedct.ConceptSCT;
 
 import javax.ejb.Local;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**
@@ -69,13 +71,21 @@ public interface RelationshipManager {
     public int updateRelationAttribute(int idRelationship, int idRelationshipAttribute);
 
     /**
-     * Este método actualiza los atributos básicos de una relación (a excepción de su
-     * ID).
+     * Este método es responsable de actualizar una relación de un concepto.
      *
-     * @param idRelation Identificador único de la relación en la BD.
-     * @param isActive   Si la relación está activa o no.
+     * @param conceptSMTK          El concepto cuya relación se desea actualizar.
+     * @param originalRelationship La relación original, antes de la actualización.
+     * @param editedRelationship   La relación actualizada.
+     * @param user                 El usuario que realiza la operación.
      */
-    public Relationship updateRelationProperties(int idRelation, boolean isActive);
+    void updateRelationship(@NotNull ConceptSMTK conceptSMTK, @NotNull Relationship originalRelationship, @NotNull Relationship editedRelationship, @NotNull User user);
+
+    /**
+     * Este método es responsable de dejar no vigente la relación a partir de este momento.
+     *
+     * @param relationship Relación que se invalida.
+     */
+    public Relationship invalidate(Relationship relationship);
 
     /**
      * Este método es responsable de recuperar todas las relaciones de un cierto tipo (es un/es una, por ejemplo) y que

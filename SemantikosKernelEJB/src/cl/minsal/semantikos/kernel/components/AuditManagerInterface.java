@@ -1,10 +1,12 @@
 package cl.minsal.semantikos.kernel.components;
 
+import cl.minsal.semantikos.model.Category;
 import cl.minsal.semantikos.model.ConceptSMTK;
 import cl.minsal.semantikos.model.Description;
 import cl.minsal.semantikos.model.User;
 import cl.minsal.semantikos.model.audit.AuditActionType;
 import cl.minsal.semantikos.model.audit.ConceptAuditAction;
+import cl.minsal.semantikos.model.relationships.Relationship;
 
 import javax.ejb.Local;
 import java.util.List;
@@ -66,6 +68,24 @@ public interface AuditManagerInterface {
     public void recordFavouriteDescriptionUpdate(ConceptSMTK conceptSMTK, Description originalDescription, User user);
 
     /**
+     * Este método es responsable de registrar en el historial el cambio de categoría de un concepto.
+     *
+     * @param conceptSMTK      El concepto cuya categoría cambia.
+     * @param originalCategory La categoría original, antes del cambio.
+     * @param user             El usuario que realiza el cambio.
+     */
+    public void recordConceptCategoryChange(ConceptSMTK conceptSMTK, Category originalCategory, User user);
+
+    /**
+     * Este método es responsable de registrar en el historial el cambio de una relación atributo del concepto.
+     *
+     * @param conceptSMTK          El concepto cuya relación se actualizó.
+     * @param originalRelationship La relación antes de la modificación.
+     * @param user                 El usuario que realizó la modificación.
+     */
+    public void recordAttributeChange(ConceptSMTK conceptSMTK, Relationship originalRelationship, User user);
+
+    /**
      * Este método es responsable de obtener y agrupar en una lista todos los tipos de cambios existentes.
      *
      * @return Una <code>List</code> con los tipos de cambio.
@@ -85,4 +105,5 @@ public interface AuditManagerInterface {
      * <code>conceptSMTK</code>
      */
     public List<ConceptAuditAction> getConceptAuditActions(ConceptSMTK conceptSMTK, int numberOfChanges, boolean changes);
+
 }

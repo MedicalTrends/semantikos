@@ -3,11 +3,11 @@ package cl.minsal.semantikos.kernel.components;
 import cl.minsal.semantikos.kernel.daos.ConceptDAO;
 import cl.minsal.semantikos.kernel.daos.DescriptionDAO;
 import cl.minsal.semantikos.kernel.daos.RelationshipDAO;
+import cl.minsal.semantikos.model.Category;
 import cl.minsal.semantikos.model.ConceptSMTK;
 import cl.minsal.semantikos.model.Description;
 import cl.minsal.semantikos.model.User;
 import cl.minsal.semantikos.model.businessrules.ConceptCreationBusinessRuleContainer;
-import cl.minsal.semantikos.model.businessrules.DescriptionEditionBR;
 import cl.minsal.semantikos.model.businessrules.RelationshipEditionBR;
 import cl.minsal.semantikos.model.relationships.Relationship;
 import org.slf4j.Logger;
@@ -199,6 +199,19 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
         conceptSMTK.setPublished(true);
         conceptDAO.update(conceptSMTK);
         auditManager.recordConceptPublished(conceptSMTK, user);
+    }
+
+    @Override
+    public void changeCategory(@NotNull ConceptSMTK conceptSMTK, @NotNull Category targetCategory, User user) {
+        /* TODO: Validar reglas de negocio */
+
+        /* TODO: Cambiar la categoría y actualizar el cambio */
+        Category originalCategory = conceptSMTK.getCategory();
+
+        /* Complex Logic here */
+
+        /* TODO: Registrar en el historial */
+        auditManager.recordConceptCategoryChange(conceptSMTK, originalCategory, user);
     }
 
     /**

@@ -201,4 +201,12 @@ public class Relationship extends PersistentEntity implements AuditableEntity {
     public boolean isPersisted() {
         return this.id != DAO.NON_PERSISTED_ID;
     }
+
+    /**
+     * Este método es responsable de determinar si esta relación es de tipo definitoria o atributo
+     * @return <code>true</code> si es de atributo y <code>false</code>.
+     */
+    public boolean isAttribute() {
+        return getRelationshipDefinition().isAttribute();
+    }
 }

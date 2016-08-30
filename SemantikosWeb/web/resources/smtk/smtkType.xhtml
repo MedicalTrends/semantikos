@@ -116,7 +116,7 @@
 
     </p:panel>
 
-    <p:panel id="panelSMTK2"
+    <p:panel id="multiplicityN"
              styleClass="tablas2"
              style="margin:20px;"
              rendered="#{cc.attrs.relationshipDefinition.multiplicity.upperBoundary!=1}">
@@ -194,7 +194,7 @@
 
     </p:panel>
 
-    <p:panel id="id2panel"
+    <p:panel id="multiplicityOne"
              styleClass="concept"
              style="margin:20px;"
              rendered="#{cc.attrs.relationshipDefinition.multiplicity.simple}">
@@ -255,7 +255,7 @@
                     <p:commandButton icon="fa fa-trash" title="Eliminar"
                                      action="#{newConceptMBean.removeRelationship(cc.attrs.relationshipDefinition,relationship)}"
                                      update="@(.concept)"
-                                     rendered="#{newConceptMBean.concept.getRelationshipsByRelationDefinition(cc.attrs.relationshipDefinition).size()!=0}"
+                                     rendered="#{newConceptMBean.concept.hasRelationships(cc.attrs.relationshipDefinition)}"
                                      process="@this">
                     </p:commandButton>
                 </ui:repeat>

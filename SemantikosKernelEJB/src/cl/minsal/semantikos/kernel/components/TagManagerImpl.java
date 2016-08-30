@@ -90,9 +90,15 @@ public class TagManagerImpl implements TagManager {
     }
 
     @Override
+    public void persist(Tag tag) {
+        logger.debug("Creando concepto " + tag);
+        tagDAO.persist(tag);
+        logger.debug("Tag creado:" + tag);
+    }
+
+    @Override
     public void update(Tag tag) {
         logger.debug("Actualizando tag " + tag);
-
         tagDAO.update(tag);
         logger.debug("Tag actualizado:" + tag);
     }

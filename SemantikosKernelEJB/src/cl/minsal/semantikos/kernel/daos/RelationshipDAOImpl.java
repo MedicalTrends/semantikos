@@ -81,7 +81,6 @@ public class RelationshipDAOImpl implements RelationshipDAO {
              CallableStatement call = connection.prepareCall(sql)) {
 
             call.setLong(1, relationship.getId());
-
             call.execute();
 
             ResultSet rs = call.getResultSet();
