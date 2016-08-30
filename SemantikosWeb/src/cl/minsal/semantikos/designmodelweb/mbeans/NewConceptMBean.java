@@ -108,6 +108,15 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
 
     private String favoriteDescription;
 
+    private int categorySelect;
+
+    public int getCategorySelect() {
+        return categorySelect;
+    }
+
+    public void setCategorySelect(int categorySelect) {
+        this.categorySelect = categorySelect;
+    }
 
     //Inicializacion del Bean
 
@@ -133,7 +142,7 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         context.execute("PF('dialogNameConcept').show();");
 
         //category = categoryManager.getCategoryById(1);
-        category = categoryManager.getCategoryById(105590001);
+        //category = categoryManager.getCategoryById(105590001);
         //category = categoryManager.getCategoryById(71388002);
 
 
@@ -277,9 +286,11 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
 
 
     //      Methods
-    public void createConcept() {
-        //concept = newConcept(category, favoriteDescription);
-        concept = getConceptById(80602);
+    public void createConcept() throws ParseException {
+        category = categoryManager.getCategoryById(categorySelect);
+        concept = newConcept(category, favoriteDescription);
+        //concept = getConceptById(80602);
+
         RequestContext context = RequestContext.getCurrentInstance();
         context.execute("PF('dialogNameConcept').hide();");
     }
@@ -294,7 +305,14 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         favouriteDescription.setState(initialState);
         favouriteDescription.setCaseSensitive(false);
         favouriteDescription.setDescriptionId(descriptionManager.generateDescriptionId());
-        Description[] descriptions= {favouriteDescription};
+
+        Description fsnDescription = new Description(term+" ("+category.getName()+")", descriptionManager.getTypeFSN());
+
+        fsnDescription.setState(initialState);
+        fsnDescription.setCaseSensitive(false);
+        fsnDescription.setDescriptionId(descriptionManager.generateDescriptionId());
+
+        Description[] descriptions= {favouriteDescription,fsnDescription};
         return new ConceptSMTKWeb(conceptManager.generateConceptId(), category, true, true, initialState, false, false, descriptions);
     }
 
