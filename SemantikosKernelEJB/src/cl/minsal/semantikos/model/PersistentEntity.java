@@ -40,4 +40,5 @@ public abstract class PersistentEntity implements IPersistentEntity {
     public PersistentEntity(long id) {
         this.id = id;
     }
+
 }

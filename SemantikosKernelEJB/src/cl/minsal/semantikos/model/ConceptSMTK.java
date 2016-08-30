@@ -7,6 +7,7 @@ import cl.minsal.semantikos.model.exceptions.BusinessRuleException;
 import cl.minsal.semantikos.model.relationships.*;
 
 import javax.validation.constraints.NotNull;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -183,7 +184,7 @@ public class ConceptSMTK extends PersistentEntity implements Target, AuditableEn
         List<Relationship> someRelationships = new ArrayList<>();
         for (Relationship relationship : relationships) {
             if (relationship.getRelationshipDefinition().equals(relationshipDefinition) &&
-                    (relationship.getValidityUntil() == null || relationship.getValidityUntil().after(Calendar.getInstance().getTime()))) {
+                    (relationship.getValidityUntil() == null || relationship.getValidityUntil().after(new Timestamp(System.currentTimeMillis())))) {
                 someRelationships.add(relationship);
             }
         }
@@ -353,6 +354,16 @@ public class ConceptSMTK extends PersistentEntity implements Target, AuditableEn
      */
     public void addRelationship(Relationship relationship) {
         this.getRelationships().add(relationship);
+    }
+
+
+    /**
+     * Este método es responsable de remover una relación a un concepto.
+     *
+     * @param relationship La relación que es removida.
+     */
+    public void removeRelationship(Relationship relationship) {
+        this.getRelationships().remove(relationship);
     }
 
     /**

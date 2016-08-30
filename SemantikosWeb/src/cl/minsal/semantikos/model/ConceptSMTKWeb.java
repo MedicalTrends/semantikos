@@ -15,34 +15,26 @@ import java.util.List;
  */
 public class ConceptSMTKWeb extends ConceptSMTK {
 
-    List<RelationshipWeb> relationshipsWeb = new ArrayList<RelationshipWeb>();
-    List<DescriptionWeb> descriptionsWeb = new ArrayList<DescriptionWeb>();
-    //Respaldo de descripciones web originales
-    List<DescriptionWeb> descriptionsWebBackup = new ArrayList<DescriptionWeb>();
+    //Respaldo de las descripciones originales
+    List<Description> descriptionsBackup = new ArrayList<Description>();
+    //Respaldo de las relaciones originales
+    List<Relationship> relationshipsBackup = new ArrayList<Relationship>();
 
-    public ConceptSMTKWeb(String conceptID, Category category, boolean isToBeReviewed, boolean isToBeConsulted, boolean modeled, boolean isFullyDefined, boolean isPublished, Description... descriptions) {
-        super(conceptID, category, isToBeReviewed, isToBeConsulted, modeled, isFullyDefined, isPublished, descriptions);
-        for (Relationship relationship : this.getRelationships()) {
-            if (relationship.isPersisted()) {
-                this.addRelationshipWeb(new RelationshipWeb(relationship.getId(), relationship, false));
-            } else {
-                this.addRelationshipWeb(new RelationshipWeb(relationship, false));
+    //Este es el constructor mínimo
+    public ConceptSMTKWeb(ConceptSMTK conceptSMTK) {
+        super(conceptSMTK.getConceptID(), conceptSMTK.getCategory(), conceptSMTK.isToBeReviewed(), conceptSMTK.isToBeConsulted(), conceptSMTK.isModeled(),
+              conceptSMTK.isFullyDefined(), conceptSMTK.isPublished(), conceptSMTK.getDescriptions().toArray(new Description[conceptSMTK.getDescriptions().size()]));
+        if(conceptSMTK.isPersistent()){
+            this.setId(conceptSMTK.getId());
+            for (Description description : this.getDescriptions()) {
+                // Si la descripcion está persistida dejar en el respaldo las originales
+                this.descriptionsBackup.add(description);
+            }
+            for (Relationship relationship : this.getRelationships()) {
+                // Si la relación está persistida dejar en el respaldo las originales
+                this.relationshipsBackup.add(relationship);
             }
         }
-        for (Description description : this.getDescriptions()) {
-            if (description.isPersisted()) {
-                this.addDescriptionWeb(new DescriptionWeb(description.getId(), description, false));
-                // Si la descripcion está persistida dejar en el respaldo las originales
-                this.descriptionsWebBackup.add(new DescriptionWeb(description.getId(), description, false));
-            } else
-                this.addDescriptionWeb(new DescriptionWeb(description, false));
-        }
-    }
-
-    public ConceptSMTKWeb(ConceptSMTK conceptSMTK) {
-        this(conceptSMTK.getConceptID(), conceptSMTK.getCategory(), conceptSMTK.isToBeReviewed(), conceptSMTK.isToBeConsulted(), conceptSMTK.isModeled(),
-                conceptSMTK.isFullyDefined(), conceptSMTK.isPublished(), conceptSMTK.getDescriptions().toArray(new Description[conceptSMTK.getDescriptions().size()]));
-        this.setId(conceptSMTK.getId());
     }
 
     /**
@@ -56,14 +48,13 @@ public class ConceptSMTKWeb extends ConceptSMTK {
      * @return La descripción preferida.
      */
     public Description getValidDescriptionFSN() {
-        for (DescriptionWeb description : descriptionsWeb) {
+        for (Description description : getDescriptions()) {
             DescriptionType descriptionType = description.getDescriptionType();
             if (descriptionType.getName().equalsIgnoreCase("FSN") &&
-                    (description.getValidityUntil() == null || description.getValidityUntil().after(Calendar.getInstance().getTime()))) {
+               (description.getValidityUntil() == null || description.getValidityUntil().after(new Timestamp(System.currentTimeMillis())))) {
                 return description;
             }
         }
-
         /* En este punto, no se encontró una descripción preferida, y se arroja una excepción */
         throw new BusinessRuleException("Concepto sin descripción FSN");
     }
@@ -79,9 +70,9 @@ public class ConceptSMTKWeb extends ConceptSMTK {
      * @return La descripción preferida.
      */
     public Description getValidDescriptionFavorite() {
-        for (DescriptionWeb description : descriptionsWeb) {
+        for (Description description : getDescriptions()) {
             if (description.getDescriptionType().getName().equalsIgnoreCase("preferida") &&
-                    (description.getValidityUntil() == null || description.getValidityUntil().after(Calendar.getInstance().getTime()))) {
+               (description.getValidityUntil() == null || description.getValidityUntil().after(new Timestamp(System.currentTimeMillis())))) {
                 return description;
             }
         }
@@ -95,36 +86,15 @@ public class ConceptSMTKWeb extends ConceptSMTK {
      *
      * @return Una lista con todas las descripciones no FSN o Preferidas.
      */
-    public List<DescriptionWeb> getValidDescriptionsButFSNandFavorite() {
-
-        List<DescriptionWeb> otherDescriptions = new ArrayList<DescriptionWeb>();
-        DescriptionType fsnType = DescriptionTypeFactory.getInstance().getFSNDescriptionType();
-        DescriptionType favoriteType = DescriptionTypeFactory.getInstance().getFavoriteDescriptionType();
-
-        for (DescriptionWeb description : descriptionsWeb) {
-            if (!description.getDescriptionType().equals(fsnType) && !description.getDescriptionType().equals(favoriteType) &&
-                    (description.getValidityUntil() == null || description.getValidityUntil().after(Calendar.getInstance().getTime()))) {
-                otherDescriptions.add(description);
-            }
-        }
-
-        return otherDescriptions;
-    }
-
-
-    /**
-     * Este método restorna todas ls descripciones que no son FSN o Preferidas.
-     *
-     * @return Una lista con todas las descripciones no FSN o Preferidas.
-     */
-    public List<Description> getDescriptionsButFSNandFavorite() {
+    public List<Description> getValidDescriptionsButFSNandFavorite() {
 
         List<Description> otherDescriptions = new ArrayList<Description>();
         DescriptionType fsnType = DescriptionTypeFactory.getInstance().getFSNDescriptionType();
         DescriptionType favoriteType = DescriptionTypeFactory.getInstance().getFavoriteDescriptionType();
 
         for (Description description : getDescriptions()) {
-            if (!description.getDescriptionType().equals(fsnType) && !description.getDescriptionType().equals(favoriteType)) {
+            if (!description.getDescriptionType().equals(fsnType) && !description.getDescriptionType().equals(favoriteType) &&
+                (description.getValidityUntil() == null || description.getValidityUntil().after(new Timestamp(System.currentTimeMillis())))) {
                 otherDescriptions.add(description);
             }
         }
@@ -132,130 +102,19 @@ public class ConceptSMTKWeb extends ConceptSMTK {
         return otherDescriptions;
     }
 
-    /**
-     * Este método es responsable de retornar todas las relaciones de este concepto que son de un cierto tipo de
-     * relación.
-     *
-     * @param relationshipDefinition El tipo de relación al que pertenecen las relaciones a retornar.
-     *
-     * @return Una <code>java.util.List</code> de relaciones de tipo <code>relationshipDefinition</code>.
-     */
-    public List<RelationshipWeb> getRelationshipsWebByRelationDefinition(RelationshipDefinition relationshipDefinition) {
-        List<RelationshipWeb> someRelationships = new ArrayList<RelationshipWeb>();
-        for (RelationshipWeb relationship : relationshipsWeb) {
-            if (relationship.getRelationshipDefinition().equals(relationshipDefinition)) {
-                someRelationships.add(relationship);
-            }
-        }
-        return someRelationships;
-    }
-
-    /**
-     * Este método es responsable de retornar todas las relaciones válidas de este concepto y que son de un cierto tipo
-     * de
-     * relación.
-     *
-     * @param relationshipDefinition El tipo de relación al que pertenecen las relaciones a retornar.
-     *
-     * @return Una <code>java.util.List</code> de relaciones de tipo <code>relationshipDefinition</code>.
-     */
-    public List<RelationshipWeb> getValidRelationshipsWebByRelationDefinition(RelationshipDefinition relationshipDefinition) {
-        List<RelationshipWeb> someRelationships = new ArrayList<RelationshipWeb>();
-        for (RelationshipWeb relationship : relationshipsWeb) {
-            if (relationship.getRelationshipDefinition().equals(relationshipDefinition) &&
-                    (relationship.getValidityUntil() == null || relationship.getValidityUntil().after(new Timestamp(System.currentTimeMillis())))) {
-                someRelationships.add(relationship);
-            }
-        }
-        return someRelationships;
-    }
-
-    public List<RelationshipWeb> getRelationshipsWeb() {
-        return relationshipsWeb;
-    }
-
-    public void setRelationshipsWeb(List<Relationship> relationships) {
-        //this.setRelationships(relationships);
-        for (Relationship relationship : relationships) {
-            if (relationship.isPersisted())
-                this.addRelationshipWeb(new RelationshipWeb(relationship.getId(), relationship, false));
-            else
-                this.addRelationshipWeb(new RelationshipWeb(relationship, false));
-        }
-    }
-
-    /**
-     * Este método es responsable de agregar una relación web al concepto.
-     *
-     * @param relationshipWeb La relación que es agregada.
-     */
-    public void addRelationshipWeb(RelationshipWeb relationshipWeb) {
-        //super.addRelationship(relationshipWeb);
-        this.getRelationshipsWeb().add(relationshipWeb);
-    }
 
 
-    public void addDescriptionWeb(DescriptionWeb descriptionWeb) {
+    public List<Pair<Description, Description>> getDescriptionsForUpdate() {
 
-        this.descriptionsWeb.add(descriptionWeb);
-    }
-
-
-    /**
-     * Este método es responsable de remover una relación web del concepto.
-     *
-     * @param relationshipWeb La relación que es removida.
-     */
-    public void removeRelationshipWeb(RelationshipWeb relationshipWeb) {
-        super.getRelationships().remove(relationshipWeb);
-        this.getRelationshipsWeb().remove(relationshipWeb);
-    }
-
-    public boolean prepareRelationships() {
-        getRelationships().clear();
-        Relationship relationship;
-        for (RelationshipWeb rWeb : relationshipsWeb) {
-            if (rWeb.isPersisted()) {
-                relationship = new Relationship(rWeb.getId(), rWeb.getSourceConcept(), rWeb.getTarget(), rWeb.getRelationshipDefinition(), rWeb.getValidityUntil());
-                relationship.setToBeUpdated(rWeb.isToBeUpdated());
-                this.addRelationship(relationship);
-            } else {
-                relationship = new Relationship(rWeb.getSourceConcept(), rWeb.getTarget(), rWeb.getRelationshipDefinition());
-                relationship.setToBeUpdated(rWeb.isToBeUpdated());
-                this.addRelationship(relationship);
-            }
-        }
-        return true;
-    }
-
-    public boolean prepareDescriptions() {
-        getDescriptions().clear();
-        Description description;
-        for (DescriptionWeb dWeb : descriptionsWeb) {
-            if (dWeb.isPersisted()) {
-                description = new Description(dWeb.getId(), dWeb.getDescriptionId(), dWeb.getDescriptionType(), dWeb.getTerm(), dWeb.isCaseSensitive(), dWeb.isAutogeneratedName(), dWeb.isActive(), dWeb.isPublished(), dWeb.getValidityUntil());
-                description.setToBeUpdated(dWeb.isToBeUpdated());
-                this.addDescription(description);
-            } else {
-                description = new Description(dWeb.getDescriptionId(), dWeb.getDescriptionType(), dWeb.getTerm(), dWeb.isCaseSensitive(), dWeb.isAutogeneratedName(), dWeb.isActive(), dWeb.isPublished(), dWeb.getValidityUntil());
-                description.setToBeUpdated(dWeb.isToBeUpdated());
-                this.addDescription(description);
-            }
-        }
-        return true;
-    }
-
-    public List<Pair<DescriptionWeb, DescriptionWeb>> getDescriptionsForUpdate() {
-
-        List<Pair<DescriptionWeb, DescriptionWeb>> descriptionsForUpdate = new ArrayList<Pair<DescriptionWeb, DescriptionWeb>>();
+        List<Pair<Description, Description>> descriptionsForUpdate = new ArrayList<Pair<Description, Description>>();
 
         //Primero se buscan todas las descripciones persistidas originales
-        for (DescriptionWeb oldDescriptionWeb : descriptionsWebBackup) {
+        for (Description initDescription : descriptionsBackup) {
             //Por cada descripción original se busca su descripcion vista correlacionada
-            for (DescriptionWeb newDescriptionWeb : descriptionsWeb) {
+            for (Description finalDescription : getDescriptions()) {
                 //Si la descripcion correlacionada sufrio alguna modificación agregar
-                if (oldDescriptionWeb.getId() == newDescriptionWeb.getId() && !oldDescriptionWeb.equals(newDescriptionWeb)) {
-                    descriptionsForUpdate.add(new Pair(oldDescriptionWeb, newDescriptionWeb));
+                if (initDescription.getId() == finalDescription.getId() && !initDescription.equals(finalDescription)) {
+                    descriptionsForUpdate.add(new Pair(initDescription, finalDescription));
                 }
             }
         }
@@ -272,7 +131,7 @@ public class ConceptSMTKWeb extends ConceptSMTK {
 
         for (RelationshipDefinition relationshipDef : this.getCategory().getRelationshipDefinitions()) {
 
-            List<RelationshipWeb> relationships = this.getValidRelationshipsWebByRelationDefinition(relationshipDef);
+            List<Relationship> relationships = this.getValidRelationshipsByRelationDefinition(relationshipDef);
 
             if (relationships.size() < relationshipDef.getMultiplicity().getLowerBoundary())
                 return false;
@@ -294,42 +153,13 @@ public class ConceptSMTKWeb extends ConceptSMTK {
      * @return Un <code>java.lang.boolean</code>
      */
     public boolean hasRelationships(RelationshipDefinition relationshipDefinition) {
-        return !getRelationshipsWebByRelationDefinition(relationshipDefinition).isEmpty();
+        return !getRelationshipsByRelationDefinition(relationshipDefinition).isEmpty();
     }
 
     @Override
     public String toString() {
 
         return super.toString();
-    }
-
-    public void editDescription(DescriptionWeb description) {
-
-        DescriptionWeb oldDescription = null;
-        boolean isDescriptionFound = false;
-
-        if (description.isPersisted() && !description.hasBeenModified()) {
-            //Buscar la descripción original en el respaldo de descripciones web
-            for (DescriptionWeb descriptionWebBackup : descriptionsWebBackup) {
-                // Si existe una con el mismo id, dejarla como invalida y agregarla
-                if (descriptionWebBackup.getId() == description.getId()) {
-                    //Setear la descripcion respaldada
-                    oldDescription = descriptionWebBackup;
-                    //Dejar la descripción inválida
-                    descriptionWebBackup.setModified(true);
-                    descriptionWebBackup.setToBeUpdated(true);
-                    descriptionWebBackup.setValidityUntil(new Timestamp(System.currentTimeMillis()));
-                    // Mover la descripción backup a la lista de descripciones web
-                    descriptionsWeb.add(descriptionWebBackup);
-                    isDescriptionFound = true;
-                }
-            }
-
-            //Por ultimo, remover la descripción del backup (puesto que ya ha sido consolidada)
-            if (isDescriptionFound) {
-                descriptionsWebBackup.remove(oldDescription);
-            }
-        }
     }
 
     public String validateDescription(Description description) {
@@ -340,4 +170,6 @@ public class ConceptSMTKWeb extends ConceptSMTK {
         }
         return "";
     }
+
+
 }

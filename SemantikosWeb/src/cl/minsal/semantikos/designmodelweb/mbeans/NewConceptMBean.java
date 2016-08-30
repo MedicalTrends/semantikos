@@ -291,7 +291,7 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         fsnDescription.setDescriptionId(descriptionManager.generateDescriptionId());
 
         Description[] descriptions = {favouriteDescription, fsnDescription};
-        return new ConceptSMTKWeb(conceptManager.generateConceptId(), category, true, true, false, false, false, descriptions);
+        return new ConceptSMTKWeb(new ConceptSMTK(conceptManager.generateConceptId(), category, true, true, false, false, false, descriptions));
     }
 
     //Este método es responsable de pasarle a la vista un concepto, dado el id del concepto
@@ -299,7 +299,7 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
     public ConceptSMTKWeb getConceptById(long conceptId) {
         ConceptSMTKWeb conceptSMTKWeb = new ConceptSMTKWeb(conceptManager.getConceptByID(conceptId));
         //conceptSMTKWeb.setRelationships(conceptManager.loadRelationships(conceptSMTKWeb));
-        conceptSMTKWeb.setRelationshipsWeb(conceptManager.loadRelationships(conceptSMTKWeb));
+        conceptSMTKWeb.setRelationships(conceptManager.loadRelationships(conceptSMTKWeb));
         category = conceptSMTKWeb.getCategory();
         return conceptSMTKWeb;
     }
@@ -335,7 +335,7 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
 
         Relationship relationship = new Relationship(this.concept, target, relationshipDefinition);
         // Se utiliza el constructor mínimo (sin id)
-        this.concept.addRelationshipWeb(new RelationshipWeb(relationship, false));
+        this.concept.addRelationship(new RelationshipWeb(relationship, false));
 
     }
 
@@ -346,7 +346,7 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
 
         Relationship relationship = new Relationship(this.concept, target, relationshipDefinition);
         // Se utiliza el constructor mínimo (sin id)
-        this.concept.addRelationshipWeb(new RelationshipWeb(relationship, false));
+        this.concept.addRelationship(new RelationshipWeb(relationship, false));
         conceptSelected = null;
     }
 
@@ -358,25 +358,9 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         boolean isRelationshipFound = false;
 
         // Se busca la relación
-        for (RelationshipWeb relationshipWeb : concept.getRelationshipsWeb()) {
+        for (Relationship relationshipWeb : concept.getRelationships()) {
             if (relationshipWeb.getRelationshipDefinition().equals(relationshipDefinition)) {
-                // Si la relación está persistida y no ha sido modificada:
-                // 1.- Se deja la original como modificada
-                // 2.- se agrega una nueva relación (clon de la original) y
-                // 3.- se deja la original como inválida
-                if (relationshipWeb.isPersisted() && !relationshipWeb.hasBeenModified()) {
-                    relationshipWeb.setModified(true);
-                    Relationship newRelationship = relationshipWeb;
-                    newRelationship.setTarget(target);
-                    relationshipWeb.setValidityUntil(new Timestamp(System.currentTimeMillis()));
-                    relationshipWeb.setToBeUpdated(true);
-                    // Se utiliza el constructor con id
-                    concept.addRelationshipWeb(new RelationshipWeb(newRelationship.getId(), newRelationship, false));
-                }
-                // Si la relación no está persistida o está persistida pero ya ha sido modificada, se modifica su target
-                else {
-                    relationshipWeb.setTarget(target);
-                }
+                relationshipWeb.setTarget(target);
                 isRelationshipFound = true;
                 break;
             }
@@ -384,7 +368,7 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         // Si no se encuentra la relación, se crea una nueva
         if (!isRelationshipFound) {
             Relationship newRelationship = new Relationship(this.concept, target, relationshipDefinition);
-            concept.addRelationshipWeb(new RelationshipWeb(newRelationship, false));
+            concept.addRelationship(newRelationship);
         }
 
         conceptSelected = null;
@@ -393,21 +377,8 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
     /**
      * Este método es el encargado de remover una relación específica del concepto.
      */
-    public void removeRelationship(RelationshipDefinition rd, RelationshipWeb r) {
-
-        // Si la relacion esta persistida y no ha sido modificada:
-        // 1.- Se deja la original como modificada
-        // 2.- se deja la original como inválida
-        if (r.isPersisted() && !r.hasBeenModified()) {
-
-            r.setModified(true);
-            r.setValidityUntil(new Timestamp(System.currentTimeMillis()));
-            r.setToBeUpdated(true);
-        }
-        // Si la relacion no esta persistida o está persistida pero ya ha sido modificada, se remueve del concepto
-        else {
-            concept.removeRelationshipWeb(r);
-        }
+    public void removeRelationship(RelationshipDefinition rd, Relationship r) {
+        concept.removeRelationship(r);
     }
 
     /**
@@ -422,7 +393,6 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
                     description.setCaseSensitive(otherSensibilidad);
                     description.setDescriptionId(descriptionManager.generateDescriptionId());
                     concept.addDescription(description);
-                    concept.addDescriptionWeb(new DescriptionWeb(description, false));
                     otherTermino = "";
                 } else {
                     context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se ha seleccionado el tipo de descripción"));
@@ -450,8 +420,10 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
     }
 
     public void editDescription(DescriptionWeb description) {
+        /*
         if (description.isPersisted() && !description.hasBeenModified())
             concept.editDescription(description);
+        */
     }
 
     /**
@@ -536,9 +508,8 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         } else {
             // Si el concepto está persistido, actualizarlo
             if (concept.isPersistent()) {
-                concept.prepareRelationships();
-                for (Pair<DescriptionWeb, DescriptionWeb> descriptionWeb : concept.getDescriptionsForUpdate()) {
-                    //descriptionManager.updateDescription(descriptionWeb.getFirst(), descriptionWeb.getSecond());
+                for (Pair<Description, Description> description : concept.getDescriptionsForUpdate()) {
+                    descriptionManager.updateDescription(concept, description.getFirst(), description.getSecond(), user);
                 }
                 // Se prepara para la actualización
                 //if(concept.prepareForUpdate())
@@ -546,7 +517,6 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
             }
             // Si el concepto no está persistido, persistirlo
             else {
-                concept.prepareDescriptions();
                 conceptManager.persist(concept, user);
             }
             context.addMessage(null, new FacesMessage("Successful", "Concepto guardado "));
