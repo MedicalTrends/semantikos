@@ -1,5 +1,6 @@
 package cl.minsal.semantikos.kernel.daos;
 
+import cl.minsal.semantikos.model.Category;
 import cl.minsal.semantikos.model.relationships.Relationship;
 import cl.minsal.semantikos.model.relationships.RelationshipDefinition;
 import cl.minsal.semantikos.model.relationships.Target;
@@ -70,4 +71,12 @@ public interface RelationshipDAO {
      * @return Una lista con las relaciones del concepto.
      */
     List<Relationship> getRelationshipsBySourceConcept(long idConcept);
+
+    /**
+     *
+     * @param sourceCategory
+     * @param destinyCategory
+     * @return
+     */
+    List<Relationship> getRelationshipByCategories(Category sourceCategory, Category destinyCategory);
 }

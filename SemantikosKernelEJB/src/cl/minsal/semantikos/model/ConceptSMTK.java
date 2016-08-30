@@ -71,8 +71,11 @@ public class ConceptSMTK extends PersistentEntity implements Target, AuditableEn
      */
     private boolean justPublished = false;
 
-    public ConceptSMTK(long id) {
-        super(id);
+    /**
+     * El constructor privado con las inicializaciones de los campos por defecto.
+     */
+    public ConceptSMTK() {
+        super(PersistentEntity.NON_PERSISTED_ID);
 
         /* El concepto parte con su estado inicial */
         this.descriptions = new ArrayList<>();
@@ -84,14 +87,7 @@ public class ConceptSMTK extends PersistentEntity implements Target, AuditableEn
         this.isToBeReviewed = false;
 
         this.category = null;
-        this.relationshipsLoaded = false;
-    }
-
-    /**
-     * El constructor privado con las inicializaciones de los campos por defecto.
-     */
-    public ConceptSMTK() {
-        this(PersistentEntity.NON_PERSISTED_ID);
+        this.relationshipsLoaded = true;
     }
 
     public ConceptSMTK(Category category) {
@@ -119,6 +115,9 @@ public class ConceptSMTK extends PersistentEntity implements Target, AuditableEn
         this.isToBeConsulted = isToBeConsulted;
         this.isFullyDefined = isFullyDefined;
         this.isPublished = isPublished;
+
+        /* Se indica que no se han cargado sus relaciones */
+        this.relationshipsLoaded = false;
     }
 
     /*

@@ -1,6 +1,7 @@
 package cl.minsal.semantikos.kernel.daos;
 
 import cl.minsal.semantikos.kernel.util.ConnectionBD;
+import cl.minsal.semantikos.model.Category;
 import cl.minsal.semantikos.model.relationships.Relationship;
 import cl.minsal.semantikos.model.relationships.RelationshipDefinition;
 import cl.minsal.semantikos.model.relationships.RelationshipFactory;
@@ -230,6 +231,12 @@ public class RelationshipDAOImpl implements RelationshipDAO {
         }
 
         return relationshipFactory.createRelationshipsFromJSON(resultJSON);
+    }
+
+    @Override
+    public List<Relationship> getRelationshipByCategories(Category sourceCategory, Category destinyCategory) {
+        // TODO: Implementar esto.
+        return null;
     }
 
 }
