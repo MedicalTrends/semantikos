@@ -22,9 +22,6 @@ public class ConceptSMTK extends PersistentEntity implements Target, AuditableEn
     /** El valor que posee un CONCEPT_ID que no ha sido definido */
     public static final String CONCEPT_ID_UNDEFINED = "-1";
 
-    /** El famoso ConceptID */
-    private long id;
-
     /** El valor de negocio del concept_id */
     private String conceptID = CONCEPT_ID_UNDEFINED;
 
@@ -74,22 +71,29 @@ public class ConceptSMTK extends PersistentEntity implements Target, AuditableEn
      */
     private boolean justPublished = false;
 
-    /**
-     * El constructor privado con las inicializaciones de los campos por defecto.
-     */
-    public ConceptSMTK() {
-        /* El identificador de persistencia por defecto (no persistido) */
-        this.id = NON_PERSISTED_ID;
+    public ConceptSMTK(long id) {
+        super(id);
 
         /* El concepto parte con su estado inicial */
         // TODO: Cambiar esto a un campo.
         this.state = ConceptStateMachine.getInstance().getInitialState();
+        this.descriptions = new ArrayList<>();
 
         this.isFullyDefined = false;
         this.isPublished = false;
         this.isToBeConsulted = false;
         this.isToBeReviewed = false;
+
+        this.category = null;
     }
+
+    /**
+     * El constructor privado con las inicializaciones de los campos por defecto.
+     */
+    public ConceptSMTK() {
+        this(PersistentEntity.NON_PERSISTED_ID);
+    }
+
 
     public ConceptSMTK(Category category) {
         this();
@@ -109,7 +113,8 @@ public class ConceptSMTK extends PersistentEntity implements Target, AuditableEn
     public ConceptSMTK(long id, String conceptID, Category category, boolean isToBeReviewed, boolean isToBeConsulted, IState state, boolean isFullyDefined, boolean isPublished, Description... descriptions) {
         this(category, state, descriptions);
 
-        this.id = id;
+        this.setId(id);
+
         this.conceptID = conceptID;
         this.isToBeReviewed = isToBeReviewed;
         this.isToBeConsulted = isToBeConsulted;
@@ -221,17 +226,9 @@ public class ConceptSMTK extends PersistentEntity implements Target, AuditableEn
         this.relationshipsLoaded = true;
     }
 
-    public long getId() {
-        return id;
-    }
-
     @Override
     public TargetType getTargetType() {
         return TargetType.SMTK;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public String getConceptID() {

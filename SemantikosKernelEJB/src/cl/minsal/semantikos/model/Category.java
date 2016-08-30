@@ -25,6 +25,10 @@ public class Category extends PersistentEntity implements TargetDefinition, Audi
 
     private List<RelationshipDefinition> relationshipDefinitions;
 
+    public Category() {
+        super();
+    }
+
     @Override
     public long getId() {
         return idCategory;
