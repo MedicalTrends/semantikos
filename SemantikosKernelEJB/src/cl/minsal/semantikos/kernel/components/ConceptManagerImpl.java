@@ -76,11 +76,11 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
     @Override
     public List<ConceptSMTK> findConceptBy(String patternOrConceptID, Long[] categories, int pageNumber, int pageSize) {
 
-        //TODO: Actualizar esto de los estados que ya no va.
-        long MODELADO_VIGENTE = 3;
-        long MODELADO_NO_VIGENTE = 4;
 
-        Long[] states = {MODELADO_VIGENTE, MODELADO_NO_VIGENTE};
+        boolean isModeled= false;
+        //TODO: Actualizar esto de los estados que ya no va.
+
+
 
         categories = (categories == null) ? new Long[0] : categories;
 
@@ -91,9 +91,9 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
         if ((categories.length != 0 && patternOrConceptID != null)) {
             if (patternOrConceptID.length() >= 3) {
                 if (arrayPattern.length >= 2) {
-                    return conceptDAO.getConceptBy(arrayPattern, categories, states, pageSize, pageNumber);
+                    return conceptDAO.getConceptBy(arrayPattern, categories, isModeled, pageSize, pageNumber);
                 } else {
-                    return conceptDAO.getConceptBy(arrayPattern[0], categories, pageNumber, pageSize, states);
+                    return conceptDAO.getConceptBy(arrayPattern[0], categories, pageNumber, pageSize, isModeled);
                 }
             }
         }
@@ -102,9 +102,9 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
         if ((categories.length == 0 && patternOrConceptID != null)) {
             if (patternOrConceptID.length() >= 3) {
                 if (arrayPattern.length >= 2) {
-                    return conceptDAO.getConceptBy(arrayPattern, states, pageSize, pageNumber);
+                    return conceptDAO.getConceptBy(arrayPattern, isModeled, pageSize, pageNumber);
                 } else {
-                    return conceptDAO.getConceptBy(arrayPattern[0], categories, pageNumber, pageSize, states);
+                    return conceptDAO.getConceptBy(arrayPattern[0], categories, pageNumber, pageSize, isModeled);
                 }
             }
 
@@ -112,12 +112,12 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
 
         //Búsqueda por categoría
         if (categories.length > 0) {
-            return conceptDAO.getConceptBy(categories, states, pageSize, pageNumber);
+            return conceptDAO.getConceptBy(categories, isModeled, pageSize, pageNumber);
         }
 
 
         //Búsqueda por largo (PageSize y PageNumber)
-        return conceptDAO.getConceptsBy(states, pageSize, pageNumber);
+        return conceptDAO.getConceptsBy(isModeled, pageSize, pageNumber);
     }
 
     @Override
@@ -136,9 +136,11 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
     @Override
     public int countConceptBy(String pattern, Long[] categories) {
 
-        long MODELADO_VIGENTE = 3;
-        long MODELADO_NO_VIGENTE = 4;
-        Long[] states = {MODELADO_VIGENTE, MODELADO_NO_VIGENTE};
+
+        // TODO: arreglar esto (Estados)
+
+        boolean isModeled= false;
+
 
         pattern = standardizationPattern(pattern);
         String[] arrayPattern = patternToArray(pattern);
@@ -149,9 +151,9 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
         if ((categories.length != 0 && pattern != null)) {
             if (pattern.length() >= 3) {
                 if (arrayPattern.length >= 2) {
-                    return conceptDAO.countConceptBy(arrayPattern, categories, states);
+                    return conceptDAO.countConceptBy(arrayPattern, categories, isModeled);
                 } else {
-                    return conceptDAO.countConceptBy(arrayPattern[0], categories, states);
+                    return conceptDAO.countConceptBy(arrayPattern[0], categories, isModeled);
                 }
             }
         }
@@ -161,18 +163,18 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
         if (pattern != null) {
             if (pattern.length() >= 3) {
                 if (arrayPattern.length >= 2) {
-                    return conceptDAO.countConceptBy(arrayPattern, new Long[0], states);
+                    return conceptDAO.countConceptBy(arrayPattern, new Long[0], isModeled);
                 } else {
-                    return conceptDAO.countConceptBy(arrayPattern[0], categories, states);
+                    return conceptDAO.countConceptBy(arrayPattern[0], categories, isModeled);
                 }
             }
         }
 
         //Cuenta por categoría
         if (categories.length > 0) {
-            return conceptDAO.countConceptBy((String[]) null, categories, states);
+            return conceptDAO.countConceptBy((String[]) null, categories, isModeled);
         }
-        return conceptDAO.countConceptBy((String[]) null, categories, states);
+        return conceptDAO.countConceptBy((String[]) null, categories, isModeled);
 
     }
 

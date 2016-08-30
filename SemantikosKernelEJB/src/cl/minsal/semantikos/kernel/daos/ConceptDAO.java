@@ -19,13 +19,13 @@ public interface ConceptDAO {
      * Este método es responsable de recuperar todos los conceptos, sin considerar su categoría, que posean un cierto
      * estado interno.
      *
-     * @param states     Los estados que deben satisfacer los conceptos a retornar.
+     * @param isModeled
      * @param pageSize   El tamaño de la página.
      * @param pageNumber La página de resultados que se desea obtener.
      *
      * @return
      */
-    public List<ConceptSMTK> getConceptsBy(Long[] states, int pageSize, int pageNumber);
+    public List<ConceptSMTK> getConceptsBy(boolean isModeled, int pageSize, int pageNumber);
 
     /**
      * Este método es responsable de recuperar los conceptos que coincidan con un cierto patrón (<code>pattern</code>)
@@ -39,7 +39,7 @@ public interface ConceptDAO {
      *
      * @return Una lista de <code>ConceptSMTK</code> que cumplen los criterios de búsqueda.
      */
-    public List<ConceptSMTK> getConceptBy(String[] pattern, Long[] categories, Long[] states, int pageSize, int pageNumber);
+    public List<ConceptSMTK> getConceptBy(String[] pattern, Long[] categories, boolean isModeled, int pageSize, int pageNumber);
 
     /**
      * Este método es responsable de recuperar los conceptos que pertenecen a un conjunto de categorías.
@@ -51,16 +51,16 @@ public interface ConceptDAO {
      *
      * @return Una lista de <code>ConceptSMTK</code> que cumplen los criterios de búsqueda.
      */
-    public List<ConceptSMTK> getConceptBy(Long[] categories, Long[] states, int pageSize, int pageNumber);
+    public List<ConceptSMTK> getConceptBy(Long[] categories, boolean isModeled, int pageSize, int pageNumber);
 
-    public List<ConceptSMTK> getConceptBy(String[] pattern, Long[] states, int pageSize, int pageNumber);
+    public List<ConceptSMTK> getConceptBy(String[] pattern, boolean isModeled, int pageSize, int pageNumber);
 
 
-    public List<ConceptSMTK> getConceptBy(String PatternOrConceptId, Long[] Category, int pageNumber, int pageSize, Long[] states);
+    public List<ConceptSMTK> getConceptBy(String PatternOrConceptId, Long[] Category, int pageNumber, int pageSize, boolean isModeled);
 
-    public int countConceptBy(String[] Pattern, Long[] category, Long[] states);
+    public int countConceptBy(String[] Pattern, Long[] category, boolean isModeled);
 
-    public int countConceptBy(String Pattern, Long[] category, Long[] states);
+    public int countConceptBy(String Pattern, Long[] category, boolean isModeled);
 
     /**
      * Este método es responsable de recuperar todos los objetos que están asociados a un Tag.

@@ -44,7 +44,7 @@ public class ConceptDAOImpl implements ConceptDAO {
 
 
     @Override
-    public List<ConceptSMTK> getConceptsBy(Long[] states, int pageSize, int pageNumber) {
+    public List<ConceptSMTK> getConceptsBy(boolean isModeled, int pageSize, int pageNumber) {
 
         List<ConceptSMTK> concepts = new ArrayList<>();
         ConnectionBD connect = new ConnectionBD();
@@ -53,9 +53,9 @@ public class ConceptDAOImpl implements ConceptDAO {
         try (Connection connection = connect.getConnection();) {
 
             call = connection.prepareCall("{call semantikos.get_all_concepts(?,?,?)}");
-            call.setInt(1, pageNumber);
-            call.setInt(2, pageSize);
-            call.setArray(3, connection.createArrayOf("bigint", states));
+            call.setBoolean(1,isModeled);
+            call.setInt(2, pageNumber);
+            call.setInt(3, pageSize);
             call.execute();
 
             ResultSet rs = call.getResultSet();
@@ -74,7 +74,7 @@ public class ConceptDAOImpl implements ConceptDAO {
     }
 
     @Override
-    public List<ConceptSMTK> getConceptBy(Long[] categories, Long[] states, int pageSize, int pageNumber) {
+    public List<ConceptSMTK> getConceptBy(Long[] categories, boolean isModeled, int pageSize, int pageNumber) {
 
         List<ConceptSMTK> concepts = new ArrayList<>();
         ConnectionBD connect = new ConnectionBD();
@@ -87,7 +87,7 @@ public class ConceptDAOImpl implements ConceptDAO {
             call.setArray(1, connect.getConnection().createArrayOf("integer", categories));
             call.setInt(2, pageNumber);
             call.setInt(3, pageSize);
-            call.setArray(4, connection.createArrayOf("bigint", states));
+            call.setBoolean(4, isModeled);
 
             call.execute();
 
@@ -105,7 +105,7 @@ public class ConceptDAOImpl implements ConceptDAO {
     }
 
     @Override
-    public List<ConceptSMTK> getConceptBy(String[] pattern, Long[] states, int pageSize, int pageNumber) {
+    public List<ConceptSMTK> getConceptBy(String[] pattern, boolean isModeled, int pageSize, int pageNumber) {
         List<ConceptSMTK> concepts = new ArrayList<ConceptSMTK>();
         ConnectionBD connect = new ConnectionBD();
 
@@ -115,7 +115,7 @@ public class ConceptDAOImpl implements ConceptDAO {
             call.setArray(1, connection.createArrayOf("text", pattern));
             call.setInt(2, pageNumber);
             call.setInt(3, pageSize);
-            call.setArray(4, connection.createArrayOf("bigint", states));
+            call.setBoolean(4,isModeled);
             call.execute();
 
             ResultSet rs = call.getResultSet();
@@ -132,7 +132,7 @@ public class ConceptDAOImpl implements ConceptDAO {
     }
 
     @Override
-    public List<ConceptSMTK> getConceptBy(String[] pattern, Long[] categories, Long[] states, int pageSize, int pageNumber) {
+    public List<ConceptSMTK> getConceptBy(String[] pattern, Long[] categories, boolean isModeled, int pageSize, int pageNumber) {
 
         List<ConceptSMTK> concepts = new ArrayList<ConceptSMTK>();
         ConnectionBD connect = new ConnectionBD();
@@ -146,7 +146,7 @@ public class ConceptDAOImpl implements ConceptDAO {
             call.setArray(2, connection.createArrayOf("text", pattern));
             call.setInt(3, pageNumber);
             call.setInt(4, pageSize);
-            call.setArray(5, connection.createArrayOf("bigint", states));
+            call.setBoolean(5,isModeled);
             call.execute();
 
             ResultSet rs = call.getResultSet();
@@ -163,12 +163,7 @@ public class ConceptDAOImpl implements ConceptDAO {
     }
 
     @Override
-    public List<ConceptSMTK> getConceptBy(String PatternOrConceptId, Long[] Category, int pageNumber, int pageSize, Long[] states) {
-        long id, conceptId, idCategory, state;
-        boolean check, consult, completelyDefined, published;
-
-        Category objectCategory = null;
-
+    public List<ConceptSMTK> getConceptBy(String PatternOrConceptId, Long[] Category, int pageNumber, int pageSize, boolean isModeled) {
 
         List<ConceptSMTK> concepts = new ArrayList<ConceptSMTK>();
 
@@ -180,7 +175,7 @@ public class ConceptDAOImpl implements ConceptDAO {
         // TODO: TryWithResources
         try (Connection connection = connect.getConnection();) {
 
-            Array ArrayStates = connection.createArrayOf("bigint", states);
+
             if (Category.length > 0) {
                 call = connection.prepareCall("{call semantikos.find_concept_by_conceptid_categories(?,?,?,?,?)}");
                 Array ArrayCategories = connection.createArrayOf("integer", Category);
@@ -189,13 +184,13 @@ public class ConceptDAOImpl implements ConceptDAO {
                 call.setArray(2, ArrayCategories);
                 call.setInt(3, pageNumber);
                 call.setInt(4, pageSize);
-                call.setArray(5, ArrayStates);
+                call.setBoolean(5,isModeled);
             } else {
                 call = connection.prepareCall("{call semantikos.find_concept_by_concept_id(?,?,?,?)}");
                 call.setString(1, PatternOrConceptId);
                 call.setInt(2, pageNumber);
                 call.setInt(3, pageSize);
-                call.setArray(4, ArrayStates);
+                call.setBoolean(4,isModeled);
             }
             call.execute();
 
@@ -214,7 +209,7 @@ public class ConceptDAOImpl implements ConceptDAO {
     }
 
     @Override
-    public int countConceptBy(String[] Pattern, Long[] category, Long[] states) {
+    public int countConceptBy(String[] Pattern, Long[] category, boolean isModeled) {
 
 
         ConnectionBD connect = new ConnectionBD();
@@ -222,7 +217,6 @@ public class ConceptDAOImpl implements ConceptDAO {
         int count = 0;
 
         try (Connection connection = connect.getConnection();) {
-            Array ArrayStates = connection.createArrayOf("bigint", states);
 
             if (Pattern != null) {
 
@@ -234,12 +228,12 @@ public class ConceptDAOImpl implements ConceptDAO {
 
                     call.setArray(1, ArrayCategories);
                     call.setArray(2, ArrayPattern);
-                    call.setArray(3, ArrayStates);
+                    call.setBoolean(3, isModeled);
 
                 } else {
                     call = connection.prepareCall("{call semantikos.count_concept_by_pattern(?,?)}");
                     call.setArray(1, ArrayPattern);
-                    call.setArray(2, ArrayStates);
+                    call.setBoolean(2, isModeled);
                 }
 
             } else {
@@ -248,11 +242,11 @@ public class ConceptDAOImpl implements ConceptDAO {
                     call = connection.prepareCall("{call semantikos.count_concept_count_by_categories(?,?)}");
                     Array ArrayCategories = connect.getConnection().createArrayOf("integer", category);
                     call.setArray(1, ArrayCategories);
-                    call.setArray(2, ArrayStates);
+                    call.setBoolean(2, isModeled);
 
                 } else {
                     call = connection.prepareCall("{call semantikos.count_concept_by_page_size(?)}");
-                    call.setArray(1, ArrayStates);
+                    call.setBoolean(1, isModeled);
                 }
             }
 
@@ -273,7 +267,7 @@ public class ConceptDAOImpl implements ConceptDAO {
     }
 
     @Override
-    public int countConceptBy(String Pattern, Long[] category, Long[] states) {
+    public int countConceptBy(String Pattern, Long[] category, boolean isModeled) {
         ConnectionBD connect = new ConnectionBD();
         int count = 0;
 
@@ -286,7 +280,7 @@ public class ConceptDAOImpl implements ConceptDAO {
              CallableStatement call = connection.prepareCall(COUNT_CALL)) {
 
             call.setString(1, Pattern);
-            call.setArray(2, connection.createArrayOf("bigint", states));
+            call.setBoolean(2,isModeled);
             if (category.length > 0) {
                 call.setArray(3, connect.getConnection().createArrayOf("integer", category));
             }
