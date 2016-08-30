@@ -21,4 +21,15 @@ public interface CrossMapManagerInterface {
      * @return El crossmap creado.
      */
     public CrossMap createCrossMap(CrossMap crossMap, User user);
+
+    /**
+     * Este método es responsable de eliminar un CrossMap de un concepto. TODO: Por definir bien qué significa eliminar
+     * un crossmap.
+     *
+     * @param crossMap El crossmap que se desea eliminar.
+     * @param user     El usuario que elimina el crossmap.
+     *
+     * @return El crossmap eliminado y actualizado.
+     */
+    public CrossMap removeCrossMap(CrossMap crossMap, User user);
 }

@@ -1,7 +1,7 @@
 package cl.minsal.semantikos.model.businessrules;
 
 import cl.minsal.semantikos.model.ConceptSMTK;
-import cl.minsal.semantikos.model.User;
+import cl.minsal.semantikos.model.audit.ConceptAuditAction;
 import cl.minsal.semantikos.model.exceptions.BusinessRuleException;
 
 /**
@@ -12,11 +12,10 @@ public class HistoryRecordBL {
     /**
      * Este método aplica todas las reglas de negocio para validar si se puede realizar el registro.
      *
-     * @param conceptSMTK El concepto sobre el cual se quiere registrar una acción en el historial.
-     * @param user        El usuario que desea realizar la acción sobre el concepto.
+     * @param conceptAuditAction La acción de Registro de Historial que se desea realizar.
      */
-    public void validate(ConceptSMTK conceptSMTK, User user) {
-        brAud001(conceptSMTK);
+    public void validate(ConceptAuditAction conceptAuditAction) {
+        brAud001(conceptAuditAction.getSubjectConcept());
     }
 
     /**
@@ -28,6 +27,6 @@ public class HistoryRecordBL {
      */
     private void brAud001(ConceptSMTK conceptSMTK) {
         if (conceptSMTK.isModeled())
-            throw new BusinessRuleException("BT-AUD-001 No satisfecha: solo se pueden registrar acciones relativas a Conceptos que se encuentran Modelados");
+            throw new BusinessRuleException("BR-AUD-001: No satisfecha: solo se pueden registrar acciones relativas a Conceptos que se encuentran Modelados");
     }
 }

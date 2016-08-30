@@ -66,8 +66,9 @@ public interface DescriptionManagerInterface {
      * @param sourceConcept El concepto en donde se encuentra la descripción inicialmente.
      * @param targetConcept El concepto al cual se quiere mover la descripción.
      * @param description   La descripción que se desea trasladar.
+     * @param user          El usuario que realiza el traslado.
      */
-    public void moveDescriptionToConcept(ConceptSMTK sourceConcept, ConceptSMTK targetConcept, Description description);
+    public void moveDescriptionToConcept(ConceptSMTK sourceConcept, ConceptSMTK targetConcept, Description description, User user);
 
     public String getIdDescription(String tipoDescription);
 

@@ -27,18 +27,23 @@ public class AuditManagerImpl implements AuditManagerInterface {
     @Override
     public void recordNewConcept(ConceptSMTK conceptSMTK, User user) {
 
-        /* Se validan las reglas de negocio para realizar el registro */
-        new HistoryRecordBL().validate(conceptSMTK, user);
-
+        /* Se crea el registro de historial, para poder validar Reglas de Negocio */
         ConceptAuditAction conceptAuditAction = new ConceptAuditAction(conceptSMTK, CONCEPT_CREATION, now(), user, conceptSMTK);
+
+        /* Se validan las reglas de negocio para realizar el registro */
+        new HistoryRecordBL().validate(conceptAuditAction);
+
         auditDAO.recordAuditAction(conceptAuditAction);
     }
 
     @Override
     public void recordUpdateConcept(ConceptSMTK conceptSMTK, User user) {
 
+        /* Se crea el registro de historial, para poder validar Reglas de Negocio */
+        ConceptAuditAction conceptAuditAction = new ConceptAuditAction(conceptSMTK, CONCEPT_ATTRIBUTE_CHANGE, now(), user, conceptSMTK);
+
         /* Se validan las reglas de negocio para realizar el registro */
-        new HistoryRecordBL().validate(conceptSMTK, user);
+        new HistoryRecordBL().validate(conceptAuditAction);
 
         // TODO: Implement this.
     }
@@ -46,8 +51,11 @@ public class AuditManagerImpl implements AuditManagerInterface {
     @Override
     public void recordDescriptionMovement(ConceptSMTK sourceConcept, ConceptSMTK targetConcept, Description description, User user) {
 
+        /* Se crea el registro de historial, para poder validar Reglas de Negocio */
+        ConceptAuditAction conceptAuditAction = new ConceptAuditAction(sourceConcept, CONCEPT_DESCRIPTION_MOVEMENT, now(), user, description);
+
         /* Se validan las reglas de negocio para realizar el registro */
-        new HistoryRecordBL().validate(sourceConcept, user);
+        new HistoryRecordBL().validate(conceptAuditAction);
 
         // TODO: Implement this.
     }
@@ -55,10 +63,10 @@ public class AuditManagerImpl implements AuditManagerInterface {
     @Override
     public void recordConceptPublished(ConceptSMTK conceptSMTK, User user) {
 
-        /* Se validan las reglas de negocio para realizar el registro */
-        new HistoryRecordBL().validate(conceptSMTK, user);
-
         ConceptAuditAction auditAction = new ConceptAuditAction(conceptSMTK, CONCEPT_PUBLICATION, now(), user, conceptSMTK);
+
+        /* Se validan las reglas de negocio para realizar el registro */
+        new HistoryRecordBL().validate(auditAction);
         auditDAO.recordAuditAction(auditAction);
     }
 
@@ -66,9 +74,9 @@ public class AuditManagerImpl implements AuditManagerInterface {
     public void recordFavouriteDescriptionUpdate(ConceptSMTK conceptSMTK, Description originalDescription, User user) {
 
         /* Se validan las reglas de negocio para realizar el registro */
-        new HistoryRecordBL().validate(conceptSMTK, user);
-
         ConceptAuditAction auditAction = new ConceptAuditAction(conceptSMTK, CONCEPT_FAVOURITE_DESCRIPTION_CHANGE, now(), user, originalDescription);
+        new HistoryRecordBL().validate(auditAction);
+
         auditDAO.recordAuditAction(auditAction);
     }
 
@@ -76,45 +84,55 @@ public class AuditManagerImpl implements AuditManagerInterface {
     public void recordConceptCategoryChange(ConceptSMTK conceptSMTK, Category originalCategory, User user) {
 
         /* Se validan las reglas de negocio para realizar el registro */
-        new HistoryRecordBL().validate(conceptSMTK, user);
-
         ConceptAuditAction auditAction = new ConceptAuditAction(conceptSMTK, CONCEPT_CATEGORY_CHANGE, now(), user, originalCategory);
+        new HistoryRecordBL().validate(auditAction);
+
         auditDAO.recordAuditAction(auditAction);
     }
 
     @Override
     public void recordAttributeChange(ConceptSMTK conceptSMTK, Relationship originalRelationship, User user) {
         /* Se validan las reglas de negocio para realizar el registro */
-        new HistoryRecordBL().validate(conceptSMTK, user);
-
         ConceptAuditAction auditAction = new ConceptAuditAction(conceptSMTK, CONCEPT_ATTRIBUTE_CHANGE, now(), user, originalRelationship);
+        new HistoryRecordBL().validate(auditAction);
+
         auditDAO.recordAuditAction(auditAction);
     }
 
     @Override
     public void recordRelationshipCreation(Relationship relationship, User user) {
-        /* Se validan las reglas de negocio para realizar el registro */
-        new HistoryRecordBL().validate(relationship.getSourceConcept(), user);
 
+        /* Se validan las reglas de negocio para realizar el registro */
         ConceptAuditAction auditAction = new ConceptAuditAction(relationship.getSourceConcept(), CONCEPT_RELATIONSHIP_CREATION, now(), user, relationship);
+        new HistoryRecordBL().validate(auditAction);
+
         auditDAO.recordAuditAction(auditAction);
     }
 
     @Override
     public void recordRelationshipRemoval(Relationship relationship, User user) {
         /* Se validan las reglas de negocio para realizar el registro */
-        new HistoryRecordBL().validate(relationship.getSourceConcept(), user);
-
         ConceptAuditAction auditAction = new ConceptAuditAction(relationship.getSourceConcept(), CONCEPT_RELATIONSHIP_REMOVAL, now(), user, relationship);
+        new HistoryRecordBL().validate(auditAction);
+
         auditDAO.recordAuditAction(auditAction);
     }
 
     @Override
     public void recordCrossMapCreation(CrossMap crossMap, User user) {
         /* Se validan las reglas de negocio para realizar el registro */
-        new HistoryRecordBL().validate(crossMap.getSourceConcept(), user);
+        ConceptAuditAction auditAction = new ConceptAuditAction(crossMap.getSourceConcept(), CONCEPT_RELATIONSHIP_CROSSMAP_CREATION, now(), user, crossMap);
+        new HistoryRecordBL().validate(auditAction);
 
-        ConceptAuditAction auditAction = new ConceptAuditAction(crossMap.getSourceConcept(), CONCEPT_RELATIONSHIP_REMOVAL, now(), user, crossMap);
+        auditDAO.recordAuditAction(auditAction);
+    }
+
+    @Override
+    public void recordCrossMapRemoval(CrossMap crossMap, User user) {
+        /* Se validan las reglas de negocio para realizar el registro */
+        ConceptAuditAction auditAction = new ConceptAuditAction(crossMap.getSourceConcept(), CONCEPT_RELATIONSHIP_CROSSMAP_REMOVAL, now(), user, crossMap);
+        new HistoryRecordBL().validate(auditAction);
+
         auditDAO.recordAuditAction(auditAction);
     }
 

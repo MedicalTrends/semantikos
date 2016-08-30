@@ -101,10 +101,18 @@ public interface AuditManagerInterface {
     /**
      * Este método es responsable de registrar en el historial la creación de un CrossMap.
      *
-     * @param crossMap El CrossMap que se desea eliminar.
+     * @param crossMap El CrossMap que se desea crear.
      * @param user     El usuario que elimina la relación.
      */
     public void recordCrossMapCreation(CrossMap crossMap, User user);
+
+    /**
+     * Este método es responsable de registrar en el historial la eliminación de un CrossMap.
+     *
+     * @param crossMap El CrossMap que se desea eliminar.
+     * @param user     El usuario que elimina la relación.
+     */
+    public void recordCrossMapRemoval(CrossMap crossMap, User user);
 
     /**
      * Este método es responsable de obtener y agrupar en una lista todos los tipos de cambios existentes.
