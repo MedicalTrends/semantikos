@@ -335,7 +335,7 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
 
         Relationship relationship = new Relationship(this.concept, target, relationshipDefinition);
         // Se utiliza el constructor mínimo (sin id)
-        this.concept.addRelationship(new RelationshipWeb(relationship, false));
+        this.concept.addRelationship(new RelationshipWeb(relationship));
 
     }
 
@@ -346,7 +346,7 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
 
         Relationship relationship = new Relationship(this.concept, target, relationshipDefinition);
         // Se utiliza el constructor mínimo (sin id)
-        this.concept.addRelationship(new RelationshipWeb(relationship, false));
+        this.concept.addRelationship(new RelationshipWeb(relationship));
         conceptSelected = null;
     }
 
@@ -392,7 +392,7 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
                     Description description = new Description(otherTermino, otherDescriptionType);
                     description.setCaseSensitive(otherSensibilidad);
                     description.setDescriptionId(descriptionManager.generateDescriptionId());
-                    concept.addDescription(description);
+                    concept.addDescriptionWeb(new DescriptionWeb(description));
                     otherTermino = "";
                 } else {
                     context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se ha seleccionado el tipo de descripción"));
@@ -416,7 +416,6 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         Description description = new Description(term, descriptionType);
         description.setCaseSensitive(caseSensitive);
         description.setDescriptionId(descriptionManager.generateDescriptionId());
-        concept.addDescription(description);
     }
 
     public void editDescription(DescriptionWeb description) {
@@ -509,6 +508,12 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         } else {
             // Si el concepto está persistido, actualizarlo
             if (concept.isPersistent()) {
+                List<Pair<Description, Description>> descriptionsForUpdate= concept.getDescriptionsForUpdate();
+                //List<Description> descriptionsForPersist= concept.;
+                //List<Description> descriptionsForDelete;
+
+                //if(descriptionsForUpdate.isEmpty() && descriptionsForPersist.isEmpty() && descriptionsForDelete.isEmpty())
+
                 for (Pair<Description, Description> description : concept.getDescriptionsForUpdate()) {
                     descriptionManager.updateDescription(concept, description.getFirst(), description.getSecond(), user);
                 }

@@ -26,13 +26,13 @@ public class ConceptSMTKWeb extends ConceptSMTK {
               conceptSMTK.isFullyDefined(), conceptSMTK.isPublished(), conceptSMTK.getDescriptions().toArray(new Description[conceptSMTK.getDescriptions().size()]));
         if(conceptSMTK.isPersistent()){
             this.setId(conceptSMTK.getId());
-            for (Description description : this.getDescriptions()) {
+            for (Description description : this.getValidDescriptions()) {
                 // Si la descripcion está persistida, clonar la descripción y dejar en el respaldo las originales
                 this.descriptionsWeb.add(new DescriptionWeb(description.getId(),description));
             }
-            for (Relationship relationship : this.getRelationships()) {
+            for (Relationship relationship : this.getValidRelationships()) {
                 // Si la relación está persistida dejar en el respaldo las originales
-                //this.relationshipsBackup.add(relationship);
+                this.relationshipsWeb.add(new RelationshipWeb(relationship.getId(), relationship));
             }
         }
     }
@@ -58,8 +58,7 @@ public class ConceptSMTKWeb extends ConceptSMTK {
     public DescriptionWeb getValidDescriptionFSN() {
         for (DescriptionWeb descriptionWeb : getDescriptionsWeb()) {
             DescriptionType descriptionType = descriptionWeb.getDescriptionType();
-            if (descriptionType.getName().equalsIgnoreCase("FSN") &&
-               (descriptionWeb.getValidityUntil() == null || descriptionWeb.getValidityUntil().after(new Timestamp(System.currentTimeMillis())))) {
+            if (descriptionType.getName().equalsIgnoreCase("FSN") && descriptionWeb.isValid()) {
                 return descriptionWeb;
             }
         }
@@ -79,8 +78,7 @@ public class ConceptSMTKWeb extends ConceptSMTK {
      */
     public DescriptionWeb getValidDescriptionFavorite() {
         for (DescriptionWeb descriptionWeb : getDescriptionsWeb()) {
-            if (descriptionWeb.getDescriptionType().getName().equalsIgnoreCase("preferida") &&
-               (descriptionWeb.getValidityUntil() == null || descriptionWeb.getValidityUntil().after(new Timestamp(System.currentTimeMillis())))) {
+            if (descriptionWeb.getDescriptionType().getName().equalsIgnoreCase("preferida") && descriptionWeb.isValid()) {
                 return descriptionWeb;
             }
         }
@@ -101,8 +99,7 @@ public class ConceptSMTKWeb extends ConceptSMTK {
         DescriptionType favoriteType = DescriptionTypeFactory.getInstance().getFavoriteDescriptionType();
 
         for (DescriptionWeb descriptionWeb : getDescriptionsWeb()) {
-            if (!descriptionWeb.getDescriptionType().equals(fsnType) && !descriptionWeb.getDescriptionType().equals(favoriteType) &&
-                (descriptionWeb.getValidityUntil() == null || descriptionWeb.getValidityUntil().after(new Timestamp(System.currentTimeMillis())))) {
+            if (!descriptionWeb.getDescriptionType().equals(fsnType) && !descriptionWeb.getDescriptionType().equals(favoriteType) && descriptionWeb.isValid()) {
                 otherDescriptions.add(descriptionWeb);
             }
         }
@@ -121,13 +118,25 @@ public class ConceptSMTKWeb extends ConceptSMTK {
             //Por cada descripción original se busca su descripcion vista correlacionada
             for (DescriptionWeb finalDescription : getDescriptionsWeb()) {
                 //Si la descripcion correlacionada sufrio alguna modificación agregar el par (init, final)
-                if (initDescription.getId() == finalDescription.getId() && finalDescription.equals(initDescription)) {
+                if (initDescription.getId() == finalDescription.getId() && !finalDescription.equals(initDescription) /*finalDescription.hasBeenModified()*/) {
                     descriptionsForUpdate.add(new Pair(initDescription, finalDescription));
                 }
             }
         }
         return descriptionsForUpdate;
     }
+
+    public List<Description> getDescriptionsForPersist() {
+
+        List<Description> descriptionsForPersist = new ArrayList<Description>();
+
+        for (DescriptionWeb descriptionWeb : getDescriptionsWeb()) {
+            if(!descriptionWeb.isPersistent())
+                descriptionsForPersist.add(descriptionWeb);
+        }
+        return descriptionsForPersist;
+    }
+
 
     /**
      * Este metodo revisa que las relaciones cumplan el lower_boundary del
@@ -179,5 +188,9 @@ public class ConceptSMTKWeb extends ConceptSMTK {
         return "";
     }
 
+    public void addDescriptionWeb(DescriptionWeb descriptionWeb) {
+        this.addDescription(descriptionWeb);
+        this.descriptionsWeb.add(descriptionWeb);
+    }
 
 }

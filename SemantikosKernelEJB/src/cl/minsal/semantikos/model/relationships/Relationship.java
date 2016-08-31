@@ -209,4 +209,13 @@ public class Relationship extends PersistentEntity implements AuditableEntity {
     public boolean isAttribute() {
         return getRelationshipDefinition().isAttribute();
     }
+
+
+    /**
+     * Este método es responsable de determinar si esta relación es válida
+     * @return <code>true</code> si es válida y <code>false</code> si no lo es.
+     */
+    public boolean isValid(){
+        return (getValidityUntil() == null || getValidityUntil().after(new Timestamp(System.currentTimeMillis())));
+    }
 }

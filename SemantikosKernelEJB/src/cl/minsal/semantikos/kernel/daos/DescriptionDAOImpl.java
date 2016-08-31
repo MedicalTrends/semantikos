@@ -216,7 +216,7 @@ public class DescriptionDAOImpl implements DescriptionDAO {
     public void update(Description description) {
 
         ConnectionBD connect = new ConnectionBD();
-        String sql = "{call semantikos.update_description(?,?,?,?,?,?,?,?,?)}";
+        String sql = "{call semantikos.update_description(?,?,?,?,?,?,?,?,?,?,?)}";
         try (Connection connection = connect.getConnection();
              CallableStatement call = connection.prepareCall(sql)) {
 
@@ -235,7 +235,7 @@ public class DescriptionDAOImpl implements DescriptionDAO {
 
             ResultSet rs = call.getResultSet();
             if (rs.next()) {
-                if (rs.getInt(1) != 1) {
+                if (rs.getBoolean(1) != true) {
                     throw new EJBException("La descripción con DESCRIPTION_ID=" + description.getDescriptionId() + " no fue actualizada.");
                 }
             } else {
