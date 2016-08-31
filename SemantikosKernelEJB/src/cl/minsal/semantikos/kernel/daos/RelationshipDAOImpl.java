@@ -1,10 +1,8 @@
 package cl.minsal.semantikos.kernel.daos;
 
 import cl.minsal.semantikos.kernel.util.ConnectionBD;
-import cl.minsal.semantikos.model.relationships.Relationship;
-import cl.minsal.semantikos.model.relationships.RelationshipDefinition;
-import cl.minsal.semantikos.model.relationships.RelationshipFactory;
-import cl.minsal.semantikos.model.relationships.Target;
+import cl.minsal.semantikos.model.Category;
+import cl.minsal.semantikos.model.relationships.*;
 import cl.minsal.semantikos.model.snomedct.ConceptSCT;
 import cl.minsal.semantikos.model.snomedct.ConceptSCTFactory;
 import org.slf4j.Logger;
@@ -17,7 +15,6 @@ import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -70,10 +67,39 @@ public class RelationshipDAOImpl implements RelationshipDAO {
     }
 
     @Override
+    public RelationshipDefinition persist(RelationshipDefinition relationshipDefinition){
+
+        /* Primero se persiste el Target Definition */
+        long idTargetDefinition = targetDAO.persist(relationshipDefinition.getTargetDefinition());
+
+        ConnectionBD connect = new ConnectionBD();
+        /*
+         * param 1: nombre
+         * param 2: descripción
+         * param 3: lower boundary
+         * param 4: upper boundary
+         * param 5: idTargetDefinition
+         */
+        String sql = "{call semantikos.create_relationship_definition(?,?,?,?,?)}";
+        try (Connection connection = connect.getConnection();
+             CallableStatement call = connection.prepareCall(sql)) {
+
+            call.setString(1, relationshipDefinition.getName());
+            call.setString(2, relationshipDefinition.getDescription());
+            call.setInt(3, relationshipDefinition.getMultiplicity().getLowerBoundary());
+            call.setInt(4, relationshipDefinition.getMultiplicity().getUpperBoundary());
+            call.setLong(5, idTargetDefinition);
+            call.execute();
+        } catch (SQLException e) {
+            throw new EJBException(e);
+        }
+
+        return relationshipDefinition;
+    }
+
+
+    @Override
     public void invalidate(Relationship relationship) {
-
-        long idRelationship;
-
         ConnectionBD connect = new ConnectionBD();
         String sql = "{call semantikos.invalidate_relationship(?)}";
 
@@ -81,29 +107,10 @@ public class RelationshipDAOImpl implements RelationshipDAO {
              CallableStatement call = connection.prepareCall(sql)) {
 
             call.setLong(1, relationship.getId());
-
             call.execute();
-
-            ResultSet rs = call.getResultSet();
-
-            if (rs.next()) {
-                relationship.setId(rs.getLong(1));
-                idRelationship = rs.getLong(1);
-                if(idRelationship==-1){
-                    String errorMsg = "La relacion no fue invalidada";
-                    logger.error(errorMsg);
-                    throw new EJBException(errorMsg);
-                }
-            } else {
-                String errorMsg = "La relacion no fue invalidada. Esta es una situación imposible. Contactar a Desarrollo";
-                logger.error(errorMsg);
-                throw new IllegalArgumentException(errorMsg);
-            }
-            rs.close();
         } catch (SQLException e) {
             throw new EJBException(e);
         }
-
     }
 
     @Override
@@ -252,6 +259,12 @@ public class RelationshipDAOImpl implements RelationshipDAO {
         }
 
         return relationshipFactory.createRelationshipsFromJSON(resultJSON);
+    }
+
+    @Override
+    public List<Relationship> getRelationshipByCategories(Category sourceCategory, Category destinyCategory) {
+        // TODO: Implementar esto.
+        return null;
     }
 
 }

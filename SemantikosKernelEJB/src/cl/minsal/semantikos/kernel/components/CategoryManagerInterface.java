@@ -1,6 +1,7 @@
 package cl.minsal.semantikos.kernel.components;
 
 import cl.minsal.semantikos.model.Category;
+import cl.minsal.semantikos.model.User;
 import cl.minsal.semantikos.model.relationships.RelationshipDefinition;
 
 import javax.ejb.Local;
@@ -19,7 +20,7 @@ public interface CategoryManagerInterface {
      * Este metodo es responsable de recuperar una Categoría completa, con sus propiedades básicas y todos sus
      * meta-atributos
      *
-     * @param idCategory Identificador Unico de la categoría.
+     * @param idCategory Identificador único de la categoría.
      *
      * @return La categoría buscada.
      */
@@ -40,15 +41,22 @@ public interface CategoryManagerInterface {
 
     /**
      * Método encagado de recuperar todas las categorías existentes.
+     *
      * @return Lista de categorías
      */
     public List<Category> getCategories();
-
-    public int persistCategory(Category category);
 
     public void addAttribute(RelationshipDefinition attributeCategory, int idCategory);
 
     public int addTypeRelationship(String name, int typeRelation, int idCategoryDes, int multiplicity);
 
-
+    /**
+     * Este método permite crear de manera persistente una categoría, con todas sus definiciones.
+     *
+     * @param category La categoría que se desea crear.
+     * @param user     El usuario que crea la categoría.
+     *
+     * @return La Categoría con su ID actualizado.
+     */
+    public Category createCategory(Category category, User user);
 }

@@ -11,7 +11,7 @@
 <composite:interface >
     <composite:attribute name="relationshipDefinition" type="cl.minsal.semantikos.model.relationships.RelationshipDefinition" />
     <composite:attribute name="targetDefinition" type="cl.minsal.semantikos.model.helpertables.HelperTable" />
-    <composite:attribute name="concept" type="cl.minsal.semantikos.model.ConceptSMTKWeb" />
+    <composite:attribute name="concept" type="cl.minsal.semantikos.model.ConceptSMTK" />
 </composite:interface>
 <composite:implementation>
     <!-- Multiplicidad 1 y Nueva relacion -->
@@ -23,7 +23,7 @@
         <div class="ui-g">
             <div class="ui-g-12 ui-md-6 ui-lg-2">
                 <p:outputLabel for="helperTableRecordsSimple" value="#{cc.attrs.relationshipDefinition.name}"/>
-                <p:outputLabel value=" *" rendered="#{!cc.attrs.relationshipDefinition.multiplicity.optional}" />
+                <p:outputLabel value=" *" rendered="#{not cc.attrs.relationshipDefinition.multiplicity.optional}" />
             </div>
             <div class="ui-g-12 ui-md-6 ui-lg-10">
                 <p:dataTable id="helperTableRecordsSimple"
@@ -56,7 +56,7 @@
              widgetVar="panelHelperTableTypeSimple#{cc.attrs.relationshipDefinition.id}"
              rendered="#{cc.attrs.relationshipDefinition.multiplicity.simple and cc.attrs.concept.hasRelationships(cc.attrs.relationshipDefinition)}">
 
-        <ui:repeat value="#{cc.attrs.concept.getValidRelationshipsWebByRelationDefinition(cc.attrs.relationshipDefinition)}"
+        <ui:repeat value="#{cc.attrs.concept.getValidRelationshipsByRelationDefinition(cc.attrs.relationshipDefinition)}"
                    var="relationship"
                    varStatus="var">
             <div class="ui-g">
@@ -96,7 +96,7 @@
         <div class="ui-g">
             <div class="ui-g-12 ui-md-6 ui-lg-2">
                 <p:outputLabel for="helperTableRecordsCollection" value="#{cc.attrs.relationshipDefinition.name}"/>
-                <p:outputLabel value=" *" rendered="#{!cc.attrs.relationshipDefinition.multiplicity.optional}" />
+                <p:outputLabel value=" *" rendered="#{not cc.attrs.relationshipDefinition.multiplicity.optional}" />
             </div>
             <div class="ui-g-12 ui-md-6 ui-lg-10">
                 <p:dataTable id="helperTableRecordsCollection"
@@ -131,7 +131,7 @@
                 <p:dataTable id="collectionValues12"
                              styleClass="tablas"
                              var="relationship"
-                             value="#{cc.attrs.concept.getValidRelationshipsWebByRelationDefinition(cc.attrs.relationshipDefinition)}"
+                             value="#{cc.attrs.concept.getValidRelationshipsByRelationDefinition(cc.attrs.relationshipDefinition)}"
                              style="width: 100%"
                              reflow="true">
                     <p:columns value="#{cc.attrs.targetDefinition.showableColumns}"

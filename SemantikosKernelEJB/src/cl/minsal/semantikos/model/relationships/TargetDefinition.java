@@ -1,11 +1,11 @@
 package cl.minsal.semantikos.model.relationships;
 
-import cl.minsal.semantikos.model.basictypes.BasicTypeDefinition;
+import cl.minsal.semantikos.model.IPersistentEntity;
 
 /**
  * @author Andres Farias
  */
-public interface TargetDefinition {
+public interface TargetDefinition extends IPersistentEntity {
 
     /**
      * Este metodo es responsable de determinar si el target type es de tipo básico es o no.

@@ -57,7 +57,7 @@ public interface TagDAO {
      *
      * @return Una lista de Tags que son hijos del Tag cuyo identificador es <code>idParent</code>.
      */
-    public List<Tag> getChildrenOf(long idParent);
+    public List<Tag> getChildrenOf(Tag parent);
 
     /**
      * Este método es responsable de asociar un Tag a un Concepto.

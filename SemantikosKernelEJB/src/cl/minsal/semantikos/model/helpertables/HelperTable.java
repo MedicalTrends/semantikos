@@ -1,6 +1,7 @@
 package cl.minsal.semantikos.model.helpertables;
 
 import cl.minsal.semantikos.kernel.daos.HelperTableDAOImpl;
+import cl.minsal.semantikos.model.PersistentEntity;
 import cl.minsal.semantikos.model.relationships.TargetDefinition;
 
 import java.util.ArrayList;
@@ -10,10 +11,7 @@ import java.util.List;
 /**
  * Created by root on 08-07-16.
  */
-public class HelperTable implements TargetDefinition {
-
-    /** Identificador único */
-    private long id;
+public class HelperTable extends PersistentEntity implements TargetDefinition {
 
     /** Un nombre legible por humanos para la Tabla Auxiliar */
     private String name;
@@ -48,6 +46,7 @@ public class HelperTable implements TargetDefinition {
      * @param columns     Columnas de la tabla auxiliar.
      */
     public HelperTable(long id, String name, String description, String tablaName, Collection<HelperTableColumn> columns) {
+        super(id);
         this.name = name;
         this.description = description;
         this.tablaName = tablaName;
@@ -55,16 +54,10 @@ public class HelperTable implements TargetDefinition {
 
         /* El nombre por defecto de la columna de PK es ID */
         this.pkColumnName = HelperTableDAOImpl.ID_COLUMN_NAME;
-
-        this.id = id;
     }
 
     public Collection<HelperTableColumn> getColumns() {
         return columns;
-    }
-
-    public long getId() {
-        return id;
     }
 
     public String getName() {

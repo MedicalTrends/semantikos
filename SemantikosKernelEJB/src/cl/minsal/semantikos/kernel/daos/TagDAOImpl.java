@@ -10,11 +10,11 @@ import org.slf4j.LoggerFactory;
 import javax.ejb.EJB;
 import javax.ejb.EJBException;
 import javax.ejb.Stateless;
-import java.sql.CallableStatement;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.List;
+
+import static cl.minsal.semantikos.kernel.daos.DAO.NON_PERSISTED_ID;
+import static java.sql.Types.BIGINT;
 
 /**
  * @author Gustavo Punucura
@@ -39,7 +39,13 @@ public class TagDAOImpl implements TagDAO {
             call.setString(1, tag.getName());
             call.setString(2, tag.getColorBackground());
             call.setString(3, tag.getColorLetter());
-            call.setLong(4, tag.getParentTag().getId());
+
+            long id = tag.getParentTag().getId();
+            if( id != NON_PERSISTED_ID) {
+                call.setLong(4, id);
+            } else {
+                call.setNull(4, BIGINT);
+            }
             call.execute();
 
             ResultSet rs = call.getResultSet();
@@ -190,14 +196,14 @@ public class TagDAOImpl implements TagDAO {
     }
 
     @Override
-    public List<Tag> getChildrenOf(long idParent) {
+    public List<Tag> getChildrenOf(Tag parent) {
         ConnectionBD connect = new ConnectionBD();
 
         String json;
         try (Connection connection = connect.getConnection();
              CallableStatement call = connection.prepareCall("{call semantikos.find_tags_by_parent(?)}")) {
 
-            call.setLong(1, idParent);
+            call.setLong(1, parent.getId());
             call.execute();
 
             ResultSet rs = call.getResultSet();
@@ -211,12 +217,12 @@ public class TagDAOImpl implements TagDAO {
             rs.close();
 
         } catch (SQLException e) {
-            String errorMsg = "Error al buscar los hijos del tag con ID=" + idParent;
+            String errorMsg = "Error al buscar los hijos del tag con ID=" + parent.getId();
             logger.error(errorMsg, e);
             throw new EJBException(errorMsg, e);
         }
 
-        return tagFactory.createTagsFromJSON(json);
+        return tagFactory.createChildrenTagsFromJSON(parent,json);
 
     }
 
@@ -259,11 +265,12 @@ public class TagDAOImpl implements TagDAO {
 
     @Override
     public Tag findTagByID(long id) {
+        if(id==0 || id==NON_PERSISTED_ID) return null;
         ConnectionBD connect = new ConnectionBD();
 
         String json;
         try (Connection connection = connect.getConnection();
-             CallableStatement call = connection.prepareCall("{call semantikos.find_tags_by_parent(?)}")) {
+             CallableStatement call = connection.prepareCall("{call semantikos.find_tags_by_id(?)}")) {
 
             call.setLong(1, id);
             call.execute();

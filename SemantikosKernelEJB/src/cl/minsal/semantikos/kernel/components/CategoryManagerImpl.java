@@ -2,8 +2,13 @@ package cl.minsal.semantikos.kernel.components;
 
 
 import cl.minsal.semantikos.kernel.daos.CategoryDAO;
+import cl.minsal.semantikos.kernel.daos.RelationshipDAO;
 import cl.minsal.semantikos.model.Category;
+import cl.minsal.semantikos.model.User;
+import cl.minsal.semantikos.model.businessrules.CategoryCreationBR;
 import cl.minsal.semantikos.model.relationships.RelationshipDefinition;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -26,6 +31,11 @@ public class CategoryManagerImpl implements CategoryManagerInterface {
 
     @EJB
     private CategoryDAO categoryDAO;
+
+    @EJB
+    private RelationshipDAO relationshipDAO;
+
+    private static final Logger logger = LoggerFactory.getLogger(CategoryManagerImpl.class);
 
     @Override
     public List<RelationshipDefinition> getCategoryMetaData(int id) {
@@ -56,40 +66,6 @@ public class CategoryManagerImpl implements CategoryManagerInterface {
     @Override
     public ArrayList<RelationshipDefinition> getAllDescription() {
         return null;
-    }
-
-
-    @Override
-    public int persistCategory(Category category) {
-
-/*
-        try {
-
-            Class.forName(driver);
-            Connection conne = (Connection) DriverManager.getConnection(ruta, user, password);
-            CallableStatement call = conne.prepareCall("{call crea_categoria(?)}");
-
-            call.setString(1,category.getName());
-            call.execute();
-
-            ResultSet rs = call.getResultSet();
-
-            int idCategory=0;
-
-            while (rs.next()) {
-                idCategory = Integer.parseInt(rs.getString(1));
-            }
-
-            for (int i = 0; i < category.getAttributeCategories().size(); i++) {
-                addAttribute(category.getAttributeCategories().get(i),idCategory);
-            }
-
-
-        } catch (SQLException | ClassNotFoundException e) {
-            System.out.println(e.toString());
-        }
-*/
-        return 0;
     }
 
     @Override
@@ -160,6 +136,28 @@ public class CategoryManagerImpl implements CategoryManagerInterface {
 */
 
         return idTypeRelationShip;
+    }
+
+    @Override
+    public Category createCategory(Category category, User user) {
+
+        logger.debug("Persistiendo la categoría: " + category);
+
+        /* Se validan las reglas de negocio */
+        new CategoryCreationBR().applyRules(category, user);
+
+        /* Se persiste la categoría */
+        categoryDAO.persist(category);
+
+        /* Se persisten sus definiciones de relaciones */
+        for (RelationshipDefinition relationshipDefinition : category.getRelationshipDefinitions()) {
+            relationshipDAO.persist(relationshipDefinition);
+        }
+
+        logger.debug("Categoría persistida: " + category);
+
+        /* Se retorna */
+        return category;
     }
 
     @Override

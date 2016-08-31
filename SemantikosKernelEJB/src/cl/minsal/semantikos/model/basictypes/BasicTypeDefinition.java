@@ -1,5 +1,6 @@
 package cl.minsal.semantikos.model.basictypes;
 
+import cl.minsal.semantikos.model.PersistentEntity;
 import cl.minsal.semantikos.model.relationships.BasicTypeType;
 import cl.minsal.semantikos.model.relationships.TargetDefinition;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
@@ -12,10 +13,7 @@ import java.util.List;
  * Esta clase representa un dominio de valores básicos.
  * La única restricción, por ahora para el tipo básica
  */
-public class BasicTypeDefinition<T extends Comparable> implements TargetDefinition {
-
-    /** Identificador de la BD */
-    private long id;
+public class BasicTypeDefinition<T extends Comparable> extends PersistentEntity implements TargetDefinition{
 
     /** Nombre del tipo */
     private String name;
@@ -50,7 +48,7 @@ public class BasicTypeDefinition<T extends Comparable> implements TargetDefiniti
      * @param description The description about this basic type.
      */
     public BasicTypeDefinition(long id, String name, String description) {
-        this.id = id;
+        super(id);
         this.name = name;
         this.description = description;
         this.domain = new ArrayList<T>();
@@ -66,20 +64,8 @@ public class BasicTypeDefinition<T extends Comparable> implements TargetDefiniti
      * @param type        The concrete type about this definition
      */
     public BasicTypeDefinition(long id, String name, String description, BasicTypeType type) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.domain = new ArrayList<T>();
-        this.interval = new EmptyInterval<>();
+        this(id, name, description);
         this.type = type;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public String getName() {

@@ -13,7 +13,7 @@
 <composite:interface>
     <composite:attribute name="relationshipDefinition" type="cl.minsal.semantikos.model.relationships.RelationshipDefinition"/>
     <composite:attribute name="targetDefinition" type="cl.minsal.semantikos.model.Category"/>
-    <composite:attribute name="concept" type="cl.minsal.semantikos.model.ConceptSMTKWeb" />
+    <composite:attribute name="concept" type="cl.minsal.semantikos.model.ConceptSMTK" />
 </composite:interface>
 
 <composite:implementation>
@@ -101,7 +101,7 @@
                 </p:column>
 
                 <p:column headerText="Estado">
-                    <h:outputText value="#{rel.target.state}"/>
+                    <h:outputText value="#{rel.target.modeled}"/>
                 </p:column>
                 <p:column headerText="Eliminar" style="width:60px;text-align: center;">
                     <p:commandButton icon="fa fa-trash" title="Eliminar"
@@ -116,7 +116,7 @@
 
     </p:panel>
 
-    <p:panel id="panelSMTK2"
+    <p:panel id="multiplicityN"
              styleClass="tablas2"
              style="margin:20px;"
              rendered="#{cc.attrs.relationshipDefinition.multiplicity.upperBoundary!=1}">
@@ -164,7 +164,7 @@
                          id="tableRelationship2"
                          styleClass="tablas2"
                          draggableRows="true" style="margin: 10px;"
-                         value="#{newConceptMBean.concept.getValidRelationshipsWebByRelationDefinition(cc.attrs.relationshipDefinition)}"
+                         value="#{newConceptMBean.concept.getValidRelationshipsByRelationDefinition(cc.attrs.relationshipDefinition)}"
                          var="rel">
                 <p:column headerText="ID">
                     <h:outputText value="#{rel.target.id}"/>
@@ -179,7 +179,7 @@
                 </p:column>
 
                 <p:column headerText="Estado">
-                    <h:outputText value="#{rel.target.state}"/>
+                    <h:outputText value="#{rel.target.modeled}"/>
                 </p:column>
                 <p:column headerText="Eliminar" style="width:60px;text-align: center;">
                     <p:commandButton icon="fa fa-trash" title="Eliminar"
@@ -194,7 +194,7 @@
 
     </p:panel>
 
-    <p:panel id="id2panel"
+    <p:panel id="multiplicityOne"
              styleClass="concept"
              style="margin:20px;"
              rendered="#{cc.attrs.relationshipDefinition.multiplicity.simple}">
@@ -237,7 +237,7 @@
                 </p:panel>
 
                 <p:panel  style="border: hidden; width: 100%;" rendered="#{cc.attrs.concept.hasRelationships(cc.attrs.relationshipDefinition)}">
-                    <ui:repeat value="#{cc.attrs.concept.getValidRelationshipsWebByRelationDefinition(cc.attrs.relationshipDefinition)}"
+                    <ui:repeat value="#{cc.attrs.concept.getValidRelationshipsByRelationDefinition(cc.attrs.relationshipDefinition)}"
                                var="relationship"
                                varStatus="var">
                         <p:outputLabel rendered="#{cc.attrs.relationshipDefinition.multiplicity.optional}"  value="#{cc.attrs.relationshipDefinition.name}: " for="itemSelected"/>
@@ -249,13 +249,13 @@
 
             </div>
             <div class="ui-g-12 ui-md-6 ui-lg-1">
-                <ui:repeat value="#{cc.attrs.concept.getValidRelationshipsWebByRelationDefinition(cc.attrs.relationshipDefinition)}"
+                <ui:repeat value="#{cc.attrs.concept.getValidRelationshipsByRelationDefinition(cc.attrs.relationshipDefinition)}"
                            var="relationship"
                            varStatus="var">
                     <p:commandButton icon="fa fa-trash" title="Eliminar"
                                      action="#{newConceptMBean.removeRelationship(cc.attrs.relationshipDefinition,relationship)}"
                                      update="@(.concept)"
-                                     rendered="#{newConceptMBean.concept.getRelationshipsByRelationDefinition(cc.attrs.relationshipDefinition).size()!=0}"
+                                     rendered="#{newConceptMBean.concept.hasRelationships(cc.attrs.relationshipDefinition)}"
                                      process="@this">
                     </p:commandButton>
                 </ui:repeat>

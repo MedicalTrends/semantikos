@@ -1,5 +1,6 @@
 package cl.minsal.semantikos.kernel.daos;
 
+import cl.minsal.semantikos.model.Category;
 import cl.minsal.semantikos.model.relationships.Relationship;
 import cl.minsal.semantikos.model.relationships.RelationshipDefinition;
 import cl.minsal.semantikos.model.relationships.Target;
@@ -20,6 +21,13 @@ public interface RelationshipDAO {
      * @param relationship La relación que se desea persistir.
      */
     public void persist(Relationship relationship);
+
+    /**
+     * Este método es responsable de persistir una definición de una relación asociada a una categoría.
+     *
+     * @param relationshipDefinition La Definición de relación que se desea persistir.
+     */
+    public RelationshipDefinition persist(RelationshipDefinition relationshipDefinition);
 
     /**
      * Este método es responsable de dejar como no vigente una relación asociada a un concepto.
@@ -70,4 +78,9 @@ public interface RelationshipDAO {
      * @return Una lista con las relaciones del concepto.
      */
     List<Relationship> getRelationshipsBySourceConcept(long idConcept);
+
+    /**
+     * @return
+     */
+    List<Relationship> getRelationshipByCategories(Category sourceCategory, Category destinyCategory);
 }

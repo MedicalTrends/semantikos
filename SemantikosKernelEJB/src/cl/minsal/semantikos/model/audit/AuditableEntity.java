@@ -1,10 +1,10 @@
 package cl.minsal.semantikos.model.audit;
 
-import cl.minsal.semantikos.model.PersistentEntity;
+import cl.minsal.semantikos.model.IPersistentEntity;
 
 /**
  * @author Andrés Farías on 8/24/16.
  */
-public interface AuditableEntity extends PersistentEntity {
+public interface AuditableEntity extends IPersistentEntity {
 
 }

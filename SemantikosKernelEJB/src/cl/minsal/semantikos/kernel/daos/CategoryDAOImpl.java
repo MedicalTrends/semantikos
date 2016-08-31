@@ -5,7 +5,6 @@ import cl.minsal.semantikos.model.Category;
 import cl.minsal.semantikos.model.relationships.RelationshipDefinition;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-//import org.hibernate.persister.internal.PersisterClassResolverInitiator;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -21,13 +20,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by des01c7 on 01-07-16.
+ * @author Diego Soto
  */
 
 @Stateless
 public class CategoryDAOImpl implements CategoryDAO {
 
-    static final Logger LOGGER = LoggerFactory.getLogger(CategoryDAOImpl.class);
+    static final Logger logger = LoggerFactory.getLogger(CategoryDAOImpl.class);
 
     private static final String SQL_GET_FULL_CATEGORY = "{call semantikos.get_full_category_by_id(?)}";
 
@@ -61,31 +60,25 @@ public class CategoryDAOImpl implements CategoryDAO {
                 category.setValid(rs.getBoolean("active"));
                 category.setRelationshipDefinitions(getCategoryMetaData(idCategory));
             }
-
             rs.close();
 
         } catch (SQLException e) {
-
-            LOGGER.error("error en getCategoryById , id= {}",idCategory,e);
-
+            logger.error("error en getCategoryById , id= {}", idCategory, e);
         }
 
-        return  category;
-
+        return category;
     }
 
     @Override
     public List<Category> getAllCategories() {
 
-        Query q = em.createNativeQuery("select * from semantikos.get_all_categories()");
+        Query q = em.createNativeQuery("SELECT * FROM semantikos.get_all_categories()");
         List<Object[]> resultList = q.getResultList();
-
         List<Category> respuesta = new ArrayList<Category>();
 
         for (Object[] result : resultList) {
 
             Category category = new Category();
-
 
             category.setIdCategory(((BigInteger) result[0]).longValue());
             category.setName((String) result[1]);
@@ -96,7 +89,6 @@ public class CategoryDAOImpl implements CategoryDAO {
         }
 
         return respuesta;
-
     }
 
     @Override
@@ -104,5 +96,31 @@ public class CategoryDAOImpl implements CategoryDAO {
         return relationshipDefinitionDAO.getRelationshipDefinitionsByCategory(idCategory);
     }
 
+    @Override
+    public void persist(Category category) {
+        ConnectionBD connect = new ConnectionBD();
+        String CREATE_CATEGORY = "{call semantikos.create_category(?, ?, ?, ?, ?, ?)}";
+
+        try (Connection connection = connect.getConnection();
+             CallableStatement call = connection.prepareCall(CREATE_CATEGORY)) {
+
+            call.setString(1, category.getName());
+            call.setString(2, category.getNameAbreviated());
+            call.setBoolean(3, category.isRestriction());
+            call.setLong(4, category.getTagSemantikos());
+            call.setBoolean(5, category.isValid());
+            call.setString(6, category.getColor());
+            call.execute();
+
+            ResultSet rs = call.getResultSet();
+            if (rs.next()) {
+                category.setId(rs.getLong(1));
+            }
+            rs.close();
+
+        } catch (SQLException e) {
+            logger.error("Error al crear la categoría:" + category);
+        }
+    }
 }
 

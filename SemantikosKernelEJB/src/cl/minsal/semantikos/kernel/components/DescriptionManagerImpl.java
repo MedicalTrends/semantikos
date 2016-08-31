@@ -3,16 +3,19 @@ package cl.minsal.semantikos.kernel.components;
 
 import cl.minsal.semantikos.kernel.daos.DescriptionDAO;
 import cl.minsal.semantikos.model.*;
-import cl.minsal.semantikos.model.businessrules.DescriptionEditionBR;
-import cl.minsal.semantikos.model.businessrules.DescriptionMovementBR;
+import cl.minsal.semantikos.model.businessrules.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.validation.constraints.NotNull;
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.UUID;
 
 import static cl.minsal.semantikos.model.DescriptionType.PREFERIDA;
+import static java.lang.System.currentTimeMillis;
 
 /**
  * @author Andrés Farías
@@ -20,35 +23,76 @@ import static cl.minsal.semantikos.model.DescriptionType.PREFERIDA;
 @Stateless
 public class DescriptionManagerImpl implements DescriptionManagerInterface {
 
+    private static final Logger logger = LoggerFactory.getLogger(DescriptionManagerImpl.class);
+
     @EJB
     DescriptionDAO descriptionDAO;
 
     @EJB
     private AuditManagerInterface auditManager;
 
+    /* El conjunto de reglas de negocio para validar creación de descripciones */
+    private DescriptionCreationBR descriptionCreationBR = new DescriptionCreationBR();
+
     @Override
-    public void addDescriptionToConcept(String idConcept, String description, String type) {
-/*
-        try {
-            Class.forName(driver);
-            Connection conne = (Connection) DriverManager.getConnection(ruta, user, password);
-            CallableStatement call = conne.prepareCall("{call add_descripcion_concepto(?,?,?)}");
+    public Description bindDescriptionToConcept(ConceptSMTK concept, String term, DescriptionType descriptionType, User user) {
 
-            call.setInt(1, Integer.parseInt(idConcept));
-            call.setString(2, description);
-            call.setInt(3,Integer.parseInt(type));
+        /* Se aplican las reglas de negocio para crear la Descripción*/
+        descriptionCreationBR.applyRules(concept, term, descriptionType, user);
 
-            call.execute();
-            conne.close();
-        } catch (SQLException | ClassNotFoundException e) {
-            System.out.println(e.toString());
+        /* Se crea la descripción */
+        Description description = new Description(term, descriptionType);
+
+        /* Se aplican las reglas de negocio para crear la Descripción y se persiste y asocia al concepto */
+        new DescriptionBindingBR().applyRules(concept, description, user);
+        descriptionDAO.persist(description, concept, user);
+
+        /* Se retorna la descripción persistida */
+        return description;
+    }
+
+    @Override
+    public Description bindDescriptionToConcept(ConceptSMTK concept, Description description, User user) {
+
+        /* Si la descripción no se encontraba persistida, se persiste primero */
+        if (!description.isPersistent()){
+            descriptionCreationBR.applyRules(concept, description.getTerm(), description.getDescriptionType(), user);
+            descriptionDAO.persist(description, concept, user);
         }
-*/
 
+        /* Se aplican las reglas de negocio para crear la Descripción y se persiste y asocia al concepto */
+        new DescriptionBindingBR().applyRules(concept, description, user);
+        descriptionDAO.persist(description, concept, user);
+
+        /* Se retorna la descripción persistida */
+        return description;
+    }
+
+    @Override
+    public Description unbindDescriptionToConcept(ConceptSMTK concept, Description description, User user) {
+
+        /* Si la descripción no se encontraba persistida, se persiste primero */
+        if (!description.isPersistent()){
+            return description;
+        }
+
+        /* Se validan las reglas de negocio para eliminar una descripción */
+        DescriptionUnbindingBR descriptionUnbindingBR = new DescriptionUnbindingBR();
+        descriptionUnbindingBR.applyRules(concept, description, user);
+
+        /* Se establece la fecha de vigencia y se actualiza la descripción */
+        description.setActive(false);
+        description.setValidityUntil(new Timestamp(currentTimeMillis()));
+        descriptionDAO.update(description);
+
+        /* Se retorna la descripción actualizada */
+        return description;
     }
 
     @Override
     public void updateDescription(@NotNull ConceptSMTK conceptSMTK, @NotNull Description initDescription, @NotNull Description finalDescription, @NotNull User user) {
+
+        logger.info("Se actualizan descripciones. \nOriginal: " + initDescription + "\nFinal: " + finalDescription);
 
         /* Se aplican las reglas de negocio */
         new DescriptionEditionBR().applyRules(initDescription, finalDescription);
@@ -58,7 +102,7 @@ public class DescriptionManagerImpl implements DescriptionManagerInterface {
         descriptionDAO.persist(finalDescription, conceptSMTK, user);
 
         /* Registrar en el Historial si es preferida (Historial BR) */
-        if (initDescription.getDescriptionType().equals(PREFERIDA)) {
+        if (conceptSMTK.isModeled() && initDescription.getDescriptionType().equals(PREFERIDA)) {
             auditManager.recordFavouriteDescriptionUpdate(conceptSMTK, initDescription, user);
         }
     }
@@ -100,13 +144,13 @@ public class DescriptionManagerImpl implements DescriptionManagerInterface {
     }
 
     @Override
-    public void moveDescriptionToConcept(ConceptSMTK sourceConcept, ConceptSMTK targetConcept, Description description) {
+    public void moveDescriptionToConcept(ConceptSMTK sourceConcept, ConceptSMTK targetConcept, Description description, User user) {
 
         /* Se aplican las reglas de negocio para el traslado */
         new DescriptionMovementBR().apply(sourceConcept, targetConcept, description);
 
         /* Se registra en el Audit el traslado */
-        auditManager.recordDescriptionMovement(sourceConcept, targetConcept, description);
+        auditManager.recordDescriptionMovement(sourceConcept, targetConcept, description, user);
 
     }
 

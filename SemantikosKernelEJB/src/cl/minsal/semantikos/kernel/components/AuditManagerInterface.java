@@ -1,10 +1,9 @@
 package cl.minsal.semantikos.kernel.components;
 
-import cl.minsal.semantikos.model.ConceptSMTK;
-import cl.minsal.semantikos.model.Description;
-import cl.minsal.semantikos.model.User;
+import cl.minsal.semantikos.model.*;
 import cl.minsal.semantikos.model.audit.AuditActionType;
 import cl.minsal.semantikos.model.audit.ConceptAuditAction;
+import cl.minsal.semantikos.model.relationships.Relationship;
 
 import javax.ejb.Local;
 import java.util.List;
@@ -40,12 +39,12 @@ public interface AuditManagerInterface {
 
     /**
      * Este método es responsable de registrar en el log de auditoría la el traslado de un concepto.
-     *
-     * @param sourceConcept El concepto en donde se encuentra la descripción inicialmente.
+     *  @param sourceConcept El concepto en donde se encuentra la descripción inicialmente.
      * @param targetConcept El concepto al cual se quiere mover la descripción.
      * @param description   La descripción que se desea trasladar.
+     * @param user
      */
-    public void recordDescriptionMovement(ConceptSMTK sourceConcept, ConceptSMTK targetConcept, Description description /* TODO: Agregar el usuario */);
+    public void recordDescriptionMovement(ConceptSMTK sourceConcept, ConceptSMTK targetConcept, Description description, /* TODO: Agregar el usuario */User user);
 
     /**
      * Este método es responsable de registrar en el log de auditoría la el traslado de un concepto.
@@ -64,6 +63,56 @@ public interface AuditManagerInterface {
      * @param user                El usuario que realizó la actualización.
      */
     public void recordFavouriteDescriptionUpdate(ConceptSMTK conceptSMTK, Description originalDescription, User user);
+
+    /**
+     * Este método es responsable de registrar en el historial el cambio de categoría de un concepto.
+     *
+     * @param conceptSMTK      El concepto cuya categoría cambia.
+     * @param originalCategory La categoría original, antes del cambio.
+     * @param user             El usuario que realiza el cambio.
+     */
+    public void recordConceptCategoryChange(ConceptSMTK conceptSMTK, Category originalCategory, User user);
+
+    /**
+     * Este método es responsable de registrar en el historial el cambio de una relación atributo del concepto.
+     *
+     * @param conceptSMTK          El concepto cuya relación se actualizó.
+     * @param originalRelationship La relación antes de la modificación.
+     * @param user                 El usuario que realizó la modificación.
+     */
+    public void recordAttributeChange(ConceptSMTK conceptSMTK, Relationship originalRelationship, User user);
+
+    /**
+     * Este método es responsable de registrar en el historial las creación de una relación.
+     *
+     * @param relationship La relación que se ha persistido.
+     * @param user         El usuario responsable de la acción.
+     */
+    public void recordRelationshipCreation(Relationship relationship, User user);
+
+    /**
+     * Este método es responsable de registrar en el historial la eliminación de una relación.
+     *
+     * @param relationship La relación que se desea eliminar.
+     * @param user         El usuario que elimina la relación.
+     */
+    public void recordRelationshipRemoval(Relationship relationship, User user);
+
+    /**
+     * Este método es responsable de registrar en el historial la creación de un CrossMap.
+     *
+     * @param crossMap El CrossMap que se desea crear.
+     * @param user     El usuario que elimina la relación.
+     */
+    public void recordCrossMapCreation(CrossMap crossMap, User user);
+
+    /**
+     * Este método es responsable de registrar en el historial la eliminación de un CrossMap.
+     *
+     * @param crossMap El CrossMap que se desea eliminar.
+     * @param user     El usuario que elimina la relación.
+     */
+    public void recordCrossMapRemoval(CrossMap crossMap, User user);
 
     /**
      * Este método es responsable de obtener y agrupar en una lista todos los tipos de cambios existentes.
