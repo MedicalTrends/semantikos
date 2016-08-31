@@ -10,6 +10,8 @@ import java.util.List;
 
 /**
  * Este DAO es responsable de recuperar información relativa a las categorías desde la BD.
+ *
+ * @author Andrés Farías
  */
 
 @Local
@@ -23,7 +25,7 @@ public interface CategoryDAO {
      * @return La categoría requerida por su ID.
      */
     public Category getCategoryById(long id);
-    
+
     public List<Category> getAllCategories();
 
     /**
@@ -35,4 +37,11 @@ public interface CategoryDAO {
      * @return La lista de definiciones de atributos de la categoría.
      */
     public List<RelationshipDefinition> getCategoryMetaData(long idCategory) throws ParseException;
+
+    /**
+     * Este método permite persistir una categoría, con todas sus definiciones.
+     *
+     * @param category La categoría que se desea crear.
+     */
+    public void persist(Category category);
 }

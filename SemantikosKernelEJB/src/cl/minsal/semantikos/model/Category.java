@@ -21,7 +21,7 @@ public class Category extends PersistentEntity implements TargetDefinition, Audi
     private boolean restriction;
     private Long tagSemantikos;
     private boolean isValid;
-    private Integer color;
+    private String color;
 
     private List<RelationshipDefinition> relationshipDefinitions;
 
@@ -78,11 +78,11 @@ public class Category extends PersistentEntity implements TargetDefinition, Audi
         this.isValid = valid;
     }
 
-    public Integer getColor() {
+    public String getColor() {
         return color;
     }
 
-    public void setColor(Integer color) {
+    public void setColor(String color) {
         this.color = color;
     }
 

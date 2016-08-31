@@ -3,6 +3,8 @@ package cl.minsal.semantikos.kernel.components;
 
 import cl.minsal.semantikos.kernel.daos.CategoryDAO;
 import cl.minsal.semantikos.model.Category;
+import cl.minsal.semantikos.model.User;
+import cl.minsal.semantikos.model.businessrules.CategoryCreationBR;
 import cl.minsal.semantikos.model.relationships.RelationshipDefinition;
 
 import javax.ejb.EJB;
@@ -160,6 +162,19 @@ public class CategoryManagerImpl implements CategoryManagerInterface {
 */
 
         return idTypeRelationShip;
+    }
+
+    @Override
+    public Category createCategory(Category category, User user) {
+
+        /* Se validan las reglas de negocio */
+        new CategoryCreationBR().applyRules(category, user);
+
+        /* Se persiste la categoría */
+        categoryDAO.persist(category);
+
+        /* Se retorna */
+        return category;
     }
 
     @Override
