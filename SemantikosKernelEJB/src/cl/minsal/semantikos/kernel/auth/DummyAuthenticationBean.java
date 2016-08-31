@@ -24,7 +24,7 @@ public class DummyAuthenticationBean extends AuthenticationMethod{
         throw new AuthenticationException("Usuario y/o Contraseña incorrecta");
     }
 
-    public User getUserDetails(String username) {
+    public User getUser(String username) {
 
         if("bpadmin".equals(username) )
             return makeDummyAdminUser();
@@ -42,18 +42,6 @@ public class DummyAuthenticationBean extends AuthenticationMethod{
         //user.getGroups().add("admins");
 
         return user;
-    }
-
-    public boolean hasRole(String username, String role) {
-        return false;
-    }
-
-    public boolean isInGroup(String username, String group) {
-        return false;
-    }
-
-    public List<String> getUsersInGroup(String group) {
-        return null;
     }
 
     @Override

@@ -1,7 +1,7 @@
 package cl.minsal.semantikos.designmodelweb.auth;
 
 import cl.minsal.semantikos.designmodelweb.Constants;
-import cl.minsal.semantikos.kernel.auth.AuthenticationManagerBean;
+import cl.minsal.semantikos.kernel.auth.AuthenticationManager;
 import cl.minsal.semantikos.kernel.config.ConfigurationBean;
 import cl.minsal.semantikos.model.User;
 import org.slf4j.Logger;
@@ -31,7 +31,7 @@ public class AuthenticationBean {
 
 
     @EJB(name = "AuthenticationManagerEJB")
-    private AuthenticationManagerBean authenticationManager;
+    private AuthenticationManager authenticationManager;
 
     @EJB
     private ConfigurationBean configuration;
@@ -141,7 +141,8 @@ public class AuthenticationBean {
         this.loggedUser = loggedUser;
     }
 
-    public void createUser(User u){
-        // TODO: ???
-    }
+
+
+
+
 }

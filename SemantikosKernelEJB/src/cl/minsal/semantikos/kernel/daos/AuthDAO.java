@@ -11,6 +11,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.io.IOException;
@@ -55,6 +56,8 @@ public class AuthDAO {
 
 
     public User getUserByUsername(String username) {
+
+
 
         Query q = em.createNativeQuery("Select * from semantikos.smtk_user u where u.username = ? ");
 
@@ -158,8 +161,12 @@ public class AuthDAO {
 
     public void createUser(User user) throws UserExistsException{
 
-        if(getUserByUsername(user.getUsername())!= null)
-            throw new UserExistsException();
+        try {
+            if (getUserByUsername(user.getUsername()) != null)
+                throw new UserExistsException();
+        }catch (NoResultException e){
+            //es lo esperado, no hacer nada
+        }
 
 
         Query q = em.createNativeQuery("INSERT INTO semantikos.smtk_user (id, username, name, last_name, second_last_name, email, locked, failed_login_attempts, rut) " +
@@ -254,7 +261,7 @@ public class AuthDAO {
                 "last_password_salt1 = ?, " +
                 "last_password_salt2 = ?, " +
                 "last_password_salt3 = ?, " +
-                "last_password_salt4 = ?, " +
+                "last_password_salt4 = ? " +
                 "where id = ?");
 
         q.setParameter(1,user.getLastPasswordChange());
@@ -307,6 +314,22 @@ public class AuthDAO {
         q.setParameter(1,username);
 
         q.executeUpdate();
+    }
+
+    public Profile getProfile(long id) {
+        Query q = em.createNativeQuery("Select * from semantikos.smtk_profile p where p.id = ? ");
+
+        q.setParameter(1,id);
+
+        Object sresult = q.getSingleResult();
+
+        if (sresult ==null)
+            return null;
+
+        Profile profile = makeProfileFromResult((Object[]) sresult);
+
+
+        return profile;
     }
 
 
