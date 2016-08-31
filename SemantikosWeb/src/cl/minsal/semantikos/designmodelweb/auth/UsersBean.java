@@ -1,6 +1,6 @@
 package cl.minsal.semantikos.designmodelweb.auth;
 
-import cl.minsal.semantikos.kernel.auth.AuthenticationManagerBean;
+import cl.minsal.semantikos.kernel.auth.AuthenticationManager;
 import cl.minsal.semantikos.kernel.auth.PasswordChangeException;
 import cl.minsal.semantikos.kernel.auth.UserManager;
 import cl.minsal.semantikos.model.Profile;
@@ -29,7 +29,7 @@ public class UsersBean {
     UserManager userManager;
 
     @EJB
-    AuthenticationManagerBean authenticationManagerBean;
+    AuthenticationManager authenticationManager;
 
     User selectedUser;
 
@@ -68,12 +68,12 @@ public class UsersBean {
         this.selectedUser = userManager.getUser(selectedUser.getIdUser());
 
         //se debe actualizar la lista del picklist con los perfiles del usuario
-        updateAvailableProfiles(selectedUser);
+        updateAvailableProfiles(this.selectedUser);
 
     }
 
     private void updateAvailableProfiles(User selectedUser) {
-        selectedUserProfileModel = new DualListModel<Profile>();
+
         selectedUserProfileModel.setTarget(selectedUser.getProfiles());
 
         List<Profile> availableProfiles = new ArrayList<Profile>();
@@ -124,8 +124,13 @@ public class UsersBean {
 
     public DualListModel<Profile> getSelectedUserProfileModel(){
 
+        if(selectedUserProfileModel == null) {
+            selectedUserProfileModel = new DualListModel<Profile>();
+        }
         return selectedUserProfileModel;
     }
+
+
 
     public void setSelectedUserProfileModel(DualListModel<Profile> selectedUserProfileModel) {
         this.selectedUserProfileModel = selectedUserProfileModel;
@@ -135,10 +140,16 @@ public class UsersBean {
 
     public void changePass(){
         try {
-            authenticationManagerBean.setUserPassword(selectedUser.getUsername(),newPass1);
+            authenticationManager.setUserPassword(selectedUser.getUsername(),newPass1);
         } catch (PasswordChangeException e) {
             e.printStackTrace();
         }
+    }
+
+
+    public Profile getProfileById(long profileId){
+        return userManager.getProfileById(profileId);
+
     }
 
 }

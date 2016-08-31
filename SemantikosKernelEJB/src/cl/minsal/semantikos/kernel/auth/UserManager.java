@@ -3,7 +3,6 @@ package cl.minsal.semantikos.kernel.auth;
 import cl.minsal.semantikos.kernel.daos.AuthDAO;
 import cl.minsal.semantikos.model.Profile;
 import cl.minsal.semantikos.model.User;
-import org.omg.CORBA.UserException;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -20,8 +19,6 @@ public class UserManager {
     @EJB
     AuthDAO authDAO;
 
-    @EJB
-    AuthenticationManagerBean authenticationManagerBean;
 
     public List<User> getAllUsers() {
 
@@ -50,5 +47,8 @@ public class UserManager {
         return authDAO.getAllProfiles();
     }
 
+    public Profile getProfileById(long id){
+        return authDAO.getProfile(id);
+    }
 
 }

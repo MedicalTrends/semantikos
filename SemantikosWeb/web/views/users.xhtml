@@ -38,8 +38,8 @@
                                     </p:column>
 
                                     <p:column exportable="false" style="width:32px;text-align: center">
-                                        <p:commandButton action="#{users.setSelectedUser(user)}" update=":form:user-detail" oncomplete="PF('userDialog').show()" icon="fa fa-view" title="Ver" />
-                                        <p:commandButton action="#{users.setSelectedUser(user)}" update=":form:user-edit" oncomplete="PF('editDialog').show()" icon="fa fa-edit" title="Editar" />
+                                        <p:commandButton action="#{users.setSelectedUser(user)}" update=":form:user-detail" oncomplete="PF('userDialog').show()" icon="fa fa-view" title="Ver"  process="@this"  />
+                                        <p:commandButton action="#{users.setSelectedUser(user)}" update=":form:user-edit" oncomplete="PF('editDialog').show()" icon="fa fa-edit" title="Editar"   process="@this" />
                                     </p:column>
 
                                 </p:dataTable>
@@ -111,9 +111,9 @@
                                             <h:outputText value="Descripcion" style="font-weight: bold"/>
 
 
-                                            <ui:repeat value="#{users.selectedUser.profiles}" var="profile">
-                                                <h:outputText value="#{profile.name}" />
-                                                <h:outputText value="#{profile.description}" />
+                                            <ui:repeat value="#{users.selectedUser.profiles}" var="profile2" >
+                                                <h:outputText value="#{profile2.name}" />
+                                                <h:outputText value="#{profile2.description}" />
                                             </ui:repeat>
 
                                         </p:panelGrid>
@@ -147,9 +147,9 @@
                                                 Datos Usuario
                                             </f:facet>
 
-                                            <p:outputLabel for="input-username" value="Nombre de Usuario:"  rendered="#{users.selectedUser.idUser != -1}" />
-                                            <p:inputText id="input-username" value="#{users.selectedUser.username}" required="true" styleClass="Wid90" rendered="#{users.selectedUser.idUser != -1}" />
-                                            <p:message for="input-username" rendered="#{users.selectedUser.idUser != -1}"  />
+                                            <p:outputLabel for="input-username" value="Nombre de Usuario:"  rendered="#{users.selectedUser.idUser == -1}" />
+                                            <p:inputText id="input-username" value="#{users.selectedUser.username}" required="true" styleClass="Wid90" rendered="#{users.selectedUser.idUser == -1}" />
+                                            <p:message for="input-username" rendered="#{users.selectedUser.idUser == -1}"  />
 
                                             <p:outputLabel for="input-user-name" value="Nombre:"/>
                                             <p:inputText id="input-user-name" value="#{users.selectedUser.name}" required="true" styleClass="Wid90"/>
@@ -173,20 +173,20 @@
 
                                         </p:panelGrid>
 
-                                        <p:pickList id="pickList" rendered="#{users.selectedUser != null}" value="#{users.selectedUserProfileModel}" var="profile" itemLabel="#{profile.name}" itemValue="#{profile}"
-                                                    showSourceControls="true" showTargetControls="true" showSourceFilter="true" showTargetFilter="true" responsive="true">
+                                        <p:pickList id="pickList1" value="#{users.selectedUserProfileModel}" var="profile3" itemLabel="#{profile3.name}" itemValue="#{profile3}"
+                                                    showSourceFilter="true" showTargetFilter="true" responsive="true" converter="profileConverter" >
                                             <f:facet name="sourceCaption">Perfiles disponibles</f:facet>
                                             <f:facet name="targetCaption">Perfiles Asignados</f:facet>
                                         </p:pickList>
 
-                                        <p:commandButton value="Guardar" icon="fa-save" action="#{users.saveUser}" />
+                                        <p:commandButton value="Guardar" icon="fa-save" action="#{users.saveUser}" oncomplete="PF('editDialog').hide()" update="form" />
 
                                         <br />
                                         <div class="separator" />
                                         <br />
 
-                                        <p:commandButton value="Desbloquear Usuario" action="#{users.unlockUser()}" disabled="#{not users.selectedUser.locked}"  rendered="#{users.selectedUser != null}" />
-                                        <p:commandButton value="Cambiar Password Usuario" rendered="#{users.selectedUser != null}" oncomplete="PF('passwordChangeDialog').show()" update=":form:pcdialog"  />
+                                        <p:commandButton value="Desbloquear Usuario" action="#{users.unlockUser()}" disabled="#{not users.selectedUser.locked}"  rendered="#{users.selectedUser != null and users.selectedUser.idUser != -1}" process="@this" />
+                                        <p:commandButton value="Cambiar Password Usuario" rendered="#{users.selectedUser != null and users.selectedUser.idUser != -1}" oncomplete="PF('passwordChangeDialog').show()" update=":form:pcdialog"   process="@this" />
 
 
                                     </h:panelGroup>
@@ -198,11 +198,11 @@
                                         <f:facet name="header">
                                             Datos Basicos
                                         </f:facet>
-                                        <p:outputLabel for="input-user-new-pass-1" value="Nuevo Password:" style="font-weight: bold"/>
+                                        <p:password for="input-user-new-pass-1" value="Nuevo Password:" style="font-weight: bold"/>
                                         <p:inputText id="input-user-new-pass-1" value="#{users.newPass1}"  styleClass="Wid90" />
 
                                         <p:outputLabel for="input-user-new-pass-2" value="Confirme Password" style="font-weight: bold"/>
-                                        <p:inputText id="input-user-new-pass-2" value="#{users.newPass2}"  styleClass="Wid90" />
+                                        <p:password id="input-user-new-pass-2" value="#{users.newPass2}"  styleClass="Wid90" />
 
                                     </p:panelGrid>
 

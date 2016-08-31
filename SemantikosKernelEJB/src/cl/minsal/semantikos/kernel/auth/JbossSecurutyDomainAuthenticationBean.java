@@ -31,6 +31,8 @@ public class JbossSecurutyDomainAuthenticationBean extends AuthenticationMethod{
     @EJB
     AuthDAO authDAO;
 
+
+
     public boolean authenticate(String username, String password, HttpServletRequest request) throws AuthenticationException {
 
         User user = authDAO.getUserByUsername(username);
@@ -79,26 +81,6 @@ public class JbossSecurutyDomainAuthenticationBean extends AuthenticationMethod{
 
     }
 
-    public User getUserDetails(String username) {
-
-        if("bpadmin".equals(username) )
-            return makeDummyAdminUser();
-
-        return null;
-    }
-
-    private User makeDummyAdminUser() {
-        User user = new User();
-
-        user.setUsername("bpadmin");
-        user.setEmail("admin@blueprintsit.cl");
-        user.setName("Usuario Dummy Admin");
-        //user.getRoles().add("admins");
-        //user.getGroups().add("admins");
-
-        return user;
-    }
-
     public boolean hasRole(String username, String role) {
         return false;
     }
@@ -137,7 +119,10 @@ public class JbossSecurutyDomainAuthenticationBean extends AuthenticationMethod{
         authDAO.updateUserPasswords(user);
     }
 
-
+    @Override
+    public User getUser(String username) {
+        return authDAO.getUserByUsername(username);
+    }
 
 
     /**

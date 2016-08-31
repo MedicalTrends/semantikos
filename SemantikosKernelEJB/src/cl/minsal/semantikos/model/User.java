@@ -27,8 +27,6 @@ public class User {
     private String passwordSalt;
 
     private List<Profile> profiles;
-    private List<Permission> permissions;
-    private List<Group> groups;
 
     private Date lastLogin;
     private Date lastPasswordChange;
@@ -50,8 +48,7 @@ public class User {
      */
     public User() {
         this.profiles = new ArrayList<>();
-        this.permissions = new ArrayList<>();
-        this.groups = new ArrayList<>();
+
     }
 
     private User(long idUser, String username, String name, boolean locked) {
@@ -103,25 +100,6 @@ public class User {
         this.profiles = profiles;
     }
 
-    public List<Group> getGroups() {
-        if (groups == null)
-            groups = new ArrayList<Group>();
-        return groups;
-    }
-
-    public void setGroups(List<Group> groups) {
-        this.groups = groups;
-    }
-
-    public List<Permission> getPermissions() {
-        if (permissions == null)
-            permissions = new ArrayList<Permission>();
-        return permissions;
-    }
-
-    public void setPermissions(List<Permission> permissions) {
-        this.permissions = permissions;
-    }
 
     public String getLastName() {
         return lastName;
@@ -137,6 +115,13 @@ public class User {
 
     public void setSecondLastName(String secondLastName) {
         this.secondLastName = secondLastName;
+    }
+
+
+    public String getFullName() {
+        return name +
+                ((lastName != null) ? " " + lastName:"") +
+                ((secondLastName != null) ? " " + secondLastName:"");
     }
 
     public String getPassword() {
