@@ -94,18 +94,6 @@ public class Category extends PersistentEntity implements TargetDefinition, Audi
         this.relationshipDefinitions = relationshipDefinitions;
     }
 
-    public List<RelationshipDefinition> getRelationshipDefinitionsOfTypeCollection() {
-
-        List<RelationshipDefinition> relationshipDefinitions = new ArrayList<>();
-
-        for (RelationshipDefinition relationshipDefinition : relationshipDefinitions) {
-            if (relationshipDefinition.getMultiplicity().getUpperBoundary() == 0)
-                relationshipDefinitions.add(relationshipDefinition);
-        }
-
-        return relationshipDefinitions;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

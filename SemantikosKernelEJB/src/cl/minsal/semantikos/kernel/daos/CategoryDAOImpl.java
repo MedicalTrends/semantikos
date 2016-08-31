@@ -99,7 +99,7 @@ public class CategoryDAOImpl implements CategoryDAO {
     @Override
     public void persist(Category category) {
         ConnectionBD connect = new ConnectionBD();
-        String CREATE_CATEGORY = "{call semantikos.create_category(?)}";
+        String CREATE_CATEGORY = "{call semantikos.create_category(?, ?, ?, ?, ?, ?)}";
 
         try (Connection connection = connect.getConnection();
              CallableStatement call = connection.prepareCall(CREATE_CATEGORY)) {

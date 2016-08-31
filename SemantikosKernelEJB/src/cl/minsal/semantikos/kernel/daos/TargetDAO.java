@@ -23,7 +23,7 @@ public interface TargetDAO {
     /**
      * Este método es responsable de persistir un Target asociado a una relación
      *
-     * @param target el target
+     * @param target           el target
      * @param targetDefinition la definición del target
      *
      * @return el id de la nueva entidad persistida
@@ -31,9 +31,18 @@ public interface TargetDAO {
     public long persist(Target target, TargetDefinition targetDefinition);
 
     /**
+     * Este método es responsable de persistir un target Definition.
+     *
+     * @param targetDefinition El objeto a persistir.
+     *
+     * @return El ID creado para la entidad.
+     */
+    public long persist(TargetDefinition targetDefinition);
+
+    /**
      * Este método es responsable de actualizar un Target asociado a una relación
      *
-     * @param target el target
+     * @param target           el target
      * @param targetDefinition la definición del target
      *
      * @return el id de la entidad actualizada

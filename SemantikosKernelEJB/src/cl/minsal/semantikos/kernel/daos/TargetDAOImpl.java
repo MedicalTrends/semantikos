@@ -12,7 +12,6 @@ import org.slf4j.LoggerFactory;
 import javax.ejb.EJB;
 import javax.ejb.EJBException;
 import javax.ejb.Stateless;
-import javax.persistence.metamodel.BasicType;
 import java.sql.*;
 
 import static cl.minsal.semantikos.model.relationships.TargetType.*;
@@ -121,6 +120,57 @@ public class TargetDAOImpl implements TargetDAO {
                 idTarget = rs.getLong(1);
             } else {
                 throw new EJBException("No se obtuvo respuesta de la base de datos, ni una excepción.");
+            }
+            rs.close();
+
+        } catch (SQLException e) {
+            throw new EJBException(e);
+        }
+        return idTarget;
+    }
+
+    @Override
+    public long persist(TargetDefinition targetDefinition) {
+        ConnectionBD connect = new ConnectionBD();
+        /**
+         * param 1: ID Categoría.
+         * param 2: Helper Table
+         * param 3: CrossMapType
+         * param 4: BasicType
+         * param 5: SnomedCTType
+         */
+        String sql = "{call semantikos.create_target_definition(?,?,?,?,?)}";
+
+        long idTarget;
+        try (Connection connection = connect.getConnection();
+             CallableStatement call = connection.prepareCall(sql)) {
+
+            /* Se setean todas las posibilidades en NULL */
+            call.setNull(1, NULL);
+            call.setNull(2, NULL);
+            call.setNull(3, NULL);
+            call.setNull(4, NULL);
+            call.setBoolean(5, false);
+
+            /* Luego se setea solo el valor que corresponde */
+            if (targetDefinition.isSMTKType()) {
+                call.setLong(1, targetDefinition.getId());
+            } else if (targetDefinition.isHelperTable()) {
+                call.setLong(2, targetDefinition.getId());
+            } else if (targetDefinition.isCrossMapType()) {
+                call.setLong(3, targetDefinition.getId());
+            } else if (targetDefinition.isBasicType()) {
+                call.setLong(4, targetDefinition.getId());
+            } else if (targetDefinition.isSnomedCTType()){
+                call.setBoolean(5, true);
+            }
+            call.execute();
+
+            ResultSet rs = call.getResultSet();
+            if (rs.next()) {
+                idTarget = rs.getLong(1);
+            } else {
+                throw new EJBException("La función persist_target_definition(?,?,?,?,?) no retornó.");
             }
             rs.close();
 

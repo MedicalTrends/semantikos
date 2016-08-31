@@ -51,6 +51,11 @@ public class RelationshipManagerImpl implements RelationshipManager {
     }
 
     @Override
+    public RelationshipDefinition createRelationshipDefinition(RelationshipDefinition relationshipDefinition) {
+        return relationshipDAO.persist(relationshipDefinition);
+    }
+
+    @Override
     public Relationship removeRelationship(Relationship relationship, User user) {
 
         /* Primero se validan las reglas de negocio asociadas a la eliminación de un concepto */

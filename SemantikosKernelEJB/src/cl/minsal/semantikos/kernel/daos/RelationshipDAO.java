@@ -23,6 +23,13 @@ public interface RelationshipDAO {
     public void persist(Relationship relationship);
 
     /**
+     * Este método es responsable de persistir una definición de una relación asociada a una categoría.
+     *
+     * @param relationshipDefinition La Definición de relación que se desea persistir.
+     */
+    public RelationshipDefinition persist(RelationshipDefinition relationshipDefinition);
+
+    /**
      * Este método es responsable de dejar como no vigente una relación asociada a un concepto.
      *
      * @param relationship La relación que se desea actualizar.
@@ -73,9 +80,6 @@ public interface RelationshipDAO {
     List<Relationship> getRelationshipsBySourceConcept(long idConcept);
 
     /**
-     *
-     * @param sourceCategory
-     * @param destinyCategory
      * @return
      */
     List<Relationship> getRelationshipByCategories(Category sourceCategory, Category destinyCategory);

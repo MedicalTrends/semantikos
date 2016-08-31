@@ -34,6 +34,14 @@ public interface RelationshipManager {
     public Relationship createRelationship(ConceptSMTK origin, Target target, RelationshipDefinition relationType, boolean isValid, User user);
 
     /**
+     * Este método es responsable de crear persistentemente una Definición de Relación para Categorías.
+     *
+     * @return La definición de relación bien persistida (con us ID).
+     * @param relationshipDefinition
+     */
+    public RelationshipDefinition createRelationshipDefinition(RelationshipDefinition relationshipDefinition);
+
+    /**
      * Este método es responsable de eliminar lógicamente una relación, dejándola no vigente, no desasociándola del
      * concepto.
      *
