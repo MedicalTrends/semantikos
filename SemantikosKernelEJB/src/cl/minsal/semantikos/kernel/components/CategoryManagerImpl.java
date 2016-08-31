@@ -68,40 +68,6 @@ public class CategoryManagerImpl implements CategoryManagerInterface {
         return null;
     }
 
-
-    @Override
-    public int persistCategory(Category category) {
-
-/*
-        try {
-
-            Class.forName(driver);
-            Connection conne = (Connection) DriverManager.getConnection(ruta, user, password);
-            CallableStatement call = conne.prepareCall("{call crea_categoria(?)}");
-
-            call.setString(1,category.getName());
-            call.execute();
-
-            ResultSet rs = call.getResultSet();
-
-            int idCategory=0;
-
-            while (rs.next()) {
-                idCategory = Integer.parseInt(rs.getString(1));
-            }
-
-            for (int i = 0; i < category.getAttributeCategories().size(); i++) {
-                addAttribute(category.getAttributeCategories().get(i),idCategory);
-            }
-
-
-        } catch (SQLException | ClassNotFoundException e) {
-            System.out.println(e.toString());
-        }
-*/
-        return 0;
-    }
-
     @Override
     public void addAttribute(RelationshipDefinition attributeCategory, int idCategory) {
 

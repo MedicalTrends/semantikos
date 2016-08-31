@@ -46,8 +46,6 @@ public interface CategoryManagerInterface {
      */
     public List<Category> getCategories();
 
-    public int persistCategory(Category category);
-
     public void addAttribute(RelationshipDefinition attributeCategory, int idCategory);
 
     public int addTypeRelationship(String name, int typeRelation, int idCategoryDes, int multiplicity);
