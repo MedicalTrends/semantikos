@@ -119,7 +119,8 @@ public class CategoryDAOImpl implements CategoryDAO {
             rs.close();
 
         } catch (SQLException e) {
-            logger.error("Error al crear la categoría:" + category);
+            logger.error("Error al crear la categoría:" + category, e);
+
         }
     }
 }

@@ -265,8 +265,8 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
     //      Methods
     public void createConcept() throws ParseException {
         category = categoryManager.getCategoryById(categorySelect);
-        //concept = newConcept(category, favoriteDescription);
-        concept = getConceptById(80602);
+        concept = newConcept(category, favoriteDescription);
+        //concept = getConceptById(80602);
 
         RequestContext context = RequestContext.getCurrentInstance();
         context.execute("PF('dialogNameConcept').hide();");
@@ -393,6 +393,7 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
                     description.setCaseSensitive(otherSensibilidad);
                     description.setDescriptionId(descriptionManager.generateDescriptionId());
                     concept.addDescription(description);
+
                     otherTermino = "";
                 } else {
                     context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se ha seleccionado el tipo de descripción"));
