@@ -73,67 +73,12 @@ public class CategoryManagerImpl implements CategoryManagerInterface {
 
     }
 
-    /*
-        @Override
-        public void addAttribute(AttributeCategory attributeCategory, int idCategory) {
-
-            try {
-
-                Class.forName(driver);
-                Connection conne = (Connection) DriverManager.getConnection(ruta, user, password);
-
-                if(attributeCategory.getId()==null){
-                    attributeCategory.setId(addTypeRelationship(attributeCategory.getName(),Integer.parseInt(attributeCategory.getType()),attributeCategory.getIdCategoryDes(),attributeCategory.getMultiplicity())+"");
-                }
-
-                CallableStatement call = conne.prepareCall("{call crea_attribute(?,?,?)}");
-
-                call.setInt(1,idCategory);
-                call.setInt(2,Integer.parseInt(attributeCategory.getId()));
-                call.setInt(3,Integer.parseInt(attributeCategory.isOrder()));
-
-                call.execute();
-
-            } catch (SQLException | ClassNotFoundException e) {
-                System.out.println(e.toString());
-            }
-
-        }
-    */
     @Override
     public int addTypeRelationship(String name, int typeRelation, int idCategoryDes, int multiplicity) {
 
+        // FIXME: Sin terminar
         int idTypeRelationShip = 0;
 
-/*
-        try {
-
-            Class.forName(driver);
-            Connection conne = (Connection) DriverManager.getConnection(ruta, user, password);
-
-
-            CallableStatement call = conne.prepareCall("{call crea_relation_type(?,?,?,?)}");
-
-            call.setString(1,name);
-            call.setInt(2,typeRelation);
-            if(idCategoryDes!=0)
-                call.setInt(3,idCategoryDes);
-            else
-                call.setNull(3,Types.INTEGER);
-            call.setInt(4,multiplicity);
-
-            call.execute();
-            ResultSet rs = call.getResultSet();
-            while (rs.next()) {
-                idTypeRelationShip = Integer.parseInt(rs.getString(1));
-            }
-
-            conne.close();
-
-        } catch (SQLException | ClassNotFoundException e) {
-            System.out.println(e.toString());
-        }
-*/
 
         return idTypeRelationShip;
     }
