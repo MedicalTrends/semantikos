@@ -28,14 +28,12 @@ public class ConceptSMTKWeb extends ConceptSMTK {
                 conceptSMTK.isFullyDefined(), conceptSMTK.isPublished(), conceptSMTK.getDescriptions().toArray(new Description[conceptSMTK.getDescriptions().size()]));
         if(conceptSMTK.isPersistent()){
             this.setId(conceptSMTK.getId());
-            for (Description description : this.getValidDescriptions()) {
-                // Si la descripcion está persistida, clonar la descripción y dejar en el respaldo las originales
+            // Si la descripcion está persistida, clonar la descripción y dejar en el respaldo las originales
+            for (Description description : this.getValidDescriptions())
                 this.descriptionsWeb.add(new DescriptionWeb(description.getId(),description));
-            }
-            for (Relationship relationship : this.getValidRelationships()) {
-                // Si la relación está persistida dejar en el respaldo las originales
+            // Si la relación está persistida dejar en el respaldo las originales
+            for (Relationship relationship : this.getValidRelationships())
                 this.relationshipsWeb.add(new RelationshipWeb(relationship.getId(), relationship));
-            }
         }
     }
 
@@ -113,7 +111,7 @@ public class ConceptSMTKWeb extends ConceptSMTK {
 
     public List<Pair<Description, Description>> getDescriptionsForUpdate() {
 
-        List<Pair<Description, Description>> descriptionsForUpdate = new ArrayList<Pair<Description, Description>>();
+        List<Pair<Description, Description>> descriptionsForUpdate = new ArrayList<Pair<Description, Description>>();// Si la relación está persistida dejar en el respaldo las originales
 
         //Primero se buscan todas las descripciones persistidas originales
         for (Description initDescription : getValidDescriptions()) {
@@ -211,13 +209,6 @@ public class ConceptSMTKWeb extends ConceptSMTK {
         return "";
     }
 
-
-
-    public void addDescriptionWeb(DescriptionWeb descriptionWeb) {
-        this.addDescription(descriptionWeb);
-        this.descriptionsWeb.add(descriptionWeb);
-    }
-
     /**
      * Este método es responsable de retornar todas las relaciones válidas de este concepto y que son de un cierto tipo
      * de
@@ -236,5 +227,49 @@ public class ConceptSMTKWeb extends ConceptSMTK {
         }
         return someRelationships;
     }
+
+    public void setRelationshipsWeb(List<Relationship> relationships) {
+        super.setRelationships(relationships);
+        for (Relationship relationship : this.getValidRelationships())
+            this.relationshipsWeb.add(new RelationshipWeb(relationship.getId(), relationship));
+    }
+
+    /**
+     * Este método es responsable de agregar una relación web al concepto.
+     *
+     * @param relationship La relación que es agregada.
+     */
+    public void addRelationshipWeb(Relationship relationship) {
+        super.addRelationship(relationship);
+        this.relationshipsWeb.add(new RelationshipWeb(relationship.getId(), relationship));
+    }
+
+
+    /**
+     * Este método es responsable de remover una descripción a un concepto.
+     *
+     * @param description La descripción que es removida.
+     */
+    public void removeDescriptionWeb(Description description) {
+        this.getDescriptions().remove(description);
+        this.descriptionsWeb.remove(new DescriptionWeb(description.getId(), description));
+    }
+
+
+    public void addDescriptionWeb(DescriptionWeb descriptionWeb) {
+        this.addDescription(descriptionWeb);
+        this.descriptionsWeb.add(descriptionWeb);
+    }
+
+    /**
+     * Este método es responsable de remover una relación a un concepto.
+     *
+     * @param relationship La relación que es removida.
+     */
+    public void removeRelationshipWeb(Relationship relationship) {
+        this.getRelationships().remove(relationship);
+        this.relationshipsWeb.remove(new RelationshipWeb(relationship.getId(), relationship));
+    }
+
 
 }

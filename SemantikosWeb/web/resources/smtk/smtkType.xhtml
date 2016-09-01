@@ -13,7 +13,7 @@
 <composite:interface>
     <composite:attribute name="relationshipDefinition" type="cl.minsal.semantikos.model.relationships.RelationshipDefinition"/>
     <composite:attribute name="targetDefinition" type="cl.minsal.semantikos.model.Category"/>
-    <composite:attribute name="concept" type="cl.minsal.semantikos.model.ConceptSMTK" />
+    <composite:attribute name="concept" type="cl.minsal.semantikos.model.ConceptSMTKWeb" />
 </composite:interface>
 
 <composite:implementation>
@@ -82,7 +82,7 @@
         </div>
 
         <div class="ui-g">
-            <p:spacer></p:spacer>
+            <p:spacer />
             <p:dataTable id="tableRelationship" draggableRows="true" style="margin: 10px;"
                          emptyMessage="No existen relaciones, se debe agregar al menos: #{cc.attrs.relationshipDefinition.multiplicity.lowerBoundary}."
                          styleClass="tablas"
@@ -147,7 +147,7 @@
                             listener="#{newConceptMBean.addRelationship(cc.attrs.relationshipDefinition,newConceptMBean.conceptSelected)}"
                             process="@this"/>
 
-                    <f:attribute name="targetDef" value="#{cc.attrs.targetDefinition}"></f:attribute>
+                    <f:attribute name="targetDef" value="#{cc.attrs.targetDefinition}" />
                 </p:autoComplete>
             </div>
             <div class="ui-g-12 ui-md-6 ui-lg-4">
@@ -203,10 +203,10 @@
 
             <div class="ui-g-12 ui-md-6 ui-lg-6">
                 <p:panel  style="border: hidden; width: 100%;"
-                          rendered="#{!cc.attrs.concept.hasRelationships(cc.attrs.relationshipDefinition)}">
+                          rendered="#{not cc.attrs.concept.hasRelationships(cc.attrs.relationshipDefinition)}">
                 <p:outputLabel rendered="#{cc.attrs.relationshipDefinition.multiplicity.optional}"  value="#{cc.attrs.relationshipDefinition.name}: " for="findConceptSMTK"/>
 
-                <p:outputLabel rendered="#{!cc.attrs.relationshipDefinition.multiplicity.optional}" value="#{cc.attrs.relationshipDefinition.name}: (*)" for="findConceptSMTK"/>
+                <p:outputLabel rendered="#{not cc.attrs.relationshipDefinition.multiplicity.optional}" value="#{cc.attrs.relationshipDefinition.name}: (*)" for="findConceptSMTK"/>
 
                 <p:autoComplete emptyMessage="No se encontraron conceptos relacionados"
                                 forceSelection="true"
@@ -231,7 +231,7 @@
                             listener="#{newConceptMBean.addOrChangeRelationship(cc.attrs.relationshipDefinition,newConceptMBean.conceptSelected)}"
                             process="@this"/>
 
-                    <f:attribute name="targetDef" value="#{cc.attrs.targetDefinition}"></f:attribute>
+                    <f:attribute name="targetDef" value="#{cc.attrs.targetDefinition}" />
                 </p:autoComplete>
 
                 </p:panel>
@@ -241,7 +241,7 @@
                                var="relationship"
                                varStatus="var">
                         <p:outputLabel rendered="#{cc.attrs.relationshipDefinition.multiplicity.optional}"  value="#{cc.attrs.relationshipDefinition.name}: " for="itemSelected"/>
-                        <p:outputLabel rendered="#{!cc.attrs.relationshipDefinition.multiplicity.optional}" value="#{cc.attrs.relationshipDefinition.name}: (*)" for="itemSelected"/>
+                        <p:outputLabel rendered="#{not cc.attrs.relationshipDefinition.multiplicity.optional}" value="#{cc.attrs.relationshipDefinition.name}: (*)" for="itemSelected"/>
 
                         <p:inputText style="width: 72%;" disabled="true" id="itemSelected" value="#{relationship.target.descriptionFavorite.term}" />
                     </ui:repeat>

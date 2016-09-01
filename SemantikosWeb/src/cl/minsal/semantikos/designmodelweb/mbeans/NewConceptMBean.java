@@ -299,9 +299,7 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
     //(llamado desde la vista cuando se desea editar un concepto)
     public ConceptSMTKWeb getConceptById(long conceptId) {
         ConceptSMTKWeb conceptSMTKWeb = new ConceptSMTKWeb(conceptManager.getConceptByID(conceptId));
-        conceptSMTKWeb.setRelationships(conceptManager.loadRelationships(conceptSMTKWeb));
-        conceptSMTKWeb.setRelationships(conceptManager.loadRelationships(conceptSMTKWeb));
-
+        conceptSMTKWeb.setRelationshipsWeb(conceptManager.loadRelationships(conceptSMTKWeb));
         //_concept = ConceptSMTKUtils.clone(conceptSMTKWeb);
 
         category = conceptSMTKWeb.getCategory();
@@ -325,7 +323,7 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
      * Este método es el encargado de remover una descripción específica de la lista de descripciones del concepto.
      */
     public void removeDescription(Description description) {
-        concept.getDescriptions().remove(description);
+        concept.removeDescriptionWeb(description);
     }
 
 
@@ -339,7 +337,7 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
 
         Relationship relationship = new Relationship(this.concept, target, relationshipDefinition);
         // Se utiliza el constructor mínimo (sin id)
-        this.concept.addRelationship(new RelationshipWeb(relationship));
+        this.concept.addRelationshipWeb(relationship);
 
     }
 
@@ -350,7 +348,7 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
 
         Relationship relationship = new Relationship(this.concept, target, relationshipDefinition);
         // Se utiliza el constructor mínimo (sin id)
-        this.concept.addRelationship(new RelationshipWeb(relationship));
+        this.concept.addRelationshipWeb(relationship);
         conceptSelected = null;
     }
 
@@ -372,7 +370,7 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         // Si no se encuentra la relación, se crea una nueva
         if (!isRelationshipFound) {
             Relationship newRelationship = new Relationship(this.concept, target, relationshipDefinition);
-            concept.addRelationship(newRelationship);
+            this.concept.addRelationshipWeb(newRelationship);
         }
 
         conceptSelected = null;
@@ -382,7 +380,7 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
      * Este método es el encargado de remover una relación específica del concepto.
      */
     public void removeRelationship(RelationshipDefinition rd, Relationship r) {
-        concept.removeRelationship(r);
+        concept.removeRelationshipWeb(r);
     }
 
     /**

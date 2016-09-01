@@ -18,7 +18,8 @@
 
 <composite:implementation>
 
-    <p:panel id="otherDescriptionsPanel" header="Otros Descriptores" toggleable="true" toggleSpeed="500" closeSpeed="500"
+    <p:panel id="otherDescriptionsPanel" styleClass="otherDescriptionsPanel"
+             header="Otros Descriptores" toggleable="true" toggleSpeed="500" closeSpeed="500"
              widgetVar="panel" style="margin-bottom:20px">
 
         <p:fieldset legend="Agregar descripción" toggleable="true" collapsed="true">
@@ -47,15 +48,17 @@
                 </div>
                 <div class="ui-g-12 ui-md-6 ui-lg-1">
                     <p:commandButton value="Agregar" id="btn" action="#{newConceptMBean.addDescription()}"
-                                     update="otherDescriptionsPanel"
+                                     process="@(.otherDescriptionsPanel)"
+                                     update="@(.otherDescriptionsPanel)"
                                      style="float: right"/>
                 </div>
             </div>
 
         </p:fieldset>
-        <p:spacer></p:spacer>
+        <p:spacer />
         <div class="ui-g">
             <p:dataTable id="otherDescriptions"
+                         styleClass="otherDescriptions"
                          var="description"
                          value="#{cc.attrs.descriptions}"
                          editable="true"
@@ -63,7 +66,7 @@
                          rowKey="#{description.id}"
                          reflow="true">
 
-                <p:ajax event="rowEdit" listener="#{newConceptMBean.onRowEdit}" update=":mainForm:editMsgs"/>
+                <p:ajax event="rowEdit" listener="#{newConceptMBean.onRowEdit}" process="@this" update="@(.otherDescriptions)"/>
                 <p:ajax event="rowEditCancel" listener="#{newConceptMBean.onRowCancel}" update=":mainForm:editMsgs"/>
 
                 <p:column selectionMode="multiple" style="width:16px;text-align:center"/>
@@ -80,7 +83,6 @@
                             <f:facet  name="output"><h:outputText value="#{description.term}"/></f:facet>
                             <f:facet  name="input"><p:inputText id="otrasTermino"
                                                                 value="#{description.term}"
-                                                                validator="#{newConceptMBean.validateRequired}"
                                                                 style="width:100%"/></f:facet>
                         </p:cellEditor>
                     </div>
@@ -152,8 +154,10 @@
                 </p:column>
 
                 <p:column headerText="Acción" style="width:4%">
-                    <p:commandLink actionListener="#{newConceptMBean.removeDescription(description)}" ajax="true"
-                                   update="otherDescriptions" style="float: right">
+                    <p:commandLink actionListener="#{newConceptMBean.removeDescription(description)}"
+                                   ajax="true"
+                                   process="@this"
+                                   update="@(.otherDescriptions)" style="float: right">
                         <h:graphicImage  style="width: 15px; height: 15px"
                                          name="images/trash-blue.png"
                         />

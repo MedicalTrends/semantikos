@@ -78,8 +78,9 @@
                 </p:panel>
 
 
-                <p:commandButton actionListener="#{newConceptMBean.saveConcept}" value="Guardar" type="submit"  update="growl, mainForm"
-
+                <p:commandButton actionListener="#{newConceptMBean.saveConcept}"
+                                 value="Guardar" type="submit" process="mainForm"
+                                 update="growl, mainForm"
                 />
 
             </h:form>

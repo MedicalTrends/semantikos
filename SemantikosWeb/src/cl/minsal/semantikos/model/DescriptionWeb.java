@@ -50,6 +50,8 @@ public class DescriptionWeb extends Description {
 
     @Override
     public void setDescriptionType(DescriptionType descriptionType) {
+        if(descriptionType == null)
+            return;
         if(!this.getDescriptionType().equals(descriptionType))
             this.setModified(true);
         super.setDescriptionType(descriptionType);
