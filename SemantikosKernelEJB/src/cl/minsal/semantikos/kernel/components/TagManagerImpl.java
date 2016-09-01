@@ -104,19 +104,19 @@ public class TagManagerImpl implements TagManager {
     }
 
     @Override
-    public void link(Tag parent, Tag child) {
-        logger.debug("Asociación de Tags:" + parent + " --> " + child);
+    public void link(Tag tag, Tag tagLink) {
+        logger.debug("Asociación de Tags:" + tag + " --> " + tagLink);
 
-        tagDAO.linkTagToTag(parent, child);
-        logger.debug("Se asociaron tags:" + parent + " --> " + child);
+        tagDAO.linkTagToTag(tag, tagLink);
+        logger.debug("Se asociaron tags:" + tag + " --> " + tagLink);
     }
 
     @Override
-    public void unlink(Tag parent, Tag child) {
-        logger.debug("Desasociación de Tags:" + parent + " --> " + child);
+    public void unlink(Tag tag, Tag tagUnlink) {
+        logger.debug("Desasociación de Tags:" + tag + " --> " + tagUnlink);
 
-        tagDAO.linkTagToTag(parent, child);
-        logger.debug("Se asociaron Tags:" + parent + " --> " + child);
+        tagDAO.unlinkTagToTag(tag, tagUnlink);
+        logger.debug("Se desasociaron Tags:" + tag + " --> " + tagUnlink);
     }
 
 

@@ -264,7 +264,7 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
 
     //      Methods
     public void createConcept() throws ParseException {
-        category = categoryManager.getCategoryById(categorySelect);
+        category = categoryManager.getCategoryById(1);
         concept = newConcept(category, favoriteDescription);
         //concept = getConceptById(80602);
 
