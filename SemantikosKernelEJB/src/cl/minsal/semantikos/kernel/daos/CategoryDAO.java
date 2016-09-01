@@ -26,6 +26,11 @@ public interface CategoryDAO {
      */
     public Category getCategoryById(long id);
 
+    /**
+     * Este método es responsable de recuperar todas las categorías del sistema.
+     *
+     * @return Una lista de categorías.
+     */
     public List<Category> getAllCategories();
 
     /**
