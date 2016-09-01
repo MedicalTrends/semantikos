@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by stk-des01 on 27-05-16.
+ * @author Andrés Farías on 27-05-16.
  */
 @Stateless
 public class CategoryManagerImpl implements CategoryManagerInterface {
@@ -60,12 +60,6 @@ public class CategoryManagerImpl implements CategoryManagerInterface {
         }
 
         return Attributes;
-    }
-
-
-    @Override
-    public ArrayList<RelationshipDefinition> getAllDescription() {
-        return null;
     }
 
     @Override
@@ -112,55 +106,11 @@ public class CategoryManagerImpl implements CategoryManagerInterface {
 
     @Override
     public List<Category> getCategories() {
-        return categoryDAO.getAllCategories();
+
+        logger.debug("Recuperando todas las categorías.");
+        List<Category> categories = categoryDAO.getAllCategories();
+        logger.debug(categories.size() + "categorías recuperadas.");
+
+        return categories;
     }
-
-
-    /*
-        @Override
-        public ArrayList<RelationShipDefinition> findDescriptionByIDConcept(int id) {
-
-
-            ArrayList<RelationShipDefinition> Attributes = new ArrayList<RelationShipDefinition>();
-
-            //entityManager.createNamedQuery();
-
-
-            try {
-                Class.forName(driver);
-                Connection conne = (Connection) DriverManager.getConnection(ruta, user, password);
-                CallableStatement call = conne.prepareCall("{call get_conf_rel(?)}");
-
-                call.setInt(1, id);
-                call.execute();
-
-                ResultSet rs = call.getResultSet();
-
-                String idA;
-                String name;
-                int multiplicity;
-                String description;
-                boolean required;
-
-
-                while (rs.next()) {
-                    idA = rs.getString("reltype");
-                    name = rs.getString("name");
-                    multiplicity = Integer.parseInt(rs.getString("multiplicidad"));
-                    description = rs.getString("idLugar");
-                    required = false;
-                    Attributes.add(new AttributeCategory(idA, name, multiplicity, description, required));
-
-                }
-                conne.close();
-
-            } catch (SQLException | ClassNotFoundException e) {
-                System.out.println(e.toString());
-            }
-
-
-            return Attributes;
-        }
-    */
-
 }

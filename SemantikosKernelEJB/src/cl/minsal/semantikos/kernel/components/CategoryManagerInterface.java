@@ -36,9 +36,6 @@ public interface CategoryManagerInterface {
      */
     public List<RelationshipDefinition> getCategoryMetaData(int id);
 
-
-    public List<RelationshipDefinition> getAllDescription();
-
     /**
      * Método encagado de recuperar todas las categorías existentes.
      *
