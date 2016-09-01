@@ -46,6 +46,7 @@ public class CategoryDAOImpl implements CategoryDAO {
             ResultSet rs = call.getResultSet();
             while (rs.next()) {
                 category = createCategoryFromResultSet(rs);
+                category.setRelationshipDefinitions(getCategoryMetaData(category.getId()));
             }
             rs.close();
         } catch (SQLException e) {
@@ -67,7 +68,10 @@ public class CategoryDAOImpl implements CategoryDAO {
 
             ResultSet resultSet = call.getResultSet();
             while (resultSet.next()) {
-                categories.add(createCategoryFromResultSet(resultSet));
+                Category categoryFromResultSet = createCategoryFromResultSet(resultSet);
+                categoryFromResultSet.setRelationshipDefinitions(getCategoryMetaData(categoryFromResultSet.getId()));
+
+                categories.add(categoryFromResultSet);
             }
         } catch (SQLException e) {
             throw new EJBException(e);

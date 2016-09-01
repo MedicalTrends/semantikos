@@ -37,7 +37,7 @@ public interface TagManager {
 
     public void update(Tag tag);
 
-    public void link(Tag parent, Tag child);
+    public void link(Tag tag, Tag tagLink);
 
-    public void unlink(Tag parent, Tag child);
+    public void unlink(Tag tag, Tag tagUnlink);
 }
