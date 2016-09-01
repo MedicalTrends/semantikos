@@ -299,7 +299,7 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
     //(llamado desde la vista cuando se desea editar un concepto)
     public ConceptSMTKWeb getConceptById(long conceptId) {
         ConceptSMTKWeb conceptSMTKWeb = new ConceptSMTKWeb(conceptManager.getConceptByID(conceptId));
-        //conceptSMTKWeb.setRelationships(conceptManager.loadRelationships(conceptSMTKWeb));
+        conceptSMTKWeb.setRelationships(conceptManager.loadRelationships(conceptSMTKWeb));
         conceptSMTKWeb.setRelationships(conceptManager.loadRelationships(conceptSMTKWeb));
 
         //_concept = ConceptSMTKUtils.clone(conceptSMTKWeb);
@@ -525,11 +525,10 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
                     descriptionManager.updateDescription(concept, description.getFirst(), description.getSecond(), user);
                 }
 
-                /*
+
                 for (Description description : descriptionsForPersist) {
-                    descriptionManager
+                    descriptionManager.bindDescriptionToConcept(concept, description, user);
                 }
-                */
 
                 //descriptionManager.
                 // Se prepara para la actualización

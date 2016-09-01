@@ -25,11 +25,11 @@ public class ConceptSMTKWeb extends ConceptSMTK {
     //Este es el constructor mínimo
     public ConceptSMTKWeb(ConceptSMTK conceptSMTK) {
         super(conceptSMTK.getConceptID(), conceptSMTK.getCategory(), conceptSMTK.isToBeReviewed(), conceptSMTK.isToBeConsulted(), conceptSMTK.isModeled(),
-              conceptSMTK.isFullyDefined(), conceptSMTK.isPublished(), conceptSMTK.getDescriptions().toArray(new Description[conceptSMTK.getDescriptions().size()]));
+                conceptSMTK.isFullyDefined(), conceptSMTK.isPublished(), conceptSMTK.getDescriptions().toArray(new Description[conceptSMTK.getDescriptions().size()]));
         if(conceptSMTK.isPersistent()){
             this.setId(conceptSMTK.getId());
             for (Description description : this.getValidDescriptions()) {
-                // Si la descripcion está persistida, clonar la descripción y agregarla a la lista de descripciones web
+                // Si la descripcion está persistida, clonar la descripción y dejar en el respaldo las originales
                 this.descriptionsWeb.add(new DescriptionWeb(description.getId(),description));
             }
             for (Relationship relationship : this.getValidRelationships()) {
@@ -211,9 +211,30 @@ public class ConceptSMTKWeb extends ConceptSMTK {
         return "";
     }
 
+
+
     public void addDescriptionWeb(DescriptionWeb descriptionWeb) {
         this.addDescription(descriptionWeb);
         this.descriptionsWeb.add(descriptionWeb);
+    }
+
+    /**
+     * Este método es responsable de retornar todas las relaciones válidas de este concepto y que son de un cierto tipo
+     * de
+     * relación.
+     *
+     * @param relationshipDefinition El tipo de relación al que pertenecen las relaciones a retornar.
+     *
+     * @return Una <code>java.util.List</code> de relaciones de tipo <code>relationshipDefinition</code>.
+     */
+    public List<RelationshipWeb> getValidRelationshipsWebByRelationDefinition(RelationshipDefinition relationshipDefinition) {
+        List<RelationshipWeb> someRelationships = new ArrayList<RelationshipWeb>();
+        for (RelationshipWeb relationship : relationshipsWeb) {
+            if (relationship.getRelationshipDefinition().equals(relationshipDefinition) && relationship.isValid()) {
+                someRelationships.add(relationship);
+            }
+        }
+        return someRelationships;
     }
 
 }

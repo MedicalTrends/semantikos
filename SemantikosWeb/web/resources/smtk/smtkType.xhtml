@@ -164,7 +164,7 @@
                          id="tableRelationship2"
                          styleClass="tablas2"
                          draggableRows="true" style="margin: 10px;"
-                         value="#{newConceptMBean.concept.getValidRelationshipsByRelationDefinition(cc.attrs.relationshipDefinition)}"
+                         value="#{newConceptMBean.concept.getValidRelationshipsWebByRelationDefinition(cc.attrs.relationshipDefinition)}"
                          var="rel">
                 <p:column headerText="ID">
                     <h:outputText value="#{rel.target.id}"/>
@@ -237,7 +237,7 @@
                 </p:panel>
 
                 <p:panel  style="border: hidden; width: 100%;" rendered="#{cc.attrs.concept.hasRelationships(cc.attrs.relationshipDefinition)}">
-                    <ui:repeat value="#{cc.attrs.concept.getValidRelationshipsByRelationDefinition(cc.attrs.relationshipDefinition)}"
+                    <ui:repeat value="#{cc.attrs.concept.getValidRelationshipsWebByRelationDefinition(cc.attrs.relationshipDefinition)}"
                                var="relationship"
                                varStatus="var">
                         <p:outputLabel rendered="#{cc.attrs.relationshipDefinition.multiplicity.optional}"  value="#{cc.attrs.relationshipDefinition.name}: " for="itemSelected"/>
@@ -249,7 +249,7 @@
 
             </div>
             <div class="ui-g-12 ui-md-6 ui-lg-1">
-                <ui:repeat value="#{cc.attrs.concept.getValidRelationshipsByRelationDefinition(cc.attrs.relationshipDefinition)}"
+                <ui:repeat value="#{cc.attrs.concept.getValidRelationshipsWebByRelationDefinition(cc.attrs.relationshipDefinition)}"
                            var="relationship"
                            varStatus="var">
                     <p:commandButton icon="fa fa-trash" title="Eliminar"

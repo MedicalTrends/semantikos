@@ -202,8 +202,7 @@ public class ConceptSMTK extends PersistentEntity implements Target, AuditableEn
     public List<Relationship> getValidRelationshipsByRelationDefinition(RelationshipDefinition relationshipDefinition) {
         List<Relationship> someRelationships = new ArrayList<>();
         for (Relationship relationship : relationships) {
-            if (relationship.getRelationshipDefinition().equals(relationshipDefinition) &&
-                    (relationship.getValidityUntil() == null || relationship.getValidityUntil().after(new Timestamp(System.currentTimeMillis())))) {
+            if (relationship.getRelationshipDefinition().equals(relationshipDefinition) && relationship.isValid()) {
                 someRelationships.add(relationship);
             }
         }
