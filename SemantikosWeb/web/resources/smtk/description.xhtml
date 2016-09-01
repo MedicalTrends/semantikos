@@ -22,12 +22,14 @@
         <div class="ui-g-12 ui-md-6 ui-lg-5">
             <p:inputText id="termNew"
                          name="description"
+                         validator="#{newConceptMBean.validateRequired}"
                          value="#{cc.attrs.description.term}"
                          rendered="#{not cc.attrs.description.persisted}"
                          style="width:90%">
             </p:inputText>
             <p:inputText id="termEdit"
                          name="description"
+                         validator="#{newConceptMBean.validateRequired}"
                          value="#{cc.attrs.description.term}"
                          rendered="#{cc.attrs.description.persisted}"
                          style="width:90%">

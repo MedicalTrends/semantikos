@@ -8,6 +8,7 @@ import cl.minsal.semantikos.model.relationships.Relationship;
 import cl.minsal.semantikos.model.relationships.RelationshipDefinition;
 import cl.minsal.semantikos.model.relationships.Target;
 import cl.minsal.semantikos.model.validations.RelationshipConstraint;
+import cl.minsal.semantikos.util.ConceptSMTKUtils;
 import cl.minsal.semantikos.util.Pair;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.RowEditEvent;
@@ -60,8 +61,8 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
 
     public User user;
 
-    @RelationshipConstraint
     private ConceptSMTKWeb concept;
+    private ConceptSMTKWeb _concept;
 
     private Category category;
     private List<DescriptionType> descriptionTypes = new ArrayList<DescriptionType>();
@@ -300,6 +301,9 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         ConceptSMTKWeb conceptSMTKWeb = new ConceptSMTKWeb(conceptManager.getConceptByID(conceptId));
         //conceptSMTKWeb.setRelationships(conceptManager.loadRelationships(conceptSMTKWeb));
         conceptSMTKWeb.setRelationships(conceptManager.loadRelationships(conceptSMTKWeb));
+
+        //_concept = ConceptSMTKUtils.clone(conceptSMTKWeb);
+
         category = conceptSMTKWeb.getCategory();
         return conceptSMTKWeb;
     }
@@ -464,13 +468,13 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
      *
      * @return
      */
-    public void validateDescription(FacesContext context, UIComponent component, Object value) throws ValidatorException {
+    public void validateRequired(FacesContext context, UIComponent component, Object value) throws ValidatorException {
 
-        String msg = concept.validateDescription((Description) value);
+        String msg = "Debe ingresar un término";
 
         //component.getParent().getAttributes().
 
-        if (!msg.equals(""))
+        if (value.equals(""))
             throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, msg, msg));
     }
 
@@ -509,14 +513,25 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
             // Si el concepto está persistido, actualizarlo
             if (concept.isPersistent()) {
                 List<Pair<Description, Description>> descriptionsForUpdate= concept.getDescriptionsForUpdate();
-                //List<Description> descriptionsForPersist= concept.;
-                //List<Description> descriptionsForDelete;
+                List<Description> descriptionsForPersist= concept.getDescriptionsForPersist();
+                List<Description> descriptionsForDelete= concept.getDescriptionsForDelete();
 
-                //if(descriptionsForUpdate.isEmpty() && descriptionsForPersist.isEmpty() && descriptionsForDelete.isEmpty())
+                if(descriptionsForUpdate.isEmpty() && descriptionsForPersist.isEmpty() && descriptionsForDelete.isEmpty()){
+                    context.addMessage(null, new FacesMessage("Warning", "No se ha realizado ningún cambio al concepto!!"));
+                    return;
+                }
 
                 for (Pair<Description, Description> description : concept.getDescriptionsForUpdate()) {
                     descriptionManager.updateDescription(concept, description.getFirst(), description.getSecond(), user);
                 }
+
+                /*
+                for (Description description : descriptionsForPersist) {
+                    descriptionManager
+                }
+                */
+
+                //descriptionManager.
                 // Se prepara para la actualización
                 //if(concept.prepareForUpdate())
                 //conceptManager.update(concept, user);

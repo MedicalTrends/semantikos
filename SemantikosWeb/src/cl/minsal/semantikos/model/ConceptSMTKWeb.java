@@ -15,9 +15,11 @@ import java.util.List;
  */
 public class ConceptSMTKWeb extends ConceptSMTK {
 
-    //Respaldo de las descripciones originales
+    //Atributos básicos del concepto que son pasados a la vista
+
+    //Descripciones que son pasadas a la vista
     List<DescriptionWeb> descriptionsWeb = new ArrayList<DescriptionWeb>();
-    //Respaldo de las relaciones originales
+    //Relaciones que son pasadas a la vista
     List<RelationshipWeb> relationshipsWeb = new ArrayList<RelationshipWeb>();
 
     //Este es el constructor mínimo
@@ -27,7 +29,7 @@ public class ConceptSMTKWeb extends ConceptSMTK {
         if(conceptSMTK.isPersistent()){
             this.setId(conceptSMTK.getId());
             for (Description description : this.getValidDescriptions()) {
-                // Si la descripcion está persistida, clonar la descripción y dejar en el respaldo las originales
+                // Si la descripcion está persistida, clonar la descripción y agregarla a la lista de descripciones web
                 this.descriptionsWeb.add(new DescriptionWeb(description.getId(),description));
             }
             for (Relationship relationship : this.getValidRelationships()) {
@@ -114,7 +116,7 @@ public class ConceptSMTKWeb extends ConceptSMTK {
         List<Pair<Description, Description>> descriptionsForUpdate = new ArrayList<Pair<Description, Description>>();
 
         //Primero se buscan todas las descripciones persistidas originales
-        for (Description initDescription : getDescriptions()) {
+        for (Description initDescription : getValidDescriptions()) {
             //Por cada descripción original se busca su descripcion vista correlacionada
             for (DescriptionWeb finalDescription : getDescriptionsWeb()) {
                 //Si la descripcion correlacionada sufrio alguna modificación agregar el par (init, final)
@@ -135,6 +137,27 @@ public class ConceptSMTKWeb extends ConceptSMTK {
                 descriptionsForPersist.add(descriptionWeb);
         }
         return descriptionsForPersist;
+    }
+
+    public List<Description> getDescriptionsForDelete() {
+
+        List<Description> descriptionsForDelete = new ArrayList<Description>();
+        boolean isDescriptionFound;
+
+        //Primero se buscan todas las descripciones persistidas originales
+        for (Description initDescription : getValidDescriptions()) {
+            isDescriptionFound = false;
+            //Por cada descripción original se busca su descripcion vista correlacionada
+            for (DescriptionWeb finalDescription : getDescriptionsWeb()) {
+                //Si la descripcion correlacionada no es encontrada, significa que fué eliminada
+                if (initDescription.getId() == finalDescription.getId()) {
+                    isDescriptionFound = true;
+                }
+            }
+            if(!isDescriptionFound)
+                descriptionsForDelete.add(initDescription);
+        }
+        return  descriptionsForDelete;
     }
 
 

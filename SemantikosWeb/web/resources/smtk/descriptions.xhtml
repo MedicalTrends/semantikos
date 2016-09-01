@@ -78,7 +78,9 @@
                     <div style="text-align: center;">
                         <p:cellEditor>
                             <f:facet  name="output"><h:outputText value="#{description.term}"/></f:facet>
-                            <f:facet  name="input"><p:inputText id="otrasTermino" value="#{description.term}"
+                            <f:facet  name="input"><p:inputText id="otrasTermino"
+                                                                value="#{description.term}"
+                                                                validator="#{newConceptMBean.validateRequired}"
                                                                 style="width:100%"/></f:facet>
                         </p:cellEditor>
                     </div>
