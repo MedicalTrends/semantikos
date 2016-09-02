@@ -1,6 +1,6 @@
 package cl.minsal.semantikos.model;
 
-import java.sql.Array;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -14,25 +14,31 @@ public class Tag {
     private String name;
     private String colorBackground;
     private String colorLetter;
-    private List<Tag> childTag;
+
+    /** Las etiquetas hijos */
+    private List<Tag> children;
+
     private Tag parentTag;
 
 
-    public Tag(long id, String name, String colorBackground, String colorLetter, List<Tag> childTag, Tag parentTag) {
+    public Tag(long id, String name, String colorBackground, String colorLetter, List<Tag> children, Tag parentTag) {
         this.id = id;
         this.name = name;
         this.colorBackground = colorBackground;
         this.colorLetter = colorLetter;
-        this.childTag = childTag;
+        this.children = children;
         this.parentTag = parentTag;
+
+        this.children = new ArrayList<>();
     }
 
-    public List<Tag> getChildTag() {
-        return childTag;
+
+    public List<Tag> getChildrenTag() {
+        return children;
     }
 
-    public void setChildTag(List<Tag> childTag) {
-        this.childTag = childTag;
+    public void setChildren(List<Tag> children) {
+        this.children = children;
     }
 
     public Tag getParentTag() {
@@ -73,5 +79,31 @@ public class Tag {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public void addChild(Tag tag) {
+        this.children.add(tag);
+    }
+
+    public int deepnessLevel() {
+
+        int deepness = 1;
+        int maxDeep = 0;
+        Tag champion = null;
+
+        for (Tag child : children) {
+            int childDeep = child.deepnessLevel();
+
+            if (childDeep > maxDeep) {
+                champion = child;
+                maxDeep = childDeep;
+            }
+        }
+
+        if (champion == null){
+            return 1;
+        }
+
+        return deepness + champion.deepnessLevel();
     }
 }

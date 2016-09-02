@@ -208,7 +208,7 @@
                                                         style="width: 80%;"
                                                         inputStyle="width: 80%;"
                                                         converter="tagConverter" var="tag"
-                                                        value="#{tagBean.childTag}"
+                                                        value="#{tagBean.children}"
                                                         completeMethod="#{tagBean.findTagByName}"
                                                         itemLabel="#{tag.name}" itemValue="#{tag}"
                                                         emptyMessage="No se encontraron tags relacionados"
@@ -224,7 +224,7 @@
                                 <div class="ui-g">
 
                                     <div class="ui-g-12 ui-md-6 ui-lg-12">
-                                        <p:dataTable value="#{tagBean.tagEdit.childTag}" var="tag">
+                                        <p:dataTable value="#{tagBean.tagEdit.childrenTag}" var="tag">
 
 
                                             <p:column headerText="Nombre">
@@ -268,7 +268,7 @@
                             </div>
                             <div class="ui-g-12 ui-md-6 ui-lg-6">
                                 <h3>Hijos</h3>
-                                <p:dataTable value="#{tagBean.tagEdit.childTag}" var="tag">
+                                <p:dataTable value="#{tagBean.tagEdit.childrenTag}" var="tag">
 
 
                                     <p:column headerText="Nombre">

@@ -4,6 +4,7 @@ import cl.minsal.semantikos.kernel.daos.ConceptDAO;
 import cl.minsal.semantikos.kernel.daos.TagDAO;
 import cl.minsal.semantikos.model.ConceptSMTK;
 import cl.minsal.semantikos.model.Tag;
+import cl.minsal.semantikos.model.businessrules.TagCreationBR;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -92,7 +93,23 @@ public class TagManagerImpl implements TagManager {
     @Override
     public void persist(Tag tag) {
         logger.debug("Creando concepto " + tag);
+
+        /* Se validan las reglas de negocio */
+        new TagCreationBR().applyRules(tag);
+
+        /* Se persiste primero el padre, luego el tag, y luego sus hijos */
+        Tag parentTag = tag.getParentTag();
+        if (parentTag != null){
+            persist(parentTag);
+        }
+
+        /* Luego el tag mismo */
         tagDAO.persist(tag);
+
+        /* Luego sus hijos */
+        for (Tag child : tag.getChildrenTag()) {
+            persist(child);
+        }
         logger.debug("Tag creado:" + tag);
     }
 
