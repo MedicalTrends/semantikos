@@ -85,6 +85,11 @@ public class Tag {
         this.children.add(tag);
     }
 
+    /**
+     * Este método es responsable de retornar el nivel de profundidad relativa a este Tag.
+     *
+     * @return El nivel de profundidad de este nodo (aunque tenga padres).
+     */
     public int deepnessLevel() {
 
         int deepness = 1;
@@ -100,10 +105,45 @@ public class Tag {
             }
         }
 
-        if (champion == null){
+        if (champion == null) {
             return 1;
         }
 
         return deepness + champion.deepnessLevel();
+    }
+
+    /**
+     * Este método es responsable de determinar este tag contienen a <code>tag</code> en su familia. Se dice que un tag
+     * contiene a otro en su familia si:
+     * <ul>
+     * <li>Es el mismo tag</li>
+     * <li>Es el padre</li>
+     * <li>Es uno de los hijos</li>
+     * </ul>
+     *
+     * @param tag El tag cuya familia se desea ver si contiene a este tag.
+     *
+     * @return <code>true</code> si este tag está en la familia del <code>tag</code> y <code>false</code> sino.
+     */
+    public boolean containsInItsFamily(Tag tag) {
+
+        /* Si es el mismo tag, lo contiene */
+        if (this.equals(tag)) {
+            return true;
+        }
+
+        /* Si es el padre, también lo contiene */
+        else if (parentTag != null && parentTag.equals(tag)) {
+            return true;
+        }
+
+        /* Finalmente, quizás "tag" es uno de los hijos */
+        for (Tag child : children) {
+            if (child.containsInItsFamily(tag)){
+                return true;
+            }
+        }
+
+        return false;
     }
 }

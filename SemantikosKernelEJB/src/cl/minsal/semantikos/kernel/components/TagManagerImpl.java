@@ -75,6 +75,20 @@ public class TagManagerImpl implements TagManager {
     }
 
     @Override
+    public List<Tag> getOtherTags(Tag tag) {
+
+        List<Tag> allTags = getAllTags();
+        List<Tag> otherTags = new ArrayList<>();
+        for (Tag aTag : allTags) {
+            if (!aTag.containsInItsFamily(tag)){
+                otherTags.add(aTag);
+            }
+        }
+
+        return otherTags;
+    }
+
+    @Override
     public void assignTag(ConceptSMTK conceptSMTK, Tag tag) {
         logger.debug("Asociando el tag " + tag + " al concepto " + conceptSMTK);
 
