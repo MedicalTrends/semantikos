@@ -4,7 +4,6 @@ import cl.minsal.semantikos.model.audit.AuditableEntity;
 import cl.minsal.semantikos.model.relationships.RelationshipDefinition;
 import cl.minsal.semantikos.model.relationships.TargetDefinition;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -13,14 +12,22 @@ import java.util.List;
 
 public class Category extends PersistentEntity implements TargetDefinition, AuditableEntity {
 
-    /** Identificador único de la categoría */
-    private long idCategory;
-
+    /** Nombre de la categoría */
     private String name;
-    private String nameAbreviated;
+
+    /** Nombre abreviado de la categoría */
+    private String nameAbbreviated;
+
+    /** Puede ser editado sólo por modeladores? */
     private boolean restriction;
+
+    /** El tag Semantikos asociado */
     private Long tagSemantikos;
+
+    /** Vigencia de la categoría */
     private boolean isValid;
+
+    /** Color de la categoría */
     private String color;
 
     private List<RelationshipDefinition> relationshipDefinitions;
@@ -29,13 +36,13 @@ public class Category extends PersistentEntity implements TargetDefinition, Audi
         super();
     }
 
-    @Override
-    public long getId() {
-        return idCategory;
-    }
-
-    public void setIdCategory(long idCategory) {
-        this.idCategory = idCategory;
+    public Category(long idCategory, String name, String nameAbbreviated, boolean restriction, boolean isValid, String color){
+        super(idCategory);
+        this.name = name;
+        this.nameAbbreviated = nameAbbreviated;
+        this.restriction = restriction;
+        this.isValid = isValid;
+        this.color = color;
     }
 
     public String getName() {
@@ -46,12 +53,12 @@ public class Category extends PersistentEntity implements TargetDefinition, Audi
         this.name = name;
     }
 
-    public String getNameAbreviated() {
-        return nameAbreviated;
+    public String getNameAbbreviated() {
+        return nameAbbreviated;
     }
 
-    public void setNameAbreviated(String nameAbreviated) {
-        this.nameAbreviated = nameAbreviated;
+    public void setNameAbbreviated(String nameAbbreviated) {
+        this.nameAbbreviated = nameAbbreviated;
     }
 
     public boolean isRestriction() {

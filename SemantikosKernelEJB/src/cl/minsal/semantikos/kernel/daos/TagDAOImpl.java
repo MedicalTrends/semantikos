@@ -105,10 +105,16 @@ public class TagDAOImpl implements TagDAO {
     public void remove(Tag tag) {
         ConnectionBD connect = new ConnectionBD();
 
-        try (Connection connection = connect.getConnection();
-             CallableStatement call = connection.prepareCall("{call semantikos.remove_tag(?)}")) {
+        Tag tagRoot =tag.getParentTag();
+        while(tagRoot.getParentTag()!=null){
 
-            call.setLong(1, tag.getId());
+            tagRoot =tagRoot.getParentTag();
+        }
+
+        try (Connection connection = connect.getConnection();
+             CallableStatement call = connection.prepareCall("{call semantikos.delete_tag(?)}")) {
+
+            call.setLong(1, tagRoot.getId());
             call.execute();
         } catch (SQLException e) {
             String errorMsg = "Error al persistir el tag " + tag;
@@ -148,17 +154,34 @@ public class TagDAOImpl implements TagDAO {
     }
 
     @Override
-    public void linkTagToTag(Tag tagPattern, Tag tagChild) {
+    public void linkTagToTag(Tag tag, Tag tagLink) {
         ConnectionBD connect = new ConnectionBD();
 
         try (Connection connection = connect.getConnection();
              CallableStatement call = connection.prepareCall("{call semantikos.link_parent_tag_to_child_tag(?,?)}")) {
 
-            call.setLong(1, tagPattern.getId());
-            call.setLong(2, tagChild.getId());
+            call.setLong(1, tag.getId());
+            call.setLong(2, tagLink.getId());
             call.execute();
         } catch (SQLException e) {
-            String errorMsg = "Error al asociar el tag " + tagChild + " al padre " + tagPattern;
+            String errorMsg = "Error al asociar el tag " + tagLink + " al Tag " + tag;
+            logger.error(errorMsg, e);
+            throw new EJBException(errorMsg, e);
+        }
+    }
+
+    @Override
+    public void unlinkTagToTag(Tag tag, Tag tagUnlink) {
+        ConnectionBD connect = new ConnectionBD();
+
+        try (Connection connection = connect.getConnection();
+             CallableStatement call = connection.prepareCall("{call semantikos.unlink_tag_to_tag(?,?)}")) {
+
+            call.setLong(1, tag.getId());
+            call.setLong(2, tagUnlink.getId());
+            call.execute();
+        } catch (SQLException e) {
+            String errorMsg = "Error al desasociar el tag " + tagUnlink + " del " + tag;
             logger.error(errorMsg, e);
             throw new EJBException(errorMsg, e);
         }

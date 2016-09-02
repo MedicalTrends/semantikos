@@ -11,7 +11,7 @@
 <composite:interface >
     <composite:attribute name="relationshipDefinition" type="cl.minsal.semantikos.model.relationships.RelationshipDefinition" />
     <composite:attribute name="targetDefinition" type="cl.minsal.semantikos.model.helpertables.HelperTable" />
-    <composite:attribute name="concept" type="cl.minsal.semantikos.model.ConceptSMTK" />
+    <composite:attribute name="concept" type="cl.minsal.semantikos.model.ConceptSMTKWeb" />
 </composite:interface>
 <composite:implementation>
     <!-- Multiplicidad 1 y Nueva relacion -->
@@ -56,7 +56,7 @@
              widgetVar="panelHelperTableTypeSimple#{cc.attrs.relationshipDefinition.id}"
              rendered="#{cc.attrs.relationshipDefinition.multiplicity.simple and cc.attrs.concept.hasRelationships(cc.attrs.relationshipDefinition)}">
 
-        <ui:repeat value="#{cc.attrs.concept.getValidRelationshipsByRelationDefinition(cc.attrs.relationshipDefinition)}"
+        <ui:repeat value="#{cc.attrs.concept.getValidRelationshipsWebByRelationDefinition(cc.attrs.relationshipDefinition)}"
                    var="relationship"
                    varStatus="var">
             <div class="ui-g">
@@ -131,7 +131,7 @@
                 <p:dataTable id="collectionValues12"
                              styleClass="tablas"
                              var="relationship"
-                             value="#{cc.attrs.concept.getValidRelationshipsByRelationDefinition(cc.attrs.relationshipDefinition)}"
+                             value="#{cc.attrs.concept.getValidRelationshipsWebByRelationDefinition(cc.attrs.relationshipDefinition)}"
                              style="width: 100%"
                              reflow="true">
                     <p:columns value="#{cc.attrs.targetDefinition.showableColumns}"

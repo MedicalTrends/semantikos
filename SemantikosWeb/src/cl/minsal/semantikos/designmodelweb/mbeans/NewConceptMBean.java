@@ -8,6 +8,7 @@ import cl.minsal.semantikos.model.relationships.Relationship;
 import cl.minsal.semantikos.model.relationships.RelationshipDefinition;
 import cl.minsal.semantikos.model.relationships.Target;
 import cl.minsal.semantikos.model.validations.RelationshipConstraint;
+import cl.minsal.semantikos.util.ConceptSMTKUtils;
 import cl.minsal.semantikos.util.Pair;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.RowEditEvent;
@@ -60,8 +61,8 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
 
     public User user;
 
-    @RelationshipConstraint
     private ConceptSMTKWeb concept;
+    private ConceptSMTKWeb _concept;
 
     private Category category;
     private List<DescriptionType> descriptionTypes = new ArrayList<DescriptionType>();
@@ -298,8 +299,9 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
     //(llamado desde la vista cuando se desea editar un concepto)
     public ConceptSMTKWeb getConceptById(long conceptId) {
         ConceptSMTKWeb conceptSMTKWeb = new ConceptSMTKWeb(conceptManager.getConceptByID(conceptId));
-        //conceptSMTKWeb.setRelationships(conceptManager.loadRelationships(conceptSMTKWeb));
-        conceptSMTKWeb.setRelationships(conceptManager.loadRelationships(conceptSMTKWeb));
+        conceptSMTKWeb.setRelationshipsWeb(conceptManager.loadRelationships(conceptSMTKWeb));
+        //_concept = ConceptSMTKUtils.clone(conceptSMTKWeb);
+
         category = conceptSMTKWeb.getCategory();
         return conceptSMTKWeb;
     }
@@ -321,7 +323,7 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
      * Este método es el encargado de remover una descripción específica de la lista de descripciones del concepto.
      */
     public void removeDescription(Description description) {
-        concept.getDescriptions().remove(description);
+        concept.removeDescriptionWeb(description);
     }
 
 
@@ -335,7 +337,7 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
 
         Relationship relationship = new Relationship(this.concept, target, relationshipDefinition);
         // Se utiliza el constructor mínimo (sin id)
-        this.concept.addRelationship(new RelationshipWeb(relationship, false));
+        this.concept.addRelationshipWeb(relationship);
 
     }
 
@@ -346,7 +348,7 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
 
         Relationship relationship = new Relationship(this.concept, target, relationshipDefinition);
         // Se utiliza el constructor mínimo (sin id)
-        this.concept.addRelationship(new RelationshipWeb(relationship, false));
+        this.concept.addRelationshipWeb(relationship);
         conceptSelected = null;
     }
 
@@ -368,7 +370,7 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         // Si no se encuentra la relación, se crea una nueva
         if (!isRelationshipFound) {
             Relationship newRelationship = new Relationship(this.concept, target, relationshipDefinition);
-            concept.addRelationship(newRelationship);
+            this.concept.addRelationshipWeb(newRelationship);
         }
 
         conceptSelected = null;
@@ -378,7 +380,7 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
      * Este método es el encargado de remover una relación específica del concepto.
      */
     public void removeRelationship(RelationshipDefinition rd, Relationship r) {
-        concept.removeRelationship(r);
+        concept.removeRelationshipWeb(r);
     }
 
     /**
@@ -392,7 +394,7 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
                     Description description = new Description(otherTermino, otherDescriptionType);
                     description.setCaseSensitive(otherSensibilidad);
                     description.setDescriptionId(descriptionManager.generateDescriptionId());
-                    concept.addDescription(description);
+                    concept.addDescriptionWeb(new DescriptionWeb(description));
                     otherTermino = "";
                 } else {
                     context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se ha seleccionado el tipo de descripción"));
@@ -416,7 +418,6 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         Description description = new Description(term, descriptionType);
         description.setCaseSensitive(caseSensitive);
         description.setDescriptionId(descriptionManager.generateDescriptionId());
-        concept.addDescription(description);
     }
 
     public void editDescription(DescriptionWeb description) {
@@ -465,13 +466,13 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
      *
      * @return
      */
-    public void validateDescription(FacesContext context, UIComponent component, Object value) throws ValidatorException {
+    public void validateRequired(FacesContext context, UIComponent component, Object value) throws ValidatorException {
 
-        String msg = concept.validateDescription((Description) value);
+        String msg = "Debe ingresar un término";
 
         //component.getParent().getAttributes().
 
-        if (!msg.equals(""))
+        if (value.equals(""))
             throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, msg, msg));
     }
 
@@ -509,9 +510,25 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         } else {
             // Si el concepto está persistido, actualizarlo
             if (concept.isPersistent()) {
+                List<Pair<Description, Description>> descriptionsForUpdate= concept.getDescriptionsForUpdate();
+                List<Description> descriptionsForPersist= concept.getDescriptionsForPersist();
+                List<Description> descriptionsForDelete= concept.getDescriptionsForDelete();
+
+                if(descriptionsForUpdate.isEmpty() && descriptionsForPersist.isEmpty() && descriptionsForDelete.isEmpty()){
+                    context.addMessage(null, new FacesMessage("Warning", "No se ha realizado ningún cambio al concepto!!"));
+                    return;
+                }
+
                 for (Pair<Description, Description> description : concept.getDescriptionsForUpdate()) {
                     descriptionManager.updateDescription(concept, description.getFirst(), description.getSecond(), user);
                 }
+
+
+                for (Description description : descriptionsForPersist) {
+                    descriptionManager.bindDescriptionToConcept(concept, description, user);
+                }
+
+                //descriptionManager.
                 // Se prepara para la actualización
                 //if(concept.prepareForUpdate())
                 //conceptManager.update(concept, user);

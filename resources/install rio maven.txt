@@ -1,2 +1,2 @@
-mvn install:install-file -Dfile=F:\workspaces\IdeaProyects\semantikos\resources\rio-theme-3.1.2.jar -DgroupId=org.primefaces -DartifactId=rio -Dversion=3.1.2 -Dpackaging=jar
+mvn install:install-file -Dfile=/Users/andres/Documents/work/sistema terminologia/semantikos/resources/rio-theme-3.1.2.jar -DgroupId=org.primefaces -DartifactId=rio -Dversion=3.1.2 -Dpackaging=jar
 

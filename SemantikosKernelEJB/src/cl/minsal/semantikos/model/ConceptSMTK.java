@@ -5,6 +5,7 @@ import cl.minsal.semantikos.model.businessrules.ConceptEditionBusinessRuleContai
 import cl.minsal.semantikos.model.businessrules.ConceptStateBusinessRulesContainer;
 import cl.minsal.semantikos.model.exceptions.BusinessRuleException;
 import cl.minsal.semantikos.model.relationships.*;
+import sun.security.krb5.internal.crypto.Des;
 
 import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
@@ -175,6 +176,21 @@ public class ConceptSMTK extends PersistentEntity implements Target, AuditableEn
     }
 
     /**
+     * Este método es responsable de retornar todas las relaciones válidas de este concepto
+     *
+     * @return Una <code>java.util.List</code> de relaciones de tipo <code>relationshipDefinition</code>.
+     */
+    public List<Relationship> getValidRelationships() {
+        List<Relationship> someRelationships = new ArrayList<>();
+        for (Relationship relationship : relationships) {
+            if (relationship.isValid()) {
+                someRelationships.add(relationship);
+            }
+        }
+        return someRelationships;
+    }
+
+    /**
      * Este método es responsable de retornar todas las relaciones válidas de este concepto y que son de un cierto tipo
      * de
      * relación.
@@ -186,12 +202,26 @@ public class ConceptSMTK extends PersistentEntity implements Target, AuditableEn
     public List<Relationship> getValidRelationshipsByRelationDefinition(RelationshipDefinition relationshipDefinition) {
         List<Relationship> someRelationships = new ArrayList<>();
         for (Relationship relationship : relationships) {
-            if (relationship.getRelationshipDefinition().equals(relationshipDefinition) &&
-                    (relationship.getValidityUntil() == null || relationship.getValidityUntil().after(new Timestamp(System.currentTimeMillis())))) {
+            if (relationship.getRelationshipDefinition().equals(relationshipDefinition) && relationship.isValid()) {
                 someRelationships.add(relationship);
             }
         }
         return someRelationships;
+    }
+
+    /**
+     * Este método es responsable de retornar todas las descripciones válidas de este concepto y que son de un cierto tipo
+     *
+     * @return Una <code>java.util.List</code> de relaciones de tipo <code>description</code>.
+     */
+    public List<Description> getValidDescriptions() {
+        List<Description> someDescriptions = new ArrayList<>();
+        for (Description description : descriptions) {
+            if (description.isValid() ) {
+                someDescriptions.add(description);
+            }
+        }
+        return someDescriptions;
     }
 
     /**

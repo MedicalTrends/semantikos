@@ -41,7 +41,14 @@ public interface TagDAO {
     /**
      * Este metodo se encarga de anidar un etiqueta padre con su hijo en la base de datos
      */
-    public void linkTagToTag(Tag tagPattern, Tag tagChild);
+    public void linkTagToTag(Tag tag, Tag tagLink);
+
+
+    /**
+     * Este metodo se encarga de anidar un etiqueta padre con su hijo en la base de datos
+     */
+    public void unlinkTagToTag(Tag tag, Tag tagUnlink);
+
 
     /**
      * Este método es responsable de recuperar todos tags del sistema.
