@@ -7,12 +7,9 @@ import cl.minsal.semantikos.model.helpertables.HelperTableRecord;
 import cl.minsal.semantikos.model.relationships.Relationship;
 import cl.minsal.semantikos.model.relationships.RelationshipDefinition;
 import cl.minsal.semantikos.model.relationships.Target;
-import cl.minsal.semantikos.model.validations.RelationshipConstraint;
-import cl.minsal.semantikos.util.ConceptSMTKUtils;
+import cl.minsal.semantikos.util.ConceptUtils;
 import cl.minsal.semantikos.util.Pair;
 import org.primefaces.context.RequestContext;
-import org.primefaces.event.RowEditEvent;
-import org.primefaces.event.SelectEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,13 +19,9 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
-import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-import javax.faces.validator.ValidatorException;
 import java.io.Serializable;
-import java.sql.Timestamp;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -36,11 +29,11 @@ import java.util.*;
  * Created by diego on 26/06/2016.
  */
 
-@ManagedBean(name = "newConceptMBean")
+@ManagedBean(name = "conceptBean")
 @ViewScoped
-public class NewConceptMBean<T extends Comparable> implements Serializable {
+public class ConceptBean implements Serializable {
 
-    static final Logger logger = LoggerFactory.getLogger(NewConceptMBean.class);
+    static final Logger logger = LoggerFactory.getLogger(ConceptBean.class);
 
     @EJB
     ConceptManagerInterface conceptManager;
@@ -137,7 +130,7 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         context.execute("PF('dialogNameConcept').show();");
 
         //category = categoryManager.getCategoryById(1);
-        //category = categoryManager.getCategoryById(105590001);
+        category = categoryManager.getCategoryById(105590001);
         //category = categoryManager.getCategoryById(71388002);
 
 
@@ -263,11 +256,12 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         this.selectedHelperTableRecord = selectedHelperTableRecord;
     }
 
-    //      Methods
+    //Methods
+
     public void createConcept() throws ParseException {
-        category = categoryManager.getCategoryById(categorySelect);
-        //newConcept(category, favoriteDescription);
-        getConceptById(80602);
+        //category = categoryManager.getCategoryById(categorySelect);
+        newConcept(category, favoriteDescription);
+        //getConceptById(80602);
 
         RequestContext context = RequestContext.getCurrentInstance();
         context.execute("PF('dialogNameConcept').hide();");
@@ -293,7 +287,9 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
 
         Description[] descriptions = {favouriteDescription, fsnDescription};
 
-        concept = new ConceptSMTKWeb(new ConceptSMTK(conceptManager.generateConceptId(), category, true, true, false, false, false, descriptions));
+        ConceptSMTK conceptSMTK = new ConceptSMTK(conceptManager.generateConceptId(), category, true, true, false, false, false, descriptions);
+
+        concept = new ConceptSMTKWeb(conceptSMTK);
     }
 
     //Este método es responsable de pasarle a la vista un concepto, dado el id del concepto
@@ -416,20 +412,6 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
 
     }
 
-    public void addDescriptionToConcept(String term, DescriptionType descriptionType, boolean caseSensitive) {
-
-        Description description = new Description(term, descriptionType);
-        description.setCaseSensitive(caseSensitive);
-        description.setDescriptionId(descriptionManager.generateDescriptionId());
-    }
-
-    public void editDescription(DescriptionWeb description) {
-        /*
-        if (description.isPersisted() && !description.hasBeenModified())
-            concept.editDescription(description);
-        */
-    }
-
     /**
      * Este método es el responsable de retornar verdadero en caso que se cumpla el UpperBoundary de la multiplicidad,
      * para asi desactivar
@@ -447,62 +429,6 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         return false;
     }
 
-    /**
-     * Este metodo revisa que las relaciones cumplan el lower_boundary del
-     * relationship definition, en caso de no cumplir la condicion se retorna falso.
-     *
-     * @return
-     */
-    public void validateRelationships(FacesContext context, UIComponent component, Object value) throws ValidatorException {
-
-        String msg = "Error!!!!!!";
-
-        //component.getParent().getAttributes().
-
-        if (!concept.isValid())
-            throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, msg, msg));
-    }
-
-    /**
-     * Este metodo revisa que las relaciones cumplan el lower_boundary del
-     * relationship definition, en caso de no cumplir la condicion se retorna falso.
-     *
-     * @return
-     */
-    public void validateRequired(FacesContext context, UIComponent component, Object value) throws ValidatorException {
-
-        String msg = "Debe ingresar un término";
-
-        //component.getParent().getAttributes().
-
-        if (value.equals(""))
-            throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, msg, msg));
-    }
-
-    public String getMyFormattedDate(Date date) {
-        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-        return new SimpleDateFormat("dd-MM-yyyy").format(date);
-    }
-
-    public void onRowEdit(RowEditEvent event) {
-        /*
-        Description description = (Description) event.getObject();
-
-        editDescription(description);
-        */
-    }
-
-    public void onRowCancel(RowEditEvent event) {
-        FacesMessage msg = new FacesMessage("Edit Cancelled", ((Description) event.getObject()).getTerm());
-        FacesContext.getCurrentInstance().addMessage(null, msg);
-    }
-
-    public void onRowSelect(SelectEvent event) {
-        //System.out.println("selectedHelperTableRecord.getFields().get('id')="+selectedHelperTableRecord.getFields().get("id"));
-        //FacesMessage msg = new FacesMessage("Car Selected", new Long(((HelperTableRecord) event.getObject()).getId()).toString());
-        //FacesContext.getCurrentInstance().addMessage(null, msg);
-    }
-
     public void saveConcept() {
 
         FacesContext context = FacesContext.getCurrentInstance();
@@ -517,9 +443,9 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
                 if(_concept.isToBeReviewed()!=concept.isToBeReviewed() || _concept.isToBeConsulted()!= concept.isToBeConsulted())
                     conceptManager.updateBasicInfo();
                 */
-                List<Pair<Description, Description>> descriptionsForUpdate= getModifiedDescriptions(_concept.getDescriptionsWeb(), concept.getDescriptionsWeb());
-                List<Description> descriptionsForPersist= getNewDescriptions(_concept.getDescriptionsWeb(), concept.getDescriptionsWeb());
-                List<Description> descriptionsForDelete= getDeletedDescriptions(_concept.getDescriptionsWeb(), concept.getDescriptionsWeb());
+                List<Pair<Description, Description>> descriptionsForUpdate= ConceptUtils.getModifiedDescriptions(_concept.getDescriptionsWeb(), concept.getDescriptionsWeb());
+                List<Description> descriptionsForPersist= ConceptUtils.getNewDescriptions(_concept.getDescriptionsWeb(), concept.getDescriptionsWeb());
+                List<Description> descriptionsForDelete= ConceptUtils.getDeletedDescriptions(_concept.getDescriptionsWeb(), concept.getDescriptionsWeb());
 
                 if(descriptionsForUpdate.isEmpty() && descriptionsForPersist.isEmpty() && descriptionsForDelete.isEmpty()){
                     context.addMessage(null, new FacesMessage("Warning", "No se ha realizado ningún cambio al concepto!!"));
@@ -535,10 +461,10 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
                     descriptionManager.bindDescriptionToConcept(concept, description, user);
                 }
 
-                //descriptionManager.
-                // Se prepara para la actualización
-                //if(concept.prepareForUpdate())
-                //conceptManager.update(concept, user);
+                for (Description description : descriptionsForDelete) {
+                    //descriptionManager.deleteDescription(concept, description, user);
+                }
+
             }
             // Si el concepto no está persistido, persistirlo
             else {
@@ -547,55 +473,6 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
             context.addMessage(null, new FacesMessage("Successful", "Concepto guardado "));
         }
 
-    }
-
-    public List<Pair<Description, Description>> getModifiedDescriptions(List<DescriptionWeb> initDescriptions, List<DescriptionWeb> finalDescriptions) {
-
-        List<Pair<Description, Description>> descriptionsForUpdate = new ArrayList<Pair<Description, Description>>();// Si la relación está persistida dejar en el respaldo las originales
-
-        //Primero se buscan todas las descripciones persistidas originales
-        for (DescriptionWeb initDescription : initDescriptions) {
-            //Por cada descripción original se busca su descripcion vista correlacionada
-            for (DescriptionWeb finalDescription : finalDescriptions) {
-                //Si la descripcion correlacionada sufrio alguna modificación agregar el par (init, final)
-                if (initDescription.getId() == finalDescription.getId() && !finalDescription.equals(initDescription) /*finalDescription.hasBeenModified()*/) {
-                    descriptionsForUpdate.add(new Pair(initDescription, finalDescription));
-                }
-            }
-        }
-        return descriptionsForUpdate;
-    }
-
-    public List<Description> getNewDescriptions(List<DescriptionWeb> initDescriptions, List<DescriptionWeb> finalDescriptions) {
-
-        List<Description> descriptionsForPersist = new ArrayList<Description>();
-
-        for (DescriptionWeb descriptionWeb : finalDescriptions) {
-            if(!descriptionWeb.isPersistent())
-                descriptionsForPersist.add(descriptionWeb);
-        }
-        return descriptionsForPersist;
-    }
-
-    public List<Description> getDeletedDescriptions(List<DescriptionWeb> initDescriptions, List<DescriptionWeb> finalDescriptions) {
-
-        List<Description> descriptionsForDelete = new ArrayList<Description>();
-        boolean isDescriptionFound;
-
-        //Primero se buscan todas las descripciones persistidas originales
-        for (Description initDescription : initDescriptions) {
-            isDescriptionFound = false;
-            //Por cada descripción original se busca su descripcion vista correlacionada
-            for (DescriptionWeb finalDescription : finalDescriptions) {
-                //Si la descripcion correlacionada no es encontrada, significa que fué eliminada
-                if (initDescription.getId() == finalDescription.getId()) {
-                    isDescriptionFound = true;
-                }
-            }
-            if(!isDescriptionFound)
-                descriptionsForDelete.add(initDescription);
-        }
-        return  descriptionsForDelete;
     }
 
 }

@@ -25,17 +25,42 @@ public class ConceptSMTKWeb extends ConceptSMTK {
     //Este es el constructor mínimo
     public ConceptSMTKWeb(ConceptSMTK conceptSMTK) {
         super(conceptSMTK.getConceptID(), conceptSMTK.getCategory(), conceptSMTK.isToBeReviewed(), conceptSMTK.isToBeConsulted(), conceptSMTK.isModeled(),
-                conceptSMTK.isFullyDefined(), conceptSMTK.isPublished(), conceptSMTK.getDescriptions().toArray(new Description[conceptSMTK.getDescriptions().size()]));
+                conceptSMTK.isFullyDefined(), conceptSMTK.isPublished());
         if(conceptSMTK.isPersistent()){
             this.setId(conceptSMTK.getId());
             // Si la descripcion está persistida, clonar la descripción y dejar en el respaldo las originales
-            for (Description description : this.getValidDescriptions())
-                this.descriptionsWeb.add(new DescriptionWeb(description.getId(),description));
+            for (Description description : conceptSMTK.getValidDescriptions())
+                addDescriptionWeb(new DescriptionWeb(description.getId(), description));
+                //this.descriptionsWeb.add(new DescriptionWeb(description.getId(),description));
             // Si la relación está persistida dejar en el respaldo las originales
-            for (Relationship relationship : this.getValidRelationships())
-                this.relationshipsWeb.add(new RelationshipWeb(relationship.getId(), relationship));
+            for (Relationship relationship : conceptSMTK.getValidRelationships())
+                addRelationshipWeb(new RelationshipWeb(relationship.getId(), relationship));
+                //this.relationshipsWeb.add(new RelationshipWeb(relationship.getId(), relationship));
+        }
+        else{
+            for (Description description : conceptSMTK.getValidDescriptions())
+                addDescriptionWeb(new DescriptionWeb(description));
         }
     }
+
+    /*
+    public ConceptSMTKWeb init(Category category, String term){
+        // Valores iniciales para el concepto
+        Description favouriteDescription = new Description(term, DescriptionTypeFactory.getInstance().getFavoriteDescriptionType());
+        favouriteDescription.setCaseSensitive(false);
+        //favouriteDescription.setDescriptionId(descriptionManager.generateDescriptionId());
+
+        Description fsnDescription = new Description(term + " (" + category.getName() + ")", descriptionManager.getTypeFSN());
+
+        fsnDescription.setCaseSensitive(false);
+        //fsnDescription.setDescriptionId(descriptionManager.generateDescriptionId());
+
+        Description[] descriptions = {favouriteDescription, fsnDescription};
+
+        ConceptSMTK conceptSMTK = new ConceptSMTK(conceptManager.generateConceptId(), category, true, true, false, false, false, descriptions);
+
+    }
+    */
 
     public List<DescriptionWeb> getDescriptionsWeb() {
         return descriptionsWeb;
@@ -105,57 +130,6 @@ public class ConceptSMTKWeb extends ConceptSMTK {
         }
 
         return otherDescriptions;
-    }
-
-
-
-    public List<Pair<Description, Description>> getDescriptionsForUpdate() {
-
-        List<Pair<Description, Description>> descriptionsForUpdate = new ArrayList<Pair<Description, Description>>();// Si la relación está persistida dejar en el respaldo las originales
-
-        //Primero se buscan todas las descripciones persistidas originales
-        for (Description initDescription : getValidDescriptions()) {
-            //Por cada descripción original se busca su descripcion vista correlacionada
-            for (DescriptionWeb finalDescription : getDescriptionsWeb()) {
-                //Si la descripcion correlacionada sufrio alguna modificación agregar el par (init, final)
-                if (initDescription.getId() == finalDescription.getId() && !finalDescription.equals(initDescription) /*finalDescription.hasBeenModified()*/) {
-                    descriptionsForUpdate.add(new Pair(initDescription, finalDescription));
-                }
-            }
-        }
-        return descriptionsForUpdate;
-    }
-
-    public List<Description> getDescriptionsForPersist() {
-
-        List<Description> descriptionsForPersist = new ArrayList<Description>();
-
-        for (DescriptionWeb descriptionWeb : getDescriptionsWeb()) {
-            if(!descriptionWeb.isPersistent())
-                descriptionsForPersist.add(descriptionWeb);
-        }
-        return descriptionsForPersist;
-    }
-
-    public List<Description> getDescriptionsForDelete() {
-
-        List<Description> descriptionsForDelete = new ArrayList<Description>();
-        boolean isDescriptionFound;
-
-        //Primero se buscan todas las descripciones persistidas originales
-        for (Description initDescription : getValidDescriptions()) {
-            isDescriptionFound = false;
-            //Por cada descripción original se busca su descripcion vista correlacionada
-            for (DescriptionWeb finalDescription : getDescriptionsWeb()) {
-                //Si la descripcion correlacionada no es encontrada, significa que fué eliminada
-                if (initDescription.getId() == finalDescription.getId()) {
-                    isDescriptionFound = true;
-                }
-            }
-            if(!isDescriptionFound)
-                descriptionsForDelete.add(initDescription);
-        }
-        return  descriptionsForDelete;
     }
 
 

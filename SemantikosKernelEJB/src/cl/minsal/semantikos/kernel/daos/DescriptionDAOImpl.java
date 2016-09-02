@@ -18,6 +18,7 @@ import java.util.List;
 
 import static cl.minsal.semantikos.kernel.daos.DAO.NON_PERSISTED_ID;
 import static cl.minsal.semantikos.kernel.util.StringUtils.underScoreToCamelCaseJSON;
+import static java.sql.Types.BIGINT;
 
 /**
  * @author Andres Farias.
@@ -156,7 +157,7 @@ public class DescriptionDAOImpl implements DescriptionDAO {
     }
 
     @Override
-    public Description persist(Description description, ConceptSMTK conceptSMTK, User user) {
+    public Description persist(Description description, User user) {
 
         ConnectionBD connect = new ConnectionBD();
         /*
@@ -184,7 +185,7 @@ public class DescriptionDAOImpl implements DescriptionDAO {
             call.setBoolean(7, description.isPublished());
             call.setBoolean(8, description.isModeled());
             call.setLong(9, user.getIdUser());
-            call.setLong(10, conceptSMTK.getId());
+            call.setNull(10, BIGINT);
             call.execute();
 
             ResultSet rs = call.getResultSet();
@@ -202,6 +203,41 @@ public class DescriptionDAOImpl implements DescriptionDAO {
         }
 
         return description;
+    }
+
+    @Override
+    public void bind(Description description, ConceptSMTK concept, User user) {
+
+        ConnectionBD connect = new ConnectionBD();
+        /*
+         * param 1: ID
+         * param 2: id concepto
+         */
+        String sql = "{call semantikos.bind_description(?,?)}";
+        try (Connection connection = connect.getConnection();
+             CallableStatement call = connection.prepareCall(sql)) {
+
+            call.setLong(1, description.getId());
+            call.setLong(2, concept.getId());
+
+            call.execute();
+
+            ResultSet rs = call.getResultSet();
+
+            if (rs.next()) {
+                if (rs.getBoolean(1) != true) {
+                    throw new EJBException("La descripción con DESCRIPTION_ID=" + description.getDescriptionId() + "  no fue ligada al concepto.");
+                }
+            } else {
+                String errorMsg = "La descripción con DESCRIPTION_ID=" + description.getDescriptionId() + " no fue actualizada. Contacte a Desarrollo.";
+                logger.error(errorMsg);
+                throw new EJBException(errorMsg);
+            }
+
+            rs.close();
+        } catch (SQLException e) {
+            throw new EJBException(e);
+        }
     }
 
     @Override
@@ -256,7 +292,7 @@ public class DescriptionDAOImpl implements DescriptionDAO {
 
         for (Description description : descriptions) {
             if (!isPersistent(description)) {
-                this.persist(description, conceptSMTK, user);
+                this.persist(description, user);
                 persistedDescriptions.add(description);
             }
         }

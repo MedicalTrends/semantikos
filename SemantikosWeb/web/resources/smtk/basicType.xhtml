@@ -19,7 +19,7 @@
     <p:panel
             id="basicTypeSimple"
             rendered="#{cc.attrs.relationshipDefinition.multiplicity.simple and not cc.attrs.concept.hasRelationships(cc.attrs.relationshipDefinition)}"
-            styleClass="relationshipDefinition"
+            styleClass="#{validatorBean.uiState}"
             widgetVar="panelBasicTypeSimple#{cc.attrs.relationshipDefinition.id}">
             <div class="ui-g">
                 <div class="ui-g-12 ui-md-6 ui-lg-2">
@@ -29,14 +29,14 @@
                 </div>
                 <div class="ui-g-12 ui-md-6 ui-lg-3">
                     <p:selectOneMenu id="basicTypeValue11"
-                                     value="#{newConceptMBean.basicTypeValue.value}"
+                                     value="#{conceptBean.basicTypeValue.value}"
                                      var="value1"
                                      converter="omnifaces.SelectItemsConverter"
                                      rendered="#{cc.attrs.targetDefinition.discreteDomain}"
                                      styleClass="relationships"
                                      >
                         <p:ajax event="itemSelect"
-                                listener="#{newConceptMBean.addOrChangeRelationship(cc.attrs.relationshipDefinition,newConceptMBean.basicTypeValue)}"
+                                listener="#{conceptBean.addOrChangeRelationship(cc.attrs.relationshipDefinition,conceptBean.basicTypeValue)}"
                                 process="@this" />
                         <f:selectItem itemLabel="Seleccione"
                                       itemValue=""
@@ -47,7 +47,7 @@
                                        itemValue="#{domain}"/>
                     </p:selectOneMenu>
                     <p:inputNumber id="basicTypeValue12"
-                                   value="#{newConceptMBean.basicTypeValue.value}"
+                                   value="#{conceptBean.basicTypeValue.value}"
                                    var="value"
                                    minValue="#{cc.attrs.targetDefinition.interval.lowerBoundary}"
                                    maxValue="#{cc.attrs.targetDefinition.interval.upperBoundary}"
@@ -57,11 +57,11 @@
                                    rendered="#{cc.attrs.targetDefinition.type.typeName=='int' and not cc.attrs.targetDefinition.discreteDomain}"
                                    styleClass="relationships"
                                    >
-                        <p:ajax listener="#{newConceptMBean.addOrChangeRelationship(cc.attrs.relationshipDefinition,newConceptMBean.basicTypeValue)}" />
+                        <p:ajax listener="#{conceptBean.addOrChangeRelationship(cc.attrs.relationshipDefinition,conceptBean.basicTypeValue)}" />
                     </p:inputNumber>
 
                     <p:inputNumber id="basicTypeValue13"
-                                   value="#{newConceptMBean.basicTypeValue.value}"
+                                   value="#{conceptBean.basicTypeValue.value}"
                                    var="value"
                                    minValue="#{cc.attrs.targetDefinition.interval.lowerBoundary}"
                                    maxValue="#{cc.attrs.targetDefinition.interval.upperBoundary}"
@@ -71,20 +71,20 @@
                                    rendered="#{cc.attrs.targetDefinition.type.typeName=='float' and not cc.attrs.targetDefinition.discreteDomain}"
                                    styleClass="relationships"
                                    >
-                        <p:ajax listener="#{newConceptMBean.addOrChangeRelationship(cc.attrs.relationshipDefinition,newConceptMBean.basicTypeValue)}" />
+                        <p:ajax listener="#{conceptBean.addOrChangeRelationship(cc.attrs.relationshipDefinition,conceptBean.basicTypeValue)}" />
                     </p:inputNumber>
                     <p:inputText id="basicTypeValue14"
-                                 value="#{newConceptMBean.basicTypeValue.value}"
+                                 value="#{conceptBean.basicTypeValue.value}"
                                  var="value"
                                  minValue="#{cc.attrs.targetDefinition.interval.lowerBoundary}"
                                  maxValue="#{cc.attrs.targetDefinition.interval.upperBoundary}"
                                  rendered="#{cc.attrs.targetDefinition.type.typeName=='string' and not cc.attrs.targetDefinition.discreteDomain}"
                                  styleClass="relationships"
                                  >
-                        <p:ajax listener="#{newConceptMBean.addOrChangeRelationship(cc.attrs.relationshipDefinition,newConceptMBean.basicTypeValue)}" />
+                        <p:ajax listener="#{conceptBean.addOrChangeRelationship(cc.attrs.relationshipDefinition,conceptBean.basicTypeValue)}" />
                     </p:inputText>
                     <p:calendar id="basicTypeValue15"
-                                value="#{newConceptMBean.basicTypeValue.value}"
+                                value="#{conceptBean.basicTypeValue.value}"
                                 var="value"
                                 showOn="button"
                                 mindate="#{cc.attrs.targetDefinition.interval.lowerBoundary}"
@@ -92,7 +92,7 @@
                                 rendered="#{cc.attrs.targetDefinition.type.typeName=='date' and not cc.attrs.targetDefinition.discreteDomain}"
                                 styleClass="relationships"
                                 >
-                        <p:ajax listener="#{newConceptMBean.addOrChangeRelationship(cc.attrs.relationshipDefinition,newConceptMBean.basicTypeValue)}" />
+                        <p:ajax listener="#{conceptBean.addOrChangeRelationship(cc.attrs.relationshipDefinition,conceptBean.basicTypeValue)}" />
                     </p:calendar>
                 </div>
                 <div class="ui-g-12 ui-md-6 ui-lg-1">
@@ -104,7 +104,7 @@
     <!-- Multiplicidad N-->
     <p:panel
          id="basicTypeCollection"
-         styleClass="relationshipDefinitions basic#{cc.attrs.relationshipDefinition.id}"
+         styleClass="basic#{cc.attrs.relationshipDefinition.id} #{validatorBean.uiState}"
          widgetVar="panelBasicTypeCollection#{cc.attrs.relationshipDefinition.id}"
          rendered="#{cc.attrs.relationshipDefinition.multiplicity.collection}">
             <div class="ui-g">
@@ -118,7 +118,7 @@
                             value="Agregar"
                             process="@(.basic#{cc.attrs.relationshipDefinition.id})"
                             update="@(.basic#{cc.attrs.relationshipDefinition.id})"
-                            action="#{newConceptMBean.addRelationship(cc.attrs.relationshipDefinition)}"
+                            action="#{conceptBean.addRelationship(cc.attrs.relationshipDefinition)}"
                             disabled="#{cc.attrs.relationshipDefinition.multiplicity.isUpperBoundaryReached(cc.attrs.concept.getRelationshipsByRelationDefinition(cc.attrs.relationshipDefinition).size())}">
                     </p:commandButton>
                 </div>
@@ -203,7 +203,7 @@
                             process="@this"
                             update="@(.basic#{cc.attrs.relationshipDefinition.id})"
                             styleClass="ui-datepicker-trigger ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only"
-                            actionListener="#{newConceptMBean.removeRelationship(cc.attrs.relationshipDefinition, relationship)}"
+                            actionListener="#{conceptBean.removeRelationship(cc.attrs.relationshipDefinition, relationship)}"
                             rendered="#{!cc.attrs.relationshipDefinition.multiplicity.isRequired(var.index) and var.index>0}"
                     >
                     </p:commandButton>

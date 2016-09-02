@@ -10,19 +10,20 @@
     <ui:define name="content">
 
         <p:panel id="createEdit">
-            <h:form id="mainForm" rendered="#{newConceptMBean.concept!=null}">
+            <h:form id="mainForm" rendered="#{conceptBean.concept!=null}">
 
                 <p:growl id="growl" showDetail="true" showSummary="true"/>
                 <p:growl id="editMsgs" showDetail="true"/>
                 <!--p:messages autoUpdate="true"></p:messages-->
 
+                <!-- Información básica del concepto -->
                 <div class="ui-g">
                     <div class="ui-g-12 ui-md-6 ui-lg-1">
                         <p:outputLabel for="toBeReviewedCheck" value="Indicadores"/>
                     </div>
                     <div class="ui-g-12 ui-md-6 ui-lg-5">
-                        <p:selectBooleanCheckbox id="toBeReviewedCheck" itemLabel="Revisar" value="#{newConceptMBean.concept.toBeReviewed}" style="width:40%" />
-                        <p:selectBooleanCheckbox id="toBeConsultatedCheck" itemLabel="Consultar" value="#{newConceptMBean.concept.toBeConsulted}" style="width:40%" />
+                        <p:selectBooleanCheckbox id="toBeReviewedCheck" itemLabel="Revisar" value="#{conceptBean.concept.toBeReviewed}" style="width:40%" />
+                        <p:selectBooleanCheckbox id="toBeConsultatedCheck" itemLabel="Consultar" value="#{conceptBean.concept.toBeConsulted}" style="width:40%" />
                     </div>
                     <div class="ui-g-12 ui-md-6 ui-lg-3">
                     </div>
@@ -30,24 +31,39 @@
                     </div>
                 </div>
 
-                <smtk:description description="#{newConceptMBean.concept.getValidDescriptionFSN()}">
+                <!--Descripciones -->
+                <smtk:description description="#{conceptBean.concept.getValidDescriptionFSN()}">
                 </smtk:description>
 
-                <smtk:description description="#{newConceptMBean.concept.getValidDescriptionFavorite()}">
+                <smtk:description description="#{conceptBean.concept.getValidDescriptionFavorite()}">
                 </smtk:description>
 
-                <smtk:descriptions descriptions="#{newConceptMBean.concept.getValidDescriptionsButFSNandFavorite()}"
-                                   otherTermino="#{newConceptMBean.otherTermino}"
-                                   otherSensibilidad="#{newConceptMBean.otherSensibilidad}"
-                                   otherDescriptionType="#{newConceptMBean.otherDescriptionType}"
-                                   descriptionTypes="#{newConceptMBean.descriptionTypes}">
+                <div class="ui-g">
+                    <div class="ui-g-12 ui-md-6 ui-lg-1">
+                        <p:outputLabel for="toBeReviewedCheck" value="Observación"/>
+                    </div>
+                    <div class="ui-g-12 ui-md-6 ui-lg-8">
+                        <p:inputTextarea id="observation"
+                                         name="observation"
+                                         style="width:90%">
+                        </p:inputTextarea>
+                    </div>
+                    <div class="ui-g-12 ui-md-6 ui-lg-3">
+                    </div>
+                </div>
+
+                <smtk:descriptions descriptions="#{conceptBean.concept.getValidDescriptionsButFSNandFavorite()}"
+                                   otherTermino="#{conceptBean.otherTermino}"
+                                   otherSensibilidad="#{conceptBean.otherSensibilidad}"
+                                   otherDescriptionType="#{conceptBean.otherDescriptionType}"
+                                   descriptionTypes="#{conceptBean.descriptionTypes}">
                 </smtk:descriptions>
 
                 <!--Relaciones -->
                 <p:panel id="atributos" header="Atributos" toggleable="true" toggleSpeed="500" closeSpeed="500"
                          widgetVar="panelAtributos" style="margin-bottom:20px" >
 
-                    <h:dataTable style="width: 100%;" value="#{newConceptMBean.category.relationshipDefinitions}"
+                    <h:dataTable style="width: 100%;" value="#{conceptBean.category.relationshipDefinitions}"
                                  var="relationshipDefinition">
 
                         <h:column>
@@ -56,18 +72,18 @@
                                     rendered="#{relationshipDefinition.targetDefinition.SMTKType}"
                                     targetDefinition="#{relationshipDefinition.targetDefinition}"
                                     relationshipDefinition="#{relationshipDefinition}"
-                                    concept="#{newConceptMBean.concept}"/>
+                                    concept="#{conceptBean.concept}"/>
 
                             <smtk:helperTableType
                                     rendered="#{relationshipDefinition.targetDefinition.helperTable}"
                                     relationshipDefinition="#{relationshipDefinition}"
                                     targetDefinition="#{relationshipDefinition.targetDefinition}"
-                                    concept="#{newConceptMBean.concept}"  />
+                                    concept="#{conceptBean.concept}"  />
 
                             <smtk:basicType
                                     targetDefinition="#{relationshipDefinition.targetDefinition}"
                                     relationshipDefinition="#{relationshipDefinition}"
-                                    concept="#{newConceptMBean.concept}"
+                                    concept="#{conceptBean.concept}"
                                     rendered="#{relationshipDefinition.targetDefinition.basicType}" />
 
                         </h:column>
@@ -78,7 +94,7 @@
                 </p:panel>
 
 
-                <p:commandButton actionListener="#{newConceptMBean.saveConcept}"
+                <p:commandButton actionListener="#{conceptBean.saveConcept}"
                                  value="Guardar" type="submit" process="mainForm"
                                  update="growl, mainForm"
                 />
@@ -95,22 +111,22 @@
 
             <p:confirmDialog id="dialogNameConcept" header="Crear Concepto" widgetVar="dialogNameConcept" global="true"
                              showEffect="fade" hideEffect="fade" closable="false"
-                             rendered="#{newConceptMBean.concept==null}">
+                             rendered="#{conceptBean.concept==null}">
                 <h:form id="initialForm" >
                     <h:outputText value="Ingrerse el nombre de su concepto:"/>
                     <div class="ui-g">
                         <div class="ui-g-12 ui-md-6 ui-lg-12">
                             <p:outputLabel value="Nombre: " for="NameConcept"/>
-                            <p:inputText id="NameConcept" value="#{newConceptMBean.favoriteDescription}"/>
+                            <p:inputText id="NameConcept" value="#{conceptBean.favoriteDescription}"/>
                         </div>
                     </div>
 
-                    <p:selectOneMenu value="#{newConceptMBean.categorySelect}">
-                        <f:selectItem itemLabel="Insumos" itemValue="3"></f:selectItem>
-                        <f:selectItem itemLabel="Dispositivos Medicos" itemValue="4"></f:selectItem>
+                    <p:selectOneMenu value="#{conceptBean.categorySelect}">
+                        <f:selectItem itemLabel="Insumos" itemValue="3" />
+                        <f:selectItem itemLabel="Dispositivos Medicos" itemValue="4" />
                     </p:selectOneMenu>
 
-                    <p:commandButton actionListener="#{newConceptMBean.createConcept}" update=":createEdit"
+                    <p:commandButton actionListener="#{conceptBean.createConcept}" update=":createEdit"
                                      value="Siguiente" onclick="loadAutogenerate()"
 
                     />

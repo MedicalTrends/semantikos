@@ -22,6 +22,9 @@
              header="Otros Descriptores" toggleable="true" toggleSpeed="500" closeSpeed="500"
              widgetVar="panel" style="margin-bottom:20px">
 
+        <p:growl id="growl" showDetail="true" showSummary="true"/>
+        <p:growl id="editMsgs" showDetail="true"/>
+
         <p:fieldset legend="Agregar descripción" toggleable="true" collapsed="true">
             <div class="ui-g">
                 <div class="ui-g-12 ui-md-6 ui-lg-1">
@@ -47,7 +50,7 @@
                     </p:selectOneMenu>
                 </div>
                 <div class="ui-g-12 ui-md-6 ui-lg-1">
-                    <p:commandButton value="Agregar" id="btn" action="#{newConceptMBean.addDescription()}"
+                    <p:commandButton value="Agregar" id="btn" action="#{conceptBean.addDescription()}"
                                      process="@(.otherDescriptionsPanel)"
                                      update="@(.otherDescriptionsPanel)"
                                      style="float: right"/>
@@ -62,12 +65,9 @@
                          var="description"
                          value="#{cc.attrs.descriptions}"
                          editable="true"
-                         selection="#{newConceptMBean.selectedDescriptions}"
+                         selection="#{conceptBean.selectedDescriptions}"
                          rowKey="#{description.id}"
                          reflow="true">
-
-                <p:ajax event="rowEdit" listener="#{newConceptMBean.onRowEdit}" process="@this" update="@(.otherDescriptions)"/>
-                <p:ajax event="rowEditCancel" listener="#{newConceptMBean.onRowCancel}" update=":mainForm:editMsgs"/>
 
                 <p:column selectionMode="multiple" style="width:16px;text-align:center"/>
 
@@ -115,7 +115,7 @@
                                 <h:selectOneMenu value="#{description.descriptionType}"
                                                  converter="omnifaces.SelectItemsConverter" style="width:100%">
                                     <f:selectItem itemLabel="Seleccione tipo" itemValue=""/>
-                                    <f:selectItems value="#{newConceptMBean.descriptionTypes}"
+                                    <f:selectItems value="#{conceptBean.descriptionTypes}"
                                                    var="descriptionType" itemLabel="#{descriptionType.name}"
                                                    itemValue="#{descriptionType}"/>
                                 </h:selectOneMenu>
@@ -154,7 +154,7 @@
                 </p:column>
 
                 <p:column headerText="Acción" style="width:4%">
-                    <p:commandLink actionListener="#{newConceptMBean.removeDescription(description)}"
+                    <p:commandLink actionListener="#{conceptBean.removeDescription(description)}"
                                    ajax="true"
                                    process="@this"
                                    update="@(.otherDescriptions)" style="float: right">
