@@ -16,19 +16,32 @@
     </parent>
 
     <dependencies>
+
+
+        <!-- dependencia del runtime de jboss que incluye jee, ejb, jsf y mucho mas -->
         <dependency>
+            <groupId>org.jboss.spec</groupId>
+            <artifactId>jboss-javaee-7.0</artifactId>
+            <version>1.0.1.Final</version>
+            <type>pom</type>
+            <scope>provided</scope>
+        </dependency>
+
+
+        <!-- dependencias no necesarias dado que se incluye el runtime de jboss -->
+        <!-- dependency>
             <groupId>javax</groupId>
             <artifactId>javaee-web-api</artifactId>
             <version>7.0</version>
             <scope>provided</scope>
-        </dependency>
+        </dependency
 
         <dependency>
             <groupId>javax.faces</groupId>
             <artifactId>javax.faces-api</artifactId>
             <version>2.1</version>
             <scope>provided</scope>
-        </dependency>
+        </dependency> -->
 
         <dependency>
             <groupId>cl.minsal.semantikos</groupId>

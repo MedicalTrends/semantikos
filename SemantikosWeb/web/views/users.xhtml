@@ -37,12 +37,13 @@
                                         <h:outputText value="#{user.email}" />
                                     </p:column>
 
-                                    <p:column exportable="false" style="width:32px;text-align: center">
+                                    <p:column exportable="false" style="width:85px;text-align: center">
                                         <p:commandButton action="#{users.setSelectedUser(user)}" update=":form:user-detail" oncomplete="PF('userDialog').show()" icon="fa fa-view" title="Ver"  process="@this"  />
                                         <p:commandButton action="#{users.setSelectedUser(user)}" update=":form:user-edit" oncomplete="PF('editDialog').show()" icon="fa fa-edit" title="Editar"   process="@this" />
                                     </p:column>
 
                                 </p:dataTable>
+
 
                                 <p:dialog height="300" width="500" header="Detalles del Usuario" widgetVar="userDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="true" responsive="true">
                                     <h:panelGroup layout="block" id="user-detail" styleClass="Container100">
@@ -93,7 +94,6 @@
 
                                             <h:outputText value="Bloqueado:" style="font-weight: bold"/>
                                             <h:outputText value="#{users.selectedUser.locked?'Si':'No'}"/>
-
 
                                         </p:panelGrid>
 
@@ -198,8 +198,8 @@
                                         <f:facet name="header">
                                             Datos Basicos
                                         </f:facet>
-                                        <p:password for="input-user-new-pass-1" value="Nuevo Password:" style="font-weight: bold"/>
-                                        <p:inputText id="input-user-new-pass-1" value="#{users.newPass1}"  styleClass="Wid90" />
+                                        <p:outputLabel for="input-user-new-pass-1" value="Nuevo Password:" style="font-weight: bold"/>
+                                        <p:password id="input-user-new-pass-1" value="#{users.newPass1}"  styleClass="Wid90" />
 
                                         <p:outputLabel for="input-user-new-pass-2" value="Confirme Password" style="font-weight: bold"/>
                                         <p:password id="input-user-new-pass-2" value="#{users.newPass2}"  styleClass="Wid90" />
