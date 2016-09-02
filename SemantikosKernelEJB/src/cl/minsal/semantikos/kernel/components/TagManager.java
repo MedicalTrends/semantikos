@@ -29,6 +29,16 @@ public interface TagManager {
 
     public List<ConceptSMTK> findConceptsByTag(Tag tag);
 
+    /**
+     * Este método es responsable de retornar una lista de todos los Tags existentes que no se encuentran en la familia
+     * del <code>tag</code>.
+     *
+     * @param tag El tag cuyo complemento se desea recuperar.
+     *
+     * @return Una lista con todos los tags que representan el complemento
+     */
+    public List<Tag> getOtherTags(Tag tag);
+
     public void assignTag(ConceptSMTK conceptSMTK, Tag tag);
 
     public void unassignTag(ConceptSMTK conceptSMTK, Tag tag);

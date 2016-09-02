@@ -184,7 +184,7 @@ public class TagBean {
     }
 
     public void addChild() {
-        tagEdit.getChildTag().add(tagSelected);
+        tagEdit.getChildrenTag().add(tagSelected);
         tagManager.link(tagEdit,tagSelected);
     }
 
@@ -196,7 +196,7 @@ public class TagBean {
 
     public void unlinkChild(Tag tagUnlink) {
         tagManager.unlink(tagEdit, tagUnlink);
-        tagEdit.getChildTag().remove(tagUnlink);
+        tagEdit.getChildrenTag().remove(tagUnlink);
         tagList = tagManager.getAllTags();
     }
 

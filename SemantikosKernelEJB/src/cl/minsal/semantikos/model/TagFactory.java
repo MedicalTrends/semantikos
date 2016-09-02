@@ -124,7 +124,7 @@ public class TagFactory {
         List<Tag> children;
         Tag tag = new Tag(tagDTO.getId(), tagDTO.getName(), tagDTO.getBackgroundColor(), tagDTO.getLetterColor(), null, parentTag);
         children = tagDAO.getChildrenOf(tag);
-        tag.setChildTag(children);
+        tag.setChildren(children);
 
         return tag;
     }
@@ -133,7 +133,7 @@ public class TagFactory {
 
         Tag tag =new Tag(tagChild.getId(), tagChild.getName(), tagChild.getBackgroundColor(), tagChild.getLetterColor(), null, tagParent);
         List<Tag> children = tagDAO.getChildrenOf(tag);
-        tag.setChildTag(children);
+        tag.setChildren(children);
         return tag;
     }
 

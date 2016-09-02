@@ -29,6 +29,7 @@ public class ConceptCreationBusinessRuleContainer implements BusinessRulesContai
 
         /* Reglas que aplican para todas las categorías */
         br101HasFSN(conceptSMTK);
+        br102NonEmptyDescriptions(conceptSMTK);
 
         /* Las reglas de negocio dependen de la categoría del concepto */
         switch (conceptSMTK.getCategory().getName()) {
@@ -57,14 +58,31 @@ public class ConceptCreationBusinessRuleContainer implements BusinessRulesContai
     }
 
     /**
+     * Esta regla de negocio valida que un concepto no puede tener descripciones nulas o vacias.
+     *
+     * @param conceptSMTK El concepto cuyas descripciones de validan.
+     */
+    private void br102NonEmptyDescriptions(ConceptSMTK conceptSMTK) {
+
+        for (Description description : conceptSMTK.getDescriptions()) {
+            String term = description.getTerm();
+            if (term == null) {
+                throw new BusinessRuleException("El término de una descripción no puede ser nulo.");
+            } else if (term.trim().equals("")) {
+                throw new BusinessRuleException("El término de una descripción no puede ser vacío.");
+            }
+        }
+    }
+
+    /**
      * Usuarios con rol de Diseñador o Modelador pueden crear conceptos de esta categoria.
      *
      * @param conceptSMTK El concepto a crear ser creado.
-     * @param IUser        El usuario que realiza la acción.
+     * @param IUser       El usuario que realiza la acción.
      */
     protected void br001creationRights(ConceptSMTK conceptSMTK, User IUser) {
 
-        /* Solo aplica a farmacos - sustancias */
+        /* Solo aplica a fármacos - sustancias */
         Category farmacosSustanciaCategory = new Category();
         farmacosSustanciaCategory.setName(CATEGORY_FARMACOS_SUSTANCIAS_NAME);
         if (!conceptSMTK.belongsTo(farmacosSustanciaCategory)) return;
@@ -83,7 +101,7 @@ public class ConceptCreationBusinessRuleContainer implements BusinessRulesContai
      * Usuarios con rol de Diseñador o Modelador pueden crear conceptos de esta categoria.
      *
      * @param conceptSMTK El concepto a crear ser creado.
-     * @param IUser        El usuario que realiza la acción.
+     * @param IUser       El usuario que realiza la acción.
      */
     protected void br002creationRights(ConceptSMTK conceptSMTK, User IUser) {
 
@@ -105,7 +123,7 @@ public class ConceptCreationBusinessRuleContainer implements BusinessRulesContai
      * Usuarios con rol de Diseñador o Modelador pueden crear conceptos de esta categoria.
      *
      * @param conceptSMTK El concepto a crear ser creado.
-     * @param IUser        El usuario que realiza la acción.
+     * @param IUser       El usuario que realiza la acción.
      */
     protected void br003creationRights(ConceptSMTK conceptSMTK, User IUser) {
 
@@ -128,7 +146,7 @@ public class ConceptCreationBusinessRuleContainer implements BusinessRulesContai
      * Usuarios con rol de Diseñador o Modelador pueden crear conceptos de esta categoria.
      *
      * @param conceptSMTK El concepto a crear ser creado.
-     * @param IUser        El usuario que realiza la acción.
+     * @param IUser       El usuario que realiza la acción.
      */
     protected void br004creationRights(ConceptSMTK conceptSMTK, User IUser) {
 
