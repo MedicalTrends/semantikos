@@ -1,0 +1,16 @@
+<datasource jndi-name="java:jboss/PostgresDS" pool-name="SemantikosDS" enabled="true">
+    <connection-url>jdbc:postgresql://192.168.0.187:5432/semantikos</connection-url>
+    <driver>postgresql</driver>
+    <pool>
+        <min-pool-size>0</min-pool-size>
+        <max-pool-size>20</max-pool-size>
+    </pool>
+    <security>
+        <user-name>postgres</user-name>
+        <password>postgres</password>
+    </security>
+    <validation>
+        <valid-connection-checker class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker"/>
+        <exception-sorter class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLExceptionSorter"/>
+    </validation>
+</datasource>

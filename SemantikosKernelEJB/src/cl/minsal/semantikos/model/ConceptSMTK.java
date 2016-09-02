@@ -5,13 +5,10 @@ import cl.minsal.semantikos.model.businessrules.ConceptEditionBusinessRuleContai
 import cl.minsal.semantikos.model.businessrules.ConceptStateBusinessRulesContainer;
 import cl.minsal.semantikos.model.exceptions.BusinessRuleException;
 import cl.minsal.semantikos.model.relationships.*;
-import sun.security.krb5.internal.crypto.Des;
 
 import javax.validation.constraints.NotNull;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -51,6 +48,9 @@ public class ConceptSMTK extends PersistentEntity implements Target, AuditableEn
     /** Otros descriptores */
     private List<Description> descriptions = new ArrayList<>();
 
+    /** Observación del Concepto */
+    private String observation;
+
     /**
      * Relaciones. Las relaciones se cargan de manera perezosa. Para no almacenar una lista nula (y así evitar
      * NullPointerException) se maneja también un booleano que indica si las relaciones fueron o no cargadas.
@@ -74,10 +74,13 @@ public class ConceptSMTK extends PersistentEntity implements Target, AuditableEn
     private boolean justPublished = false;
 
     /**
-     * El constructor privado con las inicializaciones de los campos por defecto.
+     * La categoría es la mínima información que se le puede dar a un concepto.
      */
-    public ConceptSMTK() {
+    public ConceptSMTK(Category category) {
         super(PersistentEntity.NON_PERSISTED_ID);
+
+        /* La categoría del concepto */
+        this.category = category;
 
         /* El concepto parte con su estado inicial */
         this.descriptions = new ArrayList<>();
@@ -88,13 +91,12 @@ public class ConceptSMTK extends PersistentEntity implements Target, AuditableEn
         this.isToBeConsulted = false;
         this.isToBeReviewed = false;
 
+        /** Categoría del concepto */
         this.category = null;
         this.relationshipsLoaded = true;
-    }
 
-    public ConceptSMTK(Category category) {
-        this();
-        this.category = category;
+        /* La observación asociada al concepto inicialmente es vacía */
+        this.observation = "";
     }
 
     public ConceptSMTK(Category category, @NotNull Description... descriptions) {
@@ -107,7 +109,7 @@ public class ConceptSMTK extends PersistentEntity implements Target, AuditableEn
         this.modeled = modeled;
     }
 
-    public ConceptSMTK(long id, String conceptID, Category category, boolean isToBeReviewed, boolean isToBeConsulted, boolean modeled, boolean isFullyDefined, boolean isPublished, Description... descriptions) {
+    public ConceptSMTK(long id, String conceptID, Category category, boolean isToBeReviewed, boolean isToBeConsulted, boolean modeled, boolean isFullyDefined, boolean isPublished, String observation, Description... descriptions) {
         this(category, modeled, descriptions);
 
         this.setId(id);
@@ -117,6 +119,7 @@ public class ConceptSMTK extends PersistentEntity implements Target, AuditableEn
         this.isToBeConsulted = isToBeConsulted;
         this.isFullyDefined = isFullyDefined;
         this.isPublished = isPublished;
+        this.observation = observation;
 
         /* Se indica que no se han cargado sus relaciones */
         this.relationshipsLoaded = false;
@@ -133,8 +136,8 @@ public class ConceptSMTK extends PersistentEntity implements Target, AuditableEn
      * @param isPublished ¿Publicado?
      * @param descriptions Las descripciones para este concepto
      */
-    public ConceptSMTK(String conceptID, Category category, boolean isToBeReviewed, boolean isToBeConsulted, boolean modeled, boolean isFullyDefined, boolean isPublished, Description... descriptions) {
-        this(NON_PERSISTED_ID, conceptID, category, isToBeReviewed, isToBeConsulted, modeled, isFullyDefined, isPublished, descriptions);
+    public ConceptSMTK(String conceptID, Category category, boolean isToBeReviewed, boolean isToBeConsulted, boolean modeled, boolean isFullyDefined, boolean isPublished, String observation, Description... descriptions) {
+        this(NON_PERSISTED_ID, conceptID, category, isToBeReviewed, isToBeConsulted, modeled, isFullyDefined, isPublished, observation, descriptions);
 
         /* Se indica que no se han cargado sus relaciones */
         this.relationshipsLoaded = true;
@@ -210,14 +213,15 @@ public class ConceptSMTK extends PersistentEntity implements Target, AuditableEn
     }
 
     /**
-     * Este método es responsable de retornar todas las descripciones válidas de este concepto y que son de un cierto tipo
+     * Este método es responsable de retornar todas las descripciones válidas de este concepto y que son de un cierto
+     * tipo
      *
      * @return Una <code>java.util.List</code> de relaciones de tipo <code>description</code>.
      */
     public List<Description> getValidDescriptions() {
         List<Description> someDescriptions = new ArrayList<>();
         for (Description description : descriptions) {
-            if (description.isValid() ) {
+            if (description.isValid()) {
                 someDescriptions.add(description);
             }
         }
@@ -313,6 +317,14 @@ public class ConceptSMTK extends PersistentEntity implements Target, AuditableEn
 
     public void setTags(List<Tag> tags) {
         this.tags = tags;
+    }
+
+    public String getObservation() {
+        return observation;
+    }
+
+    public void setObservation(String observation) {
+        this.observation = observation;
     }
 
     /**

@@ -1,6 +1,5 @@
 package cl.minsal.semantikos.model;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -8,11 +7,31 @@ import java.util.List;
  */
 public class Profile {
 
+    private final long id;
+    /** identificador del profile */
     long idProfile;
+
+    /** Nombre del perfil */
     String name;
+
+    /** Descripción del perfil */
     String description;
 
+    /** Permisos asociados al perfil */
     List<Permission> permissions;
+
+    /**
+     * Este es el constructor único y mínimo para un Profile.
+     *
+     * @param id          Identificador único del Profile.
+     * @param name        Nombre del Profile.
+     * @param description Descripción del Perfil.
+     */
+    public Profile(long id, String name, String description) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+    }
 
     public long getIdProfile() {
         return idProfile;

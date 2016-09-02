@@ -7,6 +7,7 @@ import org.junit.Test;
 
 import java.sql.Timestamp;
 
+import static cl.minsal.semantikos.model.CategoryFactory.getNullCategory;
 import static org.junit.Assert.*;
 
 public class ConceptSMTKTest {
@@ -14,7 +15,7 @@ public class ConceptSMTKTest {
     @Test
     public void testHasFavouriteDescription() throws Exception {
 
-        ConceptSMTK conceptSMTK = new ConceptSMTK();
+        ConceptSMTK conceptSMTK = new ConceptSMTK(getNullCategory());
 
         assertTrue(conceptSMTK.getDescriptions().isEmpty());
         assertFalse(conceptSMTK.hasFavouriteDescription());
@@ -23,7 +24,7 @@ public class ConceptSMTKTest {
     @Test
     public void testHasFavouriteDescription02() throws Exception {
 
-        ConceptSMTK conceptSMTK = new ConceptSMTK();
+        ConceptSMTK conceptSMTK = new ConceptSMTK(getNullCategory());
         Description description = new Description("Infarto Agudo al Miocardio", DescriptionTypeFactory.getInstance().getFavoriteDescriptionType());
         conceptSMTK.addDescription(description);
 
@@ -37,7 +38,7 @@ public class ConceptSMTKTest {
      */
     @Test
     public void testContains() throws Exception {
-        ConceptSMTK conceptSMTK = new ConceptSMTK();
+        ConceptSMTK conceptSMTK = new ConceptSMTK(getNullCategory());
         ConceptSCT theTarget = new ConceptSCT(10, new Timestamp(System.currentTimeMillis()), true, 1, 1);
         RelationshipDefinition relationshipDefinition = new RelationshipDefinition("RelTest", "Nada", MultiplicityFactory.ONE_TO_MANY, new Category());
 
@@ -54,7 +55,7 @@ public class ConceptSMTKTest {
     @Test
     public void testContains02() throws Exception {
 
-        ConceptSMTK conceptSMTK = new ConceptSMTK();
+        ConceptSMTK conceptSMTK = new ConceptSMTK(getNullCategory());
         ConceptSCT theTarget1 = new ConceptSCT(10, new Timestamp(System.currentTimeMillis()), true, 1, 1);
         ConceptSCT theTarget2 = new ConceptSCT(11, new Timestamp(System.currentTimeMillis()), true, 1, 1);
         RelationshipDefinition relationshipDefinition = new RelationshipDefinition("RelTest", "Nada", MultiplicityFactory.ONE_TO_MANY, new Category());
@@ -73,7 +74,7 @@ public class ConceptSMTKTest {
     @Test
     public void testContains03() throws Exception {
 
-        ConceptSMTK conceptSMTK = new ConceptSMTK();
+        ConceptSMTK conceptSMTK = new ConceptSMTK(getNullCategory());
         ConceptSCT theTarget1 = new ConceptSCT(10, new Timestamp(System.currentTimeMillis()), true, 1, 1);
         RelationshipDefinition relationshipDefinition1 = new RelationshipDefinition("RelTest", "Nada", MultiplicityFactory.ONE_TO_MANY, new Category());
         RelationshipDefinition relationshipDefinition2 = new RelationshipDefinition("RelTest", "Nada", MultiplicityFactory.ONE_TO_MANY, new Category());

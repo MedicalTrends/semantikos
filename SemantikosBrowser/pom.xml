@@ -16,12 +16,22 @@
     </parent>
 
     <dependencies>
+
         <dependency>
+            <groupId>org.jboss.spec</groupId>
+            <artifactId>jboss-javaee-7.0</artifactId>
+            <version>1.0.1.Final</version>
+            <type>pom</type>
+            <scope>provided</scope>
+        </dependency>
+
+
+        <!-- dependency>
             <groupId>javax</groupId>
             <artifactId>javaee-web-api</artifactId>
             <version>7.0</version>
             <scope>provided</scope>
-        </dependency>
+        </dependency -->
 
         <dependency>
             <groupId>javax.faces</groupId>
