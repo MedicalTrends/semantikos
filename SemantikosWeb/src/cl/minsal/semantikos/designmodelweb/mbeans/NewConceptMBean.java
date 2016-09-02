@@ -266,8 +266,8 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
     //      Methods
     public void createConcept() throws ParseException {
         category = categoryManager.getCategoryById(categorySelect);
-        //concept = newConcept(category, favoriteDescription);
-        concept = getConceptById(80602);
+        //newConcept(category, favoriteDescription);
+        getConceptById(80602);
 
         RequestContext context = RequestContext.getCurrentInstance();
         context.execute("PF('dialogNameConcept').hide();");
@@ -275,7 +275,7 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
 
     //Este método es responsable de pasarle a la vista un concepto plantilla
     //(llamado desde la vista cuando se desea crear un nuevo concepto)
-    public ConceptSMTKWeb newConcept(Category category, String term) {
+    public void newConcept(Category category, String term) {
 
         /* Valores iniciales para el concepto */
         Description fsn = new Description(term, descriptionManager.getTypeFSN());
@@ -292,18 +292,21 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         fsnDescription.setDescriptionId(descriptionManager.generateDescriptionId());
 
         Description[] descriptions = {favouriteDescription, fsnDescription};
-        return new ConceptSMTKWeb(new ConceptSMTK(conceptManager.generateConceptId(), category, true, true, false, false, false, descriptions));
+
+        concept = new ConceptSMTKWeb(new ConceptSMTK(conceptManager.generateConceptId(), category, true, true, false, false, false, descriptions));
     }
 
     //Este método es responsable de pasarle a la vista un concepto, dado el id del concepto
     //(llamado desde la vista cuando se desea editar un concepto)
-    public ConceptSMTKWeb getConceptById(long conceptId) {
-        ConceptSMTKWeb conceptSMTKWeb = new ConceptSMTKWeb(conceptManager.getConceptByID(conceptId));
-        conceptSMTKWeb.setRelationshipsWeb(conceptManager.loadRelationships(conceptSMTKWeb));
-        //_concept = ConceptSMTKUtils.clone(conceptSMTKWeb);
+    public void getConceptById(long conceptId) {
+        ConceptSMTK conceptSMTK = conceptManager.getConceptByID(conceptId);
+        conceptSMTK.setRelationships(conceptManager.loadRelationships(conceptSMTK));
 
-        category = conceptSMTKWeb.getCategory();
-        return conceptSMTKWeb;
+        concept = new ConceptSMTKWeb(conceptSMTK);
+        //Se reslpalda estado original del concepto
+        _concept = new ConceptSMTKWeb(conceptSMTK);
+
+        category = concept.getCategory();
     }
 
 
@@ -510,16 +513,20 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         } else {
             // Si el concepto está persistido, actualizarlo
             if (concept.isPersistent()) {
-                List<Pair<Description, Description>> descriptionsForUpdate= concept.getDescriptionsForUpdate();
-                List<Description> descriptionsForPersist= concept.getDescriptionsForPersist();
-                List<Description> descriptionsForDelete= concept.getDescriptionsForDelete();
+                /*
+                if(_concept.isToBeReviewed()!=concept.isToBeReviewed() || _concept.isToBeConsulted()!= concept.isToBeConsulted())
+                    conceptManager.updateBasicInfo();
+                */
+                List<Pair<Description, Description>> descriptionsForUpdate= getModifiedDescriptions(_concept.getDescriptionsWeb(), concept.getDescriptionsWeb());
+                List<Description> descriptionsForPersist= getNewDescriptions(_concept.getDescriptionsWeb(), concept.getDescriptionsWeb());
+                List<Description> descriptionsForDelete= getDeletedDescriptions(_concept.getDescriptionsWeb(), concept.getDescriptionsWeb());
 
                 if(descriptionsForUpdate.isEmpty() && descriptionsForPersist.isEmpty() && descriptionsForDelete.isEmpty()){
                     context.addMessage(null, new FacesMessage("Warning", "No se ha realizado ningún cambio al concepto!!"));
                     return;
                 }
 
-                for (Pair<Description, Description> description : concept.getDescriptionsForUpdate()) {
+                for (Pair<Description, Description> description : descriptionsForUpdate) {
                     descriptionManager.updateDescription(concept, description.getFirst(), description.getSecond(), user);
                 }
 
@@ -542,6 +549,54 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
 
     }
 
+    public List<Pair<Description, Description>> getModifiedDescriptions(List<DescriptionWeb> initDescriptions, List<DescriptionWeb> finalDescriptions) {
+
+        List<Pair<Description, Description>> descriptionsForUpdate = new ArrayList<Pair<Description, Description>>();// Si la relación está persistida dejar en el respaldo las originales
+
+        //Primero se buscan todas las descripciones persistidas originales
+        for (DescriptionWeb initDescription : initDescriptions) {
+            //Por cada descripción original se busca su descripcion vista correlacionada
+            for (DescriptionWeb finalDescription : finalDescriptions) {
+                //Si la descripcion correlacionada sufrio alguna modificación agregar el par (init, final)
+                if (initDescription.getId() == finalDescription.getId() && !finalDescription.equals(initDescription) /*finalDescription.hasBeenModified()*/) {
+                    descriptionsForUpdate.add(new Pair(initDescription, finalDescription));
+                }
+            }
+        }
+        return descriptionsForUpdate;
+    }
+
+    public List<Description> getNewDescriptions(List<DescriptionWeb> initDescriptions, List<DescriptionWeb> finalDescriptions) {
+
+        List<Description> descriptionsForPersist = new ArrayList<Description>();
+
+        for (DescriptionWeb descriptionWeb : finalDescriptions) {
+            if(!descriptionWeb.isPersistent())
+                descriptionsForPersist.add(descriptionWeb);
+        }
+        return descriptionsForPersist;
+    }
+
+    public List<Description> getDeletedDescriptions(List<DescriptionWeb> initDescriptions, List<DescriptionWeb> finalDescriptions) {
+
+        List<Description> descriptionsForDelete = new ArrayList<Description>();
+        boolean isDescriptionFound;
+
+        //Primero se buscan todas las descripciones persistidas originales
+        for (Description initDescription : initDescriptions) {
+            isDescriptionFound = false;
+            //Por cada descripción original se busca su descripcion vista correlacionada
+            for (DescriptionWeb finalDescription : finalDescriptions) {
+                //Si la descripcion correlacionada no es encontrada, significa que fué eliminada
+                if (initDescription.getId() == finalDescription.getId()) {
+                    isDescriptionFound = true;
+                }
+            }
+            if(!isDescriptionFound)
+                descriptionsForDelete.add(initDescription);
+        }
+        return  descriptionsForDelete;
+    }
 
 }
 
