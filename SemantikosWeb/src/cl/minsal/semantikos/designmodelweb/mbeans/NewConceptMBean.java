@@ -1,14 +1,15 @@
 package cl.minsal.semantikos.designmodelweb.mbeans;
 
-import cl.minsal.semantikos.kernel.components.*;
+import cl.minsal.semantikos.kernel.components.CategoryManagerInterface;
+import cl.minsal.semantikos.kernel.components.ConceptManagerInterface;
+import cl.minsal.semantikos.kernel.components.DescriptionManagerInterface;
+import cl.minsal.semantikos.kernel.components.HelperTableManagerInterface;
 import cl.minsal.semantikos.model.*;
 import cl.minsal.semantikos.model.basictypes.BasicTypeValue;
 import cl.minsal.semantikos.model.helpertables.HelperTableRecord;
 import cl.minsal.semantikos.model.relationships.Relationship;
 import cl.minsal.semantikos.model.relationships.RelationshipDefinition;
 import cl.minsal.semantikos.model.relationships.Target;
-import cl.minsal.semantikos.model.validations.RelationshipConstraint;
-import cl.minsal.semantikos.util.ConceptSMTKUtils;
 import cl.minsal.semantikos.util.Pair;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.RowEditEvent;
@@ -26,10 +27,11 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.ValidatorException;
 import java.io.Serializable;
-import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+
+import static cl.minsal.semantikos.model.ProfileFactory.DESIGNER_PROFILE;
 
 /**
  * Created by diego on 26/06/2016.
@@ -125,10 +127,7 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         user.setIdUser(1);
         user.setUsername("amauro");
         user.setPassword("amauro");
-        Profile designerProfile = new Profile();
-        designerProfile.setName("designerProfile");
-        designerProfile.setDescription("designerProfile");
-        user.getProfiles().add(designerProfile);
+        user.getProfiles().add(DESIGNER_PROFILE);
 
 
         // Iniciar cuadro de dialogo
@@ -292,7 +291,7 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         fsnDescription.setDescriptionId(descriptionManager.generateDescriptionId());
 
         Description[] descriptions = {favouriteDescription, fsnDescription};
-        return new ConceptSMTKWeb(new ConceptSMTK(conceptManager.generateConceptId(), category, true, true, false, false, false, descriptions));
+        return new ConceptSMTKWeb(new ConceptSMTK(conceptManager.generateConceptId(), category, true, true, false, false, false, "", descriptions));
     }
 
     //Este método es responsable de pasarle a la vista un concepto, dado el id del concepto

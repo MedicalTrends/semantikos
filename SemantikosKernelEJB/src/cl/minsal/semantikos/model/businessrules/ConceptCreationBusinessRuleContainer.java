@@ -7,6 +7,9 @@ import org.slf4j.LoggerFactory;
 
 import javax.validation.constraints.NotNull;
 
+import static cl.minsal.semantikos.model.ProfileFactory.DESIGNER_PROFILE;
+import static cl.minsal.semantikos.model.ProfileFactory.MODELER_PROFILE;
+
 /**
  * Este componente es responsable de almacenar las reglas de negocio relacionadas a la persistencia de conceptos.
  * Para esto, recupera reglas de nego
@@ -22,8 +25,6 @@ public class ConceptCreationBusinessRuleContainer implements BusinessRulesContai
     protected static final String CATEGORY_FARMACOS_MEDICAMENTO_CLINICO_NAME = "Fármacos – Medicamento Clínico";
     protected static final String CATEGORY_FARMACOS_MEDICAMENTO_CLINICO_CON_ENVASE_NAME = "Fármacos – Medicamento Clínico con Envase";
 
-    private Profile designerProfile = createProfile("Diseñador");
-    private Profile modelerProfile = createProfile("Modelador");
 
     public void apply(@NotNull ConceptSMTK conceptSMTK, User IUser) throws BusinessRuleException {
 
@@ -87,8 +88,8 @@ public class ConceptCreationBusinessRuleContainer implements BusinessRulesContai
         farmacosSustanciaCategory.setName(CATEGORY_FARMACOS_SUSTANCIAS_NAME);
         if (!conceptSMTK.belongsTo(farmacosSustanciaCategory)) return;
 
-        boolean isDesigner = IUser.getProfiles().contains(designerProfile);
-        boolean isModeler = IUser.getProfiles().contains(modelerProfile);
+        boolean isDesigner = IUser.getProfiles().contains(DESIGNER_PROFILE);
+        boolean isModeler = IUser.getProfiles().contains(MODELER_PROFILE);
 
         /* El usuario debe ser modelador o diseñador */
         if (!(isDesigner || isModeler)) {
@@ -110,8 +111,8 @@ public class ConceptCreationBusinessRuleContainer implements BusinessRulesContai
         farmacosMedicamentoBasicoCategory.setName(CATEGORY_FARMACOS_MEDICAMENTO_BASICO_NAME);
         if (!conceptSMTK.belongsTo(farmacosMedicamentoBasicoCategory)) return;
 
-        boolean isDesigner = IUser.getProfiles().contains(designerProfile);
-        boolean isModeler = IUser.getProfiles().contains(modelerProfile);
+        boolean isDesigner = IUser.getProfiles().contains(DESIGNER_PROFILE);
+        boolean isModeler = IUser.getProfiles().contains(MODELER_PROFILE);
 
         /* El usuario debe ser modelador o diseñador */
         if (!(isDesigner || isModeler)) {
@@ -132,8 +133,8 @@ public class ConceptCreationBusinessRuleContainer implements BusinessRulesContai
         farmMedClinic.setName(CATEGORY_FARMACOS_MEDICAMENTO_CLINICO_NAME);
         if (!conceptSMTK.belongsTo(farmMedClinic)) return;
 
-        boolean isDesigner = IUser.getProfiles().contains(designerProfile);
-        boolean isModeler = IUser.getProfiles().contains(modelerProfile);
+        boolean isDesigner = IUser.getProfiles().contains(DESIGNER_PROFILE);
+        boolean isModeler = IUser.getProfiles().contains(MODELER_PROFILE);
 
         /* El usuario debe ser modelador o diseñador */
         if (!(isDesigner || isModeler)) {
@@ -155,8 +156,8 @@ public class ConceptCreationBusinessRuleContainer implements BusinessRulesContai
         farmMedClinicEnv.setName(CATEGORY_FARMACOS_MEDICAMENTO_CLINICO_CON_ENVASE_NAME);
         if (!conceptSMTK.belongsTo(farmMedClinicEnv)) return;
 
-        boolean isDesigner = IUser.getProfiles().contains(designerProfile);
-        boolean isModeler = IUser.getProfiles().contains(modelerProfile);
+        boolean isDesigner = IUser.getProfiles().contains(DESIGNER_PROFILE);
+        boolean isModeler = IUser.getProfiles().contains(MODELER_PROFILE);
 
         /* El usuario debe ser modelador o diseñador */
         if (!(isDesigner || isModeler)) {
@@ -164,14 +165,7 @@ public class ConceptCreationBusinessRuleContainer implements BusinessRulesContai
         }
     }
 
-
     private void br101HasFSN(ConceptSMTK conceptSMTK) {
         conceptSMTK.getDescriptionFSN();
-    }
-
-    private Profile createProfile(String profileName) {
-        Profile designerProfile = new Profile();
-        designerProfile.setName(profileName);
-        return designerProfile;
     }
 }

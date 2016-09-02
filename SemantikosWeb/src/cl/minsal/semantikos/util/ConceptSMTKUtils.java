@@ -14,7 +14,7 @@ public class ConceptSMTKUtils {
     public static ConceptSMTK clone(ConceptSMTK concept){
         ConceptSMTK clone= new ConceptSMTK(concept.getId(), concept.getConceptID(), concept.getCategory(),
                                            concept.isToBeReviewed(), concept.isToBeConsulted(), concept.isModeled(),
-                                           concept.isFullyDefined(), concept.isPublished());
+                                           concept.isFullyDefined(), concept.isPublished(), concept.getObservation());
         for (Description description : concept.getValidDescriptions()) {
             clone.addDescription(new Description(description.getDescriptionId(), description.getDescriptionType(),
                                                  description.getTerm(), description.isCaseSensitive(),

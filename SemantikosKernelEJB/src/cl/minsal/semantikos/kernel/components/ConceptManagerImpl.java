@@ -185,8 +185,18 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
         /* Pre-condiciones: Reglas de negocio para la persistencia */
         new ConceptCreationBusinessRuleContainer().apply(conceptSMTK, user);
 
-        /* En este momento se está listo para persistir el concepto */
-        conceptDAO.persist(conceptSMTK, user);
+        /* En este momento se está listo para persistir el concepto (sus atributos básicos) */
+        conceptDAO.persistConceptAttributes(conceptSMTK, user);
+
+        /* Y se persisten sus descripciones */
+        for (Description description : conceptSMTK.getDescriptions()) {
+            descriptionDAO.persist(description, conceptSMTK, user);
+        }
+
+        /* Y sus relaciones */
+        for (Relationship relationship : conceptSMTK.getRelationships()) {
+            relationshipDAO.persist(relationship);
+        }
 
         /* Se deja registro en la auditoría sólo para conceptos modelados */
         if (conceptSMTK.isModeled()) {

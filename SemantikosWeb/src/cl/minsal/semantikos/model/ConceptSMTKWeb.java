@@ -5,9 +5,7 @@ import cl.minsal.semantikos.model.relationships.Relationship;
 import cl.minsal.semantikos.model.relationships.RelationshipDefinition;
 import cl.minsal.semantikos.util.Pair;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -25,12 +23,12 @@ public class ConceptSMTKWeb extends ConceptSMTK {
     //Este es el constructor mínimo
     public ConceptSMTKWeb(ConceptSMTK conceptSMTK) {
         super(conceptSMTK.getConceptID(), conceptSMTK.getCategory(), conceptSMTK.isToBeReviewed(), conceptSMTK.isToBeConsulted(), conceptSMTK.isModeled(),
-                conceptSMTK.isFullyDefined(), conceptSMTK.isPublished(), conceptSMTK.getDescriptions().toArray(new Description[conceptSMTK.getDescriptions().size()]));
-        if(conceptSMTK.isPersistent()){
+                conceptSMTK.isFullyDefined(), conceptSMTK.isPublished(), conceptSMTK.getObservation(), conceptSMTK.getDescriptions().toArray(new Description[conceptSMTK.getDescriptions().size()]));
+        if (conceptSMTK.isPersistent()) {
             this.setId(conceptSMTK.getId());
             // Si la descripcion está persistida, clonar la descripción y dejar en el respaldo las originales
             for (Description description : this.getValidDescriptions())
-                this.descriptionsWeb.add(new DescriptionWeb(description.getId(),description));
+                this.descriptionsWeb.add(new DescriptionWeb(description.getId(), description));
             // Si la relación está persistida dejar en el respaldo las originales
             for (Relationship relationship : this.getValidRelationships())
                 this.relationshipsWeb.add(new RelationshipWeb(relationship.getId(), relationship));
@@ -108,7 +106,6 @@ public class ConceptSMTKWeb extends ConceptSMTK {
     }
 
 
-
     public List<Pair<Description, Description>> getDescriptionsForUpdate() {
 
         List<Pair<Description, Description>> descriptionsForUpdate = new ArrayList<Pair<Description, Description>>();// Si la relación está persistida dejar en el respaldo las originales
@@ -131,7 +128,7 @@ public class ConceptSMTKWeb extends ConceptSMTK {
         List<Description> descriptionsForPersist = new ArrayList<Description>();
 
         for (DescriptionWeb descriptionWeb : getDescriptionsWeb()) {
-            if(!descriptionWeb.isPersistent())
+            if (!descriptionWeb.isPersistent())
                 descriptionsForPersist.add(descriptionWeb);
         }
         return descriptionsForPersist;
@@ -152,10 +149,10 @@ public class ConceptSMTKWeb extends ConceptSMTK {
                     isDescriptionFound = true;
                 }
             }
-            if(!isDescriptionFound)
+            if (!isDescriptionFound)
                 descriptionsForDelete.add(initDescription);
         }
-        return  descriptionsForDelete;
+        return descriptionsForDelete;
     }
 
 

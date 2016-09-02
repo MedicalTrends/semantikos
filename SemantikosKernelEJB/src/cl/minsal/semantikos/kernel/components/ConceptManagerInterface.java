@@ -19,8 +19,7 @@ public interface ConceptManagerInterface {
 
     /**
      * Este método es responsable de persistir un concepto que no se encuentra persistido. Esta acción, de
-     * persistencia,
-     * queda registrado como una actividad de auditoría.
+     * persistencia, queda registrado como una actividad de auditoría.
      *
      * @param conceptSMTK El concepto a persistir.
      * @param user        El usuario que persiste el concepto.

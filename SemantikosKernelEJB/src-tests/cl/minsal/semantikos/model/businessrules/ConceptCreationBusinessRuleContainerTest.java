@@ -4,23 +4,24 @@ import cl.minsal.semantikos.model.*;
 import cl.minsal.semantikos.model.exceptions.BusinessRuleException;
 import org.junit.Test;
 
+import static cl.minsal.semantikos.model.CategoryFactory.getNullCategory;
 import static cl.minsal.semantikos.model.DescriptionTypeFactory.getInstance;
+import static cl.minsal.semantikos.model.ProfileFactory.ADMINISTRATOR_PROFILE;
+import static cl.minsal.semantikos.model.ProfileFactory.DESIGNER_PROFILE;
+import static cl.minsal.semantikos.model.ProfileFactory.MODELER_PROFILE;
 import static cl.minsal.semantikos.model.businessrules.ConceptCreationBusinessRuleContainer.*;
 
 public class ConceptCreationBusinessRuleContainerTest {
 
-    private static final String ADMIN_PROFILE_NAME = "Admin";
-    private static final String DESIGNER_PROFILE_NAME = "Diseñador";
-    private static final String MODELER_PROFILE_NAME = "Modelador";
-
     private ConceptCreationBusinessRuleContainer conceptCreationBRC = new ConceptCreationBusinessRuleContainer();
+
     private Category catFarSus = createCategory(CATEGORY_FARMACOS_SUSTANCIAS_NAME);
     private Category catFarMedBas = createCategory(CATEGORY_FARMACOS_MEDICAMENTO_BASICO_NAME);
     private Category catFarMedCli = createCategory(CATEGORY_FARMACOS_MEDICAMENTO_CLINICO_NAME);
 
-    private User IUserDesigner = createUserProfile(DESIGNER_PROFILE_NAME);
-    private User IUserModeler = createUserProfile(MODELER_PROFILE_NAME);
-    private User IUserAdmin = createUserProfile(ADMIN_PROFILE_NAME);
+    private User IUserDesigner = createUserProfile(DESIGNER_PROFILE);
+    private User IUserModeler = createUserProfile(MODELER_PROFILE);
+    private User IUserAdmin = createUserProfile(ADMINISTRATOR_PROFILE);
 
     @Test(expected = BusinessRuleException.class)
     public void testApply_FarmSubs_Designer() throws Exception {
@@ -84,11 +85,11 @@ public class ConceptCreationBusinessRuleContainerTest {
      */
     @Test
     public void testBR001_02() throws Exception {
-        conceptCreationBRC.br001creationRights(new ConceptSMTK(), IUserModeler);
+        conceptCreationBRC.br001creationRights(new ConceptSMTK(getNullCategory()), IUserModeler);
     }
 
     /**
-     * Usuarios con rol de Diseñador o Modelador pueden crear conceptos de esta categoria.
+     * Usuarios con rol de Diseñador o Modelador pueden crear conceptos de esta categoría.
      * Este test verifica si usuarios con otros roles no lo logran
      */
     @Test(expected = BusinessRuleException.class)
@@ -98,7 +99,7 @@ public class ConceptCreationBusinessRuleContainerTest {
     }
 
     /**
-     * Usuarios con rol de Diseñador o Modelador pueden crear conceptos de esta categoria.
+     * Usuarios con rol de Diseñador o Modelador pueden crear conceptos de esta categoría.
      *
      * @throws Exception
      */
@@ -108,7 +109,7 @@ public class ConceptCreationBusinessRuleContainerTest {
     }
 
     /**
-     * Usuarios con rol de Diseñador o Modelador pueden crear conceptos de esta categoria.
+     * Usuarios con rol de Diseñador o Modelador pueden crear conceptos de esta categoría.
      *
      * @throws Exception
      */
@@ -118,7 +119,7 @@ public class ConceptCreationBusinessRuleContainerTest {
     }
 
     /**
-     * Usuarios con rol de Diseñador o Modelador pueden crear conceptos de esta categoria.
+     * Usuarios con rol de Diseñador o Modelador pueden crear conceptos de esta categoría.
      * Un usuario Admin debe arrojar una excepcion
      *
      * @throws Exception
@@ -192,11 +193,8 @@ public class ConceptCreationBusinessRuleContainerTest {
      *
      * @return Un usuario fresco de perfil diseñador.
      */
-    private User createUserProfile(String profileName) {
+    private User createUserProfile(Profile profile) {
         User user = new User();
-        user.setName(profileName);
-        Profile profile = new Profile();
-        profile.setName(profileName);
         user.addProfile(profile);
         return user;
     }

@@ -2,10 +2,7 @@ package cl.minsal.semantikos.adminCategory;
 
 import cl.minsal.semantikos.kernel.components.CategoryManagerImpl;
 import cl.minsal.semantikos.kernel.components.CategoryManagerInterface;
-import cl.minsal.semantikos.model.Category;
-import cl.minsal.semantikos.model.Multiplicity;
-import cl.minsal.semantikos.model.Profile;
-import cl.minsal.semantikos.model.User;
+import cl.minsal.semantikos.model.*;
 import cl.minsal.semantikos.model.relationships.RelationshipDefinition;
 import org.primefaces.context.RequestContext;
 
@@ -15,6 +12,8 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import java.util.ArrayList;
 import java.util.List;
+
+import static cl.minsal.semantikos.model.ProfileFactory.DESIGNER_PROFILE;
 
 /**
  * Created by des01c7 on 31-08-16.
@@ -81,19 +80,13 @@ public class beanCategory {
         user.setIdUser(1);
         user.setUsername("amauro");
         user.setPassword("amauro");
-        Profile designerProfile = new Profile();
-        designerProfile.setName("designerProfile");
-        designerProfile.setDescription("designerProfile");
-        user.getProfiles().add(designerProfile);
-
+        user.getProfiles().add(DESIGNER_PROFILE);
 
         category.setRelationshipDefinitions(relationshipDefinitions);
         categoryManager.createCategory(category,user);
     }
 
     public void createRelationshipDefinition(){
-
-
         if(isSmtk){
             relationshipDefinitions.add(new RelationshipDefinition(nameRelationshipDefinition,descriptionRelationshipDefinition,new Multiplicity(lowerBoundary,upperBoundary),categorySelected));
         }
