@@ -190,7 +190,7 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
 
         /* Y se persisten sus descripciones */
         for (Description description : conceptSMTK.getDescriptions()) {
-            descriptionDAO.persist(description, conceptSMTK, user);
+            descriptionDAO.persist(description, user);
         }
 
         /* Y sus relaciones */

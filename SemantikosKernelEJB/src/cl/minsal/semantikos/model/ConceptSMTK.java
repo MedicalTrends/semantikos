@@ -115,6 +115,7 @@ public class ConceptSMTK extends PersistentEntity implements Target, AuditableEn
         this.setId(id);
 
         this.conceptID = conceptID;
+        this.category = category;
         this.isToBeReviewed = isToBeReviewed;
         this.isToBeConsulted = isToBeConsulted;
         this.isFullyDefined = isFullyDefined;

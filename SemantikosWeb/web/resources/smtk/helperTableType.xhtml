@@ -17,7 +17,6 @@
 <composite:implementation>
     <!-- Multiplicidad 1 y Nueva relacion -->
     <p:panel id="helperTableTypeSimpleNew"
-             styleClass="#{validatorBean.uiState}"
              widgetVar="panelHelperTableTypeSimple#{cc.attrs.relationshipDefinition.id}"
              rendered="#{cc.attrs.relationshipDefinition.multiplicity.simple and not cc.attrs.concept.hasRelationships(cc.attrs.relationshipDefinition)}">
 
@@ -53,7 +52,6 @@
 
     <!-- Multiplicidad 1 y relacion existente -->
     <p:panel id="helperTableTypeSimple"
-             styleClass="#{validatorBean.uiState}"
              widgetVar="panelHelperTableTypeSimple#{cc.attrs.relationshipDefinition.id}"
              rendered="#{cc.attrs.relationshipDefinition.multiplicity.simple and cc.attrs.concept.hasRelationships(cc.attrs.relationshipDefinition)}">
 
@@ -91,7 +89,7 @@
 
     <!-- Multiplicidad N-->
     <p:panel id="helperTableTypeCollection"
-             styleClass="#{validatorBean.uiState} helper#{cc.attrs.relationshipDefinition.id}"
+             styleClass="helper#{cc.attrs.relationshipDefinition.id}"
              rendered="#{cc.attrs.relationshipDefinition.multiplicity.collection}">
         <smtk:relationshipValidator relationships="#{cc.attrs.concept.getValidRelationshipsWebByRelationDefinition(cc.attrs.relationshipDefinition)}"
                                     relationshipDefinition="#{cc.attrs.relationshipDefinition}"

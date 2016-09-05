@@ -24,20 +24,21 @@ public class ConceptSMTKWeb extends ConceptSMTK {
 
     //Este es el constructor mínimo
     public ConceptSMTKWeb(ConceptSMTK conceptSMTK) {
+        // Crear un nuevo concepto con su incormación básica
         super(conceptSMTK.getConceptID(), conceptSMTK.getCategory(), conceptSMTK.isToBeReviewed(), conceptSMTK.isToBeConsulted(), conceptSMTK.isModeled(),
-                conceptSMTK.isFullyDefined(), conceptSMTK.isPublished());
+                conceptSMTK.isFullyDefined(), conceptSMTK.isPublished(), conceptSMTK.getObservation());
+        // Agregar descripciones y relaciones
         if(conceptSMTK.isPersistent()){
             this.setId(conceptSMTK.getId());
-            // Si la descripcion está persistida, clonar la descripción y dejar en el respaldo las originales
+            // Si el concepto esta persistido clonar las descripciones con su id
             for (Description description : conceptSMTK.getValidDescriptions())
                 addDescriptionWeb(new DescriptionWeb(description.getId(), description));
-                //this.descriptionsWeb.add(new DescriptionWeb(description.getId(),description));
-            // Si la relación está persistida dejar en el respaldo las originales
+            // Si el concepto esta persistido clonar las relaciones con su id
             for (Relationship relationship : conceptSMTK.getValidRelationships())
                 addRelationshipWeb(new RelationshipWeb(relationship.getId(), relationship));
-                //this.relationshipsWeb.add(new RelationshipWeb(relationship.getId(), relationship));
         }
         else{
+            // Si el concepto no esta persistido clonar las descripciones sin su id
             for (Description description : conceptSMTK.getValidDescriptions())
                 addDescriptionWeb(new DescriptionWeb(description));
         }
@@ -64,6 +65,10 @@ public class ConceptSMTKWeb extends ConceptSMTK {
 
     public List<DescriptionWeb> getDescriptionsWeb() {
         return descriptionsWeb;
+    }
+
+    public List<RelationshipWeb> getRelationshipsWeb() {
+        return relationshipsWeb;
     }
 
     public void setDescriptionsWeb(List<DescriptionWeb> descriptionsWeb) {
@@ -215,7 +220,10 @@ public class ConceptSMTKWeb extends ConceptSMTK {
      */
     public void addRelationshipWeb(Relationship relationship) {
         super.addRelationship(relationship);
-        this.relationshipsWeb.add(new RelationshipWeb(relationship.getId(), relationship));
+        if(relationship.isPersistent())
+            this.relationshipsWeb.add(new RelationshipWeb(relationship.getId(), relationship));
+        else
+            this.relationshipsWeb.add(new RelationshipWeb(relationship));
     }
 
 

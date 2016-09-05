@@ -20,7 +20,6 @@
 
     <p:panel id="panelSMTK"
              style="margin:20px;"
-             styleClass="#{validatorBean.uiState}"
              rendered="#{cc.attrs.relationshipDefinition.multiplicity.upperBoundary==1000}">
 
         <h3>#{cc.attrs.relationshipDefinition.name}</h3>
@@ -118,7 +117,7 @@
     </p:panel>
 
     <p:panel id="multiplicityN"
-             styleClass="#{validatorBean.uiState} tablas2"
+             styleClass="tablas2"
              style="margin:20px;"
              rendered="#{cc.attrs.relationshipDefinition.multiplicity.upperBoundary!=1}">
         <h3>#{cc.attrs.relationshipDefinition.name}</h3>
@@ -132,6 +131,7 @@
                                 completeMethod="#{smtkBean.getConceptSearchInput}"
                                 converter="conceptConverter"
                                 var="concept"
+                                validator="#{validatorBean.validateRelationships}"
                                 disabled="#{conceptBean.limitRelationship(cc.attrs.relationshipDefinition)}"
                                 value="#{conceptBean.conceptSelected}"
                                 itemLabel="#{concept.descriptionFavorite.term}"
@@ -196,7 +196,7 @@
     </p:panel>
 
     <p:panel id="multiplicityOne"
-             styleClass="#{validatorBean.uiState} concept"
+             styleClass="concept"
              style="margin:20px;"
              rendered="#{cc.attrs.relationshipDefinition.multiplicity.simple}">
 
@@ -213,6 +213,7 @@
                                 forceSelection="true"
                                 id="findConceptSMTK" scrollHeight="200" size="5" style="width: 85%;"
                                 inputStyle="width: 85%;"
+                                validator="#{validatorBean.validateRelationships}"
                                 completeMethod="#{smtkBean.getConceptSearchInput}"
                                 converter="conceptConverter"
                                 var="concept"
