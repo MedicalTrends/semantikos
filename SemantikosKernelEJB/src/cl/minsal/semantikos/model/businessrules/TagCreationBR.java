@@ -14,7 +14,6 @@ public class TagCreationBR {
 
     private void br001DeepnessLevel(Tag tag) {
         br001_3LevelDeep(tag);
-
     }
 
     /**

@@ -72,6 +72,7 @@ public class ConceptSMTK extends PersistentEntity implements Target, AuditableEn
      * Este método es responsable de determinar si el estado de publicación del concepto cambio recientemente.
      */
     private boolean justPublished = false;
+    private TagSMTK tagSMTK;
 
     /**
      * La categoría es la mínima información que se le puede dar a un concepto.
@@ -596,5 +597,13 @@ public class ConceptSMTK extends PersistentEntity implements Target, AuditableEn
      */
     public boolean isJustPublished() {
         return justPublished;
+    }
+
+    public TagSMTK getTagSMTK() {
+        return tagSMTK;
+    }
+
+    public void setTagSMTK(TagSMTK tagSMTK) {
+        this.tagSMTK = tagSMTK;
     }
 }

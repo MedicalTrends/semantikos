@@ -3,11 +3,9 @@ package cl.minsal.semantikos.kernel.components;
 import cl.minsal.semantikos.kernel.daos.ConceptDAO;
 import cl.minsal.semantikos.kernel.daos.DescriptionDAO;
 import cl.minsal.semantikos.kernel.daos.RelationshipDAO;
-import cl.minsal.semantikos.model.Category;
-import cl.minsal.semantikos.model.ConceptSMTK;
-import cl.minsal.semantikos.model.Description;
-import cl.minsal.semantikos.model.User;
+import cl.minsal.semantikos.model.*;
 import cl.minsal.semantikos.model.businessrules.ConceptCreationBusinessRuleContainer;
+import cl.minsal.semantikos.model.businessrules.ConceptEditionBusinessRuleContainer;
 import cl.minsal.semantikos.model.businessrules.RelationshipEditionBR;
 import cl.minsal.semantikos.model.relationships.Relationship;
 import org.slf4j.Logger;
@@ -230,6 +228,11 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
         }
     }
 
+    @Override
+    public void changeTagSMTK(@NotNull ConceptSMTK conceptSMTK, @NotNull TagSMTK tagSMTK, User user) {
+        new ConceptEditionBusinessRuleContainer().preconditionsConceptEditionTag(conceptSMTK);
+    }
+
     /**
      * Este método es responsable de actualizar las relaciones respecto a una edición en una relación. Una relación
      * actualizada se compone de dos instancias de <code>Relationship</code> con el mismo identificador único, pero una
@@ -396,7 +399,6 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
         }
         return pattern;
     }
-
 
     /**
      * Método encargado de truncar a un largo de 3 las palabras del String ingresado

@@ -1,9 +1,6 @@
 package cl.minsal.semantikos.kernel.components;
 
-import cl.minsal.semantikos.model.Category;
-import cl.minsal.semantikos.model.ConceptSMTK;
-import cl.minsal.semantikos.model.Description;
-import cl.minsal.semantikos.model.User;
+import cl.minsal.semantikos.model.*;
 import cl.minsal.semantikos.model.relationships.Relationship;
 
 import javax.ejb.Local;
@@ -28,18 +25,29 @@ public interface ConceptManagerInterface {
 
     /**
      * Este método es responsable de cambiar el estado de publicación del concepto.
+     *
      * @param conceptSMTK El concepto cuyo estado de publicación ha cambiado.
-     * @param user El usuario que realizó el cambio.
+     * @param user        El usuario que realizó el cambio.
      */
     public void publish(@NotNull ConceptSMTK conceptSMTK, User user);
 
     /**
      * Este método es responsable de cambiar el concepto de una categoría a otra.
-     *  @param conceptSMTK El concepto cuya categoría se desea cambiar.
+     *
+     * @param conceptSMTK    El concepto cuya categoría se desea cambiar.
      * @param targetCategory La categoría destino del concepto.
-     * @param user
+     * @param user           El usuario que realiza la operación.
      */
     public void changeCategory(@NotNull ConceptSMTK conceptSMTK, @NotNull Category targetCategory, User user);
+
+    /**
+     * Este método es responsable de cambiar el concepto de una categoría a otra.
+     *
+     * @param conceptSMTK El concepto cuya categoría se desea cambiar.
+     * @param tagSMTK     La categoría destino del concepto.
+     * @param user        El usuario que realiza la operación.
+     */
+    public void changeTagSMTK(@NotNull ConceptSMTK conceptSMTK, @NotNull TagSMTK tagSMTK, User user);
 
     /**
      * Este método es responsable de recuperar el concepto con DESCRIPTION_ID.
