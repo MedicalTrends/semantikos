@@ -137,6 +137,15 @@ public class AuditManagerImpl implements AuditManagerInterface {
     }
 
     @Override
+    public void recordDescriptionDeletion(ConceptSMTK conceptSMTK, Description description, User user) {
+              /* Se validan las reglas de negocio para realizar el registro */
+        ConceptAuditAction auditAction = new ConceptAuditAction(conceptSMTK, CONCEPT_DESCRIPTION_DELETION, now(), user, description);
+        new HistoryRecordBL().validate(auditAction);
+
+        auditDAO.recordAuditAction(auditAction);
+    }
+
+    @Override
     public List<AuditActionType> getAllAuditActionTypes() {
         return Arrays.asList(AuditActionType.values());
     }

@@ -62,9 +62,11 @@ public interface DescriptionManagerInterface {
     /**
      * Este método es responsable de eliminar lógicamente una descripción.
      *
+     * @param conceptSMTK El concepto cuya descripción se desea eliminar.
      * @param description La descripción que se desea eliminar.
+     * @param user        El usuario que realiza la eliminación.
      */
-    public void deleteDescription(Description description);
+    public void deleteDescription(ConceptSMTK conceptSMTK, Description description, User user);
 
     /**
      * Este método es responsable de mover una descripción (<code>description</code>) asociada a un concepto
