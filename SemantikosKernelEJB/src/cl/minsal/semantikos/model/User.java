@@ -48,7 +48,6 @@ public class User {
      */
     public User() {
         this.profiles = new ArrayList<>();
-
     }
 
     private User(long idUser, String username, String name, boolean locked) {
@@ -56,6 +55,20 @@ public class User {
         this.username = username;
         this.name = name;
         this.locked = locked;
+    }
+
+    /**
+     * Constructor extendido para crear una instancia de usuario básica real.
+     *
+     * @param idUser   Identificador único del Usuario.
+     * @param username Nombre de Usuario
+     * @param name     Nombre del Usuario
+     * @param password Contraseña
+     * @param locked   Bloqueado?
+     */
+    public User(long idUser, String username, String name, String password, boolean locked) {
+        this(idUser, username, name, locked);
+        this.setPassword(password);
     }
 
     public long getIdUser() {
@@ -120,8 +133,8 @@ public class User {
 
     public String getFullName() {
         return name +
-                ((lastName != null) ? " " + lastName:"") +
-                ((secondLastName != null) ? " " + secondLastName:"");
+                ((lastName != null) ? " " + lastName : "") +
+                ((secondLastName != null) ? " " + secondLastName : "");
     }
 
     public String getPassword() {

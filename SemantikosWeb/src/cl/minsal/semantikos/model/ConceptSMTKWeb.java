@@ -25,7 +25,7 @@ public class ConceptSMTKWeb extends ConceptSMTK {
     //Este es el constructor mínimo
     public ConceptSMTKWeb(ConceptSMTK conceptSMTK) {
         super(conceptSMTK.getConceptID(), conceptSMTK.getCategory(), conceptSMTK.isToBeReviewed(), conceptSMTK.isToBeConsulted(), conceptSMTK.isModeled(),
-                conceptSMTK.isFullyDefined(), conceptSMTK.isPublished());
+                conceptSMTK.isFullyDefined(), conceptSMTK.isPublished(), conceptSMTK.getObservation());
         if(conceptSMTK.isPersistent()){
             this.setId(conceptSMTK.getId());
             // Si la descripcion está persistida, clonar la descripción y dejar en el respaldo las originales

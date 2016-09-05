@@ -1,6 +1,7 @@
 package cl.minsal.semantikos.model.businessrules;
 
 import cl.minsal.semantikos.kernel.daos.DAO;
+import cl.minsal.semantikos.model.ConceptSMTK;
 import cl.minsal.semantikos.model.Tag;
 import cl.minsal.semantikos.model.exceptions.BusinessRuleException;
 import org.junit.Test;

@@ -24,6 +24,8 @@ import java.io.Serializable;
 import java.text.ParseException;
 import java.util.*;
 
+import static cl.minsal.semantikos.model.ProfileFactory.DESIGNER_PROFILE;
+
 /**
  * Created by diego on 26/06/2016.
  * Created by diego on 26/06/2016.
@@ -112,17 +114,9 @@ public class ConceptBean implements Serializable {
     @PostConstruct
     protected void initialize() throws ParseException {
 
-        // TODO: Manejar el usuario desde la sesión
-        user = new User();
-
-        user.setIdUser(1);
-        user.setUsername("amauro");
-        user.setPassword("amauro");
-        Profile designerProfile = new Profile();
-        designerProfile.setName("designerProfile");
-        designerProfile.setDescription("designerProfile");
-        user.getProfiles().add(designerProfile);
-
+        // TODO: Diego: Manejar el usuario desde la sesión
+        user = new User(1, "amauro", "Alejandro Mauro", "amauro", false);
+        user.getProfiles().add(DESIGNER_PROFILE);
 
         // Iniciar cuadro de dialogo
 
@@ -287,7 +281,9 @@ public class ConceptBean implements Serializable {
 
         Description[] descriptions = {favouriteDescription, fsnDescription};
 
-        ConceptSMTK conceptSMTK = new ConceptSMTK(conceptManager.generateConceptId(), category, true, true, false, false, false, descriptions);
+        //TODO: Diego: Agregar la observación.
+        String observation = "";
+        ConceptSMTK conceptSMTK = new ConceptSMTK(conceptManager.generateConceptId(), category, true, true, false, false, false, observation, descriptions);
 
         concept = new ConceptSMTKWeb(conceptSMTK);
     }
