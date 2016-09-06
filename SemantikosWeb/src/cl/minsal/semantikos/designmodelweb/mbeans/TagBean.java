@@ -1,7 +1,6 @@
 package cl.minsal.semantikos.designmodelweb.mbeans;
 
 import cl.minsal.semantikos.kernel.components.TagManager;
-import cl.minsal.semantikos.model.ConceptSMTK;
 import cl.minsal.semantikos.model.Tag;
 
 import javax.annotation.PostConstruct;
@@ -24,16 +23,10 @@ public class TagBean {
 
     private List<Tag> tagListTable;
 
-    private List<Tag> tagEditList;
-
-    private List<Tag> findTagList;
 
     private List<Tag> findSonTagList;
 
     private List<Tag> listTagSon;
-
-
-    private List<Tag> children;
 
 
     private Tag selectTagListTags;
@@ -83,22 +76,14 @@ public class TagBean {
     public List<Tag> findTagByName(String nameTag) {
 
         if (nameTag != null) {
-            return tagManager.findTagByNamePattern(nameTag);
+            return tagManager.findTag(tagCreate,nameTag);
         }
         return new ArrayList<Tag>();
     }
 
     public List<Tag> findTagByNameEditTag(String nameTag) {
-
         if (nameTag != null) {
-            List<Tag> tags= tagManager.findTagByNamePattern(nameTag);
-            for (int i = 0; i < tags.size(); i++) {
-                if(tags.get(i).equals(tagEdit)){
-                    tags.remove(i);
-                    return tags;
-                }
-            }
-            return tags;
+            return tagManager.findTag(tagEdit,nameTag);
         }
         return new ArrayList<Tag>();
     }
@@ -112,9 +97,8 @@ public class TagBean {
                 findSonTagList = tagManager.getOtherTags(tagCreate.getParentTag());
             }
         }
-
-        if(tagCreate.getChildrenTag().size()>0){
-            for (Tag tagSonToCreate: tagCreate.getChildrenTag()) {
+        if(tagCreate.getSonTag().size()>0){
+            for (Tag tagSonToCreate: tagCreate.getSonTag()) {
                 for (Tag tagSonList : findSonTagList) {
                     if (tagSonList.equals(tagSonToCreate)) {
                         findSonTagList.remove(tagSonList);
@@ -124,43 +108,11 @@ public class TagBean {
             }
             return findSonTagList;
         }
-
         return findSonTagList;
-
-
     }
 
     public List<Tag> listTagSonEdit() {
-
-        listTagSon = tagManager.getAllTagsWithoutParent();
-
-        for (int i = 0; i < listTagSon.size(); i++) {
-            if(listTagSon.get(i).equals(tagEdit)){
-                listTagSon.remove(i);
-                break;
-            }
-        }
-
-        if(tagEdit.getParentTag()!=null){
-            if (tagEdit.getParentTag().getId() !=-1) {
-                listTagSon = tagManager.getOtherTags(tagEdit.getParentTag());
-            }
-        }
-        if(tagEdit.getChildrenTag().size()>0){
-            for (Tag tagSonToEdit: tagEdit.getChildrenTag()) {
-                for (Tag tagSonList : listTagSon) {
-                    if (tagSonList.equals(tagSonToEdit)) {
-                        listTagSon.remove(tagSonList);
-                        break;
-                    }
-                }
-            }
-            return listTagSon;
-        }
-
-        return listTagSon;
-
-
+        return listTagSon= tagManager.getOtherTags(tagEdit);
     }
 
     public void createTagParent(){
@@ -168,7 +120,7 @@ public class TagBean {
     }
 
     public void createTagSon(){
-        tagCreate.addChild(new Tag(-1,nameTag,colorBackground,colorText,null));
+        tagCreate.addSon(new Tag(-1,nameTag,colorBackground,colorText,null));
 
     }
 
@@ -178,13 +130,13 @@ public class TagBean {
     }
 
     public void addTagSon(){
-        tagCreate.addChild(sonTagSelect);
+        tagCreate.addSon(sonTagSelect);
         findTagSon();
 
     }
 
     public void removeTagSon(Tag son){
-        tagCreate.getChildrenTag().remove(son);
+        tagCreate.getSonTag().remove(son);
     }
 
     public void removeTagParent(){
@@ -195,10 +147,16 @@ public class TagBean {
 
     public void createTag(){
         tagManager.persist(tagCreate);
+        tagListTable= tagManager.getAllTags();
+        tagList= tagManager.getAllTags();
+        findSonTagList=tagManager.getAllTagsWithoutParent();
+        listTagSon=tagManager.getAllTagsWithoutParent();
+        tagCreate= new Tag(-1,null,null,null,null);
+        parentTagToCreate= new Tag(-1,null,null,null,null);
     }
 
     public void linkSon() {
-        tagEdit.addChild(addSonSelect);
+        tagEdit.addSon(addSonSelect);
         tagManager.link(tagEdit,addSonSelect);
         listTagSonEdit();
         tagListTable= tagManager.getAllTags();
@@ -214,7 +172,7 @@ public class TagBean {
 
     public void unlinkSon(Tag tagUnlink) {
         tagManager.unlink(tagEdit, tagUnlink);
-        tagEdit.getChildrenTag().remove(tagUnlink);
+        tagEdit.getSonTag().remove(tagUnlink);
         tagListTable= tagManager.getAllTags();
     }
 
@@ -230,18 +188,13 @@ public class TagBean {
     }
 
 
+
+
+
     /**
      * Getter & Setter
      */
 
-
-    public List<Tag> getTagEditList() {
-        return tagEditList;
-    }
-
-    public void setTagEditList(List<Tag> tagEditList) {
-        this.tagEditList = tagEditList;
-    }
 
     public List<Tag> getFindSonTagList() {
         return findSonTagList;
@@ -275,10 +228,6 @@ public class TagBean {
         this.tagList = tagList;
     }
 
-    public List<Tag> getFindTagList() {
-        return findTagList;
-    }
-
     public Tag getSelectTagListTags() {
         return selectTagListTags;
     }
@@ -287,24 +236,12 @@ public class TagBean {
         this.selectTagListTags = selectTagListTags;
     }
 
-    public void setFindTagList(List<Tag> findTagList) {
-        this.findTagList = findTagList;
-    }
-
     public Tag getTagSelected() {
         return tagSelected;
     }
 
     public void setTagSelected(Tag tagSelected) {
         this.tagSelected = tagSelected;
-    }
-
-    public TagManager getTagManager() {
-        return tagManager;
-    }
-
-    public void setTagManager(TagManager tagManager) {
-        this.tagManager = tagManager;
     }
 
     public String getColorText() {
@@ -348,14 +285,6 @@ public class TagBean {
         listTagSonEdit();
     }
 
-    public List<Tag> getChildren() {
-        return children;
-    }
-
-    public void setChildren(List<Tag> children) {
-        this.children = children;
-    }
-
     public Tag getParentTagToCreate() {
         return parentTagToCreate;
     }
@@ -396,45 +325,9 @@ public class TagBean {
         this.tagListTable = tagListTable;
     }
 
-    //Methods
-
-    public List<Tag> findTagChildByName(String nameTag) {
-
-        /*if (nameTag != null) {
-            findTagList = tagManager.findTagByNamePattern(nameTag);
-            return findTagList;
-        }*/
-        return new ArrayList<Tag>();
+    public TagManager getTagManager() {
+        return tagManager;
     }
-
-    public List<Tag> findTagParentByName(String nameTag) {
-
-        /*if (nameTag != null) {
-            findTagList = tagManager.findTagByNamePattern(nameTag);
-            return findTagList;
-        }*/
-        return new ArrayList<Tag>();
-    }
-
-
-    public void addChild() {
-        tagEdit.getChildrenTag().add(tagSelected);
-        tagManager.link(tagEdit,tagSelected);
-    }
-
-    public void addParent() {
-        tagEdit.setParentTag(parentTagSelect);
-        tagManager.link(tagSelected,tagEdit);
-    }
-
-
-
-
-
-
-
-
-
 
 
 }

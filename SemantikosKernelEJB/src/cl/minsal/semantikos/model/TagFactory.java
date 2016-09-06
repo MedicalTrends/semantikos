@@ -11,7 +11,6 @@ import javax.ejb.Singleton;
 import javax.validation.constraints.NotNull;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import static cl.minsal.semantikos.kernel.util.StringUtils.underScoreToCamelCaseJSON;
@@ -124,7 +123,7 @@ public class TagFactory {
         List<Tag> children;
         Tag tag = new Tag(tagDTO.getId(), tagDTO.getName(), tagDTO.getBackgroundColor(), tagDTO.getLetterColor(), parentTag);
         children = tagDAO.getChildrenOf(tag);
-        tag.setChildren(children);
+        tag.setSon(children);
 
         return tag;
     }
@@ -133,7 +132,7 @@ public class TagFactory {
 
         Tag tag =new Tag(tagChild.getId(), tagChild.getName(), tagChild.getBackgroundColor(), tagChild.getLetterColor(),  tagParent);
         List<Tag> children = tagDAO.getChildrenOf(tag);
-        tag.setChildren(children);
+        tag.setSon(children);
         return tag;
     }
 

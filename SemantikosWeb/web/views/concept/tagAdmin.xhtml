@@ -187,7 +187,7 @@
                                             emptyMessage="No existen etiquetas."
                                             id="tagSonTable"
                                             style="margin: 10px;"
-                                            value="#{tagBean.tagCreate.childrenTag}"
+                                            value="#{tagBean.tagCreate.sonTag}"
                                             var="tag">
                                         <p:column headerText="Nombre">
                                             <h:outputText value="#{tag.name}"/>
@@ -210,7 +210,7 @@
                     <div class="ui-g">
                         <div class="ui-g-12 ui-md-6 ui-lg-1">
                             <p:commandButton value="Crear Etiqueta" actionListener="#{tagBean.createTag}"
-                                             icon="fa fa-floppy-o">
+                                             icon="fa fa-floppy-o" update="tagForm">
                             </p:commandButton>
                         </div>
                     </div>
@@ -274,7 +274,7 @@
                 <!--Administrador de etiquetas-->
 
                 <p:panel id="adminTags" header="Administrador de etiquetas" toggleable="true" toggleSpeed="500"
-                         closeSpeed="500"
+                         closeSpeed="500" collapsed="true"
                          widgetVar="adminTags" style="margin-bottom:20px">
 
                     <div class="ui-g">
@@ -352,7 +352,7 @@
                                                     itemLabel="#{tag.name}" itemValue="#{tag}"
                                                     emptyMessage="No se encontraron tags relacionados"
                                     >
-                                        <p:ajax event="itemSelect" listener="#{tagBean.linkParent}" update="linkTagParentEdit"/>
+                                        <p:ajax event="itemSelect" listener="#{tagBean.linkParent}" update="linkTagParentEdit,linkTagSonEdit"/>
                                     </p:autoComplete>
                                 </p:panel>
                                 <p:panel rendered="#{tagBean.tagEdit.parentTag!=null}" header="Padre"
@@ -389,7 +389,7 @@
                                     <div class="ui-g">
 
                                         <div class="ui-g-12 ui-md-6 ui-lg-12">
-                                            <p:dataTable value="#{tagBean.tagEdit.childrenTag}" var="tag">
+                                            <p:dataTable value="#{tagBean.tagEdit.sonTag}" var="tag">
                                                 <p:column headerText="Nombre">
                                                     <h:outputText value="#{tag.name}"/>
                                                 </p:column>
@@ -436,7 +436,7 @@
                                 <p:panel  header="Hijos"
                                          widgetVar="sontagsunlink" style="margin-bottom:20px;">
 
-                                <p:dataTable id="unlinkTagSonEdit" value="#{tagBean.tagEdit.childrenTag}" var="tag">
+                                <p:dataTable id="unlinkTagSonEdit" value="#{tagBean.tagEdit.sonTag}" var="tag">
 
 
                                     <p:column headerText="Nombre">
@@ -468,7 +468,7 @@
 
                         <div class="ui-g">
 
-                            <p:commandButton oncomplete="PF('removeDialog').hide()"
+                            <p:commandButton oncomplete="PF('removeDialog').hide()" process="@this"
                                              actionListener="#{tagBean.deleteTag}" style="text-align: center"
                                              icon="fa fa-trash" value="Eliminar" update="adminTags">
                             </p:commandButton>
@@ -484,7 +484,7 @@
 
                 <!--Cuadro de dialogo para el Color Picker-->
 
-                <p:dialog modal="true" widgetVar="dlg" showEffect="fade" hideEffect="fade"
+                <p:dialog modal="true" widgetVar="dlgBack" showEffect="fade" hideEffect="fade"
                           header="Seleccione un color de fondo" resizable="false">
                     <h:panelGrid id="grid" columns="2" cellpadding="5">
                         <h:outputText value="Popup color: "/>
@@ -493,7 +493,7 @@
                     </h:panelGrid>
                 </p:dialog>
 
-                <p:dialog modal="true" widgetVar="dlg" showEffect="fade" hideEffect="fade"
+                <p:dialog modal="true" widgetVar="dlgTxt" showEffect="fade" hideEffect="fade"
                           header="Seleccione un color de letra" resizable="false">
                     <h:panelGrid id="grid2" columns="2" cellpadding="5">
                         <h:outputText value="Popup color: "/>

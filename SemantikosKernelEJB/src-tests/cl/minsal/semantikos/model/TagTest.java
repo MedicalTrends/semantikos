@@ -3,8 +3,6 @@ package cl.minsal.semantikos.model;
 import cl.minsal.semantikos.kernel.daos.DAO;
 import org.junit.Test;
 
-import java.util.Collections;
-
 import static org.junit.Assert.assertEquals;
 
 public class TagTest {
@@ -21,7 +19,7 @@ public class TagTest {
         Tag tag = new Tag(DAO.NON_PERSISTED_ID, "Parent Tag", "rojo", "red",  null);
 
         Tag childTag = new Tag(DAO.NON_PERSISTED_ID, "Child Tag", "blue", "blue",  tag);
-        tag.addChild(childTag);
+        tag.addSon(childTag);
 
         assertEquals(2, tag.deepnessLevel());
     }
@@ -31,10 +29,10 @@ public class TagTest {
         Tag tag = new Tag(DAO.NON_PERSISTED_ID, "Parent Tag", "rojo", "red",  null);
 
         Tag childTag = new Tag(DAO.NON_PERSISTED_ID, "Child Tag", "blue", "blue",  tag);
-        tag.addChild(childTag);
+        tag.addSon(childTag);
 
         Tag grandChildTag = new Tag(DAO.NON_PERSISTED_ID, "Grand Child Tag", "green", "green",  childTag);
-        childTag.addChild(grandChildTag);
+        childTag.addSon(grandChildTag);
 
         assertEquals(3, tag.deepnessLevel());
     }
@@ -44,13 +42,13 @@ public class TagTest {
         Tag tag = new Tag(DAO.NON_PERSISTED_ID, "Parent Tag", "rojo", "red",  null);
 
         Tag childTag = new Tag(DAO.NON_PERSISTED_ID, "Child Tag", "blue", "blue",  tag);
-        tag.addChild(childTag);
+        tag.addSon(childTag);
 
         Tag grandChildTag = new Tag(DAO.NON_PERSISTED_ID, "Grand Child Tag", "green", "green",  childTag);
-        childTag.addChild(grandChildTag);
+        childTag.addSon(grandChildTag);
 
         Tag grandGrandChildTag = new Tag(DAO.NON_PERSISTED_ID, "GrandGrand Child Tag", "black", "black",  grandChildTag);
-        grandChildTag.addChild(grandGrandChildTag);
+        grandChildTag.addSon(grandGrandChildTag);
 
         assertEquals(4, tag.deepnessLevel());
     }
@@ -61,14 +59,14 @@ public class TagTest {
 
         Tag childTag = new Tag(DAO.NON_PERSISTED_ID, "Child Tag", "blue", "blue",  tag);
         Tag childTag2 = new Tag(DAO.NON_PERSISTED_ID, "Child Tag", "Deep blue", "blue",  tag);
-        tag.addChild(childTag);
-        tag.addChild(childTag2);
+        tag.addSon(childTag);
+        tag.addSon(childTag2);
 
         Tag grandChildTag = new Tag(DAO.NON_PERSISTED_ID, "Grand Child Tag", "green", "green",  childTag);
-        childTag.addChild(grandChildTag);
+        childTag.addSon(grandChildTag);
 
         Tag grandGrandChildTag = new Tag(DAO.NON_PERSISTED_ID, "GrandGrand Child Tag", "black", "black",  grandChildTag);
-        grandChildTag.addChild(grandGrandChildTag);
+        grandChildTag.addSon(grandGrandChildTag);
 
         assertEquals(4, tag.deepnessLevel());
     }

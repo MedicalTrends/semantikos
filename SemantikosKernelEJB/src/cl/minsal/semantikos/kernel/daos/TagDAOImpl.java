@@ -78,7 +78,7 @@ public class TagDAOImpl implements TagDAO {
 
         long idTag;
         try (Connection connection = connect.getConnection();
-             CallableStatement call = connection.prepareCall("{call semantikos.create_tag(?,?,?,?)}")) {
+             CallableStatement call = connection.prepareCall("{call semantikos.update_tag(?,?,?,?,?)}")) {
 
             call.setLong(1, tag.getId());
             call.setString(2, tag.getName());
