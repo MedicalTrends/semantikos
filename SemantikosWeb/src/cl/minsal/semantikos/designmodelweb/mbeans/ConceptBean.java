@@ -24,6 +24,9 @@ import java.io.Serializable;
 import java.text.ParseException;
 import java.util.*;
 
+import static cl.minsal.semantikos.model.ProfileFactory.DESIGNER_PROFILE;
+
+
 /**
  * Created by diego on 26/06/2016.
  * Created by diego on 26/06/2016.
@@ -259,8 +262,8 @@ public class ConceptBean implements Serializable {
 
     public void createConcept() throws ParseException {
         //category = categoryManager.getCategoryById(categorySelect);
-        newConcept(category, favoriteDescription);
-        //getConceptById(80602);
+        //newConcept(category, favoriteDescription);
+        getConceptById(80602);
 
         RequestContext context = RequestContext.getCurrentInstance();
         context.execute("PF('dialogNameConcept').hide();");
@@ -286,7 +289,9 @@ public class ConceptBean implements Serializable {
 
         Description[] descriptions = {favouriteDescription, fsnDescription};
 
-        ConceptSMTK conceptSMTK = new ConceptSMTK(conceptManager.generateConceptId(), category, true, true, false, false, false, "", descriptions);
+        String observation = "";
+
+        ConceptSMTK conceptSMTK = new ConceptSMTK(conceptManager.generateConceptId(), category, true, true, false, false, false, observation, descriptions);
 
         concept = new ConceptSMTKWeb(conceptSMTK);
     }
@@ -448,7 +453,6 @@ public class ConceptBean implements Serializable {
                 descriptionManager.updateDescription(concept, description.getFirst(), description.getSecond(), user);
             }
 
-
             for (Description description : descriptionsForPersist) {
                 changes = changes + descriptionsForPersist.size();
                 descriptionManager.bindDescriptionToConcept(concept, description, user);
@@ -456,7 +460,7 @@ public class ConceptBean implements Serializable {
 
             for (Description description : descriptionsForDelete) {
                 changes = changes + descriptionsForDelete.size();
-                //descriptionManager.deleteDescription(concept, description, user);
+                descriptionManager.deleteDescription(concept, description, user);
             }
 
             if(changes == 0){

@@ -16,7 +16,7 @@
                 <p:growl id="editMsgs" showDetail="true"/>
                 <!--p:messages autoUpdate="true"></p:messages-->
 
-                <!-- Información básica del concepto -->
+                <!-- Indicadores -->
                 <div class="ui-g">
                     <div class="ui-g-12 ui-md-6 ui-lg-1">
                         <p:outputLabel for="toBeReviewedCheck" value="Indicadores"/>
@@ -31,13 +31,14 @@
                     </div>
                 </div>
 
-                <!--Descripciones -->
+                <!--Descripciones FSN y Preferida -->
                 <smtk:description description="#{conceptBean.concept.getValidDescriptionFSN()}">
                 </smtk:description>
 
                 <smtk:description description="#{conceptBean.concept.getValidDescriptionFavorite()}">
                 </smtk:description>
 
+                <!-- Observación -->
                 <div class="ui-g">
                     <div class="ui-g-12 ui-md-6 ui-lg-1">
                         <p:outputLabel for="toBeReviewedCheck" value="Observación"/>
@@ -45,6 +46,7 @@
                     <div class="ui-g-12 ui-md-6 ui-lg-8">
                         <p:inputTextarea id="observation"
                                          name="observation"
+                                         value="#{conceptBean.concept.observation}"
                                          style="width:90%">
                         </p:inputTextarea>
                     </div>
@@ -52,6 +54,7 @@
                     </div>
                 </div>
 
+                <!-- Otras descripciones -->
                 <smtk:descriptions descriptions="#{conceptBean.concept.getValidDescriptionsButFSNandFavorite()}"
                                    otherTermino="#{conceptBean.otherTermino}"
                                    otherSensibilidad="#{conceptBean.otherSensibilidad}"
