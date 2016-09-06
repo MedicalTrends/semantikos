@@ -15,6 +15,7 @@ import javax.ejb.EJB;
 import javax.ejb.EJBException;
 import javax.ejb.Stateless;
 import javax.validation.constraints.NotNull;
+import java.sql.Timestamp;
 import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.List;
@@ -211,6 +212,26 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
         if (conceptSMTK.isModeled()) {
             auditManager.recordConceptPublished(conceptSMTK, user);
         }
+    }
+
+    @Override
+    public void invalidate(@NotNull ConceptSMTK conceptSMTK, @NotNull User user) {
+
+        logger.info("Se dejará no vigente el concepto: " + conceptSMTK);
+
+        /* Se validan las pre-condiciones para eliminar un concepto */
+        new ConceptEditionBusinessRuleContainer().preconditionsConceptInvalidation(conceptSMTK, user);
+
+        /* Se invalida el concepto */
+        conceptSMTK.setPublished(false);
+        conceptSMTK.setValidUntil(new Timestamp(System.currentTimeMillis()));
+        conceptDAO.update(conceptSMTK);
+
+        /* Se registra en el historial */
+        if (conceptSMTK.isModeled()){
+            auditManager.recordConceptInvalidation(conceptSMTK, user);
+        }
+        logger.info("Se ha dejado no vigente el concepto: " + conceptSMTK);
     }
 
     @Override

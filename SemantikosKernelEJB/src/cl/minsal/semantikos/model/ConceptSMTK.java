@@ -7,6 +7,7 @@ import cl.minsal.semantikos.model.exceptions.BusinessRuleException;
 import cl.minsal.semantikos.model.relationships.*;
 
 import javax.validation.constraints.NotNull;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -45,6 +46,9 @@ public class ConceptSMTK extends PersistentEntity implements Target, AuditableEn
     /** Determina si el concepto está publicado o no */
     private boolean isPublished;
 
+    /** Fecha hasta la cual el concepto se encuentra vigente */
+    private Timestamp validUntil;
+
     /** Otros descriptores */
     private List<Description> descriptions = new ArrayList<>();
 
@@ -63,15 +67,15 @@ public class ConceptSMTK extends PersistentEntity implements Target, AuditableEn
     /** The concept's labels */
     private List<Label> labels = new ArrayList<>();
 
-    /**
-     * Lista de etiquetas
-     */
+    /** Lista de etiquetas */
     private List<Tag> tags = new ArrayList<>();
 
     /**
      * Este método es responsable de determinar si el estado de publicación del concepto cambio recientemente.
      */
     private boolean justPublished = false;
+
+    /** El Tag Semántikos que tiene asociado el concepto */
     private TagSMTK tagSMTK;
 
     /**
@@ -281,7 +285,6 @@ public class ConceptSMTK extends PersistentEntity implements Target, AuditableEn
     }
 
     public void setConceptID(String conceptID) {
-        new ConceptEditionBusinessRuleContainer().apply(this, User.getDummyUser());
         this.conceptID = conceptID;
     }
 
@@ -327,6 +330,14 @@ public class ConceptSMTK extends PersistentEntity implements Target, AuditableEn
 
     public void setObservation(String observation) {
         this.observation = observation;
+    }
+
+    public Timestamp getValidUntil() {
+        return validUntil;
+    }
+
+    public void setValidUntil(Timestamp validUntil) {
+        this.validUntil = validUntil;
     }
 
     /**
