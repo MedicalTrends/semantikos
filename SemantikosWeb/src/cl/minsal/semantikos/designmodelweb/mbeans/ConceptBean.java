@@ -130,8 +130,9 @@ public class ConceptBean implements Serializable {
         context.execute("PF('dialogNameConcept').show();");
 
         //category = categoryManager.getCategoryById(1);
-        category = categoryManager.getCategoryById(105590001);
+        //category = categoryManager.getCategoryById(105590001);
         //category = categoryManager.getCategoryById(71388002);
+        category = categoryManager.getCategoryById(419891008);
 
 
         descriptionTypes = descriptionTypeFactory.getDescriptionTypes();

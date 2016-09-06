@@ -51,6 +51,7 @@
         </div>
     </p:panel>
 
+
     <!-- Multiplicidad 1 y relacion existente -->
     <p:panel id="helperTableTypeSimple"
              styleClass="#{validatorBean.uiState}"
@@ -89,10 +90,11 @@
         </ui:repeat>
     </p:panel>
 
-    <!-- Multiplicidad N-->
+
+    <!-- Multiplicidad N  sin atributos-->
     <p:panel id="helperTableTypeCollection"
              styleClass="#{validatorBean.uiState} helper#{cc.attrs.relationshipDefinition.id}"
-             rendered="#{cc.attrs.relationshipDefinition.multiplicity.collection}">
+             rendered="#{cc.attrs.relationshipDefinition.multiplicity.collection and empty cc.attrs.relationshipDefinition.relationshipAttributeDefinitions}">
         <smtk:relationshipValidator relationships="#{cc.attrs.concept.getValidRelationshipsWebByRelationDefinition(cc.attrs.relationshipDefinition)}"
                                     relationshipDefinition="#{cc.attrs.relationshipDefinition}"
         />
@@ -106,7 +108,8 @@
                              var="helperTableRecord"
                              value="#{conceptBean.helperTableManager.getAllRecords(cc.attrs.targetDefinition)}"
                              reflow="true"
-                             >
+                >
+
                     <p:columns value="#{cc.attrs.targetDefinition.showableColumns}"
                                var="column"
                                columnIndexVar="colIndex"
@@ -163,5 +166,90 @@
             </div>
         </div>
     </p:panel>
+
+
+
+    <p:panel id="helperTableTypeCollectionWithAttributes"
+             styleClass="#{validatorBean.uiState} helper#{cc.attrs.relationshipDefinition.id}"
+             rendered="#{cc.attrs.relationshipDefinition.multiplicity.collection and not empty cc.attrs.relationshipDefinition.relationshipAttributeDefinitions}">
+        <smtk:relationshipValidator relationships="#{cc.attrs.concept.getValidRelationshipsWebByRelationDefinition(cc.attrs.relationshipDefinition)}"
+                                    relationshipDefinition="#{cc.attrs.relationshipDefinition}"
+        />
+        <div class="ui-g">
+            <div class="ui-g-12 ui-md-6 ui-lg-2">
+                <p:outputLabel for="helperTableRecordsCollectionWithAttributes" value="#{cc.attrs.relationshipDefinition.name}"/>
+                <p:outputLabel value=" *" rendered="#{not cc.attrs.relationshipDefinition.multiplicity.optional}" />
+            </div>
+            <div class="ui-g-12 ui-md-6 ui-lg-10">
+                <p:fieldset legend="Agregar #{cc.attrs.relationshipDefinition.name}">
+
+                    <ui:repeat value="#{cc.attrs.relationshipDefinition.relationshipAttributeDefinitions}" var="attributeDefinition" >
+
+                        <p:outputLabel value="#{attributeDefinition.name}" />
+                        <p:inputText 
+
+                    </ui:repeat>
+
+                    <p:commandButton
+                            id="addHelperTableRelationshipWithAttributes"
+                            process="@this"
+                            style="float: right"
+                            disabled="#{cc.attrs.relationshipDefinition.multiplicity.isUpperBoundaryReached(cc.attrs.concept.getRelationshipsByRelationDefinition(cc.attrs.relationshipDefinition).size())}"
+                            update="@(.helper#{cc.attrs.relationshipDefinition.id})"
+                            action="#{conceptBean.addRelationship(cc.attrs.relationshipDefinition,helperTableRecord)}"
+                            icon="fa fa-plus"
+                            title="Agregar"
+                    />
+
+                </p:fieldset>
+
+                    <p:columns value="#{cc.attrs.targetDefinition.showableColumns}"
+                               var="column"
+                               columnIndexVar="colIndex"
+                               sortBy="#{helperTableRecord.fields[column.columnName]}"
+                               rendered="#{column.columnName!='id'}">
+                        <f:facet name="header">
+                            <h:outputText value="#{column.columnName}" />
+                        </f:facet>
+                        <h:outputText value="#{helperTableRecord.fields.get(column.columnName)}" />
+                    </p:columns>
+
+
+
+                <p:spacer />
+                <p:dataTable id="collectionValues12WithAttributes"
+                             styleClass="tablas"
+                             var="relationship"
+                             value="#{cc.attrs.concept.getValidRelationshipsWebByRelationDefinition(cc.attrs.relationshipDefinition)}"
+                             style="width: 100%"
+                             reflow="true">
+                    <p:columns value="#{cc.attrs.targetDefinition.showableColumns}"
+                               var="column"
+                               columnIndexVar="colIndex"
+                               sortBy="#{relationship.target.fields[column.columnName]}"
+                               rendered="#{column.columnName!='id'}">
+                        <f:facet name="header">
+                            <h:outputText value="#{column.columnName}" />
+                        </f:facet>
+                        <h:outputText value="#{relationship.target.fields.get(column.columnName)}" />
+                    </p:columns>
+                    <p:column style="width: 4%">
+                        <p:commandButton
+                                icon="fa fa-trash"
+                                title="Eliminar"
+                                update="@(.helper#{cc.attrs.relationshipDefinition.id})"
+                                style="float: right"
+                                process="@this"
+                                immediate="true"
+                                actionListener="#{conceptBean.removeRelationship(cc.attrs.relationshipDefinition, relationship)}"
+                                styleClass="relationships"
+                        />
+                    </p:column>
+                </p:dataTable>
+            </div>
+        </div>
+    </p:panel>
+
+
 </composite:implementation>
 </html>
