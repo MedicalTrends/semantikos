@@ -16,7 +16,7 @@ public interface TagDAO {
     /**
      * Este método es el encargado de persistir el tag en la base de datos
      */
-    public void persist(Tag tag);
+    public Tag persist(Tag tag);
 
     /**
      * Este método es el encargado de actualizar la información de un tag ya existente en la base de datos
@@ -56,6 +56,9 @@ public interface TagDAO {
      * @return Una lista <code>List</code> de Tags.
      */
     public List<Tag> getAllTags();
+
+
+    public List<Tag> getAllTagsWithoutParent();
 
     /**
      * Este método es responsable de recuperar todos los hijos de un Tag.

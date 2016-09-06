@@ -14,6 +14,8 @@ public interface TagManager {
 
     public List<Tag> getAllTags();
 
+    public List<Tag> getAllTagsWithoutParent();
+
     /**
      * Este método es responsable de recuperar un Tag por su ID.
      *
@@ -24,6 +26,10 @@ public interface TagManager {
     public Tag findTagByID(long id);
 
     public List<Tag> findTagByNamePattern(String pattern);
+
+    public List<Tag> findTagParent(Tag tag, String pattern);
+
+    public List<Tag> findTagChild(Tag tag, String pattern);
 
     public void removeTag(Tag tag);
 

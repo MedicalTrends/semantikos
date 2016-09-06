@@ -52,6 +52,7 @@ public class ConceptUtils {
                 //Si la descripcion correlacionada no es encontrada, significa que fué eliminada
                 if (initDescription.getId() == finalDescription.getId()) {
                     isDescriptionFound = true;
+                    break;
                 }
             }
             if(!isDescriptionFound)

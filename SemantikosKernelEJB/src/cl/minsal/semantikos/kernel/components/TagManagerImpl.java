@@ -36,6 +36,12 @@ public class TagManagerImpl implements TagManager {
     }
 
     @Override
+    public List<Tag> getAllTagsWithoutParent() {
+        logger.debug("Obteniendo todos los Tags sin padres.");
+        return tagDAO.getAllTagsWithoutParent();
+    }
+
+    @Override
     public Tag findTagByID(long id) {
         logger.debug("Buscando tag con ID=" + id);
 
@@ -58,6 +64,19 @@ public class TagManagerImpl implements TagManager {
     }
 
     @Override
+    public List<Tag> findTagParent(Tag tag, String pattern) {
+
+
+
+        return null;
+    }
+
+    @Override
+    public List<Tag> findTagChild(Tag tag, String pattern) {
+        return null;
+    }
+
+    @Override
     public void removeTag(Tag tag) {
         logger.debug("Eliminando Tag: " + tag);
         tagDAO.remove(tag);
@@ -77,7 +96,7 @@ public class TagManagerImpl implements TagManager {
     @Override
     public List<Tag> getOtherTags(Tag tag) {
 
-        List<Tag> allTags = getAllTags();
+        List<Tag> allTags = getAllTagsWithoutParent();
         List<Tag> otherTags = new ArrayList<>();
         for (Tag aTag : allTags) {
             if (!aTag.containsInItsFamily(tag)){
@@ -114,15 +133,23 @@ public class TagManagerImpl implements TagManager {
         /* Se persiste primero el padre, luego el tag, y luego sus hijos */
         Tag parentTag = tag.getParentTag();
         if (parentTag != null){
-            persist(parentTag);
+            if(parentTag.getId()==-1)persist(parentTag);
         }
 
         /* Luego el tag mismo */
-        tagDAO.persist(tag);
+        if(tag.getId()==-1)tagDAO.persist(tag);
 
         /* Luego sus hijos */
         for (Tag child : tag.getChildrenTag()) {
-            persist(child);
+            if(tag.getId()==-1){
+                persist(child);
+            }else{
+                if(child.getId()==-1){
+                    child.setParentTag(tag);
+                    persist(child);
+                }
+
+            }
         }
         logger.debug("Tag creado:" + tag);
     }
