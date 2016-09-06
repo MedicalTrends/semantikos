@@ -146,6 +146,15 @@ public class AuditManagerImpl implements AuditManagerInterface {
     }
 
     @Override
+    public void recordConceptInvalidation(ConceptSMTK conceptSMTK, User user) {
+        /* Se crea el registro de historial */
+        ConceptAuditAction conceptAuditAction = new ConceptAuditAction(conceptSMTK, CONCEPT_INVALIDATION, now(), user, conceptSMTK);
+
+        /* Se validan las reglas de negocio para realizar el registro */
+        new HistoryRecordBL().validate(conceptAuditAction);
+    }
+
+    @Override
     public List<AuditActionType> getAllAuditActionTypes() {
         return Arrays.asList(AuditActionType.values());
     }

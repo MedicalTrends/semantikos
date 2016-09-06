@@ -32,6 +32,14 @@ public interface ConceptManagerInterface {
     public void publish(@NotNull ConceptSMTK conceptSMTK, User user);
 
     /**
+     * Este método es responsable de dejar no vigente (eliminar en la jerga del análisis!).
+     *
+     * @param conceptSMTK El concepto que se desea dejar no vigente.
+     * @param user        El usuario que realiza la operación.
+     */
+    public void invalidate(@NotNull ConceptSMTK conceptSMTK, @NotNull User user);
+
+    /**
      * Este método es responsable de cambiar el concepto de una categoría a otra.
      *
      * @param conceptSMTK    El concepto cuya categoría se desea cambiar.
@@ -138,6 +146,5 @@ public interface ConceptManagerInterface {
      * @return La lista de relaciones actualizadas (que ya están asociadas al objeto <code>concepto</code>.
      */
     public List<Relationship> loadRelationships(ConceptSMTK concept);
-
 
 }
