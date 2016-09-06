@@ -45,7 +45,7 @@ public class DescriptionManagerImpl implements DescriptionManagerInterface {
 
         /* Se aplican las reglas de negocio para crear la Descripción y se persiste y asocia al concepto */
         new DescriptionBindingBR().applyRules(concept, description, user);
-        descriptionDAO.persist(description, concept, user);
+        descriptionDAO.persist(description, user);
 
         /* Se retorna la descripción persistida */
         return description;
@@ -57,12 +57,12 @@ public class DescriptionManagerImpl implements DescriptionManagerInterface {
         /* Si la descripción no se encontraba persistida, se persiste primero */
         if (!description.isPersistent()){
             descriptionCreationBR.applyRules(concept, description.getTerm(), description.getDescriptionType(), user);
-            descriptionDAO.persist(description, concept, user);
+            descriptionDAO.persist(description, user);
         }
 
         /* Se aplican las reglas de negocio para crear la Descripción y se persiste y asocia al concepto */
         new DescriptionBindingBR().applyRules(concept, description, user);
-        descriptionDAO.persist(description, concept, user);
+        descriptionDAO.bind(description, concept, user);
 
         /* Se retorna la descripción persistida */
         return description;
@@ -99,11 +99,25 @@ public class DescriptionManagerImpl implements DescriptionManagerInterface {
 
         /* Y se actualizan */
         descriptionDAO.invalidate(initDescription);
-        descriptionDAO.persist(finalDescription, conceptSMTK, user);
+
+        descriptionDAO.persist(finalDescription, user);
+        descriptionDAO.bind(finalDescription, conceptSMTK, user);
 
         /* Registrar en el Historial si es preferida (Historial BR) */
         if (conceptSMTK.isModeled() && initDescription.getDescriptionType().equals(PREFERIDA)) {
             auditManager.recordFavouriteDescriptionUpdate(conceptSMTK, initDescription, user);
+        }
+    }
+
+    @Override
+    public void deleteDescription(ConceptSMTK conceptSMTK, Description description, User user) {
+
+        /* Eliminar una descripción consiste en dejarla inválida */
+        descriptionDAO.invalidate(description);
+
+        /* Se registra en el Historial si el concepto está modelado */
+        if (conceptSMTK.isModeled()) {
+            auditManager.recordDescriptionDeletion(conceptSMTK, description, user);
         }
     }
 

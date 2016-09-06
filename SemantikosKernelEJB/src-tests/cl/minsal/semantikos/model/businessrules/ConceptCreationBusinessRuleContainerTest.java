@@ -179,6 +179,9 @@ public class ConceptCreationBusinessRuleContainerTest {
         Description fav = new Description("Preferida", favDT);
         conceptSMTK.addDescription(fav);
 
+        /* Con un Tag Semántikos */
+        conceptSMTK.setTagSMTK(new TagSMTK(1, "Tag Test"));
+
         return conceptSMTK;
     }
 
@@ -197,5 +200,12 @@ public class ConceptCreationBusinessRuleContainerTest {
         User user = new User();
         user.addProfile(profile);
         return user;
+    }
+
+    @Test
+    public void testBrTagSMTK001() throws Exception {
+
+        /* El test debiera ser exitoso */
+        conceptCreationBRC.brTagSMTK001(createBasicConceptSMTK(catFarMedBas));
     }
 }

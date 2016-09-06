@@ -1,5 +1,6 @@
-package cl.minsal.semantikos.designmodelweb.mbeans;
+package cl.minsal.semantikos.designmodelweb.converters;
 
+import cl.minsal.semantikos.designmodelweb.mbeans.SMTKTypeBean;
 import cl.minsal.semantikos.kernel.components.ConceptManagerInterface;
 import cl.minsal.semantikos.model.ConceptSMTK;
 

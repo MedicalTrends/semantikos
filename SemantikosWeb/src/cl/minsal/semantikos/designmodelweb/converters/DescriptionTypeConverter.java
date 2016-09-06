@@ -1,5 +1,6 @@
-package cl.minsal.semantikos.designmodelweb.mbeans;
+package cl.minsal.semantikos.designmodelweb.converters;
 
+import cl.minsal.semantikos.designmodelweb.mbeans.ConceptBean;
 import cl.minsal.semantikos.model.DescriptionType;
 
 import javax.el.ELContext;
@@ -21,7 +22,7 @@ public class DescriptionTypeConverter implements Converter {
             if(value != null && value.trim().length() > 0) {
                 try {
                     ELContext elContext = fc.getELContext();
-                    NewConceptMBean bean = (NewConceptMBean) FacesContext.getCurrentInstance().getApplication() .getELResolver().getValue(elContext, null, "newConceptMBean");
+                    ConceptBean bean = (ConceptBean) FacesContext.getCurrentInstance().getApplication() .getELResolver().getValue(elContext, null, "conceptBean");
 
                     for (int i = 0; i < bean.getDescriptionTypes().size() ; i++) {
                         if (value.equalsIgnoreCase(String.valueOf(((DescriptionType)bean.getDescriptionTypes().get(i)).getId()))) {

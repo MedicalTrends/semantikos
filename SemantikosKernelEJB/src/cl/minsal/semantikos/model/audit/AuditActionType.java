@@ -11,6 +11,7 @@ public enum AuditActionType {
     CONCEPT_DESCRIPTION_BINDING(4, "Descripción agregada a concepto", AuditActionNature.CHANGE),
     CONCEPT_DESCRIPTION_UNBINDING(5, "Descripción eliminada a concepto", AuditActionNature.CHANGE),
     CONCEPT_DESCRIPTION_MOVEMENT(16, "Descripción traslada a otro concepto", AuditActionNature.CHANGE),
+    CONCEPT_DESCRIPTION_DELETION(17, "Descripción eliminada de un concepto", AuditActionNature.CHANGE),
     CONCEPT_CATEGORY_CHANGE(6, "Cambio de categoría de Concepto", AuditActionNature.CHANGE),
     CONCEPT_ATTRIBUTE_CHANGE(7, "Cambio de atributo de un concepto", AuditActionNature.CHANGE),
     CONCEPT_RELATIONSHIP_CREATION(8, "Nueva relación de un concepto", AuditActionNature.CHANGE),

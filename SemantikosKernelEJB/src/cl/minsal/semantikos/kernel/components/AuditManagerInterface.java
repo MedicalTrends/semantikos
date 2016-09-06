@@ -39,10 +39,10 @@ public interface AuditManagerInterface {
 
     /**
      * Este método es responsable de registrar en el log de auditoría la el traslado de un concepto.
-     *  @param sourceConcept El concepto en donde se encuentra la descripción inicialmente.
+     *
+     * @param sourceConcept El concepto en donde se encuentra la descripción inicialmente.
      * @param targetConcept El concepto al cual se quiere mover la descripción.
      * @param description   La descripción que se desea trasladar.
-     * @param user
      */
     public void recordDescriptionMovement(ConceptSMTK sourceConcept, ConceptSMTK targetConcept, Description description, /* TODO: Agregar el usuario */User user);
 
@@ -113,6 +113,15 @@ public interface AuditManagerInterface {
      * @param user     El usuario que elimina la relación.
      */
     public void recordCrossMapRemoval(CrossMap crossMap, User user);
+
+    /**
+     * Este método es responsable de registrar en el historial la eliminación de una Descripción.
+     *
+     * @param conceptSMTK El concepto cuya descripción se desea eliminar.
+     * @param description La descripción que se desea eliminar.
+     * @param user        El usuario que desea eliminar la descripción.
+     */
+    public void recordDescriptionDeletion(ConceptSMTK conceptSMTK, Description description, User user);
 
     /**
      * Este método es responsable de obtener y agrupar en una lista todos los tipos de cambios existentes.

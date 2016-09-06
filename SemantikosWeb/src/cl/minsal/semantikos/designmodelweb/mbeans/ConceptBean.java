@@ -1,19 +1,15 @@
 package cl.minsal.semantikos.designmodelweb.mbeans;
 
-import cl.minsal.semantikos.kernel.components.CategoryManagerInterface;
-import cl.minsal.semantikos.kernel.components.ConceptManagerInterface;
-import cl.minsal.semantikos.kernel.components.DescriptionManagerInterface;
-import cl.minsal.semantikos.kernel.components.HelperTableManagerInterface;
+import cl.minsal.semantikos.kernel.components.*;
 import cl.minsal.semantikos.model.*;
 import cl.minsal.semantikos.model.basictypes.BasicTypeValue;
 import cl.minsal.semantikos.model.helpertables.HelperTableRecord;
 import cl.minsal.semantikos.model.relationships.Relationship;
 import cl.minsal.semantikos.model.relationships.RelationshipDefinition;
 import cl.minsal.semantikos.model.relationships.Target;
+import cl.minsal.semantikos.util.ConceptUtils;
 import cl.minsal.semantikos.util.Pair;
 import org.primefaces.context.RequestContext;
-import org.primefaces.event.RowEditEvent;
-import org.primefaces.event.SelectEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,26 +19,24 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
-import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-import javax.faces.validator.ValidatorException;
 import java.io.Serializable;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static cl.minsal.semantikos.model.ProfileFactory.DESIGNER_PROFILE;
+
 
 /**
  * Created by diego on 26/06/2016.
  * Created by diego on 26/06/2016.
  */
 
-@ManagedBean(name = "newConceptMBean")
+@ManagedBean(name = "conceptBean")
 @ViewScoped
-public class NewConceptMBean<T extends Comparable> implements Serializable {
+public class ConceptBean implements Serializable {
 
-    static final Logger logger = LoggerFactory.getLogger(NewConceptMBean.class);
+    static final Logger logger = LoggerFactory.getLogger(ConceptBean.class);
 
     @EJB
     ConceptManagerInterface conceptManager;
@@ -64,6 +58,7 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
     public User user;
 
     private ConceptSMTKWeb concept;
+    //Concepto respaldo
     private ConceptSMTKWeb _concept;
 
     private Category category;
@@ -127,7 +122,8 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         user.setIdUser(1);
         user.setUsername("amauro");
         user.setPassword("amauro");
-        user.getProfiles().add(DESIGNER_PROFILE);
+        Profile designerProfile = new Profile(1, "designerProfile", "designerProfile");
+        user.getProfiles().add(designerProfile);
 
 
         // Iniciar cuadro de dialogo
@@ -136,7 +132,7 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         context.execute("PF('dialogNameConcept').show();");
 
         //category = categoryManager.getCategoryById(1);
-        //category = categoryManager.getCategoryById(105590001);
+        category = categoryManager.getCategoryById(105590001);
         //category = categoryManager.getCategoryById(71388002);
 
 
@@ -262,11 +258,12 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         this.selectedHelperTableRecord = selectedHelperTableRecord;
     }
 
-    //      Methods
+    //Methods
+
     public void createConcept() throws ParseException {
-        category = categoryManager.getCategoryById(categorySelect);
-        //concept = newConcept(category, favoriteDescription);
-        concept = getConceptById(80602);
+        //category = categoryManager.getCategoryById(categorySelect);
+        //newConcept(category, favoriteDescription);
+        getConceptById(80602);
 
         RequestContext context = RequestContext.getCurrentInstance();
         context.execute("PF('dialogNameConcept').hide();");
@@ -274,7 +271,7 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
 
     //Este método es responsable de pasarle a la vista un concepto plantilla
     //(llamado desde la vista cuando se desea crear un nuevo concepto)
-    public ConceptSMTKWeb newConcept(Category category, String term) {
+    public void newConcept(Category category, String term) {
 
         /* Valores iniciales para el concepto */
         Description fsn = new Description(term, descriptionManager.getTypeFSN());
@@ -291,18 +288,25 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         fsnDescription.setDescriptionId(descriptionManager.generateDescriptionId());
 
         Description[] descriptions = {favouriteDescription, fsnDescription};
-        return new ConceptSMTKWeb(new ConceptSMTK(conceptManager.generateConceptId(), category, true, true, false, false, false, "", descriptions));
+
+        String observation = "";
+
+        ConceptSMTK conceptSMTK = new ConceptSMTK(conceptManager.generateConceptId(), category, true, true, false, false, false, observation, descriptions);
+
+        concept = new ConceptSMTKWeb(conceptSMTK);
     }
 
     //Este método es responsable de pasarle a la vista un concepto, dado el id del concepto
     //(llamado desde la vista cuando se desea editar un concepto)
-    public ConceptSMTKWeb getConceptById(long conceptId) {
-        ConceptSMTKWeb conceptSMTKWeb = new ConceptSMTKWeb(conceptManager.getConceptByID(conceptId));
-        conceptSMTKWeb.setRelationshipsWeb(conceptManager.loadRelationships(conceptSMTKWeb));
-        //_concept = ConceptSMTKUtils.clone(conceptSMTKWeb);
+    public void getConceptById(long conceptId) {
+        ConceptSMTK conceptSMTK = conceptManager.getConceptByID(conceptId);
+        conceptSMTK.setRelationships(conceptManager.loadRelationships(conceptSMTK));
 
-        category = conceptSMTKWeb.getCategory();
-        return conceptSMTKWeb;
+        concept = new ConceptSMTKWeb(conceptSMTK);
+        //Se reslpalda estado original del concepto
+        _concept = new ConceptSMTKWeb(conceptSMTK);
+
+        category = concept.getCategory();
     }
 
 
@@ -359,7 +363,7 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         boolean isRelationshipFound = false;
 
         // Se busca la relación
-        for (Relationship relationshipWeb : concept.getRelationships()) {
+        for (Relationship relationshipWeb : concept.getRelationshipsWeb()) {
             if (relationshipWeb.getRelationshipDefinition().equals(relationshipDefinition)) {
                 relationshipWeb.setTarget(target);
                 isRelationshipFound = true;
@@ -368,8 +372,7 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         }
         // Si no se encuentra la relación, se crea una nueva
         if (!isRelationshipFound) {
-            Relationship newRelationship = new Relationship(this.concept, target, relationshipDefinition);
-            this.concept.addRelationshipWeb(newRelationship);
+            this.concept.addRelationshipWeb(new Relationship(this.concept, target, relationshipDefinition));
         }
 
         conceptSelected = null;
@@ -412,20 +415,6 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
 
     }
 
-    public void addDescriptionToConcept(String term, DescriptionType descriptionType, boolean caseSensitive) {
-
-        Description description = new Description(term, descriptionType);
-        description.setCaseSensitive(caseSensitive);
-        description.setDescriptionId(descriptionManager.generateDescriptionId());
-    }
-
-    public void editDescription(DescriptionWeb description) {
-        /*
-        if (description.isPersisted() && !description.hasBeenModified())
-            concept.editDescription(description);
-        */
-    }
-
     /**
      * Este método es el responsable de retornar verdadero en caso que se cumpla el UpperBoundary de la multiplicidad,
      * para asi desactivar
@@ -443,104 +432,50 @@ public class NewConceptMBean<T extends Comparable> implements Serializable {
         return false;
     }
 
-    /**
-     * Este metodo revisa que las relaciones cumplan el lower_boundary del
-     * relationship definition, en caso de no cumplir la condicion se retorna falso.
-     *
-     * @return
-     */
-    public void validateRelationships(FacesContext context, UIComponent component, Object value) throws ValidatorException {
-
-        String msg = "Error!!!!!!";
-
-        //component.getParent().getAttributes().
-
-        if (!concept.isValid())
-            throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, msg, msg));
-    }
-
-    /**
-     * Este metodo revisa que las relaciones cumplan el lower_boundary del
-     * relationship definition, en caso de no cumplir la condicion se retorna falso.
-     *
-     * @return
-     */
-    public void validateRequired(FacesContext context, UIComponent component, Object value) throws ValidatorException {
-
-        String msg = "Debe ingresar un término";
-
-        //component.getParent().getAttributes().
-
-        if (value.equals(""))
-            throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, msg, msg));
-    }
-
-    public String getMyFormattedDate(Date date) {
-        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-        return new SimpleDateFormat("dd-MM-yyyy").format(date);
-    }
-
-    public void onRowEdit(RowEditEvent event) {
-        /*
-        Description description = (Description) event.getObject();
-
-        editDescription(description);
-        */
-    }
-
-    public void onRowCancel(RowEditEvent event) {
-        FacesMessage msg = new FacesMessage("Edit Cancelled", ((Description) event.getObject()).getTerm());
-        FacesContext.getCurrentInstance().addMessage(null, msg);
-    }
-
-    public void onRowSelect(SelectEvent event) {
-        //System.out.println("selectedHelperTableRecord.getFields().get('id')="+selectedHelperTableRecord.getFields().get("id"));
-        //FacesMessage msg = new FacesMessage("Car Selected", new Long(((HelperTableRecord) event.getObject()).getId()).toString());
-        //FacesContext.getCurrentInstance().addMessage(null, msg);
-    }
-
     public void saveConcept() {
 
         FacesContext context = FacesContext.getCurrentInstance();
 
-        if (!concept.isValid()) {
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Las relaciones no cumplen con el minimo requerido"));
+        // Si el concepto está persistido, actualizarlo
+        if (concept.isPersistent()) {
 
-        } else {
-            // Si el concepto está persistido, actualizarlo
-            if (concept.isPersistent()) {
-                List<Pair<Description, Description>> descriptionsForUpdate= concept.getDescriptionsForUpdate();
-                List<Description> descriptionsForPersist= concept.getDescriptionsForPersist();
-                List<Description> descriptionsForDelete= concept.getDescriptionsForDelete();
+            int changes = 0;
+            /*
+            if(_concept.isToBeReviewed()!=concept.isToBeReviewed() || _concept.isToBeConsulted()!= concept.isToBeConsulted())
+                conceptManager.updateBasicInfo();
+            */
+            List<Pair<Description, Description>> descriptionsForUpdate= ConceptUtils.getModifiedDescriptions(_concept.getDescriptionsWeb(), concept.getDescriptionsWeb());
+            List<Description> descriptionsForPersist= ConceptUtils.getNewDescriptions(_concept.getDescriptionsWeb(), concept.getDescriptionsWeb());
+            List<Description> descriptionsForDelete= ConceptUtils.getDeletedDescriptions(_concept.getDescriptionsWeb(), concept.getDescriptionsWeb());
 
-                if(descriptionsForUpdate.isEmpty() && descriptionsForPersist.isEmpty() && descriptionsForDelete.isEmpty()){
-                    context.addMessage(null, new FacesMessage("Warning", "No se ha realizado ningún cambio al concepto!!"));
-                    return;
-                }
-
-                for (Pair<Description, Description> description : concept.getDescriptionsForUpdate()) {
-                    descriptionManager.updateDescription(concept, description.getFirst(), description.getSecond(), user);
-                }
-
-
-                for (Description description : descriptionsForPersist) {
-                    descriptionManager.bindDescriptionToConcept(concept, description, user);
-                }
-
-                //descriptionManager.
-                // Se prepara para la actualización
-                //if(concept.prepareForUpdate())
-                //conceptManager.update(concept, user);
+            for (Pair<Description, Description> description : descriptionsForUpdate) {
+                changes = changes + descriptionsForUpdate.size();
+                descriptionManager.updateDescription(concept, description.getFirst(), description.getSecond(), user);
             }
-            // Si el concepto no está persistido, persistirlo
-            else {
-                conceptManager.persist(concept, user);
+
+            for (Description description : descriptionsForPersist) {
+                changes = changes + descriptionsForPersist.size();
+                descriptionManager.bindDescriptionToConcept(concept, description, user);
             }
-            context.addMessage(null, new FacesMessage("Successful", "Concepto guardado "));
+
+            for (Description description : descriptionsForDelete) {
+                changes = changes + descriptionsForDelete.size();
+                descriptionManager.deleteDescription(concept, description, user);
+            }
+
+            if(changes == 0){
+                context.addMessage(null, new FacesMessage("Warning", "No se ha realizado ningún cambio al concepto!!"));
+                return;
+            }
+
         }
+        // Si el concepto no está persistido, persistirlo
+        else {
+            conceptManager.persist(concept, user);
+        }
+        context.addMessage(null, new FacesMessage("Successful", "Concepto guardado "));
 
     }
-
 
 }
 

@@ -1,10 +1,12 @@
 package cl.minsal.semantikos.model.businessrules;
 
+import cl.minsal.semantikos.kernel.components.TagSMTKManager;
 import cl.minsal.semantikos.model.*;
 import cl.minsal.semantikos.model.exceptions.BusinessRuleException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.ejb.EJB;
 import javax.validation.constraints.NotNull;
 
 import static cl.minsal.semantikos.model.ProfileFactory.DESIGNER_PROFILE;
@@ -31,6 +33,7 @@ public class ConceptCreationBusinessRuleContainer implements BusinessRulesContai
         /* Reglas que aplican para todas las categorías */
         br101HasFSN(conceptSMTK);
         br102NonEmptyDescriptions(conceptSMTK);
+        brTagSMTK001(conceptSMTK);
 
         /* Las reglas de negocio dependen de la categoría del concepto */
         switch (conceptSMTK.getCategory().getName()) {
@@ -55,6 +58,21 @@ public class ConceptCreationBusinessRuleContainer implements BusinessRulesContai
                 br004creationRights(conceptSMTK, IUser);
                 break;
 
+        }
+    }
+
+    /**
+     * BR-TagSMTK-001: Cuando se diseña un nuevo Término se le asigna un Tag por defecto.
+     * @param conceptSMTK El concepto sobre el cual se valida que tenga un Tag Semantikos asociado.
+     */
+    protected void brTagSMTK001(ConceptSMTK conceptSMTK) {
+
+        /* Se obtiene el Tag Semantikos */
+        TagSMTK tagSMTK = conceptSMTK.getTagSMTK();
+
+        /* Se valida que no sea nulo y que sea de los oficiales */
+        if (tagSMTK == null || !tagSMTK.isValid()){
+            throw new BusinessRuleException("Todo concepto debe tener un Tag Semántikos (válido).");
         }
     }
 

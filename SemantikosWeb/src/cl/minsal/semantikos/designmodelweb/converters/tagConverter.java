@@ -1,5 +1,6 @@
-package cl.minsal.semantikos.designmodelweb.mbeans;
+package cl.minsal.semantikos.designmodelweb.converters;
 
+import cl.minsal.semantikos.designmodelweb.mbeans.TagBean;
 import cl.minsal.semantikos.model.Tag;
 
 import javax.el.ELContext;
