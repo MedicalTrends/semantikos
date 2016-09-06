@@ -1,7 +1,6 @@
 package cl.minsal.semantikos.model;
 
 import cl.minsal.semantikos.model.audit.AuditableEntity;
-import cl.minsal.semantikos.model.businessrules.ConceptEditionBusinessRuleContainer;
 import cl.minsal.semantikos.model.businessrules.ConceptStateBusinessRulesContainer;
 import cl.minsal.semantikos.model.exceptions.BusinessRuleException;
 import cl.minsal.semantikos.model.relationships.*;
@@ -114,7 +113,22 @@ public class ConceptSMTK extends PersistentEntity implements Target, AuditableEn
         this.modeled = modeled;
     }
 
-    public ConceptSMTK(long id, String conceptID, Category category, boolean isToBeReviewed, boolean isToBeConsulted, boolean modeled, boolean isFullyDefined, boolean isPublished, String observation, Description... descriptions) {
+    /**
+     * Este es el constructor más completo, ideal de utilizar al crear objetos persistentes.
+     *
+     * @param id              Identificador único.
+     * @param conceptID       CONCEPT_ID del concepto.
+     * @param category        Su categoría.
+     * @param isToBeReviewed  Si debe ser revisado.
+     * @param isToBeConsulted Si debe ser consultado.
+     * @param modeled         Si se encuentra modelado.
+     * @param isFullyDefined  Si es Completamente definido.
+     * @param isPublished     Si se encuentra publicado
+     * @param observation     La observación.
+     * @param tagSMTK         El Tag Semántikos asociado al concepto.
+     * @param descriptions    Sus descripciones.
+     */
+    public ConceptSMTK(long id, String conceptID, Category category, boolean isToBeReviewed, boolean isToBeConsulted, boolean modeled, boolean isFullyDefined, boolean isPublished, String observation, TagSMTK tagSMTK, Description... descriptions) {
         this(category, modeled, descriptions);
 
         this.setId(id);
@@ -126,24 +140,26 @@ public class ConceptSMTK extends PersistentEntity implements Target, AuditableEn
         this.isFullyDefined = isFullyDefined;
         this.isPublished = isPublished;
         this.observation = observation;
+        this.tagSMTK = tagSMTK;
 
         /* Se indica que no se han cargado sus relaciones */
         this.relationshipsLoaded = false;
     }
 
-    /*
-    Constructor canónico para un concepto smtk
-     * @param conceptID El conceptID (identificador de negocio) de este concepto
-     * @param category La categoría a la cual pertenece este concepto
-     * @param isToBeReviewed ¿Es para ser revisado?
-     * @param isToBeConsultated ¿Es para ser consultado?
-     * @param state El estado de este concepto
-     * @param isFullyDefined ¿Completamente definido?
-     * @param isPublished ¿Publicado?
-     * @param descriptions Las descripciones para este concepto
+    /**
+     * Constructor canónico para un concepto smtk
+     *
+     * @param conceptID       El conceptID (identificador de negocio) de este concepto
+     * @param category        La categoría a la cual pertenece este concepto
+     * @param isToBeReviewed  ¿Es para ser revisado?
+     * @param isToBeConsulted ¿Es para ser consultado?
+     * @param modeled         El estado de este concepto
+     * @param isFullyDefined  ¿Completamente definido?
+     * @param isPublished     ¿Publicado?
+     * @param descriptions    Las descripciones para este concepto
      */
-    public ConceptSMTK(String conceptID, Category category, boolean isToBeReviewed, boolean isToBeConsulted, boolean modeled, boolean isFullyDefined, boolean isPublished, String observation, Description... descriptions) {
-        this(NON_PERSISTED_ID, conceptID, category, isToBeReviewed, isToBeConsulted, modeled, isFullyDefined, isPublished, observation, descriptions);
+    public ConceptSMTK(String conceptID, Category category, boolean isToBeReviewed, boolean isToBeConsulted, boolean modeled, boolean isFullyDefined, boolean isPublished, String observation, TagSMTK tagSMTK, Description... descriptions) {
+        this(NON_PERSISTED_ID, conceptID, category, isToBeReviewed, isToBeConsulted, modeled, isFullyDefined, isPublished, observation, tagSMTK, descriptions);
 
         /* Se indica que no se han cargado sus relaciones */
         this.relationshipsLoaded = true;

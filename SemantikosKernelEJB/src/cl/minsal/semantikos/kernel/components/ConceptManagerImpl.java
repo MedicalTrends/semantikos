@@ -251,7 +251,11 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
 
     @Override
     public void changeTagSMTK(@NotNull ConceptSMTK conceptSMTK, @NotNull TagSMTK tagSMTK, User user) {
+        /* Se realizan las validaciones básicas */
         new ConceptEditionBusinessRuleContainer().preconditionsConceptEditionTag(conceptSMTK);
+
+        /* Se realiza la actualización */
+        conceptDAO.update(conceptSMTK);
     }
 
     /**

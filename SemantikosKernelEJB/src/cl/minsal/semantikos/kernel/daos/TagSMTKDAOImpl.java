@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.ejb.EJBException;
+import javax.ejb.Stateless;
 import javax.validation.constraints.NotNull;
 import java.sql.CallableStatement;
 import java.sql.Connection;
@@ -17,6 +18,7 @@ import java.util.List;
 /**
  * @author Andrés Farías on 9/5/16.
  */
+@Stateless
 public class TagSMTKDAOImpl implements TagSMTKDAO {
 
     private static final Logger logger = LoggerFactory.getLogger(TagSMTKDAOImpl.class);

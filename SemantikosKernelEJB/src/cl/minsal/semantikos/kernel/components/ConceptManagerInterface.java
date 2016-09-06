@@ -51,8 +51,8 @@ public interface ConceptManagerInterface {
     /**
      * Este método es responsable de cambiar el concepto de una categoría a otra.
      *
-     * @param conceptSMTK El concepto cuya categoría se desea cambiar.
-     * @param tagSMTK     La categoría destino del concepto.
+     * @param conceptSMTK El concepto cuyo tag semántikos es actualizado.
+     * @param tagSMTK     El Tag Semántikos que tenía el concepto antes de ser modificado.
      * @param user        El usuario que realiza la operación.
      */
     public void changeTagSMTK(@NotNull ConceptSMTK conceptSMTK, @NotNull TagSMTK tagSMTK, User user);
