@@ -29,7 +29,7 @@ public class TagDAOImpl implements TagDAO {
     private TagFactory tagFactory;
 
     @Override
-    public void persist(Tag tag) {
+    public Tag persist(Tag tag) {
         ConnectionBD connect = new ConnectionBD();
 
         long idTag;
@@ -40,7 +40,7 @@ public class TagDAOImpl implements TagDAO {
             call.setString(2, tag.getColorBackground());
             call.setString(3, tag.getColorLetter());
 
-            long id = tag.getParentTag().getId();
+            long id = (tag.getParentTag()==null)?-1:tag.getParentTag().getId();
             if( id != NON_PERSISTED_ID) {
                 call.setLong(4, id);
             } else {
@@ -68,6 +68,8 @@ public class TagDAOImpl implements TagDAO {
 
         /* Se establece el ID de la entidad */
         tag.setId(idTag);
+
+        return tag;
     }
 
     @Override
@@ -76,7 +78,7 @@ public class TagDAOImpl implements TagDAO {
 
         long idTag;
         try (Connection connection = connect.getConnection();
-             CallableStatement call = connection.prepareCall("{call semantikos.create_tag(?,?,?,?)}")) {
+             CallableStatement call = connection.prepareCall("{call semantikos.update_tag(?,?,?,?,?)}")) {
 
             call.setLong(1, tag.getId());
             call.setString(2, tag.getName());
@@ -105,7 +107,7 @@ public class TagDAOImpl implements TagDAO {
     public void remove(Tag tag) {
         ConnectionBD connect = new ConnectionBD();
 
-        Tag tagRoot =tag.getParentTag();
+        Tag tagRoot = (tag.getParentTag()==null)?tag:tag.getParentTag();
         while(tagRoot.getParentTag()!=null){
 
             tagRoot =tagRoot.getParentTag();
@@ -195,6 +197,36 @@ public class TagDAOImpl implements TagDAO {
         String json;
         try (Connection connection = connect.getConnection();
              CallableStatement call = connection.prepareCall("{call semantikos.semantikos.get_all_tags()}")) {
+
+
+            call.execute();
+
+            ResultSet rs = call.getResultSet();
+            if (rs.next()) {
+                json = rs.getString(1);
+            } else {
+                String errorMsg = "Error imposible!";
+                logger.error(errorMsg);
+                throw new EJBException(errorMsg);
+            }
+            rs.close();
+
+        } catch (SQLException e) {
+            String errorMsg = "Error al buscar los hijos del tag ";
+            logger.error(errorMsg, e);
+            throw new EJBException(errorMsg, e);
+        }
+
+        return tagFactory.createTagsFromJSON(json);
+    }
+
+    @Override
+    public List<Tag> getAllTagsWithoutParent() {
+        ConnectionBD connect = new ConnectionBD();
+
+        String json;
+        try (Connection connection = connect.getConnection();
+             CallableStatement call = connection.prepareCall("{call semantikos.semantikos.get_all_tags_without()}")) {
 
 
             call.execute();

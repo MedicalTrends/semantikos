@@ -1,12 +1,12 @@
 package cl.minsal.semantikos.model;
 
 import cl.minsal.semantikos.model.audit.AuditableEntity;
-import cl.minsal.semantikos.model.businessrules.ConceptEditionBusinessRuleContainer;
 import cl.minsal.semantikos.model.businessrules.ConceptStateBusinessRulesContainer;
 import cl.minsal.semantikos.model.exceptions.BusinessRuleException;
 import cl.minsal.semantikos.model.relationships.*;
 
 import javax.validation.constraints.NotNull;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -45,6 +45,9 @@ public class ConceptSMTK extends PersistentEntity implements Target, AuditableEn
     /** Determina si el concepto está publicado o no */
     private boolean isPublished;
 
+    /** Fecha hasta la cual el concepto se encuentra vigente */
+    private Timestamp validUntil;
+
     /** Otros descriptores */
     private List<Description> descriptions = new ArrayList<>();
 
@@ -63,15 +66,15 @@ public class ConceptSMTK extends PersistentEntity implements Target, AuditableEn
     /** The concept's labels */
     private List<Label> labels = new ArrayList<>();
 
-    /**
-     * Lista de etiquetas
-     */
+    /** Lista de etiquetas */
     private List<Tag> tags = new ArrayList<>();
 
     /**
      * Este método es responsable de determinar si el estado de publicación del concepto cambio recientemente.
      */
     private boolean justPublished = false;
+
+    /** El Tag Semántikos que tiene asociado el concepto */
     private TagSMTK tagSMTK;
 
     /**
@@ -110,7 +113,22 @@ public class ConceptSMTK extends PersistentEntity implements Target, AuditableEn
         this.modeled = modeled;
     }
 
-    public ConceptSMTK(long id, String conceptID, Category category, boolean isToBeReviewed, boolean isToBeConsulted, boolean modeled, boolean isFullyDefined, boolean isPublished, String observation, Description... descriptions) {
+    /**
+     * Este es el constructor más completo, ideal de utilizar al crear objetos persistentes.
+     *
+     * @param id              Identificador único.
+     * @param conceptID       CONCEPT_ID del concepto.
+     * @param category        Su categoría.
+     * @param isToBeReviewed  Si debe ser revisado.
+     * @param isToBeConsulted Si debe ser consultado.
+     * @param modeled         Si se encuentra modelado.
+     * @param isFullyDefined  Si es Completamente definido.
+     * @param isPublished     Si se encuentra publicado
+     * @param observation     La observación.
+     * @param tagSMTK         El Tag Semántikos asociado al concepto.
+     * @param descriptions    Sus descripciones.
+     */
+    public ConceptSMTK(long id, String conceptID, Category category, boolean isToBeReviewed, boolean isToBeConsulted, boolean modeled, boolean isFullyDefined, boolean isPublished, String observation, TagSMTK tagSMTK, Description... descriptions) {
         this(category, modeled, descriptions);
 
         this.setId(id);
@@ -122,24 +140,26 @@ public class ConceptSMTK extends PersistentEntity implements Target, AuditableEn
         this.isFullyDefined = isFullyDefined;
         this.isPublished = isPublished;
         this.observation = observation;
+        this.tagSMTK = tagSMTK;
 
         /* Se indica que no se han cargado sus relaciones */
         this.relationshipsLoaded = false;
     }
 
-    /*
-    Constructor canónico para un concepto smtk
-     * @param conceptID El conceptID (identificador de negocio) de este concepto
-     * @param category La categoría a la cual pertenece este concepto
-     * @param isToBeReviewed ¿Es para ser revisado?
-     * @param isToBeConsultated ¿Es para ser consultado?
-     * @param state El estado de este concepto
-     * @param isFullyDefined ¿Completamente definido?
-     * @param isPublished ¿Publicado?
-     * @param descriptions Las descripciones para este concepto
+    /**
+     * Constructor canónico para un concepto smtk
+     *
+     * @param conceptID       El conceptID (identificador de negocio) de este concepto
+     * @param category        La categoría a la cual pertenece este concepto
+     * @param isToBeReviewed  ¿Es para ser revisado?
+     * @param isToBeConsulted ¿Es para ser consultado?
+     * @param modeled         El estado de este concepto
+     * @param isFullyDefined  ¿Completamente definido?
+     * @param isPublished     ¿Publicado?
+     * @param descriptions    Las descripciones para este concepto
      */
-    public ConceptSMTK(String conceptID, Category category, boolean isToBeReviewed, boolean isToBeConsulted, boolean modeled, boolean isFullyDefined, boolean isPublished, String observation, Description... descriptions) {
-        this(NON_PERSISTED_ID, conceptID, category, isToBeReviewed, isToBeConsulted, modeled, isFullyDefined, isPublished, observation, descriptions);
+    public ConceptSMTK(String conceptID, Category category, boolean isToBeReviewed, boolean isToBeConsulted, boolean modeled, boolean isFullyDefined, boolean isPublished, String observation, TagSMTK tagSMTK, Description... descriptions) {
+        this(NON_PERSISTED_ID, conceptID, category, isToBeReviewed, isToBeConsulted, modeled, isFullyDefined, isPublished, observation, tagSMTK, descriptions);
 
         /* Se indica que no se han cargado sus relaciones */
         this.relationshipsLoaded = true;
@@ -281,7 +301,6 @@ public class ConceptSMTK extends PersistentEntity implements Target, AuditableEn
     }
 
     public void setConceptID(String conceptID) {
-        new ConceptEditionBusinessRuleContainer().apply(this, User.getDummyUser());
         this.conceptID = conceptID;
     }
 
@@ -327,6 +346,14 @@ public class ConceptSMTK extends PersistentEntity implements Target, AuditableEn
 
     public void setObservation(String observation) {
         this.observation = observation;
+    }
+
+    public Timestamp getValidUntil() {
+        return validUntil;
+    }
+
+    public void setValidUntil(Timestamp validUntil) {
+        this.validUntil = validUntil;
     }
 
     /**

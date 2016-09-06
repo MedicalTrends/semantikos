@@ -314,7 +314,9 @@ public class ConceptBean implements Serializable {
 
         String observation = "";
 
-        ConceptSMTK conceptSMTK = new ConceptSMTK(conceptManager.generateConceptId(), category, true, true, false, false, false, observation, descriptions);
+        // TODO: Diego
+        TagSMTK tagSMTK = new TagSMTK(-1, "POR HACER");
+        ConceptSMTK conceptSMTK = new ConceptSMTK(conceptManager.generateConceptId(), category, true, true, false, false, false, observation, tagSMTK, descriptions);
 
         conceptSMTK.setTagSMTK(category.getTagSemantikos());
 
@@ -328,7 +330,7 @@ public class ConceptBean implements Serializable {
         conceptSMTK.setRelationships(conceptManager.loadRelationships(conceptSMTK));
 
         concept = new ConceptSMTKWeb(conceptSMTK);
-        //Se reslpalda estado original del concepto
+        //Se respalda estado original del concepto
         _concept = new ConceptSMTKWeb(conceptSMTK);
 
         category = concept.getCategory();

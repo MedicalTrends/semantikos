@@ -26,7 +26,7 @@ public class ConceptSMTKWeb extends ConceptSMTK {
     public ConceptSMTKWeb(ConceptSMTK conceptSMTK) {
         // Crear un nuevo concepto con su incormación básica
         super(conceptSMTK.getConceptID(), conceptSMTK.getCategory(), conceptSMTK.isToBeReviewed(), conceptSMTK.isToBeConsulted(), conceptSMTK.isModeled(),
-                conceptSMTK.isFullyDefined(), conceptSMTK.isPublished(), conceptSMTK.getObservation());
+                conceptSMTK.isFullyDefined(), conceptSMTK.isPublished(), conceptSMTK.getObservation(), conceptSMTK.getTagSMTK());
         // Agregar descripciones y relaciones
         if(conceptSMTK.isPersistent()){
             this.setId(conceptSMTK.getId());

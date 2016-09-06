@@ -41,6 +41,9 @@ public class ConceptDAOImpl implements ConceptDAO {
     @EJB
     private TargetDAO targetDAO;
 
+    @EJB
+    private TagSMTKDAO tagSMTKDAO;
+
 
     @Override
     public List<ConceptSMTK> getConceptsBy(boolean modeled, int pageSize, int pageNumber) {
@@ -173,8 +176,6 @@ public class ConceptDAOImpl implements ConceptDAO {
 
         // TODO: TryWithResources
         try (Connection connection = connect.getConnection();) {
-
-
             if (Category.length > 0) {
                 call = connection.prepareCall("{call semantikos.find_concept_by_conceptid_categories(?,?,?,?,?)}");
                 Array ArrayCategories = connection.createArrayOf("integer", Category);
@@ -417,12 +418,15 @@ public class ConceptDAOImpl implements ConceptDAO {
         published = Boolean.parseBoolean(resultSet.getString("is_published"));
         conceptId = resultSet.getString("conceptid");
         String observation = resultSet.getString("observation");
+        long idTagSMTK = resultSet.getLong("id_tag_smtk");
 
         /* Se recuperan las descripciones del concepto */
         List<Description> descriptions = descriptionDAO.getDescriptionsByConceptID(id);
         Description[] theDescriptions = descriptions.toArray(new Description[descriptions.size()]);
 
-        return new ConceptSMTK(id, conceptId, objectCategory, check, consult, modeled, completelyDefined, published, observation, theDescriptions);
+        /* Se recupera su Tag Semántikos */
+        TagSMTK tagSMTKByID = tagSMTKDAO.findTagSMTKByID(idTagSMTK);
+        return new ConceptSMTK(id, conceptId, objectCategory, check, consult, modeled, completelyDefined, published, observation, tagSMTKByID, theDescriptions);
     }
 
     @Override
@@ -430,7 +434,7 @@ public class ConceptDAOImpl implements ConceptDAO {
 
         ConnectionBD connect = new ConnectionBD();
         long id;
-        String sql = "{call semantikos.create_concept(?,?,?,?,?,?,?,?)}";
+        String sql = "{call semantikos.create_concept(?,?,?,?,?,?,?,?,?)}";
 
         try (Connection connection = connect.getConnection();
              CallableStatement call = connection.prepareCall(sql)) {
@@ -443,6 +447,7 @@ public class ConceptDAOImpl implements ConceptDAO {
             call.setBoolean(6, conceptSMTK.isFullyDefined());
             call.setBoolean(7, conceptSMTK.isPublished());
             call.setString(8, conceptSMTK.getObservation());
+            call.setLong(9, conceptSMTK.getTagSMTK().getId());
             call.execute();
 
             ResultSet rs = call.getResultSet();
@@ -471,7 +476,7 @@ public class ConceptDAOImpl implements ConceptDAO {
         logger.info("Actualizando información básica de concepto: " + conceptSMTK.toString());
         ConnectionBD connect = new ConnectionBD();
         long updated;
-        String sql = "{call semantikos.update_concept(?,?,?,?,?,?,?,?,?)}";
+        String sql = "{call semantikos.update_concept(?,?,?,?,?,?,?,?,?,?)}";
 
         try (Connection connection = connect.getConnection();
              CallableStatement call = connection.prepareCall(sql)) {
@@ -485,6 +490,7 @@ public class ConceptDAOImpl implements ConceptDAO {
             call.setBoolean(7, conceptSMTK.isFullyDefined());
             call.setBoolean(8, conceptSMTK.isPublished());
             call.setString(9, conceptSMTK.getObservation());
+            call.setLong(10, conceptSMTK.getTagSMTK().getId());
             call.execute();
 
             ResultSet rs = call.getResultSet();
@@ -511,6 +517,4 @@ public class ConceptDAOImpl implements ConceptDAO {
             throw new EJBException(errorMsg);
         }
     }
-
-
 }
