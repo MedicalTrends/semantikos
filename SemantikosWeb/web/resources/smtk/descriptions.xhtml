@@ -96,11 +96,11 @@
                                 <h:outputText value="Modelado" rendered="#{description.modeled}"/>
                             </f:facet>
                             <f:facet name="input">
-                                <h:selectOneMenu value="#{description.modeled}" style="width:100%">
+                                <p:selectOneMenu value="#{description.modeled}" style="width:60%">
                                     <f:selectItem itemLabel="Seleccione estado" itemValue=""/>
                                     <f:selectItem itemLabel="Borrador" itemValue="false"/>
                                     <f:selectItem itemLabel="Modelado" itemValue="true"/>
-                                </h:selectOneMenu>
+                                </p:selectOneMenu>
                             </f:facet>
                         </p:cellEditor>
                     </div>
@@ -112,13 +112,13 @@
                             <f:facet name="output"><h:outputText
                                     value="#{description.descriptionType}"/></f:facet>
                             <f:facet name="input">
-                                <h:selectOneMenu value="#{description.descriptionType}"
-                                                 converter="omnifaces.SelectItemsConverter" style="width:100%">
+                                <p:selectOneMenu value="#{description.descriptionType}"
+                                                 converter="omnifaces.SelectItemsConverter" style="width:60%">
                                     <f:selectItem itemLabel="Seleccione tipo" itemValue=""/>
                                     <f:selectItems value="#{conceptBean.descriptionTypes}"
                                                    var="descriptionType" itemLabel="#{descriptionType.name}"
                                                    itemValue="#{descriptionType}"/>
-                                </h:selectOneMenu>
+                                </p:selectOneMenu>
                             </f:facet>
                         </p:cellEditor>
                     </div>
@@ -138,10 +138,10 @@
                                 <h:outputText value="Insensible" rendered="#{!description.caseSensitive}"/>
                             </f:facet>
                             <f:facet name="input">
-                                <h:selectOneMenu value="#{description.caseSensitive}" style="width:100%">
+                                <p:selectOneMenu value="#{description.caseSensitive}" style="width:60%">
                                     <f:selectItem itemValue="#{true}" itemLabel="Sensible"/>
                                     <f:selectItem itemValue="#{false}" itemLabel="Insensible"/>
-                                </h:selectOneMenu>
+                                </p:selectOneMenu>
                             </f:facet>
                         </p:cellEditor>
                     </div>

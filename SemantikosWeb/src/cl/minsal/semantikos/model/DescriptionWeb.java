@@ -83,4 +83,12 @@ public class DescriptionWeb extends Description {
         result = 31 * result + getDescriptionType().hashCode();
         return result;
     }
+
+    public boolean isFsnType(){
+        return (this.getDescriptionType()==DescriptionTypeFactory.getInstance().getFSNDescriptionType());
+    }
+
+    public boolean isFavoriteType(){
+        return (this.getDescriptionType()==DescriptionTypeFactory.getInstance().getFavoriteDescriptionType());
+    }
 }

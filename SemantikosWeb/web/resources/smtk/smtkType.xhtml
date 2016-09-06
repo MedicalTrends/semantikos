@@ -136,6 +136,10 @@
                                 value="#{conceptBean.conceptSelected}"
                                 itemLabel="#{concept.descriptionFavorite.term}"
                                 itemValue="#{concept}">
+                    <!-- Parámetros del validador -->
+                    <f:attribute name="concept" value="#{cc.attrs.concept}"  />
+                    <f:attribute name="relationshipDefinition" value="#{cc.attrs.relationshipDefinition}"  />
+                    <!---->
 
                     <p:column>
                         <h:outputText value="#{concept.descriptionFavorite.id}"/>
@@ -220,6 +224,11 @@
                                 value="#{conceptBean.conceptSelected}"
                                 itemLabel="#{concept.descriptionFavorite.term}" itemValue="#{concept}"
                                 rendered="#{conceptBean.concept.getRelationshipsByRelationDefinition(cc.attrs.relationshipDefinition).size()==0}">
+
+                    <!-- Parámetros del validador -->
+                    <f:attribute name="concept" value="#{cc.attrs.concept}"  />
+                    <f:attribute name="relationshipDefinition" value="#{cc.attrs.relationshipDefinition}"  />
+                    <!---->
 
                     <p:column>
                         <h:outputText value="#{concept.descriptionFavorite.id}"/>

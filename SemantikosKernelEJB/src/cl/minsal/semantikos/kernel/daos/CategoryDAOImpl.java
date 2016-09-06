@@ -2,6 +2,7 @@ package cl.minsal.semantikos.kernel.daos;
 
 import cl.minsal.semantikos.kernel.util.ConnectionBD;
 import cl.minsal.semantikos.model.Category;
+import cl.minsal.semantikos.model.TagSMTK;
 import cl.minsal.semantikos.model.relationships.RelationshipDefinition;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,11 +30,14 @@ public class CategoryDAOImpl implements CategoryDAO {
     @EJB
     private RelationshipDefinitionDAO relationshipDefinitionDAO;
 
+    @EJB
+    private TagSMTKDAO tagSMTKDAO;
+
     // TODO: Agregar EhCache.
 
     @Override
     public Category getCategoryById(long idCategory) {
-        Category category = new Category();
+        Category category;
         ConnectionBD connect = new ConnectionBD();
         String GET_CATEGORY_BY_ID = "{call semantikos.get_category_by_id(?)}";
 
@@ -44,13 +48,17 @@ public class CategoryDAOImpl implements CategoryDAO {
             call.execute();
 
             ResultSet rs = call.getResultSet();
-            while (rs.next()) {
+            if (rs.next()) {
                 category = createCategoryFromResultSet(rs);
                 category.setRelationshipDefinitions(getCategoryMetaData(category.getId()));
+            } else {
+                throw new EJBException("Error en la llamada");
             }
             rs.close();
         } catch (SQLException e) {
-            logger.error("error en getCategoryById , id= {}", idCategory, e);
+            String errorMsg = "error en getCategoryById = " + idCategory;
+            logger.error(errorMsg, idCategory, e);
+            throw new EJBException(errorMsg, e);
         }
 
         return category;
@@ -86,10 +94,12 @@ public class CategoryDAOImpl implements CategoryDAO {
         String nameAbbreviated = resultSet.getString("nameabbreviated");
         boolean restriction = resultSet.getBoolean("restriction");
         boolean active = resultSet.getBoolean("active");
-        long idTag = resultSet.getLong("tag");
         String color = resultSet.getString("nameabbreviated");
 
-        return new Category(idCategory, nameCategory, nameAbbreviated, restriction, active, color);
+        long idTagSMTK = resultSet.getLong("tag");
+        TagSMTK tagSMTKByID = tagSMTKDAO.findTagSMTKByID(idTagSMTK);
+
+        return new Category(idCategory, nameCategory, nameAbbreviated, restriction, active, color, tagSMTKByID);
     }
 
     @Override
@@ -108,7 +118,7 @@ public class CategoryDAOImpl implements CategoryDAO {
             call.setString(1, category.getName());
             call.setString(2, category.getNameAbbreviated());
             call.setBoolean(3, category.isRestriction());
-            call.setLong(4, category.getTagSemantikos());
+            call.setLong(4, category.getTagSemantikos().getId());
             call.setBoolean(5, category.isValid());
             call.setString(6, category.getColor());
             call.execute();

@@ -82,6 +82,9 @@ class JSONHelperTableRecord {
     /** El nombre de la tabla auxiliar */
     private String tableName;
 
+    /** La llave primaria del registro */
+    private long id;
+
     private Map<String, String> fields;
 
     public JSONHelperTableRecord() {
@@ -95,6 +98,10 @@ class JSONHelperTableRecord {
     public void setTableName(String tableName) {
         this.tableName = tableName;
     }
+
+    public long getId() { return id; }
+
+    public void setId(long id) { this.id = id; }
 
     public Map<String, String> getFields() {
         return fields;
@@ -114,6 +121,9 @@ class JSONHelperTableRecords {
     /** El nombre de la tabla auxiliar */
     private String tableName;
 
+    /** La llave primaria del registro */
+    private long id;
+
     private List<Map<String, String>> records;
 
     public JSONHelperTableRecords() {
@@ -127,6 +137,10 @@ class JSONHelperTableRecords {
     public void setTableName(String tableName) {
         this.tableName = tableName;
     }
+
+    public long getId() { return id; }
+
+    public void setId(long id) { this.id = id; }
 
     public List<Map<String, String>> getRecords() {
         return records;

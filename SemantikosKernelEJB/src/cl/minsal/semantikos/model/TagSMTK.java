@@ -27,4 +27,26 @@ public class TagSMTK extends PersistentEntity {
         /* Si el tag está persistido es válido */
         return this.isPersistent();
     }
+
+    @Override
+    public String toString() {
+        return this.name;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        TagSMTK that = (TagSMTK) o;
+
+        if (!name.equals(that.name)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return name.hashCode();
+    }
 }

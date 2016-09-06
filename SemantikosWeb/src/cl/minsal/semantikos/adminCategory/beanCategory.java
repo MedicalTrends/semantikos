@@ -1,6 +1,5 @@
 package cl.minsal.semantikos.adminCategory;
 
-import cl.minsal.semantikos.kernel.components.CategoryManagerImpl;
 import cl.minsal.semantikos.kernel.components.CategoryManagerInterface;
 import cl.minsal.semantikos.model.*;
 import cl.minsal.semantikos.model.relationships.RelationshipDefinition;

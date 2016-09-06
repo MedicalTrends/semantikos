@@ -62,17 +62,17 @@ public class ConceptUtils {
     }
 
 
-    public static List<Pair<Relationship, Relationship>> getModifiedRelationships(List<DescriptionWeb> initRelationships, List<DescriptionWeb> finalRelationships) {
+    public static List<Pair<Relationship, Relationship>> getModifiedRelationships(List<RelationshipWeb> initRelationships, List<RelationshipWeb> finalRelationships) {
 
         List<Pair<Relationship, Relationship>> relationshipsForUpdate = new ArrayList<Pair<Relationship, Relationship>>();// Si la relación está persistida dejar en el respaldo las originales
 
         //Primero se buscan todas las descripciones persistidas originales
-        for (DescriptionWeb initDescription : initRelationships) {
+        for (RelationshipWeb initRelationship : initRelationships) {
             //Por cada descripción original se busca su descripcion vista correlacionada
-            for (DescriptionWeb finalDescription : finalRelationships) {
+            for (RelationshipWeb finalRelationship : finalRelationships) {
                 //Si la descripcion correlacionada sufrio alguna modificación agregar el par (init, final)
-                if (initDescription.getId() == finalDescription.getId() && !finalDescription.equals(initDescription) /*finalDescription.hasBeenModified()*/) {
-                    relationshipsForUpdate.add(new Pair(initDescription, finalDescription));
+                if (initRelationship.getId() == finalRelationship.getId() && !finalRelationship.equals(initRelationship) /*finalDescription.hasBeenModified()*/) {
+                    relationshipsForUpdate.add(new Pair(initRelationship, finalRelationship));
                 }
             }
         }
