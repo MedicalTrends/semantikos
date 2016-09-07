@@ -2,11 +2,16 @@ package cl.minsal.semantikos.designmodelweb.mbeans;
 
 import cl.minsal.semantikos.kernel.components.TagManager;
 import cl.minsal.semantikos.model.Tag;
+import org.primefaces.component.datatable.DataTable;
+import org.primefaces.event.CellEditEvent;
+import org.primefaces.event.RowEditEvent;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -153,6 +158,9 @@ public class TagBean {
         listTagSon=tagManager.getAllTagsWithoutParent();
         tagCreate= new Tag(-1,null,null,null,null);
         parentTagToCreate= new Tag(-1,null,null,null,null);
+
+        FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Etiqueta creada", "La etiqueta se creo exitosamente");
+        FacesContext.getCurrentInstance().addMessage(null, msg);
     }
 
     public void linkSon() {
@@ -187,6 +195,15 @@ public class TagBean {
         tagListTable= tagManager.getAllTags();
     }
 
+    public void onRowEdit(CellEditEvent event) {
+
+        FacesContext context = FacesContext.getCurrentInstance();
+        Tag tagToEdit = context.getApplication().evaluateExpressionGet(context, "#{tag}", Tag.class);
+        tagManager.update(tagToEdit);
+
+        FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Etiqueta actualizada", "La etiqueta se actualizo exitosamente");
+        FacesContext.getCurrentInstance().addMessage(null, msg);
+    }
 
 
 
