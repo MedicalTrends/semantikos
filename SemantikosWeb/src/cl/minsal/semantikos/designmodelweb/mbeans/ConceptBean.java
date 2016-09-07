@@ -477,10 +477,10 @@ public class ConceptBean implements Serializable {
         if (otherTermino != null) {
             if (otherTermino.length() > 0) {
                 if (otherDescriptionType != null) {
-                    Description description = new Description(concept, otherTermino, otherDescriptionType);
+                    DescriptionWeb description = new DescriptionWeb(concept, otherTermino, otherDescriptionType);
                     description.setCaseSensitive(otherSensibilidad);
                     //description.setDescriptionId(descriptionManager.generateDescriptionId());
-                    concept.addDescriptionWeb(new DescriptionWeb(description));
+                    concept.addDescriptionWeb(description);
                     otherTermino = "";
                 } else {
                     context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se ha seleccionado el tipo de descripción"));
