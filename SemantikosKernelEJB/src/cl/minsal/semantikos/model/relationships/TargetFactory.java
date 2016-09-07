@@ -3,10 +3,14 @@ package cl.minsal.semantikos.model.relationships;
 import cl.minsal.semantikos.kernel.daos.ConceptDAO;
 import cl.minsal.semantikos.kernel.daos.ConceptSCTDAO;
 import cl.minsal.semantikos.kernel.daos.HelperTableDAO;
+import cl.minsal.semantikos.model.basictypes.BasicTypeDefinition;
 import cl.minsal.semantikos.model.basictypes.BasicTypeValue;
+import cl.minsal.semantikos.model.helpertables.HelperTable;
+import cl.minsal.semantikos.model.helpertables.HelperTableRecord;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import javax.ejb.EJB;
 import javax.ejb.EJBException;
@@ -92,6 +96,34 @@ public class TargetFactory {
         }
 
         return target;
+    }
+
+
+
+    public Target createPlaceholderTargetFromTargetDefinition(TargetDefinition definition){
+
+        if(definition.isBasicType()){
+            if( ((BasicTypeDefinition)definition).getType().equals(BasicTypeType.BOOLEAN_TYPE) )
+                return new BasicTypeValue<Boolean>(false);
+            if( ((BasicTypeDefinition)definition).getType().equals(BasicTypeType.DATE_TYPE) )
+                return new BasicTypeValue<Timestamp>(null);
+            if( ((BasicTypeDefinition)definition).getType().equals(BasicTypeType.FLOAT_TYPE) )
+                return new BasicTypeValue<Float>(null);
+            if( ((BasicTypeDefinition)definition).getType().equals(BasicTypeType.INTEGER_TYPE) )
+                return new BasicTypeValue<Integer>(null);
+            if( ((BasicTypeDefinition)definition).getType().equals(BasicTypeType.STRING_TYPE) )
+                return new BasicTypeValue<String>(null);
+
+        }
+
+                /* Se evalúa caso a caso. Helper Tables: */
+        if (definition.isHelperTable()) {
+            return new HelperTableRecord((HelperTable)definition,-1);
+        } else {
+            throw new NotImplementedException();
+        }
+
+
     }
 
 }
@@ -216,4 +248,6 @@ class TargetDTO {
                 ", idTargetType=" + idTargetType +
                 '}';
     }
+
+
 }

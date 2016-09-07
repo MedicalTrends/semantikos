@@ -6,10 +6,7 @@ import java.util.List;
 /**
  * @author Gustavo Punucura
  */
-public class Tag {
-
-    /** Identificador único del Tag en la BDD */
-    private long id;
+public class Tag extends PersistentEntity {
 
     private String name;
     private String colorBackground;
@@ -22,7 +19,7 @@ public class Tag {
 
 
     public Tag(long id, String name, String colorBackground, String colorLetter, Tag parentTag) {
-        this.id = id;
+        super(id);
         this.name = name;
         this.colorBackground = colorBackground;
         this.colorLetter = colorLetter;
@@ -70,14 +67,6 @@ public class Tag {
 
     public void setColorLetter(String colorLetter) {
         this.colorLetter = colorLetter;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public void addSon(Tag tag) {
@@ -153,13 +142,6 @@ public class Tag {
 
         Tag tag = (Tag) o;
 
-        if (id != tag.id) return false;
-
         return true;
-    }
-
-    @Override
-    public int hashCode() {
-        return (int) (id ^ (id >>> 32));
     }
 }

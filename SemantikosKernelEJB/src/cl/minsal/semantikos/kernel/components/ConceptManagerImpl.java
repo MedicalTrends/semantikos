@@ -45,6 +45,9 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
     @EJB
     private RelationshipDAO relationshipDAO;
 
+    @EJB
+    private TagManager tagManager;
+
     @Override
     public ConceptSMTK getConceptByCONCEPT_ID(String conceptId) {
 
@@ -52,7 +55,8 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
         ConceptSMTK concept = this.conceptDAO.getConceptByCONCEPT_ID(conceptId);
 
         /* Se cargan las descripciones del concepto */
-        concept.setDescriptions(descriptionDAO.getDescriptionsByConceptID(concept.getId()));
+        // TODO: Factorizar esto para que siempre se cree el concepto de la misma manera cuando se crea.
+        concept.setDescriptions(descriptionDAO.getDescriptionsByConcept(concept));
 
         return concept;
     }
@@ -64,7 +68,7 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
         ConceptSMTK conceptSMTK = this.conceptDAO.getConceptByID(id);
 
         /* Se cargan las descripciones del concepto */
-        conceptSMTK.setDescriptions(descriptionDAO.getDescriptionsByConceptID(conceptSMTK.getId()));
+        conceptSMTK.setDescriptions(descriptionDAO.getDescriptionsByConcept(conceptSMTK));
 
         return conceptSMTK;
     }
@@ -73,9 +77,8 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
     public List<ConceptSMTK> findConceptBy(String patternOrConceptID, Long[] categories, int pageNumber, int pageSize) {
 
 
-        boolean isModeled= false;
+        boolean isModeled = false;
         //TODO: Actualizar esto de los estados que ya no va.
-
 
 
         categories = (categories == null) ? new Long[0] : categories;
@@ -135,7 +138,7 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
 
         // TODO: arreglar esto (Estados)
 
-        boolean isModeled= false;
+        boolean isModeled = false;
 
 
         pattern = standardizationPattern(pattern);
@@ -197,6 +200,13 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
             relationshipDAO.persist(relationship);
         }
 
+        /* Y sus tags */
+        for (Tag tag : conceptSMTK.getTags()) {
+            if (tag.isPersistent()) {
+                tagManager.persist(tag);
+            }
+        }
+
         /* Se deja registro en la auditoría sólo para conceptos modelados */
         if (conceptSMTK.isModeled()) {
             auditManager.recordNewConcept(conceptSMTK, user);
@@ -228,7 +238,7 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
         conceptDAO.update(conceptSMTK);
 
         /* Se registra en el historial */
-        if (conceptSMTK.isModeled()){
+        if (conceptSMTK.isModeled()) {
             auditManager.recordConceptInvalidation(conceptSMTK, user);
         }
         logger.info("Se ha dejado no vigente el concepto: " + conceptSMTK);
@@ -364,7 +374,7 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
 
     @Override
     public List<Description> getDescriptionsBy(ConceptSMTK concept) {
-        return descriptionDAO.getDescriptionsByConceptID(concept.getId());
+        return descriptionDAO.getDescriptionsByConcept(concept);
     }
 
     @Override
@@ -372,6 +382,11 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
         List<Relationship> relationships = relationshipDAO.getRelationshipsBySourceConcept(concept.getId());
         concept.setRelationships(relationships);
         return relationships;
+    }
+
+    @Override
+    public List<ConceptSMTK> getConceptDraft() {
+        return conceptDAO.getConceptDraft();
     }
 
     /**

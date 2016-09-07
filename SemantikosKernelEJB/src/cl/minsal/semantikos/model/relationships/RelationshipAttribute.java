@@ -8,9 +8,9 @@ import javax.persistence.Column;
  */
 public class RelationshipAttribute {
     private Long idRelationshipAttribute;
-    private Long idRelationAttributeDefinition;
-    private Long idRelationships;
-    private Long idDestiny;
+    private RelationshipAttributeDefinition relationAttributeDefinition;
+    private Relationship Relationship;
+    private Target target;
 
     public Long getIdRelationshipAttribute() {
         return idRelationshipAttribute;
@@ -20,35 +20,30 @@ public class RelationshipAttribute {
         this.idRelationshipAttribute = idRelationshipAttribute;
     }
 
-    public Long getIdRelationAttributeDefinition() {
-        return idRelationAttributeDefinition;
+    public RelationshipAttributeDefinition getRelationAttributeDefinition() {
+        return relationAttributeDefinition;
     }
 
-    public void setIdRelationAttributeDefinition(Long idRelationAttributeDefinition) {
-        this.idRelationAttributeDefinition = idRelationAttributeDefinition;
+    public void setRelationAttributeDefinition(RelationshipAttributeDefinition relationAttributeDefinition) {
+        this.relationAttributeDefinition = relationAttributeDefinition;
     }
 
-    @Basic
-    @Column(name = "id_relationships")
-    public Long getIdRelationships() {
-        return idRelationships;
+    public cl.minsal.semantikos.model.relationships.Relationship getRelationship() {
+        return Relationship;
     }
 
-    public void setIdRelationships(Long idRelationships) {
-        this.idRelationships = idRelationships;
+    public void setRelationship(cl.minsal.semantikos.model.relationships.Relationship relationship) {
+        Relationship = relationship;
     }
 
-    @Basic
-    @Column(name = "id_destiny")
-    public Long getIdDestiny() {
-        return idDestiny;
+    public Target getTarget() {
+        return target;
     }
 
-    public void setIdDestiny(Long idDestiny) {
-        this.idDestiny = idDestiny;
+    public void setTarget(Target target) {
+        this.target = target;
     }
 
-    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -57,11 +52,6 @@ public class RelationshipAttribute {
 
         if (idRelationshipAttribute != null ? !idRelationshipAttribute.equals(that.idRelationshipAttribute) : that.idRelationshipAttribute != null)
             return false;
-        if (idRelationAttributeDefinition != null ? !idRelationAttributeDefinition.equals(that.idRelationAttributeDefinition) : that.idRelationAttributeDefinition != null)
-            return false;
-        if (idRelationships != null ? !idRelationships.equals(that.idRelationships) : that.idRelationships != null)
-            return false;
-        if (idDestiny != null ? !idDestiny.equals(that.idDestiny) : that.idDestiny != null) return false;
 
         return true;
     }
@@ -69,9 +59,6 @@ public class RelationshipAttribute {
     @Override
     public int hashCode() {
         int result = idRelationshipAttribute != null ? idRelationshipAttribute.hashCode() : 0;
-        result = 31 * result + (idRelationAttributeDefinition != null ? idRelationAttributeDefinition.hashCode() : 0);
-        result = 31 * result + (idRelationships != null ? idRelationships.hashCode() : 0);
-        result = 31 * result + (idDestiny != null ? idDestiny.hashCode() : 0);
         return result;
     }
 }

@@ -218,7 +218,7 @@ public class AuthDAO {
         Query q = em.createNativeQuery("INSERT INTO semantikos.smtk_user_profile (id_user, id_profile) VALUES (?, ?)");
 
         q.setParameter(1, user.getIdUser());
-        q.setParameter(2, p.getIdProfile());
+        q.setParameter(2, p.getId());
 
         q.executeUpdate();
     }

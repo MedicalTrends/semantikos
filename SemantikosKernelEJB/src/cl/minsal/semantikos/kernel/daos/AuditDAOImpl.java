@@ -14,7 +14,10 @@ import javax.ejb.EJB;
 import javax.ejb.EJBException;
 import javax.ejb.Stateless;
 import java.sql.*;
+import java.util.Collections;
 import java.util.List;
+
+import static java.util.Collections.emptyList;
 
 /**
  * @author Andrés Farías on 8/23/16.
@@ -46,6 +49,12 @@ public class AuditDAOImpl implements AuditDAO {
             ResultSet rs = call.getResultSet();
             if (rs.next()) {
                 String jsonResult = rs.getString(1);
+
+                /* El resultado podría ser nulo si no hay un historial para ese concepto */
+                if(jsonResult == null){
+                    return emptyList();
+                }
+
                 auditActions = conceptAuditActionFactory.createAuditActionsFromJSON(jsonResult);
             } else {
                 String errorMsg = "Un error imposible ocurrio al pasar JSON a BasicTypeDefinition";

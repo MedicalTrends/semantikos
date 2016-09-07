@@ -4,9 +4,7 @@ import cl.minsal.semantikos.kernel.components.*;
 import cl.minsal.semantikos.model.*;
 import cl.minsal.semantikos.model.basictypes.BasicTypeValue;
 import cl.minsal.semantikos.model.helpertables.HelperTableRecord;
-import cl.minsal.semantikos.model.relationships.Relationship;
-import cl.minsal.semantikos.model.relationships.RelationshipDefinition;
-import cl.minsal.semantikos.model.relationships.Target;
+import cl.minsal.semantikos.model.relationships.*;
 import cl.minsal.semantikos.util.ConceptUtils;
 import cl.minsal.semantikos.util.Pair;
 import org.primefaces.context.RequestContext;
@@ -106,9 +104,24 @@ public class ConceptBean implements Serializable {
 
     private int categorySelect;
 
+
+    //TODO: editar concepto
+
+    private long idconceptselect;
+
+    public long getIdconceptselect() {
+        return idconceptselect;
+    }
+
+    public void setIdconceptselect(long idconceptselect) {
+        this.idconceptselect = idconceptselect;
+
+    }
+
     public int getCategorySelect() {
         return categorySelect;
     }
+
 
     public void setCategorySelect(int categorySelect) {
         this.categorySelect = categorySelect;
@@ -117,10 +130,45 @@ public class ConceptBean implements Serializable {
     //Inicializacion del Bean
 
 
+
+    //para tipo helpertable
+    private int helperTableValuePlaceholder;
+
+    private Map<RelationshipDefinition, List<RelationshipAttribute>> relationshipAttributesPlaceholder = new HashMap<RelationshipDefinition, List<RelationshipAttribute>>();
+
+
+    public List<RelationshipAttribute> getRelationshipAttributesByRelationshipDefinition(RelationshipDefinition definition){
+        if(!relationshipAttributesPlaceholder.containsKey(definition)) {
+
+
+            List<RelationshipAttribute> attributes = new ArrayList<RelationshipAttribute>(definition.getRelationshipAttributeDefinitions().size());
+
+            for (RelationshipAttributeDefinition attributeDefinition : definition.getRelationshipAttributeDefinitions()) {
+
+                RelationshipAttribute attribute = new RelationshipAttribute();
+
+                attribute.setRelationAttributeDefinition(attributeDefinition);
+
+                Target t = new TargetFactory().createPlaceholderTargetFromTargetDefinition(definition.getTargetDefinition());
+
+                attribute.setTarget(t);
+
+                attributes.add(attribute);
+            }
+
+            relationshipAttributesPlaceholder.put(definition,attributes);
+        }
+
+        return relationshipAttributesPlaceholder.get(definition);
+
+    }
+
+
     @PostConstruct
     protected void initialize() throws ParseException {
 
         // TODO: Manejar el usuario desde la sesión
+
         user = new User();
 
         user.setIdUser(1);
@@ -136,8 +184,9 @@ public class ConceptBean implements Serializable {
         context.execute("PF('dialogNameConcept').show();");
 
         //category = categoryManager.getCategoryById(1);
-        category = categoryManager.getCategoryById(105590001);
+        //category = categoryManager.getCategoryById(105590001);
         //category = categoryManager.getCategoryById(71388002);
+        category = categoryManager.getCategoryById(419891008);
 
 
         descriptionTypes = descriptionTypeFactory.getDescriptionTypes();
@@ -286,9 +335,15 @@ public class ConceptBean implements Serializable {
     //Methods
 
     public void createConcept() throws ParseException {
-        //category = categoryManager.getCategoryById(categorySelect);
-        newConcept(category, favoriteDescription);
-        //getConceptById(80602);
+
+        if(idconceptselect==0){
+            category = categoryManager.getCategoryById(categorySelect);
+            newConcept(category, favoriteDescription);
+        }else{
+            getConceptById(idconceptselect);
+        }
+
+
 
         RequestContext context = RequestContext.getCurrentInstance();
         context.execute("PF('dialogNameConcept').hide();");
@@ -522,8 +577,8 @@ public class ConceptBean implements Serializable {
         // Si el concepto está persistido, actualizarlo
         if (concept.isPersistent() && !concept.isModeled()) {
 
-            //concept.delete(user);
-            context.addMessage(null, new FacesMessage("Successful", "Concepto eliminado "));
+            conceptManager.invalidate(conceptSMTK, user);
+            context.addMessage(null, new FacesMessage("Successful", "Concepto eliminado."));
         }
 
     }

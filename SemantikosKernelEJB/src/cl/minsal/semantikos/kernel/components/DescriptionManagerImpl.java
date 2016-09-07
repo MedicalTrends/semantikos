@@ -229,7 +229,7 @@ public class DescriptionManagerImpl implements DescriptionManagerInterface {
 
     @Override
     public List<Description> getDescriptionsOf(ConceptSMTK concept) {
-        return descriptionDAO.getDescriptionsByConceptID(concept.getId());
+        return descriptionDAO.getDescriptionsByConcept(concept);
     }
 
     @Override

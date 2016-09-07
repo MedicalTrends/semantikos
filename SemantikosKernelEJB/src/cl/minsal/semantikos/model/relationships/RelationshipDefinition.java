@@ -153,7 +153,7 @@ public class RelationshipDefinition {
 
         RelationshipDefinition that = (RelationshipDefinition) o;
 
-        return id == that.id;
+        return this.id == that.id;
 
     }
 

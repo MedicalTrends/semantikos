@@ -61,11 +61,20 @@ public interface TagDAO {
     public List<Tag> getAllTagsWithoutParent();
 
     /**
+     * Este método es responsable de recuperar las etiquetas de un concepto.
+     *
+     * @param idConcept El Identificador único del concepto.
+     *
+     * @return Una lista de los Tags asociados al concepto.
+     */
+    public List<Tag> getTagsByConcept(long idConcept);
+
+    /**
      * Este método es responsable de recuperar todos los hijos de un Tag.
      *
-     * @param idParent El ID del Tag cuyos hijos se desea recuperar.
+     * @param parent El tag cuyos hijos se desea recuperar.
      *
-     * @return Una lista de Tags que son hijos del Tag cuyo identificador es <code>idParent</code>.
+     * @return Una lista de Tags que son hijos del Tag.
      */
     public List<Tag> getChildrenOf(Tag parent);
 

@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by des01c7 on 13-07-16.
+ * @author Gusatvo Punucura on 13-07-16.
  */
 
 @Stateless
@@ -44,6 +44,8 @@ public class ConceptDAOImpl implements ConceptDAO {
     @EJB
     private TagSMTKDAO tagSMTKDAO;
 
+    @EJB
+    TagDAO tagDAO;
 
     @Override
     public List<ConceptSMTK> getConceptsBy(boolean modeled, int pageSize, int pageNumber) {
@@ -420,13 +422,18 @@ public class ConceptDAOImpl implements ConceptDAO {
         String observation = resultSet.getString("observation");
         long idTagSMTK = resultSet.getLong("id_tag_smtk");
 
-        /* Se recuperan las descripciones del concepto */
-        List<Description> descriptions = descriptionDAO.getDescriptionsByConceptID(id);
-        Description[] theDescriptions = descriptions.toArray(new Description[descriptions.size()]);
 
         /* Se recupera su Tag Semántikos */
         TagSMTK tagSMTKByID = tagSMTKDAO.findTagSMTKByID(idTagSMTK);
-        return new ConceptSMTK(id, conceptId, objectCategory, check, consult, modeled, completelyDefined, published, observation, tagSMTKByID, theDescriptions);
+        ConceptSMTK conceptSMTK = new ConceptSMTK(id, conceptId, objectCategory, check, consult, modeled, completelyDefined, published, observation, tagSMTKByID);
+
+        /* Se recuperan las descripciones del concepto */
+        List<Description> descriptions = descriptionDAO.getDescriptionsByConcept(conceptSMTK);
+        conceptSMTK.setDescriptions(descriptions);
+
+        /* Se recuperan sus Etiquetas */
+        conceptSMTK.setTags(tagDAO.getTagsByConcept(id));
+        return conceptSMTK;
     }
 
     @Override
@@ -516,5 +523,37 @@ public class ConceptDAOImpl implements ConceptDAO {
             logger.error(errorMsg);
             throw new EJBException(errorMsg);
         }
+    }
+
+    @Override
+    public List<ConceptSMTK> getConceptDraft() {
+
+
+        List<ConceptSMTK> concepts = new ArrayList<ConceptSMTK>();
+
+        ConnectionBD connect = new ConnectionBD();
+
+
+        CallableStatement call;
+
+        // TODO: TryWithResources
+        try (Connection connection = connect.getConnection();) {
+
+            call = connection.prepareCall("{call semantikos.get_concept_draft()}");
+            call.execute();
+
+            ResultSet rs = call.getResultSet();
+            concepts = new ArrayList<>();
+            while (rs.next()) {
+                concepts.add(createConceptSMTKFromResultSet(rs));
+            }
+            rs.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return concepts;
+
     }
 }

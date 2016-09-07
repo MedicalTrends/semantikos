@@ -1,11 +1,13 @@
 package cl.minsal.semantikos.designmodelweb.mbeans;
 
+import cl.minsal.semantikos.kernel.daos.ConceptDAO;
 import cl.minsal.semantikos.model.ConceptSMTK;
 import cl.minsal.semantikos.model.RefSet;
 import cl.minsal.semantikos.model.relationships.Relationship;
 import cl.minsal.semantikos.model.snomedct.SnomedCT;
 
 import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.component.UINamingContainer;
@@ -24,7 +26,13 @@ public class ConceptExportMBean extends UINamingContainer {
     private List<ConceptBasic> conceptBasics;
 
     private ConceptSMTK conceptSMTK;
+
+    //80625 80602
+    @EJB
+    private ConceptDAO conceptDAO;
+
     private List<Relationship> crossMapsRelationships;
+
     private List<RefSet> refSets;
 
     @PostConstruct
@@ -42,7 +50,7 @@ public class ConceptExportMBean extends UINamingContainer {
         conceptBasics.add(new ConceptBasic("Observación", conceptSMTK.getObservation()));
 
         crossMapsRelationships = new ArrayList<Relationship>();
-
+        conceptDAO.getConceptByID(80625);
     }
 
     public List<ConceptBasic> getConceptBasics() {
