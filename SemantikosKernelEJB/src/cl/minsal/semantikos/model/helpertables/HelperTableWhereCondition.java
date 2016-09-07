@@ -3,14 +3,14 @@ package cl.minsal.semantikos.model.helpertables;
 /**
  * @author Andrés Farías on 9/6/16.
  */
-public class HelperTableWhereCondition<T> {
+public class HelperTableWhereCondition {
 
     /* La columna sobre la cual se define la condición */
-    private HelperTableColumn helperTableColumn;
+    protected HelperTableColumn helperTableColumn;
 
-    private ConditionalOperator conditionalOperator;
+    protected ConditionalOperator conditionalOperator;
 
-    private Object value;
+    protected Object value;
 
     public HelperTableWhereCondition(HelperTableColumn helperTableColumn, ConditionalOperator conditionalOperator, Object value) {
         this.helperTableColumn = helperTableColumn;

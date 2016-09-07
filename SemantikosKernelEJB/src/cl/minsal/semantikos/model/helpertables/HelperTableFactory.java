@@ -33,7 +33,6 @@ public class HelperTableFactory {
 
         HelperTable atcHelperTable = createATC();
         HelperTable dciHelperTable = createDCI();
-
         HelperTable rec = createRecommendation();
         HelperTable rectype = createRecommendationType();
 
@@ -72,13 +71,11 @@ public class HelperTableFactory {
      */
     private HelperTable createRecommendation() {
         HelperTableColumn idColumn = new HelperTableColumn("id", true, false, true);
-        HelperTableColumn descriptionColumn = new HelperTableColumn("descripcion", false, true, true);
-        HelperTableColumn creation_dateColumn = new HelperTableColumn("fecha_registro", false, false, true);
-        HelperTableColumn user_registerColumn = new HelperTableColumn("usuario_registro", false, false, true);
-        HelperTableColumn is_validColumn = new HelperTableColumn("valid", false, false, true);
+        HelperTableColumn descriptionColumn = new HelperTableColumn("description", false, true, true);
 
 
-        HelperTableColumn[] columns = {idColumn, descriptionColumn, creation_dateColumn, user_registerColumn, is_validColumn};
+
+        HelperTableColumn[] columns = {idColumn, descriptionColumn};
         this.recommentationsHT = new HelperTable((long) 3, "Recomendaciones", "Tabla de Recomendaciones", "smtk_ht_recommendation", Arrays.asList(columns));
 
         return this.recommentationsHT;
@@ -91,7 +88,7 @@ public class HelperTableFactory {
      */
     private HelperTable createRecommendationType() {
         HelperTableColumn idColumn = new HelperTableColumn("id", true, false, true);
-        HelperTableColumn descriptionColumn = new HelperTableColumn("name", false, true, true);
+        HelperTableColumn descriptionColumn = new HelperTableColumn("description", false, true, true);
 
 
         HelperTableColumn[] columns = {idColumn, descriptionColumn};
@@ -163,10 +160,10 @@ public class HelperTableFactory {
                 return this.dciHT;
 
             case 3:
-                return this.dciHT;
+                return this.recommentationsHT;
 
             case 4:
-                return this.dciHT;
+                return this.recommendationTypeHT;
         }
 
         throw new IllegalArgumentException("No existe tabla auxiliar con ID = " + idHelperTable);

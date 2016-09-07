@@ -8,14 +8,12 @@ import org.slf4j.LoggerFactory;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.validation.constraints.NotNull;
+import java.sql.Date;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-import static cl.minsal.semantikos.model.helpertables.ConditionalOperator.EQUALS;
 import static cl.minsal.semantikos.model.helpertables.HelperTable.SYSTEM_COLUMN_VALIDITY_UNTIL;
-import static java.lang.Boolean.TRUE;
 
 /**
  * Este manager es responsable de proveer acceso a las distintas tablas auxiliares.
@@ -64,7 +62,7 @@ public class HelperTableManagerImpl implements HelperTableManagerInterface {
         List<String> allColumns = joinColumnsWithSystemColumns(columnNames);
 
         List<HelperTableWhereCondition> isValid = new ArrayList<>();
-        isValid.add(new HelperTableWhereCondition(SYSTEM_COLUMN_VALIDITY_UNTIL, EQUALS, TRUE));
+        isValid.add(new HelperTableValidityCondition(SYSTEM_COLUMN_VALIDITY_UNTIL, new java.util.Date()));
         List<HelperTableRecord> allRecords = helperTableDAO.getRecords(helperTable, allColumns, isValid);
 
         logger.debug("Se recuperan " + allRecords.size() + " registros vigentes de la tabla " + helperTable);

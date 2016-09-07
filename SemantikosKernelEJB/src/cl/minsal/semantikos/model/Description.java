@@ -204,7 +204,7 @@ public class Description extends PersistentEntity implements AuditableEntity {
     public String toString() {
 
         if (this.getDescriptionType().equals(DescriptionType.FSN)) {
-            return this.term + "(" + conceptSMTK.getTagSMTK() + ")";
+            return this.term + (conceptSMTK==null?"":"(" + conceptSMTK.getTagSMTK() + ")");
         }
 
         return this.term;

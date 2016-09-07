@@ -5,7 +5,9 @@ package cl.minsal.semantikos.model.helpertables;
  */
 public enum ConditionalOperator {
 
-    GREATER_OR_GREATER_THAN(">"), EQUALS("=");
+    GREATER_THAN(">"),
+    LESS_THAN("<"),
+    EQUALS("=");
 
     private String representation;
 

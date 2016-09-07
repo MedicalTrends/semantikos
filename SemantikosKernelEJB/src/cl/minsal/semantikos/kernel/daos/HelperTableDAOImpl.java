@@ -152,6 +152,8 @@ public class HelperTableDAOImpl implements HelperTableDAO {
             }
             Array whereConditionsArray = connection.createArrayOf("text", theWhereConditions);
 
+
+
             /* Se prepara y realiza la consulta */
             call.setString(1, helperTable.getTablaName());
             call.setArray(2, columnsNamesArray);
