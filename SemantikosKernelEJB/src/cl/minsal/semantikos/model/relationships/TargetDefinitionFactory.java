@@ -43,6 +43,8 @@ public class TargetDefinitionFactory {
 
     public TargetDefinition createFromJSON(String jsonResult) {
 
+        logger.info("creando target definition de json: {}",jsonResult);
+
         /* Se parsea el JSON y se lleva a un DTO */
         ObjectMapper mapper = new ObjectMapper();
         TargetDefinitionDTO targetDefinitionDTO;

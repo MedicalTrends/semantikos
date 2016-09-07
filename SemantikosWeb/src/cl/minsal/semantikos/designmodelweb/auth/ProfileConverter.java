@@ -41,7 +41,7 @@ public class ProfileConverter implements Converter{
 
     public String getAsString(FacesContext fc, UIComponent uic, Object object) {
         if(object != null) {
-            return String.valueOf(((Profile) object).getIdProfile());
+            return String.valueOf(((Profile) object).getId());
         }
         else {
             return null;

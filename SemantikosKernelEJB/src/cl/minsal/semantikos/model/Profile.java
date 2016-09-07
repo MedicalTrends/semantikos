@@ -5,11 +5,7 @@ import java.util.List;
 /**
  * @author Francisco Mendez.
  */
-public class Profile {
-
-    private final long id;
-    /** identificador del profile */
-    long idProfile;
+public class Profile extends PersistentEntity {
 
     /** Nombre del perfil */
     String name;
@@ -28,17 +24,9 @@ public class Profile {
      * @param description Descripción del Perfil.
      */
     public Profile(long id, String name, String description) {
-        this.id = id;
+        super(id);
         this.name = name;
         this.description = description;
-    }
-
-    public long getIdProfile() {
-        return idProfile;
-    }
-
-    public void setIdProfile(long idProfile) {
-        this.idProfile = idProfile;
     }
 
     public String getName() {
