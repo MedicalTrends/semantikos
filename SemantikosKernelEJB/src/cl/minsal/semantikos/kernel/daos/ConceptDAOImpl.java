@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by des01c7 on 13-07-16.
+ * @author Gusatvo Punucura on 13-07-16.
  */
 
 @Stateless
@@ -422,13 +422,14 @@ public class ConceptDAOImpl implements ConceptDAO {
         String observation = resultSet.getString("observation");
         long idTagSMTK = resultSet.getLong("id_tag_smtk");
 
-        /* Se recuperan las descripciones del concepto */
-        List<Description> descriptions = descriptionDAO.getDescriptionsByConceptID(id);
-        Description[] theDescriptions = descriptions.toArray(new Description[descriptions.size()]);
 
         /* Se recupera su Tag Semántikos */
         TagSMTK tagSMTKByID = tagSMTKDAO.findTagSMTKByID(idTagSMTK);
-        ConceptSMTK conceptSMTK = new ConceptSMTK(id, conceptId, objectCategory, check, consult, modeled, completelyDefined, published, observation, tagSMTKByID, theDescriptions);
+        ConceptSMTK conceptSMTK = new ConceptSMTK(id, conceptId, objectCategory, check, consult, modeled, completelyDefined, published, observation, tagSMTKByID);
+
+        /* Se recuperan las descripciones del concepto */
+        List<Description> descriptions = descriptionDAO.getDescriptionsByConcept(conceptSMTK);
+        conceptSMTK.setDescriptions(descriptions);
 
         /* Se recuperan sus Etiquetas */
         conceptSMTK.setTags(tagDAO.getTagsByConcept(id));

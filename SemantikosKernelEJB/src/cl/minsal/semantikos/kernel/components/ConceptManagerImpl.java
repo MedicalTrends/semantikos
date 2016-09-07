@@ -55,7 +55,8 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
         ConceptSMTK concept = this.conceptDAO.getConceptByCONCEPT_ID(conceptId);
 
         /* Se cargan las descripciones del concepto */
-        concept.setDescriptions(descriptionDAO.getDescriptionsByConceptID(concept.getId()));
+        // TODO: Factorizar esto para que siempre se cree el concepto de la misma manera cuando se crea.
+        concept.setDescriptions(descriptionDAO.getDescriptionsByConcept(concept));
 
         return concept;
     }
@@ -67,7 +68,7 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
         ConceptSMTK conceptSMTK = this.conceptDAO.getConceptByID(id);
 
         /* Se cargan las descripciones del concepto */
-        conceptSMTK.setDescriptions(descriptionDAO.getDescriptionsByConceptID(conceptSMTK.getId()));
+        conceptSMTK.setDescriptions(descriptionDAO.getDescriptionsByConcept(conceptSMTK));
 
         return conceptSMTK;
     }
@@ -373,7 +374,7 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
 
     @Override
     public List<Description> getDescriptionsBy(ConceptSMTK concept) {
-        return descriptionDAO.getDescriptionsByConceptID(concept.getId());
+        return descriptionDAO.getDescriptionsByConcept(concept);
     }
 
     @Override
