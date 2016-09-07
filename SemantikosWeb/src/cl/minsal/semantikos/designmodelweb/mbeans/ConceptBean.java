@@ -113,6 +113,40 @@ public class ConceptBean implements Serializable {
     //Inicializacion del Bean
 
 
+
+    //para tipo helpertable
+    private int helperTableValuePlaceholder;
+
+    private Map<RelationshipDefinition, List<RelationshipAttribute>> relationshipAttributesPlaceholder = new HashMap<RelationshipDefinition, List<RelationshipAttribute>>();
+
+
+    public List<RelationshipAttribute> getRelationshipAttributesByRelationshipDefinition(RelationshipDefinition definition){
+        if(!relationshipAttributesPlaceholder.containsKey(definition)) {
+
+
+            List<RelationshipAttribute> attributes = new ArrayList<RelationshipAttribute>(definition.getRelationshipAttributeDefinitions().size());
+
+            for (RelationshipAttributeDefinition attributeDefinition : definition.getRelationshipAttributeDefinitions()) {
+
+                RelationshipAttribute attribute = new RelationshipAttribute();
+
+                attribute.setRelationAttributeDefinition(attributeDefinition);
+
+                Target t = new TargetFactory().createPlaceholderTargetFromTargetDefinition(definition.getTargetDefinition());
+
+                attribute.setTarget(t);
+
+                attributes.add(attribute);
+            }
+
+            relationshipAttributesPlaceholder.put(definition,attributes);
+        }
+
+        return relationshipAttributesPlaceholder.get(definition);
+
+    }
+
+
     @PostConstruct
     protected void initialize() throws ParseException {
 

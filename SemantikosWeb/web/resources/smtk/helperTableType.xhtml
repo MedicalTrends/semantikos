@@ -179,12 +179,36 @@
             <div class="ui-g-12 ui-md-6 ui-lg-10">
                 <p:fieldset legend="Agregar #{cc.attrs.relationshipDefinition.name}">
 
+
+
                     <ui:repeat value="#{cc.attrs.relationshipDefinition.relationshipAttributeDefinitions}" var="attributeDefinition" >
 
-                        <p:outputLabel value="#{attributeDefinition.name}" />
-                        <p:inputText
+                        <p:outputLabel for="" value="#{attributeDefinition.name}" />
+                        <p:inputText ></p:inputText>
 
                     </ui:repeat>
+
+                    <p:outputLabel value="Buscar #{cc.attrs.relationshipDefinition.name}" />
+
+
+                    <p:selectOneMenu id="helperTableTypeValue11"
+                                     value="#{conceptBean.basicTypeValue.value}"
+                                     validator="#{validatorBean.validateRequired}"
+                                     var="value1"
+                                     converter="omnifaces.SelectItemsConverter"
+                                     rendered="#{cc.attrs.targetDefinition.discreteDomain}"
+                                     styleClass="relationships">
+                        <p:ajax event="itemSelect"
+                                listener="#{conceptBean.addOrChangeRelationship(cc.attrs.relationshipDefinition,conceptBean.basicTypeValue)}"
+                                process="@this" />
+                        <f:selectItem itemLabel="Seleccione"
+                                      itemValue=""
+                        />
+                        <f:selectItems value="#{cc.attrs.targetDefinition.domain}"
+                                       var="domain"
+                                       itemLabel="#{domain}"
+                                       itemValue="#{domain}"/>
+                    </p:selectOneMenu>
 
                     <p:commandButton
                             id="addHelperTableRelationshipWithAttributes"
