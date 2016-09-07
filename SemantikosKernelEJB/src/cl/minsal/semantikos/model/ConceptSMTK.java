@@ -173,6 +173,10 @@ public class ConceptSMTK extends PersistentEntity implements Target, AuditableEn
         this.descriptions = descriptions;
     }
 
+    /**
+     * Este método es responsable de recuperar las relaciones del concepto.
+     * @return Una lista con las relaciones del concepto.
+     */
     public List<Relationship> getRelationships() {
 
         if (!relationshipsLoaded) {
@@ -201,6 +205,21 @@ public class ConceptSMTK extends PersistentEntity implements Target, AuditableEn
     }
 
     /**
+     * Este método es responsable de retornar las relaciones de tipo SNOMED_CT.
+     * @return Una lista de relaciones a SnomedCT
+     */
+    public List<Relationship> getRelationshipsSnomedCT() {
+        List<Relationship> snomedRelationships = new ArrayList<>();
+        for (Relationship relationship : relationships) {
+            if (relationship.getRelationshipDefinition().getTargetDefinition().isSnomedCTType()) {
+                snomedRelationships.add(relationship);
+            }
+        }
+
+        return snomedRelationships;
+    }
+
+    /**
      * Este método es responsable de retornar todas las relaciones válidas de este concepto
      *
      * @return Una <code>java.util.List</code> de relaciones de tipo <code>relationshipDefinition</code>.
@@ -209,6 +228,21 @@ public class ConceptSMTK extends PersistentEntity implements Target, AuditableEn
         List<Relationship> someRelationships = new ArrayList<>();
         for (Relationship relationship : relationships) {
             if (relationship.isValid()) {
+                someRelationships.add(relationship);
+            }
+        }
+        return someRelationships;
+    }
+
+    /**
+     * Este método es responsable de retornar todas las relaciones de tipo atributo.
+     *
+     * @return Una <code>java.util.List</code> de relaciones que son del tipo Atributo.
+     */
+    public List<Relationship> getAttributes() {
+        List<Relationship> someRelationships = new ArrayList<>();
+        for (Relationship relationship : relationships) {
+            if (relationship.isAttribute()) {
                 someRelationships.add(relationship);
             }
         }
@@ -248,31 +282,6 @@ public class ConceptSMTK extends PersistentEntity implements Target, AuditableEn
             }
         }
         return someDescriptions;
-    }
-
-    /**
-     * Este método es responsable de retornar una lista con todas las relaciones de atributos. A saber:
-     * -->SMTK,
-     * -->Tipo
-     * -->Básico,
-     * -->Tabla Auxiliar
-     *
-     * @return Una lista de todas las relaciones de atributos.
-     */
-    public List<Relationship> getAttributeRelationships() {
-
-        /* Se recorren las relaciones del concepto */
-        List<Relationship> attributeRelationships = new ArrayList<>();
-        for (Relationship relationship : relationships) {
-            TargetDefinition targetDefinition = relationship.getRelationshipDefinition().getTargetDefinition();
-
-            /* Sólo se agregan las relaciones de tipo atributo */
-            if (targetDefinition.isSMTKType() || targetDefinition.isBasicType() || targetDefinition.isHelperTable()) {
-                attributeRelationships.add(relationship);
-            }
-        }
-
-        return attributeRelationships;
     }
 
     /**
