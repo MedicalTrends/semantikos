@@ -76,7 +76,7 @@ public class ConceptBean implements Serializable {
     private DescriptionType otherDescriptionType;
 
     // Placeholders para los target de las relaciones
-    private BasicTypeValue basicTypeValue = new BasicTypeValue(null);
+    private BasicTypeValue basicTypeValue = new BasicTypeValue("hola");
 
     private HelperTableRecord selectedHelperTableRecord = new HelperTableRecord();
 
@@ -104,9 +104,24 @@ public class ConceptBean implements Serializable {
 
     private int categorySelect;
 
+
+    //TODO: editar concepto
+
+    private long idconceptselect;
+
+    public long getIdconceptselect() {
+        return idconceptselect;
+    }
+
+    public void setIdconceptselect(long idconceptselect) {
+        this.idconceptselect = idconceptselect;
+
+    }
+
     public int getCategorySelect() {
         return categorySelect;
     }
+
 
     public void setCategorySelect(int categorySelect) {
         this.categorySelect = categorySelect;
@@ -153,6 +168,7 @@ public class ConceptBean implements Serializable {
     protected void initialize() throws ParseException {
 
         // TODO: Manejar el usuario desde la sesión
+
         user = new User();
 
         user.setIdUser(1);
@@ -310,16 +326,24 @@ public class ConceptBean implements Serializable {
         return results;
     }
 
-    public void setTagSMTKs(List<TagSMTK> tagSMTKs) {
-        this.tagSMTKs = tagSMTKs;
+    public List<TagSMTK> getTagSMTKs() {
+
+        return tagSMTKs;
     }
+
 
     //Methods
 
     public void createConcept() throws ParseException {
-        //category = categoryManager.getCategoryById(categorySelect);
-        newConcept(category, favoriteDescription);
-        //getConceptById(80602);
+
+        if(idconceptselect==0){
+            category = categoryManager.getCategoryById(categorySelect);
+            newConcept(category, favoriteDescription);
+        }else{
+            getConceptById(idconceptselect);
+        }
+
+
 
         RequestContext context = RequestContext.getCurrentInstance();
         context.execute("PF('dialogNameConcept').hide();");
@@ -336,22 +360,21 @@ public class ConceptBean implements Serializable {
 
         Description favouriteDescription = new Description(term, descriptionManager.getTypeFavorite());
         favouriteDescription.setCaseSensitive(false);
-        //favouriteDescription.setDescriptionId(descriptionManager.generateDescriptionId());
+        favouriteDescription.setDescriptionId(descriptionManager.generateDescriptionId());
 
         Description fsnDescription = new Description(term + " (" + category.getName() + ")", descriptionManager.getTypeFSN());
 
         fsnDescription.setCaseSensitive(false);
-        //fsnDescription.setDescriptionId(descriptionManager.generateDescriptionId());
+        fsnDescription.setDescriptionId(descriptionManager.generateDescriptionId());
 
         Description[] descriptions = {favouriteDescription, fsnDescription};
 
         String observation = "";
 
         // TODO: Diego
-        TagSMTK tagSMTK = new TagSMTK(-1, "POR HACER");
-        ConceptSMTK conceptSMTK = new ConceptSMTK(conceptManager.generateConceptId(), category, true, true, false, false, false, observation, tagSMTK, descriptions);
+        TagSMTK tagSMTK = new TagSMTK(category.getTagSemantikos().getId(), category.getTagSemantikos().getName());
 
-        conceptSMTK.setTagSMTK(category.getTagSemantikos());
+        ConceptSMTK conceptSMTK = new ConceptSMTK(conceptManager.generateConceptId(), category, true, true, false, false, false, observation, tagSMTK, descriptions);
 
         concept = new ConceptSMTKWeb(conceptSMTK);
     }
@@ -492,12 +515,6 @@ public class ConceptBean implements Serializable {
         return false;
     }
 
-    public void clearTagSearch(){
-        System.out.println("clearTagSearch");
-
-        concept.setTagSMTK(null);
-    }
-
     public void saveConcept() {
 
         FacesContext context = FacesContext.getCurrentInstance();
@@ -559,8 +576,8 @@ public class ConceptBean implements Serializable {
         // Si el concepto está persistido, actualizarlo
         if (concept.isPersistent() && !concept.isModeled()) {
 
-            //concept.delete(user);
-            context.addMessage(null, new FacesMessage("Successful", "Concepto eliminado "));
+            conceptManager.invalidate(conceptSMTK, user);
+            context.addMessage(null, new FacesMessage("Successful", "Concepto eliminado."));
         }
 
     }

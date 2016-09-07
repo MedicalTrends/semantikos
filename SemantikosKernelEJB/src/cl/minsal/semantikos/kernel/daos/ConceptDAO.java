@@ -97,4 +97,7 @@ public interface ConceptDAO {
      * @param conceptSMTK El concepto cuya información básica se actualizará.
      */
     public void update(ConceptSMTK conceptSMTK);
+
+
+    public List<ConceptSMTK> getConceptDraft();
 }
