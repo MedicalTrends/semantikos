@@ -41,7 +41,7 @@ public class DescriptionManagerImpl implements DescriptionManagerInterface {
         descriptionCreationBR.applyRules(concept, term, descriptionType, user);
 
         /* Se crea la descripción */
-        Description description = new Description(term, descriptionType);
+        Description description = new Description(concept, term, descriptionType);
 
         /* Se aplican las reglas de negocio para crear la Descripción y se persiste y asocia al concepto */
         new DescriptionBindingBR().applyRules(concept, description, user);
@@ -229,7 +229,7 @@ public class DescriptionManagerImpl implements DescriptionManagerInterface {
 
     @Override
     public List<Description> getDescriptionsOf(ConceptSMTK concept) {
-        return descriptionDAO.getDescriptionsByConceptID(concept.getId());
+        return descriptionDAO.getDescriptionsByConcept(concept);
     }
 
     @Override

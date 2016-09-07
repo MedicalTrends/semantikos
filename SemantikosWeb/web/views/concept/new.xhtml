@@ -40,6 +40,9 @@
                         <p:selectOneMenu id="tagSemantikos"
                                          value="#{conceptBean.concept.tagSMTK}"
                                          converter="omnifaces.SelectItemsConverter" style="width:60%">
+                            <p:ajax event="itemSelect"
+                                    update="@(.terms)"
+                                    process="@this" />
                             <f:selectItem itemLabel="Seleccione tipo" itemValue=""/>
                             <f:selectItems value="#{conceptBean.tagSMTKs}" var="tag"
                                            itemValue="#{tag}"/>
@@ -78,7 +81,7 @@
 
                 <!-- Etiquetas -->
 
-                <smtk:tags tagslist="#{conceptBean.concept.tags}"></smtk:tags>
+                <smtk:tags tagslist="#{conceptBean.concept.tags}" ></smtk:tags>
 
                 <!-- Otras descripciones -->
                 <smtk:descriptions descriptions="#{conceptBean.concept.getValidDescriptionsButFSNandFavorite()}"
@@ -119,6 +122,10 @@
                     </h:dataTable>
                 </p:panel>
 
+
+                <!-- Historial -->
+
+                <smtk:history></smtk:history>
 
                 <p:commandButton actionListener="#{conceptBean.saveConcept}"
                                  value="Guardar" type="submit" process="mainForm"

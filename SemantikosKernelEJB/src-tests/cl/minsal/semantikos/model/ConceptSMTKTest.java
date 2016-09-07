@@ -25,7 +25,7 @@ public class ConceptSMTKTest {
     public void testHasFavouriteDescription02() throws Exception {
 
         ConceptSMTK conceptSMTK = new ConceptSMTK(getNullCategory());
-        Description description = new Description("Infarto Agudo al Miocardio", DescriptionTypeFactory.getInstance().getFavoriteDescriptionType());
+        Description description = new Description(conceptSMTK, "Infarto Agudo al Miocardio", DescriptionTypeFactory.getInstance().getFavoriteDescriptionType());
         conceptSMTK.addDescription(description);
 
         assertEquals(1, conceptSMTK.getDescriptions().size());

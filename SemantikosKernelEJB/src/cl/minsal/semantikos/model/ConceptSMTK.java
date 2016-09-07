@@ -439,6 +439,15 @@ public class ConceptSMTK extends PersistentEntity implements Target, AuditableEn
         this.getRelationships().add(relationship);
     }
 
+    /**
+     * Este método es responsable de agregar un Tag (Etiqueta) a un concepto.
+     *
+     * @param tag La relación que es agregada.
+     */
+    public void addTag(Tag tag) {
+        this.getTags().add(tag);
+    }
+
 
     /**
      * Este método es responsable de remover una relación a un concepto.

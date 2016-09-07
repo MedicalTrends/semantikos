@@ -257,6 +257,37 @@ public class TagDAOImpl implements TagDAO {
     }
 
     @Override
+    public List<Tag> getTagsByConcept(long idConcept) {
+        ConnectionBD connect = new ConnectionBD();
+
+        String json;
+        try (Connection connection = connect.getConnection();
+             CallableStatement call = connection.prepareCall("{call semantikos.semantikos.get_tags_by_concept_id(?)}")) {
+
+            call.setLong(1, idConcept);
+            call.execute();
+
+            ResultSet rs = call.getResultSet();
+            if (rs.next()) {
+                json = rs.getString(1);
+            } else {
+                String errorMsg = "Error imposible!";
+                logger.error(errorMsg);
+                throw new EJBException(errorMsg);
+            }
+            rs.close();
+
+        } catch (SQLException e) {
+            String errorMsg = "Error al buscar los hijos del tag ";
+            logger.error(errorMsg, e);
+            throw new EJBException(errorMsg, e);
+        }
+
+        return tagFactory.createTagsFromJSON(json);
+
+    }
+
+    @Override
     public List<Tag> getChildrenOf(Tag parent) {
         ConnectionBD connect = new ConnectionBD();
 

@@ -131,7 +131,7 @@
                                 completeMethod="#{smtkBean.getConceptSearchInput}"
                                 converter="conceptConverter"
                                 var="concept"
-                                validator="#{validatorBean.validateRelationships}"
+
                                 disabled="#{conceptBean.limitRelationship(cc.attrs.relationshipDefinition)}"
                                 value="#{conceptBean.conceptSelected}"
                                 itemLabel="#{concept.descriptionFavorite.term}"
