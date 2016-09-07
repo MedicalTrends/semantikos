@@ -82,9 +82,9 @@
                 <p:column headerText="Término" >
                     <div style="text-align: center;">
                         <p:cellEditor>
-                            <f:facet  name="output"><h:outputText value="#{description.toString()}"/></f:facet>
+                            <f:facet  name="output"><h:outputText value="#{description.term}"/></f:facet>
                             <f:facet  name="input"><p:inputText id="otrasTermino"
-                                                                value="#{description.toString()}"
+                                                                value="#{description.term}"
                                                                 style="width:100%"/></f:facet>
                         </p:cellEditor>
                     </div>

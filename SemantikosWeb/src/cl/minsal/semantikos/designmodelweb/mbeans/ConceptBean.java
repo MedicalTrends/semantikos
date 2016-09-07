@@ -2,6 +2,7 @@ package cl.minsal.semantikos.designmodelweb.mbeans;
 
 import cl.minsal.semantikos.kernel.components.*;
 import cl.minsal.semantikos.model.*;
+import cl.minsal.semantikos.model.audit.ConceptAuditAction;
 import cl.minsal.semantikos.model.basictypes.BasicTypeValue;
 import cl.minsal.semantikos.model.helpertables.HelperTableRecord;
 import cl.minsal.semantikos.model.relationships.*;
@@ -56,6 +57,8 @@ public class ConceptBean implements Serializable {
     @ManagedProperty(value = "#{smtkBean}")
     private SMTKTypeBean smtkTypeBean;
 
+    private Tag tag;
+
     public User user;
 
     private ConceptSMTKWeb concept;
@@ -104,6 +107,19 @@ public class ConceptBean implements Serializable {
 
     private int categorySelect;
 
+    @EJB
+    AuditManagerInterface auditManager;
+
+
+    private List<ConceptAuditAction> auditAction;
+
+    public List<ConceptAuditAction> getAuditAction() {
+        return auditAction;
+    }
+
+    public void setAuditAction(List<ConceptAuditAction> auditAction) {
+        this.auditAction = auditAction;
+    }
 
     //TODO: editar concepto
 
@@ -202,6 +218,14 @@ public class ConceptBean implements Serializable {
 
     // Getter and Setter
 
+
+    public Tag getTag() {
+        return tag;
+    }
+
+    public void setTag(Tag tag) {
+        this.tag = tag;
+    }
 
     public String getFSN() {
         return FSN;
@@ -337,7 +361,8 @@ public class ConceptBean implements Serializable {
     public void createConcept() throws ParseException {
 
         if(idconceptselect==0){
-            category = categoryManager.getCategoryById(categorySelect);
+            //category = categoryManager.getCategoryById(categorySelect);
+            category = categoryManager.getCategoryById(419891008);
             newConcept(category, favoriteDescription);
         }else{
             getConceptById(idconceptselect);
@@ -388,7 +413,7 @@ public class ConceptBean implements Serializable {
         concept = new ConceptSMTKWeb(conceptSMTK);
         //Se respalda estado original del concepto
         _concept = new ConceptSMTKWeb(conceptSMTK);
-
+        auditAction=auditManager.getConceptAuditActions(concept,10,true);
         category = concept.getCategory();
     }
 

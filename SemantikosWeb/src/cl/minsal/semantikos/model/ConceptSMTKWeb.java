@@ -22,6 +22,7 @@ public class ConceptSMTKWeb extends ConceptSMTK {
     //Relaciones que son pasadas a la vista
     List<RelationshipWeb> relationshipsWeb = new ArrayList<RelationshipWeb>();
 
+
     //Este es el constructor mínimo
     public ConceptSMTKWeb(ConceptSMTK conceptSMTK) {
 
@@ -38,6 +39,9 @@ public class ConceptSMTKWeb extends ConceptSMTK {
             // Si el concepto esta persistido clonar las relaciones con su id
             for (Relationship relationship : conceptSMTK.getValidRelationships())
                 addRelationshipWeb(new RelationshipWeb(relationship.getId(), relationship));
+            for (Tag tag: conceptSMTK.getTags()) {
+                addTag(tag);
+            }
         }
         else{
             // Si el concepto no esta persistido clonar las descripciones sin su id
@@ -228,6 +232,15 @@ public class ConceptSMTKWeb extends ConceptSMTK {
             this.relationshipsWeb.add(new RelationshipWeb(relationship));
     }
 
+    /**
+     * Este método es responsable de agregar un tag al concepto.
+     *
+     * @param tag El tag que es agregado.
+     */
+    public void addTag(Tag tag) {
+        super.addTag(tag);
+    }
+
 
     /**
      * Este método es responsable de remover una descripción a un concepto.
@@ -254,6 +267,7 @@ public class ConceptSMTKWeb extends ConceptSMTK {
         this.getRelationships().remove(relationship);
         this.relationshipsWeb.remove(new RelationshipWeb(relationship.getId(), relationship));
     }
+
 
 
 }
