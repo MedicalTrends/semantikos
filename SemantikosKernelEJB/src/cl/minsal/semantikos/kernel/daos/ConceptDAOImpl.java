@@ -44,6 +44,8 @@ public class ConceptDAOImpl implements ConceptDAO {
     @EJB
     private TagSMTKDAO tagSMTKDAO;
 
+    @EJB
+    TagDAO tagDAO;
 
     @Override
     public List<ConceptSMTK> getConceptsBy(boolean modeled, int pageSize, int pageNumber) {
@@ -426,7 +428,11 @@ public class ConceptDAOImpl implements ConceptDAO {
 
         /* Se recupera su Tag Semántikos */
         TagSMTK tagSMTKByID = tagSMTKDAO.findTagSMTKByID(idTagSMTK);
-        return new ConceptSMTK(id, conceptId, objectCategory, check, consult, modeled, completelyDefined, published, observation, tagSMTKByID, theDescriptions);
+        ConceptSMTK conceptSMTK = new ConceptSMTK(id, conceptId, objectCategory, check, consult, modeled, completelyDefined, published, observation, tagSMTKByID, theDescriptions);
+
+        /* Se recuperan sus Etiquetas */
+        conceptSMTK.setTags(tagDAO.getTagsByConcept(id));
+        return conceptSMTK;
     }
 
     @Override
