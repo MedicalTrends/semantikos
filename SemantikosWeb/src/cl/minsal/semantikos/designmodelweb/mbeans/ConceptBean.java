@@ -106,9 +106,24 @@ public class ConceptBean implements Serializable {
 
     private int categorySelect;
 
+
+    //TODO: editar concepto
+
+    private long idconceptselect;
+
+    public long getIdconceptselect() {
+        return idconceptselect;
+    }
+
+    public void setIdconceptselect(long idconceptselect) {
+        this.idconceptselect = idconceptselect;
+
+    }
+
     public int getCategorySelect() {
         return categorySelect;
     }
+
 
     public void setCategorySelect(int categorySelect) {
         this.categorySelect = categorySelect;
@@ -121,6 +136,7 @@ public class ConceptBean implements Serializable {
     protected void initialize() throws ParseException {
 
         // TODO: Manejar el usuario desde la sesión
+
         user = new User();
 
         user.setIdUser(1);
@@ -284,9 +300,15 @@ public class ConceptBean implements Serializable {
     //Methods
 
     public void createConcept() throws ParseException {
-        //category = categoryManager.getCategoryById(categorySelect);
-        newConcept(category, favoriteDescription);
-        //getConceptById(80602);
+
+        if(idconceptselect==0){
+            category = categoryManager.getCategoryById(categorySelect);
+            newConcept(category, favoriteDescription);
+        }else{
+            getConceptById(idconceptselect);
+        }
+
+
 
         RequestContext context = RequestContext.getCurrentInstance();
         context.execute("PF('dialogNameConcept').hide();");

@@ -22,14 +22,18 @@
                         <p:outputLabel for="toBeReviewedCheck" value="Indicadores"/>
                     </div>
                     <div class="ui-g-12 ui-md-6 ui-lg-5">
-                        <p:selectBooleanCheckbox id="toBeReviewedCheck" itemLabel="Revisar" value="#{conceptBean.concept.toBeReviewed}" style="width:40%" />
-                        <p:selectBooleanCheckbox id="toBeConsultatedCheck" itemLabel="Consultar" value="#{conceptBean.concept.toBeConsulted}" style="width:40%" />
+                        <p:selectBooleanCheckbox id="toBeReviewedCheck" itemLabel="Revisar"
+                                                 value="#{conceptBean.concept.toBeReviewed}" style="width:40%"/>
+                        <p:selectBooleanCheckbox id="toBeConsultatedCheck" itemLabel="Consultar"
+                                                 value="#{conceptBean.concept.toBeConsulted}" style="width:40%"/>
                     </div>
                     <div class="ui-g-12 ui-md-6 ui-lg-3">
                     </div>
                     <div class="ui-g-12 ui-md-6 ui-lg-3">
                     </div>
                 </div>
+
+
 
                 <!--Descripciones FSN y Preferida -->
                 <smtk:descriptionDraft description="#{conceptBean.concept.getValidDescriptionFSN()}">
@@ -54,6 +58,11 @@
                     </div>
                 </div>
 
+
+                <!-- Etiquetas -->
+
+                <smtk:tags tagslist="#{conceptBean.concept.tags}"></smtk:tags>
+
                 <!-- Otras descripciones -->
                 <smtk:descriptions descriptions="#{conceptBean.concept.getValidDescriptionsButFSNandFavorite()}"
                                    otherTermino="#{conceptBean.otherTermino}"
@@ -64,7 +73,7 @@
 
                 <!--Relaciones -->
                 <p:panel id="atributos" header="Atributos" toggleable="true" toggleSpeed="500" closeSpeed="500"
-                         widgetVar="panelAtributos" style="margin-bottom:20px" >
+                         widgetVar="panelAtributos" style="margin-bottom:20px">
 
                     <h:dataTable style="width: 100%;" value="#{conceptBean.category.relationshipDefinitions}"
                                  var="relationshipDefinition">
@@ -81,13 +90,13 @@
                                     rendered="#{relationshipDefinition.targetDefinition.helperTable}"
                                     relationshipDefinition="#{relationshipDefinition}"
                                     targetDefinition="#{relationshipDefinition.targetDefinition}"
-                                    concept="#{conceptBean.concept}"  />
+                                    concept="#{conceptBean.concept}"/>
 
                             <smtk:basicType
                                     targetDefinition="#{relationshipDefinition.targetDefinition}"
                                     relationshipDefinition="#{relationshipDefinition}"
                                     concept="#{conceptBean.concept}"
-                                    rendered="#{relationshipDefinition.targetDefinition.basicType}" />
+                                    rendered="#{relationshipDefinition.targetDefinition.basicType}"/>
 
                         </h:column>
 
@@ -119,24 +128,47 @@
             <p:confirmDialog id="dialogNameConcept" header="Crear Concepto" widgetVar="dialogNameConcept" global="true"
                              showEffect="fade" hideEffect="fade" closable="false"
                              rendered="#{conceptBean.concept==null}">
-                <h:form id="initialForm" >
-                    <h:outputText value="Ingrerse el nombre de su concepto:"/>
+                <h:form id="initialForm">
                     <div class="ui-g">
                         <div class="ui-g-12 ui-md-6 ui-lg-12">
-                            <p:outputLabel value="Nombre: " for="NameConcept"/>
-                            <p:inputText id="NameConcept" value="#{conceptBean.favoriteDescription}"/>
+                            <div class="ui-g">
+                                <div class="ui-g-12 ui-md-6 ui-lg-12">
+                                    <h:outputText value="Ingrerse el nombre de su concepto:"/>
+                                    <p:outputLabel value="Nombre: " for="NameConcept"/>
+                                    <p:inputText id="NameConcept" value="#{conceptBean.favoriteDescription}"/>
+                                </div>
+                            </div>
+                            <div class="ui-g">
+                                <div class="ui-g-12 ui-md-6 ui-lg-12">
+                                    <p:selectOneMenu value="#{conceptBean.categorySelect}">
+                                        <f:selectItem itemLabel="Insumos" itemValue="3"/>
+                                        <f:selectItem itemLabel="Dispositivos Medicos" itemValue="4"/>
+                                    </p:selectOneMenu>
+
+
+                                </div>
+                            </div>
+                            <p:commandButton actionListener="#{conceptBean.createConcept}" update=":createEdit"
+                                             value="Siguiente" onclick="loadAutogenerate()"/>
                         </div>
                     </div>
 
-                    <p:selectOneMenu value="#{conceptBean.categorySelect}">
-                        <f:selectItem itemLabel="Insumos" itemValue="3" />
-                        <f:selectItem itemLabel="Dispositivos Medicos" itemValue="4" />
-                    </p:selectOneMenu>
+                    <div class="ui-g">
+                        <div class="ui-g-12 ui-md-6 ui-lg-12">
+                            <h:outputText value="seleccione el concepto:"/>
+                            <div class="ui-g">
+                                <div class="ui-g-12 ui-md-6 ui-lg-12">
+                                    <p:outputLabel value="Nombre: " for="NameConcept"/>
+                                    <p:inputText id="idconcept" value="#{conceptBean.idconceptselect}"/>
+                                </div>
+                            </div>
 
-                    <p:commandButton actionListener="#{conceptBean.createConcept}" update=":createEdit"
-                                     value="Siguiente" onclick="loadAutogenerate()"
+                            <p:commandButton actionListener="#{conceptBean.createConcept}" update=":createEdit"
+                                             value="Editar Concepto"
 
-                    />
+                            />
+                        </div>
+                    </div>
 
                 </h:form>
             </p:confirmDialog>
@@ -145,15 +177,15 @@
 
         <script type="text/javascript">
 
-            function loadAutogenerate(){
+            function loadAutogenerate() {
 
-                setTimeout(function() {
+                setTimeout(function () {
                     autogenerate(document.getElementById('initialForm:NameConcept'));
                 }, 1000);
             }
-            function autogenerate(favorite){
-                categoryName= "#{newConceptMBean.category.name}";
-                document.getElementById('mainForm:FSN').value=favorite.value+' ('+categoryName+')';
+            function autogenerate(favorite) {
+                categoryName = "#{newConceptMBean.category.name}";
+                document.getElementById('mainForm:FSN').value = favorite.value + ' (' + categoryName + ')';
 
 
             }

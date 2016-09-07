@@ -374,6 +374,11 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
         return relationships;
     }
 
+    @Override
+    public List<ConceptSMTK> getConceptDraft() {
+        return conceptDAO.getConceptDraft();
+    }
+
     /**
      * Método encargado de convertir un string en una lista de string.
      *

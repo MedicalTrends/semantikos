@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:composite="http://java.sun.com/jsf/composite"
+      xmlns:smtk="http://java.sun.com/jsf/composite/smtk"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+<composite:interface>
+    <composite:attribute name="tagslist" type="java.util.List" />
+</composite:interface>
+
+<composite:implementation>
+
+    <p:panel id="tags" header="Etiquetas" >
+
+        <p:fieldset legend="Crear Etiqueta" collapsed="true" toggleable="true">
+
+
+                <div class="ui-g">
+                    <div class="ui-g-12 ui-md-6 ui-lg-1">
+                        <h:outputLabel for="name" value="Nombre Tag:" style="font-weight:bold"/>
+                    </div>
+                    <div class="ui-g-12 ui-md-6 ui-lg-3">
+                        <p:inputText id="name" value="#{tagBean.tagCreate.name}" label="Name" style="width: 100%;"/>
+                    </div>
+                </div>
+                <div class="ui-g">
+                    <div class="ui-g-12 ui-md-6 ui-lg-1">
+                        <h:outputText value="Color Fondo: "/>
+                    </div>
+                    <div class="ui-g-12 ui-md-6 ui-lg-1">
+                        <p:colorPicker value="#{tagBean.tagCreate.colorBackground}"/>
+                    </div>
+                </div>
+                <div class="ui-g">
+                    <div class="ui-g-12 ui-md-6 ui-lg-1">
+                        <h:outputText value="Color Texto: "/>
+                    </div>
+                    <div class="ui-g-12 ui-md-6 ui-lg-1">
+                        <p:colorPicker value="#{tagBean.tagCreate.colorLetter}"/>
+                    </div>
+                </div>
+
+                <p:fieldset legend="Agregar Etiqueta Padre" toggleable="true" collapsed="true">
+                    <p:panel id="createParent">
+                        <h3>Buscar Padre</h3>
+
+                        <div class="ui-g">
+                            <div class="ui-g-12 ui-md-6 ui-lg-1">
+                                Seleccionar padre
+                            </div>
+                            <div class="ui-g-12 ui-md-6 ui-lg-2">
+                                <p:autoComplete id="parentTag" scrollHeight="200" size="5" style="width: 100%;"
+                                                inputStyle="width: 100%;"
+                                                converter="tagConverter" var="tag"
+                                                value="#{tagBean.parentTagSelect}"
+                                                completeMethod="#{tagBean.findTagByName}"
+                                                itemLabel="#{tag.name}" itemValue="#{tag}"
+                                                emptyMessage="No se encontraron tags relacionados"
+                                                disabled="#{tagBean.tagCreate.parentTag!=null}"
+                                >
+                                    <p:ajax event="itemSelect" listener="#{tagBean.addTagParent}" process="@this"
+                                            update="createParent,createSon"/>
+                                </p:autoComplete>
+                            </div>
+                        </div>
+
+                        <h3>Crear Padre</h3>
+
+                        <div class="ui-g">
+                            <div class="ui-g-12 ui-md-6 ui-lg-1">
+                                <h:outputLabel for="namePatern" value="Nombre Tag:" style="font-weight:bold"/>
+                            </div>
+                            <div class="ui-g-12 ui-md-6 ui-lg-3">
+                                <p:inputText disabled="#{tagBean.tagCreate.parentTag!=null}" id="namePatern"
+                                             value="#{tagBean.parentTagToCreate.name}" label="Name"
+                                             style="width: 100%;"/>
+                            </div>
+                        </div>
+                        <div class="ui-g">
+                            <div class="ui-g-12 ui-md-6 ui-lg-1">
+                                <h:outputText value="Color Fondo: "/>
+                            </div>
+                            <div class="ui-g-12 ui-md-6 ui-lg-1">
+                                <p:colorPicker disabled="#{tagBean.tagCreate.parentTag!=null}"
+                                               value="#{tagBean.parentTagToCreate.colorBackground}"/>
+                            </div>
+                        </div>
+                        <div class="ui-g">
+                            <div class="ui-g-12 ui-md-6 ui-lg-1">
+                                <h:outputText value="Color Texto: "/>
+                            </div>
+                            <div class="ui-g-12 ui-md-6 ui-lg-1">
+                                <p:colorPicker disabled="#{tagBean.tagCreate.parentTag!=null}"
+                                               value="#{tagBean.parentTagToCreate.colorLetter}"/>
+                            </div>
+                        </div>
+
+                        <div class="ui-g">
+                            <div class="ui-g-12 ui-md-6 ui-lg-1">
+                                <p:commandButton disabled="#{tagBean.tagCreate.parentTag!=null}"
+                                                 actionListener="#{tagBean.createTagParent}" value="Crear Padre"
+                                                 icon="fa fa-floppy-o" update="createParent">
+                                </p:commandButton>
+                            </div>
+                            <div class="ui-g-12 ui-md-6 ui-lg-1">
+                                <p:commandButton rendered="#{tagBean.tagCreate.parentTag!=null}"
+                                                 actionListener="#{tagBean.removeTagParent}" value="Eliminar Padre"
+                                                 icon="fa fa-floppy-o"
+                                                 update="createParent,createSon">
+                                </p:commandButton>
+                            </div>
+                        </div>
+
+                    </p:panel>
+                </p:fieldset>
+
+                <p:fieldset legend="Agregar Etiquetas Hijo" toggleable="true" collapsed="true">
+                    <p:panel id="createSon" style="border: hidden">
+
+                        <div class="ui-g">
+                            <div class="ui-g-12 ui-md-6 ui-lg-6">
+                                <h3>Buscar hijo</h3>
+
+                                <p:selectOneMenu id="sonTagSelect" value="#{tagBean.sonTagSelect}"
+                                                 converter="tagConverter" panelStyle="width:180px"
+                                                 effect="fade" var="t" style="width:160px" filter="true"
+                                                 filterMatchMode="startsWith">
+                                    <f:selectItems value="#{tagBean.findSonTagList}" var="tag"
+                                                   itemLabel="#{tag.name}" itemValue="#{tag}"/>
+                                    <p:column>
+                                        <h:outputText value="#{t.name}"/>
+                                    </p:column>
+                                </p:selectOneMenu>
+                                <p:commandButton value="Agregar" icon="fa fa-floppy-o"
+                                                 actionListener="#{tagBean.addTagSon}" update="createSon">
+                                </p:commandButton>
+
+
+                            </div>
+                            <div class="ui-g-12 ui-md-6 ui-lg-6">
+                                <h3>Crear hijo</h3>
+
+
+                                <div class="ui-g">
+                                    <div class="ui-g-12 ui-md-6 ui-lg-1">
+                                        <h:outputLabel for="namePatern" value="Nombre Tag:"
+                                                       style="font-weight:bold"/>
+                                    </div>
+                                    <div class="ui-g-12 ui-md-6 ui-lg-3">
+                                        <p:inputText id="nameSonTag" value="#{tagBean.nameTag}" label="Name"
+                                                     style="width: 100%;"/>
+                                    </div>
+                                </div>
+                                <div class="ui-g">
+                                    <div class="ui-g-12 ui-md-6 ui-lg-1">
+                                        <h:outputText value="Color Fondo: "/>
+                                    </div>
+                                    <div class="ui-g-12 ui-md-6 ui-lg-1">
+                                        <p:colorPicker value="#{tagBean.colorBackground}"/>
+                                    </div>
+                                </div>
+                                <div class="ui-g">
+                                    <div class="ui-g-12 ui-md-6 ui-lg-1">
+                                        <h:outputText value="Color Texto: "/>
+                                    </div>
+                                    <div class="ui-g-12 ui-md-6 ui-lg-1">
+                                        <p:colorPicker value="#{tagBean.colorText}"/>
+                                    </div>
+                                </div>
+
+                                <div class="ui-g">
+                                    <div class="ui-g-12 ui-md-6 ui-lg-1">
+                                        <p:commandButton actionListener="#{tagBean.createTagSon}"
+                                                         value="Crear etiqueta" icon="fa fa-floppy-o"
+                                                         update="createSon">
+                                        </p:commandButton>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="ui-g">
+                            <div class="ui-g-12 ui-md-6 ui-lg-12">
+                                <p:dataTable
+                                        emptyMessage="No existen etiquetas."
+                                        id="tagSonTable"
+                                        style="margin: 10px;"
+                                        value="#{tagBean.tagCreate.sonTag}"
+                                        var="tag">
+                                    <p:column headerText="Nombre">
+                                        <h:outputText value="#{tag.name}"/>
+                                    </p:column>
+
+                                    <p:column headerText="Eliminar" style="width:60px;text-align: center;">
+                                        <p:commandButton process="@this" icon="fa fa-trash" title="Eliminar"
+                                                         actionListener="#{tagBean.removeTagSon(tag)}"
+                                                         update="createSon"/>
+                                    </p:column>
+
+
+                                </p:dataTable>
+                            </div>
+                        </div>
+                    </p:panel>
+
+                </p:fieldset>
+
+                <div class="ui-g">
+                    <div class="ui-g-12 ui-md-6 ui-lg-1">
+                        <p:commandButton value="Crear Etiqueta" actionListener="#{tagBean.createTag}"
+                                         icon="fa fa-floppy-o" update="tags">
+                        </p:commandButton>
+                    </div>
+                </div>
+
+        </p:fieldset>
+
+        <p:fieldset legend="Agregar Etiqueta existente" collapsed="true" toggleable="true">
+
+        </p:fieldset>
+
+        <br/>
+
+        <p:dataTable var="tag" value="#{cc.attrs.tagslist}">
+            <p:column headerText="">
+                <h:outputText value="#{tag.name}" style="background-color: ##{tag.colorBackground}; color=:##{tag.colorLetter}};" />
+            </p:column>
+
+        </p:dataTable>
+
+    </p:panel>
+
+</composite:implementation>
+</html>

@@ -147,4 +147,7 @@ public interface ConceptManagerInterface {
      */
     public List<Relationship> loadRelationships(ConceptSMTK concept);
 
+
+    public List<ConceptSMTK> getConceptDraft();
+
 }
