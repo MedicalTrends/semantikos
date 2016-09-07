@@ -277,9 +277,11 @@ public class ConceptBean implements Serializable {
         return results;
     }
 
-    public void setTagSMTKs(List<TagSMTK> tagSMTKs) {
-        this.tagSMTKs = tagSMTKs;
+    public List<TagSMTK> getTagSMTKs() {
+
+        return tagSMTKs;
     }
+
 
     //Methods
 
@@ -315,10 +317,9 @@ public class ConceptBean implements Serializable {
         String observation = "";
 
         // TODO: Diego
-        TagSMTK tagSMTK = new TagSMTK(-1, "POR HACER");
-        ConceptSMTK conceptSMTK = new ConceptSMTK(conceptManager.generateConceptId(), category, true, true, false, false, false, observation, tagSMTK, descriptions);
+        TagSMTK tagSMTK = new TagSMTK(category.getTagSemantikos().getId(), category.getTagSemantikos().getName());
 
-        conceptSMTK.setTagSMTK(category.getTagSemantikos());
+        ConceptSMTK conceptSMTK = new ConceptSMTK(conceptManager.generateConceptId(), category, true, true, false, false, false, observation, tagSMTK, descriptions);
 
         concept = new ConceptSMTKWeb(conceptSMTK);
     }
@@ -457,12 +458,6 @@ public class ConceptBean implements Serializable {
             }
         }
         return false;
-    }
-
-    public void clearTagSearch(){
-        System.out.println("clearTagSearch");
-
-        concept.setTagSMTK(null);
     }
 
     public void saveConcept() {
