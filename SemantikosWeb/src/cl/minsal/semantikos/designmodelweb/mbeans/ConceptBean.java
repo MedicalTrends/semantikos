@@ -521,8 +521,8 @@ public class ConceptBean implements Serializable {
         // Si el concepto está persistido, actualizarlo
         if (concept.isPersistent() && !concept.isModeled()) {
 
-            //concept.delete(user);
-            context.addMessage(null, new FacesMessage("Successful", "Concepto eliminado "));
+            conceptManager.invalidate(conceptSMTK, user);
+            context.addMessage(null, new FacesMessage("Successful", "Concepto eliminado."));
         }
 
     }
