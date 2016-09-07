@@ -172,11 +172,11 @@ public class ConceptCreationBusinessRuleContainerTest {
         ConceptSMTK conceptSMTK = new ConceptSMTK(category);
 
         DescriptionType fsnDT = getInstance().getFSNDescriptionType();
-        Description fsn = new Description("FSN", fsnDT);
+        Description fsn = new Description(conceptSMTK, "FSN", fsnDT);
         conceptSMTK.addDescription(fsn);
 
         DescriptionType favDT = getInstance().getFavoriteDescriptionType();
-        Description fav = new Description("Preferida", favDT);
+        Description fav = new Description(conceptSMTK, "Preferida", favDT);
         conceptSMTK.addDescription(fav);
 
         /* Con un Tag Semántikos */

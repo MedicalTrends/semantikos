@@ -5,9 +5,11 @@ public class DescriptionWeb extends Description {
 
     public boolean hasBeenModified;
 
-    public DescriptionWeb(){
-        super("", DescriptionTypeFactory.TYPELESS_DESCRIPTION_TYPE);
+    // Este atributo corresponde al valor de la descripción en la vista
+    public String representation;
 
+    public DescriptionWeb(){
+        super(null,"", DescriptionTypeFactory.TYPELESS_DESCRIPTION_TYPE);
     }
 
     public DescriptionWeb(Description d) {
@@ -18,6 +20,10 @@ public class DescriptionWeb extends Description {
     public DescriptionWeb(long id, Description d) {
         this(d);
         this.setId(id);
+    }
+
+    public DescriptionWeb(ConceptSMTKWeb concept, String term, DescriptionType typeFSN) {
+        super(concept, term, typeFSN);
     }
 
     public boolean hasBeenModified() {
@@ -88,5 +94,14 @@ public class DescriptionWeb extends Description {
 
     public boolean isFavoriteType(){
         return (this.getDescriptionType()==DescriptionTypeFactory.getInstance().getFavoriteDescriptionType());
+    }
+
+    public String getRepresentation() {
+        return super.toString();
+    }
+
+    public void setRepresentation(String representation) {
+        super.setTerm(representation.replace("("+super.getConceptSMTK().getTagSMTK().getName()+")",""));
+        this.representation = representation;
     }
 }
