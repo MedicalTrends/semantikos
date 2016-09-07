@@ -45,6 +45,9 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
     @EJB
     private RelationshipDAO relationshipDAO;
 
+    @EJB
+    private TagManager tagManager;
+
     @Override
     public ConceptSMTK getConceptByCONCEPT_ID(String conceptId) {
 
@@ -73,9 +76,8 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
     public List<ConceptSMTK> findConceptBy(String patternOrConceptID, Long[] categories, int pageNumber, int pageSize) {
 
 
-        boolean isModeled= false;
+        boolean isModeled = false;
         //TODO: Actualizar esto de los estados que ya no va.
-
 
 
         categories = (categories == null) ? new Long[0] : categories;
@@ -135,7 +137,7 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
 
         // TODO: arreglar esto (Estados)
 
-        boolean isModeled= false;
+        boolean isModeled = false;
 
 
         pattern = standardizationPattern(pattern);
@@ -197,6 +199,13 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
             relationshipDAO.persist(relationship);
         }
 
+        /* Y sus tags */
+        for (Tag tag : conceptSMTK.getTags()) {
+            if (tag.isPersistent()) {
+                tagManager.persist(tag);
+            }
+        }
+
         /* Se deja registro en la auditoría sólo para conceptos modelados */
         if (conceptSMTK.isModeled()) {
             auditManager.recordNewConcept(conceptSMTK, user);
@@ -228,7 +237,7 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
         conceptDAO.update(conceptSMTK);
 
         /* Se registra en el historial */
-        if (conceptSMTK.isModeled()){
+        if (conceptSMTK.isModeled()) {
             auditManager.recordConceptInvalidation(conceptSMTK, user);
         }
         logger.info("Se ha dejado no vigente el concepto: " + conceptSMTK);
