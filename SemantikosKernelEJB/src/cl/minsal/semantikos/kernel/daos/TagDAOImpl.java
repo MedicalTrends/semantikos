@@ -82,9 +82,15 @@ public class TagDAOImpl implements TagDAO {
 
             call.setLong(1, tag.getId());
             call.setString(2, tag.getName());
-            call.setString(3, tag.getColorBackground());
-            call.setString(4, tag.getColorLetter());
-            call.setLong(5, tag.getParentTag().getId());
+            call.setString(3, tag.getColorLetter());
+            call.setString(4, tag.getColorBackground());
+            long id = (tag.getParentTag()==null)?-1:tag.getParentTag().getId();
+            if( id != NON_PERSISTED_ID) {
+                call.setLong(5, tag.getParentTag().getId());
+            } else {
+                call.setNull(5, BIGINT);
+            }
+
             call.execute();
 
             ResultSet rs = call.getResultSet();

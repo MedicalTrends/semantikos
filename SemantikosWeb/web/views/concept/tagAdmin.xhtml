@@ -6,8 +6,10 @@
                 template="/WEB-INF/template/template.xhtml">
 
     <ui:define name="content">
+
         <p:panel id="tagPanel" style="border: hidden">
             <h:form id="tagForm">
+                <p:growl id="msgs" showDetail="true"/>
 
 
                 <!--Crear etiqueta-->
@@ -285,17 +287,35 @@
                                 style="margin: 10px;"
                                 value="#{tagBean.tagListTable}"
                                 var="tag"
-                                editable="true">
+                                editable="true"
+                                editMode="cell">
 
+                            <p:ajax event="cellEdit" listener="#{tagBean.onRowEdit}" update=":tagForm:msgs" />
 
                             <p:column headerText="Nombre">
-                                <h:outputText value="#{tag.name}"/>
+                                <p:cellEditor>
+                                    <f:facet name="output"><h:outputText value="#{tag.name}" /></f:facet>
+                                    <f:facet name="input"><p:inputText id="nameInput" value="#{tag.name}" style="width:100%"/></f:facet>
+                                </p:cellEditor>
                             </p:column>
-                            <p:column headerText="Color fondo" style="width:70px;text-align: center;">
-                                <p:colorPicker value="#{tag.colorBackground}"></p:colorPicker>
+
+                            <p:column headerText="Color Fondo">
+                                <p:cellEditor>
+                                    <f:facet name="output"><h:outputText value="#{tag.colorBackground}" style="background-color: ##{tag.colorBackground}" /></f:facet>
+                                    <f:facet name="input">
+                                        <p:colorPicker value="#{tag.colorBackground}"></p:colorPicker>
+
+                                    </f:facet>
+                                </p:cellEditor>
                             </p:column>
-                            <p:column headerText="Color Texto" style="width:70px;text-align: center;">
-                                <p:colorPicker value="#{tag.colorLetter}"></p:colorPicker>
+
+                            <p:column headerText="Color Texto">
+                                <p:cellEditor>
+                                    <f:facet name="output"><h:outputText value="#{tag.colorLetter}" style="background-color: ##{tag.colorLetter}" /></f:facet>
+                                    <f:facet name="input">
+                                        <p:colorPicker value="#{tag.colorLetter}"></p:colorPicker>
+                                    </f:facet>
+                                </p:cellEditor>
                             </p:column>
 
 
