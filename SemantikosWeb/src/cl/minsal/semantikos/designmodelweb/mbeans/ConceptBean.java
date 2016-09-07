@@ -78,7 +78,7 @@ public class ConceptBean implements Serializable {
     private DescriptionType otherDescriptionType;
 
     // Placeholders para los target de las relaciones
-    private BasicTypeValue basicTypeValue = new BasicTypeValue(null);
+    private BasicTypeValue basicTypeValue = new BasicTypeValue("hola");
 
     private HelperTableRecord selectedHelperTableRecord = new HelperTableRecord();
 
@@ -305,12 +305,12 @@ public class ConceptBean implements Serializable {
 
         Description favouriteDescription = new Description(term, descriptionManager.getTypeFavorite());
         favouriteDescription.setCaseSensitive(false);
-        //favouriteDescription.setDescriptionId(descriptionManager.generateDescriptionId());
+        favouriteDescription.setDescriptionId(descriptionManager.generateDescriptionId());
 
         Description fsnDescription = new Description(term + " (" + category.getName() + ")", descriptionManager.getTypeFSN());
 
         fsnDescription.setCaseSensitive(false);
-        //fsnDescription.setDescriptionId(descriptionManager.generateDescriptionId());
+        fsnDescription.setDescriptionId(descriptionManager.generateDescriptionId());
 
         Description[] descriptions = {favouriteDescription, fsnDescription};
 

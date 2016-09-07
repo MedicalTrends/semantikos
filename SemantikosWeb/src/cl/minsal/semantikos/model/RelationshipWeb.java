@@ -1,6 +1,7 @@
 package cl.minsal.semantikos.model;
 
 import cl.minsal.semantikos.model.relationships.Relationship;
+import cl.minsal.semantikos.model.relationships.Target;
 
 public class RelationshipWeb extends Relationship {
 
@@ -14,6 +15,13 @@ public class RelationshipWeb extends Relationship {
     public RelationshipWeb(long id, Relationship r) {
         this(r);
         this.setId(id);
+    }
+
+    @Override
+    public void setTarget(Target target){
+        if(target!=null){
+            super.setTarget(target);
+        }
     }
 
     public boolean hasBeenModified() {

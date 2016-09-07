@@ -109,6 +109,7 @@ public class Relationship extends PersistentEntity implements AuditableEntity {
     }
 
     public void setTarget(Target target) {
+
         this.target = target;
     }
 

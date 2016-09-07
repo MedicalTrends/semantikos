@@ -1,5 +1,7 @@
 package cl.minsal.semantikos.model;
 
+import cl.minsal.semantikos.kernel.daos.DAO;
+
 /**
  * @author Andrés Farías on 9/4/16.
  */
@@ -7,6 +9,13 @@ public class TagSMTK extends PersistentEntity {
 
     /** El nombre del Tag Semantikos */
     private String name;
+
+    /*Constructor vacío, utilizado como fix para el comportamiento de jsf-primefaces al actualizar el form en ui-state-error*/
+    @Deprecated
+    public TagSMTK(){
+        super(DAO.NON_PERSISTED_ID);
+        this.name = "";
+    }
 
     public TagSMTK(long id, String name) {
         super(id);
