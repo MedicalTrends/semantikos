@@ -21,7 +21,8 @@ public enum AuditActionType {
     CONCEPT_RELATIONSHIP_EXTERNAL_TERMINOLOGY_CREATION(12, "Nueva referencia a terminología externa en Concepto", AuditActionNature.CREATION), //TODO: DAO, Manager, Hooks
     CONCEPT_RELATIONSHIP_EXTERNAL_TERMINOLOGY_ELIMINATION(13, "Eliminación de referencia a terminología externa en Concepto", AuditActionNature.REMOVAL), //TODO: DAO, Manager, Hooks
     CONCEPT_RELATIONSHIP_REFSET_CREATION(14, "Nueva referencia a RefSet en Concepto", AuditActionNature.CREATION), //TODO: DAO, Manager, Hooks
-    CONCEPT_RELATIONSHIP_REFSET_ELIMINATION(15, "Referencia a RefSet eliminada en Concepto", AuditActionNature.REMOVAL); //TODO: DAO, Manager, Hooks
+    CONCEPT_RELATIONSHIP_REFSET_ELIMINATION(15, "Referencia a RefSet eliminada en Concepto", AuditActionNature.REMOVAL),
+    CONCEPT_INVALIDATION(16, "Concepto invalidado.", AuditActionNature.REMOVAL); //TODO: DAO, Manager, Hooks
 
     /** Identificador único de la base de datos */
     private long id;

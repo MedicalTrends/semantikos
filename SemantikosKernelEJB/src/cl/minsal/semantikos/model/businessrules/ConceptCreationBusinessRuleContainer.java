@@ -1,12 +1,10 @@
 package cl.minsal.semantikos.model.businessrules;
 
-import cl.minsal.semantikos.kernel.components.TagSMTKManager;
 import cl.minsal.semantikos.model.*;
 import cl.minsal.semantikos.model.exceptions.BusinessRuleException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.ejb.EJB;
 import javax.validation.constraints.NotNull;
 
 import static cl.minsal.semantikos.model.ProfileFactory.DESIGNER_PROFILE;

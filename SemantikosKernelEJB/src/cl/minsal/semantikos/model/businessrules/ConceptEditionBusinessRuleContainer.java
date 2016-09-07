@@ -13,10 +13,7 @@ public class ConceptEditionBusinessRuleContainer implements BusinessRulesContain
 
     private static final Logger logger = LoggerFactory.getLogger(ConceptEditionBusinessRuleContainer.class);
 
-    public void apply(ConceptSMTK conceptSMTK, User IUser) throws BusinessRuleException {
-    }
-
-    public void preconditionsConceptEditionTag(ConceptSMTK conceptSMTK){
+    public void preconditionsConceptEditionTag(ConceptSMTK conceptSMTK) {
         brTagSMTK002UpdateTag(conceptSMTK);
     }
 
@@ -45,6 +42,28 @@ public class ConceptEditionBusinessRuleContainer implements BusinessRulesContain
 
             logger.info(conceptInfo + "\n" + brDesc);
             throw new BusinessRuleException(brDesc + "\n" + conceptInfo);
+        }
+    }
+
+    /**
+     * Se aplican las reglas de pre-condición para dejar no-vigente (eliminar lógicamente) un concepto.
+     *
+     * @param conceptSMTK El concepto a ser eliminado.
+     * @param user        El usuario que realiza la acción.
+     */
+    public void preconditionsConceptInvalidation(ConceptSMTK conceptSMTK, User user) {
+        br101ConceptInvalidation(conceptSMTK);
+    }
+
+    /**
+     * Este método es responsable de implementar la regla de negocio para invalidar un concepto: No es posible
+     * invalidar conceptos que se encuentran modelados.
+     *
+     * @param conceptSMTK Concepto que se desea invalidar.
+     */
+    private void br101ConceptInvalidation(ConceptSMTK conceptSMTK) {
+        if (conceptSMTK.isModeled()) {
+            throw new BusinessRuleException("No es posible invalidar un concepto que se encuentra Modelado.");
         }
     }
 }

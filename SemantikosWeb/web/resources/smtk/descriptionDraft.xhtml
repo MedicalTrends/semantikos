@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:composite="http://java.sun.com/jsf/composite"
+      xmlns:smtk="http://java.sun.com/jsf/composite/smtk"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+<composite:interface>
+    <composite:attribute name="description" type="cl.minsal.semantikos.model.DescriptionWeb"/>
+</composite:interface>
+
+<composite:implementation>
+
+    <h:panelGroup layout="block" rendered="#{cc.attrs.description.fsnType}">
+        <div class="ui-g">
+            <div class="ui-g-12 ui-md-6 ui-lg-1">
+            </div>
+            <div class="ui-g-12 ui-md-6 ui-lg-5">
+            </div>
+            <div class="ui-g-12 ui-md-6 ui-lg-2">
+                <p:outputLabel value="Tag Semántikos" />
+            </div>
+            <div class="ui-g-12 ui-md-6 ui-lg-2">
+                <p:outputLabel value="ID"/>
+            </div>
+            <div class="ui-g-12 ui-md-6 ui-lg-2">
+            </div>
+        </div>
+    </h:panelGroup>
+    <div class="ui-g">
+        <div class="ui-g-12 ui-md-6 ui-lg-1">
+            <p:outputLabel for="termNew" value="#{cc.attrs.description.descriptionType.name} *"/>
+        </div>
+        <div class="ui-g-12 ui-md-6 ui-lg-5">
+            <p:inputText id="termNew"
+                         name="description"
+                         validator="#{validatorBean.validateRequired}"
+                         value="#{cc.attrs.description.term}"
+                         style="width:90%">
+            </p:inputText>
+        </div>
+        <div class="ui-g-12 ui-md-6 ui-lg-2">
+            <p:autoComplete id="tag_semantikos" dropdown="true" converter="omnifaces.SelectItemsConverter"
+                            forceSelection="true"
+                            minQueryLength="3"
+                            completeMethod="#{conceptBean.getTagSMTKs}"
+                            value="#{conceptBean.concept.tagSMTK}"
+                            rendered="#{cc.attrs.description.fsnType}">
+            </p:autoComplete>
+        </div>
+        <div class="ui-g-12 ui-md-6 ui-lg-2">
+            <p:inputText id="termNew2"
+                         name="descriptionId"
+                         rendered="#{not cc.attrs.description.persistent}"
+                         style="width:60%">
+            </p:inputText>
+            <p:inputText id="termNew3"
+                         name="descriptionId"
+                         value="#{cc.attrs.description.descriptionId}"
+                         rendered="#{cc.attrs.description.persistent}"
+                         style="width:60%">
+            </p:inputText>
+        </div>
+        <div class="ui-g-12 ui-md-6 ui-lg-2">
+            <p:selectOneRadio id="caseSensitiveNew"
+                              layout="responsive"
+                              columns="1"
+                              value="#{cc.attrs.description.caseSensitive}"
+                              style="width:100%">
+                <f:selectItem itemValue="#{true}" itemLabel="Sensible"/>
+                <f:selectItem itemValue="#{false}" itemLabel="Insensible"/>
+            </p:selectOneRadio>
+        </div>
+    </div>
+
+</composite:implementation>
+</html>

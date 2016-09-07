@@ -128,8 +128,10 @@
                                  var="value"
                                  converter="omnifaces.SelectItemsConverter"
                                  rendered="#{cc.attrs.targetDefinition.discreteDomain}">
+                    <!-- Parámetros del validador -->
                     <f:attribute name="concept" value="#{cc.attrs.concept}"  />
                     <f:attribute name="relationshipDefinition" value="#{cc.attrs.relationshipDefinition}"  />
+                    <!---->
                     <p:ajax event="itemSelect"
                             listener="#{conceptBean.addOrChangeRelationship(cc.attrs.relationshipDefinition,relationship.target)}"
                             process="@this" />

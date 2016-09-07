@@ -26,7 +26,7 @@ public class DescriptionType {
     /* Descripción (opcional) del tipo de descripción */
     private String description;
 
-    /*Constructor vacío, utilizado como fix para el comportamiento de jsf-primefaces al actualizar el form en state-error*/
+    /*Constructor vacío, utilizado como fix para el comportamiento de jsf-primefaces al actualizar el form en ui-state-error*/
     @Deprecated
     public DescriptionType(){
         this(DescriptionTypeFactory.TYPELESS_DESCRIPTION_TYPE.getId(), DescriptionTypeFactory.TYPELESS_DESCRIPTION_TYPE.getName(),

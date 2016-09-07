@@ -27,9 +27,7 @@ public interface TagManager {
 
     public List<Tag> findTagByNamePattern(String pattern);
 
-    public List<Tag> findTagParent(Tag tag, String pattern);
-
-    public List<Tag> findTagChild(Tag tag, String pattern);
+    public List<Tag> findTag(Tag tag, String pattern);
 
     public void removeTag(Tag tag);
 

@@ -20,7 +20,9 @@ import java.util.StringTokenizer;
 @Stateless
 public class TagManagerImpl implements TagManager {
 
-    /** El logger de la clase */
+    /**
+     * El logger de la clase
+     */
     private static final Logger logger = LoggerFactory.getLogger(TagManagerImpl.class);
 
     @EJB
@@ -63,18 +65,33 @@ public class TagManagerImpl implements TagManager {
         return tagsBy;
     }
 
-    @Override
-    public List<Tag> findTagParent(Tag tag, String pattern) {
-
-
-
-        return null;
-    }
 
     @Override
-    public List<Tag> findTagChild(Tag tag, String pattern) {
-        return null;
+    public List<Tag> findTag(Tag tag, String pattern) {
+        List<Tag> tagList = findTagByNamePattern(pattern);
+
+        for (int j = 0; j < tagList.size(); j++) {
+            if(tag.getParentTag()!=null){
+                if(tag.getParentTag().equals(tagList.get(j))){
+                    tagList.remove(j);
+                    continue;
+                }
+            }
+            if (tag.equals(tagList.get(j))) {
+                tagList.remove(j);
+                continue;
+            } else {
+                for (Tag tagSon:tag.getSonTag()) {
+                    if (tagSon.equals(tagList.get(j))) {
+                        tagList.remove(j);
+                        break;
+                    }
+                }
+            }
+        }
+        return tagList;
     }
+
 
     @Override
     public void removeTag(Tag tag) {
@@ -99,7 +116,7 @@ public class TagManagerImpl implements TagManager {
         List<Tag> allTags = getAllTagsWithoutParent();
         List<Tag> otherTags = new ArrayList<>();
         for (Tag aTag : allTags) {
-            if (!aTag.containsInItsFamily(tag)){
+            if (!aTag.containsInItsFamily(tag)) {
                 otherTags.add(aTag);
             }
         }
@@ -132,24 +149,25 @@ public class TagManagerImpl implements TagManager {
 
         /* Se persiste primero el padre, luego el tag, y luego sus hijos */
         Tag parentTag = tag.getParentTag();
-        if (parentTag != null){
-            if(parentTag.getId()==-1)persist(parentTag);
+        if (parentTag != null) {
+            if (parentTag.getId() == -1) persist(parentTag);
         }
 
         /* Luego el tag mismo */
-        if(tag.getId()==-1)tagDAO.persist(tag);
+        if (tag.getId() == -1) tagDAO.persist(tag);
 
         /* Luego sus hijos */
-        for (Tag child : tag.getChildrenTag()) {
-            if(tag.getId()==-1){
-                persist(child);
-            }else{
-                if(child.getId()==-1){
-                    child.setParentTag(tag);
-                    persist(child);
+        for (Tag son : tag.getSonTag()) {
+
+                if (son.getId() == -1) {
+                    son.setParentTag(tag);
+                    persist(son);
+                }else{
+                    son.setParentTag(tag);
+                    update(son);
                 }
 
-            }
+
         }
         logger.debug("Tag creado:" + tag);
     }

@@ -16,7 +16,7 @@ public class Tag {
     private String colorLetter;
 
     /** Las etiquetas hijos */
-    private List<Tag> children;
+    private List<Tag> son;
 
     private Tag parentTag;
 
@@ -28,16 +28,16 @@ public class Tag {
         this.colorLetter = colorLetter;
         this.parentTag = parentTag;
 
-        this.children = new ArrayList<>();
+        this.son = new ArrayList<>();
     }
 
 
-    public List<Tag> getChildrenTag() {
-        return children;
+    public List<Tag> getSonTag() {
+        return son;
     }
 
-    public void setChildren(List<Tag> children) {
-        this.children = children;
+    public void setSon(List<Tag> son) {
+        this.son = son;
     }
 
     public Tag getParentTag() {
@@ -80,8 +80,8 @@ public class Tag {
         this.id = id;
     }
 
-    public void addChild(Tag tag) {
-        this.children.add(tag);
+    public void addSon(Tag tag) {
+        this.son.add(tag);
     }
 
     /**
@@ -95,7 +95,7 @@ public class Tag {
         int maxDeep = 0;
         Tag champion = null;
 
-        for (Tag child : children) {
+        for (Tag child : son) {
             int childDeep = child.deepnessLevel();
 
             if (childDeep > maxDeep) {
@@ -137,7 +137,7 @@ public class Tag {
         }
 
         /* Finalmente, quizás "tag" es uno de los hijos */
-        for (Tag child : children) {
+        for (Tag child : son) {
             if (child.containsInItsFamily(tag)){
                 return true;
             }

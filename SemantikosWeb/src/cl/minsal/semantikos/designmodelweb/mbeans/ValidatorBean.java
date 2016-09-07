@@ -9,8 +9,10 @@ import cl.minsal.semantikos.model.relationships.RelationshipDefinition;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.component.FacesComponent;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import javax.faces.validator.FacesValidator;
 import javax.faces.validator.ValidatorException;
 import java.util.List;
 import java.util.Map;
@@ -35,6 +37,8 @@ public class ValidatorBean {
         String msg = "Debe ingresar un término";
 
         //component.getParent().getAttributes().
+        if(value == null)
+            throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, msg, msg));
 
         if (value.toString().trim().equals(""))
             throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, msg, msg));
