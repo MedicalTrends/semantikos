@@ -1,7 +1,7 @@
 package cl.minsal.semantikos.model.helpertables;
 
 /**
- * Created by andres on 7/27/16.
+ * @author Andres Farías on 7/27/16.
  */
 public class HelperTableColumn {
 

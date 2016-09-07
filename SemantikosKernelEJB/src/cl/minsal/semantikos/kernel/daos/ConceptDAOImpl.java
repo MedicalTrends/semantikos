@@ -430,7 +430,7 @@ public class ConceptDAOImpl implements ConceptDAO {
 
         ConnectionBD connect = new ConnectionBD();
         long id;
-        String sql = "{call semantikos.create_concept(?,?,?,?,?,?,?)}";
+        String sql = "{call semantikos.create_concept(?,?,?,?,?,?,?,?)}";
 
         try (Connection connection = connect.getConnection();
              CallableStatement call = connection.prepareCall(sql)) {

@@ -41,7 +41,7 @@ public class TagFactory {
 
         /* Si JSON es nulo, se retorna una lista vacía */
         if (jsonExpression == null) {
-            return Collections.emptyList();
+            return new ArrayList<>();
         }
 
         /* Se parsea la expresión JSON */
@@ -63,7 +63,7 @@ public class TagFactory {
 
         /* Si JSON es nulo, se retorna una lista vacía */
         if (jsonExpression == null) {
-            return Collections.emptyList();
+            return new ArrayList<>();
         }
 
         /* Se parsea la expresión JSON */
@@ -122,7 +122,7 @@ public class TagFactory {
 
         Tag parentTag = tagDAO.findTagByID(tagDTO.getIdParentTag());
         List<Tag> children;
-        Tag tag = new Tag(tagDTO.getId(), tagDTO.getName(), tagDTO.getBackgroundColor(), tagDTO.getLetterColor(), null, parentTag);
+        Tag tag = new Tag(tagDTO.getId(), tagDTO.getName(), tagDTO.getBackgroundColor(), tagDTO.getLetterColor(), parentTag);
         children = tagDAO.getChildrenOf(tag);
         tag.setChildren(children);
 
@@ -131,7 +131,7 @@ public class TagFactory {
 
     private Tag createTagChildren(Tag tagParent, TagDTO tagChild){
 
-        Tag tag =new Tag(tagChild.getId(), tagChild.getName(), tagChild.getBackgroundColor(), tagChild.getLetterColor(), null, tagParent);
+        Tag tag =new Tag(tagChild.getId(), tagChild.getName(), tagChild.getBackgroundColor(), tagChild.getLetterColor(),  tagParent);
         List<Tag> children = tagDAO.getChildrenOf(tag);
         tag.setChildren(children);
         return tag;

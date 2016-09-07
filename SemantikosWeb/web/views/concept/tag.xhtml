@@ -8,111 +8,6 @@
     <ui:define name="content">
         <p:panel id="findConcept">
             <h:form id="tags">
-                <p:spacer></p:spacer>
-                <h3>Crear tag</h3>
-                <p:panel id="create">
-
-                    <div class="ui-g">
-
-                        <div class="ui-g-12 ui-md-6 ui-lg-4">
-                            <p:autoComplete id="parentTag" scrollHeight="200" size="5" style="width: 80%;"
-                                            inputStyle="width: 80%;"
-                                            converter="tagConverter" var="tag"
-                                            value="#{tagBean.parentTag}"
-                                            completeMethod="#{tagBean.findTagByName}"
-                                            itemLabel="#{tag.name}" itemValue="#{tag}"
-                                            emptyMessage="No se encontraron tags relacionados"
-                            >
-                            </p:autoComplete>
-                        </div>
-
-                        <div class="ui-g-12 ui-md-6 ui-lg-3">
-                            <h:outputLabel for="name" value="Nombre Tag:" style="font-weight:bold"/>
-                            <p:inputText id="name" value="#{tagBean.nameTag}" label="Name"/>
-                        </div>
-                        <div class="ui-g-12 ui-md-6 ui-lg-2">
-                            <h:panelGrid columns="2" cellpadding="5" style="margin-left: 20px">
-                                <h:outputText value="Color Fondo: "/>
-                                <p:colorPicker value="#{tagBean.colorBackground}"/>
-
-
-                                <p:dialog modal="true" widgetVar="dlg" showEffect="fade" hideEffect="fade"
-                                          header="Seleccione un color de fondo" resizable="false">
-                                    <h:panelGrid id="grid" columns="2" cellpadding="5">
-                                        <h:outputText value="Popup color: "/>
-                                        <h:outputText value="#{tagBean.colorBackground}"
-                                                      style="background-color: \##{tagBean.colorBackground}"/>
-                                    </h:panelGrid>
-                                </p:dialog>
-                            </h:panelGrid>
-
-                        </div>
-                        <div class="ui-g-12 ui-md-6 ui-lg-2">
-                            <h:panelGrid columns="2" cellpadding="5" style="margin-left: 20px">
-                                <h:outputText value="Color Texto: "/>
-                                <p:colorPicker value="#{tagBean.colorText}"/>
-
-
-                                <p:dialog modal="true" widgetVar="dlg" showEffect="fade" hideEffect="fade"
-                                          header="Seleccione un color de letra" resizable="false">
-                                    <h:panelGrid id="grid2" columns="2" cellpadding="5">
-                                        <h:outputText value="Popup color: "/>
-                                        <h:outputText value="#{tagBean.colorText}"
-                                                      style="background-color: \##{tagBean.colorText}"/>
-                                    </h:panelGrid>
-                                </p:dialog>
-                            </h:panelGrid>
-
-                        </div>
-                        <div class="ui-g-12 ui-md-6 ui-lg-1">
-                            <p:commandButton value="Crear Tag" process="@this,create"
-                                             actionListener="#{tagBean.createTag}" update="create">
-
-                            </p:commandButton>
-                        </div>
-                    </div>
-                </p:panel>
-                <p:spacer></p:spacer>
-                <h3>Buscar tag por nombre</h3>
-                <p:spacer></p:spacer>
-                <div class="ui-g">
-
-                    <div class="ui-g-12 ui-md-6 ui-lg-6">
-                        <p:autoComplete id="inputFindTag" scrollHeight="200" size="5" style="width: 80%;"
-                                        inputStyle="width: 80%;"
-                                        converter="tagConverter" var="tag"
-                                        value="#{tagBean.tagSelected}"
-                                        completeMethod="#{tagBean.findTagByName}"
-                                        itemLabel="#{tag.name}" itemValue="#{tag}"
-                                        emptyMessage="No se encontraron tags relacionados"
-                        >
-                        </p:autoComplete>
-                    </div>
-                    <div class="ui-g-12 ui-md-6 ui-lg-6">
-
-                    </div>
-                </div>
-                <p:spacer></p:spacer>
-                <h3>Lista de tag </h3>
-                <p:spacer></p:spacer>
-                <div class="ui-g">
-
-                    <div class="ui-g-12 ui-md-6 ui-lg-6">
-                        <p:selectOneMenu id="tagslist" value="#{tagBean.tag}">
-
-                            <f:selectItems value="#{tagBean.tagList}" var="tag" itemLabel="#{tag.name}"
-                                           itemValue="#{tag}"/>
-                            <p:column style="width:10%">
-                                <h:outputText value="#{tag.name}"/>
-                            </p:column>
-                        </p:selectOneMenu>
-                    </div>
-                    <div class="ui-g-12 ui-md-6 ui-lg-6">
-
-
-                    </div>
-                </div>
-                <p:spacer></p:spacer>
 
                 <h3>Adminsitrar tag</h3>
                 <p:spacer></p:spacer>
@@ -278,7 +173,7 @@
                                     <p:column headerText="Desvincular" style="width:80px;text-align: center;">
                                         <p:commandButton update=":dialogTag:unlinkPanel,:tags:adminTag"
                                                          icon="fa fa-chain-broken"
-                                                         actionListener="#{tagBean.unlinkChild(tag)}">
+                                                         actionListener="#{tagBean.unlinkSon(tag)}">
 
                                         </p:commandButton>
                                     </p:column>

@@ -3,9 +3,9 @@ package cl.minsal.semantikos.kernel.components;
 import cl.minsal.semantikos.model.helpertables.HelperTable;
 import cl.minsal.semantikos.model.helpertables.HelperTableRecord;
 
+import javax.validation.constraints.NotNull;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author Andrés Farías
@@ -20,16 +20,28 @@ public interface HelperTableManagerInterface {
     public Collection<HelperTable> getHelperTables();
 
     /**
+     * Este método es responsable de recuperar los registros de una cierta tabla.
      *
-     * @param helperTable
-     * @param columnNames
-     * @return
+     * @param helperTable La tabla cuyos registros se desea recuperar.
+     * @param columnNames El nombre de las columnas que se desea recuperar.
+     *
+     * @return Una lista de registros de la tabla <code>helperTable</code> con las columnas <code>columnNames</code>
+     * indicadas.
      */
-    public List<HelperTableRecord> getAllRecords(HelperTable helperTable, String[] columnNames);
+    public List<HelperTableRecord> getAllRecords(@NotNull HelperTable helperTable, List<String> columnNames);
 
     /**
+     * Este método es responsable de recuperar todos los registros de una tabla auxiliar que se encuentran vigentes.
      *
-     * @param helperTable
+     * @param helperTable La tabla cuyos registros se desea recuperar.
+     * @param columnNames El nombre de las columnas que se desea recuperar.
+     *
+     * @return Una lista de registros de la tabla <code>helperTable</code> con las columnas <code>columnNames</code>
+     * indicadas que se encuentran vigentes en este momento.
+     */
+    public List<HelperTableRecord> getValidRecords(@NotNull HelperTable helperTable, List<String> columnNames);
+
+    /**
      * @return
      */
     public List<HelperTableRecord> getAllRecords(HelperTable helperTable);

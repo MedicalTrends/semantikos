@@ -109,6 +109,18 @@ public class DescriptionManagerImpl implements DescriptionManagerInterface {
         }
     }
 
+    @Override
+    public void deleteDescription(ConceptSMTK conceptSMTK, Description description, User user) {
+
+        /* Eliminar una descripción consiste en dejarla inválida */
+        descriptionDAO.invalidate(description);
+
+        /* Se registra en el Historial si el concepto está modelado */
+        if (conceptSMTK.isModeled()) {
+            auditManager.recordDescriptionDeletion(conceptSMTK, description, user);
+        }
+    }
+
 
     /**
      * Este método es responsable de aplicar las actualizaciones. Para actualizar una descripción se revisan las

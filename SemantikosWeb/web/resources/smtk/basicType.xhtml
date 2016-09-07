@@ -18,8 +18,8 @@
     <!-- Multiplicidad 1 y Nueva relacion -->
     <p:panel
             id="basicTypeSimple"
+            styleClass="basic#{cc.attrs.relationshipDefinition.id}"
             rendered="#{cc.attrs.relationshipDefinition.multiplicity.simple and not cc.attrs.concept.hasRelationships(cc.attrs.relationshipDefinition)}"
-            styleClass="#{validatorBean.uiState}"
             widgetVar="panelBasicTypeSimple#{cc.attrs.relationshipDefinition.id}">
             <div class="ui-g">
                 <div class="ui-g-12 ui-md-6 ui-lg-2">
@@ -30,11 +30,11 @@
                 <div class="ui-g-12 ui-md-6 ui-lg-3">
                     <p:selectOneMenu id="basicTypeValue11"
                                      value="#{conceptBean.basicTypeValue.value}"
+                                     validator="#{validatorBean.validateRequired}"
                                      var="value1"
                                      converter="omnifaces.SelectItemsConverter"
                                      rendered="#{cc.attrs.targetDefinition.discreteDomain}"
-                                     styleClass="relationships"
-                                     >
+                                     styleClass="relationships">
                         <p:ajax event="itemSelect"
                                 listener="#{conceptBean.addOrChangeRelationship(cc.attrs.relationshipDefinition,conceptBean.basicTypeValue)}"
                                 process="@this" />
@@ -55,8 +55,9 @@
                                    decimalSeparator=","
                                    thousandSeparator="."
                                    rendered="#{cc.attrs.targetDefinition.type.typeName=='int' and not cc.attrs.targetDefinition.discreteDomain}"
-                                   styleClass="relationships"
-                                   >
+                                   styleClass="relationships">
+                        <f:attribute name="concept" value="#{cc.attrs.concept}"  />
+                        <f:attribute name="relationshipDefinition" value="#{cc.attrs.relationshipDefinition}"  />
                         <p:ajax listener="#{conceptBean.addOrChangeRelationship(cc.attrs.relationshipDefinition,conceptBean.basicTypeValue)}" />
                     </p:inputNumber>
 
@@ -69,8 +70,9 @@
                                    thousandSeparator="."
                                    decimalPlaces="2"
                                    rendered="#{cc.attrs.targetDefinition.type.typeName=='float' and not cc.attrs.targetDefinition.discreteDomain}"
-                                   styleClass="relationships"
-                                   >
+                                   styleClass="relationships">
+                        <f:attribute name="concept" value="#{cc.attrs.concept}"  />
+                        <f:attribute name="relationshipDefinition" value="#{cc.attrs.relationshipDefinition}"  />
                         <p:ajax listener="#{conceptBean.addOrChangeRelationship(cc.attrs.relationshipDefinition,conceptBean.basicTypeValue)}" />
                     </p:inputNumber>
                     <p:inputText id="basicTypeValue14"
@@ -90,8 +92,9 @@
                                 mindate="#{cc.attrs.targetDefinition.interval.lowerBoundary}"
                                 maxdate="#{cc.attrs.targetDefinition.interval.upperBoundary}"
                                 rendered="#{cc.attrs.targetDefinition.type.typeName=='date' and not cc.attrs.targetDefinition.discreteDomain}"
-                                styleClass="relationships"
-                                >
+                                styleClass="relationships">
+                        <f:attribute name="concept" value="#{cc.attrs.concept}"  />
+                        <f:attribute name="relationshipDefinition" value="#{cc.attrs.relationshipDefinition}"  />
                         <p:ajax listener="#{conceptBean.addOrChangeRelationship(cc.attrs.relationshipDefinition,conceptBean.basicTypeValue)}" />
                     </p:calendar>
                 </div>
@@ -101,12 +104,99 @@
                 </div>
             </div>
     </p:panel>
+    <!-- Multiplicidad 1 y relacion existente -->
+    <p:panel
+            id="basicTypeSimple2"
+            styleClass="basic#{cc.attrs.relationshipDefinition.id}"
+            rendered="#{cc.attrs.relationshipDefinition.multiplicity.simple and cc.attrs.concept.hasRelationships(cc.attrs.relationshipDefinition)}"
+            widgetVar="panelBasicTypeSimple#{cc.attrs.relationshipDefinition.id}">
+        <p:repeat  value="#{cc.attrs.concept.getValidRelationshipsWebByRelationDefinition(cc.attrs.relationshipDefinition)}"
+                   offset="0"
+                   size="#{cc.attrs.concept.getValidRelationshipsWebByRelationDefinition(cc.attrs.relationshipDefinition).size()}"
+                   step="1"
+                   var="relationship"
+                   varStatus="var">
+        <div class="ui-g">
+            <div class="ui-g-12 ui-md-6 ui-lg-2">
+                <p:outputLabel for="basicTypeValue" value="#{cc.attrs.relationshipDefinition.name}"/>
+                <p:outputLabel value=" *" rendered="#{!cc.attrs.relationshipDefinition.multiplicity.optional}" />
+            </div>
+            <div class="ui-g-12 ui-md-6 ui-lg-3">
+                <p:selectOneMenu id="basicTypeValue"
+                                 value="#{relationship.target.value}"
+                                 validator="#{validatorBean.validateRelationships}"
+                                 var="value"
+                                 converter="omnifaces.SelectItemsConverter"
+                                 rendered="#{cc.attrs.targetDefinition.discreteDomain}">
+                    <f:attribute name="concept" value="#{cc.attrs.concept}"  />
+                    <f:attribute name="relationshipDefinition" value="#{cc.attrs.relationshipDefinition}"  />
+                    <p:ajax event="itemSelect"
+                            listener="#{conceptBean.addOrChangeRelationship(cc.attrs.relationshipDefinition,relationship.target)}"
+                            process="@this" />
+                    <f:selectItem itemLabel="Seleccione"
+                                  itemValue=""
+                    />
+                    <f:selectItems value="#{cc.attrs.targetDefinition.domain}"
+                                   var="domain"
+                                   itemLabel="#{domain}"
+                                   itemValue="#{domain}"/>
+                </p:selectOneMenu>
+                <p:inputNumber id="basicTypeValue2"
+                               value="#{relationship.target.value}"
+                               var="value"
+                               minValue="#{cc.attrs.targetDefinition.interval.lowerBoundary}"
+                               maxValue="#{cc.attrs.targetDefinition.interval.upperBoundary}"
+                               decimalPlaces="0"
+                               decimalSeparator=","
+                               thousandSeparator="."
+                               rendered="#{cc.attrs.targetDefinition.type.typeName=='int' and not cc.attrs.targetDefinition.discreteDomain}">
+                    <f:attribute name="concept" value="#{cc.attrs.concept}"  />
+                    <f:attribute name="relationshipDefinition" value="#{cc.attrs.relationshipDefinition}"  />
+                </p:inputNumber>
+
+                <p:inputNumber id="basicTypeValue3"
+                               value="#{relationship.target.value}"
+                               var="value"
+                               minValue="#{cc.attrs.targetDefinition.interval.lowerBoundary}"
+                               maxValue="#{cc.attrs.targetDefinition.interval.upperBoundary}"
+                               decimalSeparator=","
+                               thousandSeparator="."
+                               decimalPlaces="2"
+                               rendered="#{cc.attrs.targetDefinition.type.typeName=='float' and not cc.attrs.targetDefinition.discreteDomain}">
+                    <f:attribute name="concept" value="#{cc.attrs.concept}"  />
+                    <f:attribute name="relationshipDefinition" value="#{cc.attrs.relationshipDefinition}"  />
+                </p:inputNumber>
+                <p:inputText id="basicTypeValue4"
+                             value="#{relationship.target.value}"
+                             var="value"
+                             minValue="#{cc.attrs.targetDefinition.interval.lowerBoundary}"
+                             maxValue="#{cc.attrs.targetDefinition.interval.upperBoundary}"
+                             rendered="#{cc.attrs.targetDefinition.type.typeName=='string' and not cc.attrs.targetDefinition.discreteDomain}">
+                </p:inputText>
+                <p:calendar id="basicTypeValue5"
+                            value="#{relationship.target.value}"
+                            var="value"
+                            showOn="button"
+                            mindate="#{cc.attrs.targetDefinition.interval.lowerBoundary}"
+                            maxdate="#{cc.attrs.targetDefinition.interval.upperBoundary}"
+                            rendered="#{cc.attrs.targetDefinition.type.typeName=='date' and not cc.attrs.targetDefinition.discreteDomain}">
+                    <f:attribute name="concept" value="#{cc.attrs.concept}"  />
+                    <f:attribute name="relationshipDefinition" value="#{cc.attrs.relationshipDefinition}"  />
+                </p:calendar>
+            </div>
+            <div class="ui-g-12 ui-md-6 ui-lg-1">
+            </div>
+            <div class="ui-g-12 ui-md-6 ui-lg-6">
+            </div>
+        </div>
+        </p:repeat>
+    </p:panel>
     <!-- Multiplicidad N-->
     <p:panel
          id="basicTypeCollection"
-         styleClass="basic#{cc.attrs.relationshipDefinition.id} #{validatorBean.uiState}"
+         styleClass="basic#{cc.attrs.relationshipDefinition.id}"
          widgetVar="panelBasicTypeCollection#{cc.attrs.relationshipDefinition.id}"
-         rendered="#{cc.attrs.relationshipDefinition.multiplicity.collection}">
+         rendered="#{cc.attrs.relationshipDefinition.multiplicity.collection and cc.attrs.concept.hasRelationships(cc.attrs.relationshipDefinition)}">
             <div class="ui-g">
                 <div class="ui-g-12 ui-md-6 ui-lg-2">
                     <p:outputLabel value="#{cc.attrs.relationshipDefinition.name}"/>
@@ -145,8 +235,9 @@
                                      var="value1"
                                      converter="omnifaces.SelectItemsConverter"
                                      rendered="#{cc.attrs.targetDefinition.discreteDomain}"
-                                     styleClass="relationships"
-                                     >
+                                     styleClass="relationships">
+                        <f:attribute name="concept" value="#{cc.attrs.concept}"  />
+                        <f:attribute name="relationshipDefinition" value="#{cc.attrs.relationshipDefinition}"  />
                         <f:selectItem itemLabel="Seleccione"
                                       itemValue=""
                         />
@@ -164,8 +255,9 @@
                                    decimalSeparator=","
                                    thousandSeparator="."
                                    rendered="#{cc.attrs.targetDefinition.type.typeName=='int' and not cc.attrs.targetDefinition.discreteDomain}"
-                                   styleClass="relationships"
-                                   >
+                                   styleClass="relationships">
+                        <f:attribute name="concept" value="#{cc.attrs.concept}"  />
+                        <f:attribute name="relationshipDefinition" value="#{cc.attrs.relationshipDefinition}"  />
                     </p:inputNumber>
                     <p:inputNumber id="basicTypeValue8"
                                    value="#{relationship.target.value}"
@@ -176,8 +268,9 @@
                                    thousandSeparator="."
                                    decimalPlaces="2"
                                    rendered="#{cc.attrs.targetDefinition.type.typeName=='float' and not cc.attrs.targetDefinition.discreteDomain}"
-                                   styleClass="relationships"
-                                   >
+                                   styleClass="relationships">
+                        <f:attribute name="concept" value="#{cc.attrs.concept}"  />
+                        <f:attribute name="relationshipDefinition" value="#{cc.attrs.relationshipDefinition}"  />
                     </p:inputNumber>
                     <p:inputText id="basicTypeValue9"
                                  value="#{relationship.target.value}"
@@ -185,8 +278,9 @@
                                  minValue="#{cc.attrs.targetDefinition.interval.lowerBoundary}"
                                  maxValue="#{cc.attrs.targetDefinition.interval.upperBoundary}"
                                  rendered="#{cc.attrs.targetDefinition.type.typeName=='string' and not cc.attrs.targetDefinition.discreteDomain}"
-                                 styleClass="relationships"
-                                 >
+                                 styleClass="relationships">
+                        <f:attribute name="relationships" value="#{cc.attrs.concept.getValidRelationshipsWebByRelationDefinition(cc.attrs.relationshipDefinition)}"  />
+                        <f:attribute name="relationshipDefinition" value="#{cc.attrs.relationshipDefinition}"  />
                     </p:inputText>
                     <p:calendar id="basicTypeValue10"
                                 value="#{relationship.target.value}"
@@ -195,8 +289,9 @@
                                 mindate="#{cc.attrs.targetDefinition.interval.lowerBoundary}"
                                 maxdate="#{cc.attrs.targetDefinition.interval.upperBoundary}"
                                 rendered="#{cc.attrs.targetDefinition.type.typeName=='date' and not cc.attrs.targetDefinition.discreteDomain}"
-                                styleClass="relationships"
-                                >
+                                styleClass="relationships">
+                        <f:attribute name="concept" value="#{cc.attrs.concept}"  />
+                        <f:attribute name="relationshipDefinition" value="#{cc.attrs.relationshipDefinition}"  />
                     </p:calendar>
                     <p:commandButton
                             icon="fa fa-trash" title="Eliminar"

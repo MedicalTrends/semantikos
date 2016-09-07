@@ -24,6 +24,9 @@ import java.io.Serializable;
 import java.text.ParseException;
 import java.util.*;
 
+import static cl.minsal.semantikos.model.ProfileFactory.DESIGNER_PROFILE;
+
+
 /**
  * Created by diego on 26/06/2016.
  * Created by diego on 26/06/2016.
@@ -55,6 +58,7 @@ public class ConceptBean implements Serializable {
     public User user;
 
     private ConceptSMTKWeb concept;
+    //Concepto respaldo
     private ConceptSMTKWeb _concept;
 
     private Category category;
@@ -118,9 +122,7 @@ public class ConceptBean implements Serializable {
         user.setIdUser(1);
         user.setUsername("amauro");
         user.setPassword("amauro");
-        Profile designerProfile = new Profile();
-        designerProfile.setName("designerProfile");
-        designerProfile.setDescription("designerProfile");
+        Profile designerProfile = new Profile(1, "designerProfile", "designerProfile");
         user.getProfiles().add(designerProfile);
 
 
@@ -261,8 +263,8 @@ public class ConceptBean implements Serializable {
 
     public void createConcept() throws ParseException {
         //category = categoryManager.getCategoryById(categorySelect);
-        newConcept(category, favoriteDescription);
-        //getConceptById(80602);
+        //newConcept(category, favoriteDescription);
+        getConceptById(80602);
 
         RequestContext context = RequestContext.getCurrentInstance();
         context.execute("PF('dialogNameConcept').hide();");
@@ -288,7 +290,9 @@ public class ConceptBean implements Serializable {
 
         Description[] descriptions = {favouriteDescription, fsnDescription};
 
-        ConceptSMTK conceptSMTK = new ConceptSMTK(conceptManager.generateConceptId(), category, true, true, false, false, false, descriptions);
+        String observation = "";
+
+        ConceptSMTK conceptSMTK = new ConceptSMTK(conceptManager.generateConceptId(), category, true, true, false, false, false, observation, descriptions);
 
         concept = new ConceptSMTKWeb(conceptSMTK);
     }
@@ -360,7 +364,7 @@ public class ConceptBean implements Serializable {
         boolean isRelationshipFound = false;
 
         // Se busca la relación
-        for (Relationship relationshipWeb : concept.getRelationships()) {
+        for (Relationship relationshipWeb : concept.getRelationshipsWeb()) {
             if (relationshipWeb.getRelationshipDefinition().equals(relationshipDefinition)) {
                 relationshipWeb.setTarget(target);
                 isRelationshipFound = true;
@@ -369,8 +373,7 @@ public class ConceptBean implements Serializable {
         }
         // Si no se encuentra la relación, se crea una nueva
         if (!isRelationshipFound) {
-            Relationship newRelationship = new Relationship(this.concept, target, relationshipDefinition);
-            this.concept.addRelationshipWeb(newRelationship);
+            this.concept.addRelationshipWeb(new Relationship(this.concept, target, relationshipDefinition));
         }
 
         conceptSelected = null;
@@ -434,45 +437,44 @@ public class ConceptBean implements Serializable {
 
         FacesContext context = FacesContext.getCurrentInstance();
 
-        if (!concept.isValid()) {
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Las relaciones no cumplen con el minimo requerido"));
+        // Si el concepto está persistido, actualizarlo
+        if (concept.isPersistent()) {
 
-        } else {
-            // Si el concepto está persistido, actualizarlo
-            if (concept.isPersistent()) {
-                /*
-                if(_concept.isToBeReviewed()!=concept.isToBeReviewed() || _concept.isToBeConsulted()!= concept.isToBeConsulted())
-                    conceptManager.updateBasicInfo();
-                */
-                List<Pair<Description, Description>> descriptionsForUpdate= ConceptUtils.getModifiedDescriptions(_concept.getDescriptionsWeb(), concept.getDescriptionsWeb());
-                List<Description> descriptionsForPersist= ConceptUtils.getNewDescriptions(_concept.getDescriptionsWeb(), concept.getDescriptionsWeb());
-                List<Description> descriptionsForDelete= ConceptUtils.getDeletedDescriptions(_concept.getDescriptionsWeb(), concept.getDescriptionsWeb());
+            int changes = 0;
+            /*
+            if(_concept.isToBeReviewed()!=concept.isToBeReviewed() || _concept.isToBeConsulted()!= concept.isToBeConsulted())
+                conceptManager.updateBasicInfo();
+            */
+            List<Pair<Description, Description>> descriptionsForUpdate= ConceptUtils.getModifiedDescriptions(_concept.getDescriptionsWeb(), concept.getDescriptionsWeb());
+            List<Description> descriptionsForPersist= ConceptUtils.getNewDescriptions(_concept.getDescriptionsWeb(), concept.getDescriptionsWeb());
+            List<Description> descriptionsForDelete= ConceptUtils.getDeletedDescriptions(_concept.getDescriptionsWeb(), concept.getDescriptionsWeb());
 
-                if(descriptionsForUpdate.isEmpty() && descriptionsForPersist.isEmpty() && descriptionsForDelete.isEmpty()){
-                    context.addMessage(null, new FacesMessage("Warning", "No se ha realizado ningún cambio al concepto!!"));
-                    return;
-                }
-
-                for (Pair<Description, Description> description : descriptionsForUpdate) {
-                    descriptionManager.updateDescription(concept, description.getFirst(), description.getSecond(), user);
-                }
-
-
-                for (Description description : descriptionsForPersist) {
-                    descriptionManager.bindDescriptionToConcept(concept, description, user);
-                }
-
-                for (Description description : descriptionsForDelete) {
-                    //descriptionManager.deleteDescription(concept, description, user);
-                }
-
+            for (Pair<Description, Description> description : descriptionsForUpdate) {
+                changes = changes + descriptionsForUpdate.size();
+                descriptionManager.updateDescription(concept, description.getFirst(), description.getSecond(), user);
             }
-            // Si el concepto no está persistido, persistirlo
-            else {
-                conceptManager.persist(concept, user);
+
+            for (Description description : descriptionsForPersist) {
+                changes = changes + descriptionsForPersist.size();
+                descriptionManager.bindDescriptionToConcept(concept, description, user);
             }
-            context.addMessage(null, new FacesMessage("Successful", "Concepto guardado "));
+
+            for (Description description : descriptionsForDelete) {
+                changes = changes + descriptionsForDelete.size();
+                descriptionManager.deleteDescription(concept, description, user);
+            }
+
+            if(changes == 0){
+                context.addMessage(null, new FacesMessage("Warning", "No se ha realizado ningún cambio al concepto!!"));
+                return;
+            }
+
         }
+        // Si el concepto no está persistido, persistirlo
+        else {
+            conceptManager.persist(concept, user);
+        }
+        context.addMessage(null, new FacesMessage("Successful", "Concepto guardado "));
 
     }
 

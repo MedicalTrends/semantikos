@@ -1,6 +1,5 @@
 package cl.minsal.semantikos.model.helpertables;
 
-import cl.minsal.semantikos.kernel.daos.HelperTableDAOImpl;
 import cl.minsal.semantikos.model.PersistentEntity;
 import cl.minsal.semantikos.model.relationships.TargetDefinition;
 
@@ -9,9 +8,24 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * Created by root on 08-07-16.
+ * @author Andrés Farías
  */
 public class HelperTable extends PersistentEntity implements TargetDefinition {
+
+    /** Columna de sistema con la llave primaria para cada registro de una tabla auxiliar */
+    public static final HelperTableColumn SYSTEM_COLUMN_ID = new HelperTableColumn("id", true, true, false);
+
+    /** Columna de sistema con la descripción para cada registro de una tabla auxiliar */
+    public static final HelperTableColumn SYSTEM_COLUMN_DESCRIPTION = new HelperTableColumn("description", false, true, true);
+
+    /** Columna de sistema con la fecha de creación para cada registro de una tabla auxiliar */
+    public static final HelperTableColumn SYSTEM_COLUMN_CREATION_DATE = new HelperTableColumn("creation_date", false, true, true);
+
+    /** Columna de sistema con la fecha hasta la cual cada registro se encuentra vigente de una tabla auxiliar */
+    public static final HelperTableColumn SYSTEM_COLUMN_VALIDITY_UNTIL = new HelperTableColumn("validity_until", false, true, true);
+
+    /** Columna de sistema del usuario que modificó por última vez un registro de una tabla auxiliar */
+    public static final HelperTableColumn SYSTEM_COLUMN_USER = new HelperTableColumn("user", false, true, true);
 
     /** Un nombre legible por humanos para la Tabla Auxiliar */
     private String name;
@@ -21,9 +35,6 @@ public class HelperTable extends PersistentEntity implements TargetDefinition {
 
     /** El nombre de la tabla física */
     private String tablaName;
-
-    /** Columna con la llave primaria de los registros de la tabla auxiliar */
-    private String pkColumnName;
 
     /** El nombre de las columnas que posee la tabla física */
     private Collection<HelperTableColumn> columns;
@@ -51,9 +62,6 @@ public class HelperTable extends PersistentEntity implements TargetDefinition {
         this.description = description;
         this.tablaName = tablaName;
         this.columns = columns;
-
-        /* El nombre por defecto de la columna de PK es ID */
-        this.pkColumnName = HelperTableDAOImpl.ID_COLUMN_NAME;
     }
 
     public Collection<HelperTableColumn> getColumns() {
@@ -151,5 +159,22 @@ public class HelperTable extends PersistentEntity implements TargetDefinition {
         }
 
         return showableColumnsNames;
+    }
+
+    /**
+     * Este método es responsable de retornar las columnas de sistema de toda tabla auxiliar.
+     *
+     * @return Una colección con las columnas de sistema.
+     */
+    public static Collection<HelperTableColumn> getSystemColumns() {
+
+        Collection<HelperTableColumn> systemColumns = new ArrayList<>();
+        systemColumns.add(SYSTEM_COLUMN_ID);
+        systemColumns.add(SYSTEM_COLUMN_DESCRIPTION);
+        systemColumns.add(SYSTEM_COLUMN_CREATION_DATE);
+        systemColumns.add(SYSTEM_COLUMN_VALIDITY_UNTIL);
+        systemColumns.add(SYSTEM_COLUMN_USER);
+
+        return systemColumns;
     }
 }

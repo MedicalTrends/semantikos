@@ -1,5 +1,8 @@
 package cl.minsal.semantikos.designmodelweb.mbeans;
 
+import cl.minsal.semantikos.model.ConceptSMTK;
+import cl.minsal.semantikos.model.basictypes.BasicTypeDefinition;
+import cl.minsal.semantikos.model.basictypes.BasicTypeValue;
 import cl.minsal.semantikos.model.relationships.Relationship;
 import cl.minsal.semantikos.model.relationships.RelationshipDefinition;
 
@@ -45,18 +48,19 @@ public class ValidatorBean {
      */
     public void validateRelationships(FacesContext context, UIComponent component, Object value) throws ValidatorException {
 
-        String msg = "Error!!!!!!";
+        String msg = "Faltan relaciones para los elementos marcados";
 
-        List<Relationship> relationships = (List<Relationship>) component.getAttributes().get("relationships");
+        ConceptSMTK concept = (ConceptSMTK) component.getAttributes().get("concept");
 
         RelationshipDefinition relationshipDefinition = (RelationshipDefinition) component.getAttributes().get("relationshipDefinition");
 
-        if (relationships.size() < relationshipDefinition.getMultiplicity().getLowerBoundary()) {
-            setUiState("ui-state-error");
+        if(concept == null || relationshipDefinition == null)
+            return;
+
+        if(concept.getValidRelationshipsByRelationDefinition(relationshipDefinition).size()<relationshipDefinition.getMultiplicity().getLowerBoundary()){
             throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, msg, msg));
         }
-        else
-            setUiState("");
+
     }
 
     public String getUiState() {

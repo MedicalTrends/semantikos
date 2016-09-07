@@ -21,12 +21,11 @@ public class Tag {
     private Tag parentTag;
 
 
-    public Tag(long id, String name, String colorBackground, String colorLetter, List<Tag> children, Tag parentTag) {
+    public Tag(long id, String name, String colorBackground, String colorLetter, Tag parentTag) {
         this.id = id;
         this.name = name;
         this.colorBackground = colorBackground;
         this.colorLetter = colorLetter;
-        this.children = children;
         this.parentTag = parentTag;
 
         this.children = new ArrayList<>();
