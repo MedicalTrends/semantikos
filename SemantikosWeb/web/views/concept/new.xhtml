@@ -27,9 +27,26 @@
                         <p:selectBooleanCheckbox id="toBeConsultatedCheck" itemLabel="Consultar"
                                                  value="#{conceptBean.concept.toBeConsulted}" style="width:40%"/>
                     </div>
-                    <div class="ui-g-12 ui-md-6 ui-lg-3">
+                    <div class="ui-g-12 ui-md-6 ui-lg-6">
                     </div>
-                    <div class="ui-g-12 ui-md-6 ui-lg-3">
+                </div>
+
+                <!-- Tag Semantikos -->
+                <div class="ui-g">
+                    <div class="ui-g-12 ui-md-6 ui-lg-1">
+                        <p:outputLabel for="tagSemantikos" value="Tag Semántikos"/>
+                    </div>
+                    <div class="ui-g-12 ui-md-6 ui-lg-5">
+                        <p:selectOneMenu id="tagSemantikos"
+                                         value="#{conceptBean.concept.tagSMTK}"
+                                         converter="omnifaces.SelectItemsConverter" style="width:60%">
+                            <f:selectItem itemLabel="Seleccione tipo" itemValue=""/>
+                            <f:selectItems value="#{conceptBean.tagSMTKs}" var="tag"
+                                           itemValue="#{tag}"/>
+                        </p:selectOneMenu>
+
+                    </div>
+                    <div class="ui-g-12 ui-md-6 ui-lg-6">
                     </div>
                 </div>
 
@@ -47,14 +64,14 @@
                     <div class="ui-g-12 ui-md-6 ui-lg-1">
                         <p:outputLabel for="toBeReviewedCheck" value="Observación"/>
                     </div>
-                    <div class="ui-g-12 ui-md-6 ui-lg-7">
+                    <div class="ui-g-12 ui-md-6 ui-lg-5">
                         <p:inputTextarea id="observation"
                                          name="observation"
                                          value="#{conceptBean.concept.observation}"
-                                         style="width:90%">
+                                         style="width:95%">
                         </p:inputTextarea>
                     </div>
-                    <div class="ui-g-12 ui-md-6 ui-lg-2">
+                    <div class="ui-g-12 ui-md-6 ui-lg-6">
                     </div>
                 </div>
 
@@ -99,10 +116,7 @@
                                     rendered="#{relationshipDefinition.targetDefinition.basicType}"/>
 
                         </h:column>
-
                     </h:dataTable>
-
-
                 </p:panel>
 
 
@@ -111,7 +125,7 @@
                                  update="growl, mainForm"/>
 
                 <p:commandButton actionListener="#{conceptBean.deleteConcept}"
-                                 value="Guardar" type="submit" process="mainForm"
+                                 value="Eliminar" type="submit" process="mainForm"
                                  rendered="#{conceptBean.concept.persistent and not conceptBean.concept.modeled}"
                                  update="growl, mainForm"/>
 

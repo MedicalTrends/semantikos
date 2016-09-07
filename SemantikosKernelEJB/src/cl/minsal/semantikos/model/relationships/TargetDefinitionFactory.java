@@ -70,7 +70,7 @@ public class TargetDefinitionFactory {
                 return HelperTableFactory.getInstance().getHelperTable(targetDefinitionDTO.idHelperTableName);
 
             default:
-                throw new EJBException("TIPO DE DEFINICION INCORRECTO");
+                throw new EJBException("TIPO DE DEFINICION INCORRECTO. ID Target Type=" + targetDefinitionDTO.idTargetType);
         }
     }
 

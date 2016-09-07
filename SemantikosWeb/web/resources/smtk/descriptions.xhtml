@@ -82,22 +82,15 @@
                 <p:column headerText="Término" >
                     <div style="text-align: center;">
                         <p:cellEditor>
-                            <f:facet  name="output"><h:outputText value="#{description.term}"/></f:facet>
+                            <f:facet  name="output"><h:outputText value="#{description.toString()}"/></f:facet>
                             <f:facet  name="input"><p:inputText id="otrasTermino"
-                                                                value="#{description.term}"
+                                                                value="#{description.toString()}"
                                                                 style="width:100%"/></f:facet>
                         </p:cellEditor>
                     </div>
                 </p:column>
 
-                <p:column headerText="Estado" filterBy="#{description.term}" >
-                    <f:facet name="filter">
-                        <p:selectOneMenu style="width:60%">
-                            <f:selectItem itemLabel="Seleccione estado" itemValue=""/>
-                            <f:selectItem itemLabel="Borrador" itemValue="false"/>
-                            <f:selectItem itemLabel="Modelado" itemValue="true"/>
-                        </p:selectOneMenu>
-                    </f:facet>
+                <p:column headerText="Estado" >
                     <div style="text-align: center;">
                         <p:cellEditor>
                             <f:facet name="output">

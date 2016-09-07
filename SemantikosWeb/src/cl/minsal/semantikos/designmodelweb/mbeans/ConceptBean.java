@@ -78,7 +78,7 @@ public class ConceptBean implements Serializable {
     private DescriptionType otherDescriptionType;
 
     // Placeholders para los target de las relaciones
-    private BasicTypeValue basicTypeValue = new BasicTypeValue(null);
+    private BasicTypeValue basicTypeValue = new BasicTypeValue("hola");
 
     private HelperTableRecord selectedHelperTableRecord = new HelperTableRecord();
 
@@ -293,9 +293,11 @@ public class ConceptBean implements Serializable {
         return results;
     }
 
-    public void setTagSMTKs(List<TagSMTK> tagSMTKs) {
-        this.tagSMTKs = tagSMTKs;
+    public List<TagSMTK> getTagSMTKs() {
+
+        return tagSMTKs;
     }
+
 
     //Methods
 
@@ -325,22 +327,21 @@ public class ConceptBean implements Serializable {
 
         Description favouriteDescription = new Description(term, descriptionManager.getTypeFavorite());
         favouriteDescription.setCaseSensitive(false);
-        //favouriteDescription.setDescriptionId(descriptionManager.generateDescriptionId());
+        favouriteDescription.setDescriptionId(descriptionManager.generateDescriptionId());
 
         Description fsnDescription = new Description(term + " (" + category.getName() + ")", descriptionManager.getTypeFSN());
 
         fsnDescription.setCaseSensitive(false);
-        //fsnDescription.setDescriptionId(descriptionManager.generateDescriptionId());
+        fsnDescription.setDescriptionId(descriptionManager.generateDescriptionId());
 
         Description[] descriptions = {favouriteDescription, fsnDescription};
 
         String observation = "";
 
         // TODO: Diego
-        TagSMTK tagSMTK = new TagSMTK(-1, "POR HACER");
-        ConceptSMTK conceptSMTK = new ConceptSMTK(conceptManager.generateConceptId(), category, true, true, false, false, false, observation, tagSMTK, descriptions);
+        TagSMTK tagSMTK = new TagSMTK(category.getTagSemantikos().getId(), category.getTagSemantikos().getName());
 
-        conceptSMTK.setTagSMTK(category.getTagSemantikos());
+        ConceptSMTK conceptSMTK = new ConceptSMTK(conceptManager.generateConceptId(), category, true, true, false, false, false, observation, tagSMTK, descriptions);
 
         concept = new ConceptSMTKWeb(conceptSMTK);
     }
@@ -481,12 +482,6 @@ public class ConceptBean implements Serializable {
         return false;
     }
 
-    public void clearTagSearch(){
-        System.out.println("clearTagSearch");
-
-        concept.setTagSMTK(null);
-    }
-
     public void saveConcept() {
 
         FacesContext context = FacesContext.getCurrentInstance();
@@ -548,8 +543,8 @@ public class ConceptBean implements Serializable {
         // Si el concepto está persistido, actualizarlo
         if (concept.isPersistent() && !concept.isModeled()) {
 
-            //concept.delete(user);
-            context.addMessage(null, new FacesMessage("Successful", "Concepto eliminado "));
+            conceptManager.invalidate(conceptSMTK, user);
+            context.addMessage(null, new FacesMessage("Successful", "Concepto eliminado."));
         }
 
     }
