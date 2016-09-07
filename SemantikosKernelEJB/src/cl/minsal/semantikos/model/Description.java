@@ -92,8 +92,8 @@ public class Description extends PersistentEntity implements AuditableEntity {
      * @param term            El término de la descripción.
      * @param descriptionType El tipo de la descripción.
      */
-    public Description(String term, DescriptionType descriptionType) {
-        this(-1, null, "NULL", descriptionType, term, false, false, false, false, null);
+    public Description(ConceptSMTK conceptSMTK, String term, DescriptionType descriptionType) {
+        this(-1, conceptSMTK, "NULL", descriptionType, term, false, false, false, false, null);
     }
 
     public String getDescriptionId() {
@@ -191,6 +191,10 @@ public class Description extends PersistentEntity implements AuditableEntity {
      */
     public boolean isValid() {
         return (getValidityUntil() == null || getValidityUntil().after(new Timestamp(System.currentTimeMillis())));
+    }
+
+    public ConceptSMTK getConceptSMTK() {
+        return conceptSMTK;
     }
 
     /**

@@ -45,29 +45,35 @@ public class ConceptSMTKWeb extends ConceptSMTK {
         }
         else{
             // Si el concepto no esta persistido clonar las descripciones sin su id
-            for (Description description : conceptSMTK.getValidDescriptions())
+            for (Description description : conceptSMTK.getValidDescriptions()) {
                 addDescriptionWeb(new DescriptionWeb(description));
+            }
         }
     }
 
-    /*
     public ConceptSMTKWeb init(Category category, String term){
-        // Valores iniciales para el concepto
-        Description favouriteDescription = new Description(term, DescriptionTypeFactory.getInstance().getFavoriteDescriptionType());
+
+        /* Valores iniciales para el concepto */
+        Description fsnDescription = new Description(this, term, DescriptionTypeFactory.getInstance().getFSNDescriptionType());
+        fsnDescription.setCaseSensitive(false);
+        //fsn.setDescriptionId(descriptionManager.generateDescriptionId());
+
+        Description favouriteDescription = new Description(this, term, DescriptionTypeFactory.getInstance().getFavoriteDescriptionType());
         favouriteDescription.setCaseSensitive(false);
         //favouriteDescription.setDescriptionId(descriptionManager.generateDescriptionId());
 
-        Description fsnDescription = new Description(term + " (" + category.getName() + ")", descriptionManager.getTypeFSN());
-
-        fsnDescription.setCaseSensitive(false);
-        //fsnDescription.setDescriptionId(descriptionManager.generateDescriptionId());
-
         Description[] descriptions = {favouriteDescription, fsnDescription};
 
-        ConceptSMTK conceptSMTK = new ConceptSMTK(conceptManager.generateConceptId(), category, true, true, false, false, false, descriptions);
+        String observation = "";
+
+        // TODO: Diego
+        TagSMTK tagSMTK = new TagSMTK(category.getTagSemantikos().getId(), category.getTagSemantikos().getName());
+
+        ConceptSMTK conceptSMTK = new ConceptSMTK(null, category, true, true, false, false, false, observation, tagSMTK, descriptions);
+
+        return new ConceptSMTKWeb(conceptSMTK);
 
     }
-    */
 
     public List<DescriptionWeb> getDescriptionsWeb() {
         return descriptionsWeb;

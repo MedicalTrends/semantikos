@@ -379,29 +379,30 @@ public class ConceptBean implements Serializable {
     public void newConcept(Category category, String term) {
 
         /* Valores iniciales para el concepto */
-        Description fsn = new Description(term, descriptionManager.getTypeFSN());
-        fsn.setCaseSensitive(false);
-        //fsn.setDescriptionId(descriptionManager.generateDescriptionId());
-
-        Description favouriteDescription = new Description(term, descriptionManager.getTypeFavorite());
-        favouriteDescription.setCaseSensitive(false);
-        favouriteDescription.setDescriptionId(descriptionManager.generateDescriptionId());
-
-        Description fsnDescription = new Description(term + " (" + category.getName() + ")", descriptionManager.getTypeFSN());
-
-        fsnDescription.setCaseSensitive(false);
-        fsnDescription.setDescriptionId(descriptionManager.generateDescriptionId());
-
-        Description[] descriptions = {favouriteDescription, fsnDescription};
 
         String observation = "";
 
         // TODO: Diego
         TagSMTK tagSMTK = new TagSMTK(category.getTagSemantikos().getId(), category.getTagSemantikos().getName());
 
-        ConceptSMTK conceptSMTK = new ConceptSMTK(conceptManager.generateConceptId(), category, true, true, false, false, false, observation, tagSMTK, descriptions);
+        ConceptSMTK conceptSMTK = new ConceptSMTK(conceptManager.generateConceptId(), category, true, true, false, false, false, observation, tagSMTK);
 
         concept = new ConceptSMTKWeb(conceptSMTK);
+
+        DescriptionWeb fsnDescription = new DescriptionWeb(concept, term, descriptionManager.getTypeFSN());
+        fsnDescription.setCaseSensitive(false);
+        fsnDescription.setDescriptionId(descriptionManager.generateDescriptionId());
+
+        DescriptionWeb favouriteDescription = new DescriptionWeb(concept, term, descriptionManager.getTypeFavorite());
+        favouriteDescription.setCaseSensitive(false);
+        favouriteDescription.setDescriptionId(descriptionManager.generateDescriptionId());
+
+        DescriptionWeb[] descriptions = {favouriteDescription, fsnDescription};
+
+        for (DescriptionWeb description : descriptions) {
+            concept.addDescriptionWeb(description);
+        }
+
     }
 
     //Este método es responsable de pasarle a la vista un concepto, dado el id del concepto
@@ -501,10 +502,10 @@ public class ConceptBean implements Serializable {
         if (otherTermino != null) {
             if (otherTermino.length() > 0) {
                 if (otherDescriptionType != null) {
-                    Description description = new Description(otherTermino, otherDescriptionType);
+                    DescriptionWeb description = new DescriptionWeb(concept, otherTermino, otherDescriptionType);
                     description.setCaseSensitive(otherSensibilidad);
                     //description.setDescriptionId(descriptionManager.generateDescriptionId());
-                    concept.addDescriptionWeb(new DescriptionWeb(description));
+                    concept.addDescriptionWeb(description);
                     otherTermino = "";
                 } else {
                     context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se ha seleccionado el tipo de descripción"));

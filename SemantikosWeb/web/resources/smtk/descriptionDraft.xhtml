@@ -21,9 +21,10 @@
         </div>
         <div class="ui-g-12 ui-md-6 ui-lg-5">
             <p:inputText id="termNew"
+                         styleClass="terms"
                          name="description"
                          validator="#{validatorBean.validateRequired}"
-                         value="#{cc.attrs.description.term}"
+                         value="#{cc.attrs.description.representation}"
                          style="width:95%">
             </p:inputText>
         </div>
