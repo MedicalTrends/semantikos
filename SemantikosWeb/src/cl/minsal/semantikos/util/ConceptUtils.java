@@ -62,9 +62,9 @@ public class ConceptUtils {
     }
 
 
-    public static List<Pair<Relationship, Relationship>> getModifiedRelationships(List<RelationshipWeb> initRelationships, List<RelationshipWeb> finalRelationships) {
+    public static List<Pair<RelationshipWeb, RelationshipWeb>> getModifiedRelationships(List<RelationshipWeb> initRelationships, List<RelationshipWeb> finalRelationships) {
 
-        List<Pair<Relationship, Relationship>> relationshipsForUpdate = new ArrayList<Pair<Relationship, Relationship>>();// Si la relación está persistida dejar en el respaldo las originales
+        List<Pair<RelationshipWeb, RelationshipWeb>> relationshipsForUpdate = new ArrayList<Pair<RelationshipWeb, RelationshipWeb>>();// Si la relación está persistida dejar en el respaldo las originales
 
         //Primero se buscan todas las descripciones persistidas originales
         for (RelationshipWeb initRelationship : initRelationships) {

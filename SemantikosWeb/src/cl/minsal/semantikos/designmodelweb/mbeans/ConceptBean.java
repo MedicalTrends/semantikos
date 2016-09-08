@@ -43,6 +43,9 @@ public class ConceptBean implements Serializable {
     DescriptionManagerInterface descriptionManager;
 
     @EJB
+    RelationshipManager relationshipManager;
+
+    @EJB
     CategoryManagerInterface categoryManager;
 
     @EJB
@@ -156,11 +159,12 @@ public class ConceptBean implements Serializable {
     public void createConcept() throws ParseException {
 
         if(idconceptselect==0){
-            category = categoryManager.getCategoryById(categorySelect);
+            //category = categoryManager.getCategoryById(categorySelect);
             //category = categoryManager.getCategoryById(71388002);
             newConcept(category, favoriteDescription);
         }else{
             getConceptById(idconceptselect);
+            //getConceptById(80602);
         }
 
         RequestContext context = RequestContext.getCurrentInstance();
@@ -392,14 +396,20 @@ public class ConceptBean implements Serializable {
             for (Description description : descriptionsForDelete)
                 descriptionManager.deleteDescription(concept, description, user);
 
-            List<Pair<Relationship, Relationship>> relationshipsForUpdate= ConceptUtils.getModifiedRelationships(_concept.getRelationshipsWeb(), concept.getRelationshipsWeb());
-            List<Relationship> relationshipsForPersist= ConceptUtils.getNewRelationships(_concept.getRelationshipsWeb(), concept.getRelationshipsWeb());
+            List<Pair<RelationshipWeb, RelationshipWeb>> relationshipsForUpdate= ConceptUtils.getModifiedRelationships(_concept.getValidPersistedRelationshipsWeb(), concept.getValidPersistedRelationshipsWeb());
+            List<RelationshipWeb> relationshipsForPersist= concept.getUnpersistedRelationshipsWeb(); //ConceptUtils.getNewRelationships(_concept.getRelationshipsWeb(), concept.getRelationshipsWeb());
             List<Relationship> relationshipsForDelete= ConceptUtils.getDeletedRelationships(_concept.getRelationshipsWeb(), concept.getRelationshipsWeb());
 
             changes = changes + relationshipsForUpdate.size();
 
-            for (Pair<Relationship, Relationship> relationship : relationshipsForUpdate)
-                //relationshipManager.updateRelationship(concept, relationship.getFirst(), relationship.getSecond(), user);
+            for (Pair<RelationshipWeb, RelationshipWeb> relationship : relationshipsForUpdate)
+                relationshipManager.updateRelationship(concept, relationship.getFirst(), relationship.getSecond(), user);
+
+            for (RelationshipWeb relationshipWeb : relationshipsForPersist)
+                //relationshipManager.b descriptionManager.bindDescriptionToConcept(concept, description, user);
+
+            for (Description description : descriptionsForDelete)
+                descriptionManager.deleteDescription(concept, description, user);
 
             if(changes == 0)
                 context.addMessage(null, new FacesMessage("Warning", "No se ha realizado ningún cambio al concepto!!"));

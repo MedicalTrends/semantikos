@@ -27,40 +27,20 @@
                         <p:selectBooleanCheckbox id="toBeConsultatedCheck" itemLabel="Consultar"
                                                  value="#{conceptBean.concept.toBeConsulted}" style="width:40%"/>
                     </div>
-                    <div class="ui-g-12 ui-md-6 ui-lg-6">
-                    </div>
-                </div>
-
-                <!-- Tag Semantikos -->
-                <div class="ui-g">
                     <div class="ui-g-12 ui-md-6 ui-lg-1">
                         <p:outputLabel for="tagSemantikos" value="Tag Semántikos"/>
                     </div>
                     <div class="ui-g-12 ui-md-6 ui-lg-5">
-                        <p:selectOneMenu id="tagSemantikos"
-                                         value="#{conceptBean.concept.tagSMTK}"
-                                         converter="omnifaces.SelectItemsConverter" style="width:60%">
-                            <p:ajax event="itemSelect"
-                                    update="@(.terms)"
-                                    process="@this" />
-                            <f:selectItem itemLabel="Seleccione tipo" itemValue=""/>
-                            <f:selectItems value="#{conceptBean.tagSMTKs}" var="tag"
-                                           itemValue="#{tag}"/>
-                        </p:selectOneMenu>
-
-                    </div>
-                    <div class="ui-g-12 ui-md-6 ui-lg-6">
+                        <smtk:tagSmtk tagSmtk="#{conceptBean.concept.tagSMTK}" />
                     </div>
                 </div>
 
-
-
                 <!--Descripciones FSN y Preferida -->
-                <smtk:descriptionDraft description="#{conceptBean.concept.getValidDescriptionFSN()}">
-                </smtk:descriptionDraft>
+                <smtk:description description="#{conceptBean.concept.getValidDescriptionFSN()}" rendered="#{not conceptBean.concept.persistent}" />
+                <smtk:descriptionDraft description="#{conceptBean.concept.getValidDescriptionFSN()}" rendered="#{conceptBean.concept.persistent}" />
 
-                <smtk:descriptionDraft description="#{conceptBean.concept.getValidDescriptionFavorite()}">
-                </smtk:descriptionDraft>
+                <smtk:description description="#{conceptBean.concept.getValidDescriptionFavorite()}" rendered="#{not conceptBean.concept.persistent}" />
+                <smtk:descriptionDraft description="#{conceptBean.concept.getValidDescriptionFavorite()}" rendered="#{conceptBean.concept.persistent}" />
 
                 <!-- Observación -->
                 <div class="ui-g">
@@ -81,7 +61,7 @@
 
                 <!-- Etiquetas -->
 
-                <smtk:tags tagslist="#{conceptBean.concept.tags}" ></smtk:tags>
+                <smtk:tags tagslist="#{conceptBean.concept.tags}" />
 
                 <!-- Otras descripciones -->
                 <smtk:descriptions descriptions="#{conceptBean.concept.getValidDescriptionsButFSNandFavorite()}"
@@ -93,7 +73,7 @@
 
                 <!--Relaciones -->
                 <p:panel id="atributos" header="Atributos" toggleable="true" toggleSpeed="500" closeSpeed="500"
-                         widgetVar="panelAtributos" style="margin-bottom:20px">
+                         widgetVar="panelAtributos" rendered="#{conceptBean.category.hasRelationshipDefinitions}">
 
                     <h:dataTable style="width: 100%;" value="#{conceptBean.category.relationshipDefinitions}"
                                  var="relationshipDefinition">
@@ -125,13 +105,16 @@
 
                 <!-- Historial -->
 
-                <smtk:history></smtk:history>
+                <smtk:history />
 
-                <p:commandButton actionListener="#{conceptBean.saveConcept}"
+
+                <!-- Botonera Acciones -->
+
+                <p:commandButton actionListener="#{conceptBean.saveConcept}" icon="ui-icon-check"
                                  value="Guardar"
                                  update="growl, mainForm"/>
 
-                <p:commandButton actionListener="#{conceptBean.deleteConcept}"
+                <p:commandButton actionListener="#{conceptBean.deleteConcept}" icon="ui-icon-trash"
                                  value="Eliminar" type="submit" process="mainForm"
                                  rendered="#{conceptBean.concept.persistent and not conceptBean.concept.modeled}"
                                  update="growl, mainForm"/>

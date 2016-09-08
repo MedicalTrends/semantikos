@@ -201,14 +201,14 @@
 
     <p:panel id="multiplicityOne"
              styleClass="concept"
-             style="margin:20px;"
              rendered="#{cc.attrs.relationshipDefinition.multiplicity.simple}">
 
         <div class="ui-g">
 
             <div class="ui-g-12 ui-md-6 ui-lg-6">
-                <p:panel  style="border: hidden; width: 100%;"
-                          rendered="#{not cc.attrs.concept.hasRelationships(cc.attrs.relationshipDefinition)}">
+
+                <p:panel  style="border: hidden; width: 100%;"  rendered="#{not cc.attrs.concept.hasRelationships(cc.attrs.relationshipDefinition)}">
+
                 <p:outputLabel rendered="#{cc.attrs.relationshipDefinition.multiplicity.optional}"  value="#{cc.attrs.relationshipDefinition.name}: " for="findConceptSMTK"/>
 
                 <p:outputLabel rendered="#{not cc.attrs.relationshipDefinition.multiplicity.optional}" value="#{cc.attrs.relationshipDefinition.name}: (*)" for="findConceptSMTK"/>
@@ -218,6 +218,7 @@
                                 id="findConceptSMTK" scrollHeight="200" size="5" style="width: 85%;"
                                 inputStyle="width: 85%;"
                                 completeMethod="#{smtkBean.getConceptSearchInput}"
+                                validator="#{validatorBean.validateRelationships}"
                                 converter="conceptConverter"
                                 var="concept"
                                 value="#{conceptBean.conceptSelected}"
