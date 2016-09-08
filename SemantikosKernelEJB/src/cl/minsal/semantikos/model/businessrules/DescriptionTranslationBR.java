@@ -13,20 +13,38 @@ import static cl.minsal.semantikos.model.DescriptionType.*;
 /**
  * @author Andrés Farías on 8/26/16.
  */
-public class DescriptionMovementBR {
+public class DescriptionTranslationBR {
 
-    private static final Logger logger = LoggerFactory.getLogger(DescriptionMovementBR.class);
+    private static final Logger logger = LoggerFactory.getLogger(DescriptionTranslationBR.class);
 
     public void apply(ConceptSMTK sourceConcept, ConceptSMTK targetConcept, Description description) {
 
+        /* Descripciones que no se pueden trasladar */
+        pcDescriptionTranslate001(description);
+
+        /* Estados posibles para trasladar descripciones */
+        brDescriptionTranslate011(sourceConcept, targetConcept);
+
         /* Traslado de Descripciones abreviadas */
         brDescriptionTranslate001(sourceConcept, targetConcept, description);
+    }
 
-        /* Descripciones que no se pueden trasladar */
-        brDescriptionTranslate010(description);
+    /**
+     * BR-DESC-001: Las descripciones a trasladar no pueden ser de tipo “FSN”, ni “Preferida”.
+     *
+     * @param description La descripción que se desea trasladar.
+     */
+    private void pcDescriptionTranslate001(Description description) {
 
-        /* Estado de los conceptos */
-        brDescriptionTranslate011(targetConcept);
+        /* Validación de tipo FSN */
+        if (description.getDescriptionType().equals(FSN)) {
+            throw new BusinessRuleException("Las descripciones a trasladar no pueden ser de tipo FSN (Full Specified Name)”.");
+        }
+
+        /* Validación de tipo Preferida */
+        if (description.getDescriptionType().equals(PREFERIDA)) {
+            throw new BusinessRuleException("Las descripciones a trasladar no pueden ser de tipo Preferida.");
+        }
     }
 
     /**
@@ -35,23 +53,20 @@ public class DescriptionMovementBR {
      * <li>Trasladar una descripción desde un Concepto en Borrador a un Concepto Modelado</li>
      * <li>Trasladar una descripción desde un Concepto Modelado a otro Concepto Modelado</li>
      * </ul>
+     *
      * @param targetConcept El concepto al cual se traslada la descripción.
      */
-    private void brDescriptionTranslate011(ConceptSMTK targetConcept) {
-        if (!targetConcept.isModeled()){
-            throw new BusinessRuleException("No se puede trasladar una descripción a un concepto Borrador");
-        }
-    }
+    private void brDescriptionTranslate011(ConceptSMTK sourceConcept, ConceptSMTK targetConcept) {
 
-    /**
-     * Las descripciones a trasladar no pueden ser de tipo “FSN”, ni “Preferida”.
-     *
-     * @param description La descripción que se desea trasladar.
-     */
-    private void brDescriptionTranslate010(Description description) {
-        if (description.getDescriptionType().equals(FSN) || description.getDescriptionType().equals(PREFERIDA)) {
-            throw new BusinessRuleException("Las descripciones a trasladar no pueden ser de tipo “FSN”, ni “Preferida”.");
+        if (!sourceConcept.isModeled() && targetConcept.isModeled()) {
+            return;
         }
+
+        if (sourceConcept.isModeled() && !targetConcept.isModeled()) {
+            return;
+        }
+
+        throw new BusinessRuleException("No se puede trasladar una descripción a un concepto Borrador");
     }
 
     /**
