@@ -2,6 +2,7 @@ package cl.minsal.semantikos.designmodelweb.mbeans;
 
 import cl.minsal.semantikos.kernel.components.*;
 import cl.minsal.semantikos.model.*;
+import cl.minsal.semantikos.model.audit.ConceptAuditAction;
 import cl.minsal.semantikos.model.basictypes.BasicTypeValue;
 import cl.minsal.semantikos.model.helpertables.HelperTableRecord;
 import cl.minsal.semantikos.model.relationships.*;
@@ -27,7 +28,6 @@ import static cl.minsal.semantikos.model.ProfileFactory.DESIGNER_PROFILE;
 
 /**
  * Created by diego on 26/06/2016.
- * Created by diego on 26/06/2016.
  */
 
 @ManagedBean(name = "conceptBean")
@@ -42,8 +42,6 @@ public class ConceptBean implements Serializable {
     @EJB
     DescriptionManagerInterface descriptionManager;
 
-    DescriptionTypeFactory descriptionTypeFactory = DescriptionTypeFactory.getInstance();
-
     @EJB
     CategoryManagerInterface categoryManager;
 
@@ -53,8 +51,13 @@ public class ConceptBean implements Serializable {
     @EJB
     TagSMTKManager tagSMTKManager;
 
+    @EJB
+    AuditManagerInterface auditManager;
+
     @ManagedProperty(value = "#{smtkBean}")
     private SMTKTypeBean smtkTypeBean;
+
+    DescriptionTypeFactory descriptionTypeFactory = DescriptionTypeFactory.getInstance();
 
     public User user;
 
@@ -63,7 +66,9 @@ public class ConceptBean implements Serializable {
     private ConceptSMTKWeb _concept;
 
     private Category category;
+
     private List<DescriptionType> descriptionTypes = new ArrayList<DescriptionType>();
+
     private List<Description> selectedDescriptions = new ArrayList<Description>();
 
     private List<TagSMTK> tagSMTKs = new ArrayList<TagSMTK>();
@@ -76,7 +81,7 @@ public class ConceptBean implements Serializable {
     private DescriptionType otherDescriptionType;
 
     // Placeholders para los target de las relaciones
-    private BasicTypeValue basicTypeValue = new BasicTypeValue("hola");
+    private BasicTypeValue basicTypeValue = new BasicTypeValue(null);
 
     private HelperTableRecord selectedHelperTableRecord = new HelperTableRecord();
 
@@ -87,13 +92,7 @@ public class ConceptBean implements Serializable {
     private Map<Long, ConceptSMTK> targetSelected;
     ////////////////////////////////////////////////////
 
-    public ConceptSMTK getConceptSMTK() {
-        return conceptSMTK;
-    }
-
-    public void setConceptSMTK(ConceptSMTK conceptSMTK) {
-        this.conceptSMTK = conceptSMTK;
-    }
+    private Map<RelationshipDefinition, List<RelationshipAttribute>> relationshipAttributesPlaceholder = new HashMap<RelationshipDefinition, List<RelationshipAttribute>>();
 
 
     //Parametros del formulario
@@ -104,65 +103,13 @@ public class ConceptBean implements Serializable {
 
     private int categorySelect;
 
-
-    //TODO: editar concepto
-
-    private long idconceptselect;
-
-    public long getIdconceptselect() {
-        return idconceptselect;
-    }
-
-    public void setIdconceptselect(long idconceptselect) {
-        this.idconceptselect = idconceptselect;
-
-    }
-
-    public int getCategorySelect() {
-        return categorySelect;
-    }
-
-
-    public void setCategorySelect(int categorySelect) {
-        this.categorySelect = categorySelect;
-    }
-
-    //Inicializacion del Bean
-
-
+    private List<ConceptAuditAction> auditAction;
 
     //para tipo helpertable
     private int helperTableValuePlaceholder;
 
-    private Map<RelationshipDefinition, List<RelationshipAttribute>> relationshipAttributesPlaceholder = new HashMap<RelationshipDefinition, List<RelationshipAttribute>>();
 
-
-    public List<RelationshipAttribute> getRelationshipAttributesByRelationshipDefinition(RelationshipDefinition definition){
-        if(!relationshipAttributesPlaceholder.containsKey(definition)) {
-
-
-            List<RelationshipAttribute> attributes = new ArrayList<RelationshipAttribute>(definition.getRelationshipAttributeDefinitions().size());
-
-            for (RelationshipAttributeDefinition attributeDefinition : definition.getRelationshipAttributeDefinitions()) {
-
-                RelationshipAttribute attribute = new RelationshipAttribute();
-
-                attribute.setRelationAttributeDefinition(attributeDefinition);
-
-                Target t = new TargetFactory().createPlaceholderTargetFromTargetDefinition(definition.getTargetDefinition());
-
-                attribute.setTarget(t);
-
-                attributes.add(attribute);
-            }
-
-            relationshipAttributesPlaceholder.put(definition,attributes);
-        }
-
-        return relationshipAttributesPlaceholder.get(definition);
-
-    }
-
+    //Inicializacion del Bean
 
     @PostConstruct
     protected void initialize() throws ParseException {
@@ -200,8 +147,291 @@ public class ConceptBean implements Serializable {
 
     }
 
-    // Getter and Setter
+    //Methods
 
+    public void addTagToConcept(Tag tag){
+
+    }
+
+    public void createConcept() throws ParseException {
+
+        if(idconceptselect==0){
+            category = categoryManager.getCategoryById(categorySelect);
+            //category = categoryManager.getCategoryById(71388002);
+            newConcept(category, favoriteDescription);
+        }else{
+            getConceptById(idconceptselect);
+        }
+
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.execute("PF('dialogNameConcept').hide();");
+    }
+
+    //Este método es responsable de pasarle a la vista un concepto plantilla
+    //(llamado desde la vista cuando se desea crear un nuevo concepto)
+    public void newConcept(Category category, String term) {
+
+        /* Valores iniciales para el concepto */
+
+        String observation = "";
+
+        // TODO: Diego
+        TagSMTK tagSMTK = new TagSMTK(category.getTagSemantikos().getId(), category.getTagSemantikos().getName());
+
+        ConceptSMTK conceptSMTK = new ConceptSMTK(conceptManager.generateConceptId(), category, true, true, false, false, false, observation, tagSMTK);
+
+        concept = new ConceptSMTKWeb(conceptSMTK);
+
+        DescriptionWeb fsnDescription = new DescriptionWeb(concept, term, descriptionManager.getTypeFSN());
+        fsnDescription.setCaseSensitive(false);
+        fsnDescription.setDescriptionId(descriptionManager.generateDescriptionId());
+
+        DescriptionWeb favouriteDescription = new DescriptionWeb(concept, term, descriptionManager.getTypeFavorite());
+        favouriteDescription.setCaseSensitive(false);
+        favouriteDescription.setDescriptionId(descriptionManager.generateDescriptionId());
+
+        DescriptionWeb[] descriptions = {favouriteDescription, fsnDescription};
+
+        for (DescriptionWeb description : descriptions) {
+            concept.addDescriptionWeb(description);
+        }
+
+    }
+
+    //Este método es responsable de pasarle a la vista un concepto, dado el id del concepto
+    //(llamado desde la vista cuando se desea editar un concepto)
+    public void getConceptById(long conceptId) {
+        ConceptSMTK conceptSMTK = conceptManager.getConceptByID(conceptId);
+        conceptSMTK.setRelationships(conceptManager.loadRelationships(conceptSMTK));
+
+        concept = new ConceptSMTKWeb(conceptSMTK);
+        //Se respalda estado original del concepto
+        _concept = new ConceptSMTKWeb(conceptSMTK);
+        auditAction=auditManager.getConceptAuditActions(concept,10,true);
+        category = concept.getCategory();
+    }
+
+
+    public ConceptSMTK getTargetForRD(RelationshipDefinition relationshipDefinition, ConceptSMTK conceptSel) {
+        if (targetSelected == null) {
+            targetSelected = new HashMap<Long, ConceptSMTK>();
+        }
+
+        if (!targetSelected.containsKey(relationshipDefinition.getId())) {
+            targetSelected.put(relationshipDefinition.getId(), conceptSel);
+        }
+        return targetSelected.get(relationshipDefinition.getId());
+    }
+
+
+    /**
+     * Este método es el encargado de remover una descripción específica de la lista de descripciones del concepto.
+     */
+    public void removeDescription(Description description) {
+        concept.removeDescriptionWeb(description);
+    }
+
+
+    /**
+     * Este método es el encargado de agregar relaciones al concepto recibiendo como parámetro un Relationship
+     * Definition. Este método es utilizado por el componente BasicType, el cual agrega relaciones con target sin valor
+     */
+    public void addRelationship(RelationshipDefinition relationshipDefinition) {
+
+        Target target = new BasicTypeValue(null);
+
+        Relationship relationship = new Relationship(this.concept, target, relationshipDefinition);
+        // Se utiliza el constructor mínimo (sin id)
+        this.concept.addRelationshipWeb(relationship);
+
+    }
+
+    /**
+     * Este método es el encargado de agregar una nuva relacion con los parémetros que se indican.
+     */
+    public void addRelationship(RelationshipDefinition relationshipDefinition, Target target) {
+
+        Relationship relationship = new Relationship(this.concept, target, relationshipDefinition);
+        // Se utiliza el constructor mínimo (sin id)
+        this.concept.addRelationshipWeb(relationship);
+        conceptSelected = null;
+    }
+
+    /**
+     * Este método se encarga de agregar o cambiar la relación para el caso de multiplicidad 1.
+     */
+    public void addOrChangeRelationship(RelationshipDefinition relationshipDefinition, Target target) {
+
+        boolean isRelationshipFound = false;
+
+        // Se busca la relación
+        for (Relationship relationshipWeb : concept.getRelationshipsWeb()) {
+            if (relationshipWeb.getRelationshipDefinition().equals(relationshipDefinition)) {
+                relationshipWeb.setTarget(target);
+                isRelationshipFound = true;
+                break;
+            }
+        }
+        // Si no se encuentra la relación, se crea una nueva
+        if (!isRelationshipFound) {
+            this.concept.addRelationshipWeb(new Relationship(this.concept, target, relationshipDefinition));
+        }
+        basicTypeValue= null;
+        basicTypeValue= new BasicTypeValue(null);
+        conceptSelected = null;
+    }
+
+    /**
+     * Este método es el encargado de remover una relación específica del concepto.
+     */
+    public void removeRelationship(RelationshipDefinition rd, Relationship r) {
+        concept.removeRelationshipWeb(r);
+    }
+
+    /**
+     * Este método es el encargado de agregar descripciones al concepto
+     */
+    public void addDescription() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        if (otherTermino != null) {
+            if (otherTermino.length() > 0) {
+                if (otherDescriptionType != null) {
+                    DescriptionWeb description = new DescriptionWeb(concept, otherTermino, otherDescriptionType);
+                    description.setCaseSensitive(otherSensibilidad);
+                    //description.setDescriptionId(descriptionManager.generateDescriptionId());
+                    concept.addDescriptionWeb(description);
+                    otherTermino = "";
+                } else {
+                    context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se ha seleccionado el tipo de descripción"));
+                }
+
+            } else {
+                context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se ha ingresado el término a la descripción"));
+                context.getAttributes();
+            }
+
+        } else {
+
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se ha ingresado el término a la descripción"));
+
+        }
+
+    }
+
+    /**
+     * Este método es el responsable de retornar verdadero en caso que se cumpla el UpperBoundary de la multiplicidad,
+     * para asi desactivar
+     * la opción de agregar más relaciones en la vista. En el caso que se retorne falso este seguirá activo el boton en
+     * la presentación.
+     *
+     * @return
+     */
+    public boolean limitRelationship(RelationshipDefinition relationshipD) {
+        if (relationshipD.getMultiplicity().getUpperBoundary() != 0) {
+            if (concept.getValidRelationshipsByRelationDefinition(relationshipD).size() == relationshipD.getMultiplicity().getUpperBoundary()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public List<RelationshipAttribute> getRelationshipAttributesByRelationshipDefinition(RelationshipDefinition definition){
+        if(!relationshipAttributesPlaceholder.containsKey(definition)) {
+
+
+            List<RelationshipAttribute> attributes = new ArrayList<RelationshipAttribute>(definition.getRelationshipAttributeDefinitions().size());
+
+            for (RelationshipAttributeDefinition attributeDefinition : definition.getRelationshipAttributeDefinitions()) {
+
+                RelationshipAttribute attribute = new RelationshipAttribute();
+
+                attribute.setRelationAttributeDefinition(attributeDefinition);
+
+                Target t = new TargetFactory().createPlaceholderTargetFromTargetDefinition(definition.getTargetDefinition());
+
+                attribute.setTarget(t);
+
+                attributes.add(attribute);
+            }
+
+            relationshipAttributesPlaceholder.put(definition,attributes);
+        }
+
+        return relationshipAttributesPlaceholder.get(definition);
+
+    }
+
+    public void saveConcept() {
+
+        FacesContext context = FacesContext.getCurrentInstance();
+
+        // Si el concepto está persistido, actualizarlo
+        if (concept.isPersistent()) {
+
+            int changes = 0;
+            /*
+            if(_concept.isToBeReviewed()!=concept.isToBeReviewed() || _concept.isToBeConsulted()!= concept.isToBeConsulted())
+                conceptManager.updateBasicInfo();
+            */
+            List<Pair<Description, Description>> descriptionsForUpdate= ConceptUtils.getModifiedDescriptions(_concept.getDescriptionsWeb(), concept.getDescriptionsWeb());
+            List<Description> descriptionsForPersist= ConceptUtils.getNewDescriptions(_concept.getDescriptionsWeb(), concept.getDescriptionsWeb());
+            List<Description> descriptionsForDelete= ConceptUtils.getDeletedDescriptions(_concept.getDescriptionsWeb(), concept.getDescriptionsWeb());
+
+            changes = changes + descriptionsForUpdate.size();
+
+            for (Pair<Description, Description> description : descriptionsForUpdate)
+                descriptionManager.updateDescription(concept, description.getFirst(), description.getSecond(), user);
+
+            changes = changes + descriptionsForPersist.size();
+
+            for (Description description : descriptionsForPersist)
+                descriptionManager.bindDescriptionToConcept(concept, description, user);
+
+            changes = changes + descriptionsForDelete.size();
+
+            for (Description description : descriptionsForDelete)
+                descriptionManager.deleteDescription(concept, description, user);
+
+            List<Pair<Relationship, Relationship>> relationshipsForUpdate= ConceptUtils.getModifiedRelationships(_concept.getRelationshipsWeb(), concept.getRelationshipsWeb());
+            List<Relationship> relationshipsForPersist= ConceptUtils.getNewRelationships(_concept.getRelationshipsWeb(), concept.getRelationshipsWeb());
+            List<Relationship> relationshipsForDelete= ConceptUtils.getDeletedRelationships(_concept.getRelationshipsWeb(), concept.getRelationshipsWeb());
+
+            changes = changes + relationshipsForUpdate.size();
+
+            for (Pair<Relationship, Relationship> relationship : relationshipsForUpdate)
+                //relationshipManager.updateRelationship(concept, relationship.getFirst(), relationship.getSecond(), user);
+
+            if(changes == 0)
+                context.addMessage(null, new FacesMessage("Warning", "No se ha realizado ningún cambio al concepto!!"));
+            else
+                context.addMessage(null, new FacesMessage("Successful", "Concepto modificado "));
+
+        }
+        // Si el concepto no está persistido, persistirlo
+        else {
+            conceptManager.persist(concept, user);
+            context.addMessage(null, new FacesMessage("Successful", "Concepto guardado "));
+        }
+
+    }
+
+    public void deleteConcept() {
+
+        FacesContext context = FacesContext.getCurrentInstance();
+
+        // Si el concepto está persistido, actualizarlo
+        if (concept.isPersistent() && !concept.isModeled()) {
+
+            conceptManager.invalidate(conceptSMTK, user);
+            context.addMessage(null, new FacesMessage("Successful", "Concepto eliminado."));
+        }
+
+    }
+
+
+
+
+    // Getter and Setter
 
     public String getFSN() {
         return FSN;
@@ -315,6 +545,14 @@ public class ConceptBean implements Serializable {
         this.selectedHelperTableRecord = selectedHelperTableRecord;
     }
 
+    public ConceptSMTK getConceptSMTK() {
+        return conceptSMTK;
+    }
+
+    public void setConceptSMTK(ConceptSMTK conceptSMTK) {
+        this.conceptSMTK = conceptSMTK;
+    }
+
     public List<TagSMTK> getTagSMTKs(String query) {
         List<TagSMTK> results = new ArrayList<TagSMTK>();
 
@@ -331,254 +569,34 @@ public class ConceptBean implements Serializable {
         return tagSMTKs;
     }
 
-
-    //Methods
-
-    public void createConcept() throws ParseException {
-
-        if(idconceptselect==0){
-            category = categoryManager.getCategoryById(categorySelect);
-            newConcept(category, favoriteDescription);
-        }else{
-            getConceptById(idconceptselect);
-        }
-
-
-
-        RequestContext context = RequestContext.getCurrentInstance();
-        context.execute("PF('dialogNameConcept').hide();");
+    public int getCategorySelect() {
+        return categorySelect;
     }
 
-    //Este método es responsable de pasarle a la vista un concepto plantilla
-    //(llamado desde la vista cuando se desea crear un nuevo concepto)
-    public void newConcept(Category category, String term) {
-
-        /* Valores iniciales para el concepto */
-        Description fsn = new Description(term, descriptionManager.getTypeFSN());
-        fsn.setCaseSensitive(false);
-        //fsn.setDescriptionId(descriptionManager.generateDescriptionId());
-
-        Description favouriteDescription = new Description(term, descriptionManager.getTypeFavorite());
-        favouriteDescription.setCaseSensitive(false);
-        favouriteDescription.setDescriptionId(descriptionManager.generateDescriptionId());
-
-        Description fsnDescription = new Description(term + " (" + category.getName() + ")", descriptionManager.getTypeFSN());
-
-        fsnDescription.setCaseSensitive(false);
-        fsnDescription.setDescriptionId(descriptionManager.generateDescriptionId());
-
-        Description[] descriptions = {favouriteDescription, fsnDescription};
-
-        String observation = "";
-
-        // TODO: Diego
-        TagSMTK tagSMTK = new TagSMTK(category.getTagSemantikos().getId(), category.getTagSemantikos().getName());
-
-        ConceptSMTK conceptSMTK = new ConceptSMTK(conceptManager.generateConceptId(), category, true, true, false, false, false, observation, tagSMTK, descriptions);
-
-        concept = new ConceptSMTKWeb(conceptSMTK);
+    public void setCategorySelect(int categorySelect) {
+        this.categorySelect = categorySelect;
     }
 
-    //Este método es responsable de pasarle a la vista un concepto, dado el id del concepto
-    //(llamado desde la vista cuando se desea editar un concepto)
-    public void getConceptById(long conceptId) {
-        ConceptSMTK conceptSMTK = conceptManager.getConceptByID(conceptId);
-        conceptSMTK.setRelationships(conceptManager.loadRelationships(conceptSMTK));
+    public List<ConceptAuditAction> getAuditAction() {
+        return auditAction;
+    }
 
-        concept = new ConceptSMTKWeb(conceptSMTK);
-        //Se respalda estado original del concepto
-        _concept = new ConceptSMTKWeb(conceptSMTK);
-
-        category = concept.getCategory();
+    public void setAuditAction(List<ConceptAuditAction> auditAction) {
+        this.auditAction = auditAction;
     }
 
 
-    public ConceptSMTK getTargetForRD(RelationshipDefinition relationshipDefinition, ConceptSMTK conceptSel) {
-        if (targetSelected == null) {
-            targetSelected = new HashMap<Long, ConceptSMTK>();
-        }
 
-        if (!targetSelected.containsKey(relationshipDefinition.getId())) {
-            targetSelected.put(relationshipDefinition.getId(), conceptSel);
-        }
-        return targetSelected.get(relationshipDefinition.getId());
+    //TODO: editar concepto
+
+    private long idconceptselect;
+
+    public long getIdconceptselect() {
+        return idconceptselect;
     }
 
-
-    /**
-     * Este método es el encargado de remover una descripción específica de la lista de descripciones del concepto.
-     */
-    public void removeDescription(Description description) {
-        concept.removeDescriptionWeb(description);
-    }
-
-
-    /**
-     * Este método es el encargado de agregar relaciones al concepto recibiendo como parámetro un Relationship
-     * Definition. Este método es utilizado por el componente BasicType, el cual agrega relaciones con target sin valor
-     */
-    public void addRelationship(RelationshipDefinition relationshipDefinition) {
-
-        Target target = new BasicTypeValue(null);
-
-        Relationship relationship = new Relationship(this.concept, target, relationshipDefinition);
-        // Se utiliza el constructor mínimo (sin id)
-        this.concept.addRelationshipWeb(relationship);
-
-    }
-
-    /**
-     * Este método es el encargado de agregar una nuva relacion con los parémetros que se indican.
-     */
-    public void addRelationship(RelationshipDefinition relationshipDefinition, Target target) {
-
-        Relationship relationship = new Relationship(this.concept, target, relationshipDefinition);
-        // Se utiliza el constructor mínimo (sin id)
-        this.concept.addRelationshipWeb(relationship);
-        conceptSelected = null;
-    }
-
-    /**
-     * Este método se encarga de agregar o cambiar la relación para el caso de multiplicidad 1.
-     */
-    public void addOrChangeRelationship(RelationshipDefinition relationshipDefinition, Target target) {
-
-        boolean isRelationshipFound = false;
-
-        // Se busca la relación
-        for (Relationship relationshipWeb : concept.getRelationshipsWeb()) {
-            if (relationshipWeb.getRelationshipDefinition().equals(relationshipDefinition)) {
-                relationshipWeb.setTarget(target);
-                isRelationshipFound = true;
-                break;
-            }
-        }
-        // Si no se encuentra la relación, se crea una nueva
-        if (!isRelationshipFound) {
-            this.concept.addRelationshipWeb(new Relationship(this.concept, target, relationshipDefinition));
-        }
-
-        conceptSelected = null;
-    }
-
-    /**
-     * Este método es el encargado de remover una relación específica del concepto.
-     */
-    public void removeRelationship(RelationshipDefinition rd, Relationship r) {
-        concept.removeRelationshipWeb(r);
-    }
-
-    /**
-     * Este método es el encargado de agregar descripciones al concepto
-     */
-    public void addDescription() {
-        FacesContext context = FacesContext.getCurrentInstance();
-        if (otherTermino != null) {
-            if (otherTermino.length() > 0) {
-                if (otherDescriptionType != null) {
-                    Description description = new Description(otherTermino, otherDescriptionType);
-                    description.setCaseSensitive(otherSensibilidad);
-                    //description.setDescriptionId(descriptionManager.generateDescriptionId());
-                    concept.addDescriptionWeb(new DescriptionWeb(description));
-                    otherTermino = "";
-                } else {
-                    context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se ha seleccionado el tipo de descripción"));
-                }
-
-            } else {
-                context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se ha ingresado el término a la descripción"));
-                context.getAttributes();
-            }
-
-        } else {
-
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se ha ingresado el término a la descripción"));
-
-        }
-
-    }
-
-    /**
-     * Este método es el responsable de retornar verdadero en caso que se cumpla el UpperBoundary de la multiplicidad,
-     * para asi desactivar
-     * la opción de agregar más relaciones en la vista. En el caso que se retorne falso este seguirá activo el boton en
-     * la presentación.
-     *
-     * @return
-     */
-    public boolean limitRelationship(RelationshipDefinition relationshipD) {
-        if (relationshipD.getMultiplicity().getUpperBoundary() != 0) {
-            if (concept.getValidRelationshipsByRelationDefinition(relationshipD).size() == relationshipD.getMultiplicity().getUpperBoundary()) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public void saveConcept() {
-
-        FacesContext context = FacesContext.getCurrentInstance();
-
-        // Si el concepto está persistido, actualizarlo
-        if (concept.isPersistent()) {
-
-            int changes = 0;
-            /*
-            if(_concept.isToBeReviewed()!=concept.isToBeReviewed() || _concept.isToBeConsulted()!= concept.isToBeConsulted())
-                conceptManager.updateBasicInfo();
-            */
-            List<Pair<Description, Description>> descriptionsForUpdate= ConceptUtils.getModifiedDescriptions(_concept.getDescriptionsWeb(), concept.getDescriptionsWeb());
-            List<Description> descriptionsForPersist= ConceptUtils.getNewDescriptions(_concept.getDescriptionsWeb(), concept.getDescriptionsWeb());
-            List<Description> descriptionsForDelete= ConceptUtils.getDeletedDescriptions(_concept.getDescriptionsWeb(), concept.getDescriptionsWeb());
-
-            changes = changes + descriptionsForUpdate.size();
-
-            for (Pair<Description, Description> description : descriptionsForUpdate)
-                descriptionManager.updateDescription(concept, description.getFirst(), description.getSecond(), user);
-
-            changes = changes + descriptionsForPersist.size();
-
-            for (Description description : descriptionsForPersist)
-                descriptionManager.bindDescriptionToConcept(concept, description, user);
-
-            changes = changes + descriptionsForDelete.size();
-
-            for (Description description : descriptionsForDelete)
-                descriptionManager.deleteDescription(concept, description, user);
-
-            List<Pair<Relationship, Relationship>> relationshipsForUpdate= ConceptUtils.getModifiedRelationships(_concept.getRelationshipsWeb(), concept.getRelationshipsWeb());
-            List<Relationship> relationshipsForPersist= ConceptUtils.getNewRelationships(_concept.getRelationshipsWeb(), concept.getRelationshipsWeb());
-            List<Relationship> relationshipsForDelete= ConceptUtils.getDeletedRelationships(_concept.getRelationshipsWeb(), concept.getRelationshipsWeb());
-
-            changes = changes + relationshipsForUpdate.size();
-
-            for (Pair<Relationship, Relationship> relationship : relationshipsForUpdate)
-                //relationshipManager.updateRelationship(concept, relationship.getFirst(), relationship.getSecond(), user);
-
-            if(changes == 0)
-                context.addMessage(null, new FacesMessage("Warning", "No se ha realizado ningún cambio al concepto!!"));
-            else
-                context.addMessage(null, new FacesMessage("Successful", "Concepto modificado "));
-
-        }
-        // Si el concepto no está persistido, persistirlo
-        else {
-            conceptManager.persist(concept, user);
-            context.addMessage(null, new FacesMessage("Successful", "Concepto guardado "));
-        }
-
-    }
-
-    public void deleteConcept() {
-
-        FacesContext context = FacesContext.getCurrentInstance();
-
-        // Si el concepto está persistido, actualizarlo
-        if (concept.isPersistent() && !concept.isModeled()) {
-
-            conceptManager.invalidate(conceptSMTK, user);
-            context.addMessage(null, new FacesMessage("Successful", "Concepto eliminado."));
-        }
+    public void setIdconceptselect(long idconceptselect) {
+        this.idconceptselect = idconceptselect;
 
     }
 

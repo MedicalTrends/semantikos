@@ -92,8 +92,8 @@ public class Description extends PersistentEntity implements AuditableEntity {
      * @param term            El término de la descripción.
      * @param descriptionType El tipo de la descripción.
      */
-    public Description(String term, DescriptionType descriptionType) {
-        this(-1, null, "NULL", descriptionType, term, false, false, false, false, null);
+    public Description(ConceptSMTK conceptSMTK, String term, DescriptionType descriptionType) {
+        this(-1, conceptSMTK, "NULL", descriptionType, term, false, false, false, false, null);
     }
 
     public String getDescriptionId() {
@@ -193,6 +193,10 @@ public class Description extends PersistentEntity implements AuditableEntity {
         return (getValidityUntil() == null || getValidityUntil().after(new Timestamp(System.currentTimeMillis())));
     }
 
+    public ConceptSMTK getConceptSMTK() {
+        return conceptSMTK;
+    }
+
     /**
      * Este método es responsable de dar la representación de la descripción.
      * En particular, hay una BR que indica que para las descripciones FSN siempre se debe mostrar concatenado con el
@@ -204,7 +208,7 @@ public class Description extends PersistentEntity implements AuditableEntity {
     public String toString() {
 
         if (this.getDescriptionType().equals(DescriptionType.FSN)) {
-            return this.term + "(" + conceptSMTK.getTagSMTK() + ")";
+            return this.term + (conceptSMTK==null?"":" (" + conceptSMTK.getTagSMTK() + ")");
         }
 
         return this.term;
