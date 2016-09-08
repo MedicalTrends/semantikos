@@ -42,7 +42,7 @@
                                          converter="omnifaces.SelectItemsConverter" style="width:60%">
                             <p:ajax event="itemSelect"
                                     update="@(.terms)"
-                                    process="@this" />
+                                    process="@this"/>
                             <f:selectItem itemLabel="Seleccione tipo" itemValue=""/>
                             <f:selectItems value="#{conceptBean.tagSMTKs}" var="tag"
                                            itemValue="#{tag}"/>
@@ -52,7 +52,6 @@
                     <div class="ui-g-12 ui-md-6 ui-lg-6">
                     </div>
                 </div>
-
 
 
                 <!--Descripciones FSN y Preferida -->
@@ -81,7 +80,7 @@
 
                 <!-- Etiquetas -->
 
-                <smtk:tags tagslist="#{conceptBean.concept.tags}" ></smtk:tags>
+                <smtk:tags tagslist="#{conceptBean.concept.tags}"></smtk:tags>
 
                 <!-- Otras descripciones -->
                 <smtk:descriptions descriptions="#{conceptBean.concept.getValidDescriptionsButFSNandFavorite()}"
@@ -146,71 +145,66 @@
             </p:messages>
 
 
-            <p:confirmDialog id="dialogNameConcept" header="Crear Concepto" widgetVar="dialogNameConcept" global="true"
-                             showEffect="fade" hideEffect="fade" closable="false"
-                             rendered="#{conceptBean.concept==null}">
+            <p:dialog id="dialogNameConcept" widgetVar="dialogNameConcept"
+                      showEffect="fade" hideEffect="fade"
+                      rendered="#{conceptBean.concept==null}">
+
                 <h:form id="initialForm">
+                    <div style="text-align: center;"><h3>Crear Concepto</h3></div>
                     <div class="ui-g">
-                        <div class="ui-g-12 ui-md-6 ui-lg-12">
-                            <div class="ui-g">
-                                <div class="ui-g-12 ui-md-6 ui-lg-12">
-                                    <h:outputText value="Ingrerse el nombre de su concepto:"/>
-                                    <p:outputLabel value="Nombre: " for="NameConcept"/>
-                                    <p:inputText id="NameConcept" value="#{conceptBean.favoriteDescription}"/>
-                                </div>
-                            </div>
-                            <div class="ui-g">
-                                <div class="ui-g-12 ui-md-6 ui-lg-12">
-                                    <p:selectOneMenu value="#{conceptBean.categorySelect}">
-                                        <f:selectItem itemLabel="Insumos" itemValue="3"/>
-                                        <f:selectItem itemLabel="Dispositivos Medicos" itemValue="4"/>
+                        <div class="ui-g-12 ui-md-6 ui-lg-4">
+
+                            <p:outputLabel value="Nombre: " for="NameConcept"/>
+                            <p:inputText style="width: 75%" id="NameConcept" value="#{conceptBean.favoriteDescription}"/>
+                        </div>
+                        <div class="ui-g-12 ui-md-6 ui-lg-6">
+                            <p:outputLabel value="Categoria: " for="categoryCreateConcept"/>
+                            <p:selectOneMenu style="width: 75%" id="categoryCreateConcept" value="#{conceptBean.categorySelect}">
+                                <f:selectItem itemLabel="Insumos" itemValue="3"/>
+                                <f:selectItem itemLabel="Dispositivos Medicos" itemValue="4"/>
 
 
-                                        <f:selectItem itemValue="105590001" itemLabel="Fármacos – sustancias" />
-                                        <f:selectItem itemValue="1" itemLabel="Medicamento Básico" />
-                                        <f:selectItem itemValue="3" itemLabel="Insumos" />
-                                        <f:selectItem itemValue="4" itemLabel="Dispositivos Medicos" />
-                                        <f:selectItem itemValue="71388002" itemLabel="Procedimiento" />
-                                        <f:selectItem itemValue="123037004" itemLabel="Estructura corporal" />
-                                        <f:selectItem itemValue="123038009" itemLabel="Espécimen" />
-                                        <f:selectItem itemValue="260787004" itemLabel="Objeto físico" />
-                                        <f:selectItem itemValue="272379006" itemLabel="evento (evento)" />
-                                        <f:selectItem itemValue="362981000" itemLabel="Calificador" />
-                                        <f:selectItem itemValue="370115009" itemLabel="Concepto especial" />
-                                        <f:selectItem itemValue="373873005" itemLabel="producto biológico/farmacéutico (producto)" />
-                                        <f:selectItem itemValue="404684003" itemLabel="Problemas" />
-                                        <f:selectItem itemValue="410607006" itemLabel="Organismo" />
-                                        <f:selectItem itemValue="419891008" itemLabel="Elemento de registro"  />
+                                <f:selectItem itemValue="105590001" itemLabel="Fármacos – sustancias"/>
+                                <f:selectItem itemValue="1" itemLabel="Medicamento Básico"/>
+                                <f:selectItem itemValue="3" itemLabel="Insumos"/>
+                                <f:selectItem itemValue="4" itemLabel="Dispositivos Medicos"/>
+                                <f:selectItem itemValue="71388002" itemLabel="Procedimiento"/>
+                                <f:selectItem itemValue="123037004" itemLabel="Estructura corporal"/>
+                                <f:selectItem itemValue="123038009" itemLabel="Espécimen"/>
+                                <f:selectItem itemValue="260787004" itemLabel="Objeto físico"/>
+                                <f:selectItem itemValue="272379006" itemLabel="evento (evento)"/>
+                                <f:selectItem itemValue="362981000" itemLabel="Calificador"/>
+                                <f:selectItem itemValue="370115009" itemLabel="Concepto especial"/>
+                                <f:selectItem itemValue="373873005"
+                                              itemLabel="producto biológico/farmacéutico (producto)"/>
+                                <f:selectItem itemValue="404684003" itemLabel="Problemas"/>
+                                <f:selectItem itemValue="410607006" itemLabel="Organismo"/>
+                                <f:selectItem itemValue="419891008" itemLabel="Elemento de registro"/>
 
-                                    </p:selectOneMenu>
+                            </p:selectOneMenu>
 
-
-                                </div>
-                            </div>
+                        </div>
+                        <div class="ui-g-12 ui-md-6 ui-lg-2">
                             <p:commandButton actionListener="#{conceptBean.createConcept}" update=":createEdit"
-                                             value="Siguiente" onclick="loadAutogenerate()"/>
+                                             value="Siguiente"/>
                         </div>
                     </div>
 
+                    <hr></hr>
+
+                    <div style="text-align: center;"><h3>Editar Concepto</h3></div>
                     <div class="ui-g">
-                        <div class="ui-g-12 ui-md-6 ui-lg-12">
-                            <h:outputText value="seleccione el concepto:"/>
-                            <div class="ui-g">
-                                <div class="ui-g-12 ui-md-6 ui-lg-12">
-                                    <p:outputLabel value="Nombre: " for="NameConcept"/>
-                                    <p:inputText id="idconcept" value="#{conceptBean.idconceptselect}"/>
-                                </div>
-                            </div>
-
+                        <div class="ui-g-12 ui-md-6 ui-lg-9">
+                            <p:outputLabel value="ID Concepto: " for="NameConcept"/>
+                            <p:inputText style="width: 75%" id="idconcept" value="#{conceptBean.idconceptselect}"/>
+                        </div>
+                        <div class="ui-g-12 ui-md-6 ui-lg-3">
                             <p:commandButton actionListener="#{conceptBean.createConcept}" update=":createEdit"
-                                             value="Editar Concepto"
-
-                            />
+                                             value="Editar Concepto"/>
                         </div>
                     </div>
-
                 </h:form>
-            </p:confirmDialog>
+            </p:dialog>
         </p:panel>
 
 

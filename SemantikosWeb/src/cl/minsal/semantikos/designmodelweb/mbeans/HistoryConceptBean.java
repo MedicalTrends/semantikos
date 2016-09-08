@@ -18,7 +18,7 @@ import java.util.List;
 
 @ManagedBean(name = "historyConcept")
 @ViewScoped
-public class historyConceptBean {
+public class HistoryConceptBean {
 
     @EJB
     AuditManagerInterface auditManager;

@@ -25,20 +25,23 @@
         <pr:menu>
             <p:menuitem id="rm_users_web" value="Administracion Usuarios" icon="icon-two385" outcome="/views/users"/>
 
+            <p:menuitem id="rm_nuevo_concepto" value="Crear/Editar Concepto" icon="fa fa-plus" outcome="/views/concept/conceptEdit.xhtml"/>
+
+            <p:menuitem id="rm_buscador_concepto" value="Buscador de Concepto" icon="fa fa-search" outcome="/views/concept/finder.xhtml"/>
+
+            <p:menuitem id="rm_historial_concepto" value="Historial del Concepto" icon="fa fa-history" outcome="/views/concept/history.xhtml"/>
+
+            <p:menuitem id="rm_concepto_tag" value="Administrador de Tag" icon="fa fa-tag" outcome="/views/concept/tagAdmin.xhtml"/>
+
+            <p:menuitem id="rm_create_category" value="Crear categoria" icon="fa fa-list-alt" outcome="/views/category/createCategory.xhtml"/>
+
+
+            <p:separator />
+
             <p:submenu id="rm_administracion" label="Ejemplos Rio Theme" icon="icon-planet29">
 
                 <p:menuitem id="rm_configuraciones" value="Configuaciones" icon="icon-planet29" outcome="/views/configuraciones.xhtml"/>
             </p:submenu>
-
-            <p:menuitem id="rm_nuevo_concepto" value="Nuevo Concepto" icon="icon-android11" outcome="/views/concept/conceptEdit.xhtml"/>
-
-            <p:menuitem id="rm_buscador_concepto" value="Buscador de Concepto" icon="icon-android11" outcome="/views/concept/finder.xhtml"/>
-
-            <p:menuitem id="rm_historial_concepto" value="Historial del Concepto" icon="icon-android11" outcome="/views/concept/history.xhtml"/>
-
-            <p:menuitem id="rm_concepto_tag" value="Administrador de Tag" icon="icon-android11" outcome="/views/concept/tagAdmin.xhtml"/>
-
-            <p:menuitem id="rm_create_category" value="Crear categoria" icon="icon-android11" outcome="/views/category/createCategory.xhtml"/>
 
             <p:submenu id="rm_theme" label="Ejemplos Rio Theme" icon="icon-mountains14">
                 <p:menuitem id="rm_dashboard" value="Dashboard" icon="icon-planet29" outcome="/views/examples/dashboard"/>

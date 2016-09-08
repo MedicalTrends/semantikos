@@ -163,6 +163,7 @@ public class ConceptBean implements Serializable {
             getConceptById(idconceptselect);
         }
 
+
         RequestContext context = RequestContext.getCurrentInstance();
         context.execute("PF('dialogNameConcept').hide();");
     }
