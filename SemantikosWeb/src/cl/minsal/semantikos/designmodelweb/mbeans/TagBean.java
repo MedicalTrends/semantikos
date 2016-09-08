@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by des01c7 on 26-08-16.
+ * @author Gustavo Punucura
  */
 
 @ManagedBean(name = "tagBean")
@@ -92,6 +92,12 @@ public class TagBean implements Serializable{
      *    Methods
      */
 
+    /**
+     * Método encargado de buscar etiquetas por el nombre de la etiqueta, menos las
+     * que estén relacionadas a la etiqueta que se da como parámetro al manager. (Etiqueta a crear)
+     * @param nameTag nombre de la etiqueta
+     * @return retorna una lista de etiquetas
+     */
     public List<Tag> findTagByName(String nameTag) {
 
         if (nameTag != null) {
@@ -100,6 +106,12 @@ public class TagBean implements Serializable{
         return new ArrayList<Tag>();
     }
 
+    /**
+     * Método encargado de buscar etiquetas por el nombre de la etiqueta, menos las
+     * que estén relacionadas a la etiqueta que se da como parámetro al manager. (Etiqueta a editar)
+     * @param nameTag
+     * @return retorna una lista de etiquetas
+     */
     public List<Tag> findTagByNameEditTag(String nameTag) {
         if (nameTag != null) {
             return tagManager.findTag(tagEdit,nameTag);
@@ -107,6 +119,10 @@ public class TagBean implements Serializable{
         return new ArrayList<Tag>();
     }
 
+    /**
+     * Método encargado de buscar una lista de etiquetas que pueden ser hijos de la etiqueta que se está creando.
+     * @return retorna una lista de los posibles hijos.
+     */
     public List<Tag> findTagSon() {
 
         findSonTagList = tagManager.getAllTagsWithoutParent();
@@ -130,40 +146,65 @@ public class TagBean implements Serializable{
         return findSonTagList;
     }
 
+    /**
+     * Método encargado de buscar una lista de etiquetas que pueden ser hijos de la etiqueta que se está editando.
+     * @return retorna una lista de los posibles hijos.
+     */
     public List<Tag> listTagSonEdit() {
         return listTagSon= tagManager.getOtherTags(tagEdit);
     }
 
+    /**
+     * Se agrega una etiqueta padre que ha sido creada a la etiqueta que se está creando.
+     */
     public void createTagParent(){
         tagCreate.setParentTag(parentTagToCreate);
     }
 
+    /**
+     * Se agrega una etiqueta hijo que ha sido creada a la etiqueta que se está creando.
+     */
     public void createTagSon(){
         tagCreate.addSon(new Tag(-1,nameTag,colorBackground,colorText,null));
-
     }
 
+    /**
+     * Se agrega una etiqueta padre que ha sido seleccionada a la etiqueta que se está creando.
+     */
     public void addTagParent(){
         tagCreate.setParentTag(parentTagSelect);
         findTagSon();
     }
 
+    /**
+     * Se agrega una etiqueta hijo que ha sido seleccionada a la etiqueta que se está creando.
+     */
     public void addTagSon(){
         tagCreate.addSon(sonTagSelect);
         findTagSon();
 
     }
 
+    /**
+     * Se remueve una etiqueta hijo de la etiqueta que se está creando.
+     * @param son etiqueta a remover
+     */
     public void removeTagSon(Tag son){
         tagCreate.getSonTag().remove(son);
     }
 
+    /**
+     * Se remueve la etiqueta padre de la etiqueta que se está creando.
+     */
     public void removeTagParent(){
         tagCreate.setParentTag(null);
         parentTagSelect=null;
         parentTagToCreate= new Tag(-1,null,null,null,null);
     }
 
+    /**
+     * Método encargado de persistir la etiqueta que se está creando.
+     */
     public void createTag(){
         tagManager.persist(tagCreate);
         tagListTable= tagManager.getAllTags();
@@ -177,6 +218,9 @@ public class TagBean implements Serializable{
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
 
+    /**
+     * Método encargado de agregar la etiqueta que se está creando al concepto.
+     */
     public void createTagToConcept(){
         conceptBean.getConcept().getTags().add(tagCreate);
         tagListTable= tagManager.getAllTags();
@@ -190,17 +234,30 @@ public class TagBean implements Serializable{
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
 
+    /**
+     * Método encargado de agregar la etiqueta que se selecciona al concepto.
+     */
     public void addTagToConcept(){
         conceptBean.getConcept().getTags().add(tagSelected);
         tagListToConcept.remove(tagSelected);
         tagSelected= null;
     }
 
+    /**
+     * Método encargado de eliminar la etiqueta del concepto.
+     * @param tagToDelete etiqueta a eliminar.
+     */
     public void deleteTagToConcept(Tag tagToDelete){
         conceptBean.getConcept().getTags().remove(tagToDelete);
-        tagListToConcept.add(tagToDelete);
+        if(tagToDelete.getId()!=-1){
+            tagListToConcept.add(tagToDelete);
+        }
+
     }
 
+    /**
+     * Método encargado de vincular una etiqueta hijo a la etiqueta que se está editando.
+     */
     public void linkSon() {
         tagEdit.addSon(addSonSelect);
         tagManager.link(tagEdit,addSonSelect);
@@ -208,6 +265,9 @@ public class TagBean implements Serializable{
         tagListTable= tagManager.getAllTags();
     }
 
+    /**
+     * Método encargado de vincular una etiqueta padre a la etiqueta que se está editando.
+     */
     public void linkParent(){
         tagEdit.setParentTag(parentTag);
         tagManager.link(parentTag,tagEdit);
@@ -216,18 +276,28 @@ public class TagBean implements Serializable{
         parentTag=null;
     }
 
+    /**
+     * Método encargado de desvicular una etiqueta hijo de la etiqueta que se está editando.
+     * @param tagUnlink etiqueta hijo
+     */
     public void unlinkSon(Tag tagUnlink) {
         tagManager.unlink(tagEdit, tagUnlink);
         tagEdit.getSonTag().remove(tagUnlink);
         tagListTable= tagManager.getAllTags();
     }
 
+    /**
+     * Método encargado de desvicular una etiqueta padre de la etiqueta que se está editando
+     */
     public void unlinkParent() {
         tagManager.unlink(tagEdit.getParentTag(), tagEdit);
         tagEdit.setParentTag(null);
         tagListTable= tagManager.getAllTags();
     }
 
+    /**
+     * Método encargado de eliminar la etiqueta.
+     */
     public void deleteTag() {
         tagManager.removeTag(tagEdit);
         tagListTable= tagManager.getAllTags();

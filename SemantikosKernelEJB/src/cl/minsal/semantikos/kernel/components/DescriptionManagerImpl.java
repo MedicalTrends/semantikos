@@ -161,7 +161,7 @@ public class DescriptionManagerImpl implements DescriptionManagerInterface {
     public void moveDescriptionToConcept(ConceptSMTK sourceConcept, ConceptSMTK targetConcept, Description description, User user) {
 
         /* Se aplican las reglas de negocio para el traslado */
-        new DescriptionMovementBR().apply(sourceConcept, targetConcept, description);
+        new DescriptionTranslationBR().apply(sourceConcept, targetConcept, description);
 
         /* Se registra en el Audit el traslado */
         auditManager.recordDescriptionMovement(sourceConcept, targetConcept, description, user);

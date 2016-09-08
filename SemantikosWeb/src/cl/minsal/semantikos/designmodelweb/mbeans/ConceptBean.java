@@ -167,6 +167,7 @@ public class ConceptBean implements Serializable {
             //getConceptById(80602);
         }
 
+
         RequestContext context = RequestContext.getCurrentInstance();
         context.execute("PF('dialogNameConcept').hide();");
     }

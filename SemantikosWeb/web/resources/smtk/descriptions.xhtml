@@ -164,12 +164,65 @@
                                          name="images/trash-blue.png"
                         />
                     </p:commandLink>
+                    <p:commandButton rendered="#{conceptBean.concept.persistent}"
+                                     icon="fa fa-exchange"
+                                     process="@this"
+                                     update="@(.otherDescriptions)"
+                                     oncomplete="PF('dialogTDC').show()"
+                    />
                     <p:rowEditor style="display: inline" />
                 </p:column>
 
             </p:dataTable>
         </div>
     </p:panel>
+
+
+    <p:dialog id="dialogTDC" header="Trasladar descripcion" widgetVar="dialogTDC" global="true"
+    showEffect="fade" hideEffect="fade" >
+        <div class="ui-g">
+            <div class="ui-g-12 ui-md-6 ui-lg-6">
+                <p:panel header="Origen" style="width: 100%;">
+
+                </p:panel>
+            </div>
+            <div class="ui-g-12 ui-md-6 ui-lg-6">
+                <p:panel header="Destino" style="width: 100%;">
+                    <div class="ui-g">
+                    <div class="ui-grid-col-6">
+                        <p:autoComplete id="inputFindConcept" scrollHeight="200" size="5" style="width: 80%;"
+                                        inputStyle="width: 80%;"
+                                        converter="conceptConverter" var="concept"
+                                        value="#{findConceptBean.conceptSMTK}"
+                                        completeMethod="#{findConceptBean.getConceptSearchInput}"
+                                        itemLabel="#{concept.descriptionFavorite.term}" itemValue="#{concept}"
+                                        emptyMessage="No se encontraron conceptos relacionados"
+                        >
+                        </p:autoComplete>
+                    </div>
+
+                    <div class="ui-grid-col-6">
+                        <p:selectCheckboxMenu style="width: 100%; margin: 10px;" id="menu"
+                                              value="#{findConceptBean.categorySelect}" label="Categorías"
+                                              filter="true" filterMatchMode="startsWith">
+                            <f:selectItems value="#{findConceptBean.categoryList}" var="category"
+                                           itemLabel="#{category.name}" itemValue="#{category.id}"/>
+
+                            <p:ajax event="toggleSelect"/>
+                        </p:selectCheckboxMenu>
+                    </div>
+                    </div>
+
+                </p:panel>
+            </div>
+        </div>
+        <div style="text-align: center;">
+            <p:commandButton icon="fa fa-exchange" value="Trasladar">
+
+            </p:commandButton>
+        </div>
+
+    </p:dialog>
 
 </composite:implementation>
 </html>
