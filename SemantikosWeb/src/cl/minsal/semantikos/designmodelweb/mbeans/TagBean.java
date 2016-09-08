@@ -81,6 +81,7 @@ public class TagBean implements Serializable{
     public void init() {
         tagListTable= tagManager.getAllTags();
         tagList= tagManager.getAllTags();
+        tagListToConcept=  tagManager.getAllTags();
         findSonTagList=tagManager.getAllTagsWithoutParent();
         listTagSon=tagManager.getAllTagsWithoutParent();
         tagCreate= new Tag(-1,null,null,null,null);
@@ -176,7 +177,6 @@ public class TagBean implements Serializable{
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
 
-
     public void createTagToConcept(){
         conceptBean.getConcept().getTags().add(tagCreate);
         tagListTable= tagManager.getAllTags();
@@ -188,6 +188,17 @@ public class TagBean implements Serializable{
 
         FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Etiqueta creada", "La etiqueta se creo exitosamente");
         FacesContext.getCurrentInstance().addMessage(null, msg);
+    }
+
+    public void addTagToConcept(){
+        conceptBean.getConcept().getTags().add(tagSelected);
+        tagListToConcept.remove(tagSelected);
+        tagSelected= null;
+    }
+
+    public void deleteTagToConcept(Tag tagToDelete){
+        conceptBean.getConcept().getTags().remove(tagToDelete);
+        tagListToConcept.add(tagToDelete);
     }
 
     public void linkSon() {

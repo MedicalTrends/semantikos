@@ -227,24 +227,34 @@
                              converter="tagConverter" panelStyle="width:180px"
                              effect="fade" var="t" style="width:160px" filter="true"
                              filterMatchMode="startsWith">
-                <f:selectItems value="#{tagBean.tagListTable}" var="tag"
+                <f:selectItems value="#{tagBean.tagListToConcept}" var="tag"
                                itemLabel="#{tag.name}" itemValue="#{tag}"/>
                 <p:column>
                     <h:outputText value="#{t.name}"/>
                 </p:column>
             </p:selectOneMenu>
             <p:commandButton value="Agregar" icon="fa fa-floppy-o"
-                             actionListener="#{tagBean.addTagSon}" update="createSon">
+                             actionListener="#{tagBean.addTagToConcept}" update="tags">
             </p:commandButton>
         </p:fieldset>
 
         <br/>
 
-        <p:dataTable var="tag" value="#{cc.attrs.tagslist}">
+        <p:dataTable id="dataTableTag" var="tag" value="#{cc.attrs.tagslist}" emptyMessage="El concepto no tiene etiquetas">
             <p:column headerText="Etiqueta">
                 <div style="text-align: center;">
                     <h:outputText value="#{tag.name}"
                                   style="text-align: center; font-size: 20px ;background-color: ##{tag.colorBackground}; color:##{tag.colorLetter}; "/>
+                </div>
+            </p:column>
+
+            <p:column headerText="Eliminar">
+                <div style="text-align: center;">
+                    <p:column headerText="Eliminar" style="width:90px;text-align: center;">
+                        <p:commandButton process="@this" icon="fa fa-trash" title="Eliminar"
+                                         update=":#{cc.clientId}:tags" actionListener="#{tagBean.deleteTagToConcept(tag)}">
+                        </p:commandButton>
+                    </p:column>
                 </div>
             </p:column>
 
