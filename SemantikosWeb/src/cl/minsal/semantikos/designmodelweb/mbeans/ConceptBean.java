@@ -28,7 +28,6 @@ import static cl.minsal.semantikos.model.ProfileFactory.DESIGNER_PROFILE;
 
 /**
  * Created by diego on 26/06/2016.
- * Created by diego on 26/06/2016.
  */
 
 @ManagedBean(name = "conceptBean")
@@ -43,8 +42,6 @@ public class ConceptBean implements Serializable {
     @EJB
     DescriptionManagerInterface descriptionManager;
 
-    DescriptionTypeFactory descriptionTypeFactory = DescriptionTypeFactory.getInstance();
-
     @EJB
     CategoryManagerInterface categoryManager;
 
@@ -54,10 +51,13 @@ public class ConceptBean implements Serializable {
     @EJB
     TagSMTKManager tagSMTKManager;
 
+    @EJB
+    AuditManagerInterface auditManager;
+
     @ManagedProperty(value = "#{smtkBean}")
     private SMTKTypeBean smtkTypeBean;
 
-    private Tag tag;
+    DescriptionTypeFactory descriptionTypeFactory = DescriptionTypeFactory.getInstance();
 
     public User user;
 
@@ -66,7 +66,9 @@ public class ConceptBean implements Serializable {
     private ConceptSMTKWeb _concept;
 
     private Category category;
+
     private List<DescriptionType> descriptionTypes = new ArrayList<DescriptionType>();
+
     private List<Description> selectedDescriptions = new ArrayList<Description>();
 
     private List<TagSMTK> tagSMTKs = new ArrayList<TagSMTK>();
@@ -79,7 +81,7 @@ public class ConceptBean implements Serializable {
     private DescriptionType otherDescriptionType;
 
     // Placeholders para los target de las relaciones
-    private BasicTypeValue basicTypeValue = new BasicTypeValue("hola");
+    private BasicTypeValue basicTypeValue = new BasicTypeValue(null);
 
     private HelperTableRecord selectedHelperTableRecord = new HelperTableRecord();
 
@@ -90,13 +92,7 @@ public class ConceptBean implements Serializable {
     private Map<Long, ConceptSMTK> targetSelected;
     ////////////////////////////////////////////////////
 
-    public ConceptSMTK getConceptSMTK() {
-        return conceptSMTK;
-    }
-
-    public void setConceptSMTK(ConceptSMTK conceptSMTK) {
-        this.conceptSMTK = conceptSMTK;
-    }
+    private Map<RelationshipDefinition, List<RelationshipAttribute>> relationshipAttributesPlaceholder = new HashMap<RelationshipDefinition, List<RelationshipAttribute>>();
 
 
     //Parametros del formulario
@@ -107,78 +103,13 @@ public class ConceptBean implements Serializable {
 
     private int categorySelect;
 
-    @EJB
-    AuditManagerInterface auditManager;
-
-
     private List<ConceptAuditAction> auditAction;
-
-    public List<ConceptAuditAction> getAuditAction() {
-        return auditAction;
-    }
-
-    public void setAuditAction(List<ConceptAuditAction> auditAction) {
-        this.auditAction = auditAction;
-    }
-
-    //TODO: editar concepto
-
-    private long idconceptselect;
-
-    public long getIdconceptselect() {
-        return idconceptselect;
-    }
-
-    public void setIdconceptselect(long idconceptselect) {
-        this.idconceptselect = idconceptselect;
-
-    }
-
-    public int getCategorySelect() {
-        return categorySelect;
-    }
-
-
-    public void setCategorySelect(int categorySelect) {
-        this.categorySelect = categorySelect;
-    }
-
-    //Inicializacion del Bean
-
-
 
     //para tipo helpertable
     private int helperTableValuePlaceholder;
 
-    private Map<RelationshipDefinition, List<RelationshipAttribute>> relationshipAttributesPlaceholder = new HashMap<RelationshipDefinition, List<RelationshipAttribute>>();
 
-
-    public List<RelationshipAttribute> getRelationshipAttributesByRelationshipDefinition(RelationshipDefinition definition){
-        if(!relationshipAttributesPlaceholder.containsKey(definition)) {
-
-
-            List<RelationshipAttribute> attributes = new ArrayList<RelationshipAttribute>(definition.getRelationshipAttributeDefinitions().size());
-
-            for (RelationshipAttributeDefinition attributeDefinition : definition.getRelationshipAttributeDefinitions()) {
-
-                RelationshipAttribute attribute = new RelationshipAttribute();
-
-                attribute.setRelationAttributeDefinition(attributeDefinition);
-
-                Target t = new TargetFactory().createPlaceholderTargetFromTargetDefinition(definition.getTargetDefinition());
-
-                attribute.setTarget(t);
-
-                attributes.add(attribute);
-            }
-
-            relationshipAttributesPlaceholder.put(definition,attributes);
-        }
-
-        return relationshipAttributesPlaceholder.get(definition);
-
-    }
-
+    //Inicializacion del Bean
 
     @PostConstruct
     protected void initialize() throws ParseException {
@@ -216,159 +147,21 @@ public class ConceptBean implements Serializable {
 
     }
 
-    // Getter and Setter
-
-
-    public Tag getTag() {
-        return tag;
-    }
-
-    public void setTag(Tag tag) {
-        this.tag = tag;
-    }
-
-    public String getFSN() {
-        return FSN;
-    }
-
-    public void setFSN(String FSN) {
-        this.FSN = FSN;
-    }
-
-    public ConceptSMTKWeb getConcept() {
-        return concept;
-    }
-
-    public void setConcept(ConceptSMTKWeb concept) {
-        this.concept = concept;
-    }
-
-    public Category getCategory() {
-        return category;
-    }
-
-    public void setCategory(Category category) {
-        this.category = category;
-    }
-
-    public String getOtherTermino() {
-        return otherTermino;
-    }
-
-    public void setOtherTermino(String otherTermino) {
-        this.otherTermino = otherTermino;
-    }
-
-    public boolean getOtherSensibilidad() {
-        return otherSensibilidad;
-    }
-
-    public void setOtherSensibilidad(boolean otherSensibilidad) {
-        this.otherSensibilidad = otherSensibilidad;
-    }
-
-    public DescriptionType getOtherDescriptionType() {
-        return otherDescriptionType;
-    }
-
-    public void setOtherDescriptionType(DescriptionType otherDescriptionType) {
-        this.otherDescriptionType = otherDescriptionType;
-    }
-
-    public List<DescriptionType> getDescriptionTypes() {
-        return descriptionTypes;
-    }
-
-    public void setDescriptionTypes(List<DescriptionType> descriptionTypes) {
-        this.descriptionTypes = descriptionTypes;
-    }
-
-    public List<Description> getSelectedDescriptions() {
-        return selectedDescriptions;
-    }
-
-    public void setSelectedDescriptions(List<Description> selectedDescriptions) {
-        this.selectedDescriptions = selectedDescriptions;
-    }
-
-    public ConceptSMTK getConceptSelected() {
-        return conceptSelected;
-    }
-
-    public void setConceptSelected(ConceptSMTK conceptSelected) {
-        this.conceptSelected = conceptSelected;
-    }
-
-    public SMTKTypeBean getSmtkTypeBean() {
-        return smtkTypeBean;
-    }
-
-    public void setSmtkTypeBean(SMTKTypeBean smtkTypeBean) {
-        this.smtkTypeBean = smtkTypeBean;
-    }
-
-    public String getFavoriteDescription() {
-        return favoriteDescription;
-    }
-
-    public void setFavoriteDescription(String favoriteDescription) {
-        this.favoriteDescription = favoriteDescription;
-    }
-
-    public HelperTableManagerInterface getHelperTableManager() {
-        return helperTableManager;
-    }
-
-    public void setHelperTableManager(HelperTableManagerInterface helperTableManager) {
-        this.helperTableManager = helperTableManager;
-    }
-
-    public BasicTypeValue getBasicTypeValue() {
-        return basicTypeValue;
-    }
-
-    public void setBasicTypeValue(BasicTypeValue basicTypeValue) {
-        this.basicTypeValue = basicTypeValue;
-    }
-
-    public HelperTableRecord getSelectedHelperTableRecord() {
-        return selectedHelperTableRecord;
-    }
-
-    public void setSelectedHelperTableRecord(HelperTableRecord selectedHelperTableRecord) {
-        this.selectedHelperTableRecord = selectedHelperTableRecord;
-    }
-
-    public List<TagSMTK> getTagSMTKs(String query) {
-        List<TagSMTK> results = new ArrayList<TagSMTK>();
-
-        for (TagSMTK tagSMTK : tagSMTKs) {
-            if(tagSMTK.getName().toLowerCase().contains(query.toLowerCase()))
-                results.add(tagSMTK);
-        }
-
-        return results;
-    }
-
-    public List<TagSMTK> getTagSMTKs() {
-
-        return tagSMTKs;
-    }
-
-
     //Methods
+
+    public void addTagToConcept(Tag tag){
+
+    }
 
     public void createConcept() throws ParseException {
 
         if(idconceptselect==0){
-            //category = categoryManager.getCategoryById(categorySelect);
-            category = categoryManager.getCategoryById(419891008);
+            category = categoryManager.getCategoryById(categorySelect);
+            //category = categoryManager.getCategoryById(71388002);
             newConcept(category, favoriteDescription);
         }else{
             getConceptById(idconceptselect);
         }
-
-
 
         RequestContext context = RequestContext.getCurrentInstance();
         context.execute("PF('dialogNameConcept').hide();");
@@ -483,7 +276,8 @@ public class ConceptBean implements Serializable {
         if (!isRelationshipFound) {
             this.concept.addRelationshipWeb(new Relationship(this.concept, target, relationshipDefinition));
         }
-
+        basicTypeValue= null;
+        basicTypeValue= new BasicTypeValue(null);
         conceptSelected = null;
     }
 
@@ -539,6 +333,32 @@ public class ConceptBean implements Serializable {
             }
         }
         return false;
+    }
+
+    public List<RelationshipAttribute> getRelationshipAttributesByRelationshipDefinition(RelationshipDefinition definition){
+        if(!relationshipAttributesPlaceholder.containsKey(definition)) {
+
+
+            List<RelationshipAttribute> attributes = new ArrayList<RelationshipAttribute>(definition.getRelationshipAttributeDefinitions().size());
+
+            for (RelationshipAttributeDefinition attributeDefinition : definition.getRelationshipAttributeDefinitions()) {
+
+                RelationshipAttribute attribute = new RelationshipAttribute();
+
+                attribute.setRelationAttributeDefinition(attributeDefinition);
+
+                Target t = new TargetFactory().createPlaceholderTargetFromTargetDefinition(definition.getTargetDefinition());
+
+                attribute.setTarget(t);
+
+                attributes.add(attribute);
+            }
+
+            relationshipAttributesPlaceholder.put(definition,attributes);
+        }
+
+        return relationshipAttributesPlaceholder.get(definition);
+
     }
 
     public void saveConcept() {
@@ -605,6 +425,178 @@ public class ConceptBean implements Serializable {
             conceptManager.invalidate(conceptSMTK, user);
             context.addMessage(null, new FacesMessage("Successful", "Concepto eliminado."));
         }
+
+    }
+
+
+
+
+    // Getter and Setter
+
+    public String getFSN() {
+        return FSN;
+    }
+
+    public void setFSN(String FSN) {
+        this.FSN = FSN;
+    }
+
+    public ConceptSMTKWeb getConcept() {
+        return concept;
+    }
+
+    public void setConcept(ConceptSMTKWeb concept) {
+        this.concept = concept;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
+    public String getOtherTermino() {
+        return otherTermino;
+    }
+
+    public void setOtherTermino(String otherTermino) {
+        this.otherTermino = otherTermino;
+    }
+
+    public boolean getOtherSensibilidad() {
+        return otherSensibilidad;
+    }
+
+    public void setOtherSensibilidad(boolean otherSensibilidad) {
+        this.otherSensibilidad = otherSensibilidad;
+    }
+
+    public DescriptionType getOtherDescriptionType() {
+        return otherDescriptionType;
+    }
+
+    public void setOtherDescriptionType(DescriptionType otherDescriptionType) {
+        this.otherDescriptionType = otherDescriptionType;
+    }
+
+    public List<DescriptionType> getDescriptionTypes() {
+        return descriptionTypes;
+    }
+
+    public void setDescriptionTypes(List<DescriptionType> descriptionTypes) {
+        this.descriptionTypes = descriptionTypes;
+    }
+
+    public List<Description> getSelectedDescriptions() {
+        return selectedDescriptions;
+    }
+
+    public void setSelectedDescriptions(List<Description> selectedDescriptions) {
+        this.selectedDescriptions = selectedDescriptions;
+    }
+
+    public ConceptSMTK getConceptSelected() {
+        return conceptSelected;
+    }
+
+    public void setConceptSelected(ConceptSMTK conceptSelected) {
+        this.conceptSelected = conceptSelected;
+    }
+
+    public SMTKTypeBean getSmtkTypeBean() {
+        return smtkTypeBean;
+    }
+
+    public void setSmtkTypeBean(SMTKTypeBean smtkTypeBean) {
+        this.smtkTypeBean = smtkTypeBean;
+    }
+
+    public String getFavoriteDescription() {
+        return favoriteDescription;
+    }
+
+    public void setFavoriteDescription(String favoriteDescription) {
+        this.favoriteDescription = favoriteDescription;
+    }
+
+    public HelperTableManagerInterface getHelperTableManager() {
+        return helperTableManager;
+    }
+
+    public void setHelperTableManager(HelperTableManagerInterface helperTableManager) {
+        this.helperTableManager = helperTableManager;
+    }
+
+    public BasicTypeValue getBasicTypeValue() {
+        return basicTypeValue;
+    }
+
+    public void setBasicTypeValue(BasicTypeValue basicTypeValue) {
+        this.basicTypeValue = basicTypeValue;
+    }
+
+    public HelperTableRecord getSelectedHelperTableRecord() {
+        return selectedHelperTableRecord;
+    }
+
+    public void setSelectedHelperTableRecord(HelperTableRecord selectedHelperTableRecord) {
+        this.selectedHelperTableRecord = selectedHelperTableRecord;
+    }
+
+    public ConceptSMTK getConceptSMTK() {
+        return conceptSMTK;
+    }
+
+    public void setConceptSMTK(ConceptSMTK conceptSMTK) {
+        this.conceptSMTK = conceptSMTK;
+    }
+
+    public List<TagSMTK> getTagSMTKs(String query) {
+        List<TagSMTK> results = new ArrayList<TagSMTK>();
+
+        for (TagSMTK tagSMTK : tagSMTKs) {
+            if(tagSMTK.getName().toLowerCase().contains(query.toLowerCase()))
+                results.add(tagSMTK);
+        }
+
+        return results;
+    }
+
+    public List<TagSMTK> getTagSMTKs() {
+
+        return tagSMTKs;
+    }
+
+    public int getCategorySelect() {
+        return categorySelect;
+    }
+
+    public void setCategorySelect(int categorySelect) {
+        this.categorySelect = categorySelect;
+    }
+
+    public List<ConceptAuditAction> getAuditAction() {
+        return auditAction;
+    }
+
+    public void setAuditAction(List<ConceptAuditAction> auditAction) {
+        this.auditAction = auditAction;
+    }
+
+
+
+    //TODO: editar concepto
+
+    private long idconceptselect;
+
+    public long getIdconceptselect() {
+        return idconceptselect;
+    }
+
+    public void setIdconceptselect(long idconceptselect) {
+        this.idconceptselect = idconceptselect;
 
     }
 

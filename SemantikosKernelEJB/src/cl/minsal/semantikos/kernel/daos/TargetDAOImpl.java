@@ -13,6 +13,8 @@ import javax.ejb.EJB;
 import javax.ejb.EJBException;
 import javax.ejb.Stateless;
 import java.sql.*;
+import java.sql.Date;
+import java.util.*;
 
 import static cl.minsal.semantikos.model.relationships.TargetType.*;
 import static java.sql.Types.*;
@@ -103,7 +105,7 @@ public class TargetDAOImpl implements TargetDAO {
 
             /* Almacenar registro Tabla auxiliar */
             else if (targetDefinition.isHelperTable()) {
-                call.setLong(6, target.getId());
+                call.setLong(6, targetDefinition.getId());
                 call.setLong(10, HelperTable.getIdTargetType());
             }
 
@@ -247,8 +249,10 @@ public class TargetDAOImpl implements TargetDAO {
     private void setTargetCall(BasicTypeValue target, BasicTypeDefinition targetDefinition, CallableStatement call) throws SQLException {
 
 
-        if (target.getValue().getClass().equals(Timestamp.class)) {
-            call.setTimestamp(2, (Timestamp) target.getValue());
+        if (targetDefinition.getType().getTypeName().equals("date")) {
+            java.util.Date d = (java.util.Date) target.getValue();
+
+            call.setTimestamp(2, new Timestamp(d.getTime()) );
         } else if (target.getValue().getClass().equals(Float.class) || target.getValue().getClass().equals(Double.class)) {
             call.setFloat(1, (Float) target.getValue());
         } else if (target.getValue().getClass().equals(Integer.class)) {

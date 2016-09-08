@@ -30,7 +30,7 @@
                 <div class="ui-g-12 ui-md-6 ui-lg-3">
                     <p:selectOneMenu id="basicTypeValue11"
                                      value="#{conceptBean.basicTypeValue.value}"
-                                     validator="#{validatorBean.validateRequired}"
+
                                      var="value1"
                                      converter="omnifaces.SelectItemsConverter"
                                      rendered="#{cc.attrs.targetDefinition.discreteDomain}"
@@ -95,7 +95,7 @@
                                 styleClass="relationships">
                         <f:attribute name="concept" value="#{cc.attrs.concept}"  />
                         <f:attribute name="relationshipDefinition" value="#{cc.attrs.relationshipDefinition}"  />
-                        <p:ajax listener="#{conceptBean.addOrChangeRelationship(cc.attrs.relationshipDefinition,conceptBean.basicTypeValue)}" />
+                        <p:ajax event="dateSelect" listener="#{conceptBean.addOrChangeRelationship(cc.attrs.relationshipDefinition,conceptBean.basicTypeValue)}" />
                     </p:calendar>
                 </div>
                 <div class="ui-g-12 ui-md-6 ui-lg-1">
@@ -124,7 +124,6 @@
             <div class="ui-g-12 ui-md-6 ui-lg-3">
                 <p:selectOneMenu id="basicTypeValue"
                                  value="#{relationship.target.value}"
-                                 validator="#{validatorBean.validateRelationships}"
                                  var="value"
                                  converter="omnifaces.SelectItemsConverter"
                                  rendered="#{cc.attrs.targetDefinition.discreteDomain}">

@@ -214,7 +214,7 @@
 
             <div class="ui-g">
                 <div class="ui-g-12 ui-md-6 ui-lg-1">
-                    <p:commandButton value="Crear Etiqueta" actionListener="#{tagBean.createTag}"
+                    <p:commandButton value="Crear Etiqueta" actionListener="#{tagBean.createTagToConcept}"
                                      icon="fa fa-floppy-o" update="tags">
                     </p:commandButton>
                 </div>
@@ -223,7 +223,19 @@
         </p:fieldset>
 
         <p:fieldset legend="Agregar Etiqueta existente" collapsed="true" toggleable="true">
-
+            <p:selectOneMenu id="tagToConcept" value="#{tagBean.tagSelected}"
+                             converter="tagConverter" panelStyle="width:180px"
+                             effect="fade" var="t" style="width:160px" filter="true"
+                             filterMatchMode="startsWith">
+                <f:selectItems value="#{tagBean.tagListTable}" var="tag"
+                               itemLabel="#{tag.name}" itemValue="#{tag}"/>
+                <p:column>
+                    <h:outputText value="#{t.name}"/>
+                </p:column>
+            </p:selectOneMenu>
+            <p:commandButton value="Agregar" icon="fa fa-floppy-o"
+                             actionListener="#{tagBean.addTagSon}" update="createSon">
+            </p:commandButton>
         </p:fieldset>
 
         <br/>

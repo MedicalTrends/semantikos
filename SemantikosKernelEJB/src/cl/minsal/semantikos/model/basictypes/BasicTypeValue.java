@@ -46,8 +46,12 @@ public class BasicTypeValue<T extends Comparable> implements Target {
     public void setValue(T value)
 
     {
-        logger.debug("seteando valor de target valor={}", value);
-        this.value = value;
+
+        if(value!=null){
+            logger.debug("seteando valor de target valor={}", value);
+            this.value = value;
+        }
+
     }
 
     @Override
