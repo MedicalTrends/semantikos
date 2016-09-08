@@ -3,7 +3,9 @@ package cl.minsal.semantikos.kernel.components;
 import cl.minsal.semantikos.kernel.daos.RelationshipDAO;
 import cl.minsal.semantikos.model.Category;
 import cl.minsal.semantikos.model.ConceptSMTK;
+import cl.minsal.semantikos.model.Description;
 import cl.minsal.semantikos.model.User;
+import cl.minsal.semantikos.model.businessrules.RelationshipBindingBR;
 import cl.minsal.semantikos.model.businessrules.RelationshipEditionBR;
 import cl.minsal.semantikos.model.businessrules.RelationshipRemovalBR;
 import cl.minsal.semantikos.model.businessrules.RelelationshipCreationBR;
@@ -53,6 +55,30 @@ public class RelationshipManagerImpl implements RelationshipManager {
     @Override
     public RelationshipDefinition createRelationshipDefinition(RelationshipDefinition relationshipDefinition) {
         return relationshipDAO.persist(relationshipDefinition);
+    }
+
+    @Override
+    public Relationship bindRelationshipToConcept(ConceptSMTK concept, Relationship relationship, User user) {
+
+        /* Primero se validan las reglas de negocio asociadas a la eliminación de un concepto */
+        new RelationshipBindingBR().applyRules(concept, relationship, user);
+
+        /* Se hace la relación a nivel del modelo */
+        if (!concept.getRelationships().contains(relationship)){
+            concept.addRelationship(relationship);
+        }
+
+        if (!relationship.isPersistent()){
+            relationshipDAO.persist(relationship);
+        }
+
+          /* Se registra en el historial si el concepto fuente de la relación está modelado */
+        if (relationship.getSourceConcept().isModeled()) {
+            auditManager.recordRelationshipCreation(relationship, user);
+        }
+
+        /* Se retorna persistida */
+        return relationship;
     }
 
     @Override
