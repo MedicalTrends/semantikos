@@ -192,7 +192,10 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
 
         /* Y se persisten sus descripciones */
         for (Description description : conceptSMTK.getDescriptions()) {
+            /* Se persiste la descripción */
             descriptionDAO.persist(description, user);
+            /* Se liga al concepto */
+            descriptionDAO.bind(description, conceptSMTK, user);
         }
 
         /* Y sus relaciones */
