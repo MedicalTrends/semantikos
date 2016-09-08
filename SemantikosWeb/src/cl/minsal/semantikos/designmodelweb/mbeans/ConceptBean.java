@@ -406,8 +406,10 @@ public class ConceptBean implements Serializable {
             for (Pair<RelationshipWeb, RelationshipWeb> relationship : relationshipsForUpdate)
                 relationshipManager.updateRelationship(concept, relationship.getFirst(), relationship.getSecond(), user);
 
+            changes = changes + relationshipsForPersist.size();
+
             for (RelationshipWeb relationshipWeb : relationshipsForPersist)
-                //relationshipManager.b descriptionManager.bindDescriptionToConcept(concept, description, user);
+                relationshipManager.bindRelationshipToConcept(concept, relationshipWeb, user);
 
             for (Description description : descriptionsForDelete)
                 descriptionManager.deleteDescription(concept, description, user);
