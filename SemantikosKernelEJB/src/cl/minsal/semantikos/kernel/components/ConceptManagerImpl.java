@@ -77,7 +77,7 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
     public List<ConceptSMTK> findConceptBy(String patternOrConceptID, Long[] categories, int pageNumber, int pageSize) {
 
 
-        boolean isModeled = false;
+        boolean isModeled = true;
         //TODO: Actualizar esto de los estados que ya no va.
 
 
@@ -138,7 +138,7 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
 
         // TODO: arreglar esto (Estados)
 
-        boolean isModeled = false;
+        boolean isModeled = true;
 
 
         pattern = standardizationPattern(pattern);

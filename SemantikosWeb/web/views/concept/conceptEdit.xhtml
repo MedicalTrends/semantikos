@@ -20,7 +20,7 @@
 
                 <!-- Indicadores -->
                 <div class="ui-g">
-                    <div class="ui-g-12 ui-md-6 ui-lg-2">
+                    <div class="ui-g-12 ui-md-6 ui-lg-1">
                         <p:outputLabel for="toBeReviewedCheck" value="Indicadores"/>
                     </div>
                     <div class="ui-g-12 ui-md-6 ui-lg-5">
@@ -35,8 +35,8 @@
 
                 <!-- Tag Semantikos -->
                 <div class="ui-g">
-                    <div class="ui-g-12 ui-md-6 ui-lg-2">
-                        <p:outputLabel for="tagSemantikos" value="Tag Semántikos"/>
+                    <div class="ui-g-12 ui-md-6 ui-lg-1">
+                        <p:outputLabel for="tagSemantikos" value="Tag Semantiko"/>
                     </div>
                     <div class="ui-g-12 ui-md-6 ui-lg-5">
                         <p:selectOneMenu id="tagSemantikos"
@@ -55,16 +55,17 @@
                     </div>
                 </div>
 
-                <!--Descripciones FSN y Preferida -->
-                <smtk:description description="#{conceptBean.concept.getValidDescriptionFSN()}" rendered="#{not conceptBean.concept.persistent}" />
-                <smtk:descriptionDraft description="#{conceptBean.concept.getValidDescriptionFSN()}" rendered="#{conceptBean.concept.persistent}" />
 
-                <smtk:description description="#{conceptBean.concept.getValidDescriptionFavorite()}" rendered="#{not conceptBean.concept.persistent}" />
-                <smtk:descriptionDraft description="#{conceptBean.concept.getValidDescriptionFavorite()}" rendered="#{conceptBean.concept.persistent}" />
+                <!--Descripciones FSN y Preferida -->
+                <smtk:descriptionDraft description="#{conceptBean.concept.getValidDescriptionFSN()}">
+                </smtk:descriptionDraft>
+
+                <smtk:descriptionDraft description="#{conceptBean.concept.getValidDescriptionFavorite()}">
+                </smtk:descriptionDraft>
 
                 <!-- Observación -->
                 <div class="ui-g">
-                    <div class="ui-g-12 ui-md-6 ui-lg-2">
+                    <div class="ui-g-12 ui-md-6 ui-lg-1">
                         <p:outputLabel for="toBeReviewedCheck" value="Observación"/>
                     </div>
                     <div class="ui-g-12 ui-md-6 ui-lg-5">
@@ -223,22 +224,7 @@
         </p:panel>
 
 
-        <script type="text/javascript">
 
-            function loadAutogenerate() {
-
-                setTimeout(function () {
-                    autogenerate(document.getElementById('initialForm:NameConcept'));
-                }, 1000);
-            }
-            function autogenerate(favorite) {
-                categoryName = "#{newConceptMBean.category.name}";
-                document.getElementById('mainForm:FSN').value = favorite.value + ' (' + categoryName + ')';
-
-
-            }
-
-        </script>
 
     </ui:define>
 
