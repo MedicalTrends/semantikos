@@ -230,7 +230,7 @@ public class DescriptionDAOImpl implements DescriptionDAO {
             ResultSet rs = call.getResultSet();
 
             if (rs.next()) {
-                if (rs.getBoolean(1) != true) {
+                if (!rs.getBoolean(1)) {
                     throw new EJBException("La descripción con DESCRIPTION_ID=" + description.getDescriptionId() + "  no fue ligada al concepto.");
                 }
             } else {
