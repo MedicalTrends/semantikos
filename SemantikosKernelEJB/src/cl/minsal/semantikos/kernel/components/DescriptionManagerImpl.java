@@ -163,8 +163,12 @@ public class DescriptionManagerImpl implements DescriptionManagerInterface {
         /* Se aplican las reglas de negocio para el traslado */
         new DescriptionTranslationBR().apply(sourceConcept, targetConcept, description);
 
+
+
         /* Se registra en el Audit el traslado */
         auditManager.recordDescriptionMovement(sourceConcept, targetConcept, description, user);
+
+
 
     }
 

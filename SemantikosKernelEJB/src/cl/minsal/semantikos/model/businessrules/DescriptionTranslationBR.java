@@ -62,7 +62,7 @@ public class DescriptionTranslationBR {
             return;
         }
 
-        if (sourceConcept.isModeled() && !targetConcept.isModeled()) {
+        if (sourceConcept.isModeled() && targetConcept.isModeled()) {
             return;
         }
 

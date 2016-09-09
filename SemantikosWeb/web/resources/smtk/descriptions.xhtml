@@ -9,17 +9,17 @@
       xmlns:c="http://java.sun.com/jsp/jstl/core">
 
 <composite:interface>
-    <composite:attribute name="descriptions" type="java.util.List" />
-    <composite:attribute name="otherTermino" type="java.lang.String" />
-    <composite:attribute name="otherSensibilidad" type="java.lang.Boolean" />
-    <composite:attribute name="otherDescriptionType" type="cl.minsal.semantikos.model.DescriptionType" />
-    <composite:attribute name="descriptionTypes" type="java.util.List" />
+    <composite:attribute name="descriptions" type="java.util.List"/>
+    <composite:attribute name="otherTermino" type="java.lang.String"/>
+    <composite:attribute name="otherSensibilidad" type="java.lang.Boolean"/>
+    <composite:attribute name="otherDescriptionType" type="cl.minsal.semantikos.model.DescriptionType"/>
+    <composite:attribute name="descriptionTypes" type="java.util.List"/>
 </composite:interface>
 
 <composite:implementation>
 
     <p:panel id="otherDescriptionsPanel" styleClass="otherDescriptionsPanel"
-             header="Otros Descriptores" toggleable="true" toggleSpeed="500" closeSpeed="500"
+             header="Otras Descripciones" toggleable="true" toggleSpeed="500" closeSpeed="500"
              widgetVar="panel">
 
         <p:growl id="growl" showDetail="true" showSummary="true"/>
@@ -58,7 +58,7 @@
             </div>
 
         </p:fieldset>
-        <p:spacer />
+        <p:spacer/>
         <div class="ui-g">
             <p:dataTable id="otherDescriptions"
                          styleClass="otherDescriptions"
@@ -79,18 +79,18 @@
                     </div>
                 </p:column>
 
-                <p:column headerText="Término" >
+                <p:column headerText="Término">
                     <div style="text-align: center;">
                         <p:cellEditor>
-                            <f:facet  name="output"><h:outputText value="#{description.representation}"/></f:facet>
-                            <f:facet  name="input"><p:inputText id="otrasTermino"
-                                                                value="#{description.representation}"
-                                                                style="width:100%"/></f:facet>
+                            <f:facet name="output"><h:outputText value="#{description.representation}"/></f:facet>
+                            <f:facet name="input"><p:inputText id="otrasTermino"
+                                                               value="#{description.representation}"
+                                                               style="width:100%"/></f:facet>
                         </p:cellEditor>
                     </div>
                 </p:column>
 
-                <p:column headerText="Estado" >
+                <p:column headerText="Estado">
                     <div style="text-align: center;">
                         <p:cellEditor>
                             <f:facet name="output">
@@ -128,7 +128,7 @@
 
                 <p:column headerText="Fecha Creación">
                     <div style="text-align: center;">
-                        <h:outputText />
+                        <h:outputText/>
                     </div>
                 </p:column>
 
@@ -151,7 +151,7 @@
 
                 <p:column headerText="Usuario Creador">
                     <div style="text-align: center;">
-                        <h:outputText />
+                        <h:outputText/>
                     </div>
                 </p:column>
 
@@ -160,17 +160,19 @@
                                    ajax="true"
                                    process="@this"
                                    update="@(.otherDescriptions)" style="float: right">
-                        <h:graphicImage  style="width: 15px; height: 15px"
-                                         name="images/trash-blue.png"
+                        <h:graphicImage style="width: 15px; height: 15px"
+                                        name="images/trash-blue.png"
                         />
                     </p:commandLink>
                     <p:commandButton rendered="#{conceptBean.concept.persistent}"
                                      icon="fa fa-exchange"
                                      process="@this"
-                                     update="@(.otherDescriptions)"
+                                     update=":#{cc.clientId}:conceptTranslate"
                                      oncomplete="PF('dialogTDC').show()"
-                    />
-                    <p:rowEditor style="display: inline" />
+                    >
+                        <f:setPropertyActionListener value="#{description}" target="#{conceptBean.descriptionToTranslate}"></f:setPropertyActionListener>
+                            </p:commandButton>
+                    <p:rowEditor style="display: inline"/>
                 </p:column>
 
             </p:dataTable>
@@ -179,46 +181,70 @@
 
 
     <p:dialog id="dialogTDC" header="Trasladar descripcion" widgetVar="dialogTDC" global="true"
-    showEffect="fade" hideEffect="fade" >
-        <div class="ui-g">
-            <div class="ui-g-12 ui-md-6 ui-lg-6">
-                <p:panel header="Origen" style="width: 100%;">
+              showEffect="fade" hideEffect="fade">
 
-                </p:panel>
+
+        <p:panel id="conceptTranslate" header="Destino" style="width: 100%;">
+            <div class="ui-g">
+                <div class="ui-g-12 ui-md-6 ui-lg-6">
+                    <p:autoComplete id="inputFindConcept" scrollHeight="200" size="5" style="width: 300px;"
+                                    inputStyle="width: 300px;"
+                                    converter="conceptConverter" var="concept"
+                                    value="#{conceptBean.conceptSMTKTranslateDes}"
+                                    completeMethod="#{findConceptBean.getConceptSearchInputAndCategories}"
+                                    itemLabel="#{concept.descriptionFavorite.term}" itemValue="#{concept}"
+                                    emptyMessage="No se encontraron conceptos relacionados"
+                    >
+                        <p:ajax event="itemSelect"  update=":#{cc.clientId}:conceptTranslate"></p:ajax>
+                    </p:autoComplete>
+                </div>
+                <div class="ui-g-12 ui-md-6 ui-lg-6">
+                    <p:selectCheckboxMenu style="width: 300px;" id="menu"
+                                          value="#{findConceptBean.categoryArrayID}" label="Categorías"
+                                          filter="true" filterMatchMode="startsWith">
+                        <f:selectItems value="#{findConceptBean.categoryList}" var="category"
+                                       itemLabel="#{category.name}" itemValue="#{category.id}"/>
+                    </p:selectCheckboxMenu>
+                </div>
             </div>
-            <div class="ui-g-12 ui-md-6 ui-lg-6">
-                <p:panel header="Destino" style="width: 100%;">
-                    <div class="ui-g">
-                    <div class="ui-grid-col-6">
-                        <p:autoComplete id="inputFindConcept" scrollHeight="200" size="5" style="width: 80%;"
-                                        inputStyle="width: 80%;"
-                                        converter="conceptConverter" var="concept"
-                                        value="#{findConceptBean.conceptSMTK}"
-                                        completeMethod="#{findConceptBean.getConceptSearchInput}"
-                                        itemLabel="#{concept.descriptionFavorite.term}" itemValue="#{concept}"
-                                        emptyMessage="No se encontraron conceptos relacionados"
-                        >
-                        </p:autoComplete>
-                    </div>
 
-                    <div class="ui-grid-col-6">
-                        <p:selectCheckboxMenu style="width: 100%; margin: 10px;" id="menu"
-                                              value="#{findConceptBean.categorySelect}" label="Categorías"
-                                              filter="true" filterMatchMode="startsWith">
-                            <f:selectItems value="#{findConceptBean.categoryList}" var="category"
-                                           itemLabel="#{category.name}" itemValue="#{category.id}"/>
-
-                            <p:ajax event="toggleSelect"/>
-                        </p:selectCheckboxMenu>
-                    </div>
-                    </div>
-
-                </p:panel>
+            <h3>Descripcion a trasladar</h3>
+            <div class="ui-g">
+                <div class="ui-g-12 ui-md-6 ui-lg-1">
+                    DESCID:
+                </div>
+                <div class="ui-g-12 ui-md-6 ui-lg-3">
+                    <h:outputText value="#{conceptBean.descriptionToTranslate.descriptionId}"/>
+                </div>
+                <div class="ui-g-12 ui-md-6 ui-lg-1">
+                    Termino:
+                </div>
+                <div class="ui-g-12 ui-md-6 ui-lg-3">
+                    <h:outputText value="#{conceptBean.descriptionToTranslate.term}"/>
+                </div>
+                <div class="ui-g-12 ui-md-6 ui-lg-1">
+                    Tipo:
+                </div>
+                <div class="ui-g-12 ui-md-6 ui-lg-3">
+                    <h:outputText value="#{conceptBean.descriptionToTranslate.descriptionType.name}"/>
+                </div>
             </div>
-        </div>
+
+            <h3>Concepto</h3>
+            <div class="ui-g">
+                <div class="ui-g-12 ui-md-6 ui-lg-1">
+                    Concept ID:
+                </div>
+                <div class="ui-g-12 ui-md-6 ui-lg-3">
+                    <h:outputText value="#{conceptBean.conceptSMTKTranslateDes.conceptID}"/>
+                </div>
+            </div>
+
+
+        </p:panel>
+
         <div style="text-align: center;">
-            <p:commandButton icon="fa fa-exchange" value="Trasladar">
-
+            <p:commandButton icon="fa fa-exchange" value="Trasladar" actionListener="#{conceptBean.translateDescription}">
             </p:commandButton>
         </div>
 

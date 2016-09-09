@@ -26,7 +26,7 @@ public class HistoryRecordBL {
      * @param conceptSMTK El concepto sobre el cual se realiza el registro en el historial.
      */
     private void brAud001(ConceptSMTK conceptSMTK) {
-        if (conceptSMTK.isModeled())
+        if (!conceptSMTK.isModeled())
             throw new BusinessRuleException("BR-AUD-001: No satisfecha: solo se pueden registrar acciones relativas a Conceptos que se encuentran Modelados");
     }
 }

@@ -68,6 +68,8 @@ public class ConceptBean implements Serializable {
     //Concepto respaldo
     private ConceptSMTKWeb _concept;
 
+    private ConceptSMTK conceptSMTKTranslateDes;
+
     private Category category;
 
     private List<DescriptionType> descriptionTypes = new ArrayList<DescriptionType>();
@@ -108,6 +110,16 @@ public class ConceptBean implements Serializable {
 
     private List<ConceptAuditAction> auditAction;
 
+    private Description descriptionToTranslate;
+
+    public Description getDescriptionToTranslate() {
+        return descriptionToTranslate;
+    }
+
+    public void setDescriptionToTranslate(Description descriptionToTranslate) {
+        this.descriptionToTranslate = descriptionToTranslate;
+    }
+
     //para tipo helpertable
     private int helperTableValuePlaceholder;
 
@@ -136,11 +148,10 @@ public class ConceptBean implements Serializable {
         //category = categoryManager.getCategoryById(1);
         //category = categoryManager.getCategoryById(105590001);
         //category = categoryManager.getCategoryById(71388002);
-        category = categoryManager.getCategoryById(419891008);
+        //category = categoryManager.getCategoryById(419891008);
 
 
         descriptionTypes = descriptionTypeFactory.getDescriptionTypes();
-
         tagSMTKs = tagSMTKManager.getAllTagSMTKs();
 
 
@@ -152,14 +163,10 @@ public class ConceptBean implements Serializable {
 
     //Methods
 
-    public void addTagToConcept(Tag tag){
-
-    }
-
     public void createConcept() throws ParseException {
 
         if(idconceptselect==0){
-            //category = categoryManager.getCategoryById(categorySelect);
+            category = categoryManager.getCategoryById(categorySelect);
             //category = categoryManager.getCategoryById(71388002);
             newConcept(category, favoriteDescription);
         }else{
@@ -443,6 +450,12 @@ public class ConceptBean implements Serializable {
 
 
 
+    public void translateDescription(){
+        descriptionManager.moveDescriptionToConcept(concept,conceptSMTKTranslateDes,descriptionToTranslate,user);
+    }
+
+
+
 
     // Getter and Setter
 
@@ -598,7 +611,17 @@ public class ConceptBean implements Serializable {
         this.auditAction = auditAction;
     }
 
+    public CategoryManagerInterface getCategoryManager() {
+        return categoryManager;
+    }
 
+    public ConceptSMTK getConceptSMTKTranslateDes() {
+        return conceptSMTKTranslateDes;
+    }
+
+    public void setConceptSMTKTranslateDes(ConceptSMTK conceptSMTKTranslateDes) {
+        this.conceptSMTKTranslateDes = conceptSMTKTranslateDes;
+    }
 
     //TODO: editar concepto
 

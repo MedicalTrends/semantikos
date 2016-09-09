@@ -413,11 +413,11 @@ public class ConceptDAOImpl implements ConceptDAO {
         id = Long.valueOf(resultSet.getString("id"));
         idCategory = Long.valueOf(resultSet.getString("id_category"));
         objectCategory = categoryDAO.getCategoryById(idCategory);
-        check = Boolean.parseBoolean(resultSet.getString("is_to_be_reviewed"));
-        consult = Boolean.parseBoolean(resultSet.getString("is_to_be_consultated"));
-        modeled = Boolean.parseBoolean(resultSet.getString("is_modeled"));
-        completelyDefined = Boolean.parseBoolean(resultSet.getString("is_fully_defined"));
-        published = Boolean.parseBoolean(resultSet.getString("is_published"));
+        check = resultSet.getBoolean("is_to_be_reviewed");
+        consult = resultSet.getBoolean("is_to_be_consultated");
+        modeled = resultSet.getBoolean("is_modeled");
+        completelyDefined = resultSet.getBoolean("is_fully_defined");
+        published = resultSet.getBoolean("is_published");
         conceptId = resultSet.getString("conceptid");
         String observation = resultSet.getString("observation");
         long idTagSMTK = resultSet.getLong("id_tag_smtk");

@@ -32,7 +32,9 @@ public class FindConcept implements Serializable{
 
     private List<Category> categoryList;
 
-    private Category categorySelect;
+    private Category[] categorySelect;
+
+    private Long[] categoryArrayID;
 
 
 
@@ -42,11 +44,21 @@ public class FindConcept implements Serializable{
         categoryList = categoryManager.getCategories();
     }
 
-    public List<ConceptSMTK> getConceptSearchInput(String patron) {
+    public List<ConceptSMTK> getConceptSearchInput(String pattern) {
 
-        if (patron != null) {
-            if (patron.length() > 2) {
-                findConcepts=conceptManager.findConceptBy(patron);
+        if (pattern != null) {
+            if (pattern.length() > 2) {
+                findConcepts=conceptManager.findConceptBy(pattern);
+                return findConcepts;
+            }
+        }
+        return findConcepts;
+    }
+    public List<ConceptSMTK> getConceptSearchInputAndCategories(String pattern) {
+
+        if (pattern != null) {
+            if (pattern.length() > 2) {
+                findConcepts=conceptManager.findConceptBy(pattern,categoryArrayID,0,conceptManager.countConceptBy(pattern,categoryArrayID));
                 return findConcepts;
             }
         }
@@ -77,11 +89,19 @@ public class FindConcept implements Serializable{
         this.categoryList = categoryList;
     }
 
-    public Category getCategorySelect() {
+    public Category[] getCategorySelect() {
         return categorySelect;
     }
 
-    public void setCategorySelect(Category categorySelect) {
+    public void setCategorySelect(Category[] categorySelect) {
         this.categorySelect = categorySelect;
+    }
+
+    public Long[] getCategoryArrayID() {
+        return categoryArrayID;
+    }
+
+    public void setCategoryArrayID(Long[] categoryArrayID) {
+        this.categoryArrayID = categoryArrayID;
     }
 }
