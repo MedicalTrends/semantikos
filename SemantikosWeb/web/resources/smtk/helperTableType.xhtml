@@ -178,30 +178,37 @@
 
                 <p:fieldset legend="Agregar #{cc.attrs.relationshipDefinition.name}">
 
-                    <ui:repeat value="#{cc.attrs.relationshipDefinition.relationshipAttributeDefinitions}" var="attributeDefinition" >
+                    <p:panelGrid columns="6">
+                    <ui:repeat value="#{conceptBean.getRelationshipAttributesByRelationshipDefinition(cc.attrs.relationshipDefinition)}" var="attribute1" varStatus="attVarStatus" >
 
-                        <p:outputLabel  value="#{attributeDefinition.name}" />
-                        <p:inputText ></p:inputText>
+                        <p:outputLabel value="#{attribute1.relationAttributeDefinition.name}" />
+
+                        <p:selectOneMenu  value="#{attribute1.target.id}"  rendered="#{attribute1.relationAttributeDefinition.targetDefinition.helperTable}">
+                            <f:selectItem itemLabel="Seleccione..."
+                                          itemValue=""
+                            />
+                            <f:selectItems value="#{conceptBean.helperTableManager.getValidRecords(attribute1.relationAttributeDefinition.targetDefinition,attribute1.relationAttributeDefinition.targetDefinition.showableColumnsNames)}"
+                                           var="helperTableRecord"
+                                           itemLabel="#{helperTableRecord.fields['description']}"
+                                           itemValue="#{helperTableRecord.id}"/>
+                        </p:selectOneMenu>
 
                     </ui:repeat>
 
                     <p:outputLabel value="Buscar #{cc.attrs.relationshipDefinition.name}" />
 
 
-                    <p:selectOneMenu id="helperTableTypeValue11"
-                                     value="#{conceptBean.basicTypeValue.value}"
-                                     validator="#{validatorBean.validateRequired}"
-                                     var="value1"
-                                     styleClass="relationships">
-
-                        <f:selectItem itemLabel="Seleccione"
-                                      itemValue=""
-                        />
-                        <f:selectItems value="#{conceptBean.helperTableManager.getValidRecords(cc.attrs.targetDefinition,cc.attrs.targetDefinition.showableColumnsNames)}"
-                                       var="helperTableRecord"
-                                       itemLabel="#{helperTableRecord}"
-                                       itemValue="#{helperTableRecord}"/>
-                    </p:selectOneMenu>
+                    <p:autoComplete id="themeCustom" value="#{autoCompleteView.theme2}" completeMethod="#{helperTableBean.searchHelperTableRecords}"
+                                    var="record" itemLabel="#{record.fields['description']}" itemValue="#{record.id}"  forceSelection="true">
+                        <f:attribute name="table" value="cc.attrs.relationshipDefinition" />
+                        <p:column>
+                            <h:outputText value="#{record.id}" />
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="#{record.fields['description']}" />
+                        </p:column>
+                    </p:autoComplete>
+                        
 
                     <p:commandButton
                             id="addHelperTableRelationshipWithAttributes"
@@ -213,7 +220,7 @@
                             icon="fa fa-plus"
                             title="Agregar"
                     />
-
+                    </p:panelGrid>
                 </p:fieldset>
 
                     <p:columns value="#{cc.attrs.targetDefinition.showableColumns}"

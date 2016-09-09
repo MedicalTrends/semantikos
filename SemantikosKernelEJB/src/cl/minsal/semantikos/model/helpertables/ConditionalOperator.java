@@ -7,7 +7,8 @@ public enum ConditionalOperator {
 
     GREATER_THAN(">"),
     LESS_THAN("<"),
-    EQUALS("=");
+    EQUALS("="),
+    LIKE("LIKE");
 
     private String representation;
 

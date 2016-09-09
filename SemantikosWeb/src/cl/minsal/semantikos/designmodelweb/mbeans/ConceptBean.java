@@ -336,6 +336,10 @@ public class ConceptBean implements Serializable {
     }
 
     public List<RelationshipAttribute> getRelationshipAttributesByRelationshipDefinition(RelationshipDefinition definition){
+
+        if(definition==null)
+            return new ArrayList<RelationshipAttribute>();
+
         if(!relationshipAttributesPlaceholder.containsKey(definition)) {
 
 
@@ -538,6 +542,9 @@ public class ConceptBean implements Serializable {
     }
 
     public HelperTableRecord getSelectedHelperTableRecord() {
+        if(selectedHelperTableRecord == null)
+            selectedHelperTableRecord = new HelperTableRecord();
+
         return selectedHelperTableRecord;
     }
 
