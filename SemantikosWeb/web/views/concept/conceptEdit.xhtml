@@ -36,7 +36,7 @@
                 <!-- Tag Semantikos -->
                 <div class="ui-g">
                     <div class="ui-g-12 ui-md-6 ui-lg-1">
-                        <p:outputLabel for="tagSemantikos" value="Tag Semantiko"/>
+                        <p:outputLabel for="tagSemantikos" value="Tag Semantikos"/>
                     </div>
                     <div class="ui-g-12 ui-md-6 ui-lg-5">
                         <p:selectOneMenu id="tagSemantikos"
@@ -57,11 +57,12 @@
 
 
                 <!--Descripciones FSN y Preferida -->
-                <smtk:descriptionDraft description="#{conceptBean.concept.getValidDescriptionFSN()}">
-                </smtk:descriptionDraft>
+                <smtk:descriptionFSN description="#{conceptBean.concept.getValidDescriptionFSN()}" rendered="#{not conceptBean.concept.persistent}" />
+                <smtk:descriptionFSNDraft description="#{conceptBean.concept.getValidDescriptionFSN()}" rendered="#{conceptBean.concept.persistent}" />
 
-                <smtk:descriptionDraft description="#{conceptBean.concept.getValidDescriptionFavorite()}">
-                </smtk:descriptionDraft>
+                <smtk:descriptionFavorite description="#{conceptBean.concept.getValidDescriptionFavorite()}" rendered="#{not conceptBean.concept.persistent}" />
+                <smtk:descriptionFavoriteDraft description="#{conceptBean.concept.getValidDescriptionFavorite()}" rendered="#{conceptBean.concept.persistent}" />
+
 
                 <!-- Observación -->
                 <div class="ui-g">
@@ -223,7 +224,15 @@
             </p:dialog>
         </p:panel>
 
+        <script type="text/javascript">
 
+            /*
+            $(document).on("keyup", "input[id$=favorite]", function(event) {
+                $("input[id$=FSN]").val($(this).val());
+            });
+            */
+
+        </script>
 
 
     </ui:define>

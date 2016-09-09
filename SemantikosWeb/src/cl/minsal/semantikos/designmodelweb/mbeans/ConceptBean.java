@@ -82,6 +82,10 @@ public class ConceptBean implements Serializable {
 
     private DescriptionType otherDescriptionType;
 
+    private ConceptSMTK conceptSMTKTranslateDes;
+
+    private Description descriptionToTranslate;
+
     // Placeholders para los target de las relaciones
     private BasicTypeValue basicTypeValue = new BasicTypeValue(null);
 
@@ -92,6 +96,7 @@ public class ConceptBean implements Serializable {
     private ConceptSMTK conceptSelected;
 
     private Map<Long, ConceptSMTK> targetSelected;
+
     ////////////////////////////////////////////////////
 
     private Map<RelationshipDefinition, List<RelationshipAttribute>> relationshipAttributesPlaceholder = new HashMap<RelationshipDefinition, List<RelationshipAttribute>>();
@@ -458,6 +463,10 @@ public class ConceptBean implements Serializable {
         context.addMessage(null, new FacesMessage("Info", "Los cambios se han descartado"));
     }
 
+    public void updateFSN(Description d){
+        concept.getValidDescriptionFSN().setTerm(d.getTerm());
+    }
+
 
     public void restoreConcept(){
         concept.setToBeReviewed(_concept.isToBeReviewed());
@@ -470,6 +479,9 @@ public class ConceptBean implements Serializable {
         concept.updateDescriptions(_concept.getDescriptionsWeb());
     }
 
+    public void translateDescription(){
+        descriptionManager.moveDescriptionToConcept(concept,conceptSMTKTranslateDes,descriptionToTranslate,user);
+    }
 
 
     // Getter and Setter
@@ -626,7 +638,25 @@ public class ConceptBean implements Serializable {
         this.auditAction = auditAction;
     }
 
+    public Description getDescriptionToTranslate() {
+        return descriptionToTranslate;
+    }
 
+    public void setDescriptionToTranslate(Description descriptionToTranslate) {
+        this.descriptionToTranslate = descriptionToTranslate;
+    }
+
+    public CategoryManagerInterface getCategoryManager() {
+        return categoryManager;
+    }
+
+    public ConceptSMTK getConceptSMTKTranslateDes() {
+        return conceptSMTKTranslateDes;
+    }
+
+    public void setConceptSMTKTranslateDes(ConceptSMTK conceptSMTKTranslateDes) {
+        this.conceptSMTKTranslateDes = conceptSMTKTranslateDes;
+    }
 
     //TODO: editar concepto
 

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:composite="http://java.sun.com/jsf/composite"
+      xmlns:smtk="http://java.sun.com/jsf/composite/smtk"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+<composite:interface>
+    <composite:attribute name="description" type="cl.minsal.semantikos.model.DescriptionWeb"/>
+</composite:interface>
+
+<composite:implementation>
+
+    <div class="ui-g">
+        <div class="ui-g-12 ui-md-6 ui-lg-1">
+            <p:outputLabel for="FSN" value="#{cc.attrs.description.descriptionType.name} *"/>
+        </div>
+        <div class="ui-g-12 ui-md-6 ui-lg-5">
+            <p:inputText id="FSN"
+                         styleClass="terms"
+                         name="description"
+                         validator="#{validatorBean.validateRequired}"
+                         value="#{cc.attrs.description.representation}"
+                         style="width:90%">
+                <p:ajax event="change" listener="#{conceptBean.updateFSN(cc.attrs.description)}" update="@(.terms)" process="@this" />
+            </p:inputText>
+        </div>
+        <div class="ui-g-12 ui-md-6 ui-lg-3">
+            <p:selectOneRadio id="caseSensitiveNew"
+                              layout="responsive"
+                              columns="2"
+                              value="#{cc.attrs.description.caseSensitive}"
+                              style="width:90%">
+                <f:selectItem itemValue="#{true}" itemLabel="Sensible"/>
+                <f:selectItem itemValue="#{false}" itemLabel="Insensible"/>
+            </p:selectOneRadio>
+        </div>
+        <div class="ui-g-12 ui-md-6 ui-lg-2">
+        </div>
+    </div>
+
+</composite:implementation>
+</html>
