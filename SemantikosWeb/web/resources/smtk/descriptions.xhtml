@@ -202,14 +202,6 @@
                     </div>
 
                     <div class="ui-grid-col-6">
-                        <p:selectCheckboxMenu style="width: 100%; margin: 10px;" id="menu"
-                                              value="#{findConceptBean.categorySelect}" label="Categorías"
-                                              filter="true" filterMatchMode="startsWith">
-                            <f:selectItems value="#{findConceptBean.categoryList}" var="category"
-                                           itemLabel="#{category.name}" itemValue="#{category.id}"/>
-
-                            <p:ajax event="toggleSelect"/>
-                        </p:selectCheckboxMenu>
                     </div>
                     </div>
 

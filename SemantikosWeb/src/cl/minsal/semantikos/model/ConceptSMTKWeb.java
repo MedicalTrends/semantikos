@@ -8,6 +8,7 @@ import cl.minsal.semantikos.util.Pair;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -72,6 +73,24 @@ public class ConceptSMTKWeb extends ConceptSMTK {
         ConceptSMTK conceptSMTK = new ConceptSMTK(null, category, true, true, false, false, false, observation, tagSMTK, descriptions);
 
         return new ConceptSMTKWeb(conceptSMTK);
+
+    }
+    
+    public void nullifyReferences(){
+
+        setTagSMTK(null);
+
+        setTags(null);
+
+        setCategory(null);
+
+        setRelationships(null);
+
+        setDescriptions(null);
+
+        //setRelationshipsWeb(null);
+
+        setDescriptionsWeb(null);
 
     }
 
@@ -249,8 +268,8 @@ public class ConceptSMTKWeb extends ConceptSMTK {
         return someRelationships;
     }
 
-    public void setRelationshipsWeb(List<Relationship> relationships) {
-        super.setRelationships(relationships);
+    public void setRelationshipsWeb(List<RelationshipWeb> relationships) {
+        //super.setRelationships(relationships);
         for (Relationship relationship : this.getValidRelationships())
             this.relationshipsWeb.add(new RelationshipWeb(relationship.getId(), relationship));
     }
@@ -267,6 +286,36 @@ public class ConceptSMTKWeb extends ConceptSMTK {
         else
             this.relationshipsWeb.add(new RelationshipWeb(relationship));
     }
+
+    public void removeUnpersistedDescriptions(){
+
+        Iterator<Description> it = getDescriptions().iterator();
+
+        while (it.hasNext()) {
+            Description description = it.next(); // must be called before you can call i.remove()
+            if(!description.isPersistent() && !description.getDescriptionType().getName().equalsIgnoreCase("FSN") && !description.getDescriptionType().getName().equalsIgnoreCase("Preferida"))
+                it.remove();
+        }
+
+        Iterator<DescriptionWeb> it2 = descriptionsWeb.iterator();
+
+        while (it2.hasNext()) {
+            DescriptionWeb descriptionWeb = it2.next(); // must be called before you can call i.remove()
+            if(!descriptionWeb.isPersistent() && !descriptionWeb.getDescriptionType().getName().equalsIgnoreCase("FSN") && !descriptionWeb.getDescriptionType().getName().equalsIgnoreCase("Preferida"))
+                it2.remove();
+        }
+
+    }
+
+    public void updateDescriptions(List<DescriptionWeb> descriptionsWeb){
+        for (DescriptionWeb descriptionWeb1 : this.descriptionsWeb) {
+            for (DescriptionWeb descriptionWeb2 : descriptionsWeb) {
+                if(descriptionWeb1.getDescriptionType().equals(descriptionWeb2.getDescriptionType()))
+                    descriptionWeb1.update(descriptionWeb2);
+            }
+        }
+    }
+
 
     /**
      * Este método es responsable de agregar un tag al concepto.

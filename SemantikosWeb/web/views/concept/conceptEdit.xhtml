@@ -10,11 +10,13 @@
     <ui:define name="content">
 
         <p:panel id="createEdit">
-            <h:form id="mainForm" rendered="#{conceptBean.concept!=null}">
+            <h:form id="mainForm" rendered="#{ not (conceptBean.concept eq null ) }">
 
                 <p:growl id="growl" showDetail="true" showSummary="true"/>
                 <p:growl id="editMsgs" showDetail="true"/>
+
                 <!--p:messages autoUpdate="true"></p:messages-->
+                <smtk:title concept="#{conceptBean.concept}" />
 
                 <!-- Indicadores -->
                 <div class="ui-g">
@@ -69,7 +71,7 @@
                         <p:inputTextarea id="observation"
                                          name="observation"
                                          value="#{conceptBean.concept.observation}"
-                                         style="width:95%">
+                                         style="width:90%">
                         </p:inputTextarea>
                     </div>
                     <div class="ui-g-12 ui-md-6 ui-lg-6">
@@ -137,6 +139,17 @@
                                  rendered="#{conceptBean.concept.persistent and not conceptBean.concept.modeled}"
                                  update="growl, mainForm"/>
 
+                <p:commandButton actionListener="#{conceptBean.cancelConcept}" icon="ui-icon-cancel"
+                                 value="Cancelar" type="submit" process="mainForm"
+                                 update="growl, mainForm">
+                    <p:confirm header="Confirmation" message="¿Desea deshacer los cambios realizados en esta sesión?" icon="ui-icon-alert" />
+                </p:commandButton>
+
+                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                    <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                </p:confirmDialog>
+
             </h:form>
 
             <p:messages id="msg" showDetail="true" showSummary="true">
@@ -148,8 +161,8 @@
 
 
             <p:dialog id="dialogNameConcept" widgetVar="dialogNameConcept"
-                      showEffect="fade" hideEffect="fade"
-                      rendered="#{conceptBean.concept==null}">
+                      showEffect="fade" hideEffect="fade" closable="false"
+                      rendered="#{conceptBean.concept eq null}">
 
                 <h:form id="initialForm">
                     <div style="text-align: center;"><h3>Crear Concepto</h3></div>
@@ -192,7 +205,7 @@
                         </div>
                     </div>
 
-                    <hr></hr>
+                    <hr />
 
                     <div style="text-align: center;"><h3>Editar Concepto</h3></div>
                     <div class="ui-g">

@@ -25,28 +25,29 @@
                          name="description"
                          validator="#{validatorBean.validateRequired}"
                          value="#{cc.attrs.description.representation}"
-                         style="width:95%">
+                         style="width:90%">
             </p:inputText>
+            <p:ajax event="itemSelect"
+                    update="@(.terms)"
+                    process="@this" />
         </div>
-        <div class="ui-g-12 ui-md-6 ui-lg-1">
+        <div class="ui-g-12 ui-md-6 ui-lg-2">
             <p:inputText id="termNew3"
                          name="descriptionId"
                          value="#{cc.attrs.description.descriptionId}"
                          rendered="#{cc.attrs.description.persistent}"
-                         style="width:80%">
+                         style="width:90%">
             </p:inputText>
         </div>
-        <div class="ui-g-12 ui-md-6 ui-lg-2">
+        <div class="ui-g-12 ui-md-6 ui-lg-3">
             <p:selectOneRadio id="caseSensitiveNew"
                               layout="responsive"
                               columns="2"
                               value="#{cc.attrs.description.caseSensitive}"
-                              style="width:100%">
+                              style="width:90%">
                 <f:selectItem itemValue="#{true}" itemLabel="Sensible"/>
                 <f:selectItem itemValue="#{false}" itemLabel="Insensible"/>
             </p:selectOneRadio>
-        </div>
-        <div class="ui-g-12 ui-md-6 ui-lg-3">
         </div>
     </div>
 

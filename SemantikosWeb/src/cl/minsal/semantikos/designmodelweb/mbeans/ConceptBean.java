@@ -8,6 +8,7 @@ import cl.minsal.semantikos.model.helpertables.HelperTableRecord;
 import cl.minsal.semantikos.model.relationships.*;
 import cl.minsal.semantikos.util.ConceptUtils;
 import cl.minsal.semantikos.util.Pair;
+import org.omnifaces.util.Ajax;
 import org.primefaces.context.RequestContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,8 +23,6 @@ import javax.faces.context.FacesContext;
 import java.io.Serializable;
 import java.text.ParseException;
 import java.util.*;
-
-import static cl.minsal.semantikos.model.ProfileFactory.DESIGNER_PROFILE;
 
 
 /**
@@ -111,7 +110,6 @@ public class ConceptBean implements Serializable {
     //para tipo helpertable
     private int helperTableValuePlaceholder;
 
-
     //Inicializacion del Bean
 
     @PostConstruct
@@ -139,7 +137,7 @@ public class ConceptBean implements Serializable {
         category = categoryManager.getCategoryById(419891008);
 
 
-        descriptionTypes = descriptionTypeFactory.getDescriptionTypes();
+        descriptionTypes = descriptionTypeFactory.getDescriptionTypesButFSNandFavorite();
 
         tagSMTKs = tagSMTKManager.getAllTagSMTKs();
 
@@ -159,14 +157,13 @@ public class ConceptBean implements Serializable {
     public void createConcept() throws ParseException {
 
         if(idconceptselect==0){
-            //category = categoryManager.getCategoryById(categorySelect);
+            category = categoryManager.getCategoryById(categorySelect);
             //category = categoryManager.getCategoryById(71388002);
             newConcept(category, favoriteDescription);
         }else{
             getConceptById(idconceptselect);
             //getConceptById(80602);
         }
-
 
         RequestContext context = RequestContext.getCurrentInstance();
         context.execute("PF('dialogNameConcept').hide();");
@@ -183,7 +180,7 @@ public class ConceptBean implements Serializable {
         // TODO: Diego
         TagSMTK tagSMTK = new TagSMTK(category.getTagSemantikos().getId(), category.getTagSemantikos().getName());
 
-        ConceptSMTK conceptSMTK = new ConceptSMTK(conceptManager.generateConceptId(), category, true, true, false, false, false, observation, tagSMTK);
+        ConceptSMTK conceptSMTK = new ConceptSMTK(conceptManager.generateConceptId(), category, false, false, false, false, false, observation, tagSMTK);
 
         concept = new ConceptSMTKWeb(conceptSMTK);
 
@@ -195,11 +192,21 @@ public class ConceptBean implements Serializable {
         favouriteDescription.setCaseSensitive(false);
         favouriteDescription.setDescriptionId(descriptionManager.generateDescriptionId());
 
-        DescriptionWeb[] descriptions = {favouriteDescription, fsnDescription};
-
-        for (DescriptionWeb description : descriptions) {
+        for (DescriptionWeb description : new DescriptionWeb[]{favouriteDescription, fsnDescription})
             concept.addDescriptionWeb(description);
-        }
+
+        _concept = new ConceptSMTKWeb(conceptSMTK);
+
+        fsnDescription = new DescriptionWeb(_concept, term, descriptionManager.getTypeFSN());
+        fsnDescription.setCaseSensitive(false);
+        fsnDescription.setDescriptionId(descriptionManager.generateDescriptionId());
+
+        favouriteDescription = new DescriptionWeb(_concept, term, descriptionManager.getTypeFavorite());
+        favouriteDescription.setCaseSensitive(false);
+        favouriteDescription.setDescriptionId(descriptionManager.generateDescriptionId());
+
+        for (DescriptionWeb description : new DescriptionWeb[]{favouriteDescription, fsnDescription})
+            _concept.addDescriptionWeb(description);
 
     }
 
@@ -424,6 +431,9 @@ public class ConceptBean implements Serializable {
         else {
             conceptManager.persist(concept, user);
             context.addMessage(null, new FacesMessage("Successful", "Concepto guardado "));
+
+            // Se resetea el concepto, como el concepto está persistido, se le pasa su id
+            getConceptById(concept.getId());
         }
 
     }
@@ -436,11 +446,29 @@ public class ConceptBean implements Serializable {
         if (concept.isPersistent() && !concept.isModeled()) {
 
             conceptManager.invalidate(conceptSMTK, user);
-            context.addMessage(null, new FacesMessage("Successful", "Concepto eliminado."));
+            context.addMessage(null, new FacesMessage("Successful", "Concepto eliminado"));
         }
 
     }
 
+    public void cancelConcept() {
+
+        FacesContext context = FacesContext.getCurrentInstance();
+        restoreConcept();
+        context.addMessage(null, new FacesMessage("Info", "Los cambios se han descartado"));
+    }
+
+
+    public void restoreConcept(){
+        concept.setToBeReviewed(_concept.isToBeReviewed());
+        concept.setToBeConsulted(_concept.isToBeConsulted());
+        concept.setTags(_concept.getTags());
+        concept.setTagSMTK(_concept.getTagSMTK());
+        concept.setObservation("");
+
+        concept.removeUnpersistedDescriptions();
+        concept.updateDescriptions(_concept.getDescriptionsWeb());
+    }
 
 
 
@@ -612,7 +640,6 @@ public class ConceptBean implements Serializable {
         this.idconceptselect = idconceptselect;
 
     }
-
 
 }
 
