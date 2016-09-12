@@ -24,12 +24,8 @@
                          styleClass="terms"
                          name="description"
                          validator="#{validatorBean.validateRequired}"
-                         value="#{cc.attrs.description.representation}"
+                         value="#{cc.attrs.description.term}"
                          style="width:90%">
-                <p:ajax event="keyup"
-                        listener="#{conceptBean.updateFSN(cc.attrs.description)}"
-                        update="@(input[id$=FSN])"
-                        process="@this" />
             </p:inputText>
         </div>
         <div class="ui-g-12 ui-md-6 ui-lg-3">

@@ -43,7 +43,7 @@
                                          value="#{conceptBean.concept.tagSMTK}"
                                          converter="omnifaces.SelectItemsConverter" style="width:60%">
                             <p:ajax event="itemSelect"
-                                    update="@(.terms)"
+                                    update="@(.FSN)"
                                     process="@this" />
                             <f:selectItem itemLabel="Seleccione tipo" itemValue=""/>
                             <f:selectItems value="#{conceptBean.tagSMTKs}" var="tag"
@@ -226,11 +226,11 @@
 
         <script type="text/javascript">
 
-            /*
             $(document).on("keyup", "input[id$=favorite]", function(event) {
                 $("input[id$=FSN]").val($(this).val());
+                $("input[id$=FSN]").trigger("blur");
             });
-            */
+
 
         </script>
 

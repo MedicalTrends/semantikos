@@ -60,10 +60,12 @@ public class DescriptionWeb extends Description {
 
     @Override
     public void setTerm(String term) {
+        /*
         if(term.trim().equals(""))
             return;
         if(!this.getTerm().trim().equals(term.trim()))
             this.setModified(true);
+            */
         super.setTerm(term.trim());
     }
 
@@ -125,8 +127,7 @@ public class DescriptionWeb extends Description {
     }
 
     public void setRepresentation(String representation) {
-        System.out.println(representation);
-        super.setTerm(representation.replace("("+super.getConceptSMTK().getTagSMTK().getName()+")","").trim());
+        super.setTerm(representation.trim().replaceAll("\\(.+?\\)","").trim());
         this.representation = representation;
     }
 }
