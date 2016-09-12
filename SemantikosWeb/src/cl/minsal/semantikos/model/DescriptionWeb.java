@@ -125,7 +125,6 @@ public class DescriptionWeb extends Description {
     }
 
     public void setRepresentation(String representation) {
-        System.out.println(representation);
         super.setTerm(representation.replace("("+super.getConceptSMTK().getTagSMTK().getName()+")","").trim());
         this.representation = representation;
     }

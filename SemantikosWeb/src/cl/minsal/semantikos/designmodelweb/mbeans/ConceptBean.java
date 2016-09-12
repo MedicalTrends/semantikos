@@ -315,7 +315,7 @@ public class ConceptBean implements Serializable {
                 if (otherDescriptionType != null) {
                     DescriptionWeb description = new DescriptionWeb(concept, otherTermino, otherDescriptionType);
                     description.setCaseSensitive(otherSensibilidad);
-                    //description.setDescriptionId(descriptionManager.generateDescriptionId());
+                    description.setDescriptionId(descriptionManager.generateDescriptionId());
                     concept.addDescriptionWeb(description);
                     otherTermino = "";
                 } else {
@@ -480,7 +480,19 @@ public class ConceptBean implements Serializable {
     }
 
     public void translateDescription(){
-        descriptionManager.moveDescriptionToConcept(concept,conceptSMTKTranslateDes,descriptionToTranslate,user);
+        FacesContext context = FacesContext.getCurrentInstance();
+        if(conceptSMTKTranslateDes==null){
+
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error", "No se seleccionó el concepto de destino"));
+
+        }else{
+            descriptionManager.moveDescriptionToConcept(concept,conceptSMTKTranslateDes,descriptionToTranslate,user);
+            concept= new ConceptSMTKWeb(conceptManager.getConceptByID(concept.getId()));
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Successful", "La descripción se ha trasladado a otro concepto correctamente"));
+        }
+
+
+
     }
 
 
