@@ -313,6 +313,10 @@ public class ConceptBean implements Serializable {
         if (otherTermino != null) {
             if (otherTermino.length() > 0) {
                 if (otherDescriptionType != null) {
+                    if(otherDescriptionType.getName().equalsIgnoreCase("abreviada") && concept.getValidDescriptionAbbreviated()!=null) {
+                        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Solo puede existir una descripción abreviada"));
+                        return;
+                    }
                     DescriptionWeb description = new DescriptionWeb(concept, otherTermino, otherDescriptionType);
                     description.setCaseSensitive(otherSensibilidad);
                     description.setDescriptionId(descriptionManager.generateDescriptionId());

@@ -149,6 +149,25 @@ public class ConceptSMTKWeb extends ConceptSMTK {
     }
 
     /**
+     * <p>
+     * Este método es responsable de retornar la <i>descripción abreviada</i>. Basados en la regla de negocio que dice
+     * que un concepto debe siempre tener una y solo una descripción abreviada.</p>
+     * <p>
+     * Si el concepto no tuviera descripción preferida, se retorna una descripción "sin tipo".
+     * </p>
+     *
+     * @return La descripción abreviada.
+     */
+    public DescriptionWeb getValidDescriptionAbbreviated() {
+        for (DescriptionWeb descriptionWeb : getDescriptionsWeb()) {
+            if (descriptionWeb.getDescriptionType().getName().equalsIgnoreCase("abreviada") && descriptionWeb.isValid()) {
+                return descriptionWeb;
+            }
+        }
+        return null;
+    }
+
+    /**
      * Este método restorna todas ls descripciones que no son FSN o Preferidas.
      *
      * @return Una lista con todas las descripciones no FSN o Preferidas.
