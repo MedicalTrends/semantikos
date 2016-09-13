@@ -2,29 +2,15 @@ package cl.minsal.semantikos.designmodelweb.mbeans;
 
 import cl.minsal.semantikos.kernel.components.*;
 import cl.minsal.semantikos.model.*;
-import cl.minsal.semantikos.model.audit.ConceptAuditAction;
-import cl.minsal.semantikos.model.basictypes.BasicTypeValue;
-import cl.minsal.semantikos.model.helpertables.HelperTableRecord;
-import cl.minsal.semantikos.model.relationships.*;
-import cl.minsal.semantikos.util.ConceptUtils;
-import cl.minsal.semantikos.util.Pair;
-import org.primefaces.context.RequestContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
-import javax.faces.context.FacesContext;
 import java.io.Serializable;
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 
 /**
@@ -42,7 +28,7 @@ public class ConceptBrowserBean implements Serializable {
 
 
     @EJB
-    CategoryManagerInterface categoryManager;
+    CategoryManager categoryManager;
 
     @EJB
     AuditManagerInterface auditManager;

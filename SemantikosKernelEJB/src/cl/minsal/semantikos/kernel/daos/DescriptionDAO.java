@@ -26,6 +26,17 @@ public interface DescriptionDAO {
     public List<Description> getDescriptionsByConcept(ConceptSMTK conceptSMTK);
 
     /**
+     * Este método es responsable de buscar y retornar todas las descripciones que contienen el término dado como
+     * parámetro en cada una de las categorías indicadas.
+     *
+     * @param term       El término buscado.
+     * @param categories Las categorías en donde se realiza la búsqueda.
+     *
+     * @return Todas las descripciones que poseen exactamente el término <code>term</code>.
+     */
+    List<Description> searchDescriptionsByTerm(String term, List<Category> categories);
+
+    /**
      * Este método es responsable de retornar un Factory.
      *
      * @return El factory adecuado... //TODO: WHAT?!

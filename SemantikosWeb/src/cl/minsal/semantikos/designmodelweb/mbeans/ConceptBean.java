@@ -8,7 +8,6 @@ import cl.minsal.semantikos.model.helpertables.HelperTableRecord;
 import cl.minsal.semantikos.model.relationships.*;
 import cl.minsal.semantikos.util.ConceptUtils;
 import cl.minsal.semantikos.util.Pair;
-import org.omnifaces.util.Ajax;
 import org.primefaces.context.RequestContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,7 +44,7 @@ public class ConceptBean implements Serializable {
     RelationshipManager relationshipManager;
 
     @EJB
-    CategoryManagerInterface categoryManager;
+    CategoryManager categoryManager;
 
     @EJB
     HelperTableManagerInterface helperTableManager;
@@ -633,7 +632,7 @@ public class ConceptBean implements Serializable {
         this.descriptionToTranslate = descriptionToTranslate;
     }
 
-    public CategoryManagerInterface getCategoryManager() {
+    public CategoryManager getCategoryManager() {
         return categoryManager;
     }
 

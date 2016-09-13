@@ -14,10 +14,20 @@ import java.util.List;
  * @author Andrés Farías
  */
 @Local
-public interface CategoryManagerInterface {
+public interface CategoryManager {
 
     /**
-     * Este metodo es responsable de recuperar una Categoría completa, con sus propiedades básicas y todos sus
+     * Este método es responsable de buscar un término en el contexto de una categoría.
+     *
+     * @param category La categoría en la cual se realiza la búsqueda.
+     * @param term     El término que se busca en la categoría.
+     *
+     * @return <code>true</code> si la categoría contiene el término <code>term</code> y <code>false</code> sino.
+     */
+    public boolean categoryContains(Category category, String term);
+
+    /**
+     * Este método es responsable de recuperar una Categoría completa, con sus propiedades básicas y todos sus
      * meta-atributos
      *
      * @param idCategory Identificador único de la categoría.

@@ -254,4 +254,9 @@ public class DescriptionManagerImpl implements DescriptionManagerInterface {
     public String generateDescriptionId() {
         return UUID.randomUUID().toString();
     }
+
+    @Override
+    public List<Description> searchDescriptionsByTerm(String term, List<Category> categories) {
+        return descriptionDAO.searchDescriptionsByTerm(term, categories);
+    }
 }
