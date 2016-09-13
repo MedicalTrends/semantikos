@@ -222,6 +222,11 @@ public class TagBean implements Serializable{
      * Método encargado de agregar la etiqueta que se está creando al concepto.
      */
     public void createTagToConcept(){
+
+        if(conceptBean.getConcept().isPersistent()){
+            tagManager.persist(tagCreate);
+            tagManager.assignTag(conceptBean.getConcept(),tagCreate);
+        }
         conceptBean.getConcept().getTags().add(tagCreate);
         tagListTable= tagManager.getAllTags();
         tagList= tagManager.getAllTags();
@@ -238,6 +243,9 @@ public class TagBean implements Serializable{
      * Método encargado de agregar la etiqueta que se selecciona al concepto.
      */
     public void addTagToConcept(){
+        if(conceptBean.getConcept().isPersistent()){
+            tagManager.assignTag(conceptBean.getConcept(),tagSelected);
+        }
         conceptBean.getConcept().getTags().add(tagSelected);
         tagListToConcept.remove(tagSelected);
         tagSelected= null;
@@ -248,6 +256,10 @@ public class TagBean implements Serializable{
      * @param tagToDelete etiqueta a eliminar.
      */
     public void deleteTagToConcept(Tag tagToDelete){
+        if(conceptBean.getConcept().isPersistent()){
+
+             tagManager.unassignTag(conceptBean.getConcept(),tagToDelete);
+        }
         conceptBean.getConcept().getTags().remove(tagToDelete);
         if(tagToDelete.getId()!=-1){
             tagListToConcept.add(tagToDelete);

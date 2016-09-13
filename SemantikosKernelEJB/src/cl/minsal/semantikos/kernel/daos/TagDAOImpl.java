@@ -342,13 +342,13 @@ public class TagDAOImpl implements TagDAO {
 
         logger.error("Desasociando el tag " + tag + " al concepto " + conceptSMTK);
         try (Connection connection = connect.getConnection();
-             CallableStatement call = connection.prepareCall("{call semantikos.assign_concept_to_tag(?,?)}")) {
+             CallableStatement call = connection.prepareCall("{call semantikos.unassign_concept_to_tag(?,?)}")) {
 
             call.setLong(1, conceptSMTK.getId());
             call.setLong(2, tag.getId());
             call.execute();
         } catch (SQLException e) {
-            String errorMsg = "Error al asociar el tag " + tag + " al concepto " + conceptSMTK;
+            String errorMsg = "Error al desasociar el tag " + tag + " al concepto " + conceptSMTK;
             logger.error(errorMsg, e);
             throw new EJBException(errorMsg, e);
         }

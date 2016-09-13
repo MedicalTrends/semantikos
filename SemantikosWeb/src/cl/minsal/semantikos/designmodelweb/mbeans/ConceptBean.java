@@ -312,6 +312,16 @@ public class ConceptBean implements Serializable {
                         return;
                     }
                     DescriptionWeb description = new DescriptionWeb(concept, otherTermino, otherDescriptionType);
+                    if( categoryManager.categoryContains(category,description.getTerm())){
+                        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Esta descripcion ya existe en esta categoria"));
+                        return;
+                    }
+
+                    if(containDescription(description)){
+                        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Esta descripcion ya existe en este concepto"));
+                        return;
+                    }
+
                     description.setCaseSensitive(otherSensibilidad);
                     description.setDescriptionId(descriptionManager.generateDescriptionId());
                     concept.addDescriptionWeb(description);
@@ -331,6 +341,15 @@ public class ConceptBean implements Serializable {
 
         }
 
+    }
+
+
+    public boolean containDescription(DescriptionWeb descriptionWeb){
+        for (DescriptionWeb description: concept.getDescriptionsWeb()) {
+            if( description.getTerm().equals(descriptionWeb.getTerm())){
+                   return true;
+            }
+        }return false;
     }
 
     /**
