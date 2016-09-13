@@ -27,7 +27,7 @@ public class ConceptExportMBean extends UINamingContainer {
 
     private ConceptSMTK conceptSMTK;
 
-    //80625 80602
+    //80614
     @EJB
     private ConceptDAO conceptDAO;
 
@@ -38,6 +38,8 @@ public class ConceptExportMBean extends UINamingContainer {
     @PostConstruct
     protected void initialize() throws ParseException {
         conceptBasics = new ArrayList<ConceptBasic>();
+
+        conceptSMTK=conceptDAO.getConceptByID(80614);
 
         conceptBasics.add(new ConceptBasic("IDCONCEPT", conceptSMTK.getConceptID()));
         conceptBasics.add(new ConceptBasic("Categoría", conceptSMTK.getCategory().toString()));
@@ -50,7 +52,7 @@ public class ConceptExportMBean extends UINamingContainer {
         conceptBasics.add(new ConceptBasic("Observación", conceptSMTK.getObservation()));
 
         crossMapsRelationships = new ArrayList<Relationship>();
-        conceptDAO.getConceptByID(80625);
+
     }
 
     public List<ConceptBasic> getConceptBasics() {
@@ -86,33 +88,6 @@ public class ConceptExportMBean extends UINamingContainer {
 
     public List<RefSet> getRefSets() {
         return refSets;
-    }
-}
-
-class ConceptBasic {
-
-    private String propertyName;
-    private String propertyValue;
-
-    public ConceptBasic(String propertyName, String propertyValue) {
-        this.propertyName = propertyName;
-        this.propertyValue = propertyValue;
-    }
-
-    public void setPropertyName(String propertyName) {
-        this.propertyName = propertyName;
-    }
-
-    public void setPropertyValue(String propertyValue) {
-        this.propertyValue = propertyValue;
-    }
-
-    public String getPropertyName() {
-        return propertyName;
-    }
-
-    public String getPropertyValue() {
-        return propertyValue;
     }
 }
 
