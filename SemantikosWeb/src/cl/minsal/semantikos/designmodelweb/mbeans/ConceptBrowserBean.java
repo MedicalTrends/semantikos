@@ -59,7 +59,7 @@ public class ConceptBrowserBean implements Serializable {
     private ConceptSMTK conceptSelected;
 
     @EJB
-    private CategoryManagerInterface categoryManager;
+    private CategoryManager categoryManager;
 
     @EJB
     private ConceptManagerInterface conceptManager;
@@ -75,7 +75,7 @@ public class ConceptBrowserBean implements Serializable {
             @Override
             public List<ConceptSMTK> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
                 List<ConceptSMTK> conceptSMTKs=null;
-                selectedCategories= new Long[71388002];
+                selectedCategories= new Long[0];
                 conceptSMTKs = conceptManager.findConceptBy(pattern, selectedCategories, first, pageSize);
                 this.setRowCount(conceptManager.countConceptBy(pattern, selectedCategories));
 
@@ -113,11 +113,11 @@ public class ConceptBrowserBean implements Serializable {
         this.selectedCategories = selectedCategories;
     }
 
-    public CategoryManagerInterface getCategoryManager() {
+    public CategoryManager getCategoryManager() {
         return categoryManager;
     }
 
-    public void setCategoryManager(CategoryManagerInterface categoryManager) {
+    public void setCategoryManager(CategoryManager categoryManager) {
         this.categoryManager = categoryManager;
     }
 
