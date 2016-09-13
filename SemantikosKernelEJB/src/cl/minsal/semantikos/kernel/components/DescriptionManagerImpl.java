@@ -259,4 +259,22 @@ public class DescriptionManagerImpl implements DescriptionManagerInterface {
     public List<Description> searchDescriptionsByTerm(String term, List<Category> categories) {
         return descriptionDAO.searchDescriptionsByTerm(term, categories);
     }
+
+    @Override
+    public void createDescription(Description description, User user) {
+
+        /* Reglas de negocio previas */
+        ConceptSMTK conceptSMTK = description.getConceptSMTK();
+        new DescriptionCreationBR().applyRules(conceptSMTK, description.getTerm(), description.getDescriptionType(), user);
+
+        if (!description.isPersistent()){
+            descriptionDAO.persist(description, user);
+        }
+
+        /* Si el concepto al cual se agrega la descripción está modelado, se registra en el historial */
+        if (conceptSMTK.isModeled()){
+            auditManager.recordDescriptionCreation(description, user);
+        }
+
+    }
 }

@@ -117,4 +117,12 @@ public interface DescriptionManagerInterface {
      * @return Todas las descripciones que poseen exactamente el término <code>term</code>.
      */
     public List<Description> searchDescriptionsByTerm(String term, List<Category> categories);
+
+    /**
+     * Este método es responsable de crear en el repositorio terminológico una nueva descripción.
+     *
+     * @param description La descripción que se desea crear.
+     * @param user        El usuario que realiza la acción.
+     */
+    public void createDescription(Description description, User user);
 }
