@@ -289,7 +289,7 @@ public class DescriptionDAOImpl implements DescriptionDAO {
              CallableStatement call = connection.prepareCall(sql)) {
 
             call.setString(1, term);
-            call.setArray(1, connection.createArrayOf("BigInt", categories.toArray(new Category[categories.size()])));
+            call.setArray(2, connection.createArrayOf("bigint", convertListCategoryToListID(categories).toArray(new Long[categories.size()])));
             call.execute();
 
             logger.debug("Búsqueda exacta descripciones con término =" + term);
@@ -306,6 +306,17 @@ public class DescriptionDAOImpl implements DescriptionDAO {
         }
 
         return descriptions;
+    }
+
+    private List<Long> convertListCategoryToListID(List<Category> categories){
+
+        List<Long> listIDs= new ArrayList<>();
+
+        for (int i = 0; i < categories.size(); i++) {
+            listIDs.add(categories.get(i).getId());
+
+        }
+        return listIDs;
     }
 
     private Description createDescriptionFromResultSet(ResultSet resultSet, ConceptSMTK conceptSMTK) throws SQLException {

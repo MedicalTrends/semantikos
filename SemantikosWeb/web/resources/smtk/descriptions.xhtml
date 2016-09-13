@@ -28,7 +28,7 @@
         <p:fieldset legend="Agregar descripción" toggleable="true" collapsed="true">
             <div class="ui-g">
                 <div class="ui-g-12 ui-md-6 ui-lg-1">
-                    <p:outputLabel for="otherTermino" value="Termino"/>
+                    <p:outputLabel for="otherTermino" value="Término"/>
                 </div>
 
                 <div class="ui-g-12 ui-md-6 ui-lg-5">
@@ -94,7 +94,8 @@
                     <div style="text-align: center;">
                         <p:cellEditor>
                             <f:facet name="output">
-                                <h:outputText value="-"/>
+                                <h:outputText value="Borrador" rendered="#{not description.modeled}"/>
+                                <h:outputText value="Modelado" rendered="#{description.modeled}"/>
                             </f:facet>
                             <f:facet name="input">
                                 <p:selectOneMenu value="#{description.modeled}" style="width:60%">
@@ -169,7 +170,7 @@
                                      update=":#{cc.clientId}:conceptTranslate"
                                      oncomplete="PF('dialogTDC').show()"
                     >
-                        <f:setPropertyActionListener value="#{description}" target="#{conceptBean.descriptionToTranslate}" />
+                        <f:setPropertyActionListener value="#{description}" target="#{conceptBean.descriptionToTranslate}"></f:setPropertyActionListener>
                             </p:commandButton>
                     <p:rowEditor style="display: inline"/>
                 </p:column>
@@ -209,41 +210,56 @@
 
             <h3>Descripcion a trasladar</h3>
             <div class="ui-g">
-                <div class="ui-g-12 ui-md-6 ui-lg-1">
+                <div class="ui-g-12 ui-md-6 ui-lg-2">
                     DESCID:
                 </div>
-                <div class="ui-g-12 ui-md-6 ui-lg-3">
+                <div class="ui-g-12 ui-md-6 ui-lg-10">
                     <h:outputText value="#{conceptBean.descriptionToTranslate.descriptionId}"/>
                 </div>
-                <div class="ui-g-12 ui-md-6 ui-lg-1">
-                    Termino:
-                </div>
-                <div class="ui-g-12 ui-md-6 ui-lg-3">
-                    <h:outputText value="#{conceptBean.descriptionToTranslate.term}"/>
-                </div>
-                <div class="ui-g-12 ui-md-6 ui-lg-1">
+            </div>
+            <div class="ui-g">
+                <div class="ui-g-12 ui-md-6 ui-lg-2">
                     Tipo:
                 </div>
-                <div class="ui-g-12 ui-md-6 ui-lg-3">
+                <div class="ui-g-12 ui-md-6 ui-lg-10">
                     <h:outputText value="#{conceptBean.descriptionToTranslate.descriptionType.name}"/>
                 </div>
             </div>
-
-            <h3>Concepto</h3>
             <div class="ui-g">
-                <div class="ui-g-12 ui-md-6 ui-lg-1">
+                <div class="ui-g-12 ui-md-6 ui-lg-2">
+                    Término:
+                </div>
+                <div class="ui-g-12 ui-md-6 ui-lg-10">
+                    <h:outputText value="#{conceptBean.descriptionToTranslate.term}"/>
+                </div>
+            </div>
+
+            <h3>Concepto de destino</h3>
+            <div class="ui-g">
+                <div class="ui-g-12 ui-md-6 ui-lg-2">
                     Concept ID:
                 </div>
-                <div class="ui-g-12 ui-md-6 ui-lg-3">
+                <div class="ui-g-12 ui-md-6 ui-lg-10">
                     <h:outputText value="#{conceptBean.conceptSMTKTranslateDes.conceptID}"/>
+                </div>
+            </div>
+
+            <div class="ui-g">
+                <div class="ui-g-12 ui-md-6 ui-lg-2">
+                    Descripción:
+                </div>
+                <div class="ui-g-12 ui-md-6 ui-lg-10">
+                    <h:outputText value="#{conceptBean.conceptSMTKTranslateDes.descriptionFavorite.term}"/>
                 </div>
             </div>
 
 
         </p:panel>
+        <br/>
 
         <div style="text-align: center;">
-            <p:commandButton icon="fa fa-exchange" value="Trasladar" actionListener="#{conceptBean.translateDescription}">
+            <p:commandButton update="createEdit" icon="fa fa-exchange" value="Trasladar"
+                             actionListener="#{conceptBean.translateDescription}">
             </p:commandButton>
         </div>
 
