@@ -38,7 +38,7 @@ public class ConceptBean implements Serializable {
     ConceptManagerInterface conceptManager;
 
     @EJB
-    DescriptionManagerInterface descriptionManager;
+    DescriptionManager descriptionManager;
 
     @EJB
     RelationshipManager relationshipManager;

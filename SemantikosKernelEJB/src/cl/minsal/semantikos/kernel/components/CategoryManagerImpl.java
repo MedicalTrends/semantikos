@@ -39,7 +39,7 @@ public class CategoryManagerImpl implements CategoryManager {
     private static final Logger logger = LoggerFactory.getLogger(CategoryManagerImpl.class);
 
     @EJB
-    private DescriptionManagerInterface descriptionManager;
+    private DescriptionManager descriptionManager;
 
     @Override
     public List<RelationshipDefinition> getCategoryMetaData(int id) {

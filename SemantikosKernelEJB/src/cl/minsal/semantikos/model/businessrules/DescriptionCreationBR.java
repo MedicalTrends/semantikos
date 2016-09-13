@@ -1,10 +1,7 @@
 package cl.minsal.semantikos.model.businessrules;
 
 import cl.minsal.semantikos.kernel.components.CategoryManager;
-import cl.minsal.semantikos.model.Category;
-import cl.minsal.semantikos.model.ConceptSMTK;
-import cl.minsal.semantikos.model.DescriptionType;
-import cl.minsal.semantikos.model.User;
+import cl.minsal.semantikos.model.*;
 import cl.minsal.semantikos.model.exceptions.BusinessRuleException;
 
 import javax.ejb.EJB;
@@ -26,6 +23,12 @@ public class DescriptionCreationBR {
      * @param user    El usuario que quiere crear la descripción.
      */
     public void applyRules(ConceptSMTK concept, String term, DescriptionType type, User user) {
+
+        /* Se verifican las invariantes */
+        Description description = new Description(concept, term, type);
+        new DescriptionInvariantsBR().invariants(description);
+
+        /* Y las reglas de negocio para sobre la creación */
         brDescriptionCreation001(concept, term);
     }
 
