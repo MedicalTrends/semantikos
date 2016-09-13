@@ -18,68 +18,7 @@
                 <!--p:messages autoUpdate="true"></p:messages-->
                 <smtk:title concept="#{conceptBean.concept}" />
 
-                <!-- Indicadores -->
-                <div class="ui-g">
-                    <div class="ui-g-12 ui-md-6 ui-lg-1">
-                        <p:outputLabel for="toBeReviewedCheck" value="Indicadores"/>
-                    </div>
-                    <div class="ui-g-12 ui-md-6 ui-lg-5">
-                        <p:selectBooleanCheckbox id="toBeReviewedCheck" itemLabel="Revisar"
-                                                 value="#{conceptBean.concept.toBeReviewed}" style="width:40%"/>
-                        <p:selectBooleanCheckbox id="toBeConsultatedCheck" itemLabel="Consultar"
-                                                 value="#{conceptBean.concept.toBeConsulted}" style="width:40%"/>
-                    </div>
-                    <div class="ui-g-12 ui-md-6 ui-lg-6">
-                    </div>
-                </div>
-
-                <!-- Tag Semantikos -->
-                <div class="ui-g">
-                    <div class="ui-g-12 ui-md-6 ui-lg-1">
-                        <p:outputLabel for="tagSemantikos" value="Tag Semantikos"/>
-                    </div>
-                    <div class="ui-g-12 ui-md-6 ui-lg-5">
-                        <p:selectOneMenu id="tagSemantikos"
-                                         value="#{conceptBean.concept.tagSMTK}"
-                                         converter="omnifaces.SelectItemsConverter" style="width:60%">
-                            <p:ajax event="itemSelect"
-                                    update="@(.FSN)"
-                                    process="@this" />
-                            <f:selectItem itemLabel="Seleccione tipo" itemValue=""/>
-                            <f:selectItems value="#{conceptBean.tagSMTKs}" var="tag"
-                                           itemValue="#{tag}"/>
-                        </p:selectOneMenu>
-
-                    </div>
-                    <div class="ui-g-12 ui-md-6 ui-lg-6">
-                    </div>
-                </div>
-
-
-                <!--Descripciones FSN y Preferida -->
-                <smtk:descriptionFSN description="#{conceptBean.concept.getValidDescriptionFSN()}" rendered="#{not conceptBean.concept.persistent}" />
-                <smtk:descriptionFSNDraft description="#{conceptBean.concept.getValidDescriptionFSN()}" rendered="#{conceptBean.concept.persistent}" />
-
-                <smtk:descriptionFavorite description="#{conceptBean.concept.getValidDescriptionFavorite()}" rendered="#{not conceptBean.concept.persistent}" />
-                <smtk:descriptionFavoriteDraft description="#{conceptBean.concept.getValidDescriptionFavorite()}" rendered="#{conceptBean.concept.persistent}" />
-
-
-                <!-- Observación -->
-                <div class="ui-g">
-                    <div class="ui-g-12 ui-md-6 ui-lg-1">
-                        <p:outputLabel for="toBeReviewedCheck" value="Observación"/>
-                    </div>
-                    <div class="ui-g-12 ui-md-6 ui-lg-5">
-                        <p:inputTextarea id="observation"
-                                         name="observation"
-                                         value="#{conceptBean.concept.observation}"
-                                         style="width:90%">
-                        </p:inputTextarea>
-                    </div>
-                    <div class="ui-g-12 ui-md-6 ui-lg-6">
-                    </div>
-                </div>
-
+                <smtk:conceptHeader concept="#{conceptBean.concept}" />
 
                 <!-- Etiquetas -->
 
@@ -132,16 +71,18 @@
 
                 <!-- Botonera Acciones -->
 
-                <p:commandButton actionListener="#{conceptBean.saveConcept}" icon="ui-icon-check"
+                <p:commandButton actionListener="#{conceptBean.saveConcept}" icon="ui-icon-check" styleClass="ui-priority-primary"
                                  value="Guardar"
                                  update="growl, mainForm"/>
 
-                <p:commandButton actionListener="#{conceptBean.deleteConcept}" icon="ui-icon-trash"
+                <p:commandButton actionListener="#{conceptBean.deleteConcept}" icon="ui-icon-trash" styleClass="ui-priority-primary"
                                  value="Eliminar" type="submit" process="mainForm"
                                  rendered="#{conceptBean.concept.persistent and not conceptBean.concept.modeled}"
-                                 update="growl, mainForm"/>
+                                 update="growl, mainForm">
+                    <p:confirm header="Confirmation" message="¿Desea invalidar este concepto?" icon="ui-icon-alert" />
+                </p:commandButton>
 
-                <p:commandButton actionListener="#{conceptBean.cancelConcept}" icon="ui-icon-cancel"
+                <p:commandButton actionListener="#{conceptBean.cancelConcept}" icon="ui-icon-cancel" styleClass="ui-priority-primary"
                                  value="Cancelar" type="submit" process="mainForm"
                                  update="growl, mainForm">
                     <p:confirm header="Confirmation" message="¿Desea deshacer los cambios realizados en esta sesión?" icon="ui-icon-alert" />
@@ -226,11 +167,10 @@
 
         <script type="text/javascript">
 
-            $(document).on("keyup", "input[id$=favorite]", function(event) {
+            $(document).on("change keyup blur input", "input[id$=favorite]", function(event) {
                 $("input[id$=FSN]").val($(this).val());
                 $("input[id$=FSN]").trigger("blur");
             });
-
 
         </script>
 

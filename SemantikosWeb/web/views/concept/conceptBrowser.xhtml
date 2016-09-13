@@ -1,0 +1,25 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:smtk="http://java.sun.com/jsf/composite/smtk"
+                template="/WEB-INF/template/template.xhtml">
+
+    <ui:define name="content">
+
+        <h:form id="hola">
+        <div class="ui-fluid">
+            <p:panelGrid columns="8" columnClasses="ui-grid-col-2, ui-grid-col-2, ui-grid-col-2, ui-grid-col-2, ui-grid-col-2, ui-grid-col-2, ui-grid-col-2, ui-grid-col-2," layout="grid" styleClass="ui-panelgrid-blank">
+                <smtk:filterTermino category="#{conceptBrowserBean.category}" />
+
+            </p:panelGrid>
+
+        </div>
+        </h:form>
+
+
+    </ui:define>
+
+</ui:composition>

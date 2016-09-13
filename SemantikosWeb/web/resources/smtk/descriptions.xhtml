@@ -92,10 +92,19 @@
 
                 <p:column headerText="Estado">
                     <div style="text-align: center;">
-
-                        <h:outputText value="Borrador" rendered="#{not description.modeled}"/>
-                        <h:outputText value="Modelado" rendered="#{description.modeled}"/>
-
+                        <p:cellEditor>
+                            <f:facet name="output">
+                                <h:outputText value="Borrador" rendered="#{not description.modeled}"/>
+                                <h:outputText value="Modelado" rendered="#{description.modeled}"/>
+                            </f:facet>
+                            <f:facet name="input">
+                                <p:selectOneMenu value="#{description.modeled}" style="width:60%">
+                                    <f:selectItem itemLabel="Seleccione estado" itemValue=""/>
+                                    <f:selectItem itemLabel="Borrador" itemValue="false"/>
+                                    <f:selectItem itemLabel="Modelado" itemValue="true"/>
+                                </p:selectOneMenu>
+                            </f:facet>
+                        </p:cellEditor>
                     </div>
                 </p:column>
 
@@ -103,7 +112,7 @@
                     <div style="text-align: center;">
                         <p:cellEditor>
                             <f:facet name="output"><h:outputText
-                                    value="#{description.descriptionType.name}"/></f:facet>
+                                    value="#{description.descriptionType}"/></f:facet>
                             <f:facet name="input">
                                 <p:selectOneMenu value="#{description.descriptionType}"
                                                  converter="omnifaces.SelectItemsConverter" style="width:60%">
@@ -119,7 +128,7 @@
 
                 <p:column headerText="Fecha Creación">
                     <div style="text-align: center;">
-                        <h:outputText/>
+                        <h:outputText value="-"/>
                     </div>
                 </p:column>
 
@@ -142,7 +151,7 @@
 
                 <p:column headerText="Usuario Creador">
                     <div style="text-align: center;">
-                        <h:outputText/>
+                        <h:outputText value="-"/>
                     </div>
                 </p:column>
 
@@ -161,9 +170,8 @@
                                      update=":#{cc.clientId}:conceptTranslate"
                                      oncomplete="PF('dialogTDC').show()"
                     >
-                        <f:setPropertyActionListener value="#{description}"
-                                                     target="#{conceptBean.descriptionToTranslate}"></f:setPropertyActionListener>
-                    </p:commandButton>
+                        <f:setPropertyActionListener value="#{description}" target="#{conceptBean.descriptionToTranslate}"></f:setPropertyActionListener>
+                            </p:commandButton>
                     <p:rowEditor style="display: inline"/>
                 </p:column>
 
@@ -187,7 +195,7 @@
                                     itemLabel="#{concept.descriptionFavorite.term}" itemValue="#{concept}"
                                     emptyMessage="No se encontraron conceptos relacionados"
                     >
-                        <p:ajax event="itemSelect" update=":#{cc.clientId}:conceptTranslate"></p:ajax>
+                        <p:ajax event="itemSelect"  update=":#{cc.clientId}:conceptTranslate"></p:ajax>
                     </p:autoComplete>
                 </div>
                 <div class="ui-g-12 ui-md-6 ui-lg-6">

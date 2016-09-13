@@ -1,10 +1,7 @@
 package cl.minsal.semantikos.kernel.components;
 
 
-import cl.minsal.semantikos.model.ConceptSMTK;
-import cl.minsal.semantikos.model.Description;
-import cl.minsal.semantikos.model.DescriptionType;
-import cl.minsal.semantikos.model.User;
+import cl.minsal.semantikos.model.*;
 
 import javax.ejb.Local;
 import java.util.List;
@@ -109,4 +106,15 @@ public interface DescriptionManagerInterface {
      * @return Un objeto <code>java.util.List</code> con las descripciones del concepto <code>concept</code>.
      */
     public String generateDescriptionId();
+
+    /**
+     * Este método es responsable de buscar y retornar todas las descripciones que contienen el término dado como
+     * parámetro en cada una de las categorías indicadas.
+     *
+     * @param term       El término buscado.
+     * @param categories Las categorías en donde se realiza la búsqueda.
+     *
+     * @return Todas las descripciones que poseen exactamente el término <code>term</code>.
+     */
+    public List<Description> searchDescriptionsByTerm(String term, List<Category> categories);
 }

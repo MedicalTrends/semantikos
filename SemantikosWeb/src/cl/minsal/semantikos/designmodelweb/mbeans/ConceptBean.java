@@ -8,7 +8,6 @@ import cl.minsal.semantikos.model.helpertables.HelperTableRecord;
 import cl.minsal.semantikos.model.relationships.*;
 import cl.minsal.semantikos.util.ConceptUtils;
 import cl.minsal.semantikos.util.Pair;
-import org.omnifaces.util.Ajax;
 import org.primefaces.context.RequestContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,7 +44,7 @@ public class ConceptBean implements Serializable {
     RelationshipManager relationshipManager;
 
     @EJB
-    CategoryManagerInterface categoryManager;
+    CategoryManager categoryManager;
 
     @EJB
     HelperTableManagerInterface helperTableManager;
@@ -174,6 +173,24 @@ public class ConceptBean implements Serializable {
         context.execute("PF('dialogNameConcept').hide();");
     }
 
+    //Este método es responsable de a partir de un concepto SMTK y un término, devolver un concepto WEB con su FSN y su Favorito
+    public ConceptSMTKWeb initConcept(ConceptSMTK concept, String term){
+        ConceptSMTKWeb conceptWeb = new ConceptSMTKWeb(concept);
+
+        DescriptionWeb fsnDescription = new DescriptionWeb(conceptWeb, term, descriptionManager.getTypeFSN());
+        fsnDescription.setCaseSensitive(false);
+        fsnDescription.setDescriptionId(descriptionManager.generateDescriptionId());
+
+        DescriptionWeb favouriteDescription = new DescriptionWeb(conceptWeb, term, descriptionManager.getTypeFavorite());
+        favouriteDescription.setCaseSensitive(false);
+        favouriteDescription.setDescriptionId(descriptionManager.generateDescriptionId());
+
+        for (DescriptionWeb description : new DescriptionWeb[]{favouriteDescription, fsnDescription})
+            conceptWeb.addDescriptionWeb(description);
+
+        return conceptWeb;
+    }
+
     //Este método es responsable de pasarle a la vista un concepto plantilla
     //(llamado desde la vista cuando se desea crear un nuevo concepto)
     public void newConcept(Category category, String term) {
@@ -186,33 +203,10 @@ public class ConceptBean implements Serializable {
         TagSMTK tagSMTK = new TagSMTK(category.getTagSemantikos().getId(), category.getTagSemantikos().getName());
 
         ConceptSMTK conceptSMTK = new ConceptSMTK(conceptManager.generateConceptId(), category, false, false, false, false, false, observation, tagSMTK);
-
-        concept = new ConceptSMTKWeb(conceptSMTK);
-
-        DescriptionWeb fsnDescription = new DescriptionWeb(concept, term, descriptionManager.getTypeFSN());
-        fsnDescription.setCaseSensitive(false);
-        fsnDescription.setDescriptionId(descriptionManager.generateDescriptionId());
-
-        DescriptionWeb favouriteDescription = new DescriptionWeb(concept, term, descriptionManager.getTypeFavorite());
-        favouriteDescription.setCaseSensitive(false);
-        favouriteDescription.setDescriptionId(descriptionManager.generateDescriptionId());
-
-        for (DescriptionWeb description : new DescriptionWeb[]{favouriteDescription, fsnDescription})
-            concept.addDescriptionWeb(description);
-
-        _concept = new ConceptSMTKWeb(conceptSMTK);
-
-        fsnDescription = new DescriptionWeb(_concept, term, descriptionManager.getTypeFSN());
-        fsnDescription.setCaseSensitive(false);
-        fsnDescription.setDescriptionId(descriptionManager.generateDescriptionId());
-
-        favouriteDescription = new DescriptionWeb(_concept, term, descriptionManager.getTypeFavorite());
-        favouriteDescription.setCaseSensitive(false);
-        favouriteDescription.setDescriptionId(descriptionManager.generateDescriptionId());
-
-        for (DescriptionWeb description : new DescriptionWeb[]{favouriteDescription, fsnDescription})
-            _concept.addDescriptionWeb(description);
-
+        // Se crea el concepto WEB a partir del concepto SMTK
+        concept = initConcept(conceptSMTK, term);
+        // Se crea una copia de respaldo
+        _concept = initConcept(conceptSMTK, term);
     }
 
     //Este método es responsable de pasarle a la vista un concepto, dado el id del concepto
@@ -293,7 +287,7 @@ public class ConceptBean implements Serializable {
         if (!isRelationshipFound) {
             this.concept.addRelationshipWeb(new Relationship(this.concept, target, relationshipDefinition));
         }
-        basicTypeValue= null;
+        // Se resetean los placeholder para los target de las relaciones
         basicTypeValue= new BasicTypeValue(null);
         conceptSelected = null;
     }
@@ -451,10 +445,10 @@ public class ConceptBean implements Serializable {
 
         FacesContext context = FacesContext.getCurrentInstance();
 
-        // Si el concepto está persistido, actualizarlo
+        // Si el concepto está persistido, invalidarlo
         if (concept.isPersistent() && !concept.isModeled()) {
 
-            conceptManager.invalidate(conceptSMTK, user);
+            conceptManager.invalidate(concept, user);
             context.addMessage(null, new FacesMessage("Successful", "Concepto eliminado"));
         }
 
@@ -463,24 +457,12 @@ public class ConceptBean implements Serializable {
     public void cancelConcept() {
 
         FacesContext context = FacesContext.getCurrentInstance();
-        restoreConcept();
+        concept.restore(_concept);
         context.addMessage(null, new FacesMessage("Info", "Los cambios se han descartado"));
     }
 
     public void updateFSN(Description d){
         concept.getValidDescriptionFSN().setTerm(d.getTerm());
-    }
-
-
-    public void restoreConcept(){
-        concept.setToBeReviewed(_concept.isToBeReviewed());
-        concept.setToBeConsulted(_concept.isToBeConsulted());
-        concept.setTags(_concept.getTags());
-        concept.setTagSMTK(_concept.getTagSMTK());
-        concept.setObservation("");
-
-        concept.removeUnpersistedDescriptions();
-        concept.updateDescriptions(_concept.getDescriptionsWeb());
     }
 
     public void translateDescription(){
@@ -662,7 +644,7 @@ public class ConceptBean implements Serializable {
         this.descriptionToTranslate = descriptionToTranslate;
     }
 
-    public CategoryManagerInterface getCategoryManager() {
+    public CategoryManager getCategoryManager() {
         return categoryManager;
     }
 
