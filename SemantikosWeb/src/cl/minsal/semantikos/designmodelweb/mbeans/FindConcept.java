@@ -1,6 +1,6 @@
 package cl.minsal.semantikos.designmodelweb.mbeans;
 
-import cl.minsal.semantikos.kernel.components.CategoryManagerInterface;
+import cl.minsal.semantikos.kernel.components.CategoryManager;
 import cl.minsal.semantikos.kernel.components.ConceptManagerInterface;
 import cl.minsal.semantikos.model.Category;
 import cl.minsal.semantikos.model.ConceptSMTK;
@@ -24,7 +24,7 @@ public class FindConcept implements Serializable{
     private ConceptManagerInterface conceptManager;
 
     @EJB
-    private CategoryManagerInterface categoryManager;
+    private CategoryManager categoryManager;
 
     private List<ConceptSMTK> findConcepts;
 

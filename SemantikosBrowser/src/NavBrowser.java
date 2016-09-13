@@ -1,6 +1,6 @@
 
 
-import cl.minsal.semantikos.kernel.components.CategoryManagerInterface;
+import cl.minsal.semantikos.kernel.components.CategoryManager;
 import cl.minsal.semantikos.kernel.components.ConceptManagerInterface;
 import cl.minsal.semantikos.model.Category;
 import cl.minsal.semantikos.model.ConceptSMTK;
@@ -41,7 +41,7 @@ public class NavBrowser {
     private ConceptSMTK conceptSelected;
 
     @EJB
-    private CategoryManagerInterface categoryManager;
+    private CategoryManager categoryManager;
 
     @EJB
     private ConceptManagerInterface conceptManager;
@@ -95,11 +95,11 @@ public class NavBrowser {
         this.selectedCategories = selectedCategories;
     }
 
-    public CategoryManagerInterface getCategoryManager() {
+    public CategoryManager getCategoryManager() {
         return categoryManager;
     }
 
-    public void setCategoryManager(CategoryManagerInterface categoryManager) {
+    public void setCategoryManager(CategoryManager categoryManager) {
         this.categoryManager = categoryManager;
     }
 

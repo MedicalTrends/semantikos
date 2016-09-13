@@ -18,13 +18,14 @@ import javax.persistence.Query;
 import java.math.BigInteger;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
  * @author Andrés Farías on 27-05-16.
  */
 @Stateless
-public class CategoryManagerImpl implements CategoryManagerInterface {
+public class CategoryManagerImpl implements CategoryManager {
 
     @PersistenceContext(unitName = "SEMANTIKOS_PU")
     private EntityManager entityManager;
@@ -36,6 +37,9 @@ public class CategoryManagerImpl implements CategoryManagerInterface {
     private RelationshipDAO relationshipDAO;
 
     private static final Logger logger = LoggerFactory.getLogger(CategoryManagerImpl.class);
+
+    @EJB
+    private DescriptionManager descriptionManager;
 
     @Override
     public List<RelationshipDefinition> getCategoryMetaData(int id) {
@@ -97,6 +101,11 @@ public class CategoryManagerImpl implements CategoryManagerInterface {
 
         /* Se retorna */
         return category;
+    }
+
+    @Override
+    public boolean categoryContains(Category category, String term) {
+        return descriptionManager.searchDescriptionsByTerm(term, Arrays.asList(category)).size() > 0;
     }
 
     @Override

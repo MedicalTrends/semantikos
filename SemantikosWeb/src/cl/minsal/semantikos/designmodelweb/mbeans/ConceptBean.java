@@ -8,7 +8,6 @@ import cl.minsal.semantikos.model.helpertables.HelperTableRecord;
 import cl.minsal.semantikos.model.relationships.*;
 import cl.minsal.semantikos.util.ConceptUtils;
 import cl.minsal.semantikos.util.Pair;
-import org.omnifaces.util.Ajax;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.CellEditEvent;
 import org.primefaces.event.RowEditEvent;
@@ -41,13 +40,13 @@ public class ConceptBean implements Serializable {
     ConceptManagerInterface conceptManager;
 
     @EJB
-    DescriptionManagerInterface descriptionManager;
+    DescriptionManager descriptionManager;
 
     @EJB
     RelationshipManager relationshipManager;
 
     @EJB
-    CategoryManagerInterface categoryManager;
+    CategoryManager categoryManager;
 
     @EJB
     HelperTableManagerInterface helperTableManager;
@@ -315,6 +314,16 @@ public class ConceptBean implements Serializable {
                         return;
                     }
                     DescriptionWeb description = new DescriptionWeb(concept, otherTermino, otherDescriptionType);
+                    if( categoryManager.categoryContains(category,description.getTerm())){
+                        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Esta descripcion ya existe en esta categoria"));
+                        return;
+                    }
+
+                    if(containDescription(description)){
+                        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Esta descripcion ya existe en este concepto"));
+                        return;
+                    }
+
                     description.setCaseSensitive(otherSensibilidad);
                     description.setModeled(false);
                     description.setDescriptionId(descriptionManager.generateDescriptionId());
@@ -336,6 +345,15 @@ public class ConceptBean implements Serializable {
 
         }
 
+    }
+
+
+    public boolean containDescription(DescriptionWeb descriptionWeb){
+        for (DescriptionWeb description: concept.getDescriptionsWeb()) {
+            if( description.getTerm().equals(descriptionWeb.getTerm())){
+                   return true;
+            }
+        }return false;
     }
 
     /**
@@ -471,7 +489,19 @@ public class ConceptBean implements Serializable {
     }
 
     public void translateDescription(){
-        descriptionManager.moveDescriptionToConcept(concept,conceptSMTKTranslateDes,descriptionToTranslate,user);
+        FacesContext context = FacesContext.getCurrentInstance();
+        if(conceptSMTKTranslateDes==null){
+
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error", "No se seleccionó el concepto de destino"));
+
+        }else{
+            descriptionManager.moveDescriptionToConcept(concept,conceptSMTKTranslateDes,descriptionToTranslate,user);
+            concept= new ConceptSMTKWeb(conceptManager.getConceptByID(concept.getId()));
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Successful", "La descripción se ha trasladado a otro concepto correctamente"));
+        }
+
+
+
     }
 
     public void onRowEdit(RowEditEvent event) {
@@ -645,7 +675,7 @@ public class ConceptBean implements Serializable {
         this.descriptionToTranslate = descriptionToTranslate;
     }
 
-    public CategoryManagerInterface getCategoryManager() {
+    public CategoryManager getCategoryManager() {
         return categoryManager;
     }
 

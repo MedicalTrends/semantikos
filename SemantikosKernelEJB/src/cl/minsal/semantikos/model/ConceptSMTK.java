@@ -645,12 +645,10 @@ public class ConceptSMTK extends PersistentEntity implements Target, AuditableEn
     }
 
     public TagSMTK getTagSMTK() {
-        System.out.println(tagSMTK);
         return tagSMTK;
     }
 
     public void setTagSMTK(TagSMTK tagSMTK) {
-        System.out.println(tagSMTK);
         this.tagSMTK = tagSMTK;
     }
 }

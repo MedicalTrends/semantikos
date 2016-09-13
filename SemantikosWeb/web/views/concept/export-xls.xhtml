@@ -23,7 +23,7 @@
                              paginator="false" rows="6">
 
                     <p:column>
-                        <h:outputText value="#{descriptions.descriptionID}"/>
+                        <h:outputText value="#{descriptions.descriptionId}"/>
                     </p:column>
                     <p:column>
                         <h:outputText value="#{descriptions.term}"/>
@@ -129,7 +129,7 @@
 
                 </p:dataTable>
 
-                <p:dataTable id="refsetsTable" var="snomedctRelation" value="#{conceptExport.refsets}"
+                <p:dataTable id="refsetsTable" var="snomedctRelation" value="#{conceptExport.refSets}"
                              paginator="false" rows="6">
 
                     <p:column>

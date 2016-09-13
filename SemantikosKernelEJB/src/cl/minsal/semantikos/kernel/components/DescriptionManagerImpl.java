@@ -21,7 +21,7 @@ import static java.lang.System.currentTimeMillis;
  * @author Andrés Farías
  */
 @Stateless
-public class DescriptionManagerImpl implements DescriptionManagerInterface {
+public class DescriptionManagerImpl implements DescriptionManager {
 
     private static final Logger logger = LoggerFactory.getLogger(DescriptionManagerImpl.class);
 
@@ -33,6 +33,24 @@ public class DescriptionManagerImpl implements DescriptionManagerInterface {
 
     /* El conjunto de reglas de negocio para validar creación de descripciones */
     private DescriptionCreationBR descriptionCreationBR = new DescriptionCreationBR();
+
+    @Override
+    public void createDescription(Description description, User user) {
+
+        /* Reglas de negocio previas */
+        ConceptSMTK conceptSMTK = description.getConceptSMTK();
+        new DescriptionCreationBR().applyRules(conceptSMTK, description.getTerm(), description.getDescriptionType(), user);
+
+        if (!description.isPersistent()){
+            descriptionDAO.persist(description, user);
+        }
+
+        /* Si el concepto al cual se agrega la descripción está modelado, se registra en el historial */
+        if (conceptSMTK.isModeled()){
+            auditManager.recordDescriptionCreation(description, user);
+        }
+
+    }
 
     @Override
     public Description bindDescriptionToConcept(ConceptSMTK concept, String term, DescriptionType descriptionType, User user) {
@@ -115,6 +133,7 @@ public class DescriptionManagerImpl implements DescriptionManagerInterface {
         }
     }
 
+
     @Override
     public void deleteDescription(ConceptSMTK conceptSMTK, Description description, User user) {
 
@@ -126,7 +145,6 @@ public class DescriptionManagerImpl implements DescriptionManagerInterface {
             auditManager.recordDescriptionDeletion(conceptSMTK, description, user);
         }
     }
-
 
     /**
      * Este método es responsable de aplicar las actualizaciones. Para actualizar una descripción se revisan las
@@ -163,6 +181,7 @@ public class DescriptionManagerImpl implements DescriptionManagerInterface {
         }
     }
 
+
     @Override
     public void moveDescriptionToConcept(ConceptSMTK sourceConcept, ConceptSMTK targetConcept, Description description, User user) {
 
@@ -185,7 +204,6 @@ public class DescriptionManagerImpl implements DescriptionManagerInterface {
         /* Se registra en el Audit el traslado */
         auditManager.recordDescriptionMovement(sourceConcept, targetConcept, description, user);
     }
-
 
     @Override
     public String getIdDescription(String tipoDescription) {
@@ -220,6 +238,7 @@ public class DescriptionManagerImpl implements DescriptionManagerInterface {
 
     }
 
+
     @Override
     public List<Description> findDescriptionsByConcept(int idConcept) {
 
@@ -233,7 +252,6 @@ public class DescriptionManagerImpl implements DescriptionManagerInterface {
 
         return null;
     }
-
 
     @Override
     public DescriptionType getTypeFSN() {
@@ -253,5 +271,10 @@ public class DescriptionManagerImpl implements DescriptionManagerInterface {
     @Override
     public String generateDescriptionId() {
         return UUID.randomUUID().toString();
+    }
+
+    @Override
+    public List<Description> searchDescriptionsByTerm(String term, List<Category> categories) {
+        return descriptionDAO.searchDescriptionsByTerm(term, categories);
     }
 }
