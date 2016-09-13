@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:composite="http://java.sun.com/jsf/composite"
+      xmlns:smtk="http://java.sun.com/jsf/composite/smtk"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+<composite:interface>
+    <composite:attribute name="category" type="cl.minsal.semantikos.model.Category"/>
+</composite:interface>
+
+<composite:implementation>
+
+    <p:autoComplete emptyMessage="No se encontraron conceptos relacionados"
+                    forceSelection="true"
+                    id="findConceptSMTK" scrollHeight="200" size="5" style="width: 85%;"
+                    inputStyle="width: 85%;"
+                    completeMethod="#{smtkBean.getConceptSearchInput}"
+                    converter="conceptConverter"
+                    var="concept"
+                    value="#{conceptBean.conceptSelected}"
+                    itemLabel="#{concept.descriptionFavorite.term}" itemValue="#{concept}">
+
+        <p:column>
+            <h:outputText value="#{concept.descriptionFavorite.id}"/>
+        </p:column>
+
+        <p:column>
+            <h:outputText value="#{concept.descriptionFavorite.term}"/>
+        </p:column>
+
+        <f:attribute name="targetDef" value="#{cc.attrs.category}" />
+    </p:autoComplete>
+
+    <h:outputStylesheet id="customCSS">
+
+        input {
+            background:transparent url(http://i.stackoverflow.com/Content/Img/search.png) no-repeat scroll left center;
+            margin:0;
+            max-width:230px;
+            padding-left:16px;
+        }
+    </h:outputStylesheet>
+
+</composite:implementation>
+</html>

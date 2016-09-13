@@ -94,8 +94,7 @@
                     <div style="text-align: center;">
                         <p:cellEditor>
                             <f:facet name="output">
-                                <h:outputText value="Borrador" rendered="#{not description.modeled}"/>
-                                <h:outputText value="Modelado" rendered="#{description.modeled}"/>
+                                <h:outputText value="-"/>
                             </f:facet>
                             <f:facet name="input">
                                 <p:selectOneMenu value="#{description.modeled}" style="width:60%">
@@ -128,7 +127,7 @@
 
                 <p:column headerText="Fecha Creación">
                     <div style="text-align: center;">
-                        <h:outputText/>
+                        <h:outputText value="-"/>
                     </div>
                 </p:column>
 
@@ -151,7 +150,7 @@
 
                 <p:column headerText="Usuario Creador">
                     <div style="text-align: center;">
-                        <h:outputText/>
+                        <h:outputText value="-"/>
                     </div>
                 </p:column>
 
@@ -170,7 +169,7 @@
                                      update=":#{cc.clientId}:conceptTranslate"
                                      oncomplete="PF('dialogTDC').show()"
                     >
-                        <f:setPropertyActionListener value="#{description}" target="#{conceptBean.descriptionToTranslate}"></f:setPropertyActionListener>
+                        <f:setPropertyActionListener value="#{description}" target="#{conceptBean.descriptionToTranslate}" />
                             </p:commandButton>
                     <p:rowEditor style="display: inline"/>
                 </p:column>

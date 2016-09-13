@@ -326,13 +326,23 @@ public class ConceptSMTKWeb extends ConceptSMTK {
 
     }
 
-    public void updateDescriptions(List<DescriptionWeb> descriptionsWeb){
-        for (DescriptionWeb descriptionWeb1 : this.descriptionsWeb) {
-            for (DescriptionWeb descriptionWeb2 : descriptionsWeb) {
-                if(descriptionWeb1.getDescriptionType().equals(descriptionWeb2.getDescriptionType()))
-                    descriptionWeb1.update(descriptionWeb2);
+    public void restore(ConceptSMTKWeb _concept){
+
+        super.setToBeReviewed(_concept.isToBeReviewed());
+        super.setToBeConsulted(_concept.isToBeConsulted());
+        super.setTags(_concept.getTags());
+        super.setTagSMTK(_concept.getTagSMTK());
+        super.setObservation("");
+
+        removeUnpersistedDescriptions();
+
+        for (DescriptionWeb descriptionWeb : descriptionsWeb) {
+            for (DescriptionWeb _descriptionWeb : _concept.getDescriptionsWeb()) {
+                if(descriptionWeb.getDescriptionType().equals(_descriptionWeb.getDescriptionType()))
+                    descriptionWeb.restore(_descriptionWeb);
             }
         }
+
     }
 
 
