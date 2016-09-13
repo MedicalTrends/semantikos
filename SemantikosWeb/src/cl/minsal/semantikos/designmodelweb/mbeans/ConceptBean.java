@@ -10,6 +10,8 @@ import cl.minsal.semantikos.util.ConceptUtils;
 import cl.minsal.semantikos.util.Pair;
 import org.omnifaces.util.Ajax;
 import org.primefaces.context.RequestContext;
+import org.primefaces.event.CellEditEvent;
+import org.primefaces.event.RowEditEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -314,8 +316,10 @@ public class ConceptBean implements Serializable {
                     }
                     DescriptionWeb description = new DescriptionWeb(concept, otherTermino, otherDescriptionType);
                     description.setCaseSensitive(otherSensibilidad);
+                    description.setModeled(false);
                     description.setDescriptionId(descriptionManager.generateDescriptionId());
                     concept.addDescriptionWeb(description);
+
                     otherTermino = "";
                 } else {
                     context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se ha seleccionado el tipo de descripción"));
@@ -470,6 +474,14 @@ public class ConceptBean implements Serializable {
         descriptionManager.moveDescriptionToConcept(concept,conceptSMTKTranslateDes,descriptionToTranslate,user);
     }
 
+    public void onRowEdit(RowEditEvent event) {
+        DescriptionWeb d = (DescriptionWeb) event.getObject();
+        FacesContext context = FacesContext.getCurrentInstance();
+
+        if(d.getDescriptionType().getName().equalsIgnoreCase("abreviada") && concept.getValidDescriptionAbbreviated()!=null) {
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Solo puede existir una descripción abreviada"));
+        }
+    }
 
     // Getter and Setter
 

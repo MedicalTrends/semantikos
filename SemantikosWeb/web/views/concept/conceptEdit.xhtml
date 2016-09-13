@@ -169,7 +169,7 @@
 
             $(document).on("change keyup blur input", "input[id$=favorite]", function(event) {
                 $("input[id$=FSN]").val($(this).val());
-                $("input[id$=FSN]").trigger("blur");
+                $("input[id$=FSN]").trigger("change");
             });
 
         </script>

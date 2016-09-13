@@ -9,6 +9,8 @@ import cl.minsal.semantikos.model.relationships.*;
 import cl.minsal.semantikos.util.ConceptUtils;
 import cl.minsal.semantikos.util.Pair;
 import org.primefaces.context.RequestContext;
+import org.primefaces.model.LazyDataModel;
+import org.primefaces.model.SortOrder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,46 +39,94 @@ public class ConceptBrowserBean implements Serializable {
 
     static final Logger logger = LoggerFactory.getLogger(ConceptBrowserBean.class);
 
-    @EJB
-    ConceptManagerInterface conceptManager;
+    private List<Category> categories;
+    private LazyDataModel<ConceptSMTK> concepts;
 
+    private Long[] selectedCategories;
+    private String pattern;
 
-    @EJB
-    CategoryManagerInterface categoryManager;
+    public String getPattern() {
+        return pattern;
+    }
 
-    @EJB
-    AuditManagerInterface auditManager;
-
-    public User user;
+    public void setPattern(String pattern) {
+        this.pattern = pattern;
+    }
 
     private Category category;
+    private ConceptSMTK conceptSMTK;
+    private Description description;
+    private ConceptSMTK conceptSelected;
 
+    @EJB
+    private CategoryManagerInterface categoryManager;
 
-    //Inicializacion del Bean
+    @EJB
+    private ConceptManagerInterface conceptManager;
+
 
     @PostConstruct
-    protected void initialize() throws ParseException {
-
-        // TODO: Manejar el usuario desde la sesión
-
-        user = new User();
-
-        user.setIdUser(1);
-        user.setUsername("amauro");
-        user.setPassword("amauro");
-        Profile designerProfile = new Profile(1, "designerProfile", "designerProfile");
-        user.getProfiles().add(designerProfile);
-
-        //category = categoryManager.getCategoryById(105590001);
-        //category = categoryManager.getCategoryById(105590001);
-        category = categoryManager.getCategoryById(71388002);
-        //category = categoryManager.getCategoryById(419891008);
+    public void init() {
 
 
-        // TODO: Inicializar lista de estados de descripción con todos los estados posibles
-        //descriptionStates = stateMachineManager.getConceptStateMachine().
-        //concept = new ConceptSMTK(category, new Description("electrocardiograma de urgencia", descriptionTypes.get(0)));
+        categories = categoryManager.getCategories();
 
+        concepts = new LazyDataModel<ConceptSMTK>() {
+            @Override
+            public List<ConceptSMTK> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
+                List<ConceptSMTK> conceptSMTKs=null;
+                selectedCategories= new Long[71388002];
+                conceptSMTKs = conceptManager.findConceptBy(pattern, selectedCategories, first, pageSize);
+                this.setRowCount(conceptManager.countConceptBy(pattern, selectedCategories));
+
+
+                return conceptSMTKs;
+            }
+
+        };
+
+
+    }
+
+
+    public List<Category> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(List<Category> categories) {
+        this.categories = categories;
+    }
+
+    public LazyDataModel<ConceptSMTK> getConcepts() {
+        return concepts;
+    }
+
+    public void setConcepts(LazyDataModel<ConceptSMTK> concepts) {
+        this.concepts = concepts;
+    }
+
+    public Long[] getSelectedCategories() {
+        return selectedCategories;
+    }
+
+    public void setSelectedCategories(Long[] selectedCategories) {
+        this.selectedCategories = selectedCategories;
+    }
+
+    public CategoryManagerInterface getCategoryManager() {
+        return categoryManager;
+    }
+
+    public void setCategoryManager(CategoryManagerInterface categoryManager) {
+        this.categoryManager = categoryManager;
+    }
+
+    public ConceptManagerInterface getConceptManager() {
+        return conceptManager;
+    }
+
+    public void setConceptManager(ConceptManagerInterface conceptManager) {
+        this.conceptManager = conceptManager;
     }
 
     public Category getCategory() {
@@ -85,6 +135,30 @@ public class ConceptBrowserBean implements Serializable {
 
     public void setCategory(Category category) {
         this.category = category;
+    }
+
+    public ConceptSMTK getConceptSMTK() {
+        return conceptSMTK;
+    }
+
+    public void setConceptSMTK(ConceptSMTK conceptSMTK) {
+        this.conceptSMTK = conceptSMTK;
+    }
+
+    public Description getDescription() {
+        return description;
+    }
+
+    public void setDescription(Description description) {
+        this.description = description;
+    }
+
+    public ConceptSMTK getConceptSelected() {
+        return conceptSelected;
+    }
+
+    public void setConceptSelected(ConceptSMTK conceptSelected) {
+        this.conceptSelected = conceptSelected;
     }
 }
 

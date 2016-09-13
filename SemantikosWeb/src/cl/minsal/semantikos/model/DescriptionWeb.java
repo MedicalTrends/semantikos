@@ -60,12 +60,11 @@ public class DescriptionWeb extends Description {
 
     @Override
     public void setTerm(String term) {
-        /*
+
         if(term.trim().equals(""))
             return;
         if(!this.getTerm().trim().equals(term.trim()))
             this.setModified(true);
-            */
         super.setTerm(term.trim());
     }
 
@@ -89,6 +88,12 @@ public class DescriptionWeb extends Description {
             return;
         if(!this.getDescriptionType().equals(descriptionType))
             this.setModified(true);
+
+        for (Description description : this.getConceptSMTK().getValidDescriptions()) {
+            if(description.getDescriptionType().equals(descriptionType) && descriptionType.getName().equalsIgnoreCase("abreviada"))
+                return;
+        }
+
         super.setDescriptionType(descriptionType);
     }
 

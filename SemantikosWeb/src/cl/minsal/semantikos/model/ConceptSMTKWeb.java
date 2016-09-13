@@ -52,48 +52,6 @@ public class ConceptSMTKWeb extends ConceptSMTK {
         }
     }
 
-    public ConceptSMTKWeb init(Category category, String term){
-
-        /* Valores iniciales para el concepto */
-        Description fsnDescription = new Description(this, term, DescriptionTypeFactory.getInstance().getFSNDescriptionType());
-        fsnDescription.setCaseSensitive(false);
-        //fsn.setDescriptionId(descriptionManager.generateDescriptionId());
-
-        Description favouriteDescription = new Description(this, term, DescriptionTypeFactory.getInstance().getFavoriteDescriptionType());
-        favouriteDescription.setCaseSensitive(false);
-        //favouriteDescription.setDescriptionId(descriptionManager.generateDescriptionId());
-
-        Description[] descriptions = {favouriteDescription, fsnDescription};
-
-        String observation = "";
-
-        // TODO: Diego
-        TagSMTK tagSMTK = new TagSMTK(category.getTagSemantikos().getId(), category.getTagSemantikos().getName());
-
-        ConceptSMTK conceptSMTK = new ConceptSMTK(null, category, true, true, false, false, false, observation, tagSMTK, descriptions);
-
-        return new ConceptSMTKWeb(conceptSMTK);
-
-    }
-    
-    public void nullifyReferences(){
-
-        setTagSMTK(null);
-
-        setTags(null);
-
-        setCategory(null);
-
-        setRelationships(null);
-
-        setDescriptions(null);
-
-        //setRelationshipsWeb(null);
-
-        setDescriptionsWeb(null);
-
-    }
-
     public List<DescriptionWeb> getDescriptionsWeb() {
         return descriptionsWeb;
     }
@@ -229,15 +187,6 @@ public class ConceptSMTKWeb extends ConceptSMTK {
         return super.toString();
     }
 
-    public String validateDescription(Description description) {
-        if (description.getDescriptionType().getName().equalsIgnoreCase("FSN")) {
-            if (description == null || description.getTerm().length() == 0) {
-                return "Falta el FSN al concepto";
-            }
-        }
-        return "";
-    }
-
     /**
      * Este método es responsable de retornar todas las relaciones válidas de este concepto y que son de un cierto tipo
      * de
@@ -326,6 +275,10 @@ public class ConceptSMTKWeb extends ConceptSMTK {
 
     }
 
+    public void restoreDeletedDescriptions(List<DescriptionWeb> descriptionsWeb){
+
+    }
+
     public void restore(ConceptSMTKWeb _concept){
 
         super.setToBeReviewed(_concept.isToBeReviewed());
@@ -342,6 +295,8 @@ public class ConceptSMTKWeb extends ConceptSMTK {
                     descriptionWeb.restore(_descriptionWeb);
             }
         }
+
+
 
     }
 
