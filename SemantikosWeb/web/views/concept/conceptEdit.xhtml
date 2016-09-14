@@ -93,6 +93,8 @@
                     <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
                 </p:confirmDialog>
 
+                <smtk:export-xls></smtk:export-xls>
+
             </h:form>
 
             <p:messages id="msg" showDetail="true" showSummary="true">
@@ -108,6 +110,8 @@
                       rendered="#{conceptBean.concept eq null}">
 
                 <h:form id="initialForm">
+
+
                     <div style="text-align: center;"><h3>Crear Concepto</h3></div>
                     <div class="ui-g">
                         <div class="ui-g-12 ui-md-6 ui-lg-4">
@@ -161,6 +165,9 @@
                                              value="Editar Concepto"/>
                         </div>
                     </div>
+
+
+
                 </h:form>
             </p:dialog>
         </p:panel>

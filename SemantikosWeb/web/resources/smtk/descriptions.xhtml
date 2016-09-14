@@ -146,23 +146,26 @@
                     </div>
                 </p:column>
 
-                <p:column headerText="Acción" style="width:4%">
+                <p:column headerText="Acción" style="width:5%">
                     <p:commandLink actionListener="#{conceptBean.removeDescription(description)}"
                                    ajax="true"
                                    process="@this"
                                    update="@(.otherDescriptions)"
                                    style="float: right">
-                        <h:graphicImage style="width: 15px; height: 15px"
-                                        name="images/trash-blue.png"
-                        />
+                        <i class="fa fa-trash fa-lg"></i>
                     </p:commandLink>
-                    <p:commandButton rendered="#{conceptBean.concept.persistent}"
-                                     icon="fa fa-exchange"
-                                     process="@this"
-                                     update=":#{cc.clientId}:conceptTranslate"
-                                     oncomplete="PF('dialogTDC').show()">
+                    <p:spacer></p:spacer>
+                    <p:commandLink  rendered="#{conceptBean.concept.persistent}"
+                                    process="@this"
+                                    update=":#{cc.clientId}:conceptTranslate"
+                                    oncomplete="PF('dialogTDC').show()">
+                        <i class="fa fa-exchange fa-lg" />
                         <f:setPropertyActionListener value="#{description}" target="#{conceptBean.descriptionToTranslate}" />
-                    </p:commandButton>
+
+                    </p:commandLink>
+                    <p:spacer></p:spacer>
+
+
                     <p:rowEditor style="display: inline"/>
                 </p:column>
 

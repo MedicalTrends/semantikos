@@ -116,6 +116,18 @@ public class ConceptBean implements Serializable {
     //para tipo helpertable
     private int helperTableValuePlaceholder;
 
+
+    @ManagedProperty(value="#{conceptExport}")
+    private ConceptExportMBean conceptBeanExport;
+
+    public ConceptExportMBean getConceptBeanExport() {
+        return conceptBeanExport;
+    }
+
+    public void setConceptBeanExport(ConceptExportMBean conceptBean) {
+        this.conceptBeanExport = conceptBean;
+    }
+
     //Inicializacion del Bean
 
     @PostConstruct
@@ -209,6 +221,9 @@ public class ConceptBean implements Serializable {
         concept = initConcept(conceptSMTK, term);
         // Se crea una copia de respaldo
         _concept = initConcept(conceptSMTK, term);
+
+        conceptBeanExport.setConceptSMTK(concept);
+        conceptBeanExport.loadConcept();
     }
 
     //Este método es responsable de pasarle a la vista un concepto, dado el id del concepto
@@ -222,6 +237,8 @@ public class ConceptBean implements Serializable {
         _concept = new ConceptSMTKWeb(conceptSMTK);
         auditAction=auditManager.getConceptAuditActions(concept,10,true);
         category = concept.getCategory();
+        conceptBeanExport.setConceptSMTK(concept);
+        conceptBeanExport.loadConcept();
     }
 
 
