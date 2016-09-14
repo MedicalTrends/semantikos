@@ -29,6 +29,9 @@ public class DescriptionManagerImpl implements DescriptionManager {
     DescriptionDAO descriptionDAO;
 
     @EJB
+    CategoryManager categoryManager;
+
+    @EJB
     private AuditManagerInterface auditManager;
 
     /* El conjunto de reglas de negocio para validar creación de descripciones */
@@ -39,7 +42,7 @@ public class DescriptionManagerImpl implements DescriptionManager {
 
         /* Reglas de negocio previas */
         ConceptSMTK conceptSMTK = description.getConceptSMTK();
-        new DescriptionCreationBR().applyRules(conceptSMTK, description.getTerm(), description.getDescriptionType(), user);
+        new DescriptionCreationBR().applyRules(conceptSMTK, description.getTerm(), description.getDescriptionType(), user, categoryManager);
 
         if (!description.isPersistent()){
             descriptionDAO.persist(description, user);
@@ -56,7 +59,7 @@ public class DescriptionManagerImpl implements DescriptionManager {
     public Description bindDescriptionToConcept(ConceptSMTK concept, String term, DescriptionType descriptionType, User user) {
 
         /* Se aplican las reglas de negocio para crear la Descripción*/
-        descriptionCreationBR.applyRules(concept, term, descriptionType, user);
+        descriptionCreationBR.applyRules(concept, term, descriptionType, user, categoryManager);
 
         /* Se crea la descripción */
         Description description = new Description(concept, term, descriptionType);
@@ -74,7 +77,7 @@ public class DescriptionManagerImpl implements DescriptionManager {
 
         /* Si la descripción no se encontraba persistida, se persiste primero */
         if (!description.isPersistent()){
-            descriptionCreationBR.applyRules(concept, description.getTerm(), description.getDescriptionType(), user);
+            descriptionCreationBR.applyRules(concept, description.getTerm(), description.getDescriptionType(), user, categoryManager);
             descriptionDAO.persist(description, user);
         }
 

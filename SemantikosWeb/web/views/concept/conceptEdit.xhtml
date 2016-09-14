@@ -167,7 +167,7 @@
 
         <script type="text/javascript">
 
-            $(document).on("change keyup blur input", "input[id$=favorite]", function(event) {
+            $(document).on("change keyup input", "input[id$=favorite]", function(event) {
                 $("input[id$=FSN]").val($(this).val());
                 $("input[id$=FSN]").trigger("change");
             });

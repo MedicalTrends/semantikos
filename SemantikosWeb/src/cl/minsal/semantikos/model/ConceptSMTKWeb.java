@@ -287,17 +287,43 @@ public class ConceptSMTKWeb extends ConceptSMTK {
         super.setTagSMTK(_concept.getTagSMTK());
         super.setObservation("");
 
+        //Remover descripciones agregadas no persistidas
         removeUnpersistedDescriptions();
 
+        //Restaurar descripciones a su estado original
         for (DescriptionWeb descriptionWeb : descriptionsWeb) {
             for (DescriptionWeb _descriptionWeb : _concept.getDescriptionsWeb()) {
                 if(descriptionWeb.getDescriptionType().equals(_descriptionWeb.getDescriptionType()))
                     descriptionWeb.restore(_descriptionWeb);
             }
         }
+        //Restaurar descripciones removidas
+        for (DescriptionWeb descriptionWeb : getRemovedDescriptionsWeb(_concept)) {
+            addDescriptionWeb(descriptionWeb);
+        }
+        //TODO: Hacer lo mismo para las relaciones y presumiblemente tambien para los tags
+    }
 
+    public List<DescriptionWeb> getRemovedDescriptionsWeb(ConceptSMTKWeb _concept){
 
+        List<DescriptionWeb> removedDescriptions = new ArrayList<DescriptionWeb>();
+        boolean isDescriptionFound;
 
+        //Primero se buscan todas las descripciones persistidas originales
+        for (DescriptionWeb initDescription : _concept.getDescriptionsWeb()) {
+            isDescriptionFound = false;
+            //Por cada descripción original se busca su descripcion vista correlacionada
+            for (DescriptionWeb finalDescription : descriptionsWeb) {
+                //Si la descripcion correlacionada no es encontrada, significa que fué eliminada
+                if (initDescription.getId() == finalDescription.getId()) {
+                    isDescriptionFound = true;
+                    break;
+                }
+            }
+            if(!isDescriptionFound)
+                removedDescriptions.add(initDescription);
+        }
+        return  removedDescriptions;
     }
 
 

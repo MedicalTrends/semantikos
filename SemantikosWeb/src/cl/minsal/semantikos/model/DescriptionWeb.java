@@ -133,6 +133,7 @@ public class DescriptionWeb extends Description {
 
     public void setRepresentation(String representation) {
         super.setTerm(representation.trim().replaceAll("\\(.+?\\)","").trim());
+        //super.setTerm(representation.trim());
         this.representation = representation;
     }
 }

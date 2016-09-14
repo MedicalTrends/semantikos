@@ -449,8 +449,11 @@ public class ConceptBean implements Serializable {
 
             if(changes == 0)
                 context.addMessage(null, new FacesMessage("Warning", "No se ha realizado ningún cambio al concepto!!"));
-            else
+            else {
                 context.addMessage(null, new FacesMessage("Successful", "Concepto modificado "));
+                // Se resetea el concepto, como el concepto está persistido, se le pasa su id
+                getConceptById(concept.getId());
+            }
 
         }
         // Si el concepto no está persistido, persistirlo
