@@ -1,9 +1,8 @@
 package cl.minsal.semantikos.designmodelweb.mbeans;
 
 import cl.minsal.semantikos.kernel.components.AuditManagerInterface;
-import cl.minsal.semantikos.kernel.components.ConceptManagerInterface;
+import cl.minsal.semantikos.kernel.components.ConceptManager;
 import cl.minsal.semantikos.model.ConceptSMTK;
-import cl.minsal.semantikos.model.audit.AuditableEntity;
 import cl.minsal.semantikos.model.audit.ConceptAuditAction;
 
 import javax.annotation.PostConstruct;
@@ -24,7 +23,7 @@ public class HistoryConceptBean {
     AuditManagerInterface auditManager;
 
     @EJB
-    ConceptManagerInterface conceptManager;
+    ConceptManager conceptManager;
 
     private List<ConceptAuditAction> auditAction;
 

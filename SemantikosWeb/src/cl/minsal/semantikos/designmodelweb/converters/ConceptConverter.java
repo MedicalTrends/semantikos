@@ -1,13 +1,10 @@
 package cl.minsal.semantikos.designmodelweb.converters;
 
 import cl.minsal.semantikos.designmodelweb.mbeans.SMTKTypeBean;
-import cl.minsal.semantikos.kernel.components.ConceptManagerInterface;
 import cl.minsal.semantikos.model.ConceptSMTK;
 
-import javax.ejb.EJB;
 import javax.el.ELContext;
 import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedProperty;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;

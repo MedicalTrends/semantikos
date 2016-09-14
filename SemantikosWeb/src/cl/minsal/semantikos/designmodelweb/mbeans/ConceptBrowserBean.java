@@ -62,8 +62,7 @@ public class ConceptBrowserBean implements Serializable {
     private CategoryManager categoryManager;
 
     @EJB
-    private ConceptManagerInterface conceptManager;
-
+    private ConceptManager conceptManager;
 
     @PostConstruct
     public void init() {
@@ -119,14 +118,6 @@ public class ConceptBrowserBean implements Serializable {
 
     public void setCategoryManager(CategoryManager categoryManager) {
         this.categoryManager = categoryManager;
-    }
-
-    public ConceptManagerInterface getConceptManager() {
-        return conceptManager;
-    }
-
-    public void setConceptManager(ConceptManagerInterface conceptManager) {
-        this.conceptManager = conceptManager;
     }
 
     public Category getCategory() {

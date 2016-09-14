@@ -74,8 +74,7 @@ public class DescriptionManagerImpl implements DescriptionManager {
 
         /* Si la descripción no se encontraba persistida, se persiste primero */
         if (!description.isPersistent()){
-            descriptionCreationBR.applyRules(concept, description.getTerm(), description.getDescriptionType(), user);
-            descriptionDAO.persist(description, user);
+            this.createDescription(description, user);
         }
 
         /* Se aplican las reglas de negocio para crear la Descripción y se persiste y asocia al concepto */
@@ -145,42 +144,6 @@ public class DescriptionManagerImpl implements DescriptionManager {
             auditManager.recordDescriptionDeletion(conceptSMTK, description, user);
         }
     }
-
-    /**
-     * Este método es responsable de aplicar las actualizaciones. Para actualizar una descripción se revisan las
-     * marcadas para actualizar. La descripción <em>original</em> tiene un campo que indica que debe ser actualizado
-     * <code>isToBeUpdated</code>. Para cada una debe existir otra descripción con el mismo DESCRIPTION_ID que tiene
-     * los
-     * cambios, pero que no es persistente.
-     *
-     * <p>
-     * Este método itera sobre las descripciones marcadas para ser actualizadas, busca su par, y si existe:
-     * <ul>
-     * <li>Aplica reglas de negocio para validar que esté en orden</li>
-     * <li>y deja inválida la original, y persiste la nueva.</li>
-     * </ul>
-     * </p>
-     *
-     * @param conceptSMTK El concepto cuyas descripciones se quieren actualizar.
-     */
-    private void updateDescriptions(ConceptSMTK conceptSMTK, User user) {
-
-        // TODO: Probar esto algun dia:
-        List<Description> descriptions = conceptSMTK.getDescriptions();
-        for (Description description : descriptions) {
-
-            Description original = description;
-            /* Se buscan las descripciones a actualizar */
-            if (description.isToBeUpdated()) {
-
-                /* Una vez encontrada se busca a su hermana que tiene los nuevos valores */
-                Description changed = conceptSMTK.getDescriptionByDescriptionID(original.getDescriptionId(), true);
-
-
-            }
-        }
-    }
-
 
     @Override
     public void moveDescriptionToConcept(ConceptSMTK sourceConcept, ConceptSMTK targetConcept, Description description, User user) {

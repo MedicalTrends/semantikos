@@ -1,7 +1,7 @@
 
 
 import cl.minsal.semantikos.kernel.components.CategoryManager;
-import cl.minsal.semantikos.kernel.components.ConceptManagerInterface;
+import cl.minsal.semantikos.kernel.components.ConceptManager;
 import cl.minsal.semantikos.model.Category;
 import cl.minsal.semantikos.model.ConceptSMTK;
 import cl.minsal.semantikos.model.Description;
@@ -44,7 +44,7 @@ public class NavBrowser {
     private CategoryManager categoryManager;
 
     @EJB
-    private ConceptManagerInterface conceptManager;
+    private ConceptManager conceptManager;
 
 
     @PostConstruct
@@ -103,11 +103,11 @@ public class NavBrowser {
         this.categoryManager = categoryManager;
     }
 
-    public ConceptManagerInterface getConceptManager() {
+    public ConceptManager getConceptManager() {
         return conceptManager;
     }
 
-    public void setConceptManager(ConceptManagerInterface conceptManager) {
+    public void setConceptManager(ConceptManager conceptManager) {
         this.conceptManager = conceptManager;
     }
 

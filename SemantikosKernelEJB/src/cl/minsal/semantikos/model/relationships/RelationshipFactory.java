@@ -1,6 +1,6 @@
 package cl.minsal.semantikos.model.relationships;
 
-import cl.minsal.semantikos.kernel.components.ConceptManagerInterface;
+import cl.minsal.semantikos.kernel.components.ConceptManager;
 import cl.minsal.semantikos.kernel.daos.*;
 import cl.minsal.semantikos.model.ConceptSMTK;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -28,7 +28,7 @@ public class RelationshipFactory {
     private static final Logger logger = LoggerFactory.getLogger(RelationshipFactory.class);
 
     @EJB
-    private ConceptManagerInterface conceptDAO;
+    private ConceptManager conceptDAO;
 
     @EJB
     private ConceptSCTDAO conceptSCTDAO;

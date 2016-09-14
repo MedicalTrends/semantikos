@@ -9,11 +9,11 @@ import static cl.minsal.semantikos.model.DescriptionTypeFactory.getInstance;
 import static cl.minsal.semantikos.model.ProfileFactory.ADMINISTRATOR_PROFILE;
 import static cl.minsal.semantikos.model.ProfileFactory.DESIGNER_PROFILE;
 import static cl.minsal.semantikos.model.ProfileFactory.MODELER_PROFILE;
-import static cl.minsal.semantikos.model.businessrules.ConceptCreationBusinessRuleContainer.*;
+import static cl.minsal.semantikos.model.businessrules.ConceptCreationBR.*;
 
-public class ConceptCreationBusinessRuleContainerTest {
+public class ConceptCreationBRTest {
 
-    private ConceptCreationBusinessRuleContainer conceptCreationBRC = new ConceptCreationBusinessRuleContainer();
+    private ConceptCreationBR conceptCreationBRC = new ConceptCreationBR();
 
     private Category catFarSus = createCategory(CATEGORY_FARMACOS_SUSTANCIAS_NAME);
     private Category catFarMedBas = createCategory(CATEGORY_FARMACOS_MEDICAMENTO_BASICO_NAME);

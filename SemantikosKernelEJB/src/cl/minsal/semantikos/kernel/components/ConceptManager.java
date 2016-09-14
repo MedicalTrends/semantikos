@@ -11,7 +11,7 @@ import java.util.List;
  * @author Andrés Farías
  */
 @Local
-public interface ConceptManagerInterface {
+public interface ConceptManager {
 
 
     /**
