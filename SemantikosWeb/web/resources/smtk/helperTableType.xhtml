@@ -198,9 +198,10 @@
                     <p:outputLabel value="Buscar #{cc.attrs.relationshipDefinition.name}" />
 
 
-                    <p:autoComplete id="themeCustom" value="#{autoCompleteView.theme2}" completeMethod="#{helperTableBean.searchHelperTableRecords}"
-                                    var="record" itemLabel="#{record.fields['description']}" itemValue="#{record.id}"  forceSelection="true">
-                        <f:attribute name="table" value="cc.attrs.relationshipDefinition" />
+                    <p:autoComplete id="themeCustom" value="#{conceptBean.s}" completeMethod="#{helperTableBean.searchHelperTableRecords}"
+                                    var="record" itemLabel="#{record.fields['description']}" itemValue="#{record.id}"  forceSelection="true"
+                    minQueryLength="3">
+                        <f:attribute name="table" value="#{cc.attrs.targetDefinition}" />
                         <p:column>
                             <h:outputText value="#{record.id}" />
                         </p:column>
@@ -233,8 +234,6 @@
                         </f:facet>
                         <h:outputText value="#{helperTableRecord.fields.get(column.columnName)}" />
                     </p:columns>
-
-
 
                 <p:spacer />
                 <p:dataTable id="collectionValues12WithAttributes"

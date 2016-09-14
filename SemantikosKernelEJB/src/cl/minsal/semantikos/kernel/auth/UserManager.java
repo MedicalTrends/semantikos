@@ -51,4 +51,7 @@ public class UserManager {
         return authDAO.getProfile(id);
     }
 
+    public void unlockUser(String username) {
+        authDAO.unlockUser(username);
+    }
 }
