@@ -4,8 +4,9 @@ import cl.minsal.semantikos.kernel.daos.ConceptDAO;
 import cl.minsal.semantikos.kernel.daos.DescriptionDAO;
 import cl.minsal.semantikos.kernel.daos.RelationshipDAO;
 import cl.minsal.semantikos.model.*;
-import cl.minsal.semantikos.model.businessrules.ConceptCreationBusinessRuleContainer;
+import cl.minsal.semantikos.model.businessrules.ConceptCreationBR;
 import cl.minsal.semantikos.model.businessrules.ConceptEditionBusinessRuleContainer;
+import cl.minsal.semantikos.model.businessrules.ConceptInvariantsBR;
 import cl.minsal.semantikos.model.businessrules.RelationshipEditionBR;
 import cl.minsal.semantikos.model.relationships.Relationship;
 import org.slf4j.Logger;
@@ -28,7 +29,7 @@ import static cl.minsal.semantikos.kernel.daos.DAO.NON_PERSISTED_ID;
  * @author Andrés Farías
  */
 @Stateless
-public class ConceptManagerImpl implements ConceptManagerInterface {
+public class ConceptManagerImpl implements ConceptManager {
 
     /** El logger de la clase */
     private static final Logger logger = LoggerFactory.getLogger(ConceptManagerImpl.class);
@@ -47,6 +48,12 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
 
     @EJB
     private TagManager tagManager;
+
+    @EJB
+    private DescriptionManager descriptionManager;
+
+    @EJB
+    private RelationshipManager relationshipManager;
 
     @Override
     public ConceptSMTK getConceptByCONCEPT_ID(String conceptId) {
@@ -184,18 +191,18 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
         /* Pre-condición técnica: el concepto no debe estar persistido */
         validatesIsNotPersistent(conceptSMTK);
 
+        /* Se validan las invariantes */
+        new ConceptInvariantsBR().invariants(conceptSMTK);
+
         /* Pre-condiciones: Reglas de negocio para la persistencia */
-        new ConceptCreationBusinessRuleContainer().apply(conceptSMTK, user);
+        new ConceptCreationBR().apply(conceptSMTK, user);
 
         /* En este momento se está listo para persistir el concepto (sus atributos básicos) */
         conceptDAO.persistConceptAttributes(conceptSMTK, user);
 
         /* Y se persisten sus descripciones */
         for (Description description : conceptSMTK.getDescriptions()) {
-            /* Se persiste la descripción */
-            descriptionDAO.persist(description, user);
-            /* Se liga al concepto */
-            descriptionDAO.bind(description, conceptSMTK, user);
+            descriptionManager.bindDescriptionToConcept(conceptSMTK, description, user);
         }
 
         /* Y sus relaciones */
@@ -262,6 +269,11 @@ public class ConceptManagerImpl implements ConceptManagerInterface {
         if (conceptSMTK.isModeled()) {
             auditManager.recordConceptCategoryChange(conceptSMTK, originalCategory, user);
         }
+    }
+
+    @Override
+    public void bindRelationshipToConcept(@NotNull ConceptSMTK conceptSMTK, @NotNull Relationship relationship, @NotNull User user) {
+        relationshipManager.bindRelationshipToConcept(conceptSMTK, relationship, user);
     }
 
     @Override

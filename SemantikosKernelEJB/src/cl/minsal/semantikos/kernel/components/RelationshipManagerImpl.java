@@ -1,14 +1,14 @@
 package cl.minsal.semantikos.kernel.components;
 
+import cl.minsal.semantikos.kernel.daos.ConceptDAO;
 import cl.minsal.semantikos.kernel.daos.RelationshipDAO;
 import cl.minsal.semantikos.model.Category;
 import cl.minsal.semantikos.model.ConceptSMTK;
-import cl.minsal.semantikos.model.Description;
 import cl.minsal.semantikos.model.User;
+import cl.minsal.semantikos.model.businessrules.ConceptCreationBR;
 import cl.minsal.semantikos.model.businessrules.RelationshipBindingBR;
 import cl.minsal.semantikos.model.businessrules.RelationshipEditionBR;
 import cl.minsal.semantikos.model.businessrules.RelationshipRemovalBR;
-import cl.minsal.semantikos.model.businessrules.RelelationshipCreationBR;
 import cl.minsal.semantikos.model.relationships.Relationship;
 import cl.minsal.semantikos.model.relationships.RelationshipDefinition;
 import cl.minsal.semantikos.model.relationships.Target;
@@ -33,52 +33,61 @@ public class RelationshipManagerImpl implements RelationshipManager {
     private RelationshipDAO relationshipDAO;
 
     @EJB
+    private ConceptDAO conceptDAO;
+
+    @EJB
     private AuditManagerInterface auditManager;
-
-    @Override
-    public Relationship createRelationship(ConceptSMTK origin, Target target, RelationshipDefinition relationType, boolean isValid, User user) {
-        new RelelationshipCreationBR().applyRules(origin, target, relationType, isValid);
-        Relationship relationship = new Relationship(origin, target, relationType);
-
-        /* Se persiste la relación */
-        relationshipDAO.persist(relationship);
-
-        /* Se registra en el historial si el concepto fuente de la relación está modelado */
-        if (relationship.getSourceConcept().isModeled()) {
-            auditManager.recordRelationshipCreation(relationship, user);
-        }
-
-        /* Se retorna persistida */
-        return relationship;
-    }
-
-    @Override
-    public RelationshipDefinition createRelationshipDefinition(RelationshipDefinition relationshipDefinition) {
-        return relationshipDAO.persist(relationshipDefinition);
-    }
 
     @Override
     public Relationship bindRelationshipToConcept(ConceptSMTK concept, Relationship relationship, User user) {
 
         /* Primero se validan las reglas de negocio asociadas a la eliminación de un concepto */
-        new RelationshipBindingBR().applyRules(concept, relationship, user);
+        new RelationshipBindingBR().verifyPreConditions(concept, relationship, user);
 
         /* Se hace la relación a nivel del modelo */
-        if (!concept.getRelationships().contains(relationship)){
+        if (!concept.getRelationships().contains(relationship)) {
             concept.addRelationship(relationship);
         }
 
-        if (!relationship.isPersistent()){
-            relationshipDAO.persist(relationship);
-        }
+        /* Se asegura la persistencia de la entidad */
+        assurePersistence(concept, relationship, user);
 
           /* Se registra en el historial si el concepto fuente de la relación está modelado */
         if (relationship.getSourceConcept().isModeled()) {
             auditManager.recordRelationshipCreation(relationship, user);
         }
 
+        /* Se realizan las acciones asociadas a la asociación */
+        new RelationshipBindingBR().postActions(relationship, conceptDAO);
+
         /* Se retorna persistida */
         return relationship;
+    }
+
+    /**
+     * Este método es responsable de asegurar que una relación sea persistente. Si no lo es, lo persiste.
+     *
+     * @param concept      El concepto asociado a la relación.
+     * @param relationship La relación.
+     * @param user         El usuario que realiza la operación.
+     */
+    private void assurePersistence(ConceptSMTK concept, Relationship relationship, User user) {
+        if (!relationship.isPersistent()) {
+
+            /* Se validan las reglas de negocio */
+            new ConceptCreationBR().apply(concept, user);
+            relationshipDAO.persist(relationship);
+
+            /* Se registra en el historial si el concepto fuente de la relación está modelado */
+            if (relationship.getSourceConcept().isModeled()) {
+                auditManager.recordRelationshipCreation(relationship, user);
+            }
+        }
+    }
+
+    @Override
+    public RelationshipDefinition createRelationshipDefinition(RelationshipDefinition relationshipDefinition) {
+        return relationshipDAO.persist(relationshipDefinition);
     }
 
     @Override

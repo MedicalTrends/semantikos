@@ -11,8 +11,8 @@ import cl.minsal.semantikos.model.exceptions.BusinessRuleException;
 public class ConceptInvariantsBR {
 
     public void invariants(ConceptSMTK conceptSMTK) {
-
         brConceptInvariant001(conceptSMTK);
+        brConceptInvariant002(conceptSMTK);
     }
 
     /**
@@ -26,6 +26,22 @@ public class ConceptInvariantsBR {
      * @param conceptSMTK El concepto cuya invariante se verifica.
      */
     private void brConceptInvariant001(ConceptSMTK conceptSMTK) {
+        if (conceptSMTK.getDescriptionFavorite() == null) {
+            throw new BusinessRuleException("Un concepto siempre debe tener una descripción preferida.");
+        }
+    }
+
+    /**
+     * <p>
+     * Este método implementa la regla de negocio BR-CON-002.
+     * Esta regla de negocio es una <b>invariante</b>.
+     * </p>
+     * <p>BR-CON-001: En el diseño de un nuevo concepto, el término de tipo de descriptor FSN, es
+     * obligatorio.</p>
+     *
+     * @param conceptSMTK El concepto cuya invariante se verifica.
+     */
+    private void brConceptInvariant002(ConceptSMTK conceptSMTK) {
         if (conceptSMTK.getDescriptionFSN() == null) {
             throw new BusinessRuleException("Un concepto siempre debe tener una descripción FSN.");
         }

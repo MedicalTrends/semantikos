@@ -16,9 +16,9 @@ import static cl.minsal.semantikos.model.ProfileFactory.MODELER_PROFILE;
  *
  * @author Andrés Farías
  */
-public class ConceptCreationBusinessRuleContainer implements BusinessRulesContainer {
+public class ConceptCreationBR implements BusinessRulesContainer {
 
-    private static final Logger logger = LoggerFactory.getLogger(ConceptCreationBusinessRuleContainer.class);
+    private static final Logger logger = LoggerFactory.getLogger(ConceptCreationBR.class);
 
     protected static final String CATEGORY_FARMACOS_SUSTANCIAS_NAME = "Fármacos - Sustancias";
     protected static final String CATEGORY_FARMACOS_MEDICAMENTO_BASICO_NAME = "Fármacos - Medicamento Básico";

@@ -611,6 +611,10 @@ public class ConceptSMTK extends PersistentEntity implements Target, AuditableEn
         return this.modeled;
     }
 
+    public void setModeled(boolean modeled) {
+        this.modeled = modeled;
+    }
+
     /**
      * Este método es responsable de buscar y retornar, de existir, una descripción con un cierto DESCRIPTION_ID y con
      * una validez dada.

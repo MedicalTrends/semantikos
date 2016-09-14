@@ -37,7 +37,7 @@ public class ConceptBean implements Serializable {
     static final Logger logger = LoggerFactory.getLogger(ConceptBean.class);
 
     @EJB
-    ConceptManagerInterface conceptManager;
+    ConceptManager conceptManager;
 
     @EJB
     DescriptionManager descriptionManager;

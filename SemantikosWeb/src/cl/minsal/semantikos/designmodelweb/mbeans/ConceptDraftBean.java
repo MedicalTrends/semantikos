@@ -1,13 +1,12 @@
 package cl.minsal.semantikos.designmodelweb.mbeans;
 
-import cl.minsal.semantikos.kernel.components.ConceptManagerInterface;
+import cl.minsal.semantikos.kernel.components.ConceptManager;
 import cl.minsal.semantikos.model.ConceptSMTK;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
-import javax.ws.rs.POST;
 import java.io.Serializable;
 import java.util.List;
 
@@ -20,7 +19,7 @@ import java.util.List;
 public class ConceptDraftBean implements Serializable{
 
     @EJB
-    private ConceptManagerInterface conceptManager;
+    private ConceptManager conceptManager;
 
     private List<ConceptSMTK> conceptSMTKList;
 
