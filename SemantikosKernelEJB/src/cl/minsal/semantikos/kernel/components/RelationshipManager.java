@@ -3,6 +3,7 @@ package cl.minsal.semantikos.kernel.components;
 
 import cl.minsal.semantikos.model.Category;
 import cl.minsal.semantikos.model.ConceptSMTK;
+import cl.minsal.semantikos.model.Description;
 import cl.minsal.semantikos.model.User;
 import cl.minsal.semantikos.model.relationships.Relationship;
 import cl.minsal.semantikos.model.relationships.RelationshipDefinition;
@@ -37,9 +38,19 @@ public interface RelationshipManager {
      * Este método es responsable de crear persistentemente una Definición de Relación para Categorías.
      *
      * @return La definición de relación bien persistida (con us ID).
-     * @param relationshipDefinition
      */
     public RelationshipDefinition createRelationshipDefinition(RelationshipDefinition relationshipDefinition);
+
+    /**
+     * Este método es responsable de asociar (agregar) una relación a un concepto.
+     *
+     * @param concept      El concepto al cual se agrega la descripción.
+     * @param relationship El tipo de la descripción.
+     * @param user         El usuario que agrega el término
+     *
+     * @return La descripción creada a partir del término dado.
+     */
+    public Relationship bindRelationshipToConcept(ConceptSMTK concept, Relationship relationship, User user);
 
     /**
      * Este método es responsable de eliminar lógicamente una relación, dejándola no vigente, no desasociándola del

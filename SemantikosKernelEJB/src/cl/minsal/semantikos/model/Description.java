@@ -197,6 +197,10 @@ public class Description extends PersistentEntity implements AuditableEntity {
         return conceptSMTK;
     }
 
+    public void setConceptSMTK(ConceptSMTK conceptSMTK) {
+        this.conceptSMTK = conceptSMTK;
+    }
+
     /**
      * Este método es responsable de dar la representación de la descripción.
      * En particular, hay una BR que indica que para las descripciones FSN siempre se debe mostrar concatenado con el

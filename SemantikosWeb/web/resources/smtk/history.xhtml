@@ -16,7 +16,7 @@
 
 <composite:implementation>
 
-    <p:panel id="historyConcept" header="Historial" >
+    <p:panel id="historyConcept" header="Historial" toggleable="true" toggleSpeed="500" closeSpeed="500" >
         <p:dataTable var="history"
                      value="#{conceptBean.auditAction}">
             <p:column headerText="Fecha">

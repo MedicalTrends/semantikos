@@ -43,6 +43,9 @@ public class ConceptBean implements Serializable {
     DescriptionManagerInterface descriptionManager;
 
     @EJB
+    RelationshipManager relationshipManager;
+
+    @EJB
     CategoryManagerInterface categoryManager;
 
     @EJB
@@ -64,6 +67,8 @@ public class ConceptBean implements Serializable {
     private ConceptSMTKWeb concept;
     //Concepto respaldo
     private ConceptSMTKWeb _concept;
+
+    private ConceptSMTK conceptSMTKTranslateDes;
 
     private Category category;
 
@@ -105,6 +110,16 @@ public class ConceptBean implements Serializable {
 
     private List<ConceptAuditAction> auditAction;
 
+    private Description descriptionToTranslate;
+
+    public Description getDescriptionToTranslate() {
+        return descriptionToTranslate;
+    }
+
+    public void setDescriptionToTranslate(Description descriptionToTranslate) {
+        this.descriptionToTranslate = descriptionToTranslate;
+    }
+
     //para tipo helpertable
     private int helperTableValuePlaceholder;
 
@@ -133,11 +148,10 @@ public class ConceptBean implements Serializable {
         //category = categoryManager.getCategoryById(1);
         //category = categoryManager.getCategoryById(105590001);
         //category = categoryManager.getCategoryById(71388002);
-        category = categoryManager.getCategoryById(419891008);
+        //category = categoryManager.getCategoryById(419891008);
 
 
         descriptionTypes = descriptionTypeFactory.getDescriptionTypes();
-
         tagSMTKs = tagSMTKManager.getAllTagSMTKs();
 
 
@@ -149,10 +163,6 @@ public class ConceptBean implements Serializable {
 
     //Methods
 
-    public void addTagToConcept(Tag tag){
-
-    }
-
     public void createConcept() throws ParseException {
 
         if(idconceptselect==0){
@@ -161,7 +171,9 @@ public class ConceptBean implements Serializable {
             newConcept(category, favoriteDescription);
         }else{
             getConceptById(idconceptselect);
+            //getConceptById(80602);
         }
+
 
         RequestContext context = RequestContext.getCurrentInstance();
         context.execute("PF('dialogNameConcept').hide();");
@@ -396,14 +408,22 @@ public class ConceptBean implements Serializable {
             for (Description description : descriptionsForDelete)
                 descriptionManager.deleteDescription(concept, description, user);
 
-            List<Pair<Relationship, Relationship>> relationshipsForUpdate= ConceptUtils.getModifiedRelationships(_concept.getRelationshipsWeb(), concept.getRelationshipsWeb());
-            List<Relationship> relationshipsForPersist= ConceptUtils.getNewRelationships(_concept.getRelationshipsWeb(), concept.getRelationshipsWeb());
+            List<Pair<RelationshipWeb, RelationshipWeb>> relationshipsForUpdate= ConceptUtils.getModifiedRelationships(_concept.getValidPersistedRelationshipsWeb(), concept.getValidPersistedRelationshipsWeb());
+            List<RelationshipWeb> relationshipsForPersist= concept.getUnpersistedRelationshipsWeb(); //ConceptUtils.getNewRelationships(_concept.getRelationshipsWeb(), concept.getRelationshipsWeb());
             List<Relationship> relationshipsForDelete= ConceptUtils.getDeletedRelationships(_concept.getRelationshipsWeb(), concept.getRelationshipsWeb());
 
             changes = changes + relationshipsForUpdate.size();
 
-            for (Pair<Relationship, Relationship> relationship : relationshipsForUpdate)
-                //relationshipManager.updateRelationship(concept, relationship.getFirst(), relationship.getSecond(), user);
+            for (Pair<RelationshipWeb, RelationshipWeb> relationship : relationshipsForUpdate)
+                relationshipManager.updateRelationship(concept, relationship.getFirst(), relationship.getSecond(), user);
+
+            changes = changes + relationshipsForPersist.size();
+
+            for (RelationshipWeb relationshipWeb : relationshipsForPersist)
+                relationshipManager.bindRelationshipToConcept(concept, relationshipWeb, user);
+
+            for (Description description : descriptionsForDelete)
+                descriptionManager.deleteDescription(concept, description, user);
 
             if(changes == 0)
                 context.addMessage(null, new FacesMessage("Warning", "No se ha realizado ningún cambio al concepto!!"));
@@ -430,6 +450,12 @@ public class ConceptBean implements Serializable {
             context.addMessage(null, new FacesMessage("Successful", "Concepto eliminado."));
         }
 
+    }
+
+
+
+    public void translateDescription(){
+        descriptionManager.moveDescriptionToConcept(concept,conceptSMTKTranslateDes,descriptionToTranslate,user);
     }
 
 
@@ -592,7 +618,17 @@ public class ConceptBean implements Serializable {
         this.auditAction = auditAction;
     }
 
+    public CategoryManagerInterface getCategoryManager() {
+        return categoryManager;
+    }
 
+    public ConceptSMTK getConceptSMTKTranslateDes() {
+        return conceptSMTKTranslateDes;
+    }
+
+    public void setConceptSMTKTranslateDes(ConceptSMTK conceptSMTKTranslateDes) {
+        this.conceptSMTKTranslateDes = conceptSMTKTranslateDes;
+    }
 
     //TODO: editar concepto
 

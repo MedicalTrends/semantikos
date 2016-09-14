@@ -62,6 +62,13 @@ public class DescriptionManagerImpl implements DescriptionManagerInterface {
 
         /* Se aplican las reglas de negocio para crear la Descripción y se persiste y asocia al concepto */
         new DescriptionBindingBR().applyRules(concept, description, user);
+
+        /* Se hace la relación a nivel lógico del modelo */
+        if(!concept.getDescriptions().contains(description)){
+            concept.addDescription(description);
+        }
+
+        /* Y se persiste la nueva relación a nivel de la descripción */
         descriptionDAO.bind(description, concept, user);
 
         /* Se retorna la descripción persistida */
@@ -77,8 +84,7 @@ public class DescriptionManagerImpl implements DescriptionManagerInterface {
         }
 
         /* Se validan las reglas de negocio para eliminar una descripción */
-        DescriptionUnbindingBR descriptionUnbindingBR = new DescriptionUnbindingBR();
-        descriptionUnbindingBR.applyRules(concept, description, user);
+        new DescriptionUnbindingBR().applyRules(concept, description, user);
 
         /* Se establece la fecha de vigencia y se actualiza la descripción */
         description.setActive(false);
@@ -161,11 +167,23 @@ public class DescriptionManagerImpl implements DescriptionManagerInterface {
     public void moveDescriptionToConcept(ConceptSMTK sourceConcept, ConceptSMTK targetConcept, Description description, User user) {
 
         /* Se aplican las reglas de negocio para el traslado */
-        new DescriptionMovementBR().apply(sourceConcept, targetConcept, description);
+        new DescriptionTranslationBR().apply(sourceConcept, targetConcept, description);
+
+        /* Se realiza la actualización a nivel del modelo lógico */
+        List<Description> sourceConceptDescriptions = sourceConcept.getDescriptions();
+        if(sourceConceptDescriptions.contains(description)){
+            sourceConceptDescriptions.remove(description);
+        }
+
+        if(!targetConcept.getDescriptions().contains(description)){
+            targetConcept.addDescription(description);
+        }
+
+        /* Luego se persiste el cambio */
+        descriptionDAO.bind(description, targetConcept, user);
 
         /* Se registra en el Audit el traslado */
         auditManager.recordDescriptionMovement(sourceConcept, targetConcept, description, user);
-
     }
 
 

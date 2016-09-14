@@ -35,7 +35,7 @@ public class ConceptSMTKWeb extends ConceptSMTK {
             this.setId(conceptSMTK.getId());
             // Si el concepto esta persistido clonar las descripciones con su id
             for (Description description : conceptSMTK.getValidDescriptions())
-                addDescriptionWeb(new DescriptionWeb(description.getId(), description));
+                addDescriptionWeb(new DescriptionWeb(this, description.getId(), description));
             // Si el concepto esta persistido clonar las relaciones con su id
             for (Relationship relationship : conceptSMTK.getValidRelationships())
                 addRelationshipWeb(new RelationshipWeb(relationship.getId(), relationship));
@@ -46,7 +46,7 @@ public class ConceptSMTKWeb extends ConceptSMTK {
         else{
             // Si el concepto no esta persistido clonar las descripciones sin su id
             for (Description description : conceptSMTK.getValidDescriptions()) {
-                addDescriptionWeb(new DescriptionWeb(description));
+                addDescriptionWeb(new DescriptionWeb(this, description));
             }
         }
     }
@@ -213,6 +213,36 @@ public class ConceptSMTKWeb extends ConceptSMTK {
         List<RelationshipWeb> someRelationships = new ArrayList<RelationshipWeb>();
         for (RelationshipWeb relationship : relationshipsWeb) {
             if (relationship.getRelationshipDefinition().equals(relationshipDefinition) && relationship.isValid()) {
+                someRelationships.add(relationship);
+            }
+        }
+        return someRelationships;
+    }
+
+    /**
+     * Este método es responsable de retornar todas las relaciones válidas persistidas de este concepto
+     *
+     * @return Una <code>java.util.List</code> de relaciones persistidas
+     */
+    public List<RelationshipWeb> getValidPersistedRelationshipsWeb() {
+        List<RelationshipWeb> someRelationships = new ArrayList<RelationshipWeb>();
+        for (RelationshipWeb relationship : relationshipsWeb) {
+            if (relationship.isPersistent() && relationship.isValid()) {
+                someRelationships.add(relationship);
+            }
+        }
+        return someRelationships;
+    }
+
+    /**
+     * Este método es responsable de retornar todas las relaciones no persistidas de este concepto
+     *
+     * @return Una <code>java.util.List</code> de relaciones persistidas
+     */
+    public List<RelationshipWeb> getUnpersistedRelationshipsWeb() {
+        List<RelationshipWeb> someRelationships = new ArrayList<RelationshipWeb>();
+        for (RelationshipWeb relationship : relationshipsWeb) {
+            if (!relationship.isPersistent()) {
                 someRelationships.add(relationship);
             }
         }
