@@ -49,6 +49,15 @@ public interface ConceptManager {
     public void changeCategory(@NotNull ConceptSMTK conceptSMTK, @NotNull Category targetCategory, User user);
 
     /**
+     * Este método es responsable de agregar una relación a un concepto.
+     *
+     * @param conceptSMTK  El concepto al cual se agrega la relación.
+     * @param relationship La relación que se agrega.
+     * @param user         El usuario que realiza la operación.
+     */
+    public void bindRelationshipToConcept(@NotNull ConceptSMTK conceptSMTK, @NotNull Relationship relationship, @NotNull User user);
+
+    /**
      * Este método es responsable de cambiar el concepto de una categoría a otra.
      *
      * @param conceptSMTK El concepto cuyo tag semántikos es actualizado.

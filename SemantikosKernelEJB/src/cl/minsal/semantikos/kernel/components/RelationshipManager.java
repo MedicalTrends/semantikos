@@ -23,18 +23,6 @@ import java.util.List;
 public interface RelationshipManager {
 
     /**
-     * Este método es responsable de crear una relación de cualquier tipo, respetando
-     * los tipos de orígenes posibles y tipos de destino.
-     *
-     * @param origin       El origen de la relación, que puede ser un concepto o una relación.
-     * @param target       El destino de la relación
-     * @param relationType El tipo de relación que se quiere crear.
-     * @param isValid      Determina si es vigente o no.
-     * @param user         El usuario que crea la Relación.
-     */
-    public Relationship createRelationship(ConceptSMTK origin, Target target, RelationshipDefinition relationType, boolean isValid, User user);
-
-    /**
      * Este método es responsable de crear persistentemente una Definición de Relación para Categorías.
      *
      * @return La definición de relación bien persistida (con us ID).

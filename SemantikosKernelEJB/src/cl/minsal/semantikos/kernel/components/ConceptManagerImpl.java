@@ -52,6 +52,9 @@ public class ConceptManagerImpl implements ConceptManager {
     @EJB
     private DescriptionManager descriptionManager;
 
+    @EJB
+    private RelationshipManager relationshipManager;
+
     @Override
     public ConceptSMTK getConceptByCONCEPT_ID(String conceptId) {
 
@@ -266,6 +269,11 @@ public class ConceptManagerImpl implements ConceptManager {
         if (conceptSMTK.isModeled()) {
             auditManager.recordConceptCategoryChange(conceptSMTK, originalCategory, user);
         }
+    }
+
+    @Override
+    public void bindRelationshipToConcept(@NotNull ConceptSMTK conceptSMTK, @NotNull Relationship relationship, @NotNull User user) {
+        relationshipManager.bindRelationshipToConcept(conceptSMTK, relationship, user);
     }
 
     @Override
