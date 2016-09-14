@@ -4,10 +4,7 @@ import cl.minsal.semantikos.kernel.daos.ConceptDAO;
 import cl.minsal.semantikos.kernel.daos.DescriptionDAO;
 import cl.minsal.semantikos.kernel.daos.RelationshipDAO;
 import cl.minsal.semantikos.model.*;
-import cl.minsal.semantikos.model.businessrules.ConceptCreationBR;
-import cl.minsal.semantikos.model.businessrules.ConceptEditionBusinessRuleContainer;
-import cl.minsal.semantikos.model.businessrules.ConceptInvariantsBR;
-import cl.minsal.semantikos.model.businessrules.RelationshipEditionBR;
+import cl.minsal.semantikos.model.businessrules.*;
 import cl.minsal.semantikos.model.relationships.Relationship;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -233,6 +230,22 @@ public class ConceptManagerImpl implements ConceptManager {
 
         if (conceptSMTK.isModeled()) {
             auditManager.recordConceptPublished(conceptSMTK, user);
+        }
+    }
+
+    @Override
+    public void delete(@NotNull ConceptSMTK conceptSMTK, User user) {
+
+        /* Se validan las pre-condiciones para eliminar un concepto */
+        ConceptDeletionBR conceptDeletionBR = new ConceptDeletionBR();
+        conceptDeletionBR.preconditions(conceptSMTK, user);
+
+        /* Se invalida el concepto */
+        invalidate(conceptSMTK, user);
+
+        /* Se elimina físicamente si es borrador */
+        if (!conceptSMTK.isModeled()){
+            conceptDAO.delete(conceptSMTK);
         }
     }
 

@@ -32,6 +32,14 @@ public interface ConceptManager {
     public void publish(@NotNull ConceptSMTK conceptSMTK, User user);
 
     /**
+     * Este método es responsable de eliminar un concepto, de acuerdo a las reglas de negocio.
+     *
+     * @param conceptSMTK El concepto que se desea dejar no vigente.
+     * @param user        El usuario que realiza la operación.
+     */
+    public void delete(@NotNull ConceptSMTK conceptSMTK, User user);
+
+    /**
      * Este método es responsable de dejar no vigente (eliminar en la jerga del análisis!).
      *
      * @param conceptSMTK El concepto que se desea dejar no vigente.

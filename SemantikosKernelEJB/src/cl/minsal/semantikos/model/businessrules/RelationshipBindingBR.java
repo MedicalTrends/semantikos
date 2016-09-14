@@ -34,7 +34,7 @@ public class RelationshipBindingBR {
 
     /**
      * Este método gatilla todas las acciones relacionadas con la asociación de relaciones.
-     *
+     * Un concepto que se elimina siempre es invalidado. Sólo si satisface una regla de negocio (BR-
      * @param relationship La relación que se asoció.
      * @param conceptDAO   El DAO para realizar las accioens.
      */
