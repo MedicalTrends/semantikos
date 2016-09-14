@@ -1,5 +1,7 @@
 package cl.minsal.semantikos.model;
 
+import cl.minsal.semantikos.kernel.daos.DAO;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,6 +19,14 @@ public class Tag extends PersistentEntity {
 
     private Tag parentTag;
 
+    /*Constructor vacío, utilizado como fix para el comportamiento de jsf-primefaces al actualizar el form en ui-state-error*/
+    @Deprecated
+    public Tag(){
+        super(DAO.NON_PERSISTED_ID);
+        this.name = "";
+        this.colorBackground = "";
+        this.colorLetter = "";
+    }
 
     public Tag(long id, String name, String colorBackground, String colorLetter, Tag parentTag) {
         super(id);

@@ -187,16 +187,18 @@ public class ConceptBean implements Serializable {
         context.execute("PF('dialogNameConcept').hide();");
     }
 
-    //Este método es responsable de a partir de un concepto SMTK y un término, devolver un concepto WEB con su FSN y su Favorito
+    //Este método es responsable de a partir de un concepto SMTK y un término, devolver un concepto WEB con su FSN y su Preferida
     public ConceptSMTKWeb initConcept(ConceptSMTK concept, String term){
         ConceptSMTKWeb conceptWeb = new ConceptSMTKWeb(concept);
 
         DescriptionWeb fsnDescription = new DescriptionWeb(conceptWeb, term, descriptionManager.getTypeFSN());
         fsnDescription.setCaseSensitive(false);
+        fsnDescription.setModeled(false);
         fsnDescription.setDescriptionId(descriptionManager.generateDescriptionId());
 
         DescriptionWeb favouriteDescription = new DescriptionWeb(conceptWeb, term, descriptionManager.getTypeFavorite());
         favouriteDescription.setCaseSensitive(false);
+        fsnDescription.setModeled(false);
         favouriteDescription.setDescriptionId(descriptionManager.generateDescriptionId());
 
         for (DescriptionWeb description : new DescriptionWeb[]{favouriteDescription, fsnDescription})
@@ -323,43 +325,37 @@ public class ConceptBean implements Serializable {
      */
     public void addDescription() {
         FacesContext context = FacesContext.getCurrentInstance();
-        if (otherTermino != null) {
-            if (otherTermino.length() > 0) {
-                if (otherDescriptionType != null) {
-                    if(otherDescriptionType.getName().equalsIgnoreCase("abreviada") && concept.getValidDescriptionAbbreviated()!=null) {
-                        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Solo puede existir una descripción abreviada"));
-                        return;
-                    }
-                    DescriptionWeb description = new DescriptionWeb(concept, otherTermino, otherDescriptionType);
-                    if( categoryManager.categoryContains(category,description.getTerm())){
-                        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Esta descripcion ya existe en esta categoria"));
-                        return;
-                    }
 
-                    if(containDescription(description)){
-                        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Esta descripcion ya existe en este concepto"));
-                        return;
-                    }
-
-                    description.setCaseSensitive(otherSensibilidad);
-                    description.setModeled(false);
-                    description.setDescriptionId(descriptionManager.generateDescriptionId());
-                    concept.addDescriptionWeb(description);
-
-                    otherTermino = "";
-                } else {
-                    context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se ha seleccionado el tipo de descripción"));
+        if (!otherTermino.trim().equals("")) {
+            if (otherDescriptionType != null) {
+                if(otherDescriptionType.getName().equalsIgnoreCase("abreviada") && concept.getValidDescriptionAbbreviated()!=null) {
+                    context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Solo puede existir una descripción abreviada"));
+                    return;
+                }
+                DescriptionWeb description = new DescriptionWeb(concept, otherTermino, otherDescriptionType);
+                if( categoryManager.categoryContains(category,description.getTerm())){
+                    context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Esta descripcion ya existe en esta categoria"));
+                    return;
                 }
 
+                if(containDescription(description)){
+                    context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Esta descripcion ya existe en este concepto"));
+                    return;
+                }
+
+                description.setCaseSensitive(otherSensibilidad);
+                description.setModeled(false);
+                description.setDescriptionId(descriptionManager.generateDescriptionId());
+                concept.addDescriptionWeb(description);
+
+                otherTermino = "";
             } else {
-                context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se ha ingresado el término a la descripción"));
-                context.getAttributes();
+                context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se ha seleccionado el tipo de descripción"));
             }
 
         } else {
-
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se ha ingresado el término a la descripción"));
-
+            context.getAttributes();
         }
 
     }
@@ -524,14 +520,6 @@ public class ConceptBean implements Serializable {
 
     }
 
-    public void onRowEdit(RowEditEvent event) {
-        DescriptionWeb d = (DescriptionWeb) event.getObject();
-        FacesContext context = FacesContext.getCurrentInstance();
-
-        if(d.getDescriptionType().getName().equalsIgnoreCase("abreviada") && concept.getValidDescriptionAbbreviated()!=null) {
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Solo puede existir una descripción abreviada"));
-        }
-    }
 
     // Getter and Setter
 
