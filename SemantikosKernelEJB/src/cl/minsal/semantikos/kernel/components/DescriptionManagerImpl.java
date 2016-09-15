@@ -189,18 +189,28 @@ public class DescriptionManagerImpl implements DescriptionManager {
     public void moveDescriptionToConcept(ConceptSMTK targetConcept, Description description, User user) {
 
         /* Se aplican las reglas de negocio para el traslado */
-        new DescriptionTranslationBR().apply(targetConcept, description);
+        DescriptionTranslationBR descriptionTranslationBR = new DescriptionTranslationBR();
+        descriptionTranslationBR.validatePreConditions(description, targetConcept);
 
         /* Se realiza la actualización a nivel del modelo lógico */
         ConceptSMTK sourceConcept = description.getConceptSMTK();
         List<Description> sourceConceptDescriptions = sourceConcept.getDescriptions();
+
+        /* Se elimina la descripción del objeto base */
         if(sourceConceptDescriptions.contains(description)){
             sourceConceptDescriptions.remove(description);
         }
 
+        /* Se agrega al concepto destino */
         if(!targetConcept.getDescriptions().contains(description)){
             targetConcept.addDescription(description);
         }
+
+        /* Se actualiza el concepto dueño de la descripción en la descripción */
+        description.setConceptSMTK(targetConcept);
+
+        /* Se aplican las reglas de negocio asociadas al movimiento de un concepto */
+        descriptionTranslationBR.apply(targetConcept, description);
 
         /* Luego se persiste el cambio */
         descriptionDAO.bind(description, targetConcept, user);
