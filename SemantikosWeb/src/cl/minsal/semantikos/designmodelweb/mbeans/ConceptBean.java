@@ -432,13 +432,13 @@ public class ConceptBean implements Serializable {
                 changes++;
             }
 
-            List<Pair<Description, Description>> descriptionsForUpdate= ConceptUtils.getModifiedDescriptions(_concept.getDescriptionsWeb(), concept.getDescriptionsWeb());
-            List<Description> descriptionsForPersist= ConceptUtils.getNewDescriptions(_concept.getDescriptionsWeb(), concept.getDescriptionsWeb());
-            List<Description> descriptionsForDelete= ConceptUtils.getDeletedDescriptions(_concept.getDescriptionsWeb(), concept.getDescriptionsWeb());
+            List<DescriptionWeb> descriptionsForPersist= concept.getUnpersistedDescriptionsWeb();
+            List<DescriptionWeb> descriptionsForDelete= concept.getRemovedDescriptionsWeb(_concept);
+            List<Pair<DescriptionWeb, DescriptionWeb>> descriptionsForUpdate= concept.getModifiedDescriptionsWeb(_concept);
 
             changes = changes + descriptionsForUpdate.size();
 
-            for (Pair<Description, Description> description : descriptionsForUpdate) {
+            for (Pair<DescriptionWeb, DescriptionWeb> description : descriptionsForUpdate) {
                 descriptionManager.updateDescription(concept, description.getFirst(), description.getSecond(), user);
             }
 
@@ -452,9 +452,9 @@ public class ConceptBean implements Serializable {
             for (Description description : descriptionsForDelete)
                 descriptionManager.deleteDescription(description, user);
 
-            List<Pair<RelationshipWeb, RelationshipWeb>> relationshipsForUpdate= ConceptUtils.getModifiedRelationships(_concept.getValidPersistedRelationshipsWeb(), concept.getValidPersistedRelationshipsWeb());
-            List<RelationshipWeb> relationshipsForPersist= concept.getUnpersistedRelationshipsWeb(); //ConceptUtils.getNewRelationships(_concept.getRelationshipsWeb(), concept.getRelationshipsWeb());
-            List<Relationship> relationshipsForDelete= ConceptUtils.getDeletedRelationships(_concept.getRelationshipsWeb(), concept.getRelationshipsWeb());
+            List<RelationshipWeb> relationshipsForPersist= concept.getUnpersistedRelationshipsWeb();
+            List<Pair<RelationshipWeb, RelationshipWeb>> relationshipsForUpdate= concept.getModifiedRelationships(_concept);
+            List<RelationshipWeb> relationshipsForDelete= concept.getRemovedRelationshipsWeb(_concept);
 
             changes = changes + relationshipsForUpdate.size();
 

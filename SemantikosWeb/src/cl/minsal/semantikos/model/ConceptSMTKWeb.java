@@ -221,21 +221,6 @@ public class ConceptSMTKWeb extends ConceptSMTK {
         return someRelationships;
     }
 
-    /**
-     * Este método es responsable de retornar todas las relaciones no persistidas de este concepto
-     *
-     * @return Una <code>java.util.List</code> de relaciones persistidas
-     */
-    public List<RelationshipWeb> getUnpersistedRelationshipsWeb() {
-        List<RelationshipWeb> someRelationships = new ArrayList<RelationshipWeb>();
-        for (RelationshipWeb relationship : relationshipsWeb) {
-            if (!relationship.isPersistent()) {
-                someRelationships.add(relationship);
-            }
-        }
-        return someRelationships;
-    }
-
     public void setRelationshipsWeb(List<RelationshipWeb> relationships) {
         //super.setRelationships(relationships);
         for (Relationship relationship : this.getValidRelationships())
@@ -321,10 +306,13 @@ public class ConceptSMTKWeb extends ConceptSMTK {
     }
 
 
-    //Los siguientes métodos están destinados a obtener información sobre las modificaciones que ha sufrido el concepto, dada su imagen inicial
+    //Los siguientes métodos están destinados a obtener información sobre las modificaciones que ha sufrido
+    //el concepto, dada una imagen inicial del concepto
 
-    //Este método es responsable de obtener las descripciones que han sido removidas del concepto original
-    // @param _concept La imagen inicial del concepto
+    /** Este método es responsable de obtener las descripciones que han sido removidas del concepto original
+     * @param: Un <code>cl.minsal.semantikos.model.ConceptSMTKWeb</code> con la imagen inicial del concepto
+     * @return Una <code>java.util.List</code> de descripciones removidas
+     */
     public List<DescriptionWeb> getRemovedDescriptionsWeb(ConceptSMTKWeb _concept){
 
         List<DescriptionWeb> removedDescriptions = new ArrayList<DescriptionWeb>();
@@ -334,7 +322,7 @@ public class ConceptSMTKWeb extends ConceptSMTK {
         for (DescriptionWeb initDescription : _concept.getDescriptionsWeb()) {
             isDescriptionFound = false;
             //Por cada descripción original se busca su descripcion vista correlacionada
-            for (DescriptionWeb finalDescription : descriptionsWeb) {
+            for (DescriptionWeb finalDescription : this.getDescriptionsWeb()) {
                 //Si la descripcion correlacionada no es encontrada, significa que fué eliminada
                 if (initDescription.getId() == finalDescription.getId()) {
                     isDescriptionFound = true;
@@ -345,6 +333,105 @@ public class ConceptSMTKWeb extends ConceptSMTK {
                 removedDescriptions.add(initDescription);
         }
         return  removedDescriptions;
+    }
+
+    /** Este método es responsable de obtener las descripciones que han sido modificadas respecto al concepto original
+    * @param: Un <code>cl.minsal.semantikos.model.ConceptSMTKWeb</code> con la imagen inicial del concepto
+    * @return Una <code>java.util.List</code> de <code>cl.minsal.semantikos.util.Pair</code> de descripciones modificadas
+     */
+    public List<Pair<DescriptionWeb, DescriptionWeb>> getModifiedDescriptionsWeb(ConceptSMTKWeb _concept) {
+
+        List<Pair<DescriptionWeb, DescriptionWeb>> descriptionsForUpdate = new ArrayList<Pair<DescriptionWeb, DescriptionWeb>>();
+
+        //Primero se buscan todas las descripciones persistidas originales
+        for (DescriptionWeb initDescription : _concept.getDescriptionsWeb()) {
+            //Por cada descripción original se busca su descripcion vista correlacionada
+            for (DescriptionWeb finalDescription : this.getDescriptionsWeb()) {
+                //Si la descripcion correlacionada sufrio alguna modificación agregar el par (init, final)
+                if (initDescription.getId() == finalDescription.getId() && !finalDescription.equals(initDescription) /*finalDescription.hasBeenModified()*/) {
+                    descriptionsForUpdate.add(new Pair(initDescription, finalDescription));
+                }
+            }
+        }
+        return descriptionsForUpdate;
+    }
+
+    /**
+     * Este método es responsable de retornar todas las descripciones no persistidas de este concepto
+     *
+     * @return Una <code>java.util.List</code> de descripciones no persistidas
+     */
+    public List<DescriptionWeb> getUnpersistedDescriptionsWeb() {
+        List<DescriptionWeb> someDescriptions = new ArrayList<DescriptionWeb>();
+        for (DescriptionWeb description : this.getDescriptionsWeb()) {
+            if (!description.isPersistent()) {
+                someDescriptions.add(description);
+            }
+        }
+        return someDescriptions;
+    }
+
+    /** Este método es responsable de obtener las relaciones que han sido removidas del concepto original
+    *  @param: Un <code>cl.minsal.semantikos.model.ConceptSMTKWeb</code> con la imagen inicial del concepto
+    *  @return Una <code>java.util.List</code> de relaciones removidas
+     */
+    public List<RelationshipWeb> getRemovedRelationshipsWeb(ConceptSMTKWeb _concept){
+
+        List<RelationshipWeb> removedRelationships = new ArrayList<RelationshipWeb>();
+        boolean isRelationshipFound;
+
+        //Primero se buscan todas las relaciones persistidas originales
+        for (RelationshipWeb initRelationship : _concept.getRelationshipsWeb()) {
+            isRelationshipFound = false;
+            //Por cada descripción original se busca su descripcion vista correlacionada
+            for (RelationshipWeb finalRelationship : this.getRelationshipsWeb()) {
+                //Si la descripcion correlacionada no es encontrada, significa que fué eliminada
+                if (initRelationship.getId() == finalRelationship.getId()) {
+                    isRelationshipFound = true;
+                    break;
+                }
+            }
+            if(!isRelationshipFound)
+                removedRelationships.add(initRelationship);
+        }
+        return removedRelationships;
+    }
+
+    /** Este método es responsable de obtener las descripciones que han sido modificadas respecto al concepto original
+     * @param: Un <code>cl.minsal.semantikos.model.ConceptSMTKWeb</code> con la imagen inicial del concepto
+     * @return Una <code>java.util.List</code> de <code>cl.minsal.semantikos.util.Pair</code> de relaciones modificadas
+     */
+    public List<Pair<RelationshipWeb, RelationshipWeb>> getModifiedRelationships(ConceptSMTKWeb _concept) {
+
+        List<Pair<RelationshipWeb, RelationshipWeb>> relationshipsForUpdate = new ArrayList<Pair<RelationshipWeb, RelationshipWeb>>();
+
+        //Primero se buscan todas las descripciones persistidas originales
+        for (RelationshipWeb initRelationship : _concept.getRelationshipsWeb()) {
+            //Por cada descripción original se busca su descripcion vista correlacionada
+            for (RelationshipWeb finalRelationship : this.getRelationshipsWeb()) {
+                //Si la descripcion correlacionada sufrio alguna modificación agregar el par (init, final)
+                if (initRelationship.getId() == finalRelationship.getId() && !finalRelationship.equals(initRelationship) /*finalDescription.hasBeenModified()*/) {
+                    relationshipsForUpdate.add(new Pair(initRelationship, finalRelationship));
+                }
+            }
+        }
+        return relationshipsForUpdate;
+    }
+
+
+    /**
+     * Este método es responsable de retornar todas las relaciones no persistidas de este concepto
+     *
+     * @return Una <code>java.util.List</code> de relaciones persistidas
+     */
+    public List<RelationshipWeb> getUnpersistedRelationshipsWeb() {
+        List<RelationshipWeb> someRelationships = new ArrayList<RelationshipWeb>();
+        for (RelationshipWeb relationship : relationshipsWeb) {
+            if (!relationship.isPersistent()) {
+                someRelationships.add(relationship);
+            }
+        }
+        return someRelationships;
     }
 
     // Los siguientes métodos son de utilidad en la restauración del concepto a su estado original
