@@ -77,12 +77,11 @@ public interface DescriptionManager {
      * Este método es responsable de mover una descripción (<code>description</code>) asociada a un concepto
      * (<code>sourceConcept</code>) a otro concepto (<code>targetConcept</code>)
      *
-     * @param sourceConcept El concepto en donde se encuentra la descripción inicialmente.
      * @param targetConcept El concepto al cual se quiere mover la descripción.
      * @param description   La descripción que se desea trasladar.
      * @param user          El usuario que realiza el traslado.
      */
-    public void moveDescriptionToConcept(ConceptSMTK sourceConcept, ConceptSMTK targetConcept, Description description, User user);
+    public void moveDescriptionToConcept(ConceptSMTK targetConcept, Description description, User user);
 
     public String getIdDescription(String tipoDescription);
 

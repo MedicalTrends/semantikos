@@ -17,12 +17,13 @@ public class DescriptionTranslationBR {
 
     private static final Logger logger = LoggerFactory.getLogger(DescriptionTranslationBR.class);
 
-    public void apply(ConceptSMTK sourceConcept, ConceptSMTK targetConcept, Description description) {
+    public void apply(ConceptSMTK targetConcept, Description description) {
 
         /* Descripciones que no se pueden trasladar */
         pcDescriptionTranslate001(description);
 
         /* Estados posibles para trasladar descripciones */
+        ConceptSMTK sourceConcept = description.getConceptSMTK();
         brDescriptionTranslate011(sourceConcept, targetConcept);
 
         /* Traslado de Descripciones abreviadas */

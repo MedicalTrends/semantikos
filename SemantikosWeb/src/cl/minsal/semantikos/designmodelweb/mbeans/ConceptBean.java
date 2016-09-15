@@ -9,8 +9,6 @@ import cl.minsal.semantikos.model.relationships.*;
 import cl.minsal.semantikos.util.ConceptUtils;
 import cl.minsal.semantikos.util.Pair;
 import org.primefaces.context.RequestContext;
-import org.primefaces.event.CellEditEvent;
-import org.primefaces.event.RowEditEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -511,7 +509,7 @@ public class ConceptBean implements Serializable {
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error", "No se seleccionó el concepto de destino"));
 
         }else{
-            descriptionManager.moveDescriptionToConcept(concept,conceptSMTKTranslateDes,descriptionToTranslate,user);
+            descriptionManager.moveDescriptionToConcept(conceptSMTKTranslateDes,descriptionToTranslate,user);
             concept= new ConceptSMTKWeb(conceptManager.getConceptByID(concept.getId()));
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Successful", "La descripción se ha trasladado a otro concepto correctamente"));
         }

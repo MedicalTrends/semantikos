@@ -186,12 +186,13 @@ public class DescriptionManagerImpl implements DescriptionManager {
 
 
     @Override
-    public void moveDescriptionToConcept(ConceptSMTK sourceConcept, ConceptSMTK targetConcept, Description description, User user) {
+    public void moveDescriptionToConcept(ConceptSMTK targetConcept, Description description, User user) {
 
         /* Se aplican las reglas de negocio para el traslado */
-        new DescriptionTranslationBR().apply(sourceConcept, targetConcept, description);
+        new DescriptionTranslationBR().apply(targetConcept, description);
 
         /* Se realiza la actualización a nivel del modelo lógico */
+        ConceptSMTK sourceConcept = description.getConceptSMTK();
         List<Description> sourceConceptDescriptions = sourceConcept.getDescriptions();
         if(sourceConceptDescriptions.contains(description)){
             sourceConceptDescriptions.remove(description);
@@ -211,7 +212,7 @@ public class DescriptionManagerImpl implements DescriptionManager {
     @Override
     public String getIdDescription(String tipoDescription) {
 
-/*
+/*      TODO: Reparar esto.
         String idDescription=null;
         try {
             Class.forName(driver);
