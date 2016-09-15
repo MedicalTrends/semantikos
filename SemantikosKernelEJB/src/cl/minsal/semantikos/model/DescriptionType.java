@@ -5,17 +5,26 @@ package cl.minsal.semantikos.model;
  */
 public class DescriptionType {
 
+    /** Descripción tipo General */
+    public static final DescriptionType FSN = new DescriptionType(1, "FSN", "Descripción de tipo Full Specified Name");
+
+    /** Descripción tipo General */
+    public static final DescriptionType PREFERIDA = new DescriptionType(2, "Preferida", "Descripción de tipo preferida");
+
+    /** Descripción tipo General */
+    public static final DescriptionType SYNONYMOUS = new DescriptionType(3, "Sinónimo", "Descripción de tipo sinónimo");
+
     /** Descripción Abreviada */
     public static final DescriptionType ABREVIADA = new DescriptionType(4, "Abreviada", "Descripción de tipo abreviada");
 
     /** Descripción tipo General */
     public static final DescriptionType GENERAL = new DescriptionType(5, "General", "Descripción de tipo general");
 
-    /** Descripción tipo General */
-    public static final DescriptionType FSN = new DescriptionType(1, "FSN", "Descripción de tipo Full Specified Name");
+    /** Descripción Ambigua */
+    public static final DescriptionType AMBIGUA = new DescriptionType(6, "Ambigua", "Descripción de tipo ambigua");
 
-    /** Descripción tipo General */
-    public static final DescriptionType PREFERIDA = new DescriptionType(2, "PREFERIDA", "Descripción de tipo preferida");
+    /** Descripción Ambigua */
+    public static final DescriptionType BAD_WRITTEN = new DescriptionType(7, "Mal Escrita", "Descripción de tipo mal escrita");
 
     /** Identificador único */
     private long id;

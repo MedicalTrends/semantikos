@@ -4,6 +4,10 @@ import cl.minsal.semantikos.kernel.components.CategoryManager;
 import cl.minsal.semantikos.model.*;
 import cl.minsal.semantikos.model.exceptions.BusinessRuleException;
 
+import java.util.List;
+
+import static cl.minsal.semantikos.model.DescriptionType.*;
+
 /**
  * @author Andrés Farías on 8/29/16.
  */
@@ -32,8 +36,10 @@ public class DescriptionCreationBR {
      * @param term            El término que se desea agregar.
      * @param categoryManager El Manager.
      */
-    public void validatePreCondition(ConceptSMTK concept, String term, CategoryManager categoryManager) {
+    public void validatePreCondition(ConceptSMTK concept, String term, DescriptionType type, CategoryManager categoryManager) {
         brDescriptionCreation001(concept, term, categoryManager);
+        brDescriptionCreation002(concept, type);
+        brDescriptionCreation003(concept, type);
     }
 
     /**
@@ -49,6 +55,44 @@ public class DescriptionCreationBR {
 
         if (categoryManager.categoryContains(category, term)) {
             throw new BusinessRuleException("Un término sólo puede existir una vez en una categoría.");
+        }
+    }
+
+    /**
+     * ﻿BR-DES-010: Cuando se edita un concepto solo se le pueden agregar Descripciones de tipo: Abreviado, Sinónimo,
+     * Ambiguo, General o Mal Escrito.
+     *
+     * <p>
+     * Para distinguir si se está <em>editando</em> el concepto, se valida si este está persistido. Si lo está quiere
+     * decir que se está editando, si no lo está, significa que se está creando.
+     * </p>
+     *
+     * @param concept El concepto al cual se agrega la descripción.
+     * @param type    El tipo de la descripción que se desea crear.
+     */
+    private void brDescriptionCreation002(ConceptSMTK concept, DescriptionType type) {
+
+        if (concept.isPersistent()) {
+            if (type.equals(ABREVIADA) || type.equals(SYNONYMOUS) || type.equals(AMBIGUA) || type.equals(GENERAL) || type.equals(BAD_WRITTEN)) {
+                return;
+            }
+
+            throw new BusinessRuleException("BR-DES-010: Cuando se edita un concepto solo se le pueden agregar Descripciones de tipo: Abreviado, Sinónimo,\n" +
+                    "     * Ambiguo, General o Mal Escrito.");
+        }
+    }
+
+    /**
+     * ﻿BR-DES-012: Un concepto ya existente puede tener hasta 1 descripción abreviada.
+     *
+     * @param concept El concepto al cual se agrega la descripción.
+     * @param type    El tipo de la descripción que se desea crear.
+     */
+    private void brDescriptionCreation003(ConceptSMTK concept, DescriptionType type) {
+
+        /* Si se está editando y es una abreviada.... */
+        if (concept.isPersistent() && type.equals(ABREVIADA)) {
+            throw new BusinessRuleException("Cuando se edita un concepto no es posible agregarle una descripción de tipo 'Abreviada'.");
         }
     }
 }
