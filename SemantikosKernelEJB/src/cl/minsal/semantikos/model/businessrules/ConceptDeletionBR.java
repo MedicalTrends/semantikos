@@ -9,7 +9,6 @@ import cl.minsal.semantikos.model.exceptions.BusinessRuleException;
 import java.util.List;
 
 import static cl.minsal.semantikos.model.ProfileFactory.DESIGNER_PROFILE;
-
 /**
  * @author Andrés Farías on 9/14/16.
  */
