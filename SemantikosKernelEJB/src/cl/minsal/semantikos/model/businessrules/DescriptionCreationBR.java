@@ -16,7 +16,7 @@ public class DescriptionCreationBR {
      * @param term            El término que contiene la descripción a crear.
      * @param type            El tipo de la descripción.
      * @param user            El usuario que quiere crear la descripción.
-     * @param categoryManager El componente de negocio que encapsula las reglas referentes a las categorías.
+     * @param categoryManager El componente de negocio que encapsula las operaciones referentes a las categorías.
      */
     public void applyRules(ConceptSMTK concept, String term, DescriptionType type, User user, CategoryManager categoryManager) {
 

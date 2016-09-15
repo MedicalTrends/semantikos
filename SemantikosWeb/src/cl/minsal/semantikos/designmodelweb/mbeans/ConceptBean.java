@@ -4,6 +4,7 @@ import cl.minsal.semantikos.kernel.components.*;
 import cl.minsal.semantikos.model.*;
 import cl.minsal.semantikos.model.audit.ConceptAuditAction;
 import cl.minsal.semantikos.model.basictypes.BasicTypeValue;
+import cl.minsal.semantikos.model.exceptions.BusinessRuleException;
 import cl.minsal.semantikos.model.helpertables.HelperTableRecord;
 import cl.minsal.semantikos.model.relationships.*;
 import cl.minsal.semantikos.util.ConceptUtils;
@@ -417,7 +418,7 @@ public class ConceptBean implements Serializable {
 
     }
 
-    public void saveConcept() {
+    public void saveConcept()  {
 
         FacesContext context = FacesContext.getCurrentInstance();
 
@@ -479,11 +480,18 @@ public class ConceptBean implements Serializable {
         }
         // Si el concepto no está persistido, persistirlo
         else {
-            conceptManager.persist(concept, user);
-            context.addMessage(null, new FacesMessage("Successful", "Concepto guardado "));
 
-            // Se resetea el concepto, como el concepto está persistido, se le pasa su id
-            getConceptById(concept.getId());
+            // TODO: Investigar cómo capturar la excepción de negocio
+            try{
+                conceptManager.persist(concept, user);
+                context.addMessage(null, new FacesMessage("Successful", "Concepto guardado "));
+                // Se resetea el concepto, como el concepto está persistido, se le pasa su id
+                getConceptById(concept.getId());
+            }
+            catch (BusinessRuleException bre){
+                context.addMessage(null, new FacesMessage("Error", bre.getMessage()));
+            }
+
         }
 
     }

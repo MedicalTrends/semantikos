@@ -77,6 +77,9 @@ public class DescriptionManagerImpl implements DescriptionManager {
     @Override
     public Description bindDescriptionToConcept(ConceptSMTK concept, Description description, User user) {
 
+        // Validar que no exista el término dentro de la misma categoría
+        descriptionCreationBR.validatePreCondition(concept, description.getTerm(), categoryManager);
+
         /* Si la descripción no se encontraba persistida, se persiste primero */
         if (!description.isPersistent()) {
             descriptionCreationBR.applyRules(concept, description.getTerm(), description.getDescriptionType(), user, categoryManager);
