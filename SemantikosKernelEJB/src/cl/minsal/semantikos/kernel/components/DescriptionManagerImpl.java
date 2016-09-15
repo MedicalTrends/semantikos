@@ -42,8 +42,10 @@ public class DescriptionManagerImpl implements DescriptionManager {
 
         /* Reglas de negocio previas */
         ConceptSMTK conceptSMTK = description.getConceptSMTK();
-        new DescriptionCreationBR().applyRules(conceptSMTK, description.getTerm(), description.getDescriptionType(), user, categoryManager);
+        DescriptionCreationBR descriptionCreationBR1 = new DescriptionCreationBR();
+        descriptionCreationBR1.validatePreCondition(conceptSMTK, description.getTerm(), categoryManager);
 
+        descriptionCreationBR1.applyRules(conceptSMTK, description.getTerm(), description.getDescriptionType(), user, categoryManager);
         if (!description.isPersistent()) {
             descriptionDAO.persist(description, user);
         }
