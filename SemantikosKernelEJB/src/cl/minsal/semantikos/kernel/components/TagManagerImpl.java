@@ -159,13 +159,13 @@ public class TagManagerImpl implements TagManager {
         /* Luego sus hijos */
         for (Tag son : tag.getSonTag()) {
 
-                if (son.getId() == -1) {
-                    son.setParentTag(tag);
-                    persist(son);
-                }else{
-                    son.setParentTag(tag);
-                    update(son);
-                }
+            if (son.getId() == -1) {
+                son.setParentTag(tag);
+                persist(son);
+            }else{
+                son.setParentTag(tag);
+                update(son);
+            }
 
 
         }

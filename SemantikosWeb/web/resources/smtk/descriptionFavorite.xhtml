@@ -28,7 +28,7 @@
                          style="width:90%">
             </p:inputText>
         </div>
-        <div class="ui-g-12 ui-md-6 ui-lg-2">
+        <div class="ui-g-12 ui-md-6 ui-lg-3">
             <p:selectOneRadio id="caseSensitiveNew"
                               layout="responsive"
                               columns="2"
@@ -38,7 +38,7 @@
                 <f:selectItem itemValue="#{false}" itemLabel="Insensible"/>
             </p:selectOneRadio>
         </div>
-        <div class="ui-g-12 ui-md-6 ui-lg-4">
+        <div class="ui-g-12 ui-md-6 ui-lg-3">
             <p:outputLabel value="DESCID " rendered="#{not cc.attrs.description.persistent}"/>
 
             <p:outputLabel value="DESCID: #{cc.attrs.description.descriptionId}" rendered="#{cc.attrs.description.persistent}"/>
