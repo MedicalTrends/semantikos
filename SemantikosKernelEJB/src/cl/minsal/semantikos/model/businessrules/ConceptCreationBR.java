@@ -32,13 +32,13 @@ public class ConceptCreationBR implements BusinessRulesContainer {
         br101HasFSN(conceptSMTK);
         br102NonEmptyDescriptions(conceptSMTK);
         brTagSMTK001(conceptSMTK);
+        br001creationRights(conceptSMTK, IUser);
 
         /* Las reglas de negocio dependen de la categoría del concepto */
         switch (conceptSMTK.getCategory().getName()) {
 
             case CATEGORY_FARMACOS_SUSTANCIAS_NAME:
                 logger.debug("Aplicando reglas de negocio para GUARDADO para categoría Fármacos - Sustancias.");
-                br001creationRights(conceptSMTK, IUser);
                 break;
 
             case CATEGORY_FARMACOS_MEDICAMENTO_BASICO_NAME:
@@ -61,6 +61,7 @@ public class ConceptCreationBR implements BusinessRulesContainer {
 
     /**
      * BR-TagSMTK-001: Cuando se diseña un nuevo Término se le asigna un Tag por defecto.
+     *
      * @param conceptSMTK El concepto sobre el cual se valida que tenga un Tag Semantikos asociado.
      */
     protected void brTagSMTK001(ConceptSMTK conceptSMTK) {
@@ -69,7 +70,7 @@ public class ConceptCreationBR implements BusinessRulesContainer {
         TagSMTK tagSMTK = conceptSMTK.getTagSMTK();
 
         /* Se valida que no sea nulo y que sea de los oficiales */
-        if (tagSMTK == null || !tagSMTK.isValid()){
+        if (tagSMTK == null || !tagSMTK.isValid()) {
             throw new BusinessRuleException("Todo concepto debe tener un Tag Semántikos (válido).");
         }
     }
@@ -92,26 +93,19 @@ public class ConceptCreationBR implements BusinessRulesContainer {
     }
 
     /**
-     * Usuarios con rol de Diseñador o Modelador pueden crear conceptos de esta categoria.
+     * Usuarios con rol de Diseñador o Modelador pueden crear conceptos de esta categoría.
      *
      * @param conceptSMTK El concepto a crear ser creado.
-     * @param IUser       El usuario que realiza la acción.
+     * @param user        El usuario que realiza la acción.
      */
-    protected void br001creationRights(ConceptSMTK conceptSMTK, User IUser) {
+    protected void br001creationRights(ConceptSMTK conceptSMTK, User user) {
 
-        /* Solo aplica a fármacos - sustancias */
-        Category farmacosSustanciaCategory = new Category();
-        farmacosSustanciaCategory.setName(CATEGORY_FARMACOS_SUSTANCIAS_NAME);
-        if (!conceptSMTK.belongsTo(farmacosSustanciaCategory)) return;
-
-        boolean isDesigner = IUser.getProfiles().contains(DESIGNER_PROFILE);
-        boolean isModeler = IUser.getProfiles().contains(MODELER_PROFILE);
-
-        /* El usuario debe ser modelador o diseñador */
-        if (!(isDesigner || isModeler)) {
-            throw new BusinessRuleException("Solo usuarios con rol de Diseñador o Modelador pueden crear conceptos de esta categoria.");
+        /* Categorías restringidas para usuarios con rol diseñador */
+        if (user.getProfiles().contains(DESIGNER_PROFILE)) {
+            if (conceptSMTK.getCategory().isRestriction()) {
+                throw new BusinessRuleException("El usuario " + user + " no tiene privilegios para editar la categoría " + conceptSMTK.getCategory());
+            }
         }
-
     }
 
     /**
@@ -126,14 +120,6 @@ public class ConceptCreationBR implements BusinessRulesContainer {
         Category farmacosMedicamentoBasicoCategory = new Category();
         farmacosMedicamentoBasicoCategory.setName(CATEGORY_FARMACOS_MEDICAMENTO_BASICO_NAME);
         if (!conceptSMTK.belongsTo(farmacosMedicamentoBasicoCategory)) return;
-
-        boolean isDesigner = IUser.getProfiles().contains(DESIGNER_PROFILE);
-        boolean isModeler = IUser.getProfiles().contains(MODELER_PROFILE);
-
-        /* El usuario debe ser modelador o diseñador */
-        if (!(isDesigner || isModeler)) {
-            throw new BusinessRuleException("Solo usuarios con rol de Diseñador o Modelador pueden crear conceptos de esta categoria.");
-        }
     }
 
     /**
