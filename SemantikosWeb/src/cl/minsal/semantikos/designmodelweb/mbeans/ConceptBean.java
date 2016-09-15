@@ -138,8 +138,8 @@ public class ConceptBean implements Serializable {
         user.setIdUser(1);
         user.setUsername("amauro");
         user.setPassword("amauro");
-        Profile designerProfile = new Profile(1, "designerProfile", "designerProfile");
-        user.getProfiles().add(designerProfile);
+        Profile DESIGNER_PROFILE = new Profile(2, "Diseñador", "Usuario Diseñador");
+        user.getProfiles().add(DESIGNER_PROFILE);
 
 
         // Iniciar cuadro de dialogo
@@ -330,6 +330,7 @@ public class ConceptBean implements Serializable {
                     context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Solo puede existir una descripción abreviada"));
                     return;
                 }
+
                 DescriptionWeb description = new DescriptionWeb(concept, otherTermino, otherDescriptionType);
                 if( categoryManager.categoryContains(category,description.getTerm())){
                     context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Esta descripcion ya existe en esta categoria"));
@@ -342,6 +343,12 @@ public class ConceptBean implements Serializable {
                 }
 
                 description.setCaseSensitive(otherSensibilidad);
+
+                if(otherDescriptionType.getName().equalsIgnoreCase("abreviada") || otherDescriptionType.getName().equalsIgnoreCase("sinónimo") ){
+                    description.setCaseSensitive(concept.getValidDescriptionFavorite().isCaseSensitive());
+                }
+
+
                 description.setModeled(false);
                 description.setDescriptionId(descriptionManager.generateDescriptionId());
                 concept.addDescriptionWeb(description);
@@ -419,7 +426,7 @@ public class ConceptBean implements Serializable {
 
             int changes = 0;
 
-            if(_concept.isToBeReviewed()!=concept.isToBeReviewed() || _concept.isToBeConsulted()!= concept.isToBeConsulted()){
+            if(_concept.isToBeReviewed()!=concept.isToBeReviewed() || _concept.isToBeConsulted()!= concept.isToBeConsulted()  || !_concept.getObservation().equalsIgnoreCase(concept.getObservation())){
                 conceptManager.updateFields(_concept,concept,user);
                 changes++;
             }
@@ -487,9 +494,11 @@ public class ConceptBean implements Serializable {
 
         // Si el concepto está persistido, invalidarlo
         if (concept.isPersistent() && !concept.isModeled()) {
-
-            conceptManager.invalidate(concept, user);
+            conceptManager.delete(concept,user);
             context.addMessage(null, new FacesMessage("Successful", "Concepto eliminado"));
+        }else{
+            conceptManager.invalidate(concept, user);
+            context.addMessage(null, new FacesMessage("Successful", "Concepto invalidado"));
         }
 
     }
