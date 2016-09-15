@@ -9,6 +9,8 @@ import cl.minsal.semantikos.model.relationships.*;
 import cl.minsal.semantikos.util.ConceptUtils;
 import cl.minsal.semantikos.util.Pair;
 import org.primefaces.context.RequestContext;
+import org.primefaces.event.CellEditEvent;
+import org.primefaces.event.RowEditEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,8 +25,6 @@ import java.io.Serializable;
 import java.text.ParseException;
 import java.util.*;
 
-import static cl.minsal.semantikos.model.ProfileFactory.DESIGNER_PROFILE;
-
 
 /**
  * Created by diego on 26/06/2016.
@@ -37,16 +37,16 @@ public class ConceptBean implements Serializable {
     static final Logger logger = LoggerFactory.getLogger(ConceptBean.class);
 
     @EJB
-    ConceptManagerInterface conceptManager;
+    ConceptManager conceptManager;
 
     @EJB
-    DescriptionManagerInterface descriptionManager;
+    DescriptionManager descriptionManager;
 
     @EJB
     RelationshipManager relationshipManager;
 
     @EJB
-    CategoryManagerInterface categoryManager;
+    CategoryManager categoryManager;
 
     @EJB
     HelperTableManagerInterface helperTableManager;
@@ -68,8 +68,6 @@ public class ConceptBean implements Serializable {
     //Concepto respaldo
     private ConceptSMTKWeb _concept;
 
-    private ConceptSMTK conceptSMTKTranslateDes;
-
     private Category category;
 
     private List<DescriptionType> descriptionTypes = new ArrayList<DescriptionType>();
@@ -85,6 +83,10 @@ public class ConceptBean implements Serializable {
 
     private DescriptionType otherDescriptionType;
 
+    private ConceptSMTK conceptSMTKTranslateDes;
+
+    private Description descriptionToTranslate;
+
     // Placeholders para los target de las relaciones
     private BasicTypeValue basicTypeValue = new BasicTypeValue(null);
 
@@ -95,6 +97,7 @@ public class ConceptBean implements Serializable {
     private ConceptSMTK conceptSelected;
 
     private Map<Long, ConceptSMTK> targetSelected;
+
     ////////////////////////////////////////////////////
 
     private Map<RelationshipDefinition, List<RelationshipAttribute>> relationshipAttributesPlaceholder = new HashMap<RelationshipDefinition, List<RelationshipAttribute>>();
@@ -110,19 +113,20 @@ public class ConceptBean implements Serializable {
 
     private List<ConceptAuditAction> auditAction;
 
-    private Description descriptionToTranslate;
-
-    public Description getDescriptionToTranslate() {
-        return descriptionToTranslate;
-    }
-
-    public void setDescriptionToTranslate(Description descriptionToTranslate) {
-        this.descriptionToTranslate = descriptionToTranslate;
-    }
-
     //para tipo helpertable
     private int helperTableValuePlaceholder;
 
+
+    @ManagedProperty(value="#{conceptExport}")
+    private ConceptExportMBean conceptBeanExport;
+
+    public ConceptExportMBean getConceptBeanExport() {
+        return conceptBeanExport;
+    }
+
+    public void setConceptBeanExport(ConceptExportMBean conceptBean) {
+        this.conceptBeanExport = conceptBean;
+    }
 
     //Inicializacion del Bean
 
@@ -148,10 +152,11 @@ public class ConceptBean implements Serializable {
         //category = categoryManager.getCategoryById(1);
         //category = categoryManager.getCategoryById(105590001);
         //category = categoryManager.getCategoryById(71388002);
-        //category = categoryManager.getCategoryById(419891008);
+        category = categoryManager.getCategoryById(419891008);
 
 
-        descriptionTypes = descriptionTypeFactory.getDescriptionTypes();
+        descriptionTypes = descriptionTypeFactory.getDescriptionTypesButFSNandFavorite();
+
         tagSMTKs = tagSMTKManager.getAllTagSMTKs();
 
 
@@ -162,6 +167,10 @@ public class ConceptBean implements Serializable {
     }
 
     //Methods
+
+    public void addTagToConcept(Tag tag){
+
+    }
 
     public void createConcept() throws ParseException {
 
@@ -174,9 +183,26 @@ public class ConceptBean implements Serializable {
             //getConceptById(80602);
         }
 
-
         RequestContext context = RequestContext.getCurrentInstance();
         context.execute("PF('dialogNameConcept').hide();");
+    }
+
+    //Este método es responsable de a partir de un concepto SMTK y un término, devolver un concepto WEB con su FSN y su Favorito
+    public ConceptSMTKWeb initConcept(ConceptSMTK concept, String term){
+        ConceptSMTKWeb conceptWeb = new ConceptSMTKWeb(concept);
+
+        DescriptionWeb fsnDescription = new DescriptionWeb(conceptWeb, term, descriptionManager.getTypeFSN());
+        fsnDescription.setCaseSensitive(false);
+        fsnDescription.setDescriptionId(descriptionManager.generateDescriptionId());
+
+        DescriptionWeb favouriteDescription = new DescriptionWeb(conceptWeb, term, descriptionManager.getTypeFavorite());
+        favouriteDescription.setCaseSensitive(false);
+        favouriteDescription.setDescriptionId(descriptionManager.generateDescriptionId());
+
+        for (DescriptionWeb description : new DescriptionWeb[]{favouriteDescription, fsnDescription})
+            conceptWeb.addDescriptionWeb(description);
+
+        return conceptWeb;
     }
 
     //Este método es responsable de pasarle a la vista un concepto plantilla
@@ -190,24 +216,14 @@ public class ConceptBean implements Serializable {
         // TODO: Diego
         TagSMTK tagSMTK = new TagSMTK(category.getTagSemantikos().getId(), category.getTagSemantikos().getName());
 
-        ConceptSMTK conceptSMTK = new ConceptSMTK(conceptManager.generateConceptId(), category, true, true, false, false, false, observation, tagSMTK);
+        ConceptSMTK conceptSMTK = new ConceptSMTK(conceptManager.generateConceptId(), category, false, false, false, false, false, observation, tagSMTK);
+        // Se crea el concepto WEB a partir del concepto SMTK
+        concept = initConcept(conceptSMTK, term);
+        // Se crea una copia de respaldo
+        _concept = initConcept(conceptSMTK, term);
 
-        concept = new ConceptSMTKWeb(conceptSMTK);
-
-        DescriptionWeb fsnDescription = new DescriptionWeb(concept, term, descriptionManager.getTypeFSN());
-        fsnDescription.setCaseSensitive(false);
-        fsnDescription.setDescriptionId(descriptionManager.generateDescriptionId());
-
-        DescriptionWeb favouriteDescription = new DescriptionWeb(concept, term, descriptionManager.getTypeFavorite());
-        favouriteDescription.setCaseSensitive(false);
-        favouriteDescription.setDescriptionId(descriptionManager.generateDescriptionId());
-
-        DescriptionWeb[] descriptions = {favouriteDescription, fsnDescription};
-
-        for (DescriptionWeb description : descriptions) {
-            concept.addDescriptionWeb(description);
-        }
-
+        conceptBeanExport.setConceptSMTK(concept);
+        conceptBeanExport.loadConcept();
     }
 
     //Este método es responsable de pasarle a la vista un concepto, dado el id del concepto
@@ -221,6 +237,8 @@ public class ConceptBean implements Serializable {
         _concept = new ConceptSMTKWeb(conceptSMTK);
         auditAction=auditManager.getConceptAuditActions(concept,10,true);
         category = concept.getCategory();
+        conceptBeanExport.setConceptSMTK(concept);
+        conceptBeanExport.loadConcept();
     }
 
 
@@ -288,7 +306,7 @@ public class ConceptBean implements Serializable {
         if (!isRelationshipFound) {
             this.concept.addRelationshipWeb(new Relationship(this.concept, target, relationshipDefinition));
         }
-        basicTypeValue= null;
+        // Se resetean los placeholder para los target de las relaciones
         basicTypeValue= new BasicTypeValue(null);
         conceptSelected = null;
     }
@@ -308,10 +326,26 @@ public class ConceptBean implements Serializable {
         if (otherTermino != null) {
             if (otherTermino.length() > 0) {
                 if (otherDescriptionType != null) {
+                    if(otherDescriptionType.getName().equalsIgnoreCase("abreviada") && concept.getValidDescriptionAbbreviated()!=null) {
+                        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Solo puede existir una descripción abreviada"));
+                        return;
+                    }
                     DescriptionWeb description = new DescriptionWeb(concept, otherTermino, otherDescriptionType);
+                    if( categoryManager.categoryContains(category,description.getTerm())){
+                        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Esta descripcion ya existe en esta categoria"));
+                        return;
+                    }
+
+                    if(containDescription(description)){
+                        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Esta descripcion ya existe en este concepto"));
+                        return;
+                    }
+
                     description.setCaseSensitive(otherSensibilidad);
-                    //description.setDescriptionId(descriptionManager.generateDescriptionId());
+                    description.setModeled(false);
+                    description.setDescriptionId(descriptionManager.generateDescriptionId());
                     concept.addDescriptionWeb(description);
+
                     otherTermino = "";
                 } else {
                     context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se ha seleccionado el tipo de descripción"));
@@ -328,6 +362,15 @@ public class ConceptBean implements Serializable {
 
         }
 
+    }
+
+
+    public boolean containDescription(DescriptionWeb descriptionWeb){
+        for (DescriptionWeb description: concept.getDescriptionsWeb()) {
+            if( description.getTerm().equals(descriptionWeb.getTerm())){
+                   return true;
+            }
+        }return false;
     }
 
     /**
@@ -427,14 +470,20 @@ public class ConceptBean implements Serializable {
 
             if(changes == 0)
                 context.addMessage(null, new FacesMessage("Warning", "No se ha realizado ningún cambio al concepto!!"));
-            else
+            else {
                 context.addMessage(null, new FacesMessage("Successful", "Concepto modificado "));
+                // Se resetea el concepto, como el concepto está persistido, se le pasa su id
+                getConceptById(concept.getId());
+            }
 
         }
         // Si el concepto no está persistido, persistirlo
         else {
             conceptManager.persist(concept, user);
             context.addMessage(null, new FacesMessage("Successful", "Concepto guardado "));
+
+            // Se resetea el concepto, como el concepto está persistido, se le pasa su id
+            getConceptById(concept.getId());
         }
 
     }
@@ -443,23 +492,50 @@ public class ConceptBean implements Serializable {
 
         FacesContext context = FacesContext.getCurrentInstance();
 
-        // Si el concepto está persistido, actualizarlo
+        // Si el concepto está persistido, invalidarlo
         if (concept.isPersistent() && !concept.isModeled()) {
 
-            conceptManager.invalidate(conceptSMTK, user);
-            context.addMessage(null, new FacesMessage("Successful", "Concepto eliminado."));
+            conceptManager.invalidate(concept, user);
+            context.addMessage(null, new FacesMessage("Successful", "Concepto eliminado"));
         }
 
     }
 
+    public void cancelConcept() {
 
-
-    public void translateDescription(){
-        descriptionManager.moveDescriptionToConcept(concept,conceptSMTKTranslateDes,descriptionToTranslate,user);
+        FacesContext context = FacesContext.getCurrentInstance();
+        concept.restore(_concept);
+        context.addMessage(null, new FacesMessage("Info", "Los cambios se han descartado"));
     }
 
+    public void updateFSN(Description d){
+        concept.getValidDescriptionFSN().setTerm(d.getTerm());
+    }
+
+    public void translateDescription(){
+        FacesContext context = FacesContext.getCurrentInstance();
+        if(conceptSMTKTranslateDes==null){
+
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error", "No se seleccionó el concepto de destino"));
+
+        }else{
+            descriptionManager.moveDescriptionToConcept(concept,conceptSMTKTranslateDes,descriptionToTranslate,user);
+            concept= new ConceptSMTKWeb(conceptManager.getConceptByID(concept.getId()));
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Successful", "La descripción se ha trasladado a otro concepto correctamente"));
+        }
 
 
+
+    }
+
+    public void onRowEdit(RowEditEvent event) {
+        DescriptionWeb d = (DescriptionWeb) event.getObject();
+        FacesContext context = FacesContext.getCurrentInstance();
+
+        if(d.getDescriptionType().getName().equalsIgnoreCase("abreviada") && concept.getValidDescriptionAbbreviated()!=null) {
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Solo puede existir una descripción abreviada"));
+        }
+    }
 
     // Getter and Setter
 
@@ -618,7 +694,15 @@ public class ConceptBean implements Serializable {
         this.auditAction = auditAction;
     }
 
-    public CategoryManagerInterface getCategoryManager() {
+    public Description getDescriptionToTranslate() {
+        return descriptionToTranslate;
+    }
+
+    public void setDescriptionToTranslate(Description descriptionToTranslate) {
+        this.descriptionToTranslate = descriptionToTranslate;
+    }
+
+    public CategoryManager getCategoryManager() {
         return categoryManager;
     }
 
@@ -642,7 +726,6 @@ public class ConceptBean implements Serializable {
         this.idconceptselect = idconceptselect;
 
     }
-
 
 }
 

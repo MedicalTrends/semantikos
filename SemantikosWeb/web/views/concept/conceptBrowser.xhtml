@@ -1,0 +1,62 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:smtk="http://java.sun.com/jsf/composite/smtk"
+                template="/WEB-INF/template/template.xhtml">
+
+    <ui:define name="content">
+
+        <div class="ui-grid-responsive">
+            <div class="ui-grid-col-12">
+
+                <p:dataTable id="conceptTable"
+                             value="#{conceptBrowserBean.concepts}"
+                             var="concept"
+                             rows="15"
+                             paginator="true" lazy="true" dynamic="true"
+                             paginatorTemplate=" {CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
+                             emptyMessage="No se han encontrado conceptos con los criterios utilizados">
+
+
+                    <p:column headerText="Concept ID" style="width:5%">
+                        <h:outputText value="#{concept.id}"/>
+                    </p:column>
+
+                    <p:column headerText="Término">
+                        <h:outputText value="#{concept.descriptionFavorite.term}"/>
+                    </p:column>
+
+                    <p:column headerText="Revisar" style="width:10%">
+                        <h:commandLink rendered="#{concept.isToBeReviewed()}" value="">
+                            <i class="fa fa-check" />
+                        </h:commandLink>
+                    </p:column>
+
+                    <p:column headerText="Consultar" style="width:10%">
+                        <h:commandLink rendered="#{concept.isToBeConsulted()}" value="">
+                            <i class="fa fa-check" />
+                        </h:commandLink>
+                    </p:column>
+
+                    <p:column headerText="Está en">
+                        <h:outputText value="Borrador" rendered="#{not concept.modeled}"/>
+                        <h:outputText value="Modelado" rendered="#{concept.modeled}"/>
+                    </p:column>
+
+                    <p:column exportable="false" style="width:32px;text-align: center">
+
+                    </p:column>
+
+                </p:dataTable>
+
+            </div>
+
+        </div>
+
+
+    </ui:define>
+
+</ui:composition>

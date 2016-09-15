@@ -8,6 +8,7 @@ import cl.minsal.semantikos.util.Pair;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -49,30 +50,6 @@ public class ConceptSMTKWeb extends ConceptSMTK {
                 addDescriptionWeb(new DescriptionWeb(this, description));
             }
         }
-    }
-
-    public ConceptSMTKWeb init(Category category, String term){
-
-        /* Valores iniciales para el concepto */
-        Description fsnDescription = new Description(this, term, DescriptionTypeFactory.getInstance().getFSNDescriptionType());
-        fsnDescription.setCaseSensitive(false);
-        //fsn.setDescriptionId(descriptionManager.generateDescriptionId());
-
-        Description favouriteDescription = new Description(this, term, DescriptionTypeFactory.getInstance().getFavoriteDescriptionType());
-        favouriteDescription.setCaseSensitive(false);
-        //favouriteDescription.setDescriptionId(descriptionManager.generateDescriptionId());
-
-        Description[] descriptions = {favouriteDescription, fsnDescription};
-
-        String observation = "";
-
-        // TODO: Diego
-        TagSMTK tagSMTK = new TagSMTK(category.getTagSemantikos().getId(), category.getTagSemantikos().getName());
-
-        ConceptSMTK conceptSMTK = new ConceptSMTK(null, category, true, true, false, false, false, observation, tagSMTK, descriptions);
-
-        return new ConceptSMTKWeb(conceptSMTK);
-
     }
 
     public List<DescriptionWeb> getDescriptionsWeb() {
@@ -127,6 +104,25 @@ public class ConceptSMTKWeb extends ConceptSMTK {
 
         /* En este punto, no se encontró una descripción preferida, y se arroja una excepción */
         throw new BusinessRuleException("Concepto sin descripción preferida");
+    }
+
+    /**
+     * <p>
+     * Este método es responsable de retornar la <i>descripción abreviada</i>. Basados en la regla de negocio que dice
+     * que un concepto debe siempre tener una y solo una descripción abreviada.</p>
+     * <p>
+     * Si el concepto no tuviera descripción preferida, se retorna una descripción "sin tipo".
+     * </p>
+     *
+     * @return La descripción abreviada.
+     */
+    public DescriptionWeb getValidDescriptionAbbreviated() {
+        for (DescriptionWeb descriptionWeb : getDescriptionsWeb()) {
+            if (descriptionWeb.getDescriptionType().getName().equalsIgnoreCase("abreviada") && descriptionWeb.isValid()) {
+                return descriptionWeb;
+            }
+        }
+        return null;
     }
 
     /**
@@ -191,15 +187,6 @@ public class ConceptSMTKWeb extends ConceptSMTK {
         return super.toString();
     }
 
-    public String validateDescription(Description description) {
-        if (description.getDescriptionType().getName().equalsIgnoreCase("FSN")) {
-            if (description == null || description.getTerm().length() == 0) {
-                return "Falta el FSN al concepto";
-            }
-        }
-        return "";
-    }
-
     /**
      * Este método es responsable de retornar todas las relaciones válidas de este concepto y que son de un cierto tipo
      * de
@@ -249,8 +236,8 @@ public class ConceptSMTKWeb extends ConceptSMTK {
         return someRelationships;
     }
 
-    public void setRelationshipsWeb(List<Relationship> relationships) {
-        super.setRelationships(relationships);
+    public void setRelationshipsWeb(List<RelationshipWeb> relationships) {
+        //super.setRelationships(relationships);
         for (Relationship relationship : this.getValidRelationships())
             this.relationshipsWeb.add(new RelationshipWeb(relationship.getId(), relationship));
     }
@@ -267,6 +254,78 @@ public class ConceptSMTKWeb extends ConceptSMTK {
         else
             this.relationshipsWeb.add(new RelationshipWeb(relationship));
     }
+
+    public void removeUnpersistedDescriptions(){
+
+        Iterator<Description> it = getDescriptions().iterator();
+
+        while (it.hasNext()) {
+            Description description = it.next(); // must be called before you can call i.remove()
+            if(!description.isPersistent() && !description.getDescriptionType().getName().equalsIgnoreCase("FSN") && !description.getDescriptionType().getName().equalsIgnoreCase("Preferida"))
+                it.remove();
+        }
+
+        Iterator<DescriptionWeb> it2 = descriptionsWeb.iterator();
+
+        while (it2.hasNext()) {
+            DescriptionWeb descriptionWeb = it2.next(); // must be called before you can call i.remove()
+            if(!descriptionWeb.isPersistent() && !descriptionWeb.getDescriptionType().getName().equalsIgnoreCase("FSN") && !descriptionWeb.getDescriptionType().getName().equalsIgnoreCase("Preferida"))
+                it2.remove();
+        }
+
+    }
+
+    public void restoreDeletedDescriptions(List<DescriptionWeb> descriptionsWeb){
+
+    }
+
+    public void restore(ConceptSMTKWeb _concept){
+
+        super.setToBeReviewed(_concept.isToBeReviewed());
+        super.setToBeConsulted(_concept.isToBeConsulted());
+        super.setTags(_concept.getTags());
+        super.setTagSMTK(_concept.getTagSMTK());
+        super.setObservation("");
+
+        //Remover descripciones agregadas no persistidas
+        removeUnpersistedDescriptions();
+
+        //Restaurar descripciones a su estado original
+        for (DescriptionWeb descriptionWeb : descriptionsWeb) {
+            for (DescriptionWeb _descriptionWeb : _concept.getDescriptionsWeb()) {
+                if(descriptionWeb.getDescriptionType().equals(_descriptionWeb.getDescriptionType()))
+                    descriptionWeb.restore(_descriptionWeb);
+            }
+        }
+        //Restaurar descripciones removidas
+        for (DescriptionWeb descriptionWeb : getRemovedDescriptionsWeb(_concept)) {
+            addDescriptionWeb(descriptionWeb);
+        }
+        //TODO: Hacer lo mismo para las relaciones y presumiblemente tambien para los tags
+    }
+
+    public List<DescriptionWeb> getRemovedDescriptionsWeb(ConceptSMTKWeb _concept){
+
+        List<DescriptionWeb> removedDescriptions = new ArrayList<DescriptionWeb>();
+        boolean isDescriptionFound;
+
+        //Primero se buscan todas las descripciones persistidas originales
+        for (DescriptionWeb initDescription : _concept.getDescriptionsWeb()) {
+            isDescriptionFound = false;
+            //Por cada descripción original se busca su descripcion vista correlacionada
+            for (DescriptionWeb finalDescription : descriptionsWeb) {
+                //Si la descripcion correlacionada no es encontrada, significa que fué eliminada
+                if (initDescription.getId() == finalDescription.getId()) {
+                    isDescriptionFound = true;
+                    break;
+                }
+            }
+            if(!isDescriptionFound)
+                removedDescriptions.add(initDescription);
+        }
+        return  removedDescriptions;
+    }
+
 
     /**
      * Este método es responsable de agregar un tag al concepto.

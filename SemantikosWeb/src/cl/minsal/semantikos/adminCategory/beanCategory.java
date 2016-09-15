@@ -1,6 +1,6 @@
 package cl.minsal.semantikos.adminCategory;
 
-import cl.minsal.semantikos.kernel.components.CategoryManagerInterface;
+import cl.minsal.semantikos.kernel.components.CategoryManager;
 import cl.minsal.semantikos.model.*;
 import cl.minsal.semantikos.model.relationships.RelationshipDefinition;
 import org.primefaces.context.RequestContext;
@@ -44,7 +44,7 @@ public class beanCategory {
     private int lowerBoundary;
 
     @EJB
-    private CategoryManagerInterface categoryManager;
+    private CategoryManager categoryManager;
 
 
     @PostConstruct

@@ -14,40 +14,40 @@
 </composite:interface>
 
 <composite:implementation>
-
     <div class="ui-g">
-        <div class="ui-g-12 ui-md-6 ui-lg-1">
-            <p:outputLabel for="termNew" value="#{cc.attrs.description.descriptionType.name} *"/>
+        <!-- Nombre descripción -->
+        <div class="ui-g-12 ui-md-6 ui-lg-2">
+            <p:outputLabel for="FSN" value="#{cc.attrs.description.descriptionType.name} *"/>
         </div>
-        <div class="ui-g-12 ui-md-6 ui-lg-5">
-            <p:inputText id="termNew"
-                         styleClass="terms"
+        <!-- Término descripción -->
+        <div class="ui-g-12 ui-md-6 ui-lg-4">
+            <p:inputText id="FSN"
+                         styleClass="terms FSN"
                          name="description"
                          validator="#{validatorBean.validateRequired}"
                          value="#{cc.attrs.description.representation}"
-                         style="width:95%">
+                         style="width:90%">
+                <p:ajax event="blur" update="@this" process="@this" delay="100" />
+                <p:ajax event="change" update="@this" process="@this" delay="100" />
             </p:inputText>
         </div>
-        <div class="ui-g-12 ui-md-6 ui-lg-4">
-            <p:outputLabel for="termNew3" value="DESCID: " rendered="#{cc.attrs.description.persistent}"/>
-            <p:inputText id="termNew3"
-                         name="descriptionId"
-                         value="#{cc.attrs.description.descriptionId}"
-                         rendered="#{cc.attrs.description.persistent}"
-                         style="width:80%">
-            </p:inputText>
-        </div>
+        <!-- Sensibilidad descripción -->
         <div class="ui-g-12 ui-md-6 ui-lg-2">
             <p:selectOneRadio id="caseSensitiveNew"
                               layout="responsive"
                               columns="2"
                               value="#{cc.attrs.description.caseSensitive}"
-                              style="width:100%">
+                              style="width:90%">
                 <f:selectItem itemValue="#{true}" itemLabel="Sensible"/>
                 <f:selectItem itemValue="#{false}" itemLabel="Insensible"/>
             </p:selectOneRadio>
         </div>
-    </div>
+        <!-- DescriptionId -->
+        <div class="ui-g-12 ui-md-6 ui-lg-4">
+            <p:outputLabel value="DESCID " rendered="#{not cc.attrs.description.persistent}"/>
 
+            <p:outputLabel value="DESCID: #{cc.attrs.description.descriptionId}" rendered="#{cc.attrs.description.persistent}"/>
+        </div>
+    </div>
 </composite:implementation>
 </html>

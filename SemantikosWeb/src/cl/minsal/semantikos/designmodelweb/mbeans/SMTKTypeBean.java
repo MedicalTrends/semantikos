@@ -1,6 +1,6 @@
 package cl.minsal.semantikos.designmodelweb.mbeans;
 
-import cl.minsal.semantikos.kernel.components.ConceptManagerInterface;
+import cl.minsal.semantikos.kernel.components.ConceptManager;
 import cl.minsal.semantikos.model.Category;
 import cl.minsal.semantikos.model.ConceptSMTK;
 import org.primefaces.model.LazyDataModel;
@@ -52,7 +52,7 @@ public class SMTKTypeBean implements Serializable {
     }
 
     @EJB
-    private ConceptManagerInterface conceptManager;
+    private ConceptManager conceptManager;
 
 
     public LazyDataModel<ConceptSMTK> getConceptSearchForRDId(final Long idRelationshipDefinition, final Category targetDefinition) {
@@ -109,11 +109,11 @@ public class SMTKTypeBean implements Serializable {
         this.pattern = pattern;
     }
 
-    public ConceptManagerInterface getConceptManager() {
+    public ConceptManager getConceptManager() {
         return conceptManager;
     }
 
-    public void setConceptManager(ConceptManagerInterface conceptManager) {
+    public void setConceptManager(ConceptManager conceptManager) {
         this.conceptManager = conceptManager;
     }
 

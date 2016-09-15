@@ -6,10 +6,11 @@
                 template="/WEB-INF/template/template.xhtml">
 
     <ui:define name="content">
-        <p:panel id="findConcept">
+
             <h:form id="conceptSMTK">
+                <p:panel id="findConcept" style="display: none">
                 <p:dataTable id="conceptBasicsTable" var="conceptBasics" value="#{conceptExport.conceptBasics}"
-                             paginator="false" rows="2">
+                             paginator="false" rows="2" >
 
                     <p:column>
                         <h:outputText value="#{conceptBasics.propertyName}"/>
@@ -23,7 +24,7 @@
                              paginator="false" rows="6">
 
                     <p:column>
-                        <h:outputText value="#{descriptions.descriptionID}"/>
+                        <h:outputText value="#{descriptions.descriptionId}"/>
                     </p:column>
                     <p:column>
                         <h:outputText value="#{descriptions.term}"/>
@@ -129,7 +130,7 @@
 
                 </p:dataTable>
 
-                <p:dataTable id="refsetsTable" var="snomedctRelation" value="#{conceptExport.refsets}"
+                <p:dataTable id="refsetsTable" var="snomedctRelation" value="#{conceptExport.refSets}"
                              paginator="false" rows="6">
 
                     <p:column>
@@ -143,9 +144,15 @@
                     </p:column>
 
                 </p:dataTable>
+                </p:panel>
+
+
+                <p:commandButton ajax="false" value="Exportar">
+                    <p:dataExporter target="conceptBasicsTable,conceptDescriptionsTable,conceptAttributesTable,conceptRelationshipsTable,crossMapsDirectosTable,crossMapsInDirectosTable,refsetsTable"  type="xls" fileName="concepto"></p:dataExporter>
+                </p:commandButton>
 
             </h:form>
-        </p:panel>
+
     </ui:define>
 
 </ui:composition>

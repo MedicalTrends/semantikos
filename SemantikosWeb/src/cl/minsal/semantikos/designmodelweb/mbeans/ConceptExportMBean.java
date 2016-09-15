@@ -2,6 +2,7 @@ package cl.minsal.semantikos.designmodelweb.mbeans;
 
 import cl.minsal.semantikos.kernel.daos.ConceptDAO;
 import cl.minsal.semantikos.model.ConceptSMTK;
+import cl.minsal.semantikos.model.ConceptSMTKWeb;
 import cl.minsal.semantikos.model.RefSet;
 import cl.minsal.semantikos.model.relationships.Relationship;
 import cl.minsal.semantikos.model.snomedct.SnomedCT;
@@ -9,6 +10,7 @@ import cl.minsal.semantikos.model.snomedct.SnomedCT;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.component.UINamingContainer;
 import java.sql.Timestamp;
@@ -23,11 +25,17 @@ import java.util.List;
 @ViewScoped
 public class ConceptExportMBean extends UINamingContainer {
 
+    private String init;
+
+    public String getInit() {
+        return init;
+    }
+
     private List<ConceptBasic> conceptBasics;
 
-    private ConceptSMTK conceptSMTK;
+    private ConceptSMTKWeb conceptSMTK;
 
-    //80625 80602
+    //80614
     @EJB
     private ConceptDAO conceptDAO;
 
@@ -35,23 +43,31 @@ public class ConceptExportMBean extends UINamingContainer {
 
     private List<RefSet> refSets;
 
+
     @PostConstruct
     protected void initialize() throws ParseException {
-        conceptBasics = new ArrayList<ConceptBasic>();
 
-        conceptBasics.add(new ConceptBasic("IDCONCEPT", conceptSMTK.getConceptID()));
-        conceptBasics.add(new ConceptBasic("Categoría", conceptSMTK.getCategory().toString()));
-        conceptBasics.add(new ConceptBasic("Estado", conceptSMTK.isModeled() ? "Modelado" : "Borrador"));
-        conceptBasics.add(new ConceptBasic("Fecha Informe", new Timestamp(System.currentTimeMillis()).toString()));
-        conceptBasics.add(new ConceptBasic("Fecha Publicación", "No implementado"));
-        conceptBasics.add(new ConceptBasic("FSN", conceptSMTK.getDescriptionFSN().toString()));
-        conceptBasics.add(new ConceptBasic("FSN", conceptSMTK.getDescriptionFavorite().toString()));
-        conceptBasics.add(new ConceptBasic("Tipo Creación", conceptSMTK.isFullyDefined() ? "Completamente Definido" : "Primitivo"));
-        conceptBasics.add(new ConceptBasic("Observación", conceptSMTK.getObservation()));
 
-        crossMapsRelationships = new ArrayList<Relationship>();
-        conceptDAO.getConceptByID(80625);
     }
+
+    public void loadConcept() {
+
+            conceptBasics = new ArrayList<ConceptBasic>();
+
+            conceptBasics.add(new ConceptBasic("IDCONCEPT", conceptSMTK.getConceptID()));
+            conceptBasics.add(new ConceptBasic("Categoría", conceptSMTK.getCategory().toString()));
+            conceptBasics.add(new ConceptBasic("Estado", conceptSMTK.isModeled() ? "Modelado" : "Borrador"));
+            conceptBasics.add(new ConceptBasic("Fecha Informe", new Timestamp(System.currentTimeMillis()).toString()));
+            conceptBasics.add(new ConceptBasic("Fecha Publicación", "No implementado"));
+            conceptBasics.add(new ConceptBasic("FSN", conceptSMTK.getDescriptionFSN().toString()));
+            conceptBasics.add(new ConceptBasic("FSN", conceptSMTK.getDescriptionFavorite().toString()));
+            conceptBasics.add(new ConceptBasic("Tipo Creación", conceptSMTK.isFullyDefined() ? "Completamente Definido" : "Primitivo"));
+            conceptBasics.add(new ConceptBasic("Observación", conceptSMTK.getObservation()));
+
+            crossMapsRelationships = new ArrayList<Relationship>();
+
+    }
+
 
     public List<ConceptBasic> getConceptBasics() {
         return conceptBasics;
@@ -61,8 +77,12 @@ public class ConceptExportMBean extends UINamingContainer {
         this.conceptBasics = conceptBasics;
     }
 
-    public ConceptSMTK getConceptSMTK() {
+    public ConceptSMTKWeb getConceptSMTK() {
         return conceptSMTK;
+    }
+
+    public void setConceptSMTK(ConceptSMTKWeb conceptSMTK) {
+        this.conceptSMTK = conceptSMTK;
     }
 
     /**
@@ -86,33 +106,6 @@ public class ConceptExportMBean extends UINamingContainer {
 
     public List<RefSet> getRefSets() {
         return refSets;
-    }
-}
-
-class ConceptBasic {
-
-    private String propertyName;
-    private String propertyValue;
-
-    public ConceptBasic(String propertyName, String propertyValue) {
-        this.propertyName = propertyName;
-        this.propertyValue = propertyValue;
-    }
-
-    public void setPropertyName(String propertyName) {
-        this.propertyName = propertyName;
-    }
-
-    public void setPropertyValue(String propertyValue) {
-        this.propertyValue = propertyValue;
-    }
-
-    public String getPropertyName() {
-        return propertyName;
-    }
-
-    public String getPropertyValue() {
-        return propertyValue;
     }
 }
 

@@ -69,6 +69,7 @@
                          rowKey="#{description.id}"
                          reflow="true">
 
+                <p:ajax event="rowEdit" listener="#{conceptBean.onRowEdit}" update="#{cc.clientId}:growl" />
                 <p:column selectionMode="multiple" style="width:16px;text-align:center"/>
 
                 <!--Columnas por defecto -->
@@ -82,9 +83,9 @@
                 <p:column headerText="Término">
                     <div style="text-align: center;">
                         <p:cellEditor>
-                            <f:facet name="output"><h:outputText value="#{description.representation}"/></f:facet>
+                            <f:facet name="output"><h:outputText value="#{description.term}"/></f:facet>
                             <f:facet name="input"><p:inputText id="otrasTermino"
-                                                               value="#{description.representation}"
+                                                               value="#{description.term}"
                                                                style="width:100%"/></f:facet>
                         </p:cellEditor>
                     </div>
@@ -92,19 +93,10 @@
 
                 <p:column headerText="Estado">
                     <div style="text-align: center;">
-                        <p:cellEditor>
-                            <f:facet name="output">
-                                <h:outputText value="Borrador" rendered="#{not description.modeled}"/>
-                                <h:outputText value="Modelado" rendered="#{description.modeled}"/>
-                            </f:facet>
-                            <f:facet name="input">
-                                <p:selectOneMenu value="#{description.modeled}" style="width:60%">
-                                    <f:selectItem itemLabel="Seleccione estado" itemValue=""/>
-                                    <f:selectItem itemLabel="Borrador" itemValue="false"/>
-                                    <f:selectItem itemLabel="Modelado" itemValue="true"/>
-                                </p:selectOneMenu>
-                            </f:facet>
-                        </p:cellEditor>
+                        <f:facet name="output">
+                            <h:outputText value="Borrador" rendered="#{not description.modeled}"/>
+                            <h:outputText value="Modelado" rendered="#{description.modeled}"/>
+                        </f:facet>
                     </div>
                 </p:column>
 
@@ -116,7 +108,6 @@
                             <f:facet name="input">
                                 <p:selectOneMenu value="#{description.descriptionType}"
                                                  converter="omnifaces.SelectItemsConverter" style="width:60%">
-                                    <f:selectItem itemLabel="Seleccione tipo" itemValue=""/>
                                     <f:selectItems value="#{conceptBean.descriptionTypes}"
                                                    var="descriptionType" itemLabel="#{descriptionType.name}"
                                                    itemValue="#{descriptionType}"/>
@@ -128,7 +119,7 @@
 
                 <p:column headerText="Fecha Creación">
                     <div style="text-align: center;">
-                        <h:outputText/>
+                        <h:outputText value="-"/>
                     </div>
                 </p:column>
 
@@ -151,27 +142,30 @@
 
                 <p:column headerText="Usuario Creador">
                     <div style="text-align: center;">
-                        <h:outputText/>
+                        <h:outputText value="-"/>
                     </div>
                 </p:column>
 
-                <p:column headerText="Acción" style="width:4%">
+                <p:column headerText="Acción" style="width:5%">
                     <p:commandLink actionListener="#{conceptBean.removeDescription(description)}"
                                    ajax="true"
                                    process="@this"
-                                   update="@(.otherDescriptions)" style="float: right">
-                        <h:graphicImage style="width: 15px; height: 15px"
-                                        name="images/trash-blue.png"
-                        />
+                                   update="@(.otherDescriptions)"
+                                   style="float: right">
+                        <i class="fa fa-trash fa-lg"></i>
                     </p:commandLink>
-                    <p:commandButton rendered="#{conceptBean.concept.persistent}"
-                                     icon="fa fa-exchange"
-                                     process="@this"
-                                     update=":#{cc.clientId}:conceptTranslate"
-                                     oncomplete="PF('dialogTDC').show()"
-                    >
-                        <f:setPropertyActionListener value="#{description}" target="#{conceptBean.descriptionToTranslate}"></f:setPropertyActionListener>
-                            </p:commandButton>
+                    <p:spacer></p:spacer>
+                    <p:commandLink  rendered="#{conceptBean.concept.persistent}"
+                                    process="@this"
+                                    update=":#{cc.clientId}:conceptTranslate"
+                                    oncomplete="PF('dialogTDC').show()">
+                        <i class="fa fa-exchange fa-lg" />
+                        <f:setPropertyActionListener value="#{description}" target="#{conceptBean.descriptionToTranslate}" />
+
+                    </p:commandLink>
+                    <p:spacer></p:spacer>
+
+
                     <p:rowEditor style="display: inline"/>
                 </p:column>
 

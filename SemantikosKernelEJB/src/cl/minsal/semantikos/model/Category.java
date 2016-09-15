@@ -117,6 +117,11 @@ public class Category extends PersistentEntity implements TargetDefinition, Audi
 
 
     @Override
+    public String toString() {
+        return this.name;
+    }
+
+    @Override
     public int hashCode() {
         return name != null ? name.hashCode() : 0;
     }

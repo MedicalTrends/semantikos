@@ -21,12 +21,15 @@ import static java.lang.System.currentTimeMillis;
  * @author Andrés Farías
  */
 @Stateless
-public class DescriptionManagerImpl implements DescriptionManagerInterface {
+public class DescriptionManagerImpl implements DescriptionManager {
 
     private static final Logger logger = LoggerFactory.getLogger(DescriptionManagerImpl.class);
 
     @EJB
     DescriptionDAO descriptionDAO;
+
+    @EJB
+    CategoryManager categoryManager;
 
     @EJB
     private AuditManagerInterface auditManager;
@@ -35,10 +38,28 @@ public class DescriptionManagerImpl implements DescriptionManagerInterface {
     private DescriptionCreationBR descriptionCreationBR = new DescriptionCreationBR();
 
     @Override
+    public void createDescription(Description description, User user) {
+
+        /* Reglas de negocio previas */
+        ConceptSMTK conceptSMTK = description.getConceptSMTK();
+        new DescriptionCreationBR().applyRules(conceptSMTK, description.getTerm(), description.getDescriptionType(), user, categoryManager);
+
+        if (!description.isPersistent()){
+            descriptionDAO.persist(description, user);
+        }
+
+        /* Si el concepto al cual se agrega la descripción está modelado, se registra en el historial */
+        if (conceptSMTK.isModeled()){
+            auditManager.recordDescriptionCreation(description, user);
+        }
+
+    }
+
+    @Override
     public Description bindDescriptionToConcept(ConceptSMTK concept, String term, DescriptionType descriptionType, User user) {
 
         /* Se aplican las reglas de negocio para crear la Descripción*/
-        descriptionCreationBR.applyRules(concept, term, descriptionType, user);
+        descriptionCreationBR.applyRules(concept, term, descriptionType, user, categoryManager);
 
         /* Se crea la descripción */
         Description description = new Description(concept, term, descriptionType);
@@ -56,7 +77,7 @@ public class DescriptionManagerImpl implements DescriptionManagerInterface {
 
         /* Si la descripción no se encontraba persistida, se persiste primero */
         if (!description.isPersistent()){
-            descriptionCreationBR.applyRules(concept, description.getTerm(), description.getDescriptionType(), user);
+            descriptionCreationBR.applyRules(concept, description.getTerm(), description.getDescriptionType(), user, categoryManager);
             descriptionDAO.persist(description, user);
         }
 
@@ -115,6 +136,7 @@ public class DescriptionManagerImpl implements DescriptionManagerInterface {
         }
     }
 
+
     @Override
     public void deleteDescription(ConceptSMTK conceptSMTK, Description description, User user) {
 
@@ -126,7 +148,6 @@ public class DescriptionManagerImpl implements DescriptionManagerInterface {
             auditManager.recordDescriptionDeletion(conceptSMTK, description, user);
         }
     }
-
 
     /**
      * Este método es responsable de aplicar las actualizaciones. Para actualizar una descripción se revisan las
@@ -163,6 +184,7 @@ public class DescriptionManagerImpl implements DescriptionManagerInterface {
         }
     }
 
+
     @Override
     public void moveDescriptionToConcept(ConceptSMTK sourceConcept, ConceptSMTK targetConcept, Description description, User user) {
 
@@ -185,7 +207,6 @@ public class DescriptionManagerImpl implements DescriptionManagerInterface {
         /* Se registra en el Audit el traslado */
         auditManager.recordDescriptionMovement(sourceConcept, targetConcept, description, user);
     }
-
 
     @Override
     public String getIdDescription(String tipoDescription) {
@@ -220,6 +241,7 @@ public class DescriptionManagerImpl implements DescriptionManagerInterface {
 
     }
 
+
     @Override
     public List<Description> findDescriptionsByConcept(int idConcept) {
 
@@ -233,7 +255,6 @@ public class DescriptionManagerImpl implements DescriptionManagerInterface {
 
         return null;
     }
-
 
     @Override
     public DescriptionType getTypeFSN() {
@@ -253,5 +274,10 @@ public class DescriptionManagerImpl implements DescriptionManagerInterface {
     @Override
     public String generateDescriptionId() {
         return UUID.randomUUID().toString();
+    }
+
+    @Override
+    public List<Description> searchDescriptionsByTerm(String term, List<Category> categories) {
+        return descriptionDAO.searchDescriptionsByTerm(term, categories);
     }
 }

@@ -1,25 +1,43 @@
+package cl.minsal.semantikos.designmodelweb.mbeans;
 
-
-import cl.minsal.semantikos.kernel.components.CategoryManager;
-import cl.minsal.semantikos.kernel.components.ConceptManager;
-import cl.minsal.semantikos.model.Category;
-import cl.minsal.semantikos.model.ConceptSMTK;
-import cl.minsal.semantikos.model.Description;
+import cl.minsal.semantikos.kernel.components.*;
+import cl.minsal.semantikos.model.*;
+import cl.minsal.semantikos.model.audit.ConceptAuditAction;
+import cl.minsal.semantikos.model.basictypes.BasicTypeValue;
+import cl.minsal.semantikos.model.helpertables.HelperTableRecord;
+import cl.minsal.semantikos.model.relationships.*;
+import cl.minsal.semantikos.util.ConceptUtils;
+import cl.minsal.semantikos.util.Pair;
+import org.primefaces.context.RequestContext;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
+import java.io.Serializable;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 
-@ManagedBean
-@ViewScoped
-public class NavBrowser {
+/**
+ * Created by diego on 26/06/2016.
+ */
 
+@ManagedBean(name = "conceptBrowserBean")
+@ViewScoped
+public class ConceptBrowserBean implements Serializable {
+
+    static final Logger logger = LoggerFactory.getLogger(ConceptBrowserBean.class);
 
     private List<Category> categories;
     private LazyDataModel<ConceptSMTK> concepts;
@@ -46,7 +64,6 @@ public class NavBrowser {
     @EJB
     private ConceptManager conceptManager;
 
-
     @PostConstruct
     public void init() {
 
@@ -57,9 +74,9 @@ public class NavBrowser {
             @Override
             public List<ConceptSMTK> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
                 List<ConceptSMTK> conceptSMTKs=null;
-                    selectedCategories= (selectedCategories==null)? new Long[0]:selectedCategories;
-                    conceptSMTKs = conceptManager.findConceptBy(pattern, selectedCategories, first, pageSize);
-                    this.setRowCount(conceptManager.countConceptBy(pattern, selectedCategories));
+                selectedCategories= new Long[0];
+                conceptSMTKs = conceptManager.findConceptBy(pattern, selectedCategories, first, pageSize);
+                this.setRowCount(conceptManager.countConceptBy(pattern, selectedCategories));
 
 
                 return conceptSMTKs;
@@ -103,14 +120,6 @@ public class NavBrowser {
         this.categoryManager = categoryManager;
     }
 
-    public ConceptManager getConceptManager() {
-        return conceptManager;
-    }
-
-    public void setConceptManager(ConceptManager conceptManager) {
-        this.conceptManager = conceptManager;
-    }
-
     public Category getCategory() {
         return category;
     }
@@ -142,8 +151,5 @@ public class NavBrowser {
     public void setConceptSelected(ConceptSMTK conceptSelected) {
         this.conceptSelected = conceptSelected;
     }
-
-
-
-
 }
+

@@ -115,6 +115,13 @@ public interface AuditManagerInterface {
     public void recordCrossMapRemoval(CrossMap crossMap, User user);
 
     /**
+     * Este método es responsable de registrar en el historial la eliminación de un CrossMap.
+     *  @param description La descripción qeu se está creando.
+     * @param user        El usuario que realiza la acción.
+     */
+    public void recordDescriptionCreation(Description description, User user);
+
+    /**
      * Este método es responsable de registrar en el historial la eliminación de una Descripción.
      *
      * @param conceptSMTK El concepto cuya descripción se desea eliminar.
@@ -125,6 +132,7 @@ public interface AuditManagerInterface {
 
     /**
      * Este método es responsable de registrar en el historial la eliminación de una Descripción.
+     *
      * @param conceptSMTK El concepto que se desea eliminar.
      * @param user        El usuario que desea eliminar el concepto.
      */
