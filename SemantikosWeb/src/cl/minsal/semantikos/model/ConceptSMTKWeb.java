@@ -255,26 +255,6 @@ public class ConceptSMTKWeb extends ConceptSMTK {
             this.relationshipsWeb.add(new RelationshipWeb(relationship));
     }
 
-    public void removeUnpersistedDescriptions(){
-
-        Iterator<Description> it = getDescriptions().iterator();
-
-        while (it.hasNext()) {
-            Description description = it.next(); // must be called before you can call i.remove()
-            if(!description.isPersistent() && !description.getDescriptionType().getName().equalsIgnoreCase("FSN") && !description.getDescriptionType().getName().equalsIgnoreCase("Preferida"))
-                it.remove();
-        }
-
-        Iterator<DescriptionWeb> it2 = descriptionsWeb.iterator();
-
-        while (it2.hasNext()) {
-            DescriptionWeb descriptionWeb = it2.next(); // must be called before you can call i.remove()
-            if(!descriptionWeb.isPersistent() && !descriptionWeb.getDescriptionType().getName().equalsIgnoreCase("FSN") && !descriptionWeb.getDescriptionType().getName().equalsIgnoreCase("Preferida"))
-                it2.remove();
-        }
-
-    }
-
     public void restoreDeletedDescriptions(List<DescriptionWeb> descriptionsWeb){
 
     }
@@ -303,29 +283,6 @@ public class ConceptSMTKWeb extends ConceptSMTK {
         }
         //TODO: Hacer lo mismo para las relaciones y presumiblemente tambien para los tags
     }
-
-    public List<DescriptionWeb> getRemovedDescriptionsWeb(ConceptSMTKWeb _concept){
-
-        List<DescriptionWeb> removedDescriptions = new ArrayList<DescriptionWeb>();
-        boolean isDescriptionFound;
-
-        //Primero se buscan todas las descripciones persistidas originales
-        for (DescriptionWeb initDescription : _concept.getDescriptionsWeb()) {
-            isDescriptionFound = false;
-            //Por cada descripción original se busca su descripcion vista correlacionada
-            for (DescriptionWeb finalDescription : descriptionsWeb) {
-                //Si la descripcion correlacionada no es encontrada, significa que fué eliminada
-                if (initDescription.getId() == finalDescription.getId()) {
-                    isDescriptionFound = true;
-                    break;
-                }
-            }
-            if(!isDescriptionFound)
-                removedDescriptions.add(initDescription);
-        }
-        return  removedDescriptions;
-    }
-
 
     /**
      * Este método es responsable de agregar un tag al concepto.
@@ -364,5 +321,51 @@ public class ConceptSMTKWeb extends ConceptSMTK {
     }
 
 
+    //Los siguientes métodos están destinados a obtener información sobre las modificaciones que ha sufrido el concepto, dada su imagen inicial
+
+    //Este método es responsable de obtener las descripciones que han sido removidas del concepto original
+    // @param _concept La imagen inicial del concepto
+    public List<DescriptionWeb> getRemovedDescriptionsWeb(ConceptSMTKWeb _concept){
+
+        List<DescriptionWeb> removedDescriptions = new ArrayList<DescriptionWeb>();
+        boolean isDescriptionFound;
+
+        //Primero se buscan todas las descripciones persistidas originales
+        for (DescriptionWeb initDescription : _concept.getDescriptionsWeb()) {
+            isDescriptionFound = false;
+            //Por cada descripción original se busca su descripcion vista correlacionada
+            for (DescriptionWeb finalDescription : descriptionsWeb) {
+                //Si la descripcion correlacionada no es encontrada, significa que fué eliminada
+                if (initDescription.getId() == finalDescription.getId()) {
+                    isDescriptionFound = true;
+                    break;
+                }
+            }
+            if(!isDescriptionFound)
+                removedDescriptions.add(initDescription);
+        }
+        return  removedDescriptions;
+    }
+
+    // Los siguientes métodos son de utilidad en la restauración del concepto a su estado original
+    public void removeUnpersistedDescriptions(){
+
+        Iterator<Description> it = getDescriptions().iterator();
+
+        while (it.hasNext()) {
+            Description description = it.next(); // must be called before you can call i.remove()
+            if(!description.isPersistent() && !description.getDescriptionType().getName().equalsIgnoreCase("FSN") && !description.getDescriptionType().getName().equalsIgnoreCase("Preferida"))
+                it.remove();
+        }
+
+        Iterator<DescriptionWeb> it2 = descriptionsWeb.iterator();
+
+        while (it2.hasNext()) {
+            DescriptionWeb descriptionWeb = it2.next(); // must be called before you can call i.remove()
+            if(!descriptionWeb.isPersistent() && !descriptionWeb.getDescriptionType().getName().equalsIgnoreCase("FSN") && !descriptionWeb.getDescriptionType().getName().equalsIgnoreCase("Preferida"))
+                it2.remove();
+        }
+
+    }
 
 }

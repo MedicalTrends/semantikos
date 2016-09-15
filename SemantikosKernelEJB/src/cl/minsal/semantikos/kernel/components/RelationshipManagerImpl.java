@@ -130,14 +130,53 @@ public class RelationshipManagerImpl implements RelationshipManager {
         /* Se aplican las reglas de negocio */
         new RelationshipEditionBR().applyRules(originalRelationship, editedRelationship);
 
-        /* Y se actualizan */
-        this.invalidate(originalRelationship);
-        relationshipDAO.persist(editedRelationship);
+        /* Si el concepto es borrador, sólo se actualiza la relación BR-DES-006 */
+        if (!conceptSMTK.isModeled()) {
+
+            /* Se copian los cambios al concepto original */
+            mergeRelationship(originalRelationship, editedRelationship);
+
+            /* Si el concepto editado está persistido se elimina */
+            if (editedRelationship.isPersistent()){
+                relationshipDAO.delete(editedRelationship);
+            }
+
+            /* Se actualiza la relación original */
+            relationshipDAO.update(originalRelationship);
+        }
+
+        /* Si el concepto está modelado, se versiona y actualiza */
+        if(conceptSMTK.isModeled()){
+
+            /* Primero se versiona el original */
+            this.invalidate(originalRelationship);
+            relationshipDAO.persist(editedRelationship);
+
+            /* Se actualiza el objeto de negocio */
+            List<Relationship> relationships = conceptSMTK.getRelationships();
+            relationships.remove(originalRelationship);
+            if(!relationships.contains(editedRelationship)){
+                relationships.add(editedRelationship);
+            }
+        }
 
         /* Registrar en el Historial si es preferida (Historial BR) */
         if (editedRelationship.isAttribute()) {
             auditManager.recordAttributeChange(conceptSMTK, originalRelationship, user);
         }
+    }
+
+    /**
+     * Este método copia los atributos de una relación editada hacia la original.
+     *
+     * @param originalRelationship La relación original.
+     * @param editedRelationship   La relación editada.
+     */
+    private void mergeRelationship(Relationship originalRelationship, Relationship editedRelationship) {
+        originalRelationship.setValidityUntil(editedRelationship.getValidityUntil());
+        originalRelationship.setRelationshipDefinition(editedRelationship.getRelationshipDefinition());
+        originalRelationship.setSourceConcept(editedRelationship.getSourceConcept());
+        originalRelationship.setTarget(editedRelationship.getTarget());
     }
 
     @Override

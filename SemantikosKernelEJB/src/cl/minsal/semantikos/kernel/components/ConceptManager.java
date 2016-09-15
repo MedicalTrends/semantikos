@@ -13,7 +13,6 @@ import java.util.List;
 @Local
 public interface ConceptManager {
 
-
     /**
      * Este método es responsable de persistir un concepto que no se encuentra persistido. Esta acción, de
      * persistencia, queda registrado como una actividad de auditoría.
@@ -24,12 +23,30 @@ public interface ConceptManager {
     public void persist(@NotNull ConceptSMTK conceptSMTK, User user);
 
     /**
+     * Este método es responsable de actualizar los campos (para no decir atributos que es un caso particular de las
+     * relaciones).
+     *
+     * @param originalConcept El concepto original.
+     * @param updatedConcept  El concepto actualizado con los cambios.
+     * @param user            El usuario que realiza los cambios.
+     */
+    public void updateFields(@NotNull ConceptSMTK originalConcept, @NotNull ConceptSMTK updatedConcept, User user);
+
+    /**
      * Este método es responsable de cambiar el estado de publicación del concepto.
      *
      * @param conceptSMTK El concepto cuyo estado de publicación ha cambiado.
      * @param user        El usuario que realizó el cambio.
      */
     public void publish(@NotNull ConceptSMTK conceptSMTK, User user);
+
+    /**
+     * Este método es responsable de eliminar un concepto, de acuerdo a las reglas de negocio.
+     *
+     * @param conceptSMTK El concepto que se desea dejar no vigente.
+     * @param user        El usuario que realiza la operación.
+     */
+    public void delete(@NotNull ConceptSMTK conceptSMTK, User user);
 
     /**
      * Este método es responsable de dejar no vigente (eliminar en la jerga del análisis!).
@@ -121,15 +138,6 @@ public interface ConceptManager {
      * @return retorna un entero con la cantidad
      */
     public int countConceptBy(String pattern, Long[] categories);
-
-    /**
-     * Este método es responsable de actualizar el estado de la entidad en la base de datos.
-     *
-     * @param conceptSMTK El concepto cuyo estado se actualizará en la base de datos.
-     *
-     * @return Una copia fresca del objeto actualizado.
-     */
-    public ConceptSMTK merge(ConceptSMTK conceptSMTK);
 
     /**
      * Método encargado de generar el concept ID

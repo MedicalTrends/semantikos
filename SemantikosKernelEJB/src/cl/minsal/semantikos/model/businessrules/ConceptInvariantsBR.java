@@ -1,6 +1,7 @@
 package cl.minsal.semantikos.model.businessrules;
 
 import cl.minsal.semantikos.model.ConceptSMTK;
+import cl.minsal.semantikos.model.Description;
 import cl.minsal.semantikos.model.exceptions.BusinessRuleException;
 
 /**
@@ -13,6 +14,17 @@ public class ConceptInvariantsBR {
     public void invariants(ConceptSMTK conceptSMTK) {
         brConceptInvariant001(conceptSMTK);
         brConceptInvariant002(conceptSMTK);
+        brConceptInvariant003(conceptSMTK);
+    }
+
+    /**
+     * Esta regla de negocio valida que todas las descripciones satisfacen las invariantes.
+     */
+    private void brConceptInvariant003(ConceptSMTK conceptSMTK) {
+        DescriptionInvariantsBR descriptionInvariantsBR = new DescriptionInvariantsBR();
+        for (Description description : conceptSMTK.getDescriptions()) {
+            descriptionInvariantsBR.invariants(description);
+        }
     }
 
     /**

@@ -15,6 +15,13 @@ import java.util.List;
 public interface ConceptDAO {
 
     /**
+     * Este método es responsable de eliminar un concepto persistente.
+     *
+     * @param conceptSMTK El concepto que se desea eliminar.
+     */
+    public void delete(ConceptSMTK conceptSMTK);
+
+    /**
      * Este método es responsable de recuperar todos los conceptos, sin considerar su categoría, que posean un cierto
      * estado interno.
      *
@@ -52,8 +59,8 @@ public interface ConceptDAO {
      */
     public List<ConceptSMTK> getConceptBy(Long[] categories, boolean modeled, int pageSize, int pageNumber);
 
-    public List<ConceptSMTK> getConceptBy(String[] pattern, boolean isModeled, int pageSize, int pageNumber);
 
+    public List<ConceptSMTK> getConceptBy(String[] pattern, boolean isModeled, int pageSize, int pageNumber);
 
     public List<ConceptSMTK> getConceptBy(String PatternOrConceptId, Long[] Category, int pageNumber, int pageSize, boolean isModeled);
 
@@ -97,7 +104,6 @@ public interface ConceptDAO {
      * @param conceptSMTK El concepto cuya información básica se actualizará.
      */
     public void update(ConceptSMTK conceptSMTK);
-
 
     public List<ConceptSMTK> getConceptDraft();
 }

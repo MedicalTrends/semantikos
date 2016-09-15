@@ -242,6 +242,21 @@ public class DescriptionDAOImpl implements DescriptionDAO {
     }
 
     @Override
+    public void deleteDescription(Description description) {
+        ConnectionBD connect = new ConnectionBD();
+        String sql = "{call semantikos.delete_description(?)}";
+        try (Connection connection = connect.getConnection();
+             CallableStatement call = connection.prepareCall(sql)) {
+
+            call.setLong(1, description.getId());
+            call.execute();
+        } catch (SQLException e) {
+            logger.error("La descripción con DESCRIPTION_ID=" + description.getDescriptionId() + " no fue eliminada.", e);
+            throw new EJBException("La descripción con DESCRIPTION_ID=" + description.getDescriptionId() + " no fue eliminada.", e);
+        }
+    }
+
+    @Override
     public void update(Description description) {
 
         ConnectionBD connect = new ConnectionBD();

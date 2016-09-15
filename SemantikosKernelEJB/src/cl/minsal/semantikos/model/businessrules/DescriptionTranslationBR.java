@@ -17,20 +17,36 @@ public class DescriptionTranslationBR {
 
     private static final Logger logger = LoggerFactory.getLogger(DescriptionTranslationBR.class);
 
-    public void apply(ConceptSMTK sourceConcept, ConceptSMTK targetConcept, Description description) {
+    public void apply(ConceptSMTK targetConcept, Description description) {
 
-        /* Descripciones que no se pueden trasladar */
-        pcDescriptionTranslate001(description);
+        ConceptSMTK sourceConcept = description.getConceptSMTK();
 
-        /* Estados posibles para trasladar descripciones */
-        brDescriptionTranslate011(sourceConcept, targetConcept);
+        /* Se validan las pre-condiciones para realizar el movimiento de descripciones */
+        validatePreConditions(description, targetConcept);
 
         /* Traslado de Descripciones abreviadas */
         brDescriptionTranslate001(sourceConcept, targetConcept, description);
     }
 
     /**
-     * BR-DESC-001: Las descripciones a trasladar no pueden ser de tipo “FSN”, ni “Preferida”.
+     * Este método es responsable de realizar la validación de las pre-condiciones.
+     *
+     * @param description   La descripción que se desea validar.
+     * @param targetConcept El concepto al cual se desea mover la descripción.
+     */
+    public void validatePreConditions(Description description, ConceptSMTK targetConcept) {
+
+        /* Descripciones que no se pueden trasladar */
+        pcDescriptionTranslate001(description);
+
+        /* Estados posibles para trasladar descripciones */
+        brDescriptionTranslate011(description.getConceptSMTK(), targetConcept);
+    }
+
+    /**
+     * BR-DES-002: Las descripciones a trasladar no pueden ser de tipo “FSN”, ni “Preferida”.
+     * ﻿BR-DES-011: Las descripciones a trasladar de un concepto modelado cuando se edita no pueden ser del tipo FSN ni
+     * preferida.
      *
      * @param description La descripción que se desea trasladar.
      */
@@ -48,21 +64,19 @@ public class DescriptionTranslationBR {
     }
 
     /**
+     * ﻿BR-DES-003: Sólo se pueden trasladar descripciones desde conceptos en borrador o modelados únicamente a
+     * conceptos modelados
      * Los tipos de traslado pueden ser:
      * <ul>
      * <li>Trasladar una descripción desde un Concepto en Borrador a un Concepto Modelado</li>
-     * <li>Trasladar una descripción desde un Concepto Modelado a otro Concepto Modelado</li>
      * </ul>
      *
      * @param targetConcept El concepto al cual se traslada la descripción.
      */
     private void brDescriptionTranslate011(ConceptSMTK sourceConcept, ConceptSMTK targetConcept) {
 
-        if (!sourceConcept.isModeled() && targetConcept.isModeled()) {
-            return;
-        }
-
-        if (sourceConcept.isModeled() && targetConcept.isModeled()) {
+        /* Desde conceptos modelados a conceptos en borrador */
+        if (!sourceConcept.isModeled() && targetConcept.isModeled() || sourceConcept.isModeled() && targetConcept.isModeled()  ) {
             return;
         }
 

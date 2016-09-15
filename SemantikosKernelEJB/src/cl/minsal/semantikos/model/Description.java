@@ -110,6 +110,9 @@ public class Description extends PersistentEntity implements AuditableEntity {
 
     public void setTerm(String term) {
         this.term = term;
+        if (this.getDescriptionType().equals(DescriptionType.FSN)) {
+            this.term = this.term + (conceptSMTK==null?"":" (" + conceptSMTK.getTagSMTK() + ")");
+        }
     }
 
     public boolean isCaseSensitive() {
@@ -211,8 +214,13 @@ public class Description extends PersistentEntity implements AuditableEntity {
     @Override
     public String toString() {
 
+
         if (this.getDescriptionType().equals(DescriptionType.FSN)) {
-            return this.term + (conceptSMTK==null?"":" (" + conceptSMTK.getTagSMTK() + ")");
+            String tagSMTKParentisis = "(" + conceptSMTK.getTagSMTK().getName().toLowerCase() + ")";
+            String descTerm = term.toLowerCase();
+            if (!descTerm.endsWith(tagSMTKParentisis)) {
+                return this.term + (conceptSMTK==null?"":" (" + conceptSMTK.getTagSMTK() + ")");
+            }
         }
 
         return this.term;

@@ -258,7 +258,7 @@ public class TagBean implements Serializable{
     public void deleteTagToConcept(Tag tagToDelete){
         if(conceptBean.getConcept().isPersistent()){
 
-             tagManager.unassignTag(conceptBean.getConcept(),tagToDelete);
+            tagManager.unassignTag(conceptBean.getConcept(),tagToDelete);
         }
         conceptBean.getConcept().getTags().remove(tagToDelete);
         if(tagToDelete.getId()!=-1){

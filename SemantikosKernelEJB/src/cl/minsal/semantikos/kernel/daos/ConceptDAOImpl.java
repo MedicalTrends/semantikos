@@ -48,6 +48,27 @@ public class ConceptDAOImpl implements ConceptDAO {
     TagDAO tagDAO;
 
     @Override
+    public void delete(ConceptSMTK conceptSMTK) {
+
+        /* Esto aplica sólo si el concepto no está persistido */
+        if (!conceptSMTK.isPersistent()) {
+            return;
+        }
+
+        ConnectionBD connect = new ConnectionBD();
+        try (Connection connection = connect.getConnection();
+             CallableStatement call = connection.prepareCall("{call semantikos.delete_concept(?)}")) {
+
+            call.setLong(1, conceptSMTK.getId());
+            call.execute();
+        } catch (SQLException e) {
+            String errorMessage = "No se pudo eliminar el concepto: " + conceptSMTK.toString();
+            logger.error(errorMessage, e);
+            throw new EJBException(errorMessage, e);
+        }
+    }
+
+    @Override
     public List<ConceptSMTK> getConceptsBy(boolean modeled, int pageSize, int pageNumber) {
 
         List<ConceptSMTK> concepts = new ArrayList<>();

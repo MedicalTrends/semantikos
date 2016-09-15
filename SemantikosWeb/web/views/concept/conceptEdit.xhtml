@@ -79,6 +79,12 @@
                                  value="Eliminar" type="submit" process="mainForm"
                                  rendered="#{conceptBean.concept.persistent and not conceptBean.concept.modeled}"
                                  update="growl, mainForm">
+                    <p:confirm header="Confirmation" message="¿Desea eliminar este concepto?" icon="ui-icon-alert" />
+                </p:commandButton>
+                <p:commandButton actionListener="#{conceptBean.deleteConcept}" icon="ui-icon-trash" styleClass="ui-priority-primary"
+                                 value="Invalidar" type="submit" process="mainForm"
+                                 rendered="#{conceptBean.concept.persistent and conceptBean.concept.modeled}"
+                                 update="growl, mainForm">
                     <p:confirm header="Confirmation" message="¿Desea invalidar este concepto?" icon="ui-icon-alert" />
                 </p:commandButton>
 
@@ -93,7 +99,7 @@
                     <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
                 </p:confirmDialog>
 
-                <smtk:export-xls></smtk:export-xls>
+                <smtk:export-xls />
 
             </h:form>
 
@@ -173,6 +179,10 @@
         </p:panel>
 
         <script type="text/javascript">
+
+            $(document).on("change keyup input", "select[id$=tagSemantikos_input]", function(event) {
+                $("input[id$=FSN]").trigger("change");
+            });
 
             $(document).on("change keyup input", "input[id$=favorite]", function(event) {
                 $("input[id$=FSN]").val($(this).val());

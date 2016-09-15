@@ -9,6 +9,7 @@ public enum AuditActionType {
 
     CONCEPT_CREATION(1, "Creación de Concepto", CREATION),
     CONCEPT_PUBLICATION(2, "Publicación de Concepto", AuditActionNature.CHANGE),
+    CONCEPT_INVALIDATION(18, "Concepto invalidado.", AuditActionNature.REMOVAL),
     CONCEPT_FAVOURITE_DESCRIPTION_CHANGE(3, "Cambio en descripción preferida de un Concepto", AuditActionNature.CHANGE),
     CONCEPT_DESCRIPTION_BINDING(4, "Descripción agregada a concepto", AuditActionNature.CHANGE),
     CONCEPT_DESCRIPTION_UNBINDING(5, "Descripción eliminada a concepto", AuditActionNature.CHANGE),
@@ -20,12 +21,11 @@ public enum AuditActionType {
     CONCEPT_RELATIONSHIP_REMOVAL(9, "Eliminación de relación de un concepto", AuditActionNature.CHANGE),
     CONCEPT_RELATIONSHIP_CROSSMAP_CREATION(10, "Nuevo CrossMap de un concepto", CREATION),
     CONCEPT_RELATIONSHIP_CROSSMAP_REMOVAL(11, "Eliminación de CrossMap de un concepto", AuditActionNature.REMOVAL),
-    CONCEPT_RELATIONSHIP_EXTERNAL_TERMINOLOGY_CREATION(12, "Nueva referencia a terminología externa en Concepto", CREATION), //TODO: DAO, Manager, Hooks
-    CONCEPT_RELATIONSHIP_EXTERNAL_TERMINOLOGY_ELIMINATION(13, "Eliminación de referencia a terminología externa en Concepto", AuditActionNature.REMOVAL), //TODO: DAO, Manager, Hooks
-    CONCEPT_RELATIONSHIP_REFSET_CREATION(14, "Nueva referencia a RefSet en Concepto", CREATION), //TODO: DAO, Manager, Hooks
+    CONCEPT_RELATIONSHIP_EXTERNAL_TERMINOLOGY_CREATION(12, "Nueva referencia a terminología externa en Concepto", CREATION),
+    CONCEPT_RELATIONSHIP_EXTERNAL_TERMINOLOGY_ELIMINATION(13, "Eliminación de referencia a terminología externa en Concepto", AuditActionNature.REMOVAL),
+    CONCEPT_RELATIONSHIP_REFSET_CREATION(14, "Nueva referencia a RefSet en Concepto", CREATION),
     CONCEPT_RELATIONSHIP_REFSET_ELIMINATION(15, "Referencia a RefSet eliminada en Concepto", AuditActionNature.REMOVAL),
-    CONCEPT_INVALIDATION(16, "Concepto invalidado.", AuditActionNature.REMOVAL),
-    CONCEPT_DESCRIPTION_CREATION(17, "Descripción creada", CREATION);
+    CONCEPT_DESCRIPTION_CREATION(19, "Descripción creada", CREATION);
 
     /** Identificador único de la base de datos */
     private long id;

@@ -4,10 +4,7 @@ import cl.minsal.semantikos.kernel.daos.ConceptDAO;
 import cl.minsal.semantikos.kernel.daos.DescriptionDAO;
 import cl.minsal.semantikos.kernel.daos.RelationshipDAO;
 import cl.minsal.semantikos.model.*;
-import cl.minsal.semantikos.model.businessrules.ConceptCreationBR;
-import cl.minsal.semantikos.model.businessrules.ConceptEditionBusinessRuleContainer;
-import cl.minsal.semantikos.model.businessrules.ConceptInvariantsBR;
-import cl.minsal.semantikos.model.businessrules.RelationshipEditionBR;
+import cl.minsal.semantikos.model.businessrules.*;
 import cl.minsal.semantikos.model.relationships.Relationship;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -202,7 +199,7 @@ public class ConceptManagerImpl implements ConceptManager {
 
         /* Y se persisten sus descripciones */
         for (Description description : conceptSMTK.getDescriptions()) {
-            descriptionManager.bindDescriptionToConcept(conceptSMTK, description, user);
+            descriptionManager.bindDescriptionToConcept(conceptSMTK, description, false, user);
         }
 
         /* Y sus relaciones */
@@ -227,12 +224,39 @@ public class ConceptManagerImpl implements ConceptManager {
     }
 
     @Override
+    public void updateFields(@NotNull ConceptSMTK originalConcept, @NotNull ConceptSMTK updatedConcept, User user) {
+
+        /* Se actualiza con el DAO */
+        conceptDAO.update(updatedConcept);
+
+        if (updatedConcept.isModeled()){
+            auditManager.recordUpdateConcept(updatedConcept, user);
+        }
+    }
+
+    @Override
     public void publish(@NotNull ConceptSMTK conceptSMTK, User user) {
         conceptSMTK.setPublished(true);
         conceptDAO.update(conceptSMTK);
 
         if (conceptSMTK.isModeled()) {
             auditManager.recordConceptPublished(conceptSMTK, user);
+        }
+    }
+
+    @Override
+    public void delete(@NotNull ConceptSMTK conceptSMTK, User user) {
+
+        /* Se validan las pre-condiciones para eliminar un concepto */
+        ConceptDeletionBR conceptDeletionBR = new ConceptDeletionBR();
+        conceptDeletionBR.preconditions(conceptSMTK, user);
+
+        /* Se invalida el concepto */
+        invalidate(conceptSMTK, user);
+
+        /* Se elimina físicamente si es borrador */
+        if (!conceptSMTK.isModeled()){
+            conceptDAO.delete(conceptSMTK);
         }
     }
 
@@ -286,70 +310,6 @@ public class ConceptManagerImpl implements ConceptManager {
     }
 
     /**
-     * Este método es responsable de actualizar las relaciones respecto a una edición en una relación. Una relación
-     * actualizada se compone de dos instancias de <code>Relationship</code> con el mismo identificador único, pero una
-     * está marcada para ser actualizada.
-     *
-     * <p>Para actualizar
-     * una relación se revisan aquellas marcadas para actualizar. La relación <em>original</em> tiene un campo que
-     * indica que debe ser actualizada <code>isToBeUpdated</code>. Para cada una debe existir otra relación, con el
-     * mismo ID, que tiene los cambios, y NO está marcada para ser actualizada.</p>
-     *
-     * <p>
-     * Este método itera sobre las relaciones marcadas para ser actualizadas, busca su par, y si existe:
-     * <ul>
-     * <li>Aplica reglas de negocio para validar que esté en orden</li>
-     * <li>y deja inválida la original, y persiste la nueva.</li>
-     * </ul>
-     * </p>
-     *
-     * @param conceptSMTK El concepto cuyas relaciones se quiere actualizar.
-     */
-    private void updateRelationships(ConceptSMTK conceptSMTK) {
-
-        for (Relationship original : conceptSMTK.getRelationships()) {
-
-            /* Se busca por una relación que tenga que ser actualizada */
-            if (original.isToBeUpdated() && original.isPersisted()) {
-
-                /* La relación editada es idéntica en ID pero no está marcada para ser editada */
-                Relationship updated = getEditedRelationshipOf(conceptSMTK, original);
-
-                /* Se aplican las reglas de negocio */
-                new RelationshipEditionBR().applyRules(original, updated);
-
-                /* Y se actualizan */
-                relationshipDAO.invalidate(original);
-                relationshipDAO.persist(updated);
-            }
-        }
-    }
-
-    /**
-     * Este método es responsable de ubicar una relación <em>editada</em> a partir de otra relación. La relación
-     * editada
-     * es idéntica en ID pero no está marcada para ser editada.
-     *
-     * @param conceptSMTK El concepto con las relaciones en donde se busca la editada.
-     *
-     * @return La relación editada a partir de la relación <code>original</code>.
-     */
-    private Relationship getEditedRelationshipOf(ConceptSMTK conceptSMTK, Relationship original) {
-
-        if (!conceptSMTK.getRelationships().contains(original)) {
-            throw new EJBException("No se encontró la relación original en el concepto fuente. Relación: " + original + ". Concepto: " + conceptSMTK);
-        }
-
-        for (Relationship relationship : conceptSMTK.getRelationships()) {
-            if (relationship.getId() == original.getId() && !relationship.isToBeUpdated()) {
-                return relationship;
-            }
-        }
-
-        throw new EJBException("No se encontró la relación editada de la relación " + original);
-    }
-
-    /**
      * Este método es responsable de validar que el concepto no se encuentre persistido.
      *
      * @param conceptSMTK El concepto sobre el cual se realiza la validación de persistencia.
@@ -361,27 +321,6 @@ public class ConceptManagerImpl implements ConceptManager {
         if (id != NON_PERSISTED_ID) {
             throw new EJBException("El concepto ya se encuentra persistido. ID=" + id);
         }
-    }
-
-    /**
-     * Este método es responsable de validar que el concepto se encuentre persistido.
-     *
-     * @param conceptSMTK El concepto sobre el cual se realiza la validación de persistencia.
-     *
-     * @throws javax.ejb.EJBException Se arroja si el concepto no tiene un ID de persistencia.
-     */
-    private void validatesIsPersistent(ConceptSMTK conceptSMTK) throws EJBException {
-        long id = conceptSMTK.getId();
-        if (id == NON_PERSISTED_ID) {
-            throw new EJBException("El concepto no se encuentra persistido. ID=" + id);
-        }
-    }
-
-    @Override
-    public ConceptSMTK merge(ConceptSMTK conceptSMTK) {
-
-        // TODO: Por Implementar
-        return null;
     }
 
     @Override

@@ -30,6 +30,19 @@ public interface RelationshipDAO {
     public RelationshipDefinition persist(RelationshipDefinition relationshipDefinition);
 
     /**
+     * Este método es responsable de eliminar una relación.
+     *
+     * @param relationship La relación que se desea eliminar.
+     */
+    public void delete(Relationship relationship);
+
+    /**
+     * Este método es responsable de actualizar los atributos de una relación.
+     * @param relationship La relación que se desea actualizar.
+     */
+    public void update(Relationship relationship);
+
+    /**
      * Este método es responsable de dejar como no vigente una relación asociada a un concepto.
      *
      * @param relationship La relación que se desea actualizar.

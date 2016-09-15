@@ -4,13 +4,12 @@ import cl.minsal.semantikos.kernel.components.*;
 import cl.minsal.semantikos.model.*;
 import cl.minsal.semantikos.model.audit.ConceptAuditAction;
 import cl.minsal.semantikos.model.basictypes.BasicTypeValue;
+import cl.minsal.semantikos.model.exceptions.BusinessRuleException;
 import cl.minsal.semantikos.model.helpertables.HelperTableRecord;
 import cl.minsal.semantikos.model.relationships.*;
 import cl.minsal.semantikos.util.ConceptUtils;
 import cl.minsal.semantikos.util.Pair;
 import org.primefaces.context.RequestContext;
-import org.primefaces.event.CellEditEvent;
-import org.primefaces.event.RowEditEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -140,8 +139,8 @@ public class ConceptBean implements Serializable {
         user.setIdUser(1);
         user.setUsername("amauro");
         user.setPassword("amauro");
-        Profile designerProfile = new Profile(1, "designerProfile", "designerProfile");
-        user.getProfiles().add(designerProfile);
+        Profile DESIGNER_PROFILE = new Profile(2, "Diseñador", "Usuario Diseñador");
+        user.getProfiles().add(DESIGNER_PROFILE);
 
 
         // Iniciar cuadro de dialogo
@@ -187,16 +186,18 @@ public class ConceptBean implements Serializable {
         context.execute("PF('dialogNameConcept').hide();");
     }
 
-    //Este método es responsable de a partir de un concepto SMTK y un término, devolver un concepto WEB con su FSN y su Favorito
+    //Este método es responsable de a partir de un concepto SMTK y un término, devolver un concepto WEB con su FSN y su Preferida
     public ConceptSMTKWeb initConcept(ConceptSMTK concept, String term){
         ConceptSMTKWeb conceptWeb = new ConceptSMTKWeb(concept);
 
         DescriptionWeb fsnDescription = new DescriptionWeb(conceptWeb, term, descriptionManager.getTypeFSN());
         fsnDescription.setCaseSensitive(false);
+        fsnDescription.setModeled(false);
         fsnDescription.setDescriptionId(descriptionManager.generateDescriptionId());
 
         DescriptionWeb favouriteDescription = new DescriptionWeb(conceptWeb, term, descriptionManager.getTypeFavorite());
         favouriteDescription.setCaseSensitive(false);
+        fsnDescription.setModeled(false);
         favouriteDescription.setDescriptionId(descriptionManager.generateDescriptionId());
 
         for (DescriptionWeb description : new DescriptionWeb[]{favouriteDescription, fsnDescription})
@@ -339,43 +340,44 @@ public class ConceptBean implements Serializable {
      */
     public void addDescription() {
         FacesContext context = FacesContext.getCurrentInstance();
-        if (otherTermino != null) {
-            if (otherTermino.length() > 0) {
-                if (otherDescriptionType != null) {
-                    if(otherDescriptionType.getName().equalsIgnoreCase("abreviada") && concept.getValidDescriptionAbbreviated()!=null) {
-                        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Solo puede existir una descripción abreviada"));
-                        return;
-                    }
-                    DescriptionWeb description = new DescriptionWeb(concept, otherTermino, otherDescriptionType);
-                    if( categoryManager.categoryContains(category,description.getTerm())){
-                        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Esta descripcion ya existe en esta categoria"));
-                        return;
-                    }
 
-                    if(containDescription(description)){
-                        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Esta descripcion ya existe en este concepto"));
-                        return;
-                    }
-
-                    description.setCaseSensitive(otherSensibilidad);
-                    description.setModeled(false);
-                    description.setDescriptionId(descriptionManager.generateDescriptionId());
-                    concept.addDescriptionWeb(description);
-
-                    otherTermino = "";
-                } else {
-                    context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se ha seleccionado el tipo de descripción"));
+        if (!otherTermino.trim().equals("")) {
+            if (otherDescriptionType != null) {
+                if(otherDescriptionType.getName().equalsIgnoreCase("abreviada") && concept.getValidDescriptionAbbreviated()!=null) {
+                    context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Solo puede existir una descripción abreviada"));
+                    return;
                 }
 
+                DescriptionWeb description = new DescriptionWeb(concept, otherTermino, otherDescriptionType);
+                if( categoryManager.categoryContains(category,description.getTerm())){
+                    context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Esta descripcion ya existe en esta categoria"));
+                    return;
+                }
+
+                if(containDescription(description)){
+                    context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Esta descripcion ya existe en este concepto"));
+                    return;
+                }
+
+                description.setCaseSensitive(otherSensibilidad);
+
+                if(otherDescriptionType.getName().equalsIgnoreCase("abreviada") || otherDescriptionType.getName().equalsIgnoreCase("sinónimo") ){
+                    description.setCaseSensitive(concept.getValidDescriptionFavorite().isCaseSensitive());
+                }
+
+
+                description.setModeled(false);
+                description.setDescriptionId(descriptionManager.generateDescriptionId());
+                concept.addDescriptionWeb(description);
+
+                otherTermino = "";
             } else {
-                context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se ha ingresado el término a la descripción"));
-                context.getAttributes();
+                context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se ha seleccionado el tipo de descripción"));
             }
 
         } else {
-
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se ha ingresado el término a la descripción"));
-
+            context.getAttributes();
         }
 
     }
@@ -436,7 +438,7 @@ public class ConceptBean implements Serializable {
 
     }
 
-    public void saveConcept() {
+    public void saveConcept()  {
 
         FacesContext context = FacesContext.getCurrentInstance();
 
@@ -444,28 +446,31 @@ public class ConceptBean implements Serializable {
         if (concept.isPersistent()) {
 
             int changes = 0;
-            /*
-            if(_concept.isToBeReviewed()!=concept.isToBeReviewed() || _concept.isToBeConsulted()!= concept.isToBeConsulted())
-                conceptManager.updateBasicInfo();
-            */
+
+            if(_concept.isToBeReviewed()!=concept.isToBeReviewed() || _concept.isToBeConsulted()!= concept.isToBeConsulted()  || !_concept.getObservation().equalsIgnoreCase(concept.getObservation())){
+                conceptManager.updateFields(_concept,concept,user);
+                changes++;
+            }
+
             List<Pair<Description, Description>> descriptionsForUpdate= ConceptUtils.getModifiedDescriptions(_concept.getDescriptionsWeb(), concept.getDescriptionsWeb());
             List<Description> descriptionsForPersist= ConceptUtils.getNewDescriptions(_concept.getDescriptionsWeb(), concept.getDescriptionsWeb());
             List<Description> descriptionsForDelete= ConceptUtils.getDeletedDescriptions(_concept.getDescriptionsWeb(), concept.getDescriptionsWeb());
 
             changes = changes + descriptionsForUpdate.size();
 
-            for (Pair<Description, Description> description : descriptionsForUpdate)
+            for (Pair<Description, Description> description : descriptionsForUpdate) {
                 descriptionManager.updateDescription(concept, description.getFirst(), description.getSecond(), user);
+            }
 
             changes = changes + descriptionsForPersist.size();
 
             for (Description description : descriptionsForPersist)
-                descriptionManager.bindDescriptionToConcept(concept, description, user);
+                descriptionManager.bindDescriptionToConcept(concept, description, true, user);
 
             changes = changes + descriptionsForDelete.size();
 
             for (Description description : descriptionsForDelete)
-                descriptionManager.deleteDescription(concept, description, user);
+                descriptionManager.deleteDescription(description, user);
 
             List<Pair<RelationshipWeb, RelationshipWeb>> relationshipsForUpdate= ConceptUtils.getModifiedRelationships(_concept.getValidPersistedRelationshipsWeb(), concept.getValidPersistedRelationshipsWeb());
             List<RelationshipWeb> relationshipsForPersist= concept.getUnpersistedRelationshipsWeb(); //ConceptUtils.getNewRelationships(_concept.getRelationshipsWeb(), concept.getRelationshipsWeb());
@@ -482,7 +487,7 @@ public class ConceptBean implements Serializable {
                 relationshipManager.bindRelationshipToConcept(concept, relationshipWeb, user);
 
             for (Description description : descriptionsForDelete)
-                descriptionManager.deleteDescription(concept, description, user);
+                descriptionManager.deleteDescription(description, user);
 
             if(changes == 0)
                 context.addMessage(null, new FacesMessage("Warning", "No se ha realizado ningún cambio al concepto!!"));
@@ -495,11 +500,18 @@ public class ConceptBean implements Serializable {
         }
         // Si el concepto no está persistido, persistirlo
         else {
-            conceptManager.persist(concept, user);
-            context.addMessage(null, new FacesMessage("Successful", "Concepto guardado "));
 
-            // Se resetea el concepto, como el concepto está persistido, se le pasa su id
-            getConceptById(concept.getId());
+            // TODO: Investigar cómo capturar la excepción de negocio
+            try{
+                conceptManager.persist(concept, user);
+                context.addMessage(null, new FacesMessage("Successful", "Concepto guardado "));
+                // Se resetea el concepto, como el concepto está persistido, se le pasa su id
+                getConceptById(concept.getId());
+            }
+            catch (BusinessRuleException bre){
+                context.addMessage(null, new FacesMessage("Error", bre.getMessage()));
+            }
+
         }
 
     }
@@ -510,9 +522,11 @@ public class ConceptBean implements Serializable {
 
         // Si el concepto está persistido, invalidarlo
         if (concept.isPersistent() && !concept.isModeled()) {
-
-            conceptManager.invalidate(concept, user);
+            conceptManager.delete(concept,user);
             context.addMessage(null, new FacesMessage("Successful", "Concepto eliminado"));
+        }else{
+            conceptManager.invalidate(concept, user);
+            context.addMessage(null, new FacesMessage("Successful", "Concepto invalidado"));
         }
 
     }
@@ -535,7 +549,7 @@ public class ConceptBean implements Serializable {
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error", "No se seleccionó el concepto de destino"));
 
         }else{
-            descriptionManager.moveDescriptionToConcept(concept,conceptSMTKTranslateDes,descriptionToTranslate,user);
+            descriptionManager.moveDescriptionToConcept(conceptSMTKTranslateDes,descriptionToTranslate,user);
             concept= new ConceptSMTKWeb(conceptManager.getConceptByID(concept.getId()));
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Successful", "La descripción se ha trasladado a otro concepto correctamente"));
         }
@@ -544,14 +558,6 @@ public class ConceptBean implements Serializable {
 
     }
 
-    public void onRowEdit(RowEditEvent event) {
-        DescriptionWeb d = (DescriptionWeb) event.getObject();
-        FacesContext context = FacesContext.getCurrentInstance();
-
-        if(d.getDescriptionType().getName().equalsIgnoreCase("abreviada") && concept.getValidDescriptionAbbreviated()!=null) {
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Solo puede existir una descripción abreviada"));
-        }
-    }
 
     // Getter and Setter
 
