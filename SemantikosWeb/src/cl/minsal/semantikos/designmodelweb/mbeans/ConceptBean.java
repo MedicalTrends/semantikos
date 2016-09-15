@@ -439,7 +439,7 @@ public class ConceptBean implements Serializable {
             changes = changes + descriptionsForDelete.size();
 
             for (Description description : descriptionsForDelete)
-                descriptionManager.deleteDescription(concept, description, user);
+                descriptionManager.deleteDescription(description, user);
 
             List<Pair<RelationshipWeb, RelationshipWeb>> relationshipsForUpdate= ConceptUtils.getModifiedRelationships(_concept.getValidPersistedRelationshipsWeb(), concept.getValidPersistedRelationshipsWeb());
             List<RelationshipWeb> relationshipsForPersist= concept.getUnpersistedRelationshipsWeb(); //ConceptUtils.getNewRelationships(_concept.getRelationshipsWeb(), concept.getRelationshipsWeb());
@@ -456,7 +456,7 @@ public class ConceptBean implements Serializable {
                 relationshipManager.bindRelationshipToConcept(concept, relationshipWeb, user);
 
             for (Description description : descriptionsForDelete)
-                descriptionManager.deleteDescription(concept, description, user);
+                descriptionManager.deleteDescription(description, user);
 
             if(changes == 0)
                 context.addMessage(null, new FacesMessage("Warning", "No se ha realizado ningún cambio al concepto!!"));

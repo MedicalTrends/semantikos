@@ -44,12 +44,12 @@ public class DescriptionManagerImpl implements DescriptionManager {
         ConceptSMTK conceptSMTK = description.getConceptSMTK();
         new DescriptionCreationBR().applyRules(conceptSMTK, description.getTerm(), description.getDescriptionType(), user, categoryManager);
 
-        if (!description.isPersistent()){
+        if (!description.isPersistent()) {
             descriptionDAO.persist(description, user);
         }
 
         /* Si el concepto al cual se agrega la descripción está modelado, se registra en el historial */
-        if (conceptSMTK.isModeled()){
+        if (conceptSMTK.isModeled()) {
             auditManager.recordDescriptionCreation(description, user);
         }
 
@@ -76,7 +76,7 @@ public class DescriptionManagerImpl implements DescriptionManager {
     public Description bindDescriptionToConcept(ConceptSMTK concept, Description description, User user) {
 
         /* Si la descripción no se encontraba persistida, se persiste primero */
-        if (!description.isPersistent()){
+        if (!description.isPersistent()) {
             descriptionCreationBR.applyRules(concept, description.getTerm(), description.getDescriptionType(), user, categoryManager);
             descriptionDAO.persist(description, user);
         }
@@ -85,7 +85,7 @@ public class DescriptionManagerImpl implements DescriptionManager {
         new DescriptionBindingBR().applyRules(concept, description, user);
 
         /* Se hace la relación a nivel lógico del modelo */
-        if(!concept.getDescriptions().contains(description)){
+        if (!concept.getDescriptions().contains(description)) {
             concept.addDescription(description);
         }
 
@@ -100,7 +100,7 @@ public class DescriptionManagerImpl implements DescriptionManager {
     public Description unbindDescriptionToConcept(ConceptSMTK concept, Description description, User user) {
 
         /* Si la descripción no se encontraba persistida, se persiste primero */
-        if (!description.isPersistent()){
+        if (!description.isPersistent()) {
             return description;
         }
 
@@ -122,7 +122,7 @@ public class DescriptionManagerImpl implements DescriptionManager {
         logger.info("Se actualizan descripciones. \nOriginal: " + initDescription + "\nFinal: " + finalDescription);
 
         /* Se aplican las reglas de negocio */
-        new DescriptionEditionBR().applyRules(initDescription, finalDescription);
+        new DescriptionEditionBR().validatePreConditions(initDescription, finalDescription);
 
         /* Y se actualizan */
         descriptionDAO.invalidate(initDescription);
@@ -138,14 +138,21 @@ public class DescriptionManagerImpl implements DescriptionManager {
 
 
     @Override
-    public void deleteDescription(ConceptSMTK conceptSMTK, Description description, User user) {
+    public void deleteDescription(Description description, User user) {
 
-        /* Eliminar una descripción consiste en dejarla inválida */
-        descriptionDAO.invalidate(description);
+        ConceptSMTK concept = description.getConceptSMTK();
 
-        /* Se registra en el Historial si el concepto está modelado */
-        if (conceptSMTK.isModeled()) {
-            auditManager.recordDescriptionDeletion(conceptSMTK, description, user);
+        /* Eliminar una descripción de un modelado consiste en dejarla inválida */
+        if (concept.isModeled()) {
+            descriptionDAO.invalidate(description);
+
+            /* Se registra en el Historial si el concepto está modelado */
+            auditManager.recordDescriptionDeletion(concept, description, user);
+        }
+
+        /* Eliminar una descripción de un borrador es eliminarla físicamente BR-DES-005 */
+        if(!concept.isModeled()){
+            descriptionDAO.deleteDescription(description);
         }
     }
 
@@ -197,12 +204,12 @@ public class DescriptionManagerImpl implements DescriptionManager {
         List<Description> sourceConceptDescriptions = sourceConcept.getDescriptions();
 
         /* Se elimina la descripción del objeto base */
-        if(sourceConceptDescriptions.contains(description)){
+        if (sourceConceptDescriptions.contains(description)) {
             sourceConceptDescriptions.remove(description);
         }
 
         /* Se agrega al concepto destino */
-        if(!targetConcept.getDescriptions().contains(description)){
+        if (!targetConcept.getDescriptions().contains(description)) {
             targetConcept.addDescription(description);
         }
 

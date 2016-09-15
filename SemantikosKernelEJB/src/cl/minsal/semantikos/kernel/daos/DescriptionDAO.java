@@ -46,6 +46,7 @@ public interface DescriptionDAO {
     /**
      * Este método es responsable de persistir una descripción en la BDD. Luego de ser persistida, la descripción es
      * actualizada con su nuevo Identificador único.
+     *
      * @param description La descripción a persistir.
      * @param user        El usuario que persiste la descripción.
      */
@@ -56,8 +57,8 @@ public interface DescriptionDAO {
      * es actualizada con su llave foránea al concepto asociado
      *
      * @param description La descripción que será actualizada.
-     * @param concept El concepto al cual asociar la descripción
-     * @param user El usuario que persiste la descripción.
+     * @param concept     El concepto al cual asociar la descripción
+     * @param user        El usuario que persiste la descripción.
      */
     public void bind(Description description, ConceptSMTK concept, User user);
 
@@ -82,6 +83,13 @@ public interface DescriptionDAO {
      * @param description La descripción que se deben actualizar.
      */
     public void invalidate(Description description);
+
+    /**
+     * Este método es responsable de eliminar físicamente una descripción.
+     *
+     * @param description La descripción que se desea eliminar.
+     */
+    public void deleteDescription(Description description);
 
     /**
      * Este método es responsable de actualizar los datos de una descripción.
