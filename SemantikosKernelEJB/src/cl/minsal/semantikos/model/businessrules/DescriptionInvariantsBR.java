@@ -30,9 +30,8 @@ public class DescriptionInvariantsBR {
         Description descriptionFSN = conceptSMTK.getDescriptionFSN();
 
         /* La validación */
-        //TODO: Diego
-        /*if (!descriptionFSN.getTerm().toLowerCase().endsWith("(" + tagSMTK.getName().toLowerCase() + ")")) {
+        if (!descriptionFSN.getTerm().toLowerCase().endsWith("(" + tagSMTK.getName().toLowerCase() + ")")) {
             throw new BusinessRuleException("La descripción FSN debe terminar con el Tag Semántikos entre paréntesis.");
-        }*/
+        }
     }
 }
