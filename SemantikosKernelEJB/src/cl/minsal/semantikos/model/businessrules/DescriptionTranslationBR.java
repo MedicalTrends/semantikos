@@ -30,7 +30,8 @@ public class DescriptionTranslationBR {
 
     /**
      * Este método es responsable de realizar la validación de las pre-condiciones.
-     *  @param description   La descripción que se desea validar.
+     *
+     * @param description   La descripción que se desea validar.
      * @param targetConcept El concepto al cual se desea mover la descripción.
      */
     public void validatePreConditions(Description description, ConceptSMTK targetConcept) {
@@ -44,6 +45,8 @@ public class DescriptionTranslationBR {
 
     /**
      * BR-DES-002: Las descripciones a trasladar no pueden ser de tipo “FSN”, ni “Preferida”.
+     * ﻿BR-DES-011: Las descripciones a trasladar de un concepto modelado cuando se edita no pueden ser del tipo FSN ni
+     * preferida.
      *
      * @param description La descripción que se desea trasladar.
      */
