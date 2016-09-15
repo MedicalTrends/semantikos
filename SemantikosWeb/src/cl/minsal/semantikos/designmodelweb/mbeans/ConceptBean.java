@@ -418,10 +418,12 @@ public class ConceptBean implements Serializable {
         if (concept.isPersistent()) {
 
             int changes = 0;
-            /*
-            if(_concept.isToBeReviewed()!=concept.isToBeReviewed() || _concept.isToBeConsulted()!= concept.isToBeConsulted())
-                conceptManager.updateBasicInfo();
-            */
+
+            if(_concept.isToBeReviewed()!=concept.isToBeReviewed() || _concept.isToBeConsulted()!= concept.isToBeConsulted()){
+                conceptManager.updateFields(_concept,concept,user);
+                changes++;
+            }
+
             List<Pair<Description, Description>> descriptionsForUpdate= ConceptUtils.getModifiedDescriptions(_concept.getDescriptionsWeb(), concept.getDescriptionsWeb());
             List<Description> descriptionsForPersist= ConceptUtils.getNewDescriptions(_concept.getDescriptionsWeb(), concept.getDescriptionsWeb());
             List<Description> descriptionsForDelete= ConceptUtils.getDeletedDescriptions(_concept.getDescriptionsWeb(), concept.getDescriptionsWeb());
