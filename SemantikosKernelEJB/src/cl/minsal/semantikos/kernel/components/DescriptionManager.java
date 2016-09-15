@@ -14,11 +14,11 @@ public interface DescriptionManager {
 
     /**
      * Este método es responsable de crear en el repositorio terminológico una nueva descripción.
-     *
      * @param description La descripción que se desea crear.
+     * @param editionMode
      * @param user        El usuario que realiza la acción.
      */
-    public void createDescription(Description description, User user);
+    public void createDescription(Description description, boolean editionMode, User user);
 
     /**
      * Este método es responsable de asociar (agregar) una descripción a un concepto.
@@ -37,11 +37,11 @@ public interface DescriptionManager {
      *
      * @param concept     El concepto al cual se agrega la descripción.
      * @param description La descripción que será asociada al concepto. Esta puede o no estar persistida.
-     * @param user        El usuario que agrega el término
-     *
-     * @return La descripción creada a partir del término dado.
+     * @param editionMode
+     *@param user        El usuario que agrega el término
+     *  @return La descripción creada a partir del término dado.
      */
-    public Description bindDescriptionToConcept(ConceptSMTK concept, Description description, User user);
+    public Description bindDescriptionToConcept(ConceptSMTK concept, Description description, boolean editionMode, User user);
 
     /**
      * Este método es responsable de des-asociar (eliminar) una descripción de un concepto.

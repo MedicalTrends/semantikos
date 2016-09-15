@@ -445,7 +445,7 @@ public class ConceptBean implements Serializable {
             changes = changes + descriptionsForPersist.size();
 
             for (Description description : descriptionsForPersist)
-                descriptionManager.bindDescriptionToConcept(concept, description, user);
+                descriptionManager.bindDescriptionToConcept(concept, description, true, user);
 
             changes = changes + descriptionsForDelete.size();
 
