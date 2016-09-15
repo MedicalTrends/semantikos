@@ -1,10 +1,7 @@
 package cl.minsal.semantikos.designmodelweb.mbeans;
 
-import cl.minsal.semantikos.kernel.components.ConceptManagerInterface;
-import cl.minsal.semantikos.kernel.components.HelperTableManagerImpl;
+
 import cl.minsal.semantikos.kernel.components.HelperTableManagerInterface;
-import cl.minsal.semantikos.kernel.daos.HelperTableDAO;
-import cl.minsal.semantikos.model.ConceptSMTK;
 import cl.minsal.semantikos.model.helpertables.HelperTable;
 import cl.minsal.semantikos.model.helpertables.HelperTableRecord;
 

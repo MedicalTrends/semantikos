@@ -19,19 +19,36 @@
     <h:body styleClass="loginbodyred">
         
         <div class="Wid90 DispBlock MarAuto MarTopPerc10 TexAlCenter">
-            <div class="Wid33 MarAuto WidAutoOnMobile">
+            <div class="Wid80 MarAuto WidAutoOnMobile">
                 <div class="EmptyBox30"></div>
                 <div class="Card ShadowEffect">
                     <div class="EmptyBox40"></div>
                     <i class="icon-comments Fs100 Red"></i>
-                    <div class="Wid100 OvHidden Fs30 Red">Error Exception Occured!</div>
-                    <div class="Wid100 OvHidden Fs20 BoldGray">Please contact system administrator.</div>
+                    <div class="Wid100 OvHidden Fs30 Red">Se produjo un Error</div>
+                    <div class="Wid100 OvHidden Fs20 BoldGray">Por Favor, contacte al administrador.</div>
                     <div class="EmptyBox20"></div>
                     <div class="Separator"></div>
                     <div class="EmptyBox10"></div>
-                    <div class="Wid100"><p:button value="Back To Dashboard" icon="fa fa-dashboard" styleClass="RedButton Wid60 Fs18 White RaisedButton" href="dashboard.xhtml"/></div>
+                    <div class="Wid100"><p:button value="Volver al inicio" icon="fa fa-dashboard" styleClass="RedButton Wid60 Fs18 White RaisedButton" href="../home.xhtml"/></div>
                     <div class="EmptyBox20"></div>
+
+
+
                 </div>
+                <div class="EmptyBox20"></div>
+
+                <div class="Card ShadowEffect">
+                    <p:fieldset collapsed="true" toggleable="true" legend="Detalle del error">
+
+                        <div  class="Wid100 TexAlLeft">
+                            Message: #{pfExceptionHandler.message} <br/>
+                            StackTrace: <h:outputText value="#{pfExceptionHandler.formattedStackTrace}" escape="false" /> <br />
+
+                        </div>
+                    </p:fieldset>
+                </div>
+
+                <div class="EmptyBox20"></div>
                 <div class="Wid100 TexAlCenter MarTop20 Fs14 FontRobotoRegular WhiteBlue">
                         <i class="fa fa-copyright"></i>  PrimeFaces RIO Theme And Layout <br/> All rights reserved.
                     </div>

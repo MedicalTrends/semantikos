@@ -1,11 +1,13 @@
 package cl.minsal.semantikos.model;
 
 import cl.minsal.semantikos.model.relationships.Relationship;
+import cl.minsal.semantikos.model.relationships.RelationshipAttribute;
 import cl.minsal.semantikos.model.relationships.RelationshipDefinition;
 import cl.minsal.semantikos.model.snomedct.ConceptSCT;
 import org.junit.Test;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 
 import static cl.minsal.semantikos.model.CategoryFactory.getNullCategory;
 import static org.junit.Assert.*;
@@ -42,7 +44,7 @@ public class ConceptSMTKTest {
         ConceptSCT theTarget = new ConceptSCT(10, new Timestamp(System.currentTimeMillis()), true, 1, 1);
         RelationshipDefinition relationshipDefinition = new RelationshipDefinition("RelTest", "Nada", MultiplicityFactory.ONE_TO_MANY, new Category());
 
-        Relationship relationship1 = new Relationship(conceptSMTK, theTarget, relationshipDefinition);
+        Relationship relationship1 = new Relationship(conceptSMTK, theTarget, relationshipDefinition,new ArrayList<RelationshipAttribute>());
         conceptSMTK.addRelationship(relationship1);
 
         assertTrue(conceptSMTK.contains(relationship1));
@@ -60,10 +62,10 @@ public class ConceptSMTKTest {
         ConceptSCT theTarget2 = new ConceptSCT(11, new Timestamp(System.currentTimeMillis()), true, 1, 1);
         RelationshipDefinition relationshipDefinition = new RelationshipDefinition("RelTest", "Nada", MultiplicityFactory.ONE_TO_MANY, new Category());
 
-        Relationship relationship1 = new Relationship(conceptSMTK, theTarget1, relationshipDefinition);
+        Relationship relationship1 = new Relationship(conceptSMTK, theTarget1, relationshipDefinition,new ArrayList<RelationshipAttribute>());
         conceptSMTK.addRelationship(relationship1);
 
-        Relationship relationship2 = new Relationship(conceptSMTK, theTarget2, relationshipDefinition);
+        Relationship relationship2 = new Relationship(conceptSMTK, theTarget2, relationshipDefinition,new ArrayList<RelationshipAttribute>());
         assertFalse(conceptSMTK.contains(relationship2));
     }
 
@@ -79,10 +81,10 @@ public class ConceptSMTKTest {
         RelationshipDefinition relationshipDefinition1 = new RelationshipDefinition("RelTest", "Nada", MultiplicityFactory.ONE_TO_MANY, new Category());
         RelationshipDefinition relationshipDefinition2 = new RelationshipDefinition("RelTest", "Nada", MultiplicityFactory.ONE_TO_MANY, new Category());
 
-        Relationship relationship1 = new Relationship(conceptSMTK, theTarget1, relationshipDefinition1);
+        Relationship relationship1 = new Relationship(conceptSMTK, theTarget1, relationshipDefinition1,new ArrayList<RelationshipAttribute>());
         conceptSMTK.addRelationship(relationship1);
 
-        Relationship relationship2 = new Relationship(conceptSMTK, theTarget1, relationshipDefinition2);
+        Relationship relationship2 = new Relationship(conceptSMTK, theTarget1, relationshipDefinition2,new ArrayList<RelationshipAttribute>());
         assertTrue(conceptSMTK.contains(relationship2));
     }
 }

@@ -112,4 +112,9 @@ public class HelperTableManagerImpl implements HelperTableManagerInterface {
     public List<HelperTableRecord> getAllRecords(HelperTable helperTable) {
         return helperTableDAO.getAllRecords(helperTable);
     }
+
+    @Override
+    public HelperTableRecord getRecord( int recordId) {
+        return helperTableDAO.getHelperTableRecordFromId(recordId);
+    }
 }

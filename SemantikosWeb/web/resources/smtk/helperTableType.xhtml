@@ -198,7 +198,7 @@
                     <p:outputLabel value="Buscar #{cc.attrs.relationshipDefinition.name}" />
 
 
-                    <p:autoComplete id="themeCustom" value="#{conceptBean.s}" completeMethod="#{helperTableBean.searchHelperTableRecords}"
+                    <p:autoComplete id="helper-table-auto" value="#{conceptBean.helperTableValuePlaceholder}" completeMethod="#{helperTableBean.searchHelperTableRecords}"
                                     var="record" itemLabel="#{record.fields['description']}" itemValue="#{record.id}"  forceSelection="true"
                     minQueryLength="3">
                         <f:attribute name="table" value="#{cc.attrs.targetDefinition}" />
@@ -217,7 +217,7 @@
                             style="float: right"
                             disabled="#{cc.attrs.relationshipDefinition.multiplicity.isUpperBoundaryReached(cc.attrs.concept.getRelationshipsByRelationDefinition(cc.attrs.relationshipDefinition).size())}"
                             update="@(.helper#{cc.attrs.relationshipDefinition.id})"
-                            action="#{conceptBean.addRelationship(cc.attrs.relationshipDefinition,helperTableRecord)}"
+                            action="#{conceptBean.addHelperTableRelationshipWithAttributes(cc.attrs.relationshipDefinition)}"
                             icon="fa fa-plus"
                             title="Agregar"
                     />
@@ -242,6 +242,12 @@
                              value="#{cc.attrs.concept.getValidRelationshipsWebByRelationDefinition(cc.attrs.relationshipDefinition)}"
                              style="width: 100%"
                              reflow="true">
+                    <p:columns value="#{cc.attrs.relationshipDefinition.relationshipAttributeDefinitions}" var="attDef">
+                        <f:facet name="header">
+                            <h:outputText value="#{attDef.name}" />
+                        </f:facet>
+                        <h:outputText value="#{relationship.getAttribute(attDef).target.fields['description']}" />
+                    </p:columns>
                     <p:columns value="#{cc.attrs.targetDefinition.showableColumns}"
                                var="column"
                                columnIndexVar="colIndex"

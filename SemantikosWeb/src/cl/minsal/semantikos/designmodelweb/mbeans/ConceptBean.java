@@ -270,7 +270,7 @@ public class ConceptBean implements Serializable {
 
         Target target = new BasicTypeValue(null);
 
-        Relationship relationship = new Relationship(this.concept, target, relationshipDefinition);
+        Relationship relationship = new Relationship(this.concept, target, relationshipDefinition,new ArrayList<RelationshipAttribute>());
         // Se utiliza el constructor mínimo (sin id)
         this.concept.addRelationshipWeb(relationship);
 
@@ -281,7 +281,23 @@ public class ConceptBean implements Serializable {
      */
     public void addRelationship(RelationshipDefinition relationshipDefinition, Target target) {
 
-        Relationship relationship = new Relationship(this.concept, target, relationshipDefinition);
+        Relationship relationship = new Relationship(this.concept, target, relationshipDefinition,new ArrayList<RelationshipAttribute>());
+        // Se utiliza el constructor mínimo (sin id)
+        this.concept.addRelationshipWeb(relationship);
+        conceptSelected = null;
+    }
+
+
+    /**
+     * Este método es el encargado de agregar una nuva relacion con los parémetros que se indican.
+     */
+    public void addHelperTableRelationshipWithAttributes(RelationshipDefinition relationshipDefinition) {
+
+
+        HelperTableRecord record = helperTableManager.getRecord(helperTableValuePlaceholder);
+
+        Relationship relationship = new Relationship(this.concept, record, relationshipDefinition,getRelationshipAttributesByRelationshipDefinition(relationshipDefinition));
+
         // Se utiliza el constructor mínimo (sin id)
         this.concept.addRelationshipWeb(relationship);
         conceptSelected = null;
@@ -304,7 +320,7 @@ public class ConceptBean implements Serializable {
         }
         // Si no se encuentra la relación, se crea una nueva
         if (!isRelationshipFound) {
-            this.concept.addRelationshipWeb(new Relationship(this.concept, target, relationshipDefinition));
+            this.concept.addRelationshipWeb(new Relationship(this.concept, target, relationshipDefinition,new ArrayList<RelationshipAttribute>()));
         }
         // Se resetean los placeholder para los target de las relaciones
         basicTypeValue= new BasicTypeValue(null);
@@ -727,5 +743,12 @@ public class ConceptBean implements Serializable {
 
     }
 
+    public int getHelperTableValuePlaceholder() {
+        return helperTableValuePlaceholder;
+    }
+
+    public void setHelperTableValuePlaceholder(int helperTableValuePlaceholder) {
+        this.helperTableValuePlaceholder = helperTableValuePlaceholder;
+    }
 }
 

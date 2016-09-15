@@ -47,4 +47,6 @@ public interface HelperTableManagerInterface {
      * @return
      */
     public List<HelperTableRecord> getAllRecords(HelperTable helperTable);
+
+    HelperTableRecord getRecord(int recordId);
 }
