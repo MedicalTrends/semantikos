@@ -10,6 +10,8 @@ import cl.minsal.semantikos.model.relationships.*;
 import cl.minsal.semantikos.util.ConceptUtils;
 import cl.minsal.semantikos.util.Pair;
 import org.primefaces.context.RequestContext;
+import org.primefaces.event.CellEditEvent;
+import org.primefaces.event.RowEditEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -139,8 +141,8 @@ public class ConceptBean implements Serializable {
         user.setIdUser(1);
         user.setUsername("amauro");
         user.setPassword("amauro");
-        Profile DESIGNER_PROFILE = new Profile(2, "Diseñador", "Usuario Diseñador");
-        user.getProfiles().add(DESIGNER_PROFILE);
+        Profile designerProfile = new Profile(1, "designerProfile", "designerProfile");
+        user.getProfiles().add(designerProfile);
 
 
         // Iniciar cuadro de dialogo
