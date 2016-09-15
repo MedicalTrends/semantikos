@@ -138,8 +138,8 @@ public class ConceptBean implements Serializable {
         user.setIdUser(1);
         user.setUsername("amauro");
         user.setPassword("amauro");
-        Profile designerProfile = new Profile(1, "designerProfile", "designerProfile");
-        user.getProfiles().add(designerProfile);
+        Profile DESIGNER_PROFILE = new Profile(2, "Diseñador", "Usuario Diseñador");
+        user.getProfiles().add(DESIGNER_PROFILE);
 
 
         // Iniciar cuadro de dialogo
@@ -486,9 +486,11 @@ public class ConceptBean implements Serializable {
 
         // Si el concepto está persistido, invalidarlo
         if (concept.isPersistent() && !concept.isModeled()) {
-
-            conceptManager.invalidate(concept, user);
+            conceptManager.delete(concept,user);
             context.addMessage(null, new FacesMessage("Successful", "Concepto eliminado"));
+        }else{
+            conceptManager.invalidate(concept, user);
+            context.addMessage(null, new FacesMessage("Successful", "Concepto invalidado"));
         }
 
     }

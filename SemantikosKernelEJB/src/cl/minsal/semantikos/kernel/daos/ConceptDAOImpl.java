@@ -50,8 +50,8 @@ public class ConceptDAOImpl implements ConceptDAO {
     @Override
     public void delete(ConceptSMTK conceptSMTK) {
 
-        /* Esto aplica sólo si el concepto está persistido */
-        if (conceptSMTK.isPersistent()) {
+        /* Esto aplica sólo si el concepto no está persistido */
+        if (!conceptSMTK.isPersistent()) {
             return;
         }
 
