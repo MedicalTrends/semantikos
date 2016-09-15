@@ -98,7 +98,6 @@ public interface ConceptDAO {
      */
     public void persistConceptAttributes(ConceptSMTK conceptSMTK, User user);
 
-
     /**
      * Este método es responsable de actualizar la información base de un concepto (no sus relaciones o descripciones).
      *
