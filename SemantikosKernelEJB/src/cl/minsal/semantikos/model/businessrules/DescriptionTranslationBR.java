@@ -76,7 +76,7 @@ public class DescriptionTranslationBR {
     private void brDescriptionTranslate011(ConceptSMTK sourceConcept, ConceptSMTK targetConcept) {
 
         /* Desde conceptos modelados a conceptos en borrador */
-        if (!sourceConcept.isModeled() && targetConcept.isModeled()) {
+        if (!sourceConcept.isModeled() && targetConcept.isModeled() || sourceConcept.isModeled() && targetConcept.isModeled()  ) {
             return;
         }
 
