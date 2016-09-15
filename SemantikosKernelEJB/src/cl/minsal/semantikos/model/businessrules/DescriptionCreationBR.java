@@ -36,10 +36,16 @@ public class DescriptionCreationBR {
      * @param term            El término que se desea agregar.
      * @param categoryManager El Manager.
      */
-    public void validatePreCondition(ConceptSMTK concept, String term, DescriptionType type, CategoryManager categoryManager) {
+    public void validatePreCondition(ConceptSMTK concept, String term, DescriptionType type, CategoryManager categoryManager, boolean edition) {
+
         brDescriptionCreation001(concept, term, categoryManager);
-        brDescriptionCreation002(concept, type);
         brDescriptionCreation003(concept, type);
+
+        /* Reglas para modo edicion */
+        if(edition){
+            //TODO Arreglar regla de negocio (Andrés)
+            //brDescriptionEdition003(concept, type);
+        }
     }
 
     /**
@@ -70,7 +76,7 @@ public class DescriptionCreationBR {
      * @param concept El concepto al cual se agrega la descripción.
      * @param type    El tipo de la descripción que se desea crear.
      */
-    private void brDescriptionCreation002(ConceptSMTK concept, DescriptionType type) {
+    private void brDescriptionEdition003(ConceptSMTK concept, DescriptionType type) {
 
         if (concept.isPersistent()) {
             if (type.equals(ABREVIADA) || type.equals(SYNONYMOUS) || type.equals(AMBIGUA) || type.equals(GENERAL) || type.equals(BAD_WRITTEN)) {

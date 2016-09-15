@@ -271,10 +271,12 @@ public class AuthDAO {
 
     }
 
+
+    /* marca la ultima fecha de ingreso del usuario */
     public void markLogin(String username) {
 
         Query q = em.createNativeQuery("UPDATE semantikos.smtk_user " +
-                "SET last_login = ? " +
+                "SET last_login = ?, failed_login_attempts =0 " +
                 "WHERE username = ?");
 
         q.setParameter(1, new Date());
@@ -320,6 +322,17 @@ public class AuthDAO {
 
 
         return profile;
+    }
+
+    public void unlockUser(String username) {
+        Query q = em.createNativeQuery("UPDATE semantikos.smtk_user " +
+                "SET locked = FALSE " +
+                "WHERE username = ?");
+
+
+        q.setParameter(1, username);
+
+        q.executeUpdate();
     }
 
 

@@ -185,7 +185,7 @@
                                         <div class="separator" />
                                         <br />
 
-                                        <p:commandButton value="Desbloquear Usuario" action="#{users.unlockUser()}" disabled="#{not users.selectedUser.locked}"  rendered="#{users.selectedUser != null and users.selectedUser.idUser != -1}" process="@this" />
+                                        <p:commandButton value="Desbloquear Usuario" action="#{users.unlockUser}" disabled="#{not users.selectedUser.locked}"  rendered="#{users.selectedUser != null and users.selectedUser.idUser != -1}" process="@this" />
                                         <p:commandButton value="Cambiar Password Usuario" rendered="#{users.selectedUser != null and users.selectedUser.idUser != -1}" oncomplete="PF('passwordChangeDialog').show()" update=":form:pcdialog"   process="@this" />
 
 

@@ -1,12 +1,10 @@
 package cl.minsal.semantikos.model;
 
-import cl.minsal.semantikos.model.relationships.Relationship;
-import cl.minsal.semantikos.model.relationships.RelationshipDefinition;
-import cl.minsal.semantikos.model.relationships.Target;
-import cl.minsal.semantikos.model.relationships.TargetType;
+import cl.minsal.semantikos.model.relationships.*;
 
 import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 
 /**
  * Un CrossMap es una relación atributo de un Concepto.
@@ -16,11 +14,11 @@ import java.sql.Timestamp;
 public class CrossMap extends Relationship implements Target {
 
     public CrossMap(ConceptSMTK sourceConcept, Target target, RelationshipDefinition relationshipDefinition) {
-        super(sourceConcept, target, relationshipDefinition);
+        super(sourceConcept, target, relationshipDefinition,new ArrayList<RelationshipAttribute>());
     }
 
     public CrossMap(@NotNull long id, @NotNull ConceptSMTK sourceConcept, @NotNull Target target, @NotNull RelationshipDefinition relationshipDefinition, Timestamp validityUntil) {
-        super(id, sourceConcept, target, relationshipDefinition, validityUntil);
+        super(id, sourceConcept, target, relationshipDefinition, validityUntil,new ArrayList<RelationshipAttribute>());
     }
 
     @Override

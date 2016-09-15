@@ -9,6 +9,7 @@ import cl.minsal.semantikos.model.helpertables.HelperTableRecord;
 
 import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
+import java.util.List;
 
 /**
  * <p>Una Relación es una asociación con significado entre 2 cosas.</p>
@@ -42,14 +43,18 @@ public class Relationship extends PersistentEntity implements AuditableEntity {
     /** Indica si ha sufrido modificaciones que requieran un update */
     private boolean toBeUpdated = false;
 
+    /** Lista de Atributos de la relacion **/
+    private List<RelationshipAttribute> relationshipAttributes;
+
     /**
      * Este es el constructor mínimo con el cual se crean las Relaciones
      *
-     * @param sourceConcept          El concepto origen de la relación.
-     * @param target                 El valor de la relación (destino)
-     * @param relationshipDefinition Definición de la relación.
+     * @param sourceConcept           El concepto origen de la relación.
+     * @param target                  El valor de la relación (destino)
+     * @param relationshipDefinition  Definición de la relación.
+     * @param  relationshipAttributes Lista de Atributos
      */
-    public Relationship(ConceptSMTK sourceConcept, Target target, RelationshipDefinition relationshipDefinition) {
+    public Relationship(ConceptSMTK sourceConcept, Target target, RelationshipDefinition relationshipDefinition,List<RelationshipAttribute> relationshipAttributes) {
 
         /* No está persistido originalmente */
         this.id = NON_PERSISTED_ID;
@@ -57,6 +62,7 @@ public class Relationship extends PersistentEntity implements AuditableEntity {
         this.sourceConcept = sourceConcept;
         this.target = target;
         this.relationshipDefinition = relationshipDefinition;
+        this.relationshipAttributes = relationshipAttributes;
     }
 
     /**
@@ -69,8 +75,8 @@ public class Relationship extends PersistentEntity implements AuditableEntity {
      * @param validityUntil          Fecha de vigencia hasta. Normalmente nulo si está vigente.
      */
     public Relationship(@NotNull long id, @NotNull ConceptSMTK sourceConcept, @NotNull Target target,
-                        @NotNull RelationshipDefinition relationshipDefinition, Timestamp validityUntil) {
-        this(sourceConcept, target, relationshipDefinition);
+                        @NotNull RelationshipDefinition relationshipDefinition, Timestamp validityUntil,List<RelationshipAttribute> relationshipAttributes) {
+        this(sourceConcept, target, relationshipDefinition,relationshipAttributes);
 
         /* Basic ID validation */
         if (id < 0) {
@@ -218,5 +224,13 @@ public class Relationship extends PersistentEntity implements AuditableEntity {
      */
     public boolean isValid(){
         return (getValidityUntil() == null || getValidityUntil().after(new Timestamp(System.currentTimeMillis())));
+    }
+
+    public List<RelationshipAttribute> getRelationshipAttributes() {
+        return relationshipAttributes;
+    }
+
+    public void setRelationshipAttributes(List<RelationshipAttribute> relationshipAttributes) {
+        this.relationshipAttributes = relationshipAttributes;
     }
 }

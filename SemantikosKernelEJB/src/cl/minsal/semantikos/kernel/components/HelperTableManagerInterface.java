@@ -41,8 +41,12 @@ public interface HelperTableManagerInterface {
      */
     public List<HelperTableRecord> getValidRecords(@NotNull HelperTable helperTable, List<String> columnNames);
 
+    List<HelperTableRecord> searchValidRecords(@NotNull HelperTable helperTable, List<String> columnNames, String query);
+
     /**
      * @return
      */
     public List<HelperTableRecord> getAllRecords(HelperTable helperTable);
+
+    HelperTableRecord getRecord(int recordId);
 }

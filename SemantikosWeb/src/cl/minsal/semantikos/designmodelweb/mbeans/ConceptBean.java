@@ -10,6 +10,8 @@ import cl.minsal.semantikos.model.relationships.*;
 import cl.minsal.semantikos.util.ConceptUtils;
 import cl.minsal.semantikos.util.Pair;
 import org.primefaces.context.RequestContext;
+import org.primefaces.event.CellEditEvent;
+import org.primefaces.event.RowEditEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -139,8 +141,8 @@ public class ConceptBean implements Serializable {
         user.setIdUser(1);
         user.setUsername("amauro");
         user.setPassword("amauro");
-        Profile DESIGNER_PROFILE = new Profile(2, "Diseñador", "Usuario Diseñador");
-        user.getProfiles().add(DESIGNER_PROFILE);
+        Profile designerProfile = new Profile(1, "designerProfile", "designerProfile");
+        user.getProfiles().add(designerProfile);
 
 
         // Iniciar cuadro de dialogo
@@ -271,7 +273,7 @@ public class ConceptBean implements Serializable {
 
         Target target = new BasicTypeValue(null);
 
-        Relationship relationship = new Relationship(this.concept, target, relationshipDefinition);
+        Relationship relationship = new Relationship(this.concept, target, relationshipDefinition,new ArrayList<RelationshipAttribute>());
         // Se utiliza el constructor mínimo (sin id)
         this.concept.addRelationshipWeb(relationship);
 
@@ -282,7 +284,23 @@ public class ConceptBean implements Serializable {
      */
     public void addRelationship(RelationshipDefinition relationshipDefinition, Target target) {
 
-        Relationship relationship = new Relationship(this.concept, target, relationshipDefinition);
+        Relationship relationship = new Relationship(this.concept, target, relationshipDefinition,new ArrayList<RelationshipAttribute>());
+        // Se utiliza el constructor mínimo (sin id)
+        this.concept.addRelationshipWeb(relationship);
+        conceptSelected = null;
+    }
+
+
+    /**
+     * Este método es el encargado de agregar una nuva relacion con los parémetros que se indican.
+     */
+    public void addHelperTableRelationshipWithAttributes(RelationshipDefinition relationshipDefinition) {
+
+
+        HelperTableRecord record = helperTableManager.getRecord(helperTableValuePlaceholder);
+
+        Relationship relationship = new Relationship(this.concept, record, relationshipDefinition,getRelationshipAttributesByRelationshipDefinition(relationshipDefinition));
+
         // Se utiliza el constructor mínimo (sin id)
         this.concept.addRelationshipWeb(relationship);
         conceptSelected = null;
@@ -305,7 +323,7 @@ public class ConceptBean implements Serializable {
         }
         // Si no se encuentra la relación, se crea una nueva
         if (!isRelationshipFound) {
-            this.concept.addRelationshipWeb(new Relationship(this.concept, target, relationshipDefinition));
+            this.concept.addRelationshipWeb(new Relationship(this.concept, target, relationshipDefinition,new ArrayList<RelationshipAttribute>()));
         }
         // Se resetean los placeholder para los target de las relaciones
         basicTypeValue= new BasicTypeValue(null);
@@ -393,6 +411,10 @@ public class ConceptBean implements Serializable {
     }
 
     public List<RelationshipAttribute> getRelationshipAttributesByRelationshipDefinition(RelationshipDefinition definition){
+
+        if(definition==null)
+            return new ArrayList<RelationshipAttribute>();
+
         if(!relationshipAttributesPlaceholder.containsKey(definition)) {
 
 
@@ -445,7 +467,7 @@ public class ConceptBean implements Serializable {
             changes = changes + descriptionsForPersist.size();
 
             for (Description description : descriptionsForPersist)
-                descriptionManager.bindDescriptionToConcept(concept, description, user);
+                descriptionManager.bindDescriptionToConcept(concept, description, true, user);
 
             changes = changes + descriptionsForDelete.size();
 
@@ -646,6 +668,9 @@ public class ConceptBean implements Serializable {
     }
 
     public HelperTableRecord getSelectedHelperTableRecord() {
+        if(selectedHelperTableRecord == null)
+            selectedHelperTableRecord = new HelperTableRecord();
+
         return selectedHelperTableRecord;
     }
 
@@ -726,5 +751,12 @@ public class ConceptBean implements Serializable {
 
     }
 
+    public int getHelperTableValuePlaceholder() {
+        return helperTableValuePlaceholder;
+    }
+
+    public void setHelperTableValuePlaceholder(int helperTableValuePlaceholder) {
+        this.helperTableValuePlaceholder = helperTableValuePlaceholder;
+    }
 }
 

@@ -179,7 +179,7 @@
                                     itemLabel="#{concept.descriptionFavorite.term}" itemValue="#{concept}"
                                     emptyMessage="No se encontraron conceptos relacionados"
                     >
-                        <p:ajax event="itemSelect"  update=":#{cc.clientId}:conceptTranslate" />
+                        <p:ajax event="itemSelect" update=":#{cc.clientId}:conceptTranslate"></p:ajax>
                     </p:autoComplete>
                 </div>
                 <div class="ui-g-12 ui-md-6 ui-lg-6">
@@ -194,33 +194,46 @@
 
             <h3>Descripcion a trasladar</h3>
             <div class="ui-g">
-                <div class="ui-g-12 ui-md-6 ui-lg-1">
+                <div class="ui-g-12 ui-md-6 ui-lg-2">
                     DESCID:
                 </div>
-                <div class="ui-g-12 ui-md-6 ui-lg-3">
+                <div class="ui-g-12 ui-md-6 ui-lg-10">
                     <h:outputText value="#{conceptBean.descriptionToTranslate.descriptionId}"/>
                 </div>
-                <div class="ui-g-12 ui-md-6 ui-lg-1">
-                    Termino:
-                </div>
-                <div class="ui-g-12 ui-md-6 ui-lg-3">
-                    <h:outputText value="#{conceptBean.descriptionToTranslate.term}"/>
-                </div>
-                <div class="ui-g-12 ui-md-6 ui-lg-1">
+            </div>
+            <div class="ui-g">
+                <div class="ui-g-12 ui-md-6 ui-lg-2">
                     Tipo:
                 </div>
-                <div class="ui-g-12 ui-md-6 ui-lg-3">
+                <div class="ui-g-12 ui-md-6 ui-lg-10">
                     <h:outputText value="#{conceptBean.descriptionToTranslate.descriptionType.name}"/>
                 </div>
             </div>
-
-            <h3>Concepto</h3>
             <div class="ui-g">
-                <div class="ui-g-12 ui-md-6 ui-lg-1">
+                <div class="ui-g-12 ui-md-6 ui-lg-2">
+                    Término:
+                </div>
+                <div class="ui-g-12 ui-md-6 ui-lg-10">
+                    <h:outputText value="#{conceptBean.descriptionToTranslate.term}"/>
+                </div>
+            </div>
+
+            <h3>Concepto de destino</h3>
+            <div class="ui-g">
+                <div class="ui-g-12 ui-md-6 ui-lg-2">
                     Concept ID:
                 </div>
-                <div class="ui-g-12 ui-md-6 ui-lg-3">
+                <div class="ui-g-12 ui-md-6 ui-lg-10">
                     <h:outputText value="#{conceptBean.conceptSMTKTranslateDes.conceptID}"/>
+                </div>
+            </div>
+
+            <div class="ui-g">
+                <div class="ui-g-12 ui-md-6 ui-lg-2">
+                    Descripción:
+                </div>
+                <div class="ui-g-12 ui-md-6 ui-lg-10">
+                    <h:outputText value="#{conceptBean.conceptSMTKTranslateDes.descriptionFavorite.term}"/>
                 </div>
             </div>
 
@@ -228,7 +241,7 @@
         </p:panel>
 
         <div style="text-align: center;">
-            <p:commandButton icon="fa fa-exchange" value="Trasladar" actionListener="#{conceptBean.translateDescription}">
+            <p:commandButton update="createEdit"  icon="fa fa-exchange" value="Trasladar" actionListener="#{conceptBean.translateDescription}">
             </p:commandButton>
         </div>
 

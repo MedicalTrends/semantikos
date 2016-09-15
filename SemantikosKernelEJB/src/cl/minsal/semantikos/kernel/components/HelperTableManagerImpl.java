@@ -70,6 +70,33 @@ public class HelperTableManagerImpl implements HelperTableManagerInterface {
         return allRecords;
     }
 
+    @Override
+    public List<HelperTableRecord> searchValidRecords(@NotNull HelperTable helperTable, List<String> columnNames, String query) {
+        logger.debug("Se solicitan los registros vigentes de la tabla " + helperTable);
+
+        /* A las columnas solicitadas se deben agregar las columnas de sistema: ID, DESCRIPTION, CREATION_DATE, VALID_UNTIL, y USER */
+        List<String> allColumns = joinColumnsWithSystemColumns(columnNames);
+
+        List<HelperTableWhereCondition> isValid = new ArrayList<>();
+        isValid.add(new HelperTableValidityCondition(SYSTEM_COLUMN_VALIDITY_UNTIL, new java.util.Date()));
+        List<HelperTableRecord> allRecords = helperTableDAO.getRecords(helperTable, allColumns, isValid);
+
+        List<HelperTableColumn> searchableColumns = new ArrayList<HelperTableColumn>();
+
+        for ( HelperTableColumn column : helperTable.getColumns()) {
+
+            if(column.isSearchable()){
+                searchableColumns.add(column);
+            }
+
+        }
+        isValid.add(new HelperTableSearchCondition(searchableColumns,query));
+
+        logger.debug("Se recuperan " + allRecords.size() + " registros vigentes de la tabla " + helperTable);
+
+        return allRecords;
+    }
+
     private List<String> joinColumnsWithSystemColumns(List<String> columnNames ) {
 
         Collection<HelperTableColumn> systemColumns = HelperTable.getSystemColumns();
@@ -84,5 +111,10 @@ public class HelperTableManagerImpl implements HelperTableManagerInterface {
     @Override
     public List<HelperTableRecord> getAllRecords(HelperTable helperTable) {
         return helperTableDAO.getAllRecords(helperTable);
+    }
+
+    @Override
+    public HelperTableRecord getRecord( int recordId) {
+        return helperTableDAO.getHelperTableRecordFromId(recordId);
     }
 }

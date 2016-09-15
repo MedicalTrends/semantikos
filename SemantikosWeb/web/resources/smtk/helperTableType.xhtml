@@ -178,29 +178,38 @@
 
                 <p:fieldset legend="Agregar #{cc.attrs.relationshipDefinition.name}">
 
-                    <ui:repeat value="#{cc.attrs.relationshipDefinition.relationshipAttributeDefinitions}" var="attributeDefinition" >
+                    <p:panelGrid columns="6">
+                    <ui:repeat value="#{conceptBean.getRelationshipAttributesByRelationshipDefinition(cc.attrs.relationshipDefinition)}" var="attribute1" varStatus="attVarStatus" >
 
-                        <p:outputLabel  value="#{attributeDefinition.name}" />
-                        <p:inputText ></p:inputText>
+                        <p:outputLabel value="#{attribute1.relationAttributeDefinition.name}" />
+
+                        <p:selectOneMenu  value="#{attribute1.target.id}"  rendered="#{attribute1.relationAttributeDefinition.targetDefinition.helperTable}">
+                            <f:selectItem itemLabel="Seleccione..."
+                                          itemValue=""
+                            />
+                            <f:selectItems value="#{conceptBean.helperTableManager.getValidRecords(attribute1.relationAttributeDefinition.targetDefinition,attribute1.relationAttributeDefinition.targetDefinition.showableColumnsNames)}"
+                                           var="helperTableRecord"
+                                           itemLabel="#{helperTableRecord.fields['description']}"
+                                           itemValue="#{helperTableRecord.id}"/>
+                        </p:selectOneMenu>
 
                     </ui:repeat>
 
                     <p:outputLabel value="Buscar #{cc.attrs.relationshipDefinition.name}" />
 
 
-                    <p:selectOneMenu id="helperTableTypeValue11"
-                                     value="#{conceptBean.basicTypeValue.value}"
-                                     var="value1"
-                                     styleClass="relationships">
-
-                        <f:selectItem itemLabel="Seleccione"
-                                      itemValue=""
-                        />
-                        <f:selectItems value="#{conceptBean.helperTableManager.getValidRecords(cc.attrs.targetDefinition,cc.attrs.targetDefinition.showableColumnsNames)}"
-                                       var="helperTableRecord"
-                                       itemLabel="#{helperTableRecord}"
-                                       itemValue="#{helperTableRecord}"/>
-                    </p:selectOneMenu>
+                    <p:autoComplete id="helper-table-auto" value="#{conceptBean.helperTableValuePlaceholder}" completeMethod="#{helperTableBean.searchHelperTableRecords}"
+                                    var="record" itemLabel="#{record.fields['description']}" itemValue="#{record.id}"  forceSelection="true"
+                    minQueryLength="3">
+                        <f:attribute name="table" value="#{cc.attrs.targetDefinition}" />
+                        <p:column>
+                            <h:outputText value="#{record.id}" />
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="#{record.fields['description']}" />
+                        </p:column>
+                    </p:autoComplete>
+                        
 
                     <p:commandButton
                             id="addHelperTableRelationshipWithAttributes"
@@ -208,11 +217,11 @@
                             style="float: right"
                             disabled="#{cc.attrs.relationshipDefinition.multiplicity.isUpperBoundaryReached(cc.attrs.concept.getRelationshipsByRelationDefinition(cc.attrs.relationshipDefinition).size())}"
                             update="@(.helper#{cc.attrs.relationshipDefinition.id})"
-                            action="#{conceptBean.addRelationship(cc.attrs.relationshipDefinition,helperTableRecord)}"
+                            action="#{conceptBean.addHelperTableRelationshipWithAttributes(cc.attrs.relationshipDefinition)}"
                             icon="fa fa-plus"
                             title="Agregar"
                     />
-
+                    </p:panelGrid>
                 </p:fieldset>
 
                     <p:columns value="#{cc.attrs.targetDefinition.showableColumns}"
@@ -226,8 +235,6 @@
                         <h:outputText value="#{helperTableRecord.fields.get(column.columnName)}" />
                     </p:columns>
 
-
-
                 <p:spacer />
                 <p:dataTable id="collectionValues12WithAttributes"
                              styleClass="tablas"
@@ -235,6 +242,12 @@
                              value="#{cc.attrs.concept.getValidRelationshipsWebByRelationDefinition(cc.attrs.relationshipDefinition)}"
                              style="width: 100%"
                              reflow="true">
+                    <p:columns value="#{cc.attrs.relationshipDefinition.relationshipAttributeDefinitions}" var="attDef">
+                        <f:facet name="header">
+                            <h:outputText value="#{attDef.name}" />
+                        </f:facet>
+                        <h:outputText value="#{relationship.getAttribute(attDef).target.fields['description']}" />
+                    </p:columns>
                     <p:columns value="#{cc.attrs.targetDefinition.showableColumns}"
                                var="column"
                                columnIndexVar="colIndex"

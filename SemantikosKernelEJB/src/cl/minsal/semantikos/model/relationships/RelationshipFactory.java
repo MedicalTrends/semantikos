@@ -62,7 +62,7 @@ public class RelationshipFactory {
         Target target = targetDAO.getTargetByID(relationshipDTO.idTarget);
         RelationshipDefinition relationshipDefinition = relDefDAO.getRelationshipDefinitionByID(relationshipDTO.idRelationshipDefinition);
 
-        return new Relationship(id, sourceConcept, target, relationshipDefinition, relationshipDTO.validityUntil);
+        return new Relationship(id, sourceConcept, target, relationshipDefinition, relationshipDTO.validityUntil,new ArrayList<RelationshipAttribute>());
     }
 
     /**
@@ -173,7 +173,7 @@ public class RelationshipFactory {
             throw new EJBException(msg);
         }
 
-        return new Relationship(relationshipDTO.getId(), sourceConceptSMTK, target, relationshipDefinition, relationshipDTO.validityUntil);
+        return new Relationship(relationshipDTO.getId(), sourceConceptSMTK, target, relationshipDefinition, relationshipDTO.validityUntil,new ArrayList<RelationshipAttribute>());
     }
 
 }

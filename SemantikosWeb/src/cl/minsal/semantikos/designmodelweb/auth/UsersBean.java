@@ -152,4 +152,9 @@ public class UsersBean {
 
     }
 
+
+    public void unlockUser(){
+        userManager.unlockUser(selectedUser.getUsername());
+    }
+
 }

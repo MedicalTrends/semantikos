@@ -36,4 +36,12 @@ public class HelperTableColumn {
     public boolean isShowable() {
         return isShowable;
     }
+
+    public boolean isPK() {
+        return isPK;
+    }
+
+    public boolean isSearchable() {
+        return isSearchable;
+    }
 }

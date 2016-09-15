@@ -34,11 +34,11 @@ public class RelationshipAttributeDefinition {
         this.id = id;
     }
 
-    public TargetDefinition getTarget() {
+    public TargetDefinition getTargetDefinition() {
         return target;
     }
 
-    public void setTarget(TargetDefinition target) {
+    public void setTargetDefinition(TargetDefinition target) {
         this.target = target;
     }
 

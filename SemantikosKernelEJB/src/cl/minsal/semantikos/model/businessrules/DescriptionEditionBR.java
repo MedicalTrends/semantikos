@@ -1,10 +1,11 @@
 package cl.minsal.semantikos.model.businessrules;
 
+import cl.minsal.semantikos.model.ConceptSMTK;
 import cl.minsal.semantikos.model.Description;
+import cl.minsal.semantikos.model.DescriptionType;
 import cl.minsal.semantikos.model.exceptions.BusinessRuleException;
 
-import static cl.minsal.semantikos.model.DescriptionType.FSN;
-import static cl.minsal.semantikos.model.DescriptionType.PREFERIDA;
+import static cl.minsal.semantikos.model.DescriptionType.*;
 
 /**
  * @author Andrés Farías on 8/25/16.
@@ -53,4 +54,6 @@ public class DescriptionEditionBR implements BusinessRulesContainer {
             throw new BusinessRuleException("Los CONCEPT_ID de las descripciones no coinciden.");
         }
     }
+
+
 }

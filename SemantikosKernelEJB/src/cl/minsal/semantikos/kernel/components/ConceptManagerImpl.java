@@ -199,7 +199,7 @@ public class ConceptManagerImpl implements ConceptManager {
 
         /* Y se persisten sus descripciones */
         for (Description description : conceptSMTK.getDescriptions()) {
-            descriptionManager.bindDescriptionToConcept(conceptSMTK, description, user);
+            descriptionManager.bindDescriptionToConcept(conceptSMTK, description, false, user);
         }
 
         /* Y sus relaciones */

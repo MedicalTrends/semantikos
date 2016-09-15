@@ -38,12 +38,12 @@ public class DescriptionManagerImpl implements DescriptionManager {
     private DescriptionCreationBR descriptionCreationBR = new DescriptionCreationBR();
 
     @Override
-    public void createDescription(Description description, User user) {
+    public void createDescription(Description description, boolean editionMode, User user) {
 
         /* Reglas de negocio previas */
         ConceptSMTK conceptSMTK = description.getConceptSMTK();
         DescriptionCreationBR descriptionCreationBR1 = new DescriptionCreationBR();
-        descriptionCreationBR1.validatePreCondition(conceptSMTK, description.getTerm(), description.getDescriptionType(), categoryManager);
+        descriptionCreationBR1.validatePreCondition(conceptSMTK, description.getTerm(), description.getDescriptionType(), categoryManager, editionMode);
 
         descriptionCreationBR1.applyRules(conceptSMTK, description.getTerm(), description.getDescriptionType(), user, categoryManager);
         if (!description.isPersistent()) {
@@ -75,10 +75,11 @@ public class DescriptionManagerImpl implements DescriptionManager {
     }
 
     @Override
-    public Description bindDescriptionToConcept(ConceptSMTK concept, Description description, User user) {
+    public Description bindDescriptionToConcept(ConceptSMTK concept, Description description, boolean editionMode, User user) {
 
+        //TODO: arreglar esto
         // Validar que no exista el término dentro de la misma categoría
-        descriptionCreationBR.validatePreCondition(concept, description.getTerm(), description.getDescriptionType(), categoryManager);
+        descriptionCreationBR.validatePreCondition(concept, description.getTerm(), description.getDescriptionType(), categoryManager, editionMode);
 
         /* Si la descripción no se encontraba persistida, se persiste primero */
         if (!description.isPersistent()) {
