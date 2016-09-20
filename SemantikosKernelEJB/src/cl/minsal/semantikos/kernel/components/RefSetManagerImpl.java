@@ -28,13 +28,13 @@ public class RefSetManagerImpl implements RefSetManager {
     private AuditManager auditManager;
 
     @Override
-    public RefSet createRefSet(Institution institution, User user) {
+    public RefSet createRefSet(String name, Institution institution, User user) {
 
         /* Se validan las pre-condiciones */
         new RefSetCreationBR().validatePreConditions(institution, user);
 
         /* Se crea el RefSet y se persiste */
-        RefSet refSet = new RefSet(institution);
+        RefSet refSet = new RefSet(name, institution);
         refsetDAO.persist(refSet);
 
         /* Se registra la creación */
@@ -104,7 +104,7 @@ public class RefSetManagerImpl implements RefSetManager {
 
         //FIXME: Retornar el correcto.
         ArrayList<RefSet> refSets = new ArrayList<RefSet>();
-        refSets.add(new RefSet(new Institution()));
+        refSets.add(new RefSet("Dummy RefSet", new Institution()));
 
         return refSets;
     }

@@ -9,14 +9,18 @@ import java.sql.Timestamp;
  */
 public class RefSet extends PersistentEntity implements AuditableEntity {
 
+    /** Nombre del RefSet. Nombre corto y descriptivo de su contenido, para identificación por humanos */
+    private String name;
+
     /** La institución a la cual pertenece el RefSet */
     private Institution institution;
 
     /** Fecha hasta la cuál es vigente el RefSet */
     private Timestamp validityUntil;
 
-    public RefSet(Institution institution) {
+    public RefSet(String name, Institution institution) {
         this.institution = institution;
+        this.name = name;
     }
 
     public Institution getInstitution() {
@@ -29,5 +33,9 @@ public class RefSet extends PersistentEntity implements AuditableEntity {
 
     public void setValidityUntil(Timestamp validityUntil) {
         this.validityUntil = validityUntil;
+    }
+
+    public String getName() {
+        return name;
     }
 }

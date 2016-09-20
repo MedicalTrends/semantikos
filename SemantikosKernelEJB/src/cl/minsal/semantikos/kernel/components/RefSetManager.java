@@ -17,12 +17,14 @@ public interface RefSetManager {
     /**
      * Este método es responsable de crear un RefSet.
      *
+     * @param name        Nombre del RefSet. Nombre corto y descriptivo de su contenido, para identificación por
+     *                    humanos
+     *
      * @param institution La institución asociada.
      * @param user        El usuario que crea el RefSet.
-     *
      * @return El RefSet creado.
      */
-    public RefSet createRefSet(Institution institution, User user);
+    public RefSet createRefSet(String name, Institution institution, User user);
 
     /**
      * Este método es responsable de crear un RefSet.
