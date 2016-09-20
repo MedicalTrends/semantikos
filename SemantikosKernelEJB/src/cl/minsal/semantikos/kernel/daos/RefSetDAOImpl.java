@@ -5,6 +5,7 @@ import cl.minsal.semantikos.model.RefSet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.ejb.Stateless;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -13,6 +14,7 @@ import java.sql.SQLException;
 /**
  * @author Andrés Farías on 9/20/16.
  */
+@Stateless
 public class RefSetDAOImpl implements RefSetDAO {
 
     private static final Logger logger = LoggerFactory.getLogger(RefSetDAO.class);
@@ -38,5 +40,10 @@ public class RefSetDAOImpl implements RefSetDAO {
         } catch (SQLException e) {
             logger.error("Error al crear el RefSet:" + refSet, e);
         }
+    }
+
+    @Override
+    public void update(RefSet refSet) {
+
     }
 }
