@@ -200,6 +200,17 @@ public class AuditManagerImpl implements AuditManager {
     }
 
     @Override
+    public void recordRefSetUnbinding(RefSet refSet, Description description, User user) {
+        /* Se crea el registro de historial */
+        RefSetAuditAction refSetAuditAction = new RefSetAuditAction(refSet, REFSET_UPDATE, now(), user);
+
+        /* Se validan las reglas de negocio para realizar el registro */
+        new HistoryRecordBL().validate(refSetAuditAction);
+
+        auditDAO.recordAuditAction(refSetAuditAction);
+    }
+
+    @Override
     public List<AuditActionType> getAllAuditActionTypes() {
         return Arrays.asList(AuditActionType.values());
     }

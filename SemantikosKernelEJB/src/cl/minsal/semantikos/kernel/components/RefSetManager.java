@@ -44,6 +44,15 @@ public interface RefSetManager {
     public void bindDescriptionToRefSet(Description description, RefSet refSet, User user);
 
     /**
+     * Este método es responsable de des-asociar una descripción a un RefSet.
+     *
+     * @param description La descripción que se desea agregar.
+     * @param refSet      El RefSet al cual se desea asociar.
+     * @param user        El usuario que realiza la acción.
+     */
+    public void unbindDescriptionToRefSet(Description description, RefSet refSet, User user);
+
+    /**
      * Este método es responsable de retornar la lista completa de RefSets.
      *
      * @return Una lista de RefSets.

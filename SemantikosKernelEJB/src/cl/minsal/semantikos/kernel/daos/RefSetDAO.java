@@ -33,4 +33,12 @@ public interface RefSetDAO {
      * @param refSet      El Refset al cual se asocia la descripción.
      */
     public void bind(Description description, RefSet refSet);
+
+    /**
+     * Este método es responsable de persistir la des-asociación de una descripción a un RefSet.
+     *
+     * @param description La descripción que se desea des-asociar al refset.
+     * @param refSet      El Refset al cual se asocia la descripción.
+     */
+    public void unbind(Description description, RefSet refSet);
 }

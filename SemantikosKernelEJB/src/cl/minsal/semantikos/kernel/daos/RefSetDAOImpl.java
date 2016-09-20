@@ -62,16 +62,32 @@ public class RefSetDAOImpl implements RefSetDAO {
     @Override
     public void bind(Description description, RefSet refSet) {
         ConnectionBD connect = new ConnectionBD();
-        String UPDATE_REFSET = "{call semantikos.bind_description_to_refset(?)}";
+        String UPDATE_REFSET = "{call semantikos.bind_description_to_refset(?,?)}";
 
         try (Connection connection = connect.getConnection();
              CallableStatement call = connection.prepareCall(UPDATE_REFSET)) {
 
             call.setLong(1, refSet.getId());
-            call.setLong(2, description.getId());
+            call.setLong(2, description.getConceptSMTK().getId());
             call.execute();
         } catch (SQLException e) {
             logger.error("Error al asociar el RefSet:" + refSet + " a la descripción " + description, e);
+        }
+    }
+
+    @Override
+    public void unbind(Description description, RefSet refSet) {
+        ConnectionBD connect = new ConnectionBD();
+        String UPDATE_REFSET = "{call semantikos.unbind_description_from_refset(?,?)}";
+
+        try (Connection connection = connect.getConnection();
+             CallableStatement call = connection.prepareCall(UPDATE_REFSET)) {
+
+            call.setLong(1, refSet.getId());
+            call.setLong(2, description.getConceptSMTK().getId());
+            call.execute();
+        } catch (SQLException e) {
+            logger.error("Error al des-asociar el RefSet:" + refSet + " a la descripción " + description, e);
         }
     }
 }

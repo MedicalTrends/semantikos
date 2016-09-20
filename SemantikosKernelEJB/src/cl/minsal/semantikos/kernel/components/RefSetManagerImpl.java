@@ -7,6 +7,7 @@ import cl.minsal.semantikos.model.RefSet;
 import cl.minsal.semantikos.model.User;
 import cl.minsal.semantikos.model.businessrules.RefSetBindingBR;
 import cl.minsal.semantikos.model.businessrules.RefSetCreationBR;
+import cl.minsal.semantikos.model.businessrules.RefSetUnbindingBR;
 import cl.minsal.semantikos.model.businessrules.RefSetUpdateBR;
 
 import javax.ejb.EJB;
@@ -70,7 +71,19 @@ public class RefSetManagerImpl implements RefSetManager {
 
         /* Se registra la creación */
         auditManager.recordRefSetBinding(refSet, description, user);
+    }
 
+    @Override
+    public void unbindDescriptionToRefSet(Description description, RefSet refSet, User user) {
+
+        /* Se validan las pre-condiciones */
+        new RefSetUnbindingBR().validatePreConditions();
+
+        /* Se asocia la descripción al RefSet */
+        refsetDAO.unbind(description, refSet);
+
+        /* Se registra la creación */
+        auditManager.recordRefSetUnbinding(refSet, description, user);
     }
 
     @Override
