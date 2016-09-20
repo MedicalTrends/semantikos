@@ -8,8 +8,13 @@ import java.util.List;
  */
 public class Institution extends PersistentEntity {
 
+    public static final Institution DUMMY_INSTITUTION = new Institution();
+
     /** BR-RefSet-003: Una Institución puede tener cero o más Usuarios Administradores de RefSets. */
     private List<User> administrators;
+
+    /** El nombre de la institución */
+    private String name;
 
     public Institution() {
         this.administrators = new ArrayList<>();
@@ -17,5 +22,9 @@ public class Institution extends PersistentEntity {
 
     public List<User> getAdministrators() {
         return administrators;
+    }
+
+    public String getName() {
+        return name;
     }
 }

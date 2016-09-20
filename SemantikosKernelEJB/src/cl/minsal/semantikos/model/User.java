@@ -45,6 +45,8 @@ public class User {
     // TODO: Actualizar esto en el modelo de datos.
     /** La institución en la que trabaja el usuario */
     private List<Institution> institutions;
+
+    /** El perfil actual con el que se conectó el usuario */
     private Profile currentProfile;
 
     /**
@@ -52,9 +54,11 @@ public class User {
      */
     public User() {
         this.profiles = new ArrayList<>();
+        this.institutions = new ArrayList<>();
     }
 
     private User(long idUser, String username, String name, boolean locked) {
+        this();
         this.idUser = idUser;
         this.username = username;
         this.name = name;
