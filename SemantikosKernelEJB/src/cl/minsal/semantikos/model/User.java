@@ -45,6 +45,7 @@ public class User {
     // TODO: Actualizar esto en el modelo de datos.
     /** La institución en la que trabaja el usuario */
     private List<Institution> institutions;
+    private Profile currentProfile;
 
     /**
      * Constructor base para inicializar los objetos que lo requieren.
@@ -313,5 +314,13 @@ public class User {
      */
     public static User getDummyUser() {
         return dummyUser;
+    }
+
+    public Profile getCurrentProfile() {
+        return currentProfile;
+    }
+
+    public void setCurrentProfile(Profile currentProfile) {
+        this.currentProfile = currentProfile;
     }
 }
