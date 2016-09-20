@@ -44,6 +44,18 @@ public class RefSetDAOImpl implements RefSetDAO {
 
     @Override
     public void update(RefSet refSet) {
+        ConnectionBD connect = new ConnectionBD();
+        String UPDATE_REFSET = "{call semantikos.update_refset(?)}";
+
+        try (Connection connection = connect.getConnection();
+             CallableStatement call = connection.prepareCall(UPDATE_REFSET)) {
+
+            call.setLong(1, refSet.getId());
+            call.setLong(2, refSet.getInstitution().getId());
+            call.execute();
+        } catch (SQLException e) {
+            logger.error("Error al crear el RefSet:" + refSet, e);
+        }
 
     }
 }
