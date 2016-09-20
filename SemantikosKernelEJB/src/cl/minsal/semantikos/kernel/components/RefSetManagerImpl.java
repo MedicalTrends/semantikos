@@ -93,7 +93,8 @@ public class RefSetManagerImpl implements RefSetManager {
         new RefSetInvalidationBR().validatePreConditions();
 
         /* Se asocia la descripción al RefSet */
-        refsetDAO.invalidate(refSet, new Timestamp(currentTimeMillis()));
+        refSet.setValidityUntil(new Timestamp(currentTimeMillis()));
+        refsetDAO.update(refSet);
 
         /* Se registra la creación */
         auditManager.recordRefSetInvalidate(refSet, user);
