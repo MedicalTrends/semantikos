@@ -8,6 +8,5 @@ import cl.minsal.semantikos.model.User;
  */
 public class CrossMapRemovalBR {
     public void applyRules(CrossMap crossMap, User user) {
-        //TODO: Implementar reglas de negocio?
     }
 }

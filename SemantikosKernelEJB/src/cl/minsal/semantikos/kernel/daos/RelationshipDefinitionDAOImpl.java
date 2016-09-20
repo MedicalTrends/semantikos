@@ -15,7 +15,6 @@ import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Collections;
 import java.util.List;
 
 import static java.util.Collections.emptyList;
@@ -63,9 +62,9 @@ public class RelationshipDefinitionDAOImpl implements RelationshipDefinitionDAO 
             /* Cada Fila del ResultSet trae una relación */
             ResultSet rs = call.getResultSet();
             if (rs.next()) {
-                if(rs.getString(1)!=null){
+                if (rs.getString(1) != null) {
                     relationshipDefinitions = relationshipDefinitionFactory.createRelDefinitionsFromJSON(rs.getString(1));
-                }else{
+                } else {
                     return emptyList();
                 }
 
@@ -143,8 +142,6 @@ public class RelationshipDefinitionDAOImpl implements RelationshipDefinitionDAO 
 
             ResultSet rs = call.getResultSet();
             if (rs.next()) {
-                // TODO: Se comenta esto puesto que arroja un error PSQL al referenciar una columna que no existe (FIXME)
-                //String jsonResult = rs.getString("id_relationship_definition");
                 String jsonResult = rs.getString(1);
                 relationshipDefinition = relationshipDefinitionFactory.createFromJSON(jsonResult);
             } else {

@@ -2,7 +2,6 @@ package cl.minsal.semantikos.kernel.components;
 
 import cl.minsal.semantikos.kernel.daos.ConceptDAO;
 import cl.minsal.semantikos.kernel.daos.RelationshipDAO;
-import cl.minsal.semantikos.model.Category;
 import cl.minsal.semantikos.model.ConceptSMTK;
 import cl.minsal.semantikos.model.User;
 import cl.minsal.semantikos.model.businessrules.ConceptCreationBR;
@@ -106,11 +105,6 @@ public class RelationshipManagerImpl implements RelationshipManager {
         }
 
         return relationship;
-    }
-
-    @Override
-    public List<Relationship> findRelationByCategories(Category sourceCategory, Category destinyCategory) {
-        return relationshipDAO.getRelationshipByCategories(sourceCategory, destinyCategory);
     }
 
     @Override
