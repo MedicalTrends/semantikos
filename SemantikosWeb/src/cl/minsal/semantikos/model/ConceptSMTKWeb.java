@@ -240,35 +240,6 @@ public class ConceptSMTKWeb extends ConceptSMTK {
             this.relationshipsWeb.add(new RelationshipWeb(relationship));
     }
 
-    public void restoreDeletedDescriptions(List<DescriptionWeb> descriptionsWeb){
-
-    }
-
-    public void restore(ConceptSMTKWeb _concept){
-
-        super.setToBeReviewed(_concept.isToBeReviewed());
-        super.setToBeConsulted(_concept.isToBeConsulted());
-        super.setTags(_concept.getTags());
-        super.setTagSMTK(_concept.getTagSMTK());
-        super.setObservation("");
-
-        //Remover descripciones agregadas no persistidas
-        removeUnpersistedDescriptions();
-
-        //Restaurar descripciones a su estado original
-        for (DescriptionWeb descriptionWeb : descriptionsWeb) {
-            for (DescriptionWeb _descriptionWeb : _concept.getDescriptionsWeb()) {
-                if(descriptionWeb.getDescriptionType().equals(_descriptionWeb.getDescriptionType()))
-                    descriptionWeb.restore(_descriptionWeb);
-            }
-        }
-        //Restaurar descripciones removidas
-        for (DescriptionWeb descriptionWeb : getRemovedDescriptionsWeb(_concept)) {
-            addDescriptionWeb(descriptionWeb);
-        }
-        //TODO: Hacer lo mismo para las relaciones y presumiblemente tambien para los tags
-    }
-
     /**
      * Este método es responsable de agregar un tag al concepto.
      *
@@ -453,6 +424,42 @@ public class ConceptSMTKWeb extends ConceptSMTK {
                 it2.remove();
         }
 
+    }
+
+    public void restore(ConceptSMTKWeb _concept){
+
+        super.setToBeReviewed(_concept.isToBeReviewed());
+        super.setToBeConsulted(_concept.isToBeConsulted());
+        super.setTags(_concept.getTags());
+        super.setTagSMTK(_concept.getTagSMTK());
+        super.setObservation("");
+
+        //Remover descripciones agregadas no persistidas
+        removeUnpersistedDescriptions();
+
+        //Restaurar descripciones a su estado original
+        for (DescriptionWeb descriptionWeb : descriptionsWeb) {
+            for (DescriptionWeb _descriptionWeb : _concept.getDescriptionsWeb()) {
+                if(descriptionWeb.getDescriptionType().equals(_descriptionWeb.getDescriptionType()))
+                    descriptionWeb.restore(_descriptionWeb);
+            }
+        }
+
+        //Restaurar descripciones removidas
+        for (DescriptionWeb descriptionWeb : getRemovedDescriptionsWeb(_concept)) {
+            addDescriptionWeb(descriptionWeb);
+        }
+
+        //Remover relaciones
+        this.getRelationships().clear();
+        this.relationshipsWeb.clear();
+
+        //Restaurar relaciones a su estado original
+        for (RelationshipWeb relationshipWeb : _concept.getRelationshipsWeb()) {
+            this.addRelationshipWeb(relationshipWeb);
+        }
+
+        //TODO: Hacer lo mismo para las relaciones y presumiblemente tambien para los tags
     }
 
 }
