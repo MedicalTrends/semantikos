@@ -35,7 +35,7 @@ public class ConceptManagerImpl implements ConceptManager {
     private ConceptDAO conceptDAO;
 
     @EJB
-    private AuditManagerInterface auditManager;
+    private AuditManager auditManager;
 
     @EJB
     private DescriptionDAO descriptionDAO;

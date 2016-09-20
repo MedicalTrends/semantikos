@@ -53,7 +53,7 @@ public class ConceptBean implements Serializable {
     TagSMTKManager tagSMTKManager;
 
     @EJB
-    AuditManagerInterface auditManager;
+    AuditManager auditManager;
 
     @ManagedProperty(value = "#{smtkBean}")
     private SMTKTypeBean smtkTypeBean;

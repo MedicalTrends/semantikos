@@ -6,6 +6,7 @@ import cl.minsal.semantikos.model.RefSet;
 import cl.minsal.semantikos.model.User;
 import cl.minsal.semantikos.model.businessrules.RefSetCreationBR;
 
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
 /**
@@ -15,6 +16,9 @@ import javax.ejb.Stateless;
 public class RefSetManagerImpl implements RefSetManager {
 
     private RefSetDAO refsetDAO;
+
+    @EJB
+    private AuditManager auditManager;
 
     @Override
     public RefSet createRefSet(Institution institution, User user) {
@@ -26,6 +30,9 @@ public class RefSetManagerImpl implements RefSetManager {
         RefSet refSet = new RefSet(institution);
         refsetDAO.persist(refSet);
 
+        auditManager.recordRefSetCreation(refSet, user);
+
+        /* Se registra la creación del RefSet */
         return refSet;
     }
 }

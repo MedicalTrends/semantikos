@@ -12,7 +12,7 @@ import java.util.List;
  * @author Andrés Farías
  */
 @Local
-public interface AuditManagerInterface {
+public interface AuditManager {
 
 
     /**
@@ -116,7 +116,8 @@ public interface AuditManagerInterface {
 
     /**
      * Este método es responsable de registrar en el historial la eliminación de un CrossMap.
-     *  @param description La descripción qeu se está creando.
+     *
+     * @param description La descripción qeu se está creando.
      * @param user        El usuario que realiza la acción.
      */
     public void recordDescriptionCreation(Description description, User user);
@@ -137,6 +138,14 @@ public interface AuditManagerInterface {
      * @param user        El usuario que desea eliminar el concepto.
      */
     public void recordConceptInvalidation(ConceptSMTK conceptSMTK, User user);
+
+    /**
+     * Este método es responsable de registrar en el historial la creación de un RefSet.
+     *
+     * @param refSet El RefSet que se crea.
+     * @param user   El usuario que crea el RefSet.
+     */
+    public void recordRefSetCreation(RefSet refSet, User user);
 
     /**
      * Este método es responsable de obtener y agrupar en una lista todos los tipos de cambios existentes.

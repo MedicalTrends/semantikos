@@ -15,7 +15,7 @@ import javax.ejb.Stateless;
 public class CrossMapManagerImpl implements CrossMapManagerInterface {
 
     @EJB
-    private AuditManagerInterface auditManager;
+    private AuditManager auditManager;
 
     @Override
     public CrossMap createCrossMap(CrossMap crossMap, User user) {

@@ -4,6 +4,7 @@ import cl.minsal.semantikos.kernel.daos.AuditDAO;
 import cl.minsal.semantikos.model.*;
 import cl.minsal.semantikos.model.audit.AuditActionType;
 import cl.minsal.semantikos.model.audit.ConceptAuditAction;
+import cl.minsal.semantikos.model.audit.RefSetAuditAction;
 import cl.minsal.semantikos.model.businessrules.HistoryRecordBL;
 import cl.minsal.semantikos.model.relationships.Relationship;
 
@@ -19,7 +20,7 @@ import static cl.minsal.semantikos.model.audit.AuditActionType.*;
  * @author Andrés Farías
  */
 @Stateless
-public class AuditManagerImpl implements AuditManagerInterface {
+public class AuditManagerImpl implements AuditManager {
 
     @EJB
     private AuditDAO auditDAO;
@@ -163,6 +164,17 @@ public class AuditManagerImpl implements AuditManagerInterface {
 
         /* Se validan las reglas de negocio para realizar el registro */
         new HistoryRecordBL().validate(conceptAuditAction);
+    }
+
+    @Override
+    public void recordRefSetCreation(RefSet refSet, User user) {
+        /* Se crea el registro de historial */
+        RefSetAuditAction refSetAuditAction = new RefSetAuditAction(refSet, REFSET_CREATION, now(), user);
+
+        /* Se validan las reglas de negocio para realizar el registro */
+        new HistoryRecordBL().validate(refSetAuditAction);
+
+        auditDAO.recordAuditAction(refSetAuditAction);
     }
 
     @Override

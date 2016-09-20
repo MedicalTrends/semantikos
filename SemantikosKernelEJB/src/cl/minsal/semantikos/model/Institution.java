@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * @author Andrés Farías on 9/20/16.
  */
-public class Institution {
+public class Institution extends PersistentEntity {
 
     /** BR-RefSet-003: Una Institución puede tener cero o más Usuarios Administradores de RefSets. */
     private List<User> administrators;
