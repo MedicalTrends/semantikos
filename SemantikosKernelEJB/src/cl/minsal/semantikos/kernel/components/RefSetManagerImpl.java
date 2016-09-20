@@ -34,7 +34,7 @@ public class RefSetManagerImpl implements RefSetManager {
         new RefSetCreationBR().validatePreConditions(institution, user);
 
         /* Se crea el RefSet y se persiste */
-        RefSet refSet = new RefSet(name, institution);
+        RefSet refSet = new RefSet(name, institution, new Timestamp(currentTimeMillis()));
         refsetDAO.persist(refSet);
 
         /* Se registra la creación */
@@ -103,8 +103,8 @@ public class RefSetManagerImpl implements RefSetManager {
     public List<RefSet> getAllRefSets() {
 
         //FIXME: Retornar el correcto.
-        ArrayList<RefSet> refSets = new ArrayList<RefSet>();
-        refSets.add(new RefSet("Dummy RefSet", new Institution()));
+        ArrayList<RefSet> refSets = new ArrayList<>();
+        refSets.add(new RefSet("Dummy RefSet", new Institution(), new Timestamp(currentTimeMillis())));
 
         return refSets;
     }

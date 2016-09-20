@@ -18,9 +18,13 @@ public class RefSet extends PersistentEntity implements AuditableEntity {
     /** Fecha hasta la cuál es vigente el RefSet */
     private Timestamp validityUntil;
 
-    public RefSet(String name, Institution institution) {
+    /** Fecha de Creación */
+    private Timestamp creationDate;
+
+    public RefSet(String name, Institution institution, Timestamp creationDate) {
         this.institution = institution;
         this.name = name;
+        this.creationDate = creationDate;
     }
 
     public Institution getInstitution() {
@@ -37,5 +41,9 @@ public class RefSet extends PersistentEntity implements AuditableEntity {
 
     public String getName() {
         return name;
+    }
+
+    public Timestamp getCreationDate() {
+        return creationDate;
     }
 }
