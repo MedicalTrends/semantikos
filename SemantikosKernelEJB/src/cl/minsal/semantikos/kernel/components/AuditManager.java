@@ -148,6 +148,14 @@ public interface AuditManager {
     public void recordRefSetCreation(RefSet refSet, User user);
 
     /**
+     * Este método es responsable de registrar en el historial la actualización de un RefSet.
+     *
+     * @param refSet El RefSet que se actualiza.
+     * @param user   El usuario que crea el RefSet.
+     */
+    public void recordRefSetUpdate(RefSet refSet, User user);
+
+    /**
      * Este método es responsable de obtener y agrupar en una lista todos los tipos de cambios existentes.
      *
      * @return Una <code>List</code> con los tipos de cambio.

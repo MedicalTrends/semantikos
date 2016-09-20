@@ -11,10 +11,16 @@ import javax.ejb.Local;
 public interface RefSetDAO {
 
     /**
-     * Este método es responsable de persistir un RefSet. Si el metodo se ejecuta correctamente la entidad es
+     * Este método es responsable de persistir un RefSet. Si el método se ejecuta correctamente la entidad es
      * actualizada con un nuevo identificador.
      *
      * @param refSet El RefSet que se desea persistir.
      */
     public void persist(RefSet refSet);
+
+    /**
+     * Este método es responsable de actualizar un RefSet ya existente.
+     * @param refSet El RefSet qeu se desea actualizar.
+     */
+    public void update(RefSet refSet);
 }
