@@ -9,6 +9,5 @@ import cl.minsal.semantikos.model.User;
  */
 public class DescriptionUnbindingBR {
     public void applyRules(ConceptSMTK concept, Description description, User user) {
-        // TODO: Terminar esto.
     }
 }

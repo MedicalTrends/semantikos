@@ -7,7 +7,6 @@ import java.util.List;
 
 /**
  * @author Andrés Farías / Gustavo Punucura.
- *         TODO: Convertir esta clase a un eCache.
  */
 @Local
 public interface RelationshipDefinitionDAO {

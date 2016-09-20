@@ -11,8 +11,6 @@ import cl.minsal.semantikos.model.User;
 public class DescriptionBindingBR {
 
     /**
-     * TODO: Este método es responsable de aplicar las reglas de negocio relativas a la asociación (binding) de una
-     * descripción a un concepto dado.
      *
      * @param concept     El concepto al cual se asocia la descripción.
      * @param description La descripción que se desea asociar.

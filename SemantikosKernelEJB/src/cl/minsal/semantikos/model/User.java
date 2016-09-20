@@ -42,6 +42,9 @@ public class User {
     private String lastPasswordHash4;
     private String lastPasswordSalt4;
 
+    // TODO: Actualizar esto en el modelo de datos.
+    /** La institución en la que trabaja el usuario */
+    private List<Institution> institutions;
 
     /**
      * Constructor base para inicializar los objetos que lo requieren.
@@ -263,6 +266,10 @@ public class User {
 
     public void setLastPasswordSalt4(String lastPasswordSalt4) {
         this.lastPasswordSalt4 = lastPasswordSalt4;
+    }
+
+    public List<Institution> getInstitutions() {
+        return institutions;
     }
 
     @Override

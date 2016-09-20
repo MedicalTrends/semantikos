@@ -92,8 +92,4 @@ public interface RelationshipDAO {
      */
     List<Relationship> getRelationshipsBySourceConcept(long idConcept);
 
-    /**
-     * @return
-     */
-    List<Relationship> getRelationshipByCategories(Category sourceCategory, Category destinyCategory);
 }

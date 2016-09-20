@@ -52,17 +52,6 @@ public interface RelationshipManager {
     public Relationship removeRelationship(Relationship relationship, User user);
 
     /**
-     * Este método es responsable de buscar una relación, dadas su categoría de origen
-     * y destino
-     *
-     * @param sourceCategory  La categoría a la que pertenecen los conceptos origen.
-     * @param destinyCategory Este método busca todas aquellas relaciones que
-     *                        tienen como origen un Concepto que pertenece a la categoría origen especificada,
-     *                        y como destino un concepto que pertenece a la categoría destino especificada.
-     */
-    public List<Relationship> findRelationByCategories(Category sourceCategory, Category destinyCategory);
-
-    /**
      * Este método es responsable de recuperar todas las relaciones que tienen como
      * origen un concepto dado.
      *
