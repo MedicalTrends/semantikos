@@ -754,6 +754,8 @@ public class ConceptBean implements Serializable {
     }
 
     public void setHelperTableValuePlaceholder(int helperTableValuePlaceholder) {
+        System.out.println("hola");
+
         this.helperTableValuePlaceholder = helperTableValuePlaceholder;
     }
 }
