@@ -28,7 +28,7 @@ public class RefSetManagerImpl implements RefSetManager {
     public RefSet createRefSet(Institution institution, User user) {
 
         /* Se validan las pre-condiciones */
-        new RefSetCreationBR().validatePreConditions(user);
+        new RefSetCreationBR().validatePreConditions(institution, user);
 
         /* Se crea el RefSet y se persiste */
         RefSet refSet = new RefSet(institution);
