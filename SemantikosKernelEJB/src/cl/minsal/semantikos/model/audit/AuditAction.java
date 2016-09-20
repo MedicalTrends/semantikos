@@ -1,6 +1,5 @@
 package cl.minsal.semantikos.model.audit;
 
-import cl.minsal.semantikos.model.ConceptSMTK;
 import cl.minsal.semantikos.model.User;
 
 import java.sql.Timestamp;
@@ -22,11 +21,23 @@ public abstract class AuditAction {
     /** La entidad que fue el sujeto mismo de la acción: concepto, relación (atributo o SCT), descripción o categoría */
     private AuditableEntity auditableEntity;
 
+    /* La entidad que alberga el cambio: si se cambia una descripción a un concepto, el auditableEntity es la descripción y la entidad base es el concepto. */
+    private AuditableEntity baseEntity;
+
+    public AuditAction(AuditActionType auditActionType, Timestamp actionDate, User user, AuditableEntity auditableEntity, AuditableEntity baseEntity) {
+        this.auditActionType = auditActionType;
+        this.actionDate = actionDate;
+        this.user = user;
+        this.auditableEntity = auditableEntity;
+        this.baseEntity = baseEntity;
+    }
+
     public AuditAction(AuditActionType auditActionType, Timestamp actionDate, User user, AuditableEntity auditableEntity) {
         this.auditActionType = auditActionType;
         this.actionDate = actionDate;
         this.user = user;
         this.auditableEntity = auditableEntity;
+        this.baseEntity = auditableEntity;
     }
 
     public AuditActionType getAuditActionType() {
@@ -61,4 +72,7 @@ public abstract class AuditAction {
         this.auditableEntity = auditableEntity;
     }
 
+    public AuditableEntity getBaseEntity() {
+        return baseEntity;
+    }
 }

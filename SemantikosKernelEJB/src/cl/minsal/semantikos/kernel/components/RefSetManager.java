@@ -1,5 +1,6 @@
 package cl.minsal.semantikos.kernel.components;
 
+import cl.minsal.semantikos.model.Description;
 import cl.minsal.semantikos.model.Institution;
 import cl.minsal.semantikos.model.RefSet;
 import cl.minsal.semantikos.model.User;
@@ -32,6 +33,15 @@ public interface RefSetManager {
      * @return El RefSet creado.
      */
     public RefSet updateRefSet(RefSet refSet, User user);
+
+    /**
+     * Este método es responsable de asociar una descripción a un RefSet.
+     *
+     * @param description La descripción que se desea agregar.
+     * @param refSet      El RefSet al cual se desea asociar.
+     * @param user        El usuario que realiza la acción.
+     */
+    public void bindDescriptionToRefSet(Description description, RefSet refSet, User user);
 
     /**
      * Este método es responsable de retornar la lista completa de RefSets.

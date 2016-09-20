@@ -28,7 +28,8 @@ public enum AuditActionType {
     CONCEPT_RELATIONSHIP_REFSET_ELIMINATION(15, "Referencia a RefSet eliminada en Concepto", AuditActionNature.REMOVAL),
     CONCEPT_DESCRIPTION_CREATION(19, "Descripción creada", CREATION),
     REFSET_CREATION(20, "Creación de RefSet", CREATION),
-    REFSET_UPDATE(21, "Actualización de RefSet", CHANGE);
+    REFSET_UPDATE(21, "Actualización de RefSet", CHANGE),
+    REFSET_BINDING(22, "Actualización de Descripción a RefSet", CHANGE);
 
     /** Identificador único de la base de datos */
     private long id;

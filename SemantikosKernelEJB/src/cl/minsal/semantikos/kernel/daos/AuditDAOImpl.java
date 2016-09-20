@@ -88,7 +88,7 @@ public class AuditDAOImpl implements AuditDAO {
             /* Se invoca la consulta para recuperar las relaciones */
             Timestamp actionDate = conceptAuditAction.getActionDate();
             User user = conceptAuditAction.getUser();
-            ConceptSMTK subjectConcept = conceptAuditAction.getSubjectConcept();
+            AuditableEntity subjectConcept = conceptAuditAction.getBaseEntity();
             AuditActionType auditActionType = conceptAuditAction.getAuditActionType();
             AuditableEntity auditableEntity = conceptAuditAction.getAuditableEntity();
 

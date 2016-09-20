@@ -1,9 +1,11 @@
 package cl.minsal.semantikos.kernel.components;
 
 import cl.minsal.semantikos.kernel.daos.RefSetDAO;
+import cl.minsal.semantikos.model.Description;
 import cl.minsal.semantikos.model.Institution;
 import cl.minsal.semantikos.model.RefSet;
 import cl.minsal.semantikos.model.User;
+import cl.minsal.semantikos.model.businessrules.RefSetBindingBR;
 import cl.minsal.semantikos.model.businessrules.RefSetCreationBR;
 import cl.minsal.semantikos.model.businessrules.RefSetUpdateBR;
 
@@ -55,6 +57,20 @@ public class RefSetManagerImpl implements RefSetManager {
 
         /* Se registra la creación del RefSet */
         return refSet;
+    }
+
+    @Override
+    public void bindDescriptionToRefSet(Description description, RefSet refSet, User user) {
+
+        /* Se validan las pre-condiciones */
+        new RefSetBindingBR().validatePreConditions();
+
+        /* Se asocia la descripción al RefSet */
+        refsetDAO.bind(description, refSet);
+
+        /* Se registra la creación */
+        auditManager.recordRefSetBinding(refSet, description, user);
+
     }
 
     @Override

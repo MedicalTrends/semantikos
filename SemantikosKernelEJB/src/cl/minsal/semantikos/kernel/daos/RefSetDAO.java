@@ -1,5 +1,6 @@
 package cl.minsal.semantikos.kernel.daos;
 
+import cl.minsal.semantikos.model.Description;
 import cl.minsal.semantikos.model.RefSet;
 
 import javax.ejb.Local;
@@ -20,7 +21,16 @@ public interface RefSetDAO {
 
     /**
      * Este método es responsable de actualizar un RefSet ya existente.
+     *
      * @param refSet El RefSet qeu se desea actualizar.
      */
     public void update(RefSet refSet);
+
+    /**
+     * Este método es responsable de persistir la asociación de una descripción a un RefSet.
+     *
+     * @param description La descripción que se desea asociar al refset.
+     * @param refSet      El Refset al cual se asocia la descripción.
+     */
+    public void bind(Description description, RefSet refSet);
 }

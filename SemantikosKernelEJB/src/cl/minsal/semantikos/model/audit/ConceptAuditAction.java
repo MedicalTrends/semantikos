@@ -10,22 +10,11 @@ import java.sql.Timestamp;
  */
 public class ConceptAuditAction extends AuditAction {
 
-    /** El concepto en el que se realizó la acción */
-    private ConceptSMTK subjectConcept;
-
-
     public ConceptAuditAction(ConceptSMTK subjectConcept, AuditActionType auditActionType, Timestamp actionDate, User user, AuditableEntity auditableEntity) {
-        super(auditActionType, actionDate, user, auditableEntity);
-
-        this.subjectConcept = subjectConcept;
+        super(auditActionType, actionDate, user, auditableEntity, subjectConcept);
     }
 
     public ConceptSMTK getSubjectConcept() {
-        return subjectConcept;
+        return (ConceptSMTK) getBaseEntity();
     }
-
-    public void setSubjectConcept(ConceptSMTK subjectConcept) {
-        this.subjectConcept = subjectConcept;
-    }
-
 }
