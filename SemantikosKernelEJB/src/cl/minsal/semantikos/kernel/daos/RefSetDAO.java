@@ -4,6 +4,7 @@ import cl.minsal.semantikos.model.Description;
 import cl.minsal.semantikos.model.RefSet;
 
 import javax.ejb.Local;
+import java.sql.Timestamp;
 
 /**
  * @author Andrés Farías on 9/20/16.
@@ -41,4 +42,12 @@ public interface RefSetDAO {
      * @param refSet      El Refset al cual se asocia la descripción.
      */
     public void unbind(Description description, RefSet refSet);
+
+    /**
+     * Este método es responsable de dejar no vigente un refset.
+     *
+     * @param refSet     El RefSet que se quiere dejar vigente.
+     * @param validUntil La fecha hasta la cual es vigente el Termino.
+     */
+    public void invalidate(RefSet refSet, Timestamp validUntil);
 }

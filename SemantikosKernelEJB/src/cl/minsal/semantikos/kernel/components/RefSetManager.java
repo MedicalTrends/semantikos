@@ -53,6 +53,13 @@ public interface RefSetManager {
     public void unbindDescriptionToRefSet(Description description, RefSet refSet, User user);
 
     /**
+     * Este método es responsable de dejar inválido un RefSet.
+     *
+     * @param refSet El RefSet que se desea invalidar.
+     */
+    public void invalidate(RefSet refSet, User user);
+
+    /**
      * Este método es responsable de retornar la lista completa de RefSets.
      *
      * @return Una lista de RefSets.

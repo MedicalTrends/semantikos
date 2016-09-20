@@ -5,15 +5,15 @@ import cl.minsal.semantikos.model.Description;
 import cl.minsal.semantikos.model.Institution;
 import cl.minsal.semantikos.model.RefSet;
 import cl.minsal.semantikos.model.User;
-import cl.minsal.semantikos.model.businessrules.RefSetBindingBR;
-import cl.minsal.semantikos.model.businessrules.RefSetCreationBR;
-import cl.minsal.semantikos.model.businessrules.RefSetUnbindingBR;
-import cl.minsal.semantikos.model.businessrules.RefSetUpdateBR;
+import cl.minsal.semantikos.model.businessrules.*;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+
+import static java.lang.System.currentTimeMillis;
 
 /**
  * @author Andrés Farías on 9/20/16.
@@ -84,6 +84,19 @@ public class RefSetManagerImpl implements RefSetManager {
 
         /* Se registra la creación */
         auditManager.recordRefSetUnbinding(refSet, description, user);
+    }
+
+    @Override
+    public void invalidate(RefSet refSet, User user) {
+
+        /* Se validan las pre-condiciones */
+        new RefSetInvalidationBR().validatePreConditions();
+
+        /* Se asocia la descripción al RefSet */
+        refsetDAO.invalidate(refSet, new Timestamp(currentTimeMillis()));
+
+        /* Se registra la creación */
+        auditManager.recordRefSetInvalidate(refSet, user);
     }
 
     @Override

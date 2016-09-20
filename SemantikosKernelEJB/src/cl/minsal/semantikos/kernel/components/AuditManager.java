@@ -174,6 +174,14 @@ public interface AuditManager {
     public void recordRefSetUnbinding(RefSet refSet, Description description, User user);
 
     /**
+     * Este método es responsable de registrar en el historia cuando un RefSet se deje no vigente.
+     *
+     * @param refSet      El RefSet que se registra en el historial.
+     * @param user        El usuario que realiza la acción.
+     */
+    public void recordRefSetInvalidate(RefSet refSet, User user);
+
+    /**
      * Este método es responsable de obtener y agrupar en una lista todos los tipos de cambios existentes.
      *
      * @return Una <code>List</code> con los tipos de cambio.

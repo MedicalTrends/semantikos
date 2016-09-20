@@ -7,10 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.ejb.Stateless;
-import java.sql.CallableStatement;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 /**
  * @author Andrés Farías on 9/20/16.
@@ -88,6 +85,22 @@ public class RefSetDAOImpl implements RefSetDAO {
             call.execute();
         } catch (SQLException e) {
             logger.error("Error al des-asociar el RefSet:" + refSet + " a la descripción " + description, e);
+        }
+    }
+
+    @Override
+    public void invalidate(RefSet refSet, Timestamp validUntil) {
+        ConnectionBD connect = new ConnectionBD();
+        String UPDATE_REFSET = "{call semantikos.invalidate_refset(?,?)}";
+
+        try (Connection connection = connect.getConnection();
+             CallableStatement call = connection.prepareCall(UPDATE_REFSET)) {
+
+            call.setLong(1, refSet.getId());
+            call.setTimestamp(2, validUntil);
+            call.execute();
+        } catch (SQLException e) {
+            logger.error("Error al dejar no vigente el RefSet", e);
         }
     }
 }
