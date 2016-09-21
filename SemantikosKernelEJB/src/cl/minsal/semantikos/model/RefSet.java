@@ -3,6 +3,8 @@ package cl.minsal.semantikos.model;
 import cl.minsal.semantikos.model.audit.AuditableEntity;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Andrés Farías on 9/7/16.
@@ -21,10 +23,14 @@ public class RefSet extends PersistentEntity implements AuditableEntity {
     /** Fecha de Creación */
     private Timestamp creationDate;
 
+    /** Lista de los conceptos en el RefSet */
+    private List<ConceptSMTK> concepts;
+
     public RefSet(String name, Institution institution, Timestamp creationDate) {
         this.institution = institution;
         this.name = name;
         this.creationDate = creationDate;
+        this.concepts = new ArrayList<>();
     }
 
     public Institution getInstitution() {
@@ -45,5 +51,17 @@ public class RefSet extends PersistentEntity implements AuditableEntity {
 
     public Timestamp getCreationDate() {
         return creationDate;
+    }
+
+    public boolean bindConceptTo(ConceptSMTK conceptSMTK){
+        return concepts.add(conceptSMTK);
+    }
+
+    public boolean unbindConceptTo(ConceptSMTK conceptSMTK){
+        return concepts.remove(conceptSMTK);
+    }
+
+    public List<ConceptSMTK> getConcepts(){
+        return new ArrayList<ConceptSMTK>(this.concepts);
     }
 }
