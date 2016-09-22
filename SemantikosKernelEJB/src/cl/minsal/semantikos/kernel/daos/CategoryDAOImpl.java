@@ -99,7 +99,35 @@ public class CategoryDAOImpl implements CategoryDAO {
 
     @Override
     public List<Category> getAllCategories() {
-        return new ArrayList<>(categoryMap.values());
+        ConnectionBD connect = new ConnectionBD();
+        List<Category> categories = new ArrayList<>();
+        ;
+        try (Connection connection = connect.getConnection();
+             CallableStatement call = connection.prepareCall("SELECT * FROM semantikos.get_all_categories()")) {
+            call.execute();
+
+            ResultSet resultSet = call.getResultSet();
+            while (resultSet.next()) {
+                Category categoryFromResultSet = createCategoryFromResultSet(resultSet);
+                categories.add(categoryFromResultSet);
+            }
+
+            /* Ahora se recuperan sus definiciones */
+            for (Category category : categories) {
+                long id = category.getId();
+                List<RelationshipDefinition> categoryMetaData = getCategoryMetaData(id);
+                category.setRelationshipDefinitions(categoryMetaData);
+
+                if (!categoryMap.containsKey(id)){
+                    categoryMap.put(id, category);
+                }
+            }
+
+        } catch (SQLException e) {
+            throw new EJBException(e);
+        }
+
+        return categories;
     }
 
     private Category createCategoryFromResultSet(ResultSet resultSet) throws SQLException {
