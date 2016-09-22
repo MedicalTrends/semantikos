@@ -1,4 +1,4 @@
-package cl.minsal.semantikos.designer_modeler.designer;
+package cl.minsal.semantikos.designer_modeler.browser;
 
 import cl.minsal.semantikos.kernel.components.*;
 import cl.minsal.semantikos.model.*;
