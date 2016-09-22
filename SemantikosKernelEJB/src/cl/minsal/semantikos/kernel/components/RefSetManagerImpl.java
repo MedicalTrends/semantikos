@@ -1,10 +1,7 @@
 package cl.minsal.semantikos.kernel.components;
 
 import cl.minsal.semantikos.kernel.daos.RefSetDAO;
-import cl.minsal.semantikos.model.Description;
-import cl.minsal.semantikos.model.Institution;
-import cl.minsal.semantikos.model.RefSet;
-import cl.minsal.semantikos.model.User;
+import cl.minsal.semantikos.model.*;
 import cl.minsal.semantikos.model.businessrules.*;
 
 import javax.ejb.EJB;
@@ -40,6 +37,7 @@ public class RefSetManagerImpl implements RefSetManager {
         /* Se registra la creación */
         auditManager.recordRefSetCreation(refSet, user);
 
+
         /* Se registra la creación del RefSet */
         return refSet;
     }
@@ -56,36 +54,42 @@ public class RefSetManagerImpl implements RefSetManager {
         /* Se registra la creación */
         auditManager.recordRefSetUpdate(refSet, user);
 
+        /* Se guardan los conceptos asignados al refset*/
+
+        for (ConceptSMTK concept: refSet.getConcepts()) {
+            bindConceptToRefSet(concept, refSet, user);
+        }
+
         /* Se registra la creación del RefSet */
         return refSet;
     }
 
     @Override
-    public void bindDescriptionToRefSet(Description description, RefSet refSet, User user) {
+    public void bindConceptToRefSet(ConceptSMTK conceptSMTK, RefSet refSet, User user) {
 
         /* Se validan las pre-condiciones */
         new RefSetBindingBR().validatePreConditions();
 
         /* Se asocia la descripción al RefSet */
-        refsetDAO.bind(description, refSet);
-        refSet.bindConceptTo(description.getConceptSMTK());
+        refsetDAO.bind(conceptSMTK, refSet);
+        refSet.bindConceptTo(conceptSMTK);
 
         /* Se registra la creación */
-        auditManager.recordRefSetBinding(refSet, description, user);
+        auditManager.recordRefSetBinding(refSet, conceptSMTK, user);
     }
 
     @Override
-    public void unbindDescriptionToRefSet(Description description, RefSet refSet, User user) {
+    public void unbindConceptToRefSet(ConceptSMTK conceptSMTK, RefSet refSet, User user) {
 
         /* Se validan las pre-condiciones */
         new RefSetUnbindingBR().validatePreConditions();
 
         /* Se asocia la descripción al RefSet */
-        refsetDAO.unbind(description, refSet);
-        refSet.unbindConceptTo(description.getConceptSMTK());
+        refsetDAO.unbind(conceptSMTK, refSet);
+        refSet.unbindConceptTo(conceptSMTK);
 
         /* Se registra la creación */
-        auditManager.recordRefSetUnbinding(refSet, description, user);
+        auditManager.recordRefSetUnbinding(refSet, conceptSMTK, user);
     }
 
     @Override
@@ -105,10 +109,6 @@ public class RefSetManagerImpl implements RefSetManager {
     @Override
     public List<RefSet> getAllRefSets() {
 
-        //FIXME: Retornar el correcto.
-        ArrayList<RefSet> refSets = new ArrayList<>();
-        refSets.add(new RefSet("Dummy RefSet", new Institution(), new Timestamp(currentTimeMillis())));
-
-        return refSets;
+        return refsetDAO.getReftsets();
     }
 }

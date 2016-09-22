@@ -27,4 +27,8 @@ public class Institution extends PersistentEntity {
     public String getName() {
         return name;
     }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }

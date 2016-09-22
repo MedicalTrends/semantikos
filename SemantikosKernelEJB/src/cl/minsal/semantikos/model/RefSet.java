@@ -26,6 +26,8 @@ public class RefSet extends PersistentEntity implements AuditableEntity {
     /** Lista de los conceptos en el RefSet */
     private List<ConceptSMTK> concepts;
 
+    private long id;
+
     public RefSet(String name, Institution institution, Timestamp creationDate) {
         this.institution = institution;
         this.name = name;
@@ -63,5 +65,19 @@ public class RefSet extends PersistentEntity implements AuditableEntity {
 
     public List<ConceptSMTK> getConcepts(){
         return new ArrayList<ConceptSMTK>(this.concepts);
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public long getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(long id) {
+        this.id = id;
     }
 }

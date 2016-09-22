@@ -159,19 +159,19 @@ public interface AuditManager {
      * Este método es responsable de registrar en el historia la asociación de una descripción a un RefSet.
      *
      * @param refSet      El RefSet que se registra en el historial.
-     * @param description La Descripción que se asocia al RefSet.
+     * @param conceptSMTK El concepto que se asocia al RefSet.
      * @param user        El usuario que realiza la acción.
      */
-    public void recordRefSetBinding(RefSet refSet, Description description, User user);
+    public void recordRefSetBinding(RefSet refSet, ConceptSMTK conceptSMTK, User user);
 
     /**
      * Este método es responsable de registrar en el historia la des-asociación de una descripción a un RefSet.
      *
      * @param refSet      El RefSet que se registra en el historial.
-     * @param description La Descripción que se des-asocia al RefSet.
+     * @param conceptSMTK La Descripción que se des-asocia al RefSet.
      * @param user        El usuario que realiza la acción.
      */
-    public void recordRefSetUnbinding(RefSet refSet, Description description, User user);
+    public void recordRefSetUnbinding(RefSet refSet, ConceptSMTK conceptSMTK, User user);
 
     /**
      * Este método es responsable de registrar en el historia cuando un RefSet se deje no vigente.

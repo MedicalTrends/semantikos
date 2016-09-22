@@ -1,10 +1,12 @@
 package cl.minsal.semantikos.kernel.daos;
 
+import cl.minsal.semantikos.model.ConceptSMTK;
 import cl.minsal.semantikos.model.Description;
 import cl.minsal.semantikos.model.RefSet;
 
 import javax.ejb.Local;
 import java.sql.Timestamp;
+import java.util.List;
 
 /**
  * @author Andrés Farías on 9/20/16.
@@ -30,16 +32,22 @@ public interface RefSetDAO {
     /**
      * Este método es responsable de persistir la asociación de una descripción a un RefSet.
      *
-     * @param description La descripción que se desea asociar al refset.
+     * @param conceptSMTK El concepto que se desea asociar al refset.
      * @param refSet      El Refset al cual se asocia la descripción.
      */
-    public void bind(Description description, RefSet refSet);
+    public void bind(ConceptSMTK conceptSMTK, RefSet refSet);
 
     /**
      * Este método es responsable de persistir la des-asociación de una descripción a un RefSet.
      *
-     * @param description La descripción que se desea des-asociar al refset.
+     * @param conceptSMTK El concepto que se desea des-asociar al refset.
      * @param refSet      El Refset al cual se asocia la descripción.
      */
-    public void unbind(Description description, RefSet refSet);
+    public void unbind(ConceptSMTK conceptSMTK, RefSet refSet);
+
+    /**
+     * Este metodo es el responsable de obtener todos los refsets
+     * @return Lista de refsets
+     */
+    public List<RefSet> getReftsets();
 }

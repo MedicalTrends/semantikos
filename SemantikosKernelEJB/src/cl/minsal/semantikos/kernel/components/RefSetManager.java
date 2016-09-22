@@ -1,9 +1,6 @@
 package cl.minsal.semantikos.kernel.components;
 
-import cl.minsal.semantikos.model.Description;
-import cl.minsal.semantikos.model.Institution;
-import cl.minsal.semantikos.model.RefSet;
-import cl.minsal.semantikos.model.User;
+import cl.minsal.semantikos.model.*;
 
 import javax.ejb.Local;
 import java.util.List;
@@ -39,20 +36,20 @@ public interface RefSetManager {
     /**
      * Este método es responsable de asociar una descripción a un RefSet.
      *
-     * @param description La descripción que se desea agregar.
+     * @param conceptSMTK La descripción que se desea agregar.
      * @param refSet      El RefSet al cual se desea asociar.
      * @param user        El usuario que realiza la acción.
      */
-    public void bindDescriptionToRefSet(Description description, RefSet refSet, User user);
+    public void bindConceptToRefSet(ConceptSMTK conceptSMTK, RefSet refSet, User user);
 
     /**
      * Este método es responsable de des-asociar una descripción a un RefSet.
      *
-     * @param description La descripción que se desea agregar.
+     * @param conceptSMTK La descripción que se desea agregar.
      * @param refSet      El RefSet al cual se desea asociar.
      * @param user        El usuario que realiza la acción.
      */
-    public void unbindDescriptionToRefSet(Description description, RefSet refSet, User user);
+    public void unbindConceptToRefSet(ConceptSMTK conceptSMTK, RefSet refSet, User user);
 
     /**
      * Este método es responsable de dejar inválido un RefSet.
