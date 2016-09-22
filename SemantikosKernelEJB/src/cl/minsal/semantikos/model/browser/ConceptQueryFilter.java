@@ -11,5 +11,23 @@ import java.util.List;
 public class ConceptQueryFilter {
 
     TargetDefinition definition;
+
     List<Target> targets;
+
+    public TargetDefinition getDefinition() {
+        return definition;
+    }
+
+    public void setDefinition(TargetDefinition definition) {
+        this.definition = definition;
+    }
+
+    public List<Target> getTargets() {
+        return targets;
+    }
+
+    public void setTargets(List<Target> targets) {
+        this.targets = targets;
+    }
+
 }

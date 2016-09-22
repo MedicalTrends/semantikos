@@ -12,6 +12,7 @@ import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -25,6 +26,19 @@ import java.util.Map;
 public class ConceptBrowserBean implements Serializable {
 
     static final Logger logger = LoggerFactory.getLogger(ConceptBrowserBean.class);
+
+    @EJB
+    ConceptQueryManager conceptQueryManager;
+
+    @EJB
+    TagManager tagManager;
+
+    @EJB
+    HelperTableManagerInterface helperTableManager;
+
+    private cl.minsal.semantikos.model.browser.ConceptQuery conceptQuery;
+
+    private List<Tag> tags = new ArrayList<Tag>();
 
     private List<Category> categories;
     private LazyDataModel<ConceptSMTK> concepts;
@@ -60,6 +74,7 @@ public class ConceptBrowserBean implements Serializable {
         concepts = new LazyDataModel<ConceptSMTK>() {
             @Override
             public List<ConceptSMTK> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
+
                 List<ConceptSMTK> conceptSMTKs=null;
                 selectedCategories= new Long[0];
                 conceptSMTKs = conceptManager.findConceptBy(pattern, selectedCategories, first, pageSize);
@@ -71,9 +86,11 @@ public class ConceptBrowserBean implements Serializable {
 
         };
 
+        conceptQuery = conceptQueryManager.getDefaultQueryByCategory(category);
+
+        tags = tagManager.getAllTags();
 
     }
-
 
     public List<Category> getCategories() {
         return categories;
@@ -137,6 +154,30 @@ public class ConceptBrowserBean implements Serializable {
 
     public void setConceptSelected(ConceptSMTK conceptSelected) {
         this.conceptSelected = conceptSelected;
+    }
+
+    public cl.minsal.semantikos.model.browser.ConceptQuery getConceptQuery() {
+        return conceptQuery;
+    }
+
+    public void setConceptQuery(cl.minsal.semantikos.model.browser.ConceptQuery conceptQuery) {
+        this.conceptQuery = conceptQuery;
+    }
+
+    public List<Tag> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<Tag> tags) {
+        this.tags = tags;
+    }
+
+    public HelperTableManagerInterface getHelperTableManager() {
+        return helperTableManager;
+    }
+
+    public void setHelperTableManager(HelperTableManagerInterface helperTableManager) {
+        this.helperTableManager = helperTableManager;
     }
 }
 

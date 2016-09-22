@@ -15,24 +15,31 @@
             <p:panelGrid columns="8" columnClasses="ui-grid-col-2,ui-grid-col-2,ui-grid-col-2,ui-grid-col-2,ui-grid-col-2,ui-grid-col-2" layout="grid" styleClass="ui-panelgrid-blank">
                 <p:inputText style="margin-left:10px; width: 90%" placeholder="Search"/>
 
-                <p:selectOneMenu id="toBeReviewed" style="margin-left:10px; width: 60%">
+                <p:selectOneMenu id="toBeReviewed" value="#{conceptBrowserBean.conceptQuery.toBeReviewed}" style="margin-left:10px; width: 60%">
                     <f:selectItem itemLabel="¿Revisar?" itemValue="#{null}"/>
                     <f:selectItem itemLabel="Sin Revisar" itemValue="#{false}"/>
                     <f:selectItem itemLabel="Revisar" itemValue="#{true}"/>
                 </p:selectOneMenu>
-                <p:selectOneMenu id="toBeConsulted" style="margin-left:10px; width: 60%">
+                <p:selectOneMenu id="toBeConsulted" value="#{conceptBrowserBean.conceptQuery.toBeConsulted}" style="margin-left:10px; width: 60%">
                     <f:selectItem itemLabel="¿Consultar?" itemValue="#{null}"/>
                     <f:selectItem itemLabel="Sin Consultar" itemValue="#{false}"/>
                     <f:selectItem itemLabel="Revisar" itemValue="#{true}"/>
                 </p:selectOneMenu>
-                <p:selectOneMenu id="modeled" style="margin-left:10px; width: 60%">
+                <p:selectOneMenu id="modeled" value="#{conceptBrowserBean.conceptQuery.modeled}" style="margin-left:10px; width: 60%">
                     <f:selectItem itemLabel="Estado" itemValue="#{null}"/>
                     <f:selectItem itemLabel="Borrador" itemValue="#{false}"/>
                     <f:selectItem itemLabel="Modelado" itemValue="#{true}"/>
                 </p:selectOneMenu>
-                <p:selectOneMenu id="tag" style="margin-left:10px; width: 60%">
-                    <f:selectItem itemLabel="Tags" itemValue="#{null}"/>
+                <p:selectOneMenu id="tag" value="#{conceptBrowserBean.conceptQuery.tag}" converter="omnifaces.SelectItemsConverter"
+                                 style="margin-left:10px; width: 60%">
+                    <f:selectItems value="#{conceptBrowserBean.tags}" var="tag"
+                                   itemLabel="#{tag.name}" itemValue="#{tag.id}"/>
                 </p:selectOneMenu>
+                <!--Filtros dinámicos-->
+                <ui:repeat value="#{conceptBrowserBean.conceptQuery.filters}" var="filter">
+                    <smtk:basicTypeFilter targets="#{filter.targets}" targetDefinition="#{filter.definition}" rendered="#{filter.definition.basicType}" />
+                </ui:repeat>
+
             </p:panelGrid>
 
 
