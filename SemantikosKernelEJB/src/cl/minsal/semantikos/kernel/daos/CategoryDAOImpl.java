@@ -15,10 +15,14 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Diego Soto
+ * @author Andrés Farías
+ * @version 2.0
  */
 
 @Stateless
@@ -33,10 +37,40 @@ public class CategoryDAOImpl implements CategoryDAO {
     @EJB
     private TagSMTKDAO tagSMTKDAO;
 
-    // TODO: Agregar EhCache.
+    /** Un caché de categorías */
+    private Map<Long, Category> categoryMap;
+
+    public CategoryDAOImpl() {
+        this.categoryMap = new HashMap<>();
+    }
 
     @Override
     public Category getCategoryById(long idCategory) {
+
+        /* Si está en el caché, se retorna */
+        if(categoryMap.containsKey(idCategory)){
+            return categoryMap.get(idCategory);
+        }
+
+        /* Se almacena en el caché */
+        Category categoryByIdFromDB = getCategoryByIdFromDB(idCategory);
+        categoryMap.put(idCategory, categoryByIdFromDB);
+
+        /* Y se carga su metadata */
+        List<RelationshipDefinition> categoryMetaData = getCategoryMetaData(idCategory);
+        categoryByIdFromDB.setRelationshipDefinitions(categoryMetaData);
+
+        return categoryByIdFromDB;
+    }
+
+    /**
+     * Este método es responsable de recuperar de la BDD.
+     *
+     * @param idCategory ID de la categoría.
+     *
+     * @return La categoría desde la bdd.
+     */
+    private Category getCategoryByIdFromDB(long idCategory) {
         Category category;
         ConnectionBD connect = new ConnectionBD();
         String GET_CATEGORY_BY_ID = "{call semantikos.get_category_by_id(?)}";
@@ -50,7 +84,6 @@ public class CategoryDAOImpl implements CategoryDAO {
             ResultSet rs = call.getResultSet();
             if (rs.next()) {
                 category = createCategoryFromResultSet(rs);
-                category.setRelationshipDefinitions(getCategoryMetaData(category.getId()));
             } else {
                 throw new EJBException("Error en la llamada");
             }
@@ -66,26 +99,7 @@ public class CategoryDAOImpl implements CategoryDAO {
 
     @Override
     public List<Category> getAllCategories() {
-
-        ConnectionBD connect = new ConnectionBD();
-        List<Category> categories = new ArrayList<>();
-        ;
-        try (Connection connection = connect.getConnection();
-             CallableStatement call = connection.prepareCall("SELECT * FROM semantikos.get_all_categories()")) {
-            call.execute();
-
-            ResultSet resultSet = call.getResultSet();
-            while (resultSet.next()) {
-                Category categoryFromResultSet = createCategoryFromResultSet(resultSet);
-                categoryFromResultSet.setRelationshipDefinitions(getCategoryMetaData(categoryFromResultSet.getId()));
-
-                categories.add(categoryFromResultSet);
-            }
-        } catch (SQLException e) {
-            throw new EJBException(e);
-        }
-
-        return categories;
+        return new ArrayList<>(categoryMap.values());
     }
 
     private Category createCategoryFromResultSet(ResultSet resultSet) throws SQLException {
@@ -125,7 +139,11 @@ public class CategoryDAOImpl implements CategoryDAO {
 
             ResultSet rs = call.getResultSet();
             if (rs.next()) {
-                category.setId(rs.getLong(1));
+                long catID = rs.getLong(1);
+                category.setId(catID);
+                if (!categoryMap.containsKey(catID)) {
+                    categoryMap.put(catID, category);
+                }
             }
             rs.close();
 
