@@ -3,6 +3,7 @@ package cl.minsal.semantikos.model;
 import cl.minsal.semantikos.kernel.daos.DAO;
 
 /**
+ * TEST PANCHO ES UN MALDITO.
  * @author Andrés Farías on 9/4/16.
  */
 public class TagSMTK extends PersistentEntity {
