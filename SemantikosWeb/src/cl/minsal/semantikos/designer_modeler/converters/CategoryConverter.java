@@ -16,6 +16,7 @@ import java.text.ParseException;
 /**
  * Created by des01c7 on 09-09-16.
  */
+
 @FacesConverter("CategoryConverter")
 public class CategoryConverter implements Converter{
 
@@ -30,7 +31,7 @@ public class CategoryConverter implements Converter{
                 return bean.getCategoryManager().getCategoryById(Integer.parseInt(s));
 
             } catch(NumberFormatException e) {
-                throw new ConverterException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Conversion Error", "Not a valid theme."));
+                throw new ConverterException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Conversion Error", "Categoria no valida"));
             } catch (ParseException e) {
                 e.printStackTrace();
             }

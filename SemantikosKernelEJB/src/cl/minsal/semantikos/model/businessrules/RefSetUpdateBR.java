@@ -11,18 +11,23 @@ import static cl.minsal.semantikos.model.ProfileFactory.ADMINISTRATOR_REFSETS_PR
  */
 public class RefSetUpdateBR {
 
+    /**
+     * Este método realiza la validación de las pre-condiciones necesarias para poder modificar un RefSet.
+     *
+     * @param refSet El RefSet que se desea modificar.
+     * @param user   El usuario que realiza la modificación.
+     */
     public void validatePreConditions(RefSet refSet, User user) {
         brRefSet001(user);
         brRefSet002(refSet, user);
     }
-
 
     /**
      * BR-RefSet-001: Los RefSets son administrados por usuarios que tienen perfil de Administrador de RefSets.
      *
      * @param user El usuario que realiza la operación.
      */
-    public void brRefSet001(User user) {
+    protected void brRefSet001(User user) {
         if (user.getProfiles().equals(ADMINISTRATOR_REFSETS_PROFILE)) {
             throw new BusinessRuleException("Los RefSets puede ser actualizados sólo por usuario con el perfil " + ADMINISTRATOR_REFSETS_PROFILE);
         }
@@ -34,7 +39,9 @@ public class RefSetUpdateBR {
      * @param refSet El RefSet que se desea modificar.
      * @param user   El usuario que realiza la operación.
      */
-    public void brRefSet002(RefSet refSet, User user) {
-
+    protected void brRefSet002(RefSet refSet, User user) {
+        if (!user.getInstitutions().contains(refSet.getInstitution())) {
+            throw new BusinessRuleException("Un usuario puede editar RefSets de instituciones a las que se encuentra asociado.");
+        }
     }
 }

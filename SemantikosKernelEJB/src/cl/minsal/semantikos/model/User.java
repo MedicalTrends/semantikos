@@ -42,19 +42,20 @@ public class User {
     private String lastPasswordHash4;
     private String lastPasswordSalt4;
 
-    // TODO: Actualizar esto en el modelo de datos.
-    /** La institución en la que trabaja el usuario */
+    // TODO: Francisco. Actualizar esto en el modelo de datos.
+    /** BR-RefSet-004: La institución en la que trabaja el usuario */
     private List<Institution> institutions;
-    private Profile currentProfile;
 
     /**
      * Constructor base para inicializar los objetos que lo requieren.
      */
     public User() {
         this.profiles = new ArrayList<>();
+        this.institutions = new ArrayList<>();
     }
 
     private User(long idUser, String username, String name, boolean locked) {
+        this();
         this.idUser = idUser;
         this.username = username;
         this.name = name;
@@ -314,13 +315,5 @@ public class User {
      */
     public static User getDummyUser() {
         return dummyUser;
-    }
-
-    public Profile getCurrentProfile() {
-        return currentProfile;
-    }
-
-    public void setCurrentProfile(Profile currentProfile) {
-        this.currentProfile = currentProfile;
     }
 }

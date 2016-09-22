@@ -8,68 +8,13 @@ import java.sql.Timestamp;
 /**
  * @author Andrés Farías on 8/23/16.
  */
-public class ConceptAuditAction {
-
-    /** El concepto en el que se realizó la acción */
-    private ConceptSMTK subjectConcept;
-
-    /** The kind of change happened */
-    private AuditActionType auditActionType;
-
-    /** La fecha en que tomo lugar la acción auditable */
-    private Timestamp actionDate;
-
-    /** El usuario que realizó la acción */
-    private User user;
-
-    /** La entidad que fue el sujeto mismo de la acción: concepto, relación (atributo o SCT), descripción o categoría */
-    private AuditableEntity auditableEntity;
+public class ConceptAuditAction extends AuditAction {
 
     public ConceptAuditAction(ConceptSMTK subjectConcept, AuditActionType auditActionType, Timestamp actionDate, User user, AuditableEntity auditableEntity) {
-        this.subjectConcept = subjectConcept;
-        this.auditActionType = auditActionType;
-        this.actionDate = actionDate;
-        this.user = user;
-        this.auditableEntity = auditableEntity;
+        super(auditActionType, actionDate, user, auditableEntity, subjectConcept);
     }
 
     public ConceptSMTK getSubjectConcept() {
-        return subjectConcept;
-    }
-
-    public void setSubjectConcept(ConceptSMTK subjectConcept) {
-        this.subjectConcept = subjectConcept;
-    }
-
-    public AuditActionType getAuditActionType() {
-        return auditActionType;
-    }
-
-    public void setAuditActionType(AuditActionType auditActionType) {
-        this.auditActionType = auditActionType;
-    }
-
-    public Timestamp getActionDate() {
-        return actionDate;
-    }
-
-    public void setActionDate(Timestamp actionDate) {
-        this.actionDate = actionDate;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public AuditableEntity getAuditableEntity() {
-        return auditableEntity;
-    }
-
-    public void setAuditableEntity(AuditableEntity auditableEntity) {
-        this.auditableEntity = auditableEntity;
+        return (ConceptSMTK) getBaseEntity();
     }
 }

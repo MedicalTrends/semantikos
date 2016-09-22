@@ -3,10 +3,7 @@ package cl.minsal.semantikos.kernel.daos;
 import cl.minsal.semantikos.kernel.util.ConnectionBD;
 import cl.minsal.semantikos.model.ConceptSMTK;
 import cl.minsal.semantikos.model.User;
-import cl.minsal.semantikos.model.audit.AuditActionType;
-import cl.minsal.semantikos.model.audit.AuditableEntity;
-import cl.minsal.semantikos.model.audit.ConceptAuditAction;
-import cl.minsal.semantikos.model.audit.ConceptAuditActionFactory;
+import cl.minsal.semantikos.model.audit.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -91,7 +88,7 @@ public class AuditDAOImpl implements AuditDAO {
             /* Se invoca la consulta para recuperar las relaciones */
             Timestamp actionDate = conceptAuditAction.getActionDate();
             User user = conceptAuditAction.getUser();
-            ConceptSMTK subjectConcept = conceptAuditAction.getSubjectConcept();
+            AuditableEntity subjectConcept = conceptAuditAction.getBaseEntity();
             AuditActionType auditActionType = conceptAuditAction.getAuditActionType();
             AuditableEntity auditableEntity = conceptAuditAction.getAuditableEntity();
 
@@ -107,5 +104,39 @@ public class AuditDAOImpl implements AuditDAO {
             logger.error(errorMsg);
             throw new EJBException(errorMsg, e);
         }
+    }
+
+    public void recordAuditAction(RefSetAuditAction refSetAuditAction){
+        logger.debug("Registrando información de Auditoría: " + refSetAuditAction);
+        ConnectionBD connect = new ConnectionBD();
+        /*
+         * param 1: La fecha en que se realiza (Timestamp).
+         * param 2: El usuario que realiza la acción (id_user).
+         * param 3: concepto en el que se realiza la acción.
+         * param 4: El tipo de acción que realiza
+         * param 5: La entidad en la que se realizó la acción..
+         */
+        String sqlQuery = "{call semantikos.create_refset_audit_actions(?,?,?,?,?)}";
+        try (Connection connection = connect.getConnection();
+             CallableStatement call = connection.prepareCall(sqlQuery)) {
+
+            /* Se invoca la consulta para recuperar las relaciones */
+            Timestamp actionDate = refSetAuditAction.getActionDate();
+            User user = refSetAuditAction.getUser();
+            AuditActionType auditActionType = refSetAuditAction.getAuditActionType();
+            AuditableEntity auditableEntity = refSetAuditAction.getAuditableEntity();
+
+            call.setTimestamp(1, actionDate);
+            call.setLong(2, user.getIdUser());
+            call.setLong(3, auditActionType.getId());
+            call.setLong(4, auditableEntity.getId());
+            call.execute();
+
+        } catch (SQLException e) {
+            String errorMsg = "Error al registrar en el log.";
+            logger.error(errorMsg);
+            throw new EJBException(errorMsg, e);
+        }
+
     }
 }

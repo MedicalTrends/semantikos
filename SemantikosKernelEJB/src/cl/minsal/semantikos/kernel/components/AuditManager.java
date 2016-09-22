@@ -12,7 +12,7 @@ import java.util.List;
  * @author Andrés Farías
  */
 @Local
-public interface AuditManagerInterface {
+public interface AuditManager {
 
 
     /**
@@ -116,7 +116,8 @@ public interface AuditManagerInterface {
 
     /**
      * Este método es responsable de registrar en el historial la eliminación de un CrossMap.
-     *  @param description La descripción qeu se está creando.
+     *
+     * @param description La descripción qeu se está creando.
      * @param user        El usuario que realiza la acción.
      */
     public void recordDescriptionCreation(Description description, User user);
@@ -137,6 +138,48 @@ public interface AuditManagerInterface {
      * @param user        El usuario que desea eliminar el concepto.
      */
     public void recordConceptInvalidation(ConceptSMTK conceptSMTK, User user);
+
+    /**
+     * Este método es responsable de registrar en el historial la creación de un RefSet.
+     *
+     * @param refSet El RefSet que se crea.
+     * @param user   El usuario que crea el RefSet.
+     */
+    public void recordRefSetCreation(RefSet refSet, User user);
+
+    /**
+     * Este método es responsable de registrar en el historial la actualización de un RefSet.
+     *
+     * @param refSet El RefSet que se actualiza.
+     * @param user   El usuario que crea el RefSet.
+     */
+    public void recordRefSetUpdate(RefSet refSet, User user);
+
+    /**
+     * Este método es responsable de registrar en el historia la asociación de una descripción a un RefSet.
+     *
+     * @param refSet      El RefSet que se registra en el historial.
+     * @param conceptSMTK El concepto que se asocia al RefSet.
+     * @param user        El usuario que realiza la acción.
+     */
+    public void recordRefSetBinding(RefSet refSet, ConceptSMTK conceptSMTK, User user);
+
+    /**
+     * Este método es responsable de registrar en el historia la des-asociación de una descripción a un RefSet.
+     *
+     * @param refSet      El RefSet que se registra en el historial.
+     * @param conceptSMTK La Descripción que se des-asocia al RefSet.
+     * @param user        El usuario que realiza la acción.
+     */
+    public void recordRefSetUnbinding(RefSet refSet, ConceptSMTK conceptSMTK, User user);
+
+    /**
+     * Este método es responsable de registrar en el historia cuando un RefSet se deje no vigente.
+     *
+     * @param refSet      El RefSet que se registra en el historial.
+     * @param user        El usuario que realiza la acción.
+     */
+    public void recordRefSetInvalidate(RefSet refSet, User user);
 
     /**
      * Este método es responsable de obtener y agrupar en una lista todos los tipos de cambios existentes.

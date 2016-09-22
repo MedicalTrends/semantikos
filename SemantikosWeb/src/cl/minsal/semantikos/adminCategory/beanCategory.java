@@ -1,6 +1,8 @@
 package cl.minsal.semantikos.adminCategory;
 
 import cl.minsal.semantikos.kernel.components.CategoryManager;
+import cl.minsal.semantikos.kernel.components.TagManager;
+import cl.minsal.semantikos.kernel.components.TagSMTKManager;
 import cl.minsal.semantikos.model.*;
 import cl.minsal.semantikos.model.relationships.RelationshipDefinition;
 import org.primefaces.context.RequestContext;
@@ -31,6 +33,8 @@ public class beanCategory {
 
     private List<Category> categories;
 
+    private List<TagSMTK> tagSMTKList;
+
     private Category categorySelected;
 
     private boolean isSmtk;
@@ -46,6 +50,8 @@ public class beanCategory {
     @EJB
     private CategoryManager categoryManager;
 
+    @EJB
+    private TagSMTKManager tagSMTKManager;
 
     @PostConstruct
     public void init(){
@@ -54,6 +60,7 @@ public class beanCategory {
         relationshipDefinitions=new ArrayList<RelationshipDefinition>();
         isSmtk=false;
         isOther=false;
+        tagSMTKList= tagSMTKManager.getAllTagSMTKs();
     }
 
     public void selectType(){
@@ -184,5 +191,13 @@ public class beanCategory {
 
     public void setLowerBoundary(int lowerBoundary) {
         this.lowerBoundary = lowerBoundary;
+    }
+
+    public List<TagSMTK> getTagSMTKList() {
+        return tagSMTKList;
+    }
+
+    public void setTagSMTKList(List<TagSMTK> tagSMTKList) {
+        this.tagSMTKList = tagSMTKList;
     }
 }

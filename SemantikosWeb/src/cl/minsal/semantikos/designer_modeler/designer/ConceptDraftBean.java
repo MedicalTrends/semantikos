@@ -26,6 +26,7 @@ public class ConceptDraftBean implements Serializable{
     @PostConstruct
     public void init(){
         conceptSMTKList=conceptManager.getConceptDraft();
+
     }
 
     public List<ConceptSMTK> getConceptSMTKList() {

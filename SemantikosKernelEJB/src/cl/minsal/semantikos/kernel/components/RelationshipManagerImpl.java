@@ -35,7 +35,7 @@ public class RelationshipManagerImpl implements RelationshipManager {
     private ConceptDAO conceptDAO;
 
     @EJB
-    private AuditManagerInterface auditManager;
+    private AuditManager auditManager;
 
     @Override
     public Relationship bindRelationshipToConcept(ConceptSMTK concept, Relationship relationship, User user) {

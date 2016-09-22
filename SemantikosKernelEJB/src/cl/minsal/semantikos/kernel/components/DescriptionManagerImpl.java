@@ -32,7 +32,7 @@ public class DescriptionManagerImpl implements DescriptionManager {
     CategoryManager categoryManager;
 
     @EJB
-    private AuditManagerInterface auditManager;
+    private AuditManager auditManager;
 
     /* El conjunto de reglas de negocio para validar creación de descripciones */
     private DescriptionCreationBR descriptionCreationBR = new DescriptionCreationBR();

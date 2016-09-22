@@ -53,7 +53,7 @@ public class ConceptBean implements Serializable {
     TagSMTKManager tagSMTKManager;
 
     @EJB
-    AuditManagerInterface auditManager;
+    AuditManager auditManager;
 
     @ManagedProperty(value = "#{smtkBean}")
     private SMTKTypeBean smtkTypeBean;
@@ -61,6 +61,10 @@ public class ConceptBean implements Serializable {
     DescriptionTypeFactory descriptionTypeFactory = DescriptionTypeFactory.getInstance();
 
     public User user;
+
+    private List<Category> categoryList;
+
+    private Category categorySelected;
 
     private ConceptSMTKWeb concept;
     //Concepto respaldo
@@ -115,6 +119,7 @@ public class ConceptBean implements Serializable {
     private int helperTableValuePlaceholder;
 
 
+
     @ManagedProperty(value="#{conceptExport}")
     private ConceptExportMBean conceptBeanExport;
 
@@ -147,10 +152,7 @@ public class ConceptBean implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         context.execute("PF('dialogNameConcept').show();");
 
-        //category = categoryManager.getCategoryById(1);
-        //category = categoryManager.getCategoryById(105590001);
-        //category = categoryManager.getCategoryById(71388002);
-        category = categoryManager.getCategoryById(419891008);
+        categoryList= categoryManager.getCategories();
 
 
         descriptionTypes = descriptionTypeFactory.getDescriptionTypesButFSNandFavorite();
@@ -173,12 +175,10 @@ public class ConceptBean implements Serializable {
     public void createConcept() throws ParseException {
 
         if(idconceptselect==0){
-            category = categoryManager.getCategoryById(categorySelect);
-            //category = categoryManager.getCategoryById(71388002);
+            category = categorySelected;
             newConcept(category, favoriteDescription);
         }else{
             getConceptById(idconceptselect);
-            //getConceptById(80602);
         }
 
         RequestContext context = RequestContext.getCurrentInstance();
@@ -755,6 +755,22 @@ public class ConceptBean implements Serializable {
 
     public void setHelperTableValuePlaceholder(int helperTableValuePlaceholder) {
         this.helperTableValuePlaceholder = helperTableValuePlaceholder;
+    }
+
+    public List<Category> getCategoryList() {
+        return categoryList;
+    }
+
+    public void setCategoryList(List<Category> categoryList) {
+        this.categoryList = categoryList;
+    }
+
+    public Category getCategorySelected() {
+        return categorySelected;
+    }
+
+    public void setCategorySelected(Category categorySelected) {
+        this.categorySelected = categorySelected;
     }
 }
 
