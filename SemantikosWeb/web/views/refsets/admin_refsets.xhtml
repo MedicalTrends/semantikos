@@ -49,7 +49,8 @@
                                         </div>
                                         <div class="ui-g-12 ui-md-6 ui-lg-4">
                                             <p:inputText value="#{refsetsBean.pattern}" style="width: 100%;">
-                                                <p:ajax event="keyup" listener="#{refsetsBean.patternEvent}" update="conceptTableDescription"></p:ajax>
+                                                <p:ajax event="keyup" listener="#{refsetsBean.patternEvent}"
+                                                        update="conceptTableDescription"></p:ajax>
                                             </p:inputText>
                                         </div>
                                     </div>
@@ -71,7 +72,9 @@
                                                     <h:outputText value="#{conceptSMTK.descriptionFavorite.term}"/>
                                                 </p:column>
                                                 <p:column exportable="false" style="width:32px;text-align: center">
-                                                    <p:commandButton update=":formRefset:conceptLinkToRefset" icon="fa fa-plus" actionListener="#{refsetsBean.addConcept(refsetsBean.refSetToCreate,conceptSMTK)}">
+                                                    <p:commandButton update=":formRefset:conceptLinkToRefset"
+                                                                     icon="fa fa-plus"
+                                                                     actionListener="#{refsetsBean.addConcept(refsetsBean.refSetToCreate,conceptSMTK)}">
 
                                                     </p:commandButton>
                                                 </p:column>
@@ -130,7 +133,9 @@
                                                     <h:outputText value="#{conceptSMTK.descriptionFavorite.term}"/>
                                                 </p:column>
                                                 <p:column exportable="false" style="width:32px;text-align: center">
-                                                    <p:commandButton update=":formRefset:conceptLinkToRefset" icon="fa fa-plus" actionListener="#{refsetsBean.addConcept(refsetsBean.refSetToCreate,conceptSMTK)}">
+                                                    <p:commandButton update=":formRefset:conceptLinkToRefset"
+                                                                     icon="fa fa-plus"
+                                                                     actionListener="#{refsetsBean.addConcept(refsetsBean.refSetToCreate,conceptSMTK)}">
 
                                                     </p:commandButton>
                                                 </p:column>
@@ -159,7 +164,7 @@
                             <br/>
 
                             <p:dataTable id="conceptLinkToRefset" emptyMessage="No se han agregado conceptos al RefSets"
-                            value="#{refsetsBean.refSetToCreate.concepts}" var="conceptSMTK">
+                                         value="#{refsetsBean.refSetToCreate.concepts}" var="conceptSMTK">
 
                                 <p:column headerText="ID">
                                     <h:outputText value="#{conceptSMTK.id}"/>
@@ -170,7 +175,8 @@
                                 </p:column>
 
                                 <p:column headerText="Acción">
-                                    <p:commandButton icon="fa fa-chain-broken" actionListener="#{refsetsBean.removeConcept(refsetsBean.refSetToCreate,conceptSMTK)}" >
+                                    <p:commandButton icon="fa fa-chain-broken"
+                                                     actionListener="#{refsetsBean.removeConcept(refsetsBean.refSetToCreate,conceptSMTK)}">
 
                                     </p:commandButton>
                                 </p:column>
@@ -180,7 +186,8 @@
                             <br/>
 
                             <div style="text-align: center;">
-                                <h3><p:commandButton value="Crear Refset" actionListener="#{refsetsBean.createRefset}"></p:commandButton></h3>
+                                <h3><p:commandButton value="Crear Refset" actionListener="#{refsetsBean.createRefset}"
+                                                     update="formRefset"/></h3>
                             </div>
 
                         </div>
@@ -198,12 +205,11 @@
                             </div>
 
 
-
-                        <p:dataTable
-                                id="refsetsTable" value="#{refsetsBean.refSetList}"
-                                var="refset"
-                                rows="15"
-                                paginator="true"  emptyMessage="No se han creado Refsets">
+                            <p:dataTable
+                                    id="refsetsTable" value="#{refsetsBean.refSetList}"
+                                    var="refset"
+                                    rows="15"
+                                    paginator="true" emptyMessage="No se han creado Refsets">
 
                                 <p:column headerText="ID">
                                     <h:outputText value="#{refset.id}"/>
@@ -222,8 +228,9 @@
                                 </p:column>
 
                                 <p:column headerText="Acción">
-                                    <p:commandButton icon="fa fa-edit" >
-
+                                    <p:commandButton icon="fa fa-edit" oncomplete="PF('editRefset').show()">
+                                        <f:setPropertyActionListener value="#{refset}"
+                                                                     target="#{refsetsBean.refSetEdit}"/>
                                     </p:commandButton>
                                 </p:column>
 
@@ -237,8 +244,8 @@
                     <p:outputPanel id="editRefsetPanel" style="text-align:center;">
                         <div class="ui-g">
 
-                           <div class="ui-g-12 ui-md-6 ui-lg-12">
-                               <h3> Refset: #{refsetsBean.refSetEdit.name}</h3>
+                            <div class="ui-g-12 ui-md-6 ui-lg-12">
+                                <h3> Refset: #{refsetsBean.refSetEdit.name}</h3>
                             </div>
                         </div>
 
@@ -246,9 +253,9 @@
 
                             <div class="ui-g-12 ui-md-6 ui-lg-12">
 
-                                <p:dataTable>
+                                <br/>
 
-                                </p:dataTable>
+
 
                             </div>
                         </div>
