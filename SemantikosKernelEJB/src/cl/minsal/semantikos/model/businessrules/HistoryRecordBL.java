@@ -2,6 +2,7 @@ package cl.minsal.semantikos.model.businessrules;
 
 import cl.minsal.semantikos.model.ConceptSMTK;
 import cl.minsal.semantikos.model.audit.ConceptAuditAction;
+import cl.minsal.semantikos.model.audit.RefSetAuditAction;
 import cl.minsal.semantikos.model.exceptions.BusinessRuleException;
 
 /**
@@ -16,6 +17,26 @@ public class HistoryRecordBL {
      */
     public void validate(ConceptAuditAction conceptAuditAction) {
         brAud001(conceptAuditAction.getSubjectConcept());
+    }
+
+    /**
+     * Este método aplica todas las reglas de negocio para validar si se puede realizar el registro.
+     *
+     * @param refSetAuditAction La acción de Registro de Historial que se desea realizar.
+     */
+    public void validate(RefSetAuditAction refSetAuditAction) {
+        brAud002(refSetAuditAction);
+
+    }
+
+    /**
+     * BR-AUD-002: Se guardará en el historial un registro de la creación de un RefSet.
+     *
+     * @param refSetAuditAction El refSet sobre el cual se realiza el registro en el historial.
+     */
+    private void brAud002(RefSetAuditAction refSetAuditAction) {
+        if (!refSetAuditAction.getRefSet().isPersistent())
+            throw new BusinessRuleException("BR-AUD-002: No satisfecha: solo se pueden registrar acciones relativas a Conceptos que se encuentran Modelados");
     }
 
     /**

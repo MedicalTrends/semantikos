@@ -30,10 +30,24 @@
                 <p:spacer/>
                 <div class="ui-g">
                     <div class="ui-g-12 ui-md-6 ui-lg-1">
-                        <p:outputLabel for="tagSemantikos" value="Tag Semantikos"/>
+                        <p:outputLabel  value="Tag Semantikos"/>
                     </div>
                     <div class="ui-g-12 ui-md-6 ui-lg-1">
-                        <p:inputText id="tagSemantikos" value="#{beanCategory.category.tagSemantikos}"/>
+
+                        <p:selectOneMenu id="tagSMTK"
+                                         value="#{beanCategory.category.tagSemantikos}"
+                                         panelStyle="width:180px"
+                                         converter="omnifaces.SelectItemsConverter"
+                                         effect="fade" var="t" style="width:160px" filter="true"
+                                         filterMatchMode="startsWith">
+                            <f:selectItems value="#{beanCategory.tagSMTKList}" var="tagSMTK"
+                                           itemLabel="#{tagSMTK.name}" itemValue="#{tagSMTK}"/>
+                            <p:ajax event="itemSelect"/>
+
+                            <p:column>
+                                <h:outputText value="#{t.name}"/>
+                            </p:column>
+                        </p:selectOneMenu>
                     </div>
                 </div>
                 <p:spacer/>

@@ -1,6 +1,7 @@
 package cl.minsal.semantikos.kernel.daos;
 
 import cl.minsal.semantikos.model.audit.ConceptAuditAction;
+import cl.minsal.semantikos.model.audit.RefSetAuditAction;
 
 import javax.ejb.Local;
 import java.util.List;
@@ -31,4 +32,11 @@ public interface AuditDAO {
      * @param conceptAuditAction La acción de auditoría que se desea registrar.
      */
     public void recordAuditAction(ConceptAuditAction conceptAuditAction);
+
+    /**
+     * Este método es responsable de registrar una acción de auditoría (historial) en la base de datos.
+     *
+     * @param refSetAuditAction La acción de auditoría que se desea registrar.
+     */
+    public void recordAuditAction(RefSetAuditAction refSetAuditAction);
 }

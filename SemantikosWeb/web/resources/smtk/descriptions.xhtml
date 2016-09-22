@@ -28,7 +28,7 @@
         <p:fieldset legend="Agregar descripción" toggleable="true" collapsed="true">
             <div class="ui-g">
             <div class="ui-g-12 ui-md-6 ui-lg-1">
-                <p:outputLabel for="otherTermino" value="Termino"/>
+                <p:outputLabel for="otherTermino" value="Término"/>
             </div>
 
             <div class="ui-g-12 ui-md-6 ui-lg-4">
@@ -97,7 +97,7 @@
                     <div style="text-align: center;">
                         <p:cellEditor>
                             <f:facet name="output"><h:outputText
-                                    value="#{description.descriptionType}"/></f:facet>
+                                    value="#{description.descriptionType.name}"/></f:facet>
                             <f:facet name="input">
                                 <p:selectOneMenu value="#{description.descriptionType}"
                                                  converter="omnifaces.SelectItemsConverter" style="width:60%">
