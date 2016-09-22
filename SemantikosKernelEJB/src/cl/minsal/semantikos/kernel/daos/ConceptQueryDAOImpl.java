@@ -11,6 +11,8 @@ import java.util.List;
 public class ConceptQueryDAOImpl implements ConceptQueryDAO {
     @Override
     public List<ConceptSMTK> callQuery(ConceptQuery query) {
+        //TODO: implementar
+
         return null;
     }
 }
