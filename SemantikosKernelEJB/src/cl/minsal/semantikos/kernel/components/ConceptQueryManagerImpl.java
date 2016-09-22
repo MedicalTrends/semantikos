@@ -6,17 +6,21 @@ import cl.minsal.semantikos.model.browser.ConceptQuery;
 import cl.minsal.semantikos.model.browser.ConceptQueryFilter;
 import cl.minsal.semantikos.model.relationships.RelationshipDefinition;
 
+import javax.ejb.Stateless;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by BluePrints Developer on 21-09-2016.
  */
+@Stateless
 public class ConceptQueryManagerImpl implements ConceptQueryInterface{
 
 
     @Override
     public ConceptQuery getDefaultQueryByCategory(Category category) {
+//TODO: implementar de veldá
+
         ConceptQuery query = new ConceptQuery();
 
         List<Category> categories = new ArrayList<Category>();
@@ -40,6 +44,7 @@ public class ConceptQueryManagerImpl implements ConceptQueryInterface{
 
     @Override
     public List<RelationshipDefinition> getShowableAttributesByCategory(Category category) {
-        return null;
+//TODO:implement
+        return new ArrayList<RelationshipDefinition>();
     }
 }
