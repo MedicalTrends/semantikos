@@ -12,57 +12,37 @@
         <h:form>
             <p:growl id="messages"/>
 
-            <p:panelGrid columns="8" columnClasses="ui-grid-col-2,ui-grid-col-2,ui-grid-col-2,ui-grid-col-2,ui-grid-col-2,ui-grid-col-2" layout="grid" styleClass="ui-panelgrid-blank">
-                <p:inputText style="margin-left:10px; width: 90%" placeholder="Search"/>
+            <p:panelGrid columns="2" columnClasses="ui-grid-col-6,ui-grid-col-6" layout="grid" styleClass="ui-panelgrid-blank">
 
-                <p:selectOneMenu id="toBeReviewed" value="#{conceptBrowserBean.conceptQuery.toBeReviewed}" style="margin-left:10px; width: 60%">
-                    <f:selectItem itemLabel="¿Revisar?" itemValue="#{null}"/>
-                    <f:selectItem itemLabel="Sin Revisar" itemValue="#{false}"/>
-                    <f:selectItem itemLabel="Revisar" itemValue="#{true}"/>
-                </p:selectOneMenu>
-                <p:selectOneMenu id="toBeConsulted" value="#{conceptBrowserBean.conceptQuery.toBeConsulted}" style="margin-left:10px; width: 60%">
-                    <f:selectItem itemLabel="¿Consultar?" itemValue="#{null}"/>
-                    <f:selectItem itemLabel="Sin Consultar" itemValue="#{false}"/>
-                    <f:selectItem itemLabel="Revisar" itemValue="#{true}"/>
-                </p:selectOneMenu>
-                <p:selectOneMenu id="modeled" value="#{conceptBrowserBean.conceptQuery.modeled}" style="margin-left:10px; width: 60%">
-                    <f:selectItem itemLabel="Estado" itemValue="#{null}"/>
-                    <f:selectItem itemLabel="Borrador" itemValue="#{false}"/>
-                    <f:selectItem itemLabel="Modelado" itemValue="#{true}"/>
-                </p:selectOneMenu>
-                <p:selectOneMenu id="tag" value="#{conceptBrowserBean.conceptQuery.tag}" converter="omnifaces.SelectItemsConverter"
-                                 style="margin-left:10px; width: 60%">
-                    <f:selectItems value="#{conceptBrowserBean.tags}" var="tag"
-                                   itemLabel="#{tag.name}" itemValue="#{tag.id}"/>
-                </p:selectOneMenu>
-                <!--Filtros dinámicos-->
-                <ui:repeat value="#{conceptBrowserBean.conceptQuery.filters}" var="filter">
-                    <smtk:basicTypeFilter targets="#{filter.targets}" targetDefinition="#{filter.definition}" rendered="#{filter.definition.basicType}" />
-                </ui:repeat>
+                <p:dataList value="#{mainMenuBean.categories}" var="category" type="definition">
+                    <f:facet name="header">
+                        Categorías
+                    </f:facet>
+                    <p:link outcome="conceptBrowser" value="#{category.name}" style="margin-left: 20px">
+                        <f:param name="idCategory" value="#{category.id}" />
+                    </p:link>
+                </p:dataList>
+
+                <p:panelGrid columns="1" columnClasses="ui-grid-col-12" layout="grid" styleClass="ui-panelgrid-blank">
+
+                    <p:dataList type="definition">
+                        <f:facet name="header">
+                            Otros
+                        </f:facet>
+                    </p:dataList>
+
+                    <p:dataList type="definition">
+                        <f:facet name="header">
+                            Administración
+                        </f:facet>
+                    </p:dataList>
+
+                </p:panelGrid>
 
             </p:panelGrid>
 
-
-            <!--p:menubar>
-                <f:facet name="options">
-                    <p:inputText style="margin-left:10px;" placeholder="Search"/>
-                    <p:inputText style="margin-left:10px;" placeholder="Search"/>
-                    <p:selectOneMenu id="toBeReviewed">
-                        <f:selectItem itemLabel="Todos" itemValue="#{null}"/>
-                        <f:selectItem itemLabel="Sin Revisar" itemValue="#{false}"/>
-                        <f:selectItem itemLabel="Revisar" itemValue="#{true}"/>
-                    </p:selectOneMenu>
-                </f:facet>
-            </p:menubar-->
         </h:form>
 
     </ui:define>
-
-    <h:outputStylesheet id="customCSS">
-
-        .ui-menu .ui-menubar .ui-widget .ui-widget-content .ui-corner-all .ui-helper-clearfix ul.ui-menu-list .ui-helper-reset li.ui-menuitem .ui-menubar-options .ui-widget .ui-corner-all {
-            float: left !important;
-        }
-    </h:outputStylesheet>
 
 </ui:composition>

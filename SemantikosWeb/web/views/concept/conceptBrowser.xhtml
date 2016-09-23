@@ -9,9 +9,19 @@
 
     <ui:define name="content">
 
+        <f:metadata>
+            <f:viewParam name="idCategory" value="#{conceptBrowserBean.idCategory}" />
+            <f:event type="preRenderView" listener="#{conceptBrowserBean.init}" />
+        </f:metadata>
+
+        <p>You've been redirected to this bookmarkable page with button.
+            ViewParameter you've passed is <strong>"#{conceptBrowserBean.idCategory}"</strong>
+        </p>
+
         <div class="ui-grid-responsive">
             <div class="ui-grid-col-12">
-
+                <smtk:browserFilter conceptQuery="#{conceptBrowserBean.conceptQuery}" />
+                <p:spacer />
                 <p:dataTable id="conceptTable"
                              value="#{conceptBrowserBean.concepts}"
                              var="concept"
@@ -21,7 +31,7 @@
                              emptyMessage="No se han encontrado conceptos con los criterios utilizados">
 
 
-                    <p:column headerText="Concept ID" style="width:5%">
+                    <p:column headerText="ConceptID" style="width:5%">
                         <h:outputText value="#{concept.id}"/>
                     </p:column>
 
@@ -29,14 +39,14 @@
                         <h:outputText value="#{concept.descriptionFavorite.term}"/>
                     </p:column>
 
-                    <p:column headerText="Revisar" style="width:10%">
-                        <h:commandLink rendered="#{concept.isToBeReviewed()}" value="">
+                    <p:column headerText="Observación">
+                        <h:commandLink rendered="#{concept.observation}" value="">
                             <i class="fa fa-check" />
                         </h:commandLink>
                     </p:column>
 
-                    <p:column headerText="Consultar" style="width:10%">
-                        <h:commandLink rendered="#{concept.isToBeConsulted()}" value="">
+                    <p:column headerText="Etiqueta">
+                        <h:commandLink rendered="#{conceptBrowserBean.stringifyList(concept.tags)}" value="">
                             <i class="fa fa-check" />
                         </h:commandLink>
                     </p:column>

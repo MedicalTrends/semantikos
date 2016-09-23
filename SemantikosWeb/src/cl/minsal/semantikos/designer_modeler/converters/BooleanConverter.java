@@ -15,34 +15,33 @@ import javax.faces.convert.FacesConverter;
  * Created by des01c7 on 26-08-16.
  */
 
-@FacesConverter("tagConverter")
+@FacesConverter("booleanConverter")
 public class BooleanConverter implements Converter{
 
     @Override
     public Object getAsObject(FacesContext facesContext, UIComponent uiComponent, String s) {
-        if(s != null && s.trim().length() > 0) {
-            try {
 
-                ELContext elContext = facesContext.getELContext();
-                TagBean bean = (TagBean) FacesContext.getCurrentInstance().getApplication() .getELResolver().getValue(elContext, null, "tagBean");
-                return bean.getTagManager().findTagByID((Long.parseLong(s)));
-
-            } catch(NumberFormatException e) {
-                throw new ConverterException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Conversion Error", "Not a valid theme."));
-            }
-        }
-        else {
+        if(s.equals("0"))
             return null;
-        }
+        if(s.equals("1"))
+            return true;
+        if(s.equals("2"))
+            return false;
+        else
+            throw new ConverterException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Conversion Error", "Not a valid string."));
+
     }
 
     @Override
     public String getAsString(FacesContext facesContext, UIComponent uiComponent, Object o) {
-        if(o != null) {
-            return String.valueOf(((Tag) o).getId());
-        }
-        else {
-            return null;
-        }
+
+        Boolean booleanObject = (Boolean) o;
+
+        if(booleanObject == null)
+            return "0";
+        if(booleanObject)
+            return "1";
+        else
+            return "2";
     }
 }

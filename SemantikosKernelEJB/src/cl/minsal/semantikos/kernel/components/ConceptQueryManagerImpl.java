@@ -14,12 +14,12 @@ import java.util.List;
  * Created by BluePrints Developer on 21-09-2016.
  */
 @Stateless
-public class ConceptQueryManagerImpl implements ConceptQueryInterface{
+public class ConceptQueryManagerImpl implements ConceptQueryManager{
 
 
     @Override
     public ConceptQuery getDefaultQueryByCategory(Category category) {
-//TODO: implementar de veldá
+        //TODO: implementar de veldá
 
         ConceptQuery query = new ConceptQuery();
 
