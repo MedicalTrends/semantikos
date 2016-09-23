@@ -154,4 +154,9 @@ public class Tag extends PersistentEntity {
 
         return true;
     }
+
+    @Override
+    public String toString() {
+        return this.name;
+    }
 }
