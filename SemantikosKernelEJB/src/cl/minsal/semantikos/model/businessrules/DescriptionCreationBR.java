@@ -41,10 +41,9 @@ public class DescriptionCreationBR {
         brDescriptionCreation001(concept, term, categoryManager);
         brDescriptionCreation003(concept, type);
 
-        /* Reglas para modo edicion */
+        /* Reglas para modo edición */
         if(edition){
-            //TODO Arreglar regla de negocio (Andrés)
-            //brDescriptionEdition003(concept, type);
+            brDescriptionEdition003(concept, type);
         }
     }
 

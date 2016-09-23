@@ -57,7 +57,6 @@ public class DescriptionManagerImpl implements DescriptionManager {
         if (conceptSMTK.isModeled()) {
             auditManager.recordDescriptionCreation(description, user);
         }
-
     }
 
     @Override
