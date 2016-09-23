@@ -114,7 +114,7 @@ public class CategoryManagerImpl implements CategoryManager {
                 return true;
             }
         }
-        return descriptions.size() > 0;
+        return false;
     }
 
     @Override

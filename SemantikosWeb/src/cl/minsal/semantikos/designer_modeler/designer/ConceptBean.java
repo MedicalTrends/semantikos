@@ -9,6 +9,7 @@ import cl.minsal.semantikos.model.helpertables.HelperTableRecord;
 import cl.minsal.semantikos.model.relationships.*;
 import cl.minsal.semantikos.util.Pair;
 import org.primefaces.context.RequestContext;
+import org.primefaces.event.RowEditEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -77,6 +78,8 @@ public class ConceptBean implements Serializable {
     private Category category;
 
     private List<DescriptionType> descriptionTypes = new ArrayList<DescriptionType>();
+
+    private List<DescriptionType> descriptionTypesEdit = new ArrayList<DescriptionType>();
 
     private List<Description> selectedDescriptions = new ArrayList<Description>();
 
@@ -160,6 +163,8 @@ public class ConceptBean implements Serializable {
 
         descriptionTypes = descriptionTypeFactory.getDescriptionTypesButFSNandFavorite();
 
+        descriptionTypesEdit = descriptionTypeFactory.getDescriptionTypesButFSN();
+
         tagSMTKs = tagSMTKManager.getAllTagSMTKs();
 
 
@@ -171,9 +176,6 @@ public class ConceptBean implements Serializable {
 
     //Methods
 
-    public void addTagToConcept(Tag tag) {
-
-    }
 
     public void createConcept() throws ParseException {
 
@@ -527,7 +529,8 @@ public class ConceptBean implements Serializable {
     private int updateConceptDescriptions() {
 
         /* Se persisten las nuevas descripciones */
-        for (Description description : concept.getUnpersistedDescriptions()) {
+        List<DescriptionWeb> unpersistedDescriptions = concept.getUnpersistedDescriptions();
+        for (Description description : unpersistedDescriptions) {
             descriptionManager.bindDescriptionToConcept(concept, description, true, user);
         }
 
@@ -541,10 +544,11 @@ public class ConceptBean implements Serializable {
         /* Se actualizan las que tienen cambios */
         List<Pair<DescriptionWeb, DescriptionWeb>> descriptionsForUpdate = concept.getModifiedDescriptionsWeb(_concept);
         for (Pair<DescriptionWeb, DescriptionWeb> description : descriptionsForUpdate) {
+            description.getSecond().setId(PersistentEntity.NON_PERSISTED_ID);
             descriptionManager.updateDescription(concept, description.getFirst(), description.getSecond(), user);
         }
 
-        return concept.getUnpersistedDescriptions().size() + descriptionsForDelete.size() + descriptionsForUpdate.size();
+        return unpersistedDescriptions.size() + descriptionsForDelete.size() + descriptionsForUpdate.size();
     }
 
     private int updateConceptFields() {
@@ -560,7 +564,8 @@ public class ConceptBean implements Serializable {
     private boolean attributeChanges() {
         return _concept.isToBeReviewed() != concept.isToBeReviewed()
                 || _concept.isToBeConsulted() != concept.isToBeConsulted()
-                || !_concept.getObservation().equalsIgnoreCase(concept.getObservation());
+                || !_concept.getObservation().equalsIgnoreCase(concept.getObservation())
+                || !_concept.getTagSMTK().equals(concept.getTagSMTK());
     }
 
     public void deleteConcept() {
@@ -598,8 +603,18 @@ public class ConceptBean implements Serializable {
         } else {
             descriptionManager.moveDescriptionToConcept(conceptSMTKTranslateDes, descriptionToTranslate, user);
             concept = new ConceptSMTKWeb(conceptManager.getConceptByID(concept.getId()));
+            conceptSMTKTranslateDes= null;
+            descriptionToTranslate=null;
+            auditAction = auditManager.getConceptAuditActions(concept, 10, true);
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Successful", "La descripción se ha trasladado a otro concepto correctamente"));
         }
+
+
+    }
+
+    public void descriptionEditRow(RowEditEvent event) {
+
+
 
 
     }
@@ -817,6 +832,14 @@ public class ConceptBean implements Serializable {
 
     public void setCategorySelected(Category categorySelected) {
         this.categorySelected = categorySelected;
+    }
+
+    public List<DescriptionType> getDescriptionTypesEdit() {
+        return descriptionTypesEdit;
+    }
+
+    public void setDescriptionTypesEdit(List<DescriptionType> descriptionTypesEdit) {
+        this.descriptionTypesEdit = descriptionTypesEdit;
     }
 }
 
