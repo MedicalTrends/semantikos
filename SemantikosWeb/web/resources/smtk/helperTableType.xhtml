@@ -33,8 +33,7 @@
                              selectionMode="single"
                              reflow="true"
                              rowKey="#{helperTableRecord.fields.id}"
-                             styleClass="relationships"
-                >
+                             styleClass="relationships">
                     <p:ajax event="rowSelect" listener="#{conceptBean.addOrChangeRelationship(cc.attrs.relationshipDefinition,conceptBean.selectedHelperTableRecord)}" />
                     <p:columns value="#{cc.attrs.targetDefinition.showableColumns}"
                                var="column"

@@ -6,16 +6,18 @@ import cl.minsal.semantikos.model.browser.ConceptQuery;
 import cl.minsal.semantikos.model.relationships.Relationship;
 import cl.minsal.semantikos.model.relationships.RelationshipDefinition;
 
+import javax.ejb.Local;
 import java.util.List;
 
 /**
  * Created by BluePrints Developer on 21-09-2016.
  */
-public interface ConceptQueryInterface {
+@Local
+public interface ConceptQueryManager {
 
-    public ConceptQuery getDefaultQueryByCategory(Category category);
+    public cl.minsal.semantikos.model.browser.ConceptQuery getDefaultQueryByCategory(Category category);
 
-    public List<ConceptSMTK> executeQuery(ConceptQuery query);
+    public List<ConceptSMTK> executeQuery(cl.minsal.semantikos.model.browser.ConceptQuery query);
 
     public List<RelationshipDefinition> getShowableAttributesByCategory(Category category);
 

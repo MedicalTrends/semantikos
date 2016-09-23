@@ -278,10 +278,10 @@ public class ConceptSMTKWeb extends ConceptSMTK {
 
 
     //Los siguientes métodos están destinados a obtener información sobre las modificaciones que ha sufrido
-    //el concepto, dada una imagen inicial del concepto
+    //el concepto, dada una imagen original del concepto
 
     /** Este método es responsable de obtener las descripciones que han sido removidas del concepto original
-     * @param: Un <code>cl.minsal.semantikos.model.ConceptSMTKWeb</code> con la imagen inicial del concepto
+     * @param: Un <code>cl.minsal.semantikos.model.ConceptSMTKWeb</code> con la imagen original del concepto
      * @return Una <code>java.util.List</code> de descripciones removidas
      */
     public List<DescriptionWeb> getRemovedDescriptionsWeb(ConceptSMTKWeb _concept){
@@ -307,7 +307,7 @@ public class ConceptSMTKWeb extends ConceptSMTK {
     }
 
     /** Este método es responsable de obtener las descripciones que han sido modificadas respecto al concepto original
-    * @param: Un <code>cl.minsal.semantikos.model.ConceptSMTKWeb</code> con la imagen inicial del concepto
+    * @param: Un <code>cl.minsal.semantikos.model.ConceptSMTKWeb</code> con la imagen original del concepto
     * @return Una <code>java.util.List</code> de <code>cl.minsal.semantikos.util.Pair</code> de descripciones modificadas
      */
     public List<Pair<DescriptionWeb, DescriptionWeb>> getModifiedDescriptionsWeb(ConceptSMTKWeb _concept) {
@@ -343,7 +343,7 @@ public class ConceptSMTKWeb extends ConceptSMTK {
     }
 
     /** Este método es responsable de obtener las relaciones que han sido removidas del concepto original
-    *  @param: Un <code>cl.minsal.semantikos.model.ConceptSMTKWeb</code> con la imagen inicial del concepto
+    *  @param: Un <code>cl.minsal.semantikos.model.ConceptSMTKWeb</code> con la imagen original del concepto
     *  @return Una <code>java.util.List</code> de relaciones removidas
      */
     public List<RelationshipWeb> getRemovedRelationshipsWeb(ConceptSMTKWeb _concept){
@@ -369,7 +369,7 @@ public class ConceptSMTKWeb extends ConceptSMTK {
     }
 
     /** Este método es responsable de obtener las descripciones que han sido modificadas respecto al concepto original
-     * @param: Un <code>cl.minsal.semantikos.model.ConceptSMTKWeb</code> con la imagen inicial del concepto
+     * @param: Un <code>cl.minsal.semantikos.model.ConceptSMTKWeb</code> con la imagen original del concepto
      * @return Una <code>java.util.List</code> de <code>cl.minsal.semantikos.util.Pair</code> de relaciones modificadas
      */
     public List<Pair<RelationshipWeb, RelationshipWeb>> getModifiedRelationships(ConceptSMTKWeb _concept) {
