@@ -46,7 +46,7 @@ public class AuditManagerImpl implements AuditManager {
         /* Se validan las reglas de negocio para realizar el registro */
         new HistoryRecordBL().validate(conceptAuditAction);
 
-        // TODO: Implement this.
+        auditDAO.recordAuditAction(conceptAuditAction);
     }
 
     @Override
@@ -58,7 +58,7 @@ public class AuditManagerImpl implements AuditManager {
         /* Se validan las reglas de negocio para realizar el registro */
         new HistoryRecordBL().validate(conceptAuditAction);
 
-        // TODO: Implement this.
+        auditDAO.recordAuditAction(conceptAuditAction);
     }
 
     @Override

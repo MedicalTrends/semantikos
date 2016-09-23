@@ -201,7 +201,6 @@ public class DescriptionManagerImpl implements DescriptionManager {
         }
     }
 
-
     @Override
     public void moveDescriptionToConcept(ConceptSMTK targetConcept, Description description, User user) {
 
