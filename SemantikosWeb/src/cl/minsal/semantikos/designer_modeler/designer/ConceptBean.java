@@ -475,73 +475,79 @@ public class ConceptBean implements Serializable {
      */
     private void updateConcept(FacesContext context) {
 
-        /* Almacena la cantidad de cambios registrados */
-        int changes = 0;
+        /* Se actualizan los campos básicos */
+        int changes = updateConceptFields();
 
-        /* Se actualizan los atributos básicos */
-        changes += updateConceptAttributes();
+        /* Se actualizan las descripciones */
+        changes += updateConceptDescriptions();
 
-        //List<DescriptionWeb> descriptionsForPersist = concept.getUnpersistedDescriptions();
-        List<DescriptionWeb> descriptionsForDelete = concept.getRemovedDescriptionsWeb(_concept);
-        List<Pair<DescriptionWeb, DescriptionWeb>> descriptionsForUpdate = concept.getModifiedDescriptionsWeb(_concept);
-
-        changes += descriptionsForUpdate.size();
-
-        for (Pair<DescriptionWeb, DescriptionWeb> description : descriptionsForUpdate) {
-            descriptionManager.updateDescription(concept, description.getFirst(), description.getSecond(), user);
-        }
-
-        //changes = changes + descriptionsForPersist.size();
-
-        //for (Description description : descriptionsForPersist)
-        //    descriptionManager.bindDescriptionToConcept(concept, description, true, user);
-
-        changes = changes + descriptionsForDelete.size();
-
-        for (Description description : descriptionsForDelete)
-            descriptionManager.deleteDescription(description, user);
-
-        List<RelationshipWeb> relationshipsForPersist = concept.getUnpersistedRelationshipsWeb();
-        List<Pair<RelationshipWeb, RelationshipWeb>> relationshipsForUpdate = concept.getModifiedRelationships(_concept);
-        List<RelationshipWeb> relationshipsForDelete = concept.getRemovedRelationshipsWeb(_concept);
-
-        changes = changes + relationshipsForUpdate.size();
-
-        for (Pair<RelationshipWeb, RelationshipWeb> relationship : relationshipsForUpdate)
-            relationshipManager.updateRelationship(concept, relationship.getFirst(), relationship.getSecond(), user);
-
-        changes = changes + relationshipsForPersist.size();
-
-        for (RelationshipWeb relationshipWeb : relationshipsForPersist)
-            relationshipManager.bindRelationshipToConcept(concept, relationshipWeb, user);
-
-        for (Description description : descriptionsForDelete)
-            descriptionManager.deleteDescription(description, user);
+        /* Se actualizan las relaciones */
+        changes += updateConceptRelationships();
 
         if (changes == 0)
             context.addMessage(null, new FacesMessage("Warning", "No se ha realizado ningún cambio al concepto!!"));
         else {
-            context.addMessage(null, new FacesMessage("Successful", "Concepto modificado "));
-            // Se resetea el concepto, como el concepto está persistido, se le pasa su id
+            context.addMessage(null, new FacesMessage("Successful", "Se han registrado " + changes + " cambios en el concepto."));
+
+            // Se restablece el concepto, como el concepto está persistido, se le pasa su id
             getConceptById(concept.getId());
         }
     }
 
     /**
-     *
-     * @return La cantidad de cambios.
+     * @return
      */
-    private int updateConceptDescriptions(){
+    private int updateConceptRelationships() {
+
+        /* Se persisten las nuevas relaciones */
+        for (RelationshipWeb relationshipWeb : concept.getUnpersistedRelationshipsWeb()) {
+            relationshipManager.bindRelationshipToConcept(concept, relationshipWeb, user);
+        }
+
+        /* Se elimina las relaciones eliminadas */
+        List<RelationshipWeb> removedRelationshipsWeb = concept.getRemovedRelationshipsWeb(_concept);
+        for (RelationshipWeb relationshipWeb : removedRelationshipsWeb) {
+            relationshipManager.removeRelationship(relationshipWeb, user);
+            _concept.removeRelationship(relationshipWeb);
+        }
+
+        /* Se actualizan las relaciones actualizadas */
+        List<Pair<RelationshipWeb, RelationshipWeb>> relationshipsForUpdate = concept.getModifiedRelationships(_concept);
+        for (Pair<RelationshipWeb, RelationshipWeb> relationship : relationshipsForUpdate)
+            relationshipManager.updateRelationship(concept, relationship.getFirst(), relationship.getSecond(), user);
+
+        return concept.getUnpersistedRelationshipsWeb().size() + removedRelationshipsWeb.size() + relationshipsForUpdate.size();
+    }
+
+    /**
+     * Este método es responsable de actualizar las descripciones del concepto.
+     *
+     * @return La cantidad de cambios realizados: agregadas, eliminadas y actualizadas.
+     */
+    private int updateConceptDescriptions() {
 
         /* Se persisten las nuevas descripciones */
         for (Description description : concept.getUnpersistedDescriptions()) {
             descriptionManager.bindDescriptionToConcept(concept, description, true, user);
         }
 
-        return concept.getUnpersistedDescriptions().size();
+        /* Se invalidan las descripciones eliminadas */
+        List<DescriptionWeb> descriptionsForDelete = concept.getRemovedDescriptionsWeb(_concept);
+        for (Description description : descriptionsForDelete) {
+            descriptionManager.deleteDescription(description, user);
+            _concept.removeDescription(description);
+        }
+
+        /* Se actualizan las que tienen cambios */
+        List<Pair<DescriptionWeb, DescriptionWeb>> descriptionsForUpdate = concept.getModifiedDescriptionsWeb(_concept);
+        for (Pair<DescriptionWeb, DescriptionWeb> description : descriptionsForUpdate) {
+            descriptionManager.updateDescription(concept, description.getFirst(), description.getSecond(), user);
+        }
+
+        return concept.getUnpersistedDescriptions().size() + descriptionsForDelete.size() + descriptionsForUpdate.size();
     }
 
-    private int updateConceptAttributes() {
+    private int updateConceptFields() {
         int changes = 0;
 
         if (attributeChanges()) {

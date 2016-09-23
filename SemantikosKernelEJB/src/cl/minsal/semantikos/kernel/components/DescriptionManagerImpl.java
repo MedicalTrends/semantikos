@@ -141,9 +141,7 @@ public class DescriptionManagerImpl implements DescriptionManager {
         this.bindDescriptionToConcept(conceptSMTK, finalDescription, true, user);
 
         /* Registrar en el Historial si es preferida (Historial BR) */
-        if (conceptSMTK.isModeled() && initDescription.getDescriptionType().equals(PREFERIDA)) {
             auditManager.recordFavouriteDescriptionUpdate(conceptSMTK, initDescription, user);
-        }
     }
 
 
