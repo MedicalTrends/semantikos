@@ -1,7 +1,10 @@
-package cl.minsal.semantikos.designer_modeler.designer;
+package cl.minsal.semantikos.designer_modeler.browser;
 
 import cl.minsal.semantikos.kernel.components.*;
-import cl.minsal.semantikos.model.*;
+import cl.minsal.semantikos.model.Category;
+import cl.minsal.semantikos.model.ConceptSMTK;
+import cl.minsal.semantikos.model.Description;
+import cl.minsal.semantikos.model.Tag;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
 import org.slf4j.Logger;
@@ -12,6 +15,8 @@ import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import java.io.Serializable;
+import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -22,9 +27,22 @@ import java.util.Map;
 
 @ManagedBean(name = "conceptBrowserBean")
 @ViewScoped
-public class ConceptBrowserBean implements Serializable {
+public class MainMenuBean implements Serializable {
 
-    static final Logger logger = LoggerFactory.getLogger(ConceptBrowserBean.class);
+    static final Logger logger = LoggerFactory.getLogger(MainMenuBean.class);
+
+    @EJB
+    ConceptQueryManager conceptQueryManager;
+
+    @EJB
+    TagManager tagManager;
+
+    @EJB
+    HelperTableManagerInterface helperTableManager;
+
+    private cl.minsal.semantikos.model.browser.ConceptQuery conceptQuery;
+
+    private List<Tag> tags = new ArrayList<Tag>();
 
     private List<Category> categories;
     private LazyDataModel<ConceptSMTK> concepts;
@@ -55,11 +73,18 @@ public class ConceptBrowserBean implements Serializable {
     public void init() {
 
 
-        categories = categoryManager.getCategories();
+        //categories = categoryManager.getCategories();
+
+        try {
+            category = categoryManager.getCategoryById(3);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
         concepts = new LazyDataModel<ConceptSMTK>() {
             @Override
             public List<ConceptSMTK> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
+
                 List<ConceptSMTK> conceptSMTKs=null;
                 selectedCategories= new Long[0];
                 conceptSMTKs = conceptManager.findConceptBy(pattern, selectedCategories, first, pageSize);
@@ -71,9 +96,11 @@ public class ConceptBrowserBean implements Serializable {
 
         };
 
+        conceptQuery = conceptQueryManager.getDefaultQueryByCategory(category);
+
+        tags = tagManager.getAllTags();
 
     }
-
 
     public List<Category> getCategories() {
         return categories;
@@ -137,6 +164,30 @@ public class ConceptBrowserBean implements Serializable {
 
     public void setConceptSelected(ConceptSMTK conceptSelected) {
         this.conceptSelected = conceptSelected;
+    }
+
+    public cl.minsal.semantikos.model.browser.ConceptQuery getConceptQuery() {
+        return conceptQuery;
+    }
+
+    public void setConceptQuery(cl.minsal.semantikos.model.browser.ConceptQuery conceptQuery) {
+        this.conceptQuery = conceptQuery;
+    }
+
+    public List<Tag> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<Tag> tags) {
+        this.tags = tags;
+    }
+
+    public HelperTableManagerInterface getHelperTableManager() {
+        return helperTableManager;
+    }
+
+    public void setHelperTableManager(HelperTableManagerInterface helperTableManager) {
+        this.helperTableManager = helperTableManager;
     }
 }
 
