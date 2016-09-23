@@ -163,7 +163,7 @@ public class DescriptionDAOImpl implements DescriptionDAO {
          * param 7: published
          * param 8: estado
          * param 9: id user
-         * param 9: id concepto
+         * param 10: id concepto
          */
         String sql = "{call semantikos.create_description(?,?,?,?,?,?,?,?,?,?)}";
         try (Connection connection = connect.getConnection();
@@ -178,7 +178,7 @@ public class DescriptionDAOImpl implements DescriptionDAO {
             call.setBoolean(7, description.isPublished());
             call.setBoolean(8, description.isModeled());
             call.setLong(9, user.getIdUser());
-            call.setNull(10, BIGINT);
+            call.setLong(10, description.getConceptSMTK().getId());
             call.execute();
 
             ResultSet rs = call.getResultSet();
