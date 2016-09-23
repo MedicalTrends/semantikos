@@ -101,7 +101,9 @@ public class DescriptionManagerImpl implements DescriptionManager {
         }
 
         /* Registrar en el Historial si es preferida (Historial BR) */
-        auditManager.recordDescriptionCreation(description, user);
+        if (description.getConceptSMTK().isModeled()) {
+            auditManager.recordDescriptionCreation(description, user);
+        }
 
         /* Se retorna la descripción persistida */
         return description;
