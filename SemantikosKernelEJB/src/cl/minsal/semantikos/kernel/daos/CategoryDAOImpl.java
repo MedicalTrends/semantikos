@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.ejb.EJB;
 import javax.ejb.EJBException;
+import javax.ejb.Singleton;
 import javax.ejb.Stateless;
 import java.sql.CallableStatement;
 import java.sql.Connection;
@@ -25,7 +26,7 @@ import java.util.Map;
  * @version 2.0
  */
 
-@Stateless
+@Singleton
 public class CategoryDAOImpl implements CategoryDAO {
 
     static final Logger logger = LoggerFactory.getLogger(CategoryDAOImpl.class);
