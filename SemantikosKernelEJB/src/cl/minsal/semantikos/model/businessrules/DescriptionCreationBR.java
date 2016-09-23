@@ -36,15 +36,14 @@ public class DescriptionCreationBR {
      * @param term            El término que se desea agregar.
      * @param categoryManager El Manager.
      */
-    public void validatePreCondition(ConceptSMTK concept, String term, DescriptionType type, CategoryManager categoryManager, boolean edition) {
+    public void validatePreConditions(ConceptSMTK concept, String term, DescriptionType type, CategoryManager categoryManager, boolean edition) {
 
         brDescriptionCreation001(concept, term, categoryManager);
         brDescriptionCreation003(concept, type);
 
-        /* Reglas para modo edicion */
+        /* Reglas para modo edición */
         if(edition){
-            //TODO Arreglar regla de negocio (Andrés)
-            //brDescriptionEdition003(concept, type);
+            brDescriptionEdition003(concept, type);
         }
     }
 

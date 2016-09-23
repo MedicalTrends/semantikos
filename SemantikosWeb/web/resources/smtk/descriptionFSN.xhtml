@@ -26,7 +26,7 @@
                          name="description"
                          validator="#{validatorBean.validateRequired}"
                          value="#{cc.attrs.description.representation}"
-                         style="width:90%">
+                         style="width:90%" disabled="#{cc.attrs.description.conceptSMTK.modeled}">
                 <p:ajax event="blur" update="@this" process="@this" delay="100" />
                 <p:ajax event="change" update="@this" process="@this" delay="100" />
             </p:inputText>
@@ -37,7 +37,8 @@
                               layout="responsive"
                               columns="2"
                               value="#{cc.attrs.description.caseSensitive}"
-                              style="width:90%">
+                              style="width:90%"
+                              disabled="#{cc.attrs.description.conceptSMTK.modeled}">
                 <f:selectItem itemValue="#{true}" itemLabel="Sensible"/>
                 <f:selectItem itemValue="#{false}" itemLabel="Insensible"/>
             </p:selectOneRadio>
