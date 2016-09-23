@@ -34,6 +34,9 @@ public class DescriptionManagerImpl implements DescriptionManager {
     @EJB
     private AuditManager auditManager;
 
+    @EJB
+    private ConceptManager conceptManager;
+
     /* El conjunto de reglas de negocio para validar creación de descripciones */
     private DescriptionCreationBR descriptionCreationBR = new DescriptionCreationBR();
 
@@ -43,7 +46,7 @@ public class DescriptionManagerImpl implements DescriptionManager {
         /* Reglas de negocio previas */
         ConceptSMTK conceptSMTK = description.getConceptSMTK();
         DescriptionCreationBR descriptionCreationBR1 = new DescriptionCreationBR();
-        descriptionCreationBR1.validatePreCondition(conceptSMTK, description.getTerm(), description.getDescriptionType(), categoryManager, editionMode);
+        descriptionCreationBR1.validatePreConditions(conceptSMTK, description.getTerm(), description.getDescriptionType(), categoryManager, editionMode);
 
         descriptionCreationBR1.applyRules(conceptSMTK, description.getTerm(), description.getDescriptionType(), user, categoryManager);
         if (!description.isPersistent()) {
@@ -77,15 +80,11 @@ public class DescriptionManagerImpl implements DescriptionManager {
     @Override
     public Description bindDescriptionToConcept(ConceptSMTK concept, Description description, boolean editionMode, User user) {
 
-        //TODO: arreglar esto
-        // Validar que no exista el término dentro de la misma categoría
-        descriptionCreationBR.validatePreCondition(concept, description.getTerm(), description.getDescriptionType(), categoryManager, editionMode);
-
-        /* Si la descripción no se encontraba persistida, se persiste primero */
-        if (!description.isPersistent()) {
-            descriptionCreationBR.applyRules(concept, description.getTerm(), description.getDescriptionType(), user, categoryManager);
-            descriptionDAO.persist(description, user);
-        }
+        /*
+         * Se aplican las pre-condiciones para asociar la descripción al concepto. En particular hay que validar que
+         * no exista el término dentro de la misma categoría
+         */
+        descriptionCreationBR.validatePreConditions(concept, description.getTerm(), description.getDescriptionType(), categoryManager, editionMode);
 
         /* Se aplican las reglas de negocio para crear la Descripción y se persiste y asocia al concepto */
         new DescriptionBindingBR().applyRules(concept, description, user);
@@ -93,10 +92,16 @@ public class DescriptionManagerImpl implements DescriptionManager {
         /* Se hace la relación a nivel lógico del modelo */
         if (!concept.getDescriptions().contains(description)) {
             concept.addDescription(description);
+            description.setConceptSMTK(concept);
         }
 
-        /* Y se persiste la nueva relación a nivel de la descripción */
-        descriptionDAO.bind(description, concept, user);
+        /* Lo esperable es que la descripción no se encontrara persistida */
+        if (!description.isPersistent()) {
+            descriptionDAO.persist(description, user);
+        }
+
+        /* Registrar en el Historial si es preferida (Historial BR) */
+        auditManager.recordDescriptionCreation(description, user);
 
         /* Se retorna la descripción persistida */
         return description;
@@ -130,11 +135,10 @@ public class DescriptionManagerImpl implements DescriptionManager {
         /* Se aplican las reglas de negocio */
         new DescriptionEditionBR().validatePreConditions(initDescription, finalDescription);
 
-        /* Y se actualizan */
+        /* Se actualiza el modelo de negocio primero */
         descriptionDAO.invalidate(initDescription);
-
-        descriptionDAO.persist(finalDescription, user);
-        descriptionDAO.bind(finalDescription, conceptSMTK, user);
+        finalDescription.setConceptSMTK(conceptSMTK);
+        this.bindDescriptionToConcept(conceptSMTK, finalDescription, true, user);
 
         /* Registrar en el Historial si es preferida (Historial BR) */
         if (conceptSMTK.isModeled() && initDescription.getDescriptionType().equals(PREFERIDA)) {
@@ -157,7 +161,7 @@ public class DescriptionManagerImpl implements DescriptionManager {
         }
 
         /* Eliminar una descripción de un borrador es eliminarla físicamente BR-DES-005 */
-        if(!concept.isModeled()){
+        if (!concept.isModeled()) {
             descriptionDAO.deleteDescription(description);
         }
     }
@@ -226,7 +230,7 @@ public class DescriptionManagerImpl implements DescriptionManager {
         descriptionTranslationBR.apply(targetConcept, description);
 
         /* Luego se persiste el cambio */
-        descriptionDAO.bind(description, targetConcept, user);
+        descriptionDAO.update(description);
 
         /* Se registra en el Audit el traslado */
         auditManager.recordDescriptionMovement(sourceConcept, targetConcept, description, user);

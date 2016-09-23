@@ -332,7 +332,7 @@ public class ConceptSMTKWeb extends ConceptSMTK {
      *
      * @return Una <code>java.util.List</code> de descripciones no persistidas
      */
-    public List<DescriptionWeb> getUnpersistedDescriptionsWeb() {
+    public List<DescriptionWeb> getUnpersistedDescriptions() {
         List<DescriptionWeb> someDescriptions = new ArrayList<DescriptionWeb>();
         for (DescriptionWeb description : this.getDescriptionsWeb()) {
             if (!description.isPersistent()) {

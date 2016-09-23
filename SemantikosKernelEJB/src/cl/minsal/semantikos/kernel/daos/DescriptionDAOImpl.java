@@ -199,41 +199,6 @@ public class DescriptionDAOImpl implements DescriptionDAO {
     }
 
     @Override
-    public void bind(Description description, ConceptSMTK concept, User user) {
-
-        ConnectionBD connect = new ConnectionBD();
-        /*
-         * param 1: ID
-         * param 2: id concepto
-         */
-        String sql = "{call semantikos.bind_description(?,?)}";
-        try (Connection connection = connect.getConnection();
-             CallableStatement call = connection.prepareCall(sql)) {
-
-            call.setLong(1, description.getId());
-            call.setLong(2, concept.getId());
-
-            call.execute();
-
-            ResultSet rs = call.getResultSet();
-
-            if (rs.next()) {
-                if (!rs.getBoolean(1)) {
-                    throw new EJBException("La descripción con DESCRIPTION_ID=" + description.getDescriptionId() + "  no fue ligada al concepto.");
-                }
-            } else {
-                String errorMsg = "La descripción con DESCRIPTION_ID=" + description.getDescriptionId() + " no fue actualizada. Contacte a Desarrollo.";
-                logger.error(errorMsg);
-                throw new EJBException(errorMsg);
-            }
-
-            rs.close();
-        } catch (SQLException e) {
-            throw new EJBException(e);
-        }
-    }
-
-    @Override
     public void invalidate(Description description) {
         description.setActive(false);
         description.setValidityUntil(new Timestamp(System.currentTimeMillis()));
