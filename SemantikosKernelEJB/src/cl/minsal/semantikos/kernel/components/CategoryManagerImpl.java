@@ -4,6 +4,7 @@ package cl.minsal.semantikos.kernel.components;
 import cl.minsal.semantikos.kernel.daos.CategoryDAO;
 import cl.minsal.semantikos.kernel.daos.RelationshipDAO;
 import cl.minsal.semantikos.model.Category;
+import cl.minsal.semantikos.model.Description;
 import cl.minsal.semantikos.model.User;
 import cl.minsal.semantikos.model.businessrules.CategoryCreationBR;
 import cl.minsal.semantikos.model.relationships.RelationshipDefinition;
@@ -105,7 +106,15 @@ public class CategoryManagerImpl implements CategoryManager {
 
     @Override
     public boolean categoryContains(Category category, String term) {
-        return descriptionManager.searchDescriptionsByTerm(term, Arrays.asList(category)).size() > 0;
+        List<Description> descriptions = descriptionManager.searchDescriptionsByTerm(term, Arrays.asList(category));
+
+        /* Si la búsqueda resultó con al menos un término vigente, entonces si contiene */
+        for (Description description : descriptions) {
+            if (description.isValid()){
+                return true;
+            }
+        }
+        return descriptions.size() > 0;
     }
 
     @Override

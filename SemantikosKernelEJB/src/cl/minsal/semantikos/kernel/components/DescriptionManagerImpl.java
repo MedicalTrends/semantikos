@@ -14,7 +14,6 @@ import java.sql.Timestamp;
 import java.util.List;
 import java.util.UUID;
 
-import static cl.minsal.semantikos.model.DescriptionType.PREFERIDA;
 import static java.lang.System.currentTimeMillis;
 
 /**
@@ -120,7 +119,6 @@ public class DescriptionManagerImpl implements DescriptionManager {
         new DescriptionUnbindingBR().applyRules(concept, description, user);
 
         /* Se establece la fecha de vigencia y se actualiza la descripción */
-        description.setActive(false);
         description.setValidityUntil(new Timestamp(currentTimeMillis()));
         descriptionDAO.update(description);
 
@@ -162,41 +160,6 @@ public class DescriptionManagerImpl implements DescriptionManager {
         /* Eliminar una descripción de un borrador es eliminarla físicamente BR-DES-005 */
         if (!concept.isModeled()) {
             descriptionDAO.deleteDescription(description);
-        }
-    }
-
-    /**
-     * Este método es responsable de aplicar las actualizaciones. Para actualizar una descripción se revisan las
-     * marcadas para actualizar. La descripción <em>original</em> tiene un campo que indica que debe ser actualizado
-     * <code>isToBeUpdated</code>. Para cada una debe existir otra descripción con el mismo DESCRIPTION_ID que tiene
-     * los
-     * cambios, pero que no es persistente.
-     *
-     * <p>
-     * Este método itera sobre las descripciones marcadas para ser actualizadas, busca su par, y si existe:
-     * <ul>
-     * <li>Aplica reglas de negocio para validar que esté en orden</li>
-     * <li>y deja inválida la original, y persiste la nueva.</li>
-     * </ul>
-     * </p>
-     *
-     * @param conceptSMTK El concepto cuyas descripciones se quieren actualizar.
-     */
-    private void updateDescriptions(ConceptSMTK conceptSMTK, User user) {
-
-        // TODO: Probar esto algun dia:
-        List<Description> descriptions = conceptSMTK.getDescriptions();
-        for (Description description : descriptions) {
-
-            Description original = description;
-            /* Se buscan las descripciones a actualizar */
-            if (description.isToBeUpdated()) {
-
-                /* Una vez encontrada se busca a su hermana que tiene los nuevos valores */
-                Description changed = conceptSMTK.getDescriptionByDescriptionID(original.getDescriptionId(), true);
-
-
-            }
         }
     }
 
