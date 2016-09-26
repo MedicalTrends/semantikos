@@ -34,14 +34,17 @@
             <f:selectItem itemLabel="Borrador" itemValue="#{false}"/>
             <f:selectItem itemLabel="Modelado" itemValue="#{true}"/>
         </p:selectOneMenu>
-        <p:selectOneMenu id="tag" value="#{cc.attrs.conceptQuery.tag}" converter="omnifaces.SelectItemsConverter"
+        <p:selectOneMenu id="tag" value="#{cc.attrs.conceptQuery.tag}"
                          style="margin-right:10px; width: 60%">
             <f:selectItems value="#{conceptBrowserBean.tags}" var="tag"
                            itemLabel="#{tag.name}" itemValue="#{tag.id}"/>
         </p:selectOneMenu>
         <ui:repeat value="#{cc.attrs.conceptQuery.filters}" var="filter">
-            <!--Filtros dinámicos-->
-            <smtk:basicTypeFilter targets="#{filter.targets}" targetDefinition="#{filter.definition}" rendered="#{filter.definition.basicType}" />
+            <smtk:basicTypeFilter relationshipDefinition="#{filter.definition}"
+                                  targetDefinition="#{filter.definition.targetDefinition}"
+                                  targets="#{filter.targets}"
+                                  multiple="#{filter.multiple}"
+                                  rendered="#{filter.definition.targetDefinition.basicType}" />
         </ui:repeat>
 
     </p:panelGrid>

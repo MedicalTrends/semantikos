@@ -2,6 +2,11 @@ package cl.minsal.semantikos.designer_modeler.browser;
 
 import cl.minsal.semantikos.kernel.components.*;
 import cl.minsal.semantikos.model.*;
+import cl.minsal.semantikos.model.basictypes.BasicTypeValue;
+import cl.minsal.semantikos.model.browser.ConceptQuery;
+import cl.minsal.semantikos.model.browser.ConceptQueryFilter;
+import cl.minsal.semantikos.model.helpertables.HelperTableRecord;
+import cl.minsal.semantikos.model.relationships.*;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
 import org.slf4j.Logger;
@@ -48,22 +53,31 @@ public class ConceptBrowserBean implements Serializable {
 
     private int idCategory;
 
+    // Placeholders para los targets
+    private BasicTypeValue basicTypeValue = new BasicTypeValue(null);
+
+    private HelperTableRecord helperTableRecord = new HelperTableRecord();
+
     @EJB
+
     private CategoryManager categoryManager;
 
     @EJB
     private ConceptManager conceptManager;
 
 
-    @PostConstruct
+    //@PostConstruct
     public void init() {
 
         if(category == null){
+            /*
             try {
                 category = categoryManager.getCategoryById(3);
             } catch (ParseException e) {
                 e.printStackTrace();
             }
+            */
+            return;
         }
 
         concepts = new LazyDataModel<ConceptSMTK>() {
@@ -147,7 +161,7 @@ public class ConceptBrowserBean implements Serializable {
         refreshResults();
     }
 
-    public cl.minsal.semantikos.model.browser.ConceptQuery getConceptQuery() {
+    public ConceptQuery getConceptQuery() {
         return conceptQuery;
     }
 
@@ -170,5 +184,55 @@ public class ConceptBrowserBean implements Serializable {
     public void setHelperTableManager(HelperTableManagerInterface helperTableManager) {
         this.helperTableManager = helperTableManager;
     }
+
+    public BasicTypeValue getBasicTypeValue() {
+        return basicTypeValue;
+    }
+
+    public void setBasicTypeValue(BasicTypeValue basicTypeValue) {
+        this.basicTypeValue = basicTypeValue;
+    }
+
+    public HelperTableRecord getHelperTableRecord() {
+        return helperTableRecord;
+    }
+
+    public void setHelperTableRecord(HelperTableRecord helperTableRecord) {
+        this.helperTableRecord = helperTableRecord;
+    }
+
+    /**
+     * Este método se encarga de agregar o cambiar el filtro para el caso de selección simple
+     */
+    public void setSimpleSelection(RelationshipDefinition relationshipDefinition, Target target) {
+
+        // Se busca el filtro
+        for (ConceptQueryFilter conceptQueryFilter : conceptQuery.getFilters()) {
+            if (conceptQueryFilter.getDefinition().equals(relationshipDefinition)) {
+                if(conceptQueryFilter.getTargets().isEmpty()) //Si la lista de targets está vacía, se agrega el target
+                    conceptQueryFilter.getTargets().add(target);
+                else //Si no, se modifica
+                    conceptQueryFilter.getTargets().set(0, target);
+                break;
+            }
+        }
+        // Se resetean los placeholder para los target de las relaciones
+        basicTypeValue = new BasicTypeValue(null);
+    }
+
+    /**
+     * Este método se encarga de agregar o cambiar el filtro para el caso de selección múltiple
+     */
+    public void setMultipleSelection(RelationshipDefinition relationshipDefinition, Target target) {
+
+        // Se busca el filtro
+        for (ConceptQueryFilter conceptQueryFilter : conceptQuery.getFilters()) {
+            if (conceptQueryFilter.getDefinition().equals(relationshipDefinition)) {
+                conceptQueryFilter.getTargets().add(target);
+                break;
+            }
+        }
+    }
+
 }
 
