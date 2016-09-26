@@ -322,7 +322,7 @@ public class TagDAOImpl implements TagDAO {
     public void assignTag(ConceptSMTK conceptSMTK, Tag tag) {
         ConnectionBD connect = new ConnectionBD();
 
-        logger.error("Asociando el tag " + tag + " al concepto " + conceptSMTK);
+        logger.debug("Asociando el tag " + tag + " al concepto " + conceptSMTK);
         try (Connection connection = connect.getConnection();
              CallableStatement call = connection.prepareCall("{call semantikos.assign_concept_to_tag(?,?)}")) {
 
@@ -340,7 +340,7 @@ public class TagDAOImpl implements TagDAO {
     public void unassignTag(ConceptSMTK conceptSMTK, Tag tag) {
         ConnectionBD connect = new ConnectionBD();
 
-        logger.error("Desasociando el tag " + tag + " al concepto " + conceptSMTK);
+        logger.debug("Desasociando el tag " + tag + " al concepto " + conceptSMTK);
         try (Connection connection = connect.getConnection();
              CallableStatement call = connection.prepareCall("{call semantikos.unassign_concept_to_tag(?,?)}")) {
 

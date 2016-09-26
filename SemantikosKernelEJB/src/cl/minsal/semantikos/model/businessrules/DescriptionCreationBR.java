@@ -82,6 +82,10 @@ public class DescriptionCreationBR {
                 return;
             }
 
+            if(!concept.isModeled() && type.equals(FSN) || !concept.isModeled() && type.equals(PREFERIDA)){
+                return;
+            }
+
             throw new BusinessRuleException("BR-DES-010: Cuando se edita un concepto solo se le pueden agregar Descripciones de tipo: Abreviado, Sinónimo,\n" +
                     "     * Ambiguo, General o Mal Escrito.");
         }

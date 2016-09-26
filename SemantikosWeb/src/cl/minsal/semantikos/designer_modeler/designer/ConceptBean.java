@@ -612,11 +612,23 @@ public class ConceptBean implements Serializable {
 
     }
 
+    /**
+     * Metodo encargado de hacer el "enroque" con la preferida.
+     */
+
     public void descriptionEditRow(RowEditEvent event) {
-
-
-
-
+        long SYNONYMOUS_ID=3;
+        for (DescriptionWeb descriptionRowEdit: concept.getDescriptionsWeb()) {
+            if(descriptionRowEdit.equals(event.getObject()) || descriptionRowEdit.getId()== ((DescriptionWeb)event.getObject()).getId()){
+                if (descriptionRowEdit.getDescriptionType().equals(descriptionTypeFactory.getFavoriteDescriptionType())){
+                    descriptionRowEdit.setDescriptionType(descriptionTypeFactory.getDescriptionTypeByID(SYNONYMOUS_ID));
+                    DescriptionWeb descriptionFavorite  = concept.getValidDescriptionFavorite();
+                    descriptionFavorite.setDescriptionType(descriptionTypeFactory.getDescriptionTypeByID(SYNONYMOUS_ID));
+                    descriptionRowEdit.setDescriptionType(descriptionTypeFactory.getFavoriteDescriptionType());
+                    break;
+                }
+            }
+        }
     }
 
 

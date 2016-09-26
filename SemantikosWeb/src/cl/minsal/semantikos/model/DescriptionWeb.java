@@ -100,7 +100,8 @@ public class DescriptionWeb extends Description {
     @Override
     public boolean equals(Object o) {
 
-        if (o == this) return true;
+        if (o == this)return true;
+
 
         Description description = (Description) o;
 

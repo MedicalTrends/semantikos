@@ -67,6 +67,9 @@
                          editable="true"
                          reflow="true">
 
+
+                <p:ajax listener="#{conceptBean.descriptionEditRow}" event="rowEdit" update="otherDescriptions,:mainForm:conceptHeader" />
+
                 <!--Columnas por defecto -->
 
                 <p:column headerText="DescId" style="width:5%">
