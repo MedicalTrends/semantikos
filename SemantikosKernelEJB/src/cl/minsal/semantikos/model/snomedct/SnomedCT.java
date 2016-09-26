@@ -1,18 +1,36 @@
 package cl.minsal.semantikos.model.snomedct;
 
 import cl.minsal.semantikos.model.PersistentEntity;
+import cl.minsal.semantikos.model.relationships.Target;
 import cl.minsal.semantikos.model.relationships.TargetDefinition;
+import cl.minsal.semantikos.model.relationships.TargetType;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static cl.minsal.semantikos.model.relationships.TargetType.SnomedCT;
 
 /**
  * Esta clase, representa la terminología internacional estándar SNOMED CT.
+ *
  * @author Andrés Farías
  */
 public class SnomedCT extends PersistentEntity implements TargetDefinition{
 
     /** Descripción del concepto */
-    private String description;
-    private String idSnomedCT;
-    private String domain;
+    private String version;
+
+    public SnomedCT(String version) {
+        super();
+    }
+
+    public String getVersion() {
+        return version;
+    }
+
+    public void setVersion(String version) {
+        this.version = version;
+    }
 
     @Override
     public boolean isBasicType() {
@@ -37,29 +55,5 @@ public class SnomedCT extends PersistentEntity implements TargetDefinition{
     @Override
     public boolean isCrossMapType() {
         return false;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setIdSnomedCT(String idSnomedCT) {
-        this.idSnomedCT = idSnomedCT;
-    }
-
-    public String getIdSnomedCT() {
-        return idSnomedCT;
-    }
-
-    public void setDomain(String domain) {
-        this.domain = domain;
-    }
-
-    public String getDomain() {
-        return domain;
     }
 }

@@ -4,6 +4,7 @@ import cl.minsal.semantikos.model.relationships.Target;
 import cl.minsal.semantikos.model.relationships.TargetType;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 /**
  * @author Andres Farias
@@ -14,6 +15,11 @@ public class ConceptSCT implements Target {
 
 	/** Identificador único (oficial) de Snomed CT para este concepto. */
 	private long id;
+
+	/** Descripciones del Concepto */
+	private List<SCTDescription> descriptions;
+
+	private List<RelationshipSCT> relationships;
 
 	/** TODO: Determinar qué es esto */
 	private Timestamp effectiveTime;

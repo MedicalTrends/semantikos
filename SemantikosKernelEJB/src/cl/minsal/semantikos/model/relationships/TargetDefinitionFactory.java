@@ -66,7 +66,7 @@ public class TargetDefinitionFactory {
                 return categoryDAO.getCategoryById(targetDefinitionDTO.idCategory);
 
             case SCT_TYPE_ID:
-                return new SnomedCT();
+                return new SnomedCT("1.0");
 
             case HELPER_TABLE_TYPE_ID:
                 return HelperTableFactory.getInstance().getHelperTable(targetDefinitionDTO.idHelperTableName);
