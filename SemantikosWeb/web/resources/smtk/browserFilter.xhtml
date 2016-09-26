@@ -16,8 +16,9 @@
 </composite:interface>
 <composite:implementation>
 
-    <p:panelGrid columns="8" columnClasses="ui-grid-col-2,ui-grid-col-2,ui-grid-col-2,ui-grid-col-2,ui-grid-col-2,ui-grid-col-2" layout="grid" styleClass="ui-panelgrid-blank">
-        <p:inputText style="margin-left:10px; width: 90%" placeholder="Search"/>
+    <p:panelGrid columns="8" columnClasses="ui-grid-col-2,ui-grid-col-2,ui-grid-col-2,ui-grid-col-2,ui-grid-col-2,ui-grid-col-2" layout="grid"
+                 styleClass="ui-panelgrid-blank conceptFilters">
+        <p:inputText style="margin-right:10px; width: 80%" placeholder="Search"/>
 
         <p:selectOneMenu id="toBeReviewed" value="#{cc.attrs.conceptQuery.toBeReviewed}" style="margin-right:10px; width: 60%">
             <f:selectItem itemLabel="¿Revisar?" itemValue="#{null}"/>

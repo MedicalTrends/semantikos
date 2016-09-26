@@ -53,6 +53,8 @@ public class ConceptBrowserBean implements Serializable {
 
     private int idCategory;
 
+    private boolean flag = true;
+
     // Placeholders para los targets
     private BasicTypeValue basicTypeValue = new BasicTypeValue(null);
 
@@ -93,7 +95,18 @@ public class ConceptBrowserBean implements Serializable {
 
         };
 
-        conceptQuery = conceptQueryManager.getDefaultQueryByCategory(category);
+        if(flag) {
+            flag = false;
+
+            conceptQuery = conceptQueryManager.getDefaultQueryByCategory(category);
+
+            for (RelationshipDefinition relationshipDefinition : category.getRelationshipDefinitions()) {
+                ConceptQueryFilter conceptQueryFilter = new ConceptQueryFilter();
+                conceptQueryFilter.setDefinition(relationshipDefinition);
+
+                conceptQuery.getFilters().add(conceptQueryFilter);
+            }
+        }
 
         tags = tagManager.getAllTags();
 

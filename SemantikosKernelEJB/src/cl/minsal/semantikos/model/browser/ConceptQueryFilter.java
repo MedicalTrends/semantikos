@@ -4,6 +4,7 @@ import cl.minsal.semantikos.model.relationships.RelationshipDefinition;
 import cl.minsal.semantikos.model.relationships.Target;
 import cl.minsal.semantikos.model.relationships.TargetDefinition;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -13,7 +14,7 @@ public class ConceptQueryFilter {
 
     RelationshipDefinition definition;
 
-    List<Target> targets;
+    List<Target> targets = new ArrayList<Target>();
 
     boolean multiple;
 
