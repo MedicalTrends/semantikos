@@ -44,42 +44,12 @@ public class CategoryManagerImpl implements CategoryManager {
 
     @Override
     public List<RelationshipDefinition> getCategoryMetaData(int id) {
-        ArrayList<RelationshipDefinition> Attributes = new ArrayList<RelationshipDefinition>();
-
-        Query nativeQuery = this.entityManager.createNativeQuery("SELECT get_conf_rel_all()");
-        List<Object[]> relationships = nativeQuery.getResultList();
-
-        long idRelationship;
-        String name;
-        int multiplicity;
-        String description;
-        boolean required;
-
-        for (Object[] relationship : relationships) {
-            idRelationship = ((BigInteger) relationship[0]).longValue();
-            name = (String) relationship[1];
-            multiplicity = Integer.parseInt((String) relationship[2]);
-
-            /* Se crea el objeto */
-            //Attributes.add(new AttributeCategory(idRelationship, name, multiplicity, description, required));
-        }
-
-        return Attributes;
+       return categoryDAO.getCategoryMetaData(id);
     }
 
     @Override
     public void addAttribute(RelationshipDefinition attributeCategory, int idCategory) {
 
-    }
-
-    @Override
-    public int addTypeRelationship(String name, int typeRelation, int idCategoryDes, int multiplicity) {
-
-        // FIXME: Sin terminar
-        int idTypeRelationShip = 0;
-
-
-        return idTypeRelationShip;
     }
 
     @Override
@@ -106,6 +76,7 @@ public class CategoryManagerImpl implements CategoryManager {
 
     @Override
     public boolean categoryContains(Category category, String term) {
+
         List<Description> descriptions = descriptionManager.searchDescriptionsByTerm(term, Arrays.asList(category));
 
         /* Si la búsqueda resultó con al menos un término vigente, entonces si contiene */
