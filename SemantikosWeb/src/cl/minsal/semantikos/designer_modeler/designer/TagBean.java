@@ -84,7 +84,7 @@ public class TagBean implements Serializable{
         listTagSon=tagManager.getAllTagsWithoutParent();
         tagCreate= new Tag(-1,null,null,null,null);
         parentTagToCreate= new Tag(-1,null,null,null,null);
-
+        tagEdit= new Tag(-1,null,null,null,null);
 
 
 
@@ -342,6 +342,14 @@ public class TagBean implements Serializable{
 
         FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Etiqueta actualizada", "La etiqueta se actualizo exitosamente");
         FacesContext.getCurrentInstance().addMessage(null, msg);
+    }
+
+
+    public void updateTag(){
+        tagManager.update(tagEdit);
+        FacesContext context = FacesContext.getCurrentInstance();
+        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Etiqueta actualizada", "La etiqueta se actualizo exitosamente"));
+
     }
 
 

@@ -181,7 +181,7 @@
                     </div>
                 </div>
                 <div style="text-align: center">
-                    <p:commandButton value="Editar etiqueta" />
+                    <p:commandButton value="Editar etiqueta" actionListener="#{tagBean.updateTag}" update="dataTableTag" oncomplete="PF('dialogEditTag').hide()"/>
                 </div>
 
             </p:panel>
