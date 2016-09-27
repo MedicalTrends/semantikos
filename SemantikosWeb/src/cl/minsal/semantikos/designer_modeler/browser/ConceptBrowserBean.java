@@ -7,6 +7,7 @@ import cl.minsal.semantikos.model.browser.ConceptQuery;
 import cl.minsal.semantikos.model.browser.ConceptQueryFilter;
 import cl.minsal.semantikos.model.helpertables.HelperTableRecord;
 import cl.minsal.semantikos.model.relationships.*;
+import org.primefaces.extensions.model.fluidgrid.FluidGridItem;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
 import org.slf4j.Logger;
@@ -67,6 +68,8 @@ public class ConceptBrowserBean implements Serializable {
     @EJB
     private ConceptManager conceptManager;
 
+    private List<FluidGridItem> items;
+
 
     //@PostConstruct
     public void init() {
@@ -103,7 +106,7 @@ public class ConceptBrowserBean implements Serializable {
             for (RelationshipDefinition relationshipDefinition : category.getRelationshipDefinitions()) {
                 ConceptQueryFilter conceptQueryFilter = new ConceptQueryFilter();
                 conceptQueryFilter.setDefinition(relationshipDefinition);
-                //conceptQueryFilter.setMultiple(true);
+                conceptQueryFilter.setMultiple(true);
 
                 conceptQuery.getFilters().add(conceptQueryFilter);
             }
@@ -208,6 +211,9 @@ public class ConceptBrowserBean implements Serializable {
     }
 
     public HelperTableRecord getHelperTableRecord() {
+        if (helperTableRecord == null)
+            helperTableRecord = new HelperTableRecord();
+
         return helperTableRecord;
     }
 
