@@ -234,7 +234,7 @@ public class ConceptSMTKWeb extends ConceptSMTK {
      */
     public void addRelationshipWeb(Relationship relationship) {
         super.addRelationship(relationship);
-        if(relationship.isPersistent())
+        if(relationship.getId()!=PersistentEntity.NON_PERSISTED_ID)
             this.relationshipsWeb.add(new RelationshipWeb(relationship.getId(), relationship));
         else
             this.relationshipsWeb.add(new RelationshipWeb(relationship));

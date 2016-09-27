@@ -71,15 +71,26 @@ public class BasicTypeDAOImpl implements BasicTypeDAO {
         /* Se evaluan los tipos básicos */
 
         if (basicTypeDTO.getFloatValue() != null) {
-            return new BasicTypeValue<Float>(basicTypeDTO.getFloatValue());
+            BasicTypeValue bt=new BasicTypeValue<Float>(basicTypeDTO.getFloatValue());
+            bt.setId(basicTypeDTO.getId());
+            return bt;
         } else if (basicTypeDTO.getIntValue() != null) {
-            return new BasicTypeValue<Integer>(basicTypeDTO.getIntValue());
+            BasicTypeValue bt=new BasicTypeValue<Integer>(basicTypeDTO.getIntValue());
+            bt.setId(basicTypeDTO.getId());
+            return bt;
         } else if (basicTypeDTO.getBooleanValue() != null) {
-            return new BasicTypeValue<Boolean>(basicTypeDTO.getBooleanValue());
+            BasicTypeValue bt=new BasicTypeValue<Boolean>(basicTypeDTO.getBooleanValue());
+            bt.setId(basicTypeDTO.getId());
+            return bt;
         } else if (basicTypeDTO.getStringValue() != null) {
-            return new BasicTypeValue<String>(basicTypeDTO.getStringValue());
+            BasicTypeValue bt=new BasicTypeValue<String>(basicTypeDTO.getStringValue());
+            bt.setId(basicTypeDTO.getId());
+            return bt;
         } else if (basicTypeDTO.getDateValue() != null) {
-            return new BasicTypeValue<Timestamp>(basicTypeDTO.getDateValue());
+
+            BasicTypeValue bt=new BasicTypeValue<Timestamp>(basicTypeDTO.getDateValue());
+            bt.setId(basicTypeDTO.getId());
+            return bt;
         } else {
             String message = "Existe un caso no contemplado";
             logger.error(message);

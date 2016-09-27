@@ -97,7 +97,7 @@ public class RelationshipManagerImpl implements RelationshipManager {
 
         /* Luego se elimina la relación */
         relationship.setValidityUntil(new Timestamp(currentTimeMillis()));
-        relationshipDAO.invalidate(relationship);
+        relationshipDAO.update(relationship);
 
         /* Se registra en el historial la eliminación (si el concepto asociado está modelado) */
         if (relationship.getSourceConcept().isModeled()) {

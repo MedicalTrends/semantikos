@@ -12,8 +12,9 @@ public class RelationshipWeb extends Relationship {
     public boolean hasBeenModified;
 
     public RelationshipWeb(Relationship r) {
-        super(r.getSourceConcept(), r.getTarget(), r.getRelationshipDefinition(),new ArrayList<RelationshipAttribute>());
+        super(r.getSourceConcept(), r.getTarget(), r.getRelationshipDefinition(), new ArrayList<RelationshipAttribute>());
         this.hasBeenModified = false;
+
     }
 
     public RelationshipWeb(long id, Relationship r) {
@@ -22,8 +23,8 @@ public class RelationshipWeb extends Relationship {
     }
 
     @Override
-    public void setTarget(Target target){
-        if(target!=null){
+    public void setTarget(Target target) {
+        if (target != null) {
             super.setTarget(target);
         }
     }
@@ -41,8 +42,9 @@ public class RelationshipWeb extends Relationship {
 
         if (o == this) return true;
 
+
         RelationshipWeb relationshipWeb = new RelationshipWeb((Relationship) o);
-        return (this.getSourceConcept().getId()==relationshipWeb.getSourceConcept().getId() && this.getRelationshipDefinition().getId()==relationshipWeb.getRelationshipDefinition().getId() && this.getTarget().getId()==relationshipWeb.getTarget().getId());
+        return (this.getSourceConcept().getId() == relationshipWeb.getSourceConcept().getId() && this.getRelationshipDefinition().getId() == relationshipWeb.getRelationshipDefinition().getId() && this.getTarget().getId() == relationshipWeb.getTarget().getId());
     }
 
     @Override
@@ -55,9 +57,9 @@ public class RelationshipWeb extends Relationship {
     }
 
 
-    public RelationshipAttribute getAttribute(RelationshipAttributeDefinition definition){
-        for (RelationshipAttribute attribute: getRelationshipAttributes()) {
-            if(definition.equals(attribute.getRelationAttributeDefinition()))
+    public RelationshipAttribute getAttribute(RelationshipAttributeDefinition definition) {
+        for (RelationshipAttribute attribute : getRelationshipAttributes()) {
+            if (definition.equals(attribute.getRelationAttributeDefinition()))
                 return attribute;
         }
 
