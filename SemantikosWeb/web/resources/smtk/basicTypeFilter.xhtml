@@ -17,8 +17,26 @@
 </composite:interface>
 <composite:implementation>
 
-    <p:selectOneMenu id="basicTypeValueSimpleSelection"
+    <p:selectCheckboxMenu id="basicTypeMultipleSelection"
+                          value="#{cc.attrs.targets}"
+                          converter="omnifaces.SelectItemsConverter"
+                          label="#{cc.attrs.relationshipDefinition.name}"
+                          filter="true"
+                          filterMatchMode="startsWith"
+                          style="margin-right:10px; width: 60%"
+                          rendered="#{cc.attrs.targetDefinition.discreteDomain and cc.attrs.multiple }">
+        <p:ajax event="change"
+                update="@(.conceptFilters)"
+                process="@this" />
+        <f:selectItems value="#{cc.attrs.targetDefinition.domain}"
+                       var="domain"
+                       itemLabel="#{domain}"
+                       itemValue="#{domain}"/>
+    </p:selectCheckboxMenu>
+
+    <p:selectOneMenu id="basicTypeSimpleSelection"
                      value="#{conceptBrowserBean.basicTypeValue.value}"
+                     label="#{cc.attrs.relationshipDefinition.name}"
                      var="selection"
                      converter="omnifaces.SelectItemsConverter"
                      style="margin-right:10px; width: 60%"
@@ -30,8 +48,10 @@
                 process="@this" />
 
         <f:selectItem itemLabel="#{cc.attrs.relationshipDefinition.name}"
-                      itemValue="#{null}"
+                      itemValue="#{ null }"
+                      noSelectionOption="true"
         />
+
         <f:selectItems value="#{cc.attrs.targetDefinition.domain}"
                        var="domain"
                        itemLabel="#{domain}"
@@ -45,15 +65,22 @@
                var="target"
                varStatus="var">
 
-        <p:selectOneMenu id="basicTypeValueSimpleSelection2"
+        <p:selectOneMenu id="basicTypeSimpleSelection2"
                          value="#{target.value}"
+                         label="#{cc.attrs.relationshipDefinition.name}"
                          var="selection"
                          converter="omnifaces.SelectItemsConverter"
                          style="margin-right:10px; width: 60%"
                          rendered="#{cc.attrs.targetDefinition.discreteDomain and not cc.attrs.targets.isEmpty() and not cc.attrs.multiple }">
 
+            <p:ajax event="itemSelect"
+                    listener="#{conceptBrowserBean.setSimpleSelection(cc.attrs.relationshipDefinition, target)}"
+                    update="@(.conceptFilters)"
+                    process="@this" />
+
             <f:selectItem itemLabel="#{cc.attrs.relationshipDefinition.name}"
-                          itemValue="#{null}"
+                          itemValue="#{ null }"
+                          noSelectionOption="true"
             />
             <f:selectItems value="#{cc.attrs.targetDefinition.domain}"
                            var="domain"
@@ -63,26 +90,6 @@
 
 
     </p:repeat>
-
-    <p:selectOneMenu id="basicTypeValueMultipleSelection"
-                     value="#{cc.attrs.targets}"
-                     var="selection"
-                     converter="omnifaces.SelectItemsConverter"
-                     style="margin-right:10px; width: 60%"
-                     rendered="#{cc.attrs.targetDefinition.discreteDomain and cc.attrs.multiple }">
-        <p:ajax event="itemSelect"
-                listener="#{conceptBrowserBean.setMultipleSelection(cc.attrs.relationshipDefinition, selection)}"
-                process="@this" />
-
-        <f:selectItem itemLabel="Seleccione"
-                      itemValue="#{null}"
-        />
-        <f:selectItems value="#{cc.attrs.targetDefinition.domain}"
-                       var="domain"
-                       itemLabel="#{domain}"
-                       itemValue="#{domain}"/>
-    </p:selectOneMenu>
-
 
     <h:outputStylesheet id="customCSS">
         .ui-selectonemenu .ui-selectonemenu-label {

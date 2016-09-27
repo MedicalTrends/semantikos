@@ -103,6 +103,7 @@ public class ConceptBrowserBean implements Serializable {
             for (RelationshipDefinition relationshipDefinition : category.getRelationshipDefinitions()) {
                 ConceptQueryFilter conceptQueryFilter = new ConceptQueryFilter();
                 conceptQueryFilter.setDefinition(relationshipDefinition);
+                //conceptQueryFilter.setMultiple(true);
 
                 conceptQuery.getFilters().add(conceptQueryFilter);
             }

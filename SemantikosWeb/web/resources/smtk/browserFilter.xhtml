@@ -16,9 +16,14 @@
 </composite:interface>
 <composite:implementation>
 
-    <p:panelGrid columns="8" columnClasses="ui-grid-col-2,ui-grid-col-2,ui-grid-col-2,ui-grid-col-2,ui-grid-col-2,ui-grid-col-2" layout="grid"
+    <p:panelGrid columns="6" columnClasses="ui-grid-col-2,ui-grid-col-2,ui-grid-col-2,ui-grid-col-2,ui-grid-col-2,ui-grid-col-2" layout="grid"
                  styleClass="ui-panelgrid-blank conceptFilters">
-        <p:inputText style="margin-right:10px; width: 80%" placeholder="Search"/>
+
+        <p:selectOneMenu value="#{cc.attrs.conceptQuery.toBeReviewed}" style="margin-right:10px; width: 60%">
+            <f:selectItem itemLabel="¿Revisar?" itemValue="#{null}"/>
+            <f:selectItem itemLabel="Sin Revisar" itemValue="#{false}"/>
+            <f:selectItem itemLabel="Revisar" itemValue="#{true}"/>
+        </p:selectOneMenu>
 
         <p:selectOneMenu id="toBeReviewed" value="#{cc.attrs.conceptQuery.toBeReviewed}" style="margin-right:10px; width: 60%">
             <f:selectItem itemLabel="¿Revisar?" itemValue="#{null}"/>
@@ -40,13 +45,25 @@
             <f:selectItems value="#{conceptBrowserBean.tags}" var="tag"
                            itemLabel="#{tag.name}" itemValue="#{tag.id}"/>
         </p:selectOneMenu>
-        <ui:repeat value="#{cc.attrs.conceptQuery.filters}" var="filter">
+        <p:repeat
+                offset="0"
+                size="#{cc.attrs.conceptQuery.filters.size()}"
+                step="1"
+                varStatus="var"
+                value="#{cc.attrs.conceptQuery.filters}"
+                var="filter">
             <smtk:basicTypeFilter relationshipDefinition="#{filter.definition}"
                                   targetDefinition="#{filter.definition.targetDefinition}"
                                   targets="#{filter.targets}"
                                   multiple="#{filter.multiple}"
                                   rendered="#{filter.definition.targetDefinition.basicType}" />
-        </ui:repeat>
+            <smtk:helperTableTypeFilter
+                                  relationshipDefinition="#{filter.definition}"
+                                  targetDefinition="#{filter.definition.targetDefinition}"
+                                  targets="#{filter.targets}"
+                                  multiple="#{filter.multiple}"
+                                  rendered="#{filter.definition.targetDefinition.helperTable}" />
+        </p:repeat>
 
     </p:panelGrid>
 
