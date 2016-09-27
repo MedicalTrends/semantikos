@@ -20,8 +20,6 @@ public interface AuditManager {
      * Este método es responsable de registrar en el log de auditoría la creación del concepto, por el usuario.
      * Este método solo registra la creación del concepto, y no de cada una de sus relaciones o descripciones.
      *
-     * TODO: Determinar qué cosas hay que auditar al momento de crear un nuevo concepto.
-     *
      * @param conceptSMTK El concepto que se creo.
      * @param user        El usuario que creó el concepto.
      */
@@ -30,8 +28,6 @@ public interface AuditManager {
     /**
      * Este método es responsable de registrar en el log de auditoría la actualización del concepto, por el usuario.
      * Este método solo registra la creación del concepto, y no de cada una de sus relaciones o descripciones.
-     *
-     * TODO: Determinar qué cosas hay que auditar al momento de crear un nuevo concepto.
      *
      * @param conceptSMTK El concepto que se creo.
      * @param user        El usuario que creó el concepto.
@@ -45,7 +41,7 @@ public interface AuditManager {
      * @param targetConcept El concepto al cual se quiere mover la descripción.
      * @param description   La descripción que se desea trasladar.
      */
-    public void recordDescriptionMovement(ConceptSMTK sourceConcept, ConceptSMTK targetConcept, Description description, /* TODO: Agregar el usuario */User user);
+    public void recordDescriptionMovement(ConceptSMTK sourceConcept, ConceptSMTK targetConcept, Description description, User user);
 
     /**
      * Este método es responsable de registrar en el log de auditoría la el traslado de un concepto.

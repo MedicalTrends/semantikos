@@ -140,7 +140,7 @@ public class DescriptionManagerImpl implements DescriptionManager {
         this.bindDescriptionToConcept(conceptSMTK, finalDescription, true, user);
 
         /* Registrar en el Historial si es preferida (Historial BR) */
-            auditManager.recordFavouriteDescriptionUpdate(conceptSMTK, initDescription, user);
+        auditManager.recordFavouriteDescriptionUpdate(conceptSMTK, initDescription, user);
     }
 
 
