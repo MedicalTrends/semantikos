@@ -29,7 +29,9 @@ public enum AuditActionType {
     CONCEPT_DESCRIPTION_CREATION(19, "Descripción creada", CREATION),
     REFSET_CREATION(20, "Creación de RefSet", CREATION),
     REFSET_UPDATE(21, "Actualización de RefSet", CHANGE),
-    REFSET_BINDING(22, "Actualización de Descripción a RefSet", CHANGE);
+    REFSET_BINDING(22, "Actualización de Descripción a RefSet", CHANGE),
+    CONCEPT_RELATIONSHIP_DEFINITION_CREATION(23, "Nuevo atributo asociado a un concepto.", CHANGE),
+    CONCEPT_RELATIONSHIP_ATTRIBUTE_CREATION(24, "Nueva relación definitoria asociada a un concepto", CHANGE);
 
     /** Identificador único de la base de datos */
     private long id;

@@ -1,7 +1,6 @@
 package cl.minsal.semantikos.kernel.daos;
 
-import cl.minsal.semantikos.model.CrossMap;
-import cl.minsal.semantikos.model.relationships.Target;
+import cl.minsal.semantikos.model.relationships.CrossMap;
 
 import javax.ejb.Local;
 

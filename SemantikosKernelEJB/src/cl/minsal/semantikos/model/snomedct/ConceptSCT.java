@@ -7,87 +7,89 @@ import java.sql.Timestamp;
 import java.util.List;
 
 /**
+ * Esta clase representa un concepto Snomed-CT.
+ *
  * @author Andres Farias
  * @version 1.0
  * @created 17-ago-2016 12:52:05
  */
 public class ConceptSCT implements Target {
 
-	/** Identificador único (oficial) de Snomed CT para este concepto. */
-	private long id;
+    /** Identificador único (oficial) de Snomed CT para este concepto. */
+    private long id;
 
-	/** Descripciones del Concepto */
-	private List<SCTDescription> descriptions;
+    /** Descripciones del Concepto */
+    private List<SCTDescription> descriptions;
 
-	private List<RelationshipSCT> relationships;
+    private List<RelationshipSCT> relationships;
 
-	/** TODO: Determinar qué es esto */
-	private Timestamp effectiveTime;
+    /** TODO: Determinar qué es esto */
+    private Timestamp effectiveTime;
 
-	/** Si el concepto Snomed CT está vigente */
-	private boolean isActive;
+    /** Si el concepto Snomed CT está vigente */
+    private boolean isActive;
 
-	/** TODO: Averiguar qué es esto */
-	private long moduleId;
+    /** TODO: Averiguar qué es esto */
+    private long moduleId;
 
-	/** TODO: Averiguar qué es esto */
-	private long definitionStatusId;
+    /** TODO: Averiguar qué es esto */
+    private long definitionStatusId;
 
-	public ConceptSCT() {
-	}
+    public ConceptSCT() {
+    }
 
-	public ConceptSCT(long id, Timestamp effectiveTime, boolean isActive, long moduleId, long definitionStatusId) {
-		this.id = id;
-		this.effectiveTime = effectiveTime;
-		this.isActive = isActive;
-		this.moduleId = moduleId;
-		this.definitionStatusId = definitionStatusId;
-	}
+    public ConceptSCT(long id, Timestamp effectiveTime, boolean isActive, long moduleId, long definitionStatusId) {
+        this.id = id;
+        this.effectiveTime = effectiveTime;
+        this.isActive = isActive;
+        this.moduleId = moduleId;
+        this.definitionStatusId = definitionStatusId;
+    }
 
-	public void setId(long id) {
-		this.id = id;
-	}
+    public void setId(long id) {
+        this.id = id;
+    }
 
-	public Timestamp getEffectiveTime() {
-		return effectiveTime;
-	}
+    public Timestamp getEffectiveTime() {
+        return effectiveTime;
+    }
 
-	public void setEffectiveTime(Timestamp effectiveTime) {
-		this.effectiveTime = effectiveTime;
-	}
+    public void setEffectiveTime(Timestamp effectiveTime) {
+        this.effectiveTime = effectiveTime;
+    }
 
-	public boolean isActive() {
-		return isActive;
-	}
+    public boolean isActive() {
+        return isActive;
+    }
 
-	public void setActive(boolean active) {
-		isActive = active;
-	}
+    public void setActive(boolean active) {
+        isActive = active;
+    }
 
-	public long getModuleId() {
-		return moduleId;
-	}
+    public long getModuleId() {
+        return moduleId;
+    }
 
-	public void setModuleId(long moduleId) {
-		this.moduleId = moduleId;
-	}
+    public void setModuleId(long moduleId) {
+        this.moduleId = moduleId;
+    }
 
-	public long getDefinitionStatusId() {
-		return definitionStatusId;
-	}
+    public long getDefinitionStatusId() {
+        return definitionStatusId;
+    }
 
-	public void setDefinitionStatusId(long definitionStatusId) {
-		this.definitionStatusId = definitionStatusId;
-	}
+    public void setDefinitionStatusId(long definitionStatusId) {
+        this.definitionStatusId = definitionStatusId;
+    }
 
-	@Override
-	public long getId() {
-		return id;
-	}
+    @Override
+    public long getId() {
+        return id;
+    }
 
-	@Override
-	public TargetType getTargetType() {
-		return TargetType.SnomedCT;
-	}
+    @Override
+    public TargetType getTargetType() {
+        return TargetType.SnomedCT;
+    }
 
 }

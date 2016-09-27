@@ -1,6 +1,6 @@
 package cl.minsal.semantikos.model.businessrules;
 
-import cl.minsal.semantikos.model.CrossMap;
+import cl.minsal.semantikos.model.relationships.CrossMap;
 import cl.minsal.semantikos.model.User;
 
 /**

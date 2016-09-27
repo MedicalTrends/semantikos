@@ -75,7 +75,6 @@ public class TargetDefinitionFactory {
                 throw new EJBException("TIPO DE DEFINICION INCORRECTO. ID Target Type=" + targetDefinitionDTO.idTargetType);
         }
     }
-
 }
 
 /**

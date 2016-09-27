@@ -3,6 +3,7 @@ package cl.minsal.semantikos.kernel.components;
 import cl.minsal.semantikos.model.*;
 import cl.minsal.semantikos.model.audit.AuditActionType;
 import cl.minsal.semantikos.model.audit.ConceptAuditAction;
+import cl.minsal.semantikos.model.relationships.CrossMap;
 import cl.minsal.semantikos.model.relationships.Relationship;
 
 import javax.ejb.Local;
@@ -83,7 +84,8 @@ public interface AuditManager {
     public void recordAttributeChange(ConceptSMTK conceptSMTK, Relationship originalRelationship, User user);
 
     /**
-     * Este método es responsable de registrar en el historial las creación de una relación.
+     * <p>Este método es responsable de registrar en el historial las creación de una relación.</p>
+     * <p>Las relaciones se dividen en dos tipos: atributos y definitorias (SnomedCT).</p>
      *
      * @param relationship La relación que se ha persistido.
      * @param user         El usuario responsable de la acción.
