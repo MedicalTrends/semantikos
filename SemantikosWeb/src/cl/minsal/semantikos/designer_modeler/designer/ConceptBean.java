@@ -626,7 +626,6 @@ public class ConceptBean implements Serializable {
         }
     }
 
-
     // Getter and Setter
 
     public String getFSN() {

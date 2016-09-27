@@ -173,6 +173,7 @@ public class RelationshipFactory {
             throw new EJBException(msg);
         }
 
+
         return new Relationship(relationshipDTO.getId(), sourceConceptSMTK, target, relationshipDefinition, relationshipDTO.validityUntil,new ArrayList<RelationshipAttribute>());
     }
 
