@@ -79,8 +79,6 @@ public class ConceptQueryDAOImpl implements ConceptQueryDAO {
 
             while (rs.next()) {
 
-
-
                 ConceptSMTK recoveredConcept = conceptManager.getConceptByID( rs.getLong(1));
                 concepts.add(recoveredConcept);
             }
