@@ -62,21 +62,10 @@ public class DescriptionSCT extends PersistentEntity {
      */
     private String term;
 
-    private final Timestamp effectiveTime;
-    private final boolean active;
-    private final long moduleID;
-    private final long conceptID;
-    private final String languageCode;
-    private final long caseSignificanceID;
-
     private DescriptionSCTType type;
 
     private boolean favourite;
 
-    public DescriptionSCT(long id, DescriptionSCTType type, String term, Timestamp effectiveTime, boolean active, long moduleID, long conceptID, String languageCode, long caseSignificanceID, boolean favourite) {
-        super(id);
-
-        this.type = type;
     /**
      * Este es el constructor completo para la clase descriptionSCT
      * @param effectiveTime
@@ -97,13 +86,6 @@ public class DescriptionSCT extends PersistentEntity {
         this.languageCode = languageCode;
         this.typeId = typeId;
         this.term = term;
-        this.effectiveTime = effectiveTime;
-        this.active = active;
-        this.moduleID = moduleID;
-        this.conceptID = conceptID;
-        this.languageCode = languageCode;
-        this.caseSignificanceID = caseSignificanceID;
-        this.favourite = favourite;
         this.caseSignificanceId = caseSignificanceId;
     }
 
@@ -131,8 +113,63 @@ public class DescriptionSCT extends PersistentEntity {
         this.favourite = favourite;
     }
 
-    public enum DescriptionSCTType {
-        FSN, SYNONYM;
+    public Timestamp getEffectiveTime() {
+        return effectiveTime;
+    }
+
+    public void setEffectiveTime(Timestamp effectiveTime) {
+        this.effectiveTime = effectiveTime;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    public long getModuleId() {
+        return moduleId;
+    }
+
+    public void setModuleId(long moduleId) {
+        this.moduleId = moduleId;
+    }
+
+    public long getConceptId() {
+        return conceptId;
+    }
+
+    public void setConceptId(long conceptId) {
+        this.conceptId = conceptId;
+    }
+
+    public String getLanguageCode() {
+        return languageCode;
+    }
+
+    public void setLanguageCode(String languageCode) {
+        this.languageCode = languageCode;
+    }
+
+    public long getCaseSignificanceId() {
+        return caseSignificanceId;
+    }
+
+    public void setCaseSignificanceId(long caseSignificanceId) {
+        this.caseSignificanceId = caseSignificanceId;
+    }
+
+    public long getTypeId() {
+        return typeId;
+    }
+
+    public void setTypeId(long typeId) {
+        this.typeId = typeId;
     }
 }
 
+enum DescriptionSCTType {
+    FSN, SYNONYM;
+}
