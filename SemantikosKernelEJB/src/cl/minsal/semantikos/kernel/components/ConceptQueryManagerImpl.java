@@ -38,13 +38,13 @@ public class ConceptQueryManagerImpl implements ConceptQueryManager{
     public List<ConceptSMTK> executeQuery(ConceptQuery query) {
 
 
-//TODO: implement
+        //TODO: implement
         return new ArrayList<ConceptSMTK>();
     }
 
     @Override
     public List<RelationshipDefinition> getShowableAttributesByCategory(Category category) {
-//TODO:implement
+        //TODO:implement
         return new ArrayList<RelationshipDefinition>();
     }
 }

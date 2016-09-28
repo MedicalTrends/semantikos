@@ -85,19 +85,6 @@ public class ConceptBrowserBean implements Serializable {
             return;
         }
 
-        concepts = new LazyDataModel<ConceptSMTK>() {
-            @Override
-            public List<ConceptSMTK> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
-
-
-                List<ConceptSMTK> conceptSMTKs = conceptManager.findConceptBy(category, first, pageSize);
-                this.setRowCount(30);
-
-                return conceptSMTKs;
-            }
-
-        };
-
         if(flag) {
             flag = false;
 
@@ -106,13 +93,28 @@ public class ConceptBrowserBean implements Serializable {
             for (RelationshipDefinition relationshipDefinition : category.getRelationshipDefinitions()) {
                 ConceptQueryFilter conceptQueryFilter = new ConceptQueryFilter();
                 conceptQueryFilter.setDefinition(relationshipDefinition);
-                conceptQueryFilter.setMultiple(true);
+                conceptQueryFilter.setMultiple(false);
 
                 conceptQuery.getFilters().add(conceptQueryFilter);
             }
         }
 
         tags = tagManager.getAllTags();
+
+        concepts = new LazyDataModel<ConceptSMTK>() {
+            @Override
+            public List<ConceptSMTK> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
+
+
+                //List<ConceptSMTK> conceptSMTKs = conceptManager.findConceptBy(category, first, pageSize);
+
+                List<ConceptSMTK> conceptSMTKs = conceptQueryManager.executeQuery(conceptQuery);
+                this.setRowCount(30);
+
+                return conceptSMTKs;
+            }
+
+        };
 
     }
 
