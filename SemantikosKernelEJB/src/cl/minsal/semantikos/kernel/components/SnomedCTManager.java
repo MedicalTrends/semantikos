@@ -1,5 +1,6 @@
 package cl.minsal.semantikos.kernel.components;
 
+import cl.minsal.semantikos.model.snomedct.ConceptSCT;
 import cl.minsal.semantikos.model.snomedct.RelationshipSCT;
 import cl.minsal.semantikos.model.snomedct.SnapshotProcessingResult;
 import cl.minsal.semantikos.model.snomedct.SnomedCTSnapshot;
@@ -31,4 +32,13 @@ public interface SnomedCTManager {
      */
     public List<RelationshipSCT> getRelationshipsFrom(long idConceptSCT);
 
+    /**
+     * Este método es responsable de buscar aquellos conceptos que posean al menos una descripción cuyo término coincide
+     * con el patrón dado como parámetro.
+     *
+     * @param patron El patrón de búsqueda.
+     *
+     * @return La lista de conceptos que satisfacen el criterio de búsqueda.
+     */
+    public List<ConceptSCT> findConceptsBy(String patron);
 }

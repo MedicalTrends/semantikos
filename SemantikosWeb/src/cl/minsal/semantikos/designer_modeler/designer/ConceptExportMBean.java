@@ -4,7 +4,9 @@ import cl.minsal.semantikos.kernel.daos.ConceptDAO;
 import cl.minsal.semantikos.model.ConceptSMTKWeb;
 import cl.minsal.semantikos.model.RefSet;
 import cl.minsal.semantikos.model.relationships.Relationship;
-import cl.minsal.semantikos.model.snomedct.SnomedCT;
+import cl.minsal.semantikos.model.relationships.SnomedCTRelationship;
+import cl.minsal.semantikos.model.snomedct.ConceptSCT;
+import cl.minsal.semantikos.model.snomedct.RelationshipSCT;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -88,11 +90,11 @@ public class ConceptExportMBean extends UINamingContainer {
      *
      * @return Una lista de los DTO de relaciones Snomed CT.
      */
-    public List<SnomedRelationship> getSnomedCTRelationships() {
+    public List<SnomedCTRelationshipDTO> getSnomedCTRelationships() {
 
-        List<SnomedRelationship> snomedCTRelationships = new ArrayList<SnomedRelationship>();
-        for (Relationship relationship : conceptSMTK.getRelationshipsSnomedCT()) {
-            snomedCTRelationships.add(new SnomedRelationship(relationship));
+        List<SnomedCTRelationshipDTO> snomedCTRelationships = new ArrayList<SnomedCTRelationshipDTO>();
+        for (SnomedCTRelationship relationship : conceptSMTK.getRelationshipsSnomedCT()) {
+            snomedCTRelationships.add(new SnomedCTRelationshipDTO(relationship));
         }
 
         return snomedCTRelationships;
@@ -107,15 +109,19 @@ public class ConceptExportMBean extends UINamingContainer {
     }
 }
 
-class SnomedRelationship {
+class SnomedCTRelationshipDTO {
 
-    private Relationship relationship;
+    private SnomedCTRelationship relationship;
 
-    public SnomedRelationship(Relationship relationship) {
+    public SnomedCTRelationshipDTO(SnomedCTRelationship relationship) {
         this.relationship = relationship;
     }
 
-    public SnomedCT getSnomedCT() {
-        return (SnomedCT) relationship.getTarget();
+    public ConceptSCT getSnomedCT() {
+        return relationship.getTarget();
+    }
+
+    public String getRelationType(){
+        return relationship.getRelationshipDefinition().getName();
     }
 }

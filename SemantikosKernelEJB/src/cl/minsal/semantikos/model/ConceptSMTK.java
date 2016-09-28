@@ -3,10 +3,7 @@ package cl.minsal.semantikos.model;
 import cl.minsal.semantikos.model.audit.AuditableEntity;
 import cl.minsal.semantikos.model.businessrules.ConceptStateBusinessRulesContainer;
 import cl.minsal.semantikos.model.exceptions.BusinessRuleException;
-import cl.minsal.semantikos.model.relationships.Relationship;
-import cl.minsal.semantikos.model.relationships.RelationshipDefinition;
-import cl.minsal.semantikos.model.relationships.Target;
-import cl.minsal.semantikos.model.relationships.TargetType;
+import cl.minsal.semantikos.model.relationships.*;
 
 import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
@@ -178,6 +175,7 @@ public class ConceptSMTK extends PersistentEntity implements Target, AuditableEn
 
     /**
      * Este método es responsable de recuperar las relaciones del concepto.
+     *
      * @return Una lista con las relaciones del concepto.
      */
     public List<Relationship> getRelationships() {
@@ -209,13 +207,15 @@ public class ConceptSMTK extends PersistentEntity implements Target, AuditableEn
 
     /**
      * Este método es responsable de retornar las relaciones de tipo SNOMED_CT.
+     *
      * @return Una lista de relaciones a SnomedCT
      */
-    public List<Relationship> getRelationshipsSnomedCT() {
-        List<Relationship> snomedRelationships = new ArrayList<>();
+    public List<SnomedCTRelationship> getRelationshipsSnomedCT() {
+
+        List<SnomedCTRelationship> snomedRelationships = new ArrayList<>();
         for (Relationship relationship : relationships) {
             if (relationship.getRelationshipDefinition().getTargetDefinition().isSnomedCTType()) {
-                snomedRelationships.add(relationship);
+                snomedRelationships.add((SnomedCTRelationship) relationship);
             }
         }
 
