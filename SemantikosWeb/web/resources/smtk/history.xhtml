@@ -19,6 +19,9 @@
     <p:panel id="historyConcept" header="Historial" toggleable="true" toggleSpeed="500" closeSpeed="500" >
         <p:dataTable var="history"
                      value="#{conceptBean.auditAction}">
+            <p:column style="width:16px">
+                <p:rowToggler />
+            </p:column>
             <p:column headerText="Fecha">
                 <h:outputText value="#{history.actionDate}"></h:outputText>
             </p:column>
@@ -31,6 +34,24 @@
             <p:column headerText="Fecha">
                 <h:outputText value="#{history.actionDate}"></h:outputText>
             </p:column>
+            <p:rowExpansion>
+                <p:panelGrid  columns="2" columnClasses="label,value" >
+                    <f:facet name="header">
+                        <h3>Detalle del cambio</h3>
+                    </f:facet>
+
+
+
+                    <h:outputText value="ID Atributo:" />
+                    <h:outputText value="#{history.auditableEntity.id}" />
+
+                    <h:outputText value="Atributo:" />
+                    <h:outputText value="#{history.auditableEntity}" />
+
+
+
+                </p:panelGrid>
+            </p:rowExpansion>
         </p:dataTable>
 
     </p:panel>

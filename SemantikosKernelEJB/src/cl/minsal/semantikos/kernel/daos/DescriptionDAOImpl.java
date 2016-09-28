@@ -72,7 +72,30 @@ public class DescriptionDAOImpl implements DescriptionDAO {
     // TODO: Implementar este método
     @Override
     public Description getDescriptionBy(long id) {
-        return null;
+        ConnectionBD connect = new ConnectionBD();
+        Description description= null;
+
+        String sql = "{call semantikos.get_description_by_id(?)}";
+        try (Connection connection = connect.getConnection();
+             CallableStatement call = connection.prepareCall(sql)) {
+
+            call.setLong(1, id);
+            call.execute();
+
+            logger.debug("Descripciones recuperadas con ID=" + id);
+            ResultSet rs = call.getResultSet();
+            while (rs.next()) {
+                description = createDescriptionFromResultSet(rs, null);
+
+            }
+
+        } catch (SQLException e) {
+            String errorMsg = "Error al recuperar la descripción de la BDD.";
+            logger.error(errorMsg, e);
+            throw new EJBException(e);
+        }
+
+        return description;
     }
 
     @Override
