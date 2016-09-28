@@ -1,8 +1,6 @@
 package cl.minsal.semantikos.kernel.components;
 
-import cl.minsal.semantikos.model.snomedct.RelationshipSCT;
-import cl.minsal.semantikos.model.snomedct.SnapshotProcessingResult;
-import cl.minsal.semantikos.model.snomedct.SnomedCTSnapshot;
+import cl.minsal.semantikos.model.snomedct.*;
 
 import java.util.List;
 
@@ -15,6 +13,15 @@ public class SnomedCTManagerImpl implements SnomedCTManager {
 
     @Override
     public SnapshotProcessingResult processSnapshot(SnomedCTSnapshot snomedCTSnapshot) {
+
+        List<ConceptSCT> conceptSCTs = SnomedCTSnapshotFactory.getInstance().createConceptsSCTFromPath(snomedCTSnapshot.getConceptSnapshotPath());
+
+        List<DescriptionSCT> descriptionSCTs = SnomedCTSnapshotFactory.getInstance().createDescriptionsSCTFromPath(snomedCTSnapshot.getDescriptionSnapshotPath());
+
+        for (DescriptionSCT descriptionSCT : descriptionSCTs) {
+            
+        }
+
         return new SnapshotProcessingResult();
     }
 
