@@ -72,7 +72,9 @@ public class ConceptBean implements Serializable {
 
     private ConceptSMTKWeb concept;
 
-    /** El concepto original */
+    /**
+     * El concepto original
+     */
     private ConceptSMTKWeb _concept;
 
     private Category category;
@@ -148,7 +150,7 @@ public class ConceptBean implements Serializable {
         user.setIdUser(1);
         user.setUsername("amauro");
         user.setPassword("amauro");
-        Profile designerProfile = new Profile(1, "designerProfile", "designerProfile");
+        Profile designerProfile = new Profile(2, "Diseñador", "Usuario Diseñador");
         user.getProfiles().add(designerProfile);
 
 
@@ -173,16 +175,20 @@ public class ConceptBean implements Serializable {
 
 
     public void createConcept() throws ParseException {
-
+        RequestContext context = RequestContext.getCurrentInstance();
         if (idconceptselect == 0) {
             category = categorySelected;
-            newConcept(category, favoriteDescription);
+            if (categoryManager.categoryContains(category, favoriteDescription)) {
+                FacesContext c = FacesContext.getCurrentInstance();
+                c.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "La descripción " + favoriteDescription + " ya existe dentro de la categoría " + category.getName()));
+            } else {
+                newConcept(category, favoriteDescription);
+                context.execute("PF('dialogNameConcept').hide();");
+            }
         } else {
             getConceptById(idconceptselect);
+            context.execute("PF('dialogNameConcept').hide();");
         }
-
-        RequestContext context = RequestContext.getCurrentInstance();
-        context.execute("PF('dialogNameConcept').hide();");
     }
 
     //Este método es responsable de a partir de un concepto SMTK y un término, devolver un concepto WEB con su FSN y su Preferida
@@ -314,6 +320,9 @@ public class ConceptBean implements Serializable {
         // Se busca la relación
         for (Relationship relationshipWeb : concept.getRelationshipsWeb()) {
             if (relationshipWeb.getRelationshipDefinition().equals(relationshipDefinition)) {
+                concept.removeRelationshipWeb(relationshipWeb);
+                relationshipWeb = new RelationshipWeb(relationshipWeb);
+                concept.addRelationshipWeb(relationshipWeb);
                 relationshipWeb.setTarget(target);
                 isRelationshipFound = true;
                 break;
@@ -382,6 +391,20 @@ public class ConceptBean implements Serializable {
 
     }
 
+    /**
+     * Este metodo revisa que las relaciones cumplan el lower_boundary del
+     * relationship definition, en caso de no cumplir la condicion se retorna falso.
+     *
+     * @return
+     */
+    public boolean validateRelationships() {
+        for (int i = 0; i < category.getRelationshipDefinitions().size(); i++) {
+            if (!(concept.getValidRelationshipsWebByRelationDefinition(category.getRelationshipDefinitions().get(i)).size() >= category.getRelationshipDefinitions().get(i).getMultiplicity().getLowerBoundary())) {
+                return false;
+            }
+        }
+        return true;
+    }
 
     public boolean containDescription(DescriptionWeb descriptionWeb) {
         for (DescriptionWeb description : concept.getDescriptionsWeb()) {
@@ -442,16 +465,21 @@ public class ConceptBean implements Serializable {
     public void saveConcept() {
 
         FacesContext context = FacesContext.getCurrentInstance();
+        if (validateRelationships()) {
+            // Si el concepto está persistido, actualizarlo
+            if (concept.isPersistent()) {
+                updateConcept(context);
+            }
 
-        // Si el concepto está persistido, actualizarlo
-        if (concept.isPersistent()) {
-            updateConcept(context);
+            // Si el concepto no está persistido, persistirlo
+            else {
+                persistConcept(context);
+            }
+        } else {
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Las relaciones no cumplen con el minimo requerido"));
+
         }
 
-        // Si el concepto no está persistido, persistirlo
-        else {
-            persistConcept(context);
-        }
     }
 
     private void persistConcept(FacesContext context) {
@@ -467,7 +495,6 @@ public class ConceptBean implements Serializable {
     }
 
     /**
-     *
      * @param context
      */
     private void updateConcept(FacesContext context) {
@@ -598,8 +625,8 @@ public class ConceptBean implements Serializable {
         } else {
             descriptionManager.moveDescriptionToConcept(conceptSMTKTranslateDes, descriptionToTranslate, user);
             concept = new ConceptSMTKWeb(conceptManager.getConceptByID(concept.getId()));
-            conceptSMTKTranslateDes= null;
-            descriptionToTranslate=null;
+            conceptSMTKTranslateDes = null;
+            descriptionToTranslate = null;
             auditAction = auditManager.getConceptAuditActions(concept, 10, true);
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Successful", "La descripción se ha trasladado a otro concepto correctamente"));
         }
@@ -612,12 +639,12 @@ public class ConceptBean implements Serializable {
      */
 
     public void descriptionEditRow(RowEditEvent event) {
-        long SYNONYMOUS_ID=3;
-        for (DescriptionWeb descriptionRowEdit: concept.getDescriptionsWeb()) {
-            if(descriptionRowEdit.equals(event.getObject()) || descriptionRowEdit.getId()== ((DescriptionWeb)event.getObject()).getId()){
-                if (descriptionRowEdit.getDescriptionType().equals(descriptionTypeFactory.getFavoriteDescriptionType())){
+        long SYNONYMOUS_ID = 3;
+        for (DescriptionWeb descriptionRowEdit : concept.getDescriptionsWeb()) {
+            if (descriptionRowEdit.equals(event.getObject()) || descriptionRowEdit.getId() == ((DescriptionWeb) event.getObject()).getId()) {
+                if (descriptionRowEdit.getDescriptionType().equals(descriptionTypeFactory.getFavoriteDescriptionType())) {
                     descriptionRowEdit.setDescriptionType(descriptionTypeFactory.getDescriptionTypeByID(SYNONYMOUS_ID));
-                    DescriptionWeb descriptionFavorite  = concept.getValidDescriptionFavorite();
+                    DescriptionWeb descriptionFavorite = concept.getValidDescriptionFavorite();
                     descriptionFavorite.setDescriptionType(descriptionTypeFactory.getDescriptionTypeByID(SYNONYMOUS_ID));
                     descriptionRowEdit.setDescriptionType(descriptionTypeFactory.getFavoriteDescriptionType());
                     break;

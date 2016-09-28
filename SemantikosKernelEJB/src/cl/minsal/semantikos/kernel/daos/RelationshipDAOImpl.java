@@ -135,16 +135,13 @@ public class RelationshipDAOImpl implements RelationshipDAO {
     @Override
     public void invalidate(Relationship relationship) {
         ConnectionBD connect = new ConnectionBD();
-        String sql = "{call semantikos.invalidate_relationship(?,?,?,?,?)}";
+        String sql = "{call semantikos.invalidate_relationship(?,?)}";
 
         try (Connection connection = connect.getConnection();
              CallableStatement call = connection.prepareCall(sql)) {
 
             call.setLong(1, relationship.getId());
-            call.setLong(2, relationship.getSourceConcept().getId());
-            call.setLong(3, relationship.getTarget().getId());
-            call.setLong(4, relationship.getRelationshipDefinition().getId());
-            call.setTimestamp(5, relationship.getValidityUntil());
+            call.setTimestamp(2, relationship.getValidityUntil());
             call.execute();
         } catch (SQLException e) {
             throw new EJBException(e);

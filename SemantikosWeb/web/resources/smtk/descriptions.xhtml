@@ -157,7 +157,7 @@
                                     oncomplete="PF('dialogTDC').show()">
                         <i class="fa fa-exchange fa-lg" />
                         <f:setPropertyActionListener value="#{description}" target="#{conceptBean.descriptionToTranslate}" />
-
+                        <f:setPropertyActionListener value="" target="#{conceptBean.conceptSMTKTranslateDes}" />
                     </p:commandLink>
                     <p:rowEditor id="rowEditor" style="display: inline"/>
                 </p:column>

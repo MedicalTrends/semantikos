@@ -153,7 +153,8 @@ public class RelationshipFactory {
 
         /* El target puede ser un concepto SMTK */
         else if (relationshipDefinition.getTargetDefinition().isSMTKType()) {
-            target = conceptDAO.getConceptByID(idTarget);
+            //target = conceptDAO.getConceptByID(idTarget);
+            target = targetDAO.getTargetByID(idTarget);
         }
 
         /* El target puede ser un concepto Snomed CT */

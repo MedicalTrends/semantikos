@@ -9,6 +9,7 @@
 
     <ui:define name="content">
 
+
         <p:panel id="createEdit">
             <h:form id="mainForm" rendered="#{ not (conceptBean.concept eq null ) }">
 
@@ -121,7 +122,6 @@
                       rendered="#{conceptBean.concept eq null}">
 
                 <h:form id="initialForm">
-
 
                     <div style="text-align: center;"><h3>Crear Concepto</h3></div>
                     <div class="ui-g">

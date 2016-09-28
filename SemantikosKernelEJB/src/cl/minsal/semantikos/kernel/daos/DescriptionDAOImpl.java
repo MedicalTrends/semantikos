@@ -274,7 +274,7 @@ public class DescriptionDAOImpl implements DescriptionDAO {
         try (Connection connection = connect.getConnection();
              CallableStatement call = connection.prepareCall(sql)) {
 
-            call.setString(1, term);
+            call.setString(1, term.toLowerCase());
             call.setArray(2, connection.createArrayOf("bigint", convertListCategoryToListID(categories).toArray(new Long[categories.size()])));
             call.execute();
 

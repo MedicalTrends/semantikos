@@ -99,9 +99,15 @@ public class DescriptionCreationBR {
      */
     private void brDescriptionCreation003(ConceptSMTK concept, DescriptionType type) {
 
-        /* Si se está editando y es una abreviada.... */
-        if (concept.isPersistent() && type.equals(ABREVIADA)) {
-            throw new BusinessRuleException("Cuando se edita un concepto no es posible agregarle una descripción de tipo 'Abreviada'.");
+        for (Description description: concept.getDescriptions()) {
+            if(description.getDescriptionType().equals(ABREVIADA) && description.isPersistent()){
+                /* Si se está editando y es una abreviada.... */
+                if (concept.isPersistent() && type.equals(ABREVIADA)) {
+                    throw new BusinessRuleException("Cuando se edita un concepto no es posible agregarle una descripción de tipo 'Abreviada'.");
+                }
+            }
         }
+
+
     }
 }
