@@ -90,19 +90,7 @@ public class ConceptQueryDAOImpl implements ConceptQueryDAO {
             e.printStackTrace();
         }
 
-
-        try (Connection connection = connect.getConnection();
-             CallableStatement call = connection.prepareCall("{call semantikos.delete_concept(?)}")) {
-
-            call.setLong(1,1);
-            call.execute();
-        } catch (SQLException e) {
-            String errorMessage = "No se pudo llamar query: " + query.toString();
-            logger.error(errorMessage, e);
-            throw new EJBException(errorMessage, e);
-        }
-
-        return null;
+        return concepts;
     }
 
     private Array getArrayAuxTargets(ConceptQuery query, Connection connection) throws SQLException {
@@ -194,18 +182,6 @@ public class ConceptQueryDAOImpl implements ConceptQueryDAO {
             categorias[i]=query.getCategories().get(i).getId();
         }
         return connection.createArrayOf("integer", categorias);
-    }
-
-
-    private String makeSQLfromQuery(ConceptQuery query){
-
-
-
-
-
-
-
-        return null;
     }
 
 
