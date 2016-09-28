@@ -57,12 +57,12 @@ public class FindConcept implements Serializable{
     public List<ConceptSMTK> getConceptSearchInputAndCategories(String pattern) {
 
         if (pattern != null) {
-            if (pattern.length() > 2) {
+            if (pattern.trim().length() > 2) {
                 findConcepts=conceptManager.findConceptBy(pattern,categoryArrayID,0,conceptManager.countConceptBy(pattern,categoryArrayID));
                 return findConcepts;
             }
         }
-        return findConcepts;
+        return null;
     }
 
     public List<ConceptSMTK> getFindConcepts() {
