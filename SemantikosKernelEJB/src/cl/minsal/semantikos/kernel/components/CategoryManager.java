@@ -55,8 +55,6 @@ public interface CategoryManager {
 
     public void addAttribute(RelationshipDefinition attributeCategory, int idCategory);
 
-    public int addTypeRelationship(String name, int typeRelation, int idCategoryDes, int multiplicity);
-
     /**
      * Este método permite crear de manera persistente una categoría, con todas sus definiciones.
      *

@@ -8,8 +8,8 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
-import static cl.minsal.semantikos.model.snomedct.DescriptionSCTType.FSN;
-import static cl.minsal.semantikos.model.snomedct.DescriptionSCTType.SYNONYM;
+import static cl.minsal.semantikos.model.snomedct.DescriptionSCT.DescriptionSCTType.FSN;
+import static cl.minsal.semantikos.model.snomedct.DescriptionSCT.DescriptionSCTType.SYNONYM;
 
 /**
  * Esta clase representa un concepto Snomed-CT.
@@ -128,7 +128,7 @@ public class ConceptSCT extends PersistentEntity implements Target {
     private DescriptionSCT getDescriptionFavouriteSynonymous() {
 
         for (DescriptionSCT synonym : this.getDescriptionSynonymous()) {
-            if (synonym.isFavourite()){
+            if (synonym.isFavourite()) {
                 return synonym;
             }
         }
@@ -147,8 +147,13 @@ public class ConceptSCT extends PersistentEntity implements Target {
         return synonyms;
     }
 
-    private String getDescriptionFSN() {
-
+    /**
+     * Este método es responsable de buscar y retornar la descripción FSN  del concepto. <p>Es un supuesto que todos
+     * los conceptos tienen una descripción FSN.</p>
+     *
+     * @return La descripción del concepto.
+     */
+    public String getDescriptionFSN() {
         for (DescriptionSCT description : descriptions) {
             if (description.getType().equals(FSN)) {
                 return description.getTerm();
@@ -157,4 +162,13 @@ public class ConceptSCT extends PersistentEntity implements Target {
 
         return null;
     }
+
+    public void setDescriptions(List<DescriptionSCT> descriptions) {
+        this.descriptions = descriptions;
+    }
+
+    public List<DescriptionSCT> getDescriptions() {
+        return descriptions;
+    }
+
 }

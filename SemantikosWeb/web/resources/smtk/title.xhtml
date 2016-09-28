@@ -18,9 +18,9 @@
     <div class="ui-g">
         <div class="ui-g-12 ui-md-6 ui-lg-12">
             <h2>
-                <h:outputText value="Nuevo Concepto Borrador" rendered="#{ not cc.attrs.concept.persistent}" />
-                <h:outputText value="Concepto Borrador #{cc.attrs.concept.conceptID}" rendered="#{ cc.attrs.concept.persistent and not cc.attrs.concept.modeled}" />
-                <h:outputText value="Concepto Modelado #{cc.attrs.concept.conceptID}" rendered="#{ cc.attrs.concept.persistent and cc.attrs.concept.modeled}" />
+                <h:outputText value="Nuevo Concepto Borrador, #{cc.attrs.concept.category.name}" rendered="#{ not cc.attrs.concept.persistent}" />
+                <h:outputText value="Concepto Borrador #{cc.attrs.concept.conceptID}, #{cc.attrs.concept.category.name}" rendered="#{ cc.attrs.concept.persistent and not cc.attrs.concept.modeled}" />
+                <h:outputText value="Concepto Modelado #{cc.attrs.concept.conceptID}, #{cc.attrs.concept.category.name}" rendered="#{ cc.attrs.concept.persistent and cc.attrs.concept.modeled}" />
             </h2>
         </div>
     </div>

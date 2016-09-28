@@ -145,7 +145,6 @@ public class ConceptBean implements Serializable {
         // TODO: Manejar el usuario desde la sesión
 
         user = new User();
-
         user.setIdUser(1);
         user.setUsername("amauro");
         user.setPassword("amauro");
@@ -160,7 +159,6 @@ public class ConceptBean implements Serializable {
 
         categoryList = categoryManager.getCategories();
 
-
         descriptionTypes = descriptionTypeFactory.getDescriptionTypesButFSNandFavorite();
 
         descriptionTypesEdit = descriptionTypeFactory.getDescriptionTypesButFSN();
@@ -169,9 +167,6 @@ public class ConceptBean implements Serializable {
 
 
         // TODO: Inicializar lista de estados de descripción con todos los estados posibles
-        //descriptionStates = stateMachineManager.getConceptStateMachine().
-        //concept = new ConceptSMTK(category, new Description("electrocardiograma de urgencia", descriptionTypes.get(0)));
-
     }
 
     //Methods
@@ -612,11 +607,23 @@ public class ConceptBean implements Serializable {
 
     }
 
+    /**
+     * Metodo encargado de hacer el "enroque" con la preferida.
+     */
+
     public void descriptionEditRow(RowEditEvent event) {
-
-
-
-
+        long SYNONYMOUS_ID=3;
+        for (DescriptionWeb descriptionRowEdit: concept.getDescriptionsWeb()) {
+            if(descriptionRowEdit.equals(event.getObject()) || descriptionRowEdit.getId()== ((DescriptionWeb)event.getObject()).getId()){
+                if (descriptionRowEdit.getDescriptionType().equals(descriptionTypeFactory.getFavoriteDescriptionType())){
+                    descriptionRowEdit.setDescriptionType(descriptionTypeFactory.getDescriptionTypeByID(SYNONYMOUS_ID));
+                    DescriptionWeb descriptionFavorite  = concept.getValidDescriptionFavorite();
+                    descriptionFavorite.setDescriptionType(descriptionTypeFactory.getDescriptionTypeByID(SYNONYMOUS_ID));
+                    descriptionRowEdit.setDescriptionType(descriptionTypeFactory.getFavoriteDescriptionType());
+                    break;
+                }
+            }
+        }
     }
 
 

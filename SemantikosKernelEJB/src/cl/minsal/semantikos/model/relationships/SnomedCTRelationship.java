@@ -13,18 +13,23 @@ import java.util.List;
  * @author Andrés Farías
  * @created 9/27/16.
  */
-public class SnomedCTMapping extends Relationship {
+public class SnomedCTRelationship extends Relationship {
 
-    public SnomedCTMapping(ConceptSMTK sourceConcept, ConceptSCT conceptSCT, RelationshipDefinition relationshipDefinition, List<RelationshipAttribute> relationshipAttributes) {
+    public SnomedCTRelationship(ConceptSMTK sourceConcept, ConceptSCT conceptSCT, RelationshipDefinition relationshipDefinition, List<RelationshipAttribute> relationshipAttributes) {
         super(sourceConcept, conceptSCT, relationshipDefinition, relationshipAttributes);
     }
 
-    public SnomedCTMapping(@NotNull long id, @NotNull ConceptSMTK sourceConcept, @NotNull ConceptSCT conceptSCT, @NotNull RelationshipDefinition relationshipDefinition, Timestamp validityUntil, List<RelationshipAttribute> relationshipAttributes) {
+    public SnomedCTRelationship(@NotNull long id, @NotNull ConceptSMTK sourceConcept, @NotNull ConceptSCT conceptSCT, @NotNull RelationshipDefinition relationshipDefinition, Timestamp validityUntil, List<RelationshipAttribute> relationshipAttributes) {
         super(id, sourceConcept, conceptSCT, relationshipDefinition, validityUntil, relationshipAttributes);
     }
 
     public boolean isDefinitional(){
         String name = this.getRelationshipDefinition().getName();
         return name.equalsIgnoreCase("ES_UN") || name.equalsIgnoreCase("ES_UN_MAPEO_DE");
+    }
+
+    @Override
+    public ConceptSCT getTarget() {
+        return (ConceptSCT) super.getTarget();
     }
 }

@@ -5,7 +5,7 @@ import cl.minsal.semantikos.model.ConceptSMTK;
 import cl.minsal.semantikos.model.User;
 import cl.minsal.semantikos.model.exceptions.BusinessRuleException;
 import cl.minsal.semantikos.model.relationships.Relationship;
-import cl.minsal.semantikos.model.relationships.SnomedCTMapping;
+import cl.minsal.semantikos.model.relationships.SnomedCTRelationship;
 
 import javax.validation.constraints.NotNull;
 
@@ -60,7 +60,7 @@ public class RelationshipBindingBR {
          * mapeo del concepto Semantikos a un concepto a SNOMED CT, o al menos realice una relación del tipo “Es un”.
          */
         if (isSnomedCTType && !sourceConcept.isModeled()) {
-            if (((SnomedCTMapping) relationship).isDefinitional()) {
+            if (((SnomedCTRelationship) relationship).isDefinitional()) {
                 sourceConcept.setModeled(true);
                 conceptDAO.update(sourceConcept);
             }

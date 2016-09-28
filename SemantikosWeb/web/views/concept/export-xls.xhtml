@@ -55,25 +55,19 @@
                 </p:dataTable>
 
                 <p:dataTable id="conceptRelationshipsTable" var="snomedctRelation" value="#{conceptExport.snomedCTRelationships}"
-                             paginator="false" rows="6">
+                             paginator="false" rows="4">
 
                     <p:column>
-                        <h:outputText value="Definitoria"/>
+                        <h:outputText value="#{snomedctRelation.relationType}"/>
                     </p:column>
                     <p:column>
-                        <h:outputText value="#{snomedctRelation.snomedCT.description}"/>
+                        <h:outputText value="#{snomedctRelation.snomedCT.descriptionFSN}"/>
                     </p:column>
                     <p:column>
                         <h:outputText value="#{snomedctRelation.snomedCT.idSnomedCT}"/>
                     </p:column>
                     <p:column>
-                        <h:outputText value="#{snomedctRelation.snomedCT.domain}"/>
-                    </p:column>
-                    <p:column>
-                        <h:outputText value="#{descriptions.uses}"/>
-                    </p:column>
-                    <p:column>
-                        <h:outputText value="No implementado"/>
+                        <h:outputText value="#{snomedctRelation.snomedCT.active ? 'Activo' : 'Inactivo'}"/>
                     </p:column>
                 </p:dataTable>
 
