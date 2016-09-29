@@ -1,11 +1,13 @@
 package cl.minsal.semantikos.kernel.components;
 
+import cl.minsal.semantikos.kernel.daos.ConceptQueryDAO;
 import cl.minsal.semantikos.model.Category;
 import cl.minsal.semantikos.model.ConceptSMTK;
 import cl.minsal.semantikos.model.browser.ConceptQuery;
 import cl.minsal.semantikos.model.browser.ConceptQueryFilter;
 import cl.minsal.semantikos.model.relationships.RelationshipDefinition;
 
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +18,9 @@ import java.util.List;
 @Stateless
 public class ConceptQueryManagerImpl implements ConceptQueryManager{
 
+
+    @EJB
+    ConceptQueryDAO conceptQueryDAO;
 
     @Override
     public ConceptQuery getDefaultQueryByCategory(Category category) {
@@ -37,14 +42,13 @@ public class ConceptQueryManagerImpl implements ConceptQueryManager{
     @Override
     public List<ConceptSMTK> executeQuery(ConceptQuery query) {
 
+        return conceptQueryDAO.callQuery(query);
 
-        //TODO: implement
-        return new ArrayList<ConceptSMTK>();
     }
 
     @Override
     public List<RelationshipDefinition> getShowableAttributesByCategory(Category category) {
-        //TODO:implement
+//TODO:implement
         return new ArrayList<RelationshipDefinition>();
     }
 }
