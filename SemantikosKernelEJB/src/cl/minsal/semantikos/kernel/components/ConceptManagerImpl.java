@@ -182,6 +182,12 @@ public class ConceptManagerImpl implements ConceptManager {
     }
 
     @Override
+    public List<ConceptSMTK> getConceptBy(RefSet refSet) {
+        return conceptDAO.getConceptBy(refSet);
+
+    }
+
+    @Override
     public void persist(@NotNull ConceptSMTK conceptSMTK, User user) {
         logger.debug("El concepto " + conceptSMTK + " será persistido.");
 

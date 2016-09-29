@@ -83,7 +83,6 @@ public class RefSetManagerImpl implements RefSetManager {
 
         /* Se asocia la descripción al RefSet */
         refsetDAO.bind(conceptSMTK, refSet);
-        refSet.bindConceptTo(conceptSMTK);
 
         /* Se registra la creación */
         auditManager.recordRefSetBinding(refSet, conceptSMTK, user);
@@ -97,7 +96,6 @@ public class RefSetManagerImpl implements RefSetManager {
 
         /* Se asocia la descripción al RefSet */
         refsetDAO.unbind(conceptSMTK, refSet);
-        refSet.unbindConceptTo(conceptSMTK);
 
         /* Se registra la creación */
         auditManager.recordRefSetUnbinding(refSet, conceptSMTK, user);

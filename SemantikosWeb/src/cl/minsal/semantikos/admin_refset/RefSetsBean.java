@@ -11,8 +11,11 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
+
+import static java.lang.System.currentTimeMillis;
 
 /**
  * Created by des01c7 on 20-09-16.
@@ -94,6 +97,12 @@ public class RefSetsBean {
 
     }
 
+    public void invalidRefset(){
+        refSetEdit.setValidityUntil(new Timestamp(currentTimeMillis()));
+        refSetManager.updateRefSet(refSetEdit,user);
+        refSetList= refSetManager.getAllRefSets();
+    }
+
     public void selectCategoryEvent(){
 
 
@@ -146,10 +155,16 @@ public class RefSetsBean {
 
     public void addConcept(RefSet refSet, ConceptSMTK conceptSMTK){
         refSet.bindConceptTo(conceptSMTK);
+        if(refSet.isPersistent()){
+            refSetManager.bindConceptToRefSet(conceptSMTK,refSet,user);
+        }
     }
 
     public void removeConcept(RefSet refSet, ConceptSMTK conceptSMTK){
         refSet.unbindConceptTo(conceptSMTK);
+        if(refSet.isPersistent()){
+            refSetManager.unbindConceptToRefSet(conceptSMTK,refSet,user);
+        }
     }
 
 

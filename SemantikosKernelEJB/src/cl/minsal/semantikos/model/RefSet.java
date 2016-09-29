@@ -71,6 +71,14 @@ public class RefSet extends PersistentEntity implements AuditableEntity {
         this.name = name;
     }
 
+    public void setConcepts(List<ConceptSMTK> concepts) {
+        this.concepts = concepts;
+    }
+
+    public boolean isValid() {
+        return (getValidityUntil() == null || this.getValidityUntil().after(new Timestamp(System.currentTimeMillis())));
+    }
+
     @Override
     public long getId() {
         return id;
