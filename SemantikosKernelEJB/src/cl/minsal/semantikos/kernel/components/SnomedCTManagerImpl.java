@@ -116,7 +116,8 @@ public class SnomedCTManagerImpl implements SnomedCTManager {
         String term = resultSet.getString("term");
         long caseSignificanceID = resultSet.getLong("caseSignificanceId");
 
-        DescriptionSCT.DescriptionSCTType type = typeID == 1 ? DescriptionSCT.DescriptionSCTType.FSN : DescriptionSCT.DescriptionSCTType.SYNONYM;
-        return new DescriptionSCT(id, type, term, effectiveTime, active, moduleID, conceptID, languageCode, caseSignificanceID, true);
+        //DescriptionSCT.DescriptionSCTType type = typeID == 1 ? DescriptionSCT.DescriptionSCTType.FSN : DescriptionSCT.DescriptionSCTType.SYNONYM;
+
+        return new DescriptionSCT(id, effectiveTime, active, moduleID, conceptID, languageCode , typeID , term , caseSignificanceID);
     }
 }

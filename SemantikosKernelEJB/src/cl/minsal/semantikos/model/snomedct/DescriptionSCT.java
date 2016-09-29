@@ -62,8 +62,6 @@ public class DescriptionSCT extends PersistentEntity {
      */
     private String term;
 
-    private DescriptionSCTType type;
-
     private boolean favourite;
 
     /**
@@ -87,14 +85,6 @@ public class DescriptionSCT extends PersistentEntity {
         this.typeId = typeId;
         this.term = term;
         this.caseSignificanceId = caseSignificanceId;
-    }
-
-    public DescriptionSCTType getType() {
-        return type;
-    }
-
-    public void setType(DescriptionSCTType type) {
-        this.type = type;
     }
 
     public String getTerm() {
@@ -168,8 +158,4 @@ public class DescriptionSCT extends PersistentEntity {
     public void setTypeId(long typeId) {
         this.typeId = typeId;
     }
-}
-
-enum DescriptionSCTType {
-    FSN, SYNONYM;
 }

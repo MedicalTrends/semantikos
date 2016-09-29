@@ -139,7 +139,7 @@ public class ConceptSCT extends PersistentEntity implements Target {
     private List<DescriptionSCT> getDescriptionSynonymous() {
         List<DescriptionSCT> synonyms = new ArrayList<>();
         for (DescriptionSCT description : descriptions) {
-            if (description.getType().equals(SYNONYM)) {
+            if (SnomedCTMetadata.SYNONIM.equals(description.getTypeId())) {
                 synonyms.add(description);
             }
         }
@@ -155,7 +155,7 @@ public class ConceptSCT extends PersistentEntity implements Target {
      */
     public String getDescriptionFSN() {
         for (DescriptionSCT description : descriptions) {
-            if (description.getType().equals(FSN)) {
+            if (SnomedCTMetadata.FSN.equals(description.getTypeId())) {
                 return description.getTerm();
             }
         }
