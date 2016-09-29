@@ -129,11 +129,11 @@ public class ConceptQueryDAOImpl implements ConceptQueryDAO {
 
 
         for (ConceptQueryFilter filter:query.getFilters()) {
-            if (filter.getDefinition().getTargetDefinition().isHelperTable()) {
+            if (filter.getDefinition().getTargetDefinition().isHelperTable() && filter.getTargets().size()>0) {
                 filters++;
 
                        if (filter.getTargets().size()>maxTargetsSize)
-                    maxTargetsSize = filter.getTargets().size();
+                            maxTargetsSize = filter.getTargets().size();
             }
         }
 
@@ -145,7 +145,7 @@ public class ConceptQueryDAOImpl implements ConceptQueryDAO {
         int i = 0;
         for (ConceptQueryFilter filter:query.getFilters()) {
 
-            if (filter.getDefinition().getTargetDefinition().isHelperTable()) {
+            if (filter.getDefinition().getTargetDefinition().isHelperTable() && filter.getTargets().size()>0) {
                 for(int j = 0; j < filter.getTargets().size(); j++){
                     auxtargets[i][j] = (int) ( ( (HelperTableRecord) (filter.getTargets().get(j)) ).getId() );
                 }
@@ -162,19 +162,13 @@ public class ConceptQueryDAOImpl implements ConceptQueryDAO {
 
     private Array getArrayAuxRefdefs(ConceptQuery query, Connection connection) throws SQLException {
 
-        int filters = 0;
-
-        for (ConceptQueryFilter filter:query.getFilters()) {
-            if (filter.getDefinition().getTargetDefinition().isHelperTable()) {
-                filters++;
-            }
-        }
+        int filters = getValidFilterNumber(query);
 
         Integer[] auxtables = new Integer[filters];
 
         int i = 0;
         for (ConceptQueryFilter filter:query.getFilters()) {
-            if (filter.getDefinition().getTargetDefinition().isHelperTable()) {
+            if (filter.getDefinition().getTargetDefinition().isHelperTable() && filter.getTargets().size()>0) {
                 auxtables[i] =  (int)   filter.getDefinition().getId()   ;
                 i++;
             }
@@ -182,21 +176,26 @@ public class ConceptQueryDAOImpl implements ConceptQueryDAO {
         return connection.createArrayOf("integer", auxtables);
     }
 
-    private Array getArrayAuxTables(ConceptQuery query, Connection connection) throws SQLException {
-
+    private int getValidFilterNumber(ConceptQuery query) {
         int filters = 0;
 
         for (ConceptQueryFilter filter:query.getFilters()) {
-            if (filter.getDefinition().getTargetDefinition().isHelperTable()) {
+            if (filter.getDefinition().getTargetDefinition().isHelperTable() && filter.getTargets().size()>0) {
                 filters++;
             }
         }
+        return filters;
+    }
+
+    private Array getArrayAuxTables(ConceptQuery query, Connection connection) throws SQLException {
+
+        int filters = getValidFilterNumber(query);
 
         Integer[] auxtables = new Integer[filters];
 
         int i = 0;
         for (ConceptQueryFilter filter:query.getFilters()) {
-            if (filter.getDefinition().getTargetDefinition().isHelperTable()) {
+            if (filter.getDefinition().getTargetDefinition().isHelperTable() && filter.getTargets().size()>0) {
                 auxtables[i] =  (int) (  ((HelperTable)filter.getDefinition().getTargetDefinition()).getId()   );
                 i++;
             }
