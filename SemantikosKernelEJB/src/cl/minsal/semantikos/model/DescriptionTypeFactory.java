@@ -115,4 +115,18 @@ public class DescriptionTypeFactory {
 
         return otherDescriptionTypes;
     }
+
+    public List<DescriptionType> getDescriptionTypesButFSN() {
+
+        List<DescriptionType> otherDescriptionTypes = new ArrayList<DescriptionType>();
+        DescriptionType fsnType = DescriptionTypeFactory.getInstance().getFSNDescriptionType();
+
+        for (DescriptionType descriptionType : getDescriptionTypes()) {
+            if (!descriptionType.equals(fsnType)) {
+                otherDescriptionTypes.add(descriptionType);
+            }
+        }
+
+        return otherDescriptionTypes;
+    }
 }

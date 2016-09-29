@@ -41,7 +41,7 @@ public interface CategoryDAO {
      *
      * @return La lista de definiciones de atributos de la categoría.
      */
-    public List<RelationshipDefinition> getCategoryMetaData(long idCategory) throws ParseException;
+    public List<RelationshipDefinition> getCategoryMetaData(long idCategory);
 
     /**
      * Este método permite persistir una categoría, con todas sus definiciones.

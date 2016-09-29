@@ -13,46 +13,40 @@ import javax.naming.AuthenticationException;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * Created by BluePrints Developer on 19-05-2016.
+ * @author Francisco Méndez on 19-05-2016.
  */
 @Stateless(name = "AuthenticationManagerEJB")
 @SecurityDomain("semantikos")
 public class AuthenticationManager {
 
-    static private final Logger logger = LoggerFactory.getLogger(AuthenticationManager.class);
-
+    private static final Logger logger = LoggerFactory.getLogger(AuthenticationManager.class);
 
     @EJB(name = "DummyAuthenticationEJB")
     DummyAuthenticationBean dummyAuthenticationBean;
 
 
-    @EJB(name = "JbossSecurutyDomainAuthenticationEJB")
-    JbossSecurutyDomainAuthenticationBean jbossSecurutyDomainAuthenticationBean;
+    @EJB(name = "JbossSecurityDomainAuthenticationEJB")
+    JbossSecurityDomainAuthenticationBean jbossSecurityDomainAuthenticationBean;
 
 
     @PermitAll
-    public boolean authenticate(String username, String password, HttpServletRequest request) throws AuthenticationException{
+    public boolean authenticate(String username, String password, HttpServletRequest request) throws AuthenticationException {
 
-        return getAuthenticationMethod().authenticate(username,password,request);
+        return getAuthenticationMethod().authenticate(username, password, request);
     }
 
-    @PermitAll   //es nece
-    public User getUserDetails(String username){
+    @PermitAll
+    public User getUserDetails(String username) {
         return getAuthenticationMethod().getUser(username);
     }
 
-
-
-    //TODO retornar dianamicamente dependiendo de alguna deteccion del ambiente?
-    private AuthenticationMethod getAuthenticationMethod(){
-
-        //return dummyAuthenticationBean;
-        return jbossSecurutyDomainAuthenticationBean;
+    private AuthenticationMethod getAuthenticationMethod() {
+        return jbossSecurityDomainAuthenticationBean;
     }
 
 
     @RolesAllowed("Administrador")
     public void setUserPassword(String username, String password) throws PasswordChangeException {
-        getAuthenticationMethod().setUserPassword(username,password);
+        getAuthenticationMethod().setUserPassword(username, password);
     }
 }

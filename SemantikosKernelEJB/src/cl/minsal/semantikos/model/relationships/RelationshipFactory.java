@@ -153,7 +153,8 @@ public class RelationshipFactory {
 
         /* El target puede ser un concepto SMTK */
         else if (relationshipDefinition.getTargetDefinition().isSMTKType()) {
-            target = conceptDAO.getConceptByID(idTarget);
+            //target = conceptDAO.getConceptByID(idTarget);
+            target = targetDAO.getTargetByID(idTarget);
         }
 
         /* El target puede ser un concepto Snomed CT */
@@ -172,6 +173,7 @@ public class RelationshipFactory {
             logger.error(msg);
             throw new EJBException(msg);
         }
+
 
         return new Relationship(relationshipDTO.getId(), sourceConceptSMTK, target, relationshipDefinition, relationshipDTO.validityUntil,new ArrayList<RelationshipAttribute>());
     }

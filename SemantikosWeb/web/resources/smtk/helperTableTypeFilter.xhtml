@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:composite="http://java.sun.com/jsf/composite"
+      xmlns:smtk="http://java.sun.com/jsf/composite/smtk"
+      xmlns:p="http://primefaces.org/ui">
+
+<composite:interface >
+    <composite:attribute name="targetDefinition" type="cl.minsal.semantikos.model.helpertables.HelperTable" />
+    <composite:attribute name="targets" type="java.util.List"/>
+</composite:interface>
+<composite:implementation>
+    <p:selectOneMenu value="#{cc.attrs.targets.get(0)}" rendered="#{cc.attrs.targets.size() eq 0}">
+        <f:selectItem itemLabel="Seleccione..."
+                      itemValue=""
+        />
+        <f:selectItems value="#{conceptBrowserBean.helperTableManager.getAllRecords(cc.attrs.targetDefinition)}"
+                       var="helperTableRecord"
+                       itemLabel="#{helperTableRecord.fields['description']}"
+                       itemValue="#{helperTableRecord.id}"/>
+    </p:selectOneMenu>
+
+
+</composite:implementation>
+</html>

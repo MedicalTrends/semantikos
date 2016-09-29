@@ -34,7 +34,7 @@ public abstract class PersistentEntity implements IPersistentEntity {
 
     @Override
     public boolean isPersistent() {
-        return this.id != NON_PERSISTED_ID;
+        return this.getId() != NON_PERSISTED_ID;
     }
 
     public PersistentEntity(long id) {

@@ -15,6 +15,9 @@
                 <p:column headerText="Descripcion preferida">
                     <h:outputText value="#{concepto.descriptionFavorite.term}"/>
                 </p:column>
+                <p:column headerText="Categoría">
+                    <h:outputText value="#{concepto.category.name}"/>
+                </p:column>
             </p:dataTable>
         </p:panel>
     </ui:define>

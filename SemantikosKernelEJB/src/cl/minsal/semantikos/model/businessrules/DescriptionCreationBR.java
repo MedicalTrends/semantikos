@@ -36,15 +36,14 @@ public class DescriptionCreationBR {
      * @param term            El término que se desea agregar.
      * @param categoryManager El Manager.
      */
-    public void validatePreCondition(ConceptSMTK concept, String term, DescriptionType type, CategoryManager categoryManager, boolean edition) {
+    public void validatePreConditions(ConceptSMTK concept, String term, DescriptionType type, CategoryManager categoryManager, boolean edition) {
 
         brDescriptionCreation001(concept, term, categoryManager);
         brDescriptionCreation003(concept, type);
 
-        /* Reglas para modo edicion */
+        /* Reglas para modo edición */
         if(edition){
-            //TODO Arreglar regla de negocio (Andrés)
-            //brDescriptionEdition003(concept, type);
+            brDescriptionEdition003(concept, type);
         }
     }
 
@@ -83,6 +82,10 @@ public class DescriptionCreationBR {
                 return;
             }
 
+            if(!concept.isModeled() && type.equals(FSN) || !concept.isModeled() && type.equals(PREFERIDA)){
+                return;
+            }
+
             throw new BusinessRuleException("BR-DES-010: Cuando se edita un concepto solo se le pueden agregar Descripciones de tipo: Abreviado, Sinónimo,\n" +
                     "     * Ambiguo, General o Mal Escrito.");
         }
@@ -96,9 +99,15 @@ public class DescriptionCreationBR {
      */
     private void brDescriptionCreation003(ConceptSMTK concept, DescriptionType type) {
 
-        /* Si se está editando y es una abreviada.... */
-        if (concept.isPersistent() && type.equals(ABREVIADA)) {
-            throw new BusinessRuleException("Cuando se edita un concepto no es posible agregarle una descripción de tipo 'Abreviada'.");
+        for (Description description: concept.getDescriptions()) {
+            if(description.getDescriptionType().equals(ABREVIADA) && description.isPersistent()){
+                /* Si se está editando y es una abreviada.... */
+                if (concept.isPersistent() && type.equals(ABREVIADA)) {
+                    throw new BusinessRuleException("Cuando se edita un concepto no es posible agregarle una descripción de tipo 'Abreviada'.");
+                }
+            }
         }
+
+
     }
 }

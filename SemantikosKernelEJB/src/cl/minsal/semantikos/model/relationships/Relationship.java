@@ -115,8 +115,10 @@ public class Relationship extends PersistentEntity implements AuditableEntity {
     }
 
     public void setTarget(Target target) {
+        if(target!=null){
+            this.target = target;
+        }
 
-        this.target = target;
     }
 
     public boolean isToBeUpdated() {
