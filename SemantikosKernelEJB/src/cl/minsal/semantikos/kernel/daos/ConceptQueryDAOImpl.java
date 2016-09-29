@@ -64,12 +64,39 @@ public class ConceptQueryDAOImpl implements ConceptQueryDAO {
             call.setArray(3, getArrayAuxTargets(query, connection));
             call.setArray(4, getArrayAuxTables(query, connection));
             call.setArray(5, getArrayAuxRefdefs(query, connection));
-            call.setBoolean(6, query.getModeled()==null? false: query.getModeled());
-            call.setBoolean(7, query.getToBeReviewed()==null? false: query.getToBeReviewed());
-            call.setBoolean(8, query.getToBeConsulted()==null? false: query.getToBeConsulted());
-            call.setLong(9, query.getTag()==null? null: query.getTag().getId());
-            call.setDate(10, new Date(query.getCreationDateSince().getTime()));
-            call.setDate(11, new Date(query.getCreationDateTo().getTime()));
+
+            if(query.getModeled()==null)
+                call.setNull(6, Types.BOOLEAN );
+            else
+                call.setBoolean(6, query.getModeled());
+
+            if(query.getToBeReviewed()==null)
+                call.setNull(7, Types.BOOLEAN );
+            else
+                call.setBoolean(7, query.getToBeReviewed());
+
+
+            if(query.getToBeConsulted()==null)
+                call.setNull(8, Types.BOOLEAN );
+            else
+                call.setBoolean(8, query.getToBeConsulted());
+
+            if(query.getTag()==null)
+                call.setNull(9, Types.INTEGER );
+            else
+                call.setLong(9, query.getTag().getId());
+
+            if (query.getCreationDateSince()==null)
+                call.setNull(10, Types.DATE );
+            else
+                call.setDate(10, new Date(query.getCreationDateSince().getTime()));
+
+            if(query.getCreationDateTo()==null)
+                call.setNull(11, Types.DATE );
+            else
+                call.setDate(11, new Date(query.getCreationDateTo().getTime()));
+
+
             call.setString(12, query.getOrder());
             call.setInt(13, query.getPageNumber());
             call.setInt(14, query.getPageSize());
@@ -176,7 +203,7 @@ public class ConceptQueryDAOImpl implements ConceptQueryDAO {
 
     private Array getArrayCategories(ConceptQuery query, Connection connection) throws SQLException {
         Long[] categorias = new Long[query.getCategories().size()];
-        for(int i = 0; i< query.getCategories().size();i++){
+        for(int i = 0; i < query.getCategories().size();i++){
             categorias[i]=query.getCategories().get(i).getId();
         }
         return connection.createArrayOf("integer", categorias);
