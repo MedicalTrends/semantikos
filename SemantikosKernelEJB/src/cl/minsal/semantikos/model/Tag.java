@@ -146,17 +146,22 @@ public class Tag extends PersistentEntity {
     }
 
     @Override
+    public String toString() {
+        return this.name;
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
         Tag tag = (Tag) o;
 
-        return true;
+        return name.equals(tag.name);
     }
 
     @Override
-    public String toString() {
-        return this.name;
+    public int hashCode() {
+        return name.hashCode();
     }
 }

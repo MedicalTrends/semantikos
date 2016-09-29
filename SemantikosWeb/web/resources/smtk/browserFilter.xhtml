@@ -18,17 +18,16 @@
 
     <div class="ui-g">
         <div class="ui-g-12 ui-md-6 ui-lg-2">
-            <p:selectOneMenu value="#{cc.attrs.conceptQuery.toBeReviewed}" style="margin-right:10px; width: 60%">
-                <f:selectItem itemLabel="¿Revisar?" itemValue="#{null}"/>
-                <f:selectItem itemLabel="Sin Revisar" itemValue="#{false}"/>
-                <f:selectItem itemLabel="Revisar" itemValue="#{true}"/>
-            </p:selectOneMenu>
+            <p:inputText value="#{cc.attrs.conceptQuery.query}" style="margin-right:10px; width: 80%" placeholder="Buscar...">
+                <p:ajax event="keyup" update="@(.conceptBrowserTable)" />
+            </p:inputText>
         </div>
         <div class="ui-g-12 ui-md-6 ui-lg-2">
             <p:selectOneMenu value="#{cc.attrs.conceptQuery.toBeReviewed}" style="margin-right:10px; width: 60%">
                 <f:selectItem itemLabel="¿Revisar?" itemValue="#{null}"/>
                 <f:selectItem itemLabel="Sin Revisar" itemValue="#{false}"/>
                 <f:selectItem itemLabel="Revisar" itemValue="#{true}"/>
+                <p:ajax event="itemSelect" update="@(.conceptBrowserTable)" />
             </p:selectOneMenu>
         </div>
         <div class="ui-g-12 ui-md-6 ui-lg-2">
@@ -36,6 +35,7 @@
                 <f:selectItem itemLabel="¿Consultar?" itemValue="#{null}"/>
                 <f:selectItem itemLabel="Sin Consultar" itemValue="#{false}"/>
                 <f:selectItem itemLabel="Revisar" itemValue="#{true}"/>
+                <p:ajax event="itemSelect" update="@(.conceptBrowserTable)" />
             </p:selectOneMenu>
         </div>
         <div class="ui-g-12 ui-md-6 ui-lg-2">
@@ -43,13 +43,15 @@
                 <f:selectItem itemLabel="Estado" itemValue="#{null}"/>
                 <f:selectItem itemLabel="Borrador" itemValue="#{false}"/>
                 <f:selectItem itemLabel="Modelado" itemValue="#{true}"/>
+                <p:ajax event="itemSelect" update="@(.conceptBrowserTable)" />
             </p:selectOneMenu>
         </div>
         <div class="ui-g-12 ui-md-6 ui-lg-2">
-            <p:selectOneMenu value="#{cc.attrs.conceptQuery.tag}"
+            <p:selectOneMenu value="#{cc.attrs.conceptQuery.tag}" converter="omnifaces.SelectItemsConverter"
                              style="margin-right:10px; width: 60%">
                 <f:selectItems value="#{conceptBrowserBean.tags}" var="tag"
-                               itemLabel="#{tag.name}" itemValue="#{tag.id}"/>
+                               itemLabel="#{tag.name}" itemValue="#{tag}"/>
+                <p:ajax event="itemSelect" update="@(.conceptBrowserTable)" />
             </p:selectOneMenu>
         </div>
 

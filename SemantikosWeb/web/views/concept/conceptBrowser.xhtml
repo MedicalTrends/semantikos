@@ -11,7 +11,7 @@
 
         <f:metadata>
             <f:viewParam name="idCategory" value="#{conceptBrowserBean.idCategory}" />
-            <f:event type="preRenderView" listener="#{conceptBrowserBean.init}" />
+            <f:event type="preRenderView" listener="#{conceptBrowserBean.executeQuery}" />
         </f:metadata>
 
         <div class="Container100">
@@ -26,9 +26,10 @@
                                         <smtk:browserFilter conceptQuery="#{conceptBrowserBean.conceptQuery}" />
                                         <p:spacer />
                                         <p:dataTable id="conceptTable"
+                                                     styleClass="conceptBrowserTable"
                                                      value="#{conceptBrowserBean.concepts}"
                                                      var="concept"
-                                                     rows="15"
+                                                     rows="30"
                                                      paginator="true" lazy="true" dynamic="true"
                                                      paginatorTemplate=" {CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
                                                      emptyMessage="No se han encontrado conceptos con los criterios utilizados">
