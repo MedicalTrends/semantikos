@@ -68,8 +68,6 @@ public class ConceptBrowserBean implements Serializable {
     @EJB
     private ConceptManager conceptManager;
 
-    private List<FluidGridItem> items;
-
 
     //@PostConstruct
     public void init() {

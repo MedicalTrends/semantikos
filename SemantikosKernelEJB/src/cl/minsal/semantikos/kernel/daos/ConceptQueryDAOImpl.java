@@ -39,7 +39,7 @@ public class ConceptQueryDAOImpl implements ConceptQueryDAO {
 
         //TODO: hacer funcion en pg
         try (Connection connection = connect.getConnection();
-             CallableStatement call = connection.prepareCall("{call semantikos.find_concept_by_query(?,?,?,?,?,?,?,?,?,?,?,?,?,?) " )){
+             CallableStatement call = connection.prepareCall("{call semantikos.find_concept_by_query(?,?,?,?,?,?,?,?,?,?,?,?,?,?)}" )){
 
             /*
                1 categories _int4,
@@ -64,10 +64,10 @@ public class ConceptQueryDAOImpl implements ConceptQueryDAO {
             call.setArray(3, getArrayAuxTargets(query, connection));
             call.setArray(4, getArrayAuxTables(query, connection));
             call.setArray(5, getArrayAuxRefdefs(query, connection));
-            call.setBoolean(6, query.getModeled());
-            call.setBoolean(7, query.getToBeReviewed());
-            call.setBoolean(8, query.getToBeConsulted());
-            call.setLong(9, query.getTag().getId());
+            call.setBoolean(6, query.getModeled()==null? false: query.getModeled());
+            call.setBoolean(7, query.getToBeReviewed()==null? false: query.getToBeReviewed());
+            call.setBoolean(8, query.getToBeConsulted()==null? false: query.getToBeConsulted());
+            call.setLong(9, query.getTag()==null? null: query.getTag().getId());
             call.setDate(10, new Date(query.getCreationDateSince().getTime()));
             call.setDate(11, new Date(query.getCreationDateTo().getTime()));
             call.setString(12, query.getOrder());
@@ -98,14 +98,14 @@ public class ConceptQueryDAOImpl implements ConceptQueryDAO {
 
 
         int maxTargetsSize = 0;
-        int filters = 0;
+         int filters = 0;
 
 
         for (ConceptQueryFilter filter:query.getFilters()) {
             if (filter.getDefinition().getTargetDefinition().isHelperTable()) {
                 filters++;
 
-                if (filter.getTargets().size()>maxTargetsSize)
+                       if (filter.getTargets().size()>maxTargetsSize)
                     maxTargetsSize = filter.getTargets().size();
             }
         }
@@ -176,7 +176,7 @@ public class ConceptQueryDAOImpl implements ConceptQueryDAO {
 
     private Array getArrayCategories(ConceptQuery query, Connection connection) throws SQLException {
         Long[] categorias = new Long[query.getCategories().size()];
-        for(int i = 0; i<= query.getCategories().size();i++){
+        for(int i = 0; i< query.getCategories().size();i++){
             categorias[i]=query.getCategories().get(i).getId();
         }
         return connection.createArrayOf("integer", categorias);
