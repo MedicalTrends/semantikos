@@ -24,7 +24,7 @@ public class RefSetCreationBR {
      * @param user              El usuario que crea el RefSet.
      */
     private void brRefSet005(Institution refSetInstitution, User user) {
-        if (user.getInstitutions().contains(refSetInstitution)) {
+        if (!user.getInstitutions().contains(refSetInstitution)) {
             throw new BusinessRuleException("Un Administrador sólo puede crear RefSets asociados a los establecimientos a los que pertenece el usuario");
         }
     }

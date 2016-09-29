@@ -25,6 +25,20 @@ public class RefSetManagerImpl implements RefSetManager {
     private AuditManager auditManager;
 
     @Override
+    public RefSet createRefSet(RefSet refSet, User user) {
+        RefSet refsetPersist = createRefSet(refSet.getName(),refSet.getInstitution(),user);
+
+            /* Se guardan los conceptos asignados al refset*/
+
+        for (ConceptSMTK concept: refSet.getConcepts()) {
+            bindConceptToRefSet(concept, refsetPersist, user);
+            refsetPersist.bindConceptTo(concept);
+        }
+
+        return refsetPersist;
+    }
+
+    @Override
     public RefSet createRefSet(String name, Institution institution, User user) {
 
         /* Se validan las pre-condiciones */
@@ -33,6 +47,7 @@ public class RefSetManagerImpl implements RefSetManager {
         /* Se crea el RefSet y se persiste */
         RefSet refSet = new RefSet(name, institution, new Timestamp(currentTimeMillis()));
         refsetDAO.persist(refSet);
+
 
         /* Se registra la creación */
         auditManager.recordRefSetCreation(refSet, user);
@@ -54,11 +69,7 @@ public class RefSetManagerImpl implements RefSetManager {
         /* Se registra la creación */
         auditManager.recordRefSetUpdate(refSet, user);
 
-        /* Se guardan los conceptos asignados al refset*/
 
-        for (ConceptSMTK concept: refSet.getConcepts()) {
-            bindConceptToRefSet(concept, refSet, user);
-        }
 
         /* Se registra la creación del RefSet */
         return refSet;

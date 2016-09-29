@@ -14,6 +14,15 @@ public interface RefSetManager {
     /**
      * Este método es responsable de crear un RefSet.
      *
+     * @param refSet refset para persistir
+     * @param user   El usuario que crea el RefSet.
+     * @return El RefSet creado.
+     */
+    public RefSet createRefSet(RefSet refSet, User user);
+
+    /**
+     * Este método es responsable de crear un RefSet.
+     *
      * @param name        Nombre del RefSet. Nombre corto y descriptivo de su contenido, para identificación por
      *                    humanos
      *
