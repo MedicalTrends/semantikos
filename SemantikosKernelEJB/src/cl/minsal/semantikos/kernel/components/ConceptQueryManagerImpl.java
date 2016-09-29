@@ -42,7 +42,9 @@ public class ConceptQueryManagerImpl implements ConceptQueryManager{
     @Override
     public List<ConceptSMTK> executeQuery(ConceptQuery query) {
 
-        return conceptQueryDAO.callQuery(query);
+        //return conceptQueryDAO.callQuery(query);
+
+        return conceptQueryDAO.executeQuery(query);
 
     }
 

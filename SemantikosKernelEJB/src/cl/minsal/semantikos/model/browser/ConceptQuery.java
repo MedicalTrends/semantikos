@@ -2,9 +2,13 @@ package cl.minsal.semantikos.model.browser;
 
 import cl.minsal.semantikos.model.Category;
 import cl.minsal.semantikos.model.Tag;
+import cl.minsal.semantikos.model.basictypes.BasicTypeValue;
+import cl.minsal.semantikos.model.helpertables.HelperTableRecord;
+import cl.minsal.semantikos.model.relationships.Target;
 
-import java.util.Date;
-import java.util.List;
+import java.lang.reflect.Array;
+import java.lang.reflect.Type;
+import java.util.*;
 
 /**
  * Created by BluePrints Developer on 21-09-2016.
@@ -30,7 +34,6 @@ public class ConceptQuery {
     private String order;
 
     private List<Category> categories;
-
 
     public String getQuery() {
         return query;
@@ -126,5 +129,67 @@ public class ConceptQuery {
 
     public void setCategories(List<Category> categories) {
         this.categories = categories;
+    }
+
+    public Long[] getCategoryValues(){
+
+        List<Long> categoryValues = new ArrayList<>();
+
+        for (Category category : getCategories())
+            categoryValues.add(category.getId());
+
+        if(categoryValues.isEmpty())
+            return null;
+
+        else {
+            Long[] array = new Long[categoryValues.size()];
+            return categoryValues.toArray(array);
+        }
+    }
+
+    public Long[] getHelperTableValues(){
+
+        List<Long> helperTableValues = new ArrayList<>();
+
+        for (ConceptQueryFilter filter : filters)
+            helperTableValues.addAll(filter.getHelperTableValues());
+
+        if(helperTableValues.isEmpty())
+            return null;
+
+        else {
+            Long[] array = new Long[helperTableValues.size()];
+            return helperTableValues.toArray(array);
+        }
+    }
+
+    public String[] getBasicTypeValues(){
+
+        List<String> basicTypeValues = new ArrayList<>();
+
+        for (ConceptQueryFilter filter : filters)
+            basicTypeValues.addAll(filter.getBasicTypeValues());
+
+        if(basicTypeValues.isEmpty())
+            return null;
+
+        else {
+            String[] array = new String[basicTypeValues.size()];
+            return basicTypeValues.toArray(array);
+        }
+    }
+
+    public List<Map<Type, Object> > getConceptQueryParameters(){
+
+        List<Map<Type, Object> > conceptQueryParameters = new ArrayList<>();
+        Map<Type, Object> conceptQueryParameter = new HashMap<>();
+
+        conceptQueryParameter.put(Long.class, getCategoryValues()[0]);
+        conceptQueryParameters.add(conceptQueryParameter);
+
+        conceptQueryParameter.put(Long.class, getCategoryValues()[0]);
+        conceptQueryParameters.add(conceptQueryParameter);
+
+        return map;
     }
 }
