@@ -137,6 +137,8 @@ public class ConceptQueryDAOImpl implements ConceptQueryDAO {
             }
         }
 
+        if(filters == 0 || maxTargetsSize == 0)
+            return  connection.createArrayOf("integer", new Integer[0]);
 
         int[][] auxtargets = new int[filters][maxTargetsSize];
 
@@ -152,6 +154,8 @@ public class ConceptQueryDAOImpl implements ConceptQueryDAO {
 
             }
         }
+
+
         return connection.createArrayOf("integer", auxtargets);
     }
 
