@@ -220,19 +220,23 @@
                                         itemLabel="#{concept.descriptionFavorite.term}" itemValue="#{concept}"
                                         emptyMessage="No se encontraron conceptos relacionados"
                                         placeholder="Buscar concepto por término"
+                                        disabled="#{conceptBean.conceptSMTKTranslateDes!=null}"
                         >
                             <p:ajax event="itemSelect" update=":#{cc.clientId}:conceptTranslate"></p:ajax>
+
                         </p:autoComplete>
-                    </div>
+                        </div>
                     <div class="ui-g-12 ui-md-6 ui-lg-6">
                         <p:selectCheckboxMenu style="width: 300px;" id="menu"
                                               value="#{findConceptBean.categoryArrayID}" label="Filtro categorías"
-                                              filter="true" filterMatchMode="startsWith">
+                                              filter="true" filterMatchMode="startsWith"
+                        disabled="#{conceptBean.conceptSMTKTranslateDes!=null}">
 
                             <f:selectItems value="#{findConceptBean.categoryList}" var="category"
                                            itemLabel="#{category.name}" itemValue="#{category.id}"/>
                             <p:ajax listener="#{findConceptBean.getConceptSearchInputAndCategories}"></p:ajax>
                         </p:selectCheckboxMenu>
+
                     </div>
                 </div>
 
@@ -262,7 +266,12 @@
                     <div class="ui-g-12 ui-md-6 ui-lg-4">
                         <h:outputText value="#{conceptBean.conceptSMTKTranslateDes.category.name}"/>
                     </div>
+                    <div class="ui-g-12 ui-md-6 ui-lg-6">
+                    <p:commandButton rendered="#{conceptBean.conceptSMTKTranslateDes!=null}" update=":#{cc.clientId}:conceptTranslate" value="Cambiar Concepto"><f:setPropertyActionListener value="" target="#{conceptBean.conceptSMTKTranslateDes}"/></p:commandButton>
+
+                    </div>
                 </div>
+
 
             </p:panel>
 

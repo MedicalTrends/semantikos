@@ -345,6 +345,8 @@ public class ConceptManagerImpl implements ConceptManager {
         return conceptDAO.getConceptDraft();
     }
 
+
+
     /**
      * Método encargado de convertir un string en una lista de string.
      *
