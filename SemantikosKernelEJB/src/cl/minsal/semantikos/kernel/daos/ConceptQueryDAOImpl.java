@@ -84,7 +84,7 @@ public class ConceptQueryDAOImpl implements ConceptQueryDAO {
             if(query.getTag()==null)
                 call.setNull(9, Types.INTEGER );
             else
-                call.setLong(9, query.getTag().getId());
+                call.setInt(9, (int)query.getTag().getId());
 
             if (query.getCreationDateSince()==null)
                 call.setNull(10, Types.DATE );
@@ -125,25 +125,27 @@ public class ConceptQueryDAOImpl implements ConceptQueryDAO {
 
 
         int maxTargetsSize = 0;
-         int filters = 0;
+        int filters = 0;
 
 
         for (ConceptQueryFilter filter:query.getFilters()) {
-            if (filter.getDefinition().getTargetDefinition().isHelperTable()) {
+            if (filter.getDefinition().getTargetDefinition().isHelperTable() && filter.getTargets().size()>0) {
                 filters++;
 
-                       if (filter.getTargets().size()>maxTargetsSize)
+                if (filter.getTargets().size()>maxTargetsSize)
                     maxTargetsSize = filter.getTargets().size();
             }
         }
 
+        if(filters == 0 || maxTargetsSize == 0)
+            return  connection.createArrayOf("integer", new Integer[0]);
 
         int[][] auxtargets = new int[filters][maxTargetsSize];
 
         int i = 0;
         for (ConceptQueryFilter filter:query.getFilters()) {
 
-            if (filter.getDefinition().getTargetDefinition().isHelperTable()) {
+            if (filter.getDefinition().getTargetDefinition().isHelperTable() && filter.getTargets().size()>0) {
                 for(int j = 0; j < filter.getTargets().size(); j++){
                     auxtargets[i][j] = (int) ( ( (HelperTableRecord) (filter.getTargets().get(j)) ).getId() );
                 }
@@ -152,25 +154,21 @@ public class ConceptQueryDAOImpl implements ConceptQueryDAO {
 
             }
         }
+
+
         return connection.createArrayOf("integer", auxtargets);
     }
 
 
     private Array getArrayAuxRefdefs(ConceptQuery query, Connection connection) throws SQLException {
 
-        int filters = 0;
-
-        for (ConceptQueryFilter filter:query.getFilters()) {
-            if (filter.getDefinition().getTargetDefinition().isHelperTable()) {
-                filters++;
-            }
-        }
+        int filters = getValidFilterNumber(query);
 
         Integer[] auxtables = new Integer[filters];
 
         int i = 0;
         for (ConceptQueryFilter filter:query.getFilters()) {
-            if (filter.getDefinition().getTargetDefinition().isHelperTable()) {
+            if (filter.getDefinition().getTargetDefinition().isHelperTable() && filter.getTargets().size()>0) {
                 auxtables[i] =  (int)   filter.getDefinition().getId()   ;
                 i++;
             }
@@ -178,21 +176,26 @@ public class ConceptQueryDAOImpl implements ConceptQueryDAO {
         return connection.createArrayOf("integer", auxtables);
     }
 
-    private Array getArrayAuxTables(ConceptQuery query, Connection connection) throws SQLException {
-
+    private int getValidFilterNumber(ConceptQuery query) {
         int filters = 0;
 
         for (ConceptQueryFilter filter:query.getFilters()) {
-            if (filter.getDefinition().getTargetDefinition().isHelperTable()) {
+            if (filter.getDefinition().getTargetDefinition().isHelperTable() && filter.getTargets().size()>0) {
                 filters++;
             }
         }
+        return filters;
+    }
+
+    private Array getArrayAuxTables(ConceptQuery query, Connection connection) throws SQLException {
+
+        int filters = getValidFilterNumber(query);
 
         Integer[] auxtables = new Integer[filters];
 
         int i = 0;
         for (ConceptQueryFilter filter:query.getFilters()) {
-            if (filter.getDefinition().getTargetDefinition().isHelperTable()) {
+            if (filter.getDefinition().getTargetDefinition().isHelperTable() && filter.getTargets().size()>0) {
                 auxtables[i] =  (int) (  ((HelperTable)filter.getDefinition().getTargetDefinition()).getId()   );
                 i++;
             }
