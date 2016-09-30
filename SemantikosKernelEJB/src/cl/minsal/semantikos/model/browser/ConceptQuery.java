@@ -179,13 +179,17 @@ public class ConceptQuery {
         }
     }
 
-    public List<Map<Type, Object> > getConceptQueryParameters(){
+    public List<ConceptQueryParameter> getConceptQueryParameters(){
 
-        List<Map<Type, Object> > conceptQueryParameters = new ArrayList<>();
-        Map<Type, Object> conceptQueryParameter = new HashMap<>();
+        List<ConceptQueryParameter> conceptQueryParameters = new ArrayList<>();
+
+        conceptQueryParameters.add(new ConceptQueryParameter(Long.class, getCategoryValues(), true));
+
 
         conceptQueryParameter.put(Long.class, getCategoryValues()[0]);
         conceptQueryParameters.add(conceptQueryParameter);
+
+        conceptQueryParameter.get
 
         conceptQueryParameter.put(Long.class, getCategoryValues()[0]);
         conceptQueryParameters.add(conceptQueryParameter);

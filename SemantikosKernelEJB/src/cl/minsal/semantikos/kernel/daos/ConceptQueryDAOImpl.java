@@ -6,6 +6,7 @@ import cl.minsal.semantikos.model.ConceptSMTK;
 import cl.minsal.semantikos.model.Tag;
 import cl.minsal.semantikos.model.browser.ConceptQuery;
 import cl.minsal.semantikos.model.browser.ConceptQueryFilter;
+import cl.minsal.semantikos.model.browser.ConceptQueryParameter;
 import cl.minsal.semantikos.model.helpertables.HelperTable;
 import cl.minsal.semantikos.model.helpertables.HelperTableRecord;
 import org.slf4j.Logger;
@@ -273,13 +274,16 @@ public class ConceptQueryDAOImpl implements ConceptQueryDAO {
     }
 
 
-    private void bindParameter(int paramNumber, CallableStatement call, Connection connection, Conce) throws SQLException {
+    private void bindParameter(int paramNumber, CallableStatement call, Connection connection, ConceptQueryParameter param) throws SQLException {
 
 
         System.out.println(object.getClass().getName());
 
-        if(object instanceof String[]){
-            if(object == null)
+        if(param.getValue() == null)
+            if(param.getType().)
+
+        if(param.getValue() instanceof String[]){
+            if(param.getValue() == null)
                 call.setNull(paramNumber, Types.ARRAY);
             else
                 call.setArray(paramNumber, connection.createArrayOf("text", (String[])object));
