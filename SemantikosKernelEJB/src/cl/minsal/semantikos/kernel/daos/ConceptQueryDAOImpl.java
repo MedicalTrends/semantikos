@@ -84,7 +84,7 @@ public class ConceptQueryDAOImpl implements ConceptQueryDAO {
             if(query.getTag()==null)
                 call.setNull(9, Types.INTEGER );
             else
-                call.setLong(9, query.getTag().getId());
+                call.setInt(9, (int)query.getTag().getId());
 
             if (query.getCreationDateSince()==null)
                 call.setNull(10, Types.DATE );

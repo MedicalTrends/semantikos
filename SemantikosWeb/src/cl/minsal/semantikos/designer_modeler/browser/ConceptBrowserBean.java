@@ -44,19 +44,34 @@ public class ConceptBrowserBean implements Serializable {
     @EJB
     HelperTableManagerInterface helperTableManager;
 
-    private cl.minsal.semantikos.model.browser.ConceptQuery conceptQuery;
+    /**
+     * Objeto de consulta: contiene todos los filtros necesarios para el despliegue de los resultados para el navegador
+     */
+    private ConceptQuery conceptQuery;
 
+    /**
+     * Lista de tags para el despliegue del filtro por tags
+     */
     private List<Tag> tags = new ArrayList<Tag>();
 
+    /**
+     * Lista de conceptos para el despliegue del resultado de la consulta
+     */
     private LazyDataModel<ConceptSMTK> concepts;
 
+
+    /**
+     * Categoría sobre la cual se está navegando
+     */
     private Category category;
 
+    /**
+     * id de la categoría sobre la cual se esta navegando. Usado como puente entre la petición desde el MainMenu y la
+     * categoría
+     */
     private int idCategory;
 
-    private boolean flag = true;
-
-    // Placeholders para los targets
+    // Placeholders para los targets de los filtros, dados como elementos seleccionables
     private BasicTypeValue basicTypeValue = new BasicTypeValue(null);
 
     private HelperTableRecord helperTableRecord = new HelperTableRecord();
@@ -69,22 +84,27 @@ public class ConceptBrowserBean implements Serializable {
     private ConceptManager conceptManager;
 
 
-    //@PostConstruct
-    public void init() {
 
-        if(category == null){
-            /*
-            try {
-                category = categoryManager.getCategoryById(3);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-            */
+    @PostConstruct
+    public void init(){
+        tags = tagManager.getAllTags();
+    }
+
+    /**
+     * Este método es el responsable de ejecutar la consulta
+     */
+    public void executeQuery() {
+
+        /**
+         * Si la categoría no está seteada, retornar inmediatamente
+         */
+        if(category == null)
             return;
-        }
 
-        if(flag) {
-            flag = false;
+        /**
+         * Si el objeto de consulta no está inicializado, inicializarlo
+         */
+        if(conceptQuery == null) {
 
             conceptQuery = conceptQueryManager.getDefaultQueryByCategory(category);
 
@@ -97,14 +117,17 @@ public class ConceptBrowserBean implements Serializable {
             }
         }
 
-        tags = tagManager.getAllTags();
-
+        /**
+         * Ejecutar la consulta
+         */
         concepts = new LazyDataModel<ConceptSMTK>() {
             @Override
             public List<ConceptSMTK> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
 
-
                 //List<ConceptSMTK> conceptSMTKs = conceptManager.findConceptBy(category, first, pageSize);
+
+                conceptQuery.setPageNumber(first);
+                conceptQuery.setPageSize(pageSize);
 
                 List<ConceptSMTK> conceptSMTKs = conceptQueryManager.executeQuery(conceptQuery);
                 this.setRowCount(30);
@@ -116,30 +139,15 @@ public class ConceptBrowserBean implements Serializable {
 
     }
 
-    public void refreshResults(){
-
-        concepts = new LazyDataModel<ConceptSMTK>() {
-            @Override
-            public List<ConceptSMTK> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
-
-            conceptQuery.setPageNumber(first);
-            conceptQuery.setPageSize(pageSize);
-
-                //List<ConceptSMTK> conceptSMTKs = conceptQueryManager.executeQuery(conceptQuery);;
-            //this.setRowCount(conceptManager.countConceptBy(pattern, selectedCategories));
-
-            List<ConceptSMTK> conceptSMTKs = conceptManager.findConceptBy(category, first, pageSize);
-            this.setRowCount(30);
-            return conceptSMTKs;
-            }
-
-        };
-    }
-
     public int getIdCategory() {
         return idCategory;
     }
 
+    /**
+     * Este método se encarga de setear el idCategory. En la práctica este metodo es gatillado al realizar el request
+     * desde el mainMenu. Se setea además la categoría, que será utilizada posteriormente para obtener el objeto de consulta
+     * @param idCategory
+     */
     public void setIdCategory(int idCategory) {
         this.idCategory = idCategory;
         try {
@@ -175,7 +183,6 @@ public class ConceptBrowserBean implements Serializable {
 
     public void setCategory(Category category) {
         this.category = category;
-        refreshResults();
     }
 
     public ConceptQuery getConceptQuery() {
@@ -240,19 +247,6 @@ public class ConceptBrowserBean implements Serializable {
         basicTypeValue = new BasicTypeValue(null);
     }
 
-    /**
-     * Este método se encarga de agregar o cambiar el filtro para el caso de selección múltiple
-     */
-    public void setMultipleSelection(RelationshipDefinition relationshipDefinition, Target target) {
-
-        // Se busca el filtro
-        for (ConceptQueryFilter conceptQueryFilter : conceptQuery.getFilters()) {
-            if (conceptQueryFilter.getDefinition().equals(relationshipDefinition)) {
-                conceptQueryFilter.getTargets().add(target);
-                break;
-            }
-        }
-    }
 
 }
 
