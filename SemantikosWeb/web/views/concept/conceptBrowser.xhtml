@@ -9,53 +9,68 @@
 
     <ui:define name="content">
 
-        <div class="ui-grid-responsive">
-            <div class="ui-grid-col-12">
+        <f:metadata>
+            <f:viewParam name="idCategory" value="#{conceptBrowserBean.idCategory}" />
+            <f:event type="preRenderView" listener="#{conceptBrowserBean.init}" />
+        </f:metadata>
 
-                <p:dataTable id="conceptTable"
-                             value="#{conceptBrowserBean.concepts}"
-                             var="concept"
-                             rows="15"
-                             paginator="true" lazy="true" dynamic="true"
-                             paginatorTemplate=" {CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
-                             emptyMessage="No se han encontrado conceptos con los criterios utilizados">
+        <div class="Container100">
+            <div class="ContainerIndent">
+                <div class="Card ShadowEffect  ">
+                    <div class="Container100">
+                        <div class="ContainerIndent">
+                            <div class="ui-grid-responsive">
+                                <div class="ui-grid-col-12">
+                                    <h:form id="browserForm">
+                                        <h2 class="TexAlCenter BigTopic">Navegador General [#{conceptBrowserBean.category.name}]</h2>
+                                        <smtk:browserFilter conceptQuery="#{conceptBrowserBean.conceptQuery}" />
+                                        <p:spacer />
+                                        <p:dataTable id="conceptTable"
+                                                     value="#{conceptBrowserBean.concepts}"
+                                                     var="concept"
+                                                     rows="15"
+                                                     paginator="true" lazy="true" dynamic="true"
+                                                     paginatorTemplate=" {CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                                                     emptyMessage="No se han encontrado conceptos con los criterios utilizados">
 
 
-                    <p:column headerText="Concept ID" style="width:5%">
-                        <h:outputText value="#{concept.id}"/>
-                    </p:column>
+                                            <p:column headerText="ConceptID" style="width:5%">
+                                                <h:outputText value="#{concept.id}"/>
+                                            </p:column>
 
-                    <p:column headerText="Término">
-                        <h:outputText value="#{concept.descriptionFavorite.term}"/>
-                    </p:column>
+                                            <p:column headerText="Término">
+                                                <h:outputText value="#{concept.descriptionFavorite.term}"/>
+                                            </p:column>
 
-                    <p:column headerText="Revisar" style="width:10%">
-                        <h:commandLink rendered="#{concept.isToBeReviewed()}" value="">
-                            <i class="fa fa-check" />
-                        </h:commandLink>
-                    </p:column>
+                                            <p:column headerText="Observación">
+                                                <h:outputText value="#{concept.observation}"/>
+                                            </p:column>
 
-                    <p:column headerText="Consultar" style="width:10%">
-                        <h:commandLink rendered="#{concept.isToBeConsulted()}" value="">
-                            <i class="fa fa-check" />
-                        </h:commandLink>
-                    </p:column>
+                                            <p:column headerText="Etiqueta">
+                                                <h:outputText value="#{conceptBrowserBean.stringifyList(concept.tags)}"/>
+                                            </p:column>
 
-                    <p:column headerText="Está en">
-                        <h:outputText value="Borrador" rendered="#{not concept.modeled}"/>
-                        <h:outputText value="Modelado" rendered="#{concept.modeled}"/>
-                    </p:column>
+                                            <p:column headerText="Está en">
+                                                <h:outputText value="Borrador" rendered="#{not concept.modeled}"/>
+                                                <h:outputText value="Modelado" rendered="#{concept.modeled}"/>
+                                            </p:column>
 
-                    <p:column exportable="false" style="width:32px;text-align: center">
+                                            <p:column headerText="Acciones" exportable="false" style="text-align: center">
+                                                <p:commandButton icon="fa fa-eye" />
+                                                <p:commandButton icon="fa fa-edit" />
+                                                <p:commandButton icon="fa fa-exchange" />
+                                                <p:commandButton icon="fa fa-trash" />
+                                            </p:column>
 
-                    </p:column>
-
-                </p:dataTable>
-
+                                        </p:dataTable>
+                                    </h:form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-
         </div>
-
 
     </ui:define>
 
