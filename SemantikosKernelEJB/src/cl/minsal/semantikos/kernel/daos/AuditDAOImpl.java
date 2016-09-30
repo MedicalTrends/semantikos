@@ -116,7 +116,8 @@ public class AuditDAOImpl implements AuditDAO {
          * param 4: El tipo de acción que realiza
          * param 5: La entidad en la que se realizó la acción..
          */
-        String sqlQuery = "{call semantikos.create_refset_audit_actions(?,?,?,?,?)}";
+        //TODO arreglar esto
+        String sqlQuery = "{call semantikos.create_refset_audit_actions(?,?,?,?)}";
         try (Connection connection = connect.getConnection();
              CallableStatement call = connection.prepareCall(sqlQuery)) {
 
@@ -130,7 +131,7 @@ public class AuditDAOImpl implements AuditDAO {
             call.setLong(2, user.getIdUser());
             call.setLong(3, auditActionType.getId());
             call.setLong(4, auditableEntity.getId());
-            call.execute();
+            //call.execute();
 
         } catch (SQLException e) {
             String errorMsg = "Error al registrar en el log.";
