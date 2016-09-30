@@ -7,6 +7,7 @@ import cl.minsal.semantikos.model.browser.ConceptQuery;
 import cl.minsal.semantikos.model.browser.ConceptQueryFilter;
 import cl.minsal.semantikos.model.helpertables.HelperTableRecord;
 import cl.minsal.semantikos.model.relationships.*;
+import org.omnifaces.util.Ajax;
 import org.primefaces.extensions.model.fluidgrid.FluidGridItem;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
@@ -245,6 +246,8 @@ public class ConceptBrowserBean implements Serializable {
         }
         // Se resetean los placeholder para los target de las relaciones
         basicTypeValue = new BasicTypeValue(null);
+
+        //Ajax.update("@(.conceptBrowserTable)");
     }
 
 

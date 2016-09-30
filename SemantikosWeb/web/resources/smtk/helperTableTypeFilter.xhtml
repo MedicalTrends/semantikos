@@ -29,6 +29,7 @@
             <p:ajax event="change"
                     update="@(.conceptFilters)"
                     process="@this" />
+
             <f:selectItems value="#{conceptBrowserBean.helperTableManager.getAllRecords(cc.attrs.targetDefinition)}"
                            var="helperTableRecord"
                            itemLabel="#{helperTableRecord.fields['description']}"
@@ -71,11 +72,6 @@
                              var="selection"
                              style="margin-right:10px; width: 70%"
                              rendered="#{ not cc.attrs.targets.isEmpty() and not cc.attrs.multiple }">
-
-                <p:ajax event="itemSelect"
-                        listener="#{conceptBrowserBean.setSimpleSelection(cc.attrs.relationshipDefinition, target)}"
-                        update="@(.conceptFilters)"
-                        process="@this" />
 
                 <f:selectItem itemLabel="#{cc.attrs.relationshipDefinition.name}"
                               itemValue="#{ null }"
