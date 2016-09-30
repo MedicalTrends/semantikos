@@ -8,6 +8,7 @@ import cl.minsal.semantikos.model.relationships.Target;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Type;
+import java.sql.Timestamp;
 import java.util.*;
 
 /**
@@ -184,16 +185,19 @@ public class ConceptQuery {
         List<ConceptQueryParameter> conceptQueryParameters = new ArrayList<>();
 
         conceptQueryParameters.add(new ConceptQueryParameter(Long.class, getCategoryValues(), true));
+        conceptQueryParameters.add(new ConceptQueryParameter(String.class, getQuery(), false));
+        conceptQueryParameters.add(new ConceptQueryParameter(Boolean.class, getModeled(), false));
+        conceptQueryParameters.add(new ConceptQueryParameter(Boolean.class, getToBeReviewed(), false));
+        conceptQueryParameters.add(new ConceptQueryParameter(Boolean.class, getToBeConsulted(), false));
+        conceptQueryParameters.add(new ConceptQueryParameter(Tag.class, getTag(), false));
+        conceptQueryParameters.add(new ConceptQueryParameter(String.class, getBasicTypeValues(), true));
+        conceptQueryParameters.add(new ConceptQueryParameter(Long.class, getHelperTableValues(), true));
+        conceptQueryParameters.add(new ConceptQueryParameter(Timestamp.class, getCreationDateSince(), false));
+        conceptQueryParameters.add(new ConceptQueryParameter(Timestamp.class, getCreationDateTo(), false));
+        conceptQueryParameters.add(new ConceptQueryParameter(Integer.class, getPageNumber(), false));
+        conceptQueryParameters.add(new ConceptQueryParameter(Integer.class, getPageSize(), false));
+        //conceptQueryParameters.add(new ConceptQueryParameter(String.class, getOrder(), false));
 
-
-        conceptQueryParameter.put(Long.class, getCategoryValues()[0]);
-        conceptQueryParameters.add(conceptQueryParameter);
-
-        conceptQueryParameter.get
-
-        conceptQueryParameter.put(Long.class, getCategoryValues()[0]);
-        conceptQueryParameters.add(conceptQueryParameter);
-
-        return map;
+        return conceptQueryParameters;
     }
 }

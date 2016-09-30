@@ -129,7 +129,7 @@ public class ConceptQueryDAOImpl implements ConceptQueryDAO {
 
         //TODO: hacer funcion en pg
         try (Connection connection = connect.getConnection();
-             CallableStatement call = connection.prepareCall("{call semantikos.get_concept_by_query(?,?,?,?,?,?,?,?,?,?,?,?,?)}" )){
+             CallableStatement call = connection.prepareCall("{call semantikos.get_concept_by_query(?,?,?,?,?,?,?,?,?,?,?,?)}" )){
 
             /*
                 1. p_id_category integer, --static
@@ -146,20 +146,16 @@ public class ConceptQueryDAOImpl implements ConceptQueryDAO {
                 12. p_page integer, --static
                 13. p_page_size integer --static
             */
-            bindParameter(1, call, connect.getConnection(), query.getCategoryValues());
-            bindParameter(2, call, connect.getConnection(), query.getQuery());
-            bindParameter(3, call, connect.getConnection(), query.getModeled());
-            bindParameter(4, call, connect.getConnection(), query.getToBeReviewed());
-            bindParameter(5, call, connect.getConnection(), query.getToBeConsulted());
-            bindParameter(6, call, connect.getConnection(), query.getTag());
-            bindParameter(7, call, connect.getConnection(), query.getBasicTypeValues());
-            bindParameter(8, call, connect.getConnection(), query.getHelperTableValues());
-            bindParameter(9, call, connect.getConnection(), query.getCreationDateSince());
-            bindParameter(10, call, connect.getConnection(), query.getCreationDateTo());
-            bindParameter(11, call, connect.getConnection(), query.getOrder());
-            bindParameter(12, call, connect.getConnection(), query.getPageNumber());
-            bindParameter(13, call, connect.getConnection(), query.getPageSize());
+
             //bindParameter();
+
+            int paramNumber = 1;
+
+            for (ConceptQueryParameter conceptQueryParameter : query.getConceptQueryParameters()) {
+                bindParameter(paramNumber, call, connect.getConnection(), conceptQueryParameter);
+                paramNumber++;
+            }
+
 
             call.execute();
 
@@ -274,56 +270,85 @@ public class ConceptQueryDAOImpl implements ConceptQueryDAO {
     }
 
 
-    private void bindParameter(int paramNumber, CallableStatement call, Connection connection, ConceptQueryParameter param) throws SQLException {
+    private void bindParameter(int paramNumber, CallableStatement call, Connection connection, ConceptQueryParameter param)
+            throws SQLException {
 
 
-        System.out.println(object.getClass().getName());
+        if(param.getValue() == null){
 
-        if(param.getValue() == null)
-            if(param.getType().)
-
-        if(param.getValue() instanceof String[]){
-            if(param.getValue() == null)
+            if(param.isArray()){
                 call.setNull(paramNumber, Types.ARRAY);
-            else
-                call.setArray(paramNumber, connection.createArrayOf("text", (String[])object));
+                return;
+            }
+            else{
+                if(param.getType() == String.class) {
+                    call.setNull(paramNumber, Types.VARCHAR);
+                    return;
+                }
+
+                if(param.getType() == Long.class) {
+                    call.setNull(paramNumber, Types.BIGINT);
+                    return;
+                }
+
+                if(param.getType() == Tag.class) {
+                    call.setNull(paramNumber, Types.BIGINT);
+                    return;
+                }
+
+                if(param.getType() == Boolean.class) {
+                    call.setNull(paramNumber, Types.BOOLEAN);
+                    return;
+                }
+
+                if(param.getType() == Timestamp.class) {
+                    call.setNull(paramNumber, Types.TIMESTAMP);
+                    return;
+                }
+            }
         }
+        else{
+            if(param.isArray()){
+                if(param.getType() == String.class) {
+                    call.setArray(paramNumber, connection.createArrayOf("text", (String[]) param.getValue()));
+                    return;
+                }
+                if(param.getType() == Long.class) {
+                    call.setArray(paramNumber, connection.createArrayOf("bigint", (Long[]) param.getValue()));
+                    return;
+                }
+            }
+            else{
+                if(param.getType() == String.class) {
+                    call.setString(paramNumber, param.getValue().toString());
+                    return;
+                }
+                if(param.getType() == Long.class) {
+                    call.setLong(paramNumber, (Long) param.getValue());
+                    return;
+                }
 
-        if(object instanceof Long[]){
-            if(object == null)
-                call.setNull(paramNumber, Types.ARRAY);
-            else
-                call.setArray(paramNumber, connection.createArrayOf("bigint", (Long[])object));
+                if(param.getType() == Tag.class) {
+                    Tag tag = (Tag) param.getValue();
+                    call.setLong(paramNumber, tag.getId());
+                    return;
+                }
+
+                if(param.getType() == Boolean.class) {
+                    call.setBoolean(paramNumber, (Boolean) param.getValue());
+                    return;
+                }
+
+                if(param.getType() == Timestamp.class) {
+                    call.setDate(paramNumber, (Date) param.getValue());
+                    return;
+                }
+
+                if(param.getType() == Integer.class) {
+                    call.setInt(paramNumber, (Integer) param.getValue());
+                    return;
+                }
+            }
         }
-
-        if(object instanceof String){
-            if(object == null)
-                call.setNull(paramNumber, Types.VARCHAR);
-            else
-                call.setString(paramNumber, object.toString());
-        }
-
-        if(object instanceof Boolean){
-            if(object == null)
-                call.setNull(paramNumber, Types.BOOLEAN);
-            else
-                call.setBoolean(paramNumber, (Boolean)object);
-        }
-
-
-        if(object instanceof Date){
-            if(object == null)
-                call.setNull(paramNumber, Types.TIMESTAMP);
-            else
-                call.setTimestamp(paramNumber, (Timestamp)object);
-        }
-
-        if(object instanceof Tag){
-            if(object == null)
-                call.setNull(paramNumber, Types.BIGINT );
-            else
-                call.setLong(paramNumber, ((Tag) object).getId());
-        }
-
     }
 }

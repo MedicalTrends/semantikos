@@ -126,6 +126,9 @@ public class ConceptBrowserBean implements Serializable {
 
                 //List<ConceptSMTK> conceptSMTKs = conceptManager.findConceptBy(category, first, pageSize);
 
+                conceptQuery.setPageNumber(first);
+                conceptQuery.setPageSize(pageSize);
+
                 List<ConceptSMTK> conceptSMTKs = conceptQueryManager.executeQuery(conceptQuery);
                 this.setRowCount(30);
 
