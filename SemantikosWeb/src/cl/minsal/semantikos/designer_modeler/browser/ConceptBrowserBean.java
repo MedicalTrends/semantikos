@@ -97,7 +97,7 @@ public class ConceptBrowserBean implements Serializable {
 
         /**
          * Si la categoría no está seteada, retornar inmediatamente
-        */
+         */
         if(category == null)
             return;
 
@@ -125,6 +125,9 @@ public class ConceptBrowserBean implements Serializable {
             public List<ConceptSMTK> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
 
                 //List<ConceptSMTK> conceptSMTKs = conceptManager.findConceptBy(category, first, pageSize);
+
+                conceptQuery.setPageNumber(first);
+                conceptQuery.setPageSize(pageSize);
 
                 List<ConceptSMTK> conceptSMTKs = conceptQueryManager.executeQuery(conceptQuery);
                 this.setRowCount(30);
