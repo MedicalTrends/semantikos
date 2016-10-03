@@ -51,7 +51,7 @@ public class ConceptBean implements Serializable {
     CategoryManager categoryManager;
 
     @EJB
-    HelperTableManagerInterface helperTableManager;
+    HelperTableManager helperTableManager;
 
     @EJB
     TagSMTKManager tagSMTKManager;
@@ -743,11 +743,11 @@ public class ConceptBean implements Serializable {
         this.favoriteDescription = favoriteDescription;
     }
 
-    public HelperTableManagerInterface getHelperTableManager() {
+    public HelperTableManager getHelperTableManager() {
         return helperTableManager;
     }
 
-    public void setHelperTableManager(HelperTableManagerInterface helperTableManager) {
+    public void setHelperTableManager(HelperTableManager helperTableManager) {
         this.helperTableManager = helperTableManager;
     }
 

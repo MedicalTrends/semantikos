@@ -9,10 +9,7 @@ import javax.ejb.EJBException;
 import javax.ejb.Stateless;
 import java.io.IOException;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author Andrés Farías
@@ -25,8 +22,11 @@ public class HelperTableDAOImpl implements HelperTableDAO {
 
     private HelperTableRecordFactory helperTableRecordFactory;
 
+    private Map<Long, HelperTable> helperTablesMap;
+
     public HelperTableDAOImpl() {
         this.helperTableRecordFactory = HelperTableRecordFactory.getInstance();
+        this.helperTablesMap = new HashMap<>();
     }
 
     @Override
@@ -115,7 +115,7 @@ public class HelperTableDAOImpl implements HelperTableDAO {
 
             ResultSet rs = call.getResultSet();
             while (rs.next()) {
-                helperTableRecords = this.helperTableRecordFactory.createRecordsFromJSON(rs.getString(1));
+                helperTableRecords = this.helperTableRecordFactory.createHelperRecordsFromJSON(rs.getString(1));
             }
             rs.close();
         } catch (SQLException e) {
@@ -146,7 +146,7 @@ public class HelperTableDAOImpl implements HelperTableDAO {
 
             /* Se envían las condiciones de columna en un Arreglo */
             String[] theWhereConditions = new String[whereConditions.size()];
-            int i=0;
+            int i = 0;
             for (HelperTableWhereCondition whereCondition : whereConditions) {
                 theWhereConditions[i++] = whereCondition.toString();
             }
@@ -162,7 +162,7 @@ public class HelperTableDAOImpl implements HelperTableDAO {
 
             ResultSet rs = call.getResultSet();
             while (rs.next()) {
-                helperTableRecords = this.helperTableRecordFactory.createRecordsFromJSON(rs.getString(1));
+                helperTableRecords = this.helperTableRecordFactory.createHelperRecordsFromJSON(rs.getString(1));
             }
             rs.close();
         } catch (SQLException e) {
@@ -211,5 +211,69 @@ public class HelperTableDAOImpl implements HelperTableDAO {
         }
 
         return recordFromJSON;
+    }
+
+    @Override
+    public Collection<HelperTable> getHelperTables() {
+
+        ConnectionBD connectionBD = new ConnectionBD();
+        String selectRecord = "{call semantikos.get_helper_tables()}";
+        List<HelperTable> recordFromJSON;
+        try (Connection connection = connectionBD.getConnection();
+             CallableStatement call = connection.prepareCall(selectRecord)) {
+
+            /* Se prepara y realiza la consulta */
+            call.execute();
+            ResultSet rs = call.getResultSet();
+            if (rs.next()) {
+                recordFromJSON = this.helperTableRecordFactory.createHelperTablesFromJSON(rs.getString(1));
+            } else {
+                throw new EJBException("Error imposible en HelperTableDAOImpl");
+            }
+            rs.close();
+        } catch (SQLException e) {
+            logger.error("Hubo un error al acceder a la base de datos.", e);
+            throw new EJBException(e);
+        } catch (IOException e) {
+            logger.error("Hubo un error procesar los resultados con JSON.", e);
+            throw new EJBException(e);
+        }
+
+        return recordFromJSON;
+    }
+
+    @Override
+    public HelperTable getHelperTableByID(long id) {
+
+        /* Si no se ha recuperado se recupera ahora */
+        if (!helperTablesMap.containsKey(id)) {
+
+            ConnectionBD connectionBD = new ConnectionBD();
+            String selectRecord = "{call semantikos.get_helper_table_by_id(?)}";
+            HelperTable recordFromJSON;
+            try (Connection connection = connectionBD.getConnection();
+                 CallableStatement call = connection.prepareCall(selectRecord)) {
+
+                /* Se prepara y realiza la consulta */
+                call.setLong(1, id);
+                call.execute();
+                ResultSet rs = call.getResultSet();
+                if (rs.next()) {
+                    recordFromJSON = this.helperTableRecordFactory.createHelperTableFromJSON(rs.getString(1));
+                } else {
+                    throw new EJBException("Error imposible en HelperTableDAOImpl");
+                }
+                rs.close();
+            } catch (SQLException e) {
+                logger.error("Hubo un error al acceder a la base de datos.", e);
+                throw new EJBException(e);
+            } catch (IOException e) {
+                logger.error("Hubo un error procesar los resultados con JSON.", e);
+                throw new EJBException(e);
+            }
+
+        }
+
+        return helperTablesMap.get(id);
     }
 }

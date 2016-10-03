@@ -1,13 +1,11 @@
 package cl.minsal.semantikos.model.helpertables;
 
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author Andrés Farías
@@ -58,7 +56,7 @@ public class HelperTableRecordFactory {
      *
      * @throws IOException Arrojada si hay un problema.
      */
-    public List<HelperTableRecord> createRecordsFromJSON(String jsonExpression) throws IOException {
+    public List<HelperTableRecord> createHelperRecordsFromJSON(String jsonExpression) throws IOException {
 
         JSONHelperTableRecords jsonHelperTableRecord = mapper.readValue(jsonExpression, JSONHelperTableRecords.class);
         HelperTable helperTable = HelperTableFactory.getInstance().getHelperTable(jsonHelperTableRecord.getTableName());
@@ -70,6 +68,19 @@ public class HelperTableRecordFactory {
         }
 
         return records;
+    }
+
+    public List<HelperTable> createHelperTablesFromJSON(String jsonExpression) throws IOException {
+        HelperTable[] jsonHelperTables = mapper.readValue(jsonExpression, HelperTable[].class);
+
+        return Arrays.asList(jsonHelperTables);
+    }
+
+
+    public HelperTable createHelperTableFromJSON(String jsonExpression) throws IOException {
+        HelperTable jsonHelperTable = mapper.readValue(jsonExpression, HelperTable.class);
+
+        return jsonHelperTable;
     }
 }
 
@@ -149,5 +160,9 @@ class JSONHelperTableRecords {
     public void setRecords(List<Map<String, String>> records) {
         this.records = records;
     }
+}
+
+class HelperTableJSON {
+
 }
 
