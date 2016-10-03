@@ -18,7 +18,6 @@ public class RelationshipDefinitionTest {
     public void testHelperTableRelationship() throws Exception {
 
         Multiplicity multiplicity = new MultiplicityFactory().createMultiplicityByUML("1-1");
-        HelperTableFactory helperTableFactory = HelperTableFactory.getInstance();
 
 
         /* Ahora tratar de crear una relación de este tipo */

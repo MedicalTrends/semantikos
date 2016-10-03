@@ -5,6 +5,7 @@ import cl.minsal.semantikos.model.helpertables.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.ejb.EJB;
 import javax.ejb.EJBException;
 import javax.ejb.Stateless;
 import java.io.IOException;
@@ -20,12 +21,13 @@ public class HelperTableDAOImpl implements HelperTableDAO {
     /** Logger de la clase */
     private static final Logger logger = LoggerFactory.getLogger(HelperTableDAOImpl.class);
 
-    private HelperTableRecordFactory helperTableRecordFactory;
+
+    @EJB
+    HelperTableRecordFactory helperTableRecordFactory;
 
     private Map<Long, HelperTable> helperTablesMap;
 
     public HelperTableDAOImpl() {
-        this.helperTableRecordFactory = HelperTableRecordFactory.getInstance();
         this.helperTablesMap = new HashMap<>();
     }
 

@@ -4,7 +4,7 @@
     <root id="root">
       <element id="javaee-facet-resources" facet="SemantikosCentralEAR/javaeeApplication/javaEEApplication" />
       <element id="directory" name="META-INF">
-        <element id="file-copy" path="$PROJECT_DIR$/SemantikosCentralEAR/target/MANIFEST.MF" />
+        <element id="file-copy" path="$PROJECT_DIR$/SemantikosCentralEAR/target/SemantikosCentralEAR-0.5.0/META-INF/MANIFEST.MF" />
       </element>
       <element id="dir-copy" path="src/main/java" />
       <element id="directory" name="lib">

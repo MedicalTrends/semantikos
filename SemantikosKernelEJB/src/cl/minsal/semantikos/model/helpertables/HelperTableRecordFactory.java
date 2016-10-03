@@ -1,33 +1,30 @@
 package cl.minsal.semantikos.model.helpertables;
 
+import cl.minsal.semantikos.kernel.components.HelperTableManager;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import javax.ejb.EJB;
+import javax.ejb.Singleton;
 import java.io.IOException;
 import java.util.*;
 
 /**
  * @author Andrés Farías
  */
+@Singleton
 public class HelperTableRecordFactory {
 
-    /** The Singleton instance of this class */
-    private static final HelperTableRecordFactory singleton = new HelperTableRecordFactory();
+
+    @EJB
+    HelperTableManager helperTableManager;
 
     private ObjectMapper mapper = new ObjectMapper();
 
-    private HelperTableRecordFactory() {
-    }
+    public HelperTableRecordFactory() {}
 
-    /**
-     * Método único para obtener la instancia de esta clase.
-     *
-     * @return La instancia singleton de esta clase.
-     */
-    public static HelperTableRecordFactory getInstance() {
-        return singleton;
-    }
+
 
     /**
      * Este método es responsable de crear un HelperTable Record a partir de un objeto JSON.
@@ -42,7 +39,7 @@ public class HelperTableRecordFactory {
     public HelperTableRecord createRecordFromJSON(String jsonExpression) throws IOException {
         JSONHelperTableRecord jsonHelperTableRecord = mapper.readValue(jsonExpression, JSONHelperTableRecord.class);
 
-        HelperTable helperTable = HelperTableFactory.getInstance().getHelperTable(jsonHelperTableRecord.getTableName());
+        HelperTable helperTable = helperTableManager.findHelperTableByID(jsonHelperTableRecord.getTableId());
         return new HelperTableRecord(helperTable, jsonHelperTableRecord.getFields());
     }
 
@@ -59,7 +56,7 @@ public class HelperTableRecordFactory {
     public List<HelperTableRecord> createHelperRecordsFromJSON(String jsonExpression) throws IOException {
 
         JSONHelperTableRecords jsonHelperTableRecord = mapper.readValue(jsonExpression, JSONHelperTableRecords.class);
-        HelperTable helperTable = HelperTableFactory.getInstance().getHelperTable(jsonHelperTableRecord.getTableName());
+        HelperTable helperTable = helperTableManager.findHelperTableByID(jsonHelperTableRecord.getTableId());
 
         List<HelperTableRecord> records = new ArrayList<>();
         for (Map<String, String> fields : jsonHelperTableRecord.getRecords()) {
@@ -91,7 +88,7 @@ public class HelperTableRecordFactory {
 class JSONHelperTableRecord {
 
     /** El nombre de la tabla auxiliar */
-    private String tableName;
+    private long tableId;
 
     /** La llave primaria del registro */
     private long id;
@@ -102,12 +99,12 @@ class JSONHelperTableRecord {
         this.fields = new HashMap<>();
     }
 
-    public String getTableName() {
-        return tableName;
+    public long getTableId() {
+        return tableId;
     }
 
-    public void setTableName(String tableName) {
-        this.tableName = tableName;
+    public void setTableId(long tableId) {
+        this.tableId = tableId;
     }
 
     public long getId() { return id; }
@@ -130,7 +127,7 @@ class JSONHelperTableRecord {
 class JSONHelperTableRecords {
 
     /** El nombre de la tabla auxiliar */
-    private String tableName;
+    private long tableId;
 
     /** La llave primaria del registro */
     private long id;
@@ -141,12 +138,12 @@ class JSONHelperTableRecords {
         this.records = new ArrayList<>();
     }
 
-    public String getTableName() {
-        return tableName;
+    public long getTableId() {
+        return tableId;
     }
 
-    public void setTableName(String tableName) {
-        this.tableName = tableName;
+    public void setTableId(long tableId) {
+        this.tableId = tableId;
     }
 
     public long getId() { return id; }
