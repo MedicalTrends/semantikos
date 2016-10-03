@@ -78,9 +78,9 @@ public class HelperTableRecordFactory {
 
 
     public HelperTable createHelperTableFromJSON(String jsonExpression) throws IOException {
-        HelperTable jsonHelperTable = mapper.readValue(jsonExpression, HelperTable.class);
+        HelperTableJSON jsonHelperTable = mapper.readValue(jsonExpression, HelperTableJSON.class);
 
-        return jsonHelperTable;
+        return new HelperTable(jsonHelperTable.getName(), jsonHelperTable.getDescription(), jsonHelperTable.getTablaName(), jsonHelperTable.getColumns());
     }
 }
 
@@ -162,7 +162,58 @@ class JSONHelperTableRecords {
     }
 }
 
+/**
+ * Esta clase tiene como propósito dar una representación simple de varios registros para ser transformado
+ * automáticamente desde JSON.
+ */
 class HelperTableJSON {
 
+    /** Un nombre legible por humanos para la Tabla Auxiliar */
+    private String name;
+
+    /* Una breve descripción de la tabla auxiliar */
+    private String description;
+
+    /** El nombre de la tabla física */
+    private String tablaName;
+
+    /** El nombre de las columnas que posee la tabla física */
+    private Collection<HelperTableColumn> columns;
+
+
+    public HelperTableJSON() {
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getTablaName() {
+        return tablaName;
+    }
+
+    public void setTablaName(String tablaName) {
+        this.tablaName = tablaName;
+    }
+
+    public Collection<HelperTableColumn> getColumns() {
+        return columns;
+    }
+
+    public void setColumns(Collection<HelperTableColumn> columns) {
+        this.columns = columns;
+    }
 }
 
