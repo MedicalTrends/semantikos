@@ -440,7 +440,7 @@ public class ConceptSMTKWeb extends ConceptSMTK {
         //Restaurar descripciones a su estado original
         for (DescriptionWeb descriptionWeb : descriptionsWeb) {
             for (DescriptionWeb _descriptionWeb : _concept.getDescriptionsWeb()) {
-                if(descriptionWeb.getDescriptionType().equals(_descriptionWeb.getDescriptionType()))
+                if(descriptionWeb.getId()==_descriptionWeb.getId() && descriptionWeb.isPersistent() )
                     descriptionWeb.restore(_descriptionWeb);
             }
         }

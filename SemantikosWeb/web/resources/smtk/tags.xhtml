@@ -182,7 +182,11 @@
                     </div>
                 </div>
                 <div style="text-align: center">
-                    <p:commandButton value="Editar etiqueta" actionListener="#{tagBean.updateTag}" update="dataTableTag" oncomplete="PF('dialogEditTag').hide()"/>
+                    <p:commandButton value="Editar etiqueta" actionListener="#{tagBean.updateTag}" update="tags" oncomplete="PF('dialogEditTag').hide()"/>
+                    <p:commandButton value="Eliminar etiqueta del sistema" actionListener="#{tagBean.removeTag}" update="tags" oncomplete="PF('dialogEditTag').hide()">
+                        <p:confirm header="Confirmacion" message="La etiqueta se eliminara del sistema, todos los conceptos relacionados a esta etiqueta perderan su relacion ¿Esta seguro de eliminar la etiqueta?"
+                                   icon="ui-icon-alert"/>
+                    </p:commandButton>
                 </div>
 
             </p:panel>
