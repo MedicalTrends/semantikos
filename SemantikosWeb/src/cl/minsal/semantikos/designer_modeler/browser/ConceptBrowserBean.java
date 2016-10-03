@@ -7,7 +7,6 @@ import cl.minsal.semantikos.model.browser.ConceptQuery;
 import cl.minsal.semantikos.model.browser.ConceptQueryFilter;
 import cl.minsal.semantikos.model.helpertables.HelperTableRecord;
 import cl.minsal.semantikos.model.relationships.*;
-import org.primefaces.extensions.model.fluidgrid.FluidGridItem;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
 import org.slf4j.Logger;
@@ -42,7 +41,7 @@ public class ConceptBrowserBean implements Serializable {
     TagManager tagManager;
 
     @EJB
-    HelperTableManagerInterface helperTableManager;
+    HelperTableManager helperTableManager;
 
     /**
      * Objeto de consulta: contiene todos los filtros necesarios para el despliegue de los resultados para el navegador
@@ -201,11 +200,11 @@ public class ConceptBrowserBean implements Serializable {
         this.tags = tags;
     }
 
-    public HelperTableManagerInterface getHelperTableManager() {
+    public HelperTableManager getHelperTableManager() {
         return helperTableManager;
     }
 
-    public void setHelperTableManager(HelperTableManagerInterface helperTableManager) {
+    public void setHelperTableManager(HelperTableManager helperTableManager) {
         this.helperTableManager = helperTableManager;
     }
 

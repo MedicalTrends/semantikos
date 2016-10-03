@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * @author Andrés Farías
  */
-public interface HelperTableManagerInterface {
+public interface HelperTableManager {
 
     /**
      * Este método es responsable de proveer una lista de objetos que representan las Tablas Auxiliares.
@@ -49,4 +49,13 @@ public interface HelperTableManagerInterface {
     public List<HelperTableRecord> getAllRecords(HelperTable helperTable);
 
     HelperTableRecord getRecord(int recordId);
+
+    /**
+     * Este método es responsable de recuperar una tabla dado su identificador.
+     *
+     * @param id El ID de la tabla
+     *
+     * @return La tabla auxiliar.
+     */
+    public HelperTable findHelperTableByID(long id);
 }
