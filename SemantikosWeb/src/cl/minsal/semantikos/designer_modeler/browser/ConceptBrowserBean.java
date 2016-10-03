@@ -127,6 +127,7 @@ public class ConceptBrowserBean implements Serializable {
 
                 //List<ConceptSMTK> conceptSMTKs = conceptManager.findConceptBy(category, first, pageSize);
 
+
                 conceptQuery.setPageNumber(first);
                 conceptQuery.setPageSize(pageSize);
 
@@ -248,6 +249,10 @@ public class ConceptBrowserBean implements Serializable {
         basicTypeValue = new BasicTypeValue(null);
 
         //Ajax.update("@(.conceptBrowserTable)");
+    }
+
+    public void synch(){
+        System.out.println("synch!!");
     }
 
 

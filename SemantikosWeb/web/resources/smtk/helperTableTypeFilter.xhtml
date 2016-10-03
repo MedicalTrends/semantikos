@@ -48,6 +48,11 @@
                     update="@(.conceptFilters)"
                     process="@this" />
 
+            <p:ajax event="itemSelect"
+                    listener="#{conceptBrowserBean.synch()}"
+                    update="@(.conceptBrowserTable)"
+                     />
+
             <f:selectItem itemLabel="#{cc.attrs.relationshipDefinition.name}"
                           itemValue="#{ null }"
                           noSelectionOption="true"
@@ -72,6 +77,16 @@
                              var="selection"
                              style="margin-right:10px; width: 70%"
                              rendered="#{ not cc.attrs.targets.isEmpty() and not cc.attrs.multiple }">
+
+                <p:ajax event="itemSelect"
+                        listener="#{conceptBrowserBean.setSimpleSelection(cc.attrs.relationshipDefinition, conceptBrowserBean.helperTableRecord)}"
+                        update="@(.conceptFilters)"
+                        process="@this" />
+
+                <p:ajax event="itemSelect"
+                        listener="#{conceptBrowserBean.synch()}"
+                        update="@(.conceptBrowserTable)"
+                         />
 
                 <f:selectItem itemLabel="#{cc.attrs.relationshipDefinition.name}"
                               itemValue="#{ null }"
