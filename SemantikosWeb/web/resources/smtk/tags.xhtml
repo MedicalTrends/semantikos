@@ -24,7 +24,7 @@
 
             <div class="ui-g">
                 <div class="ui-g-12 ui-md-6 ui-lg-1">
-                    <h:outputLabel for="name" value="Nombre Tag:" style="font-weight:bold"/>
+                    <h:outputLabel value="Nombre Tag:" style="font-weight:bold"/>
                 </div>
                 <div class="ui-g-12 ui-md-6 ui-lg-3">
                     <p:inputText value="#{tagBean.tagCreate.name}" label="Name" style="width: 100%;"/>
@@ -56,18 +56,19 @@
                             Seleccionar padre
                         </div>
                         <div class="ui-g-12 ui-md-6 ui-lg-2">
-                            <p:autoComplete id="parentTag" scrollHeight="200" size="5" style="width: 100%;"
-                                            inputStyle="width: 100%;"
-                                            converter="tagConverter" var="tag"
-                                            value="#{tagBean.parentTagSelect}"
-                                            completeMethod="#{tagBean.findTagByName}"
-                                            itemLabel="#{tag.name}" itemValue="#{tag}"
-                                            emptyMessage="No se encontraron tags relacionados"
-                                            disabled="#{tagBean.tagCreate.parentTag!=null}"
-                            >
-                                <p:ajax event="itemSelect" listener="#{tagBean.addTagParent}" process="@this"
+                            <p:selectOneMenu id="parentTag" value="#{tagBean.parentTagSelect}"
+                                             converter="tagConverter" panelStyle="width:180px"
+                                             effect="fade" var="t" style="width:160px" filter="true"
+                                             filterMatchMode="startsWith">
+                                <p:ajax event="itemSelect" listener="#{tagBean.addTagParent}"
                                         update="createParent"/>
-                            </p:autoComplete>
+                                <f:selectItem itemLabel="Seleccione una etiqueta" itemDisabled="true"/>
+                                <f:selectItems value="#{tagBean.tagListToConcept}" var="tag"
+                                               itemLabel="#{tag.name}" itemValue="#{tag}"/>
+                                <p:column>
+                                    <h:outputText value="#{t.name}"/>
+                                </p:column>
+                            </p:selectOneMenu>
                         </div>
                     </div>
 
@@ -125,7 +126,7 @@
                 </div>
             </p:column>
 
-            <p:column headerText="Eliminar">
+            <p:column headerText="Accion">
                 <div style="text-align: center;">
 
                     <p:commandButton process="@this" icon="fa fa-edit" title="Editar"
