@@ -75,7 +75,7 @@ public class AuthDAO {
         List<Profile> profiles = new ArrayList<Profile>();
 
         for (Object row : q.getResultList()) {
-            Profile profile = makeProfileFromResult((Object[]) q.getSingleResult());
+            Profile profile = makeProfileFromResult((Object[]) row);
             profiles.add(profile);
         }
 

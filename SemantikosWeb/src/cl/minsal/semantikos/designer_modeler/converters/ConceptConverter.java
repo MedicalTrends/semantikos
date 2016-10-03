@@ -28,7 +28,7 @@ public class ConceptConverter implements Converter{
                 return bean.getConceptManager().getConceptByID(Long.parseLong(value));
 
             } catch(NumberFormatException e) {
-                throw new ConverterException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Conversion Error", "Not a valid theme."));
+                throw new ConverterException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se seleccionó el concepto de destino."));
             }
         }
         else {

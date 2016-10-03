@@ -1,8 +1,10 @@
 package cl.minsal.semantikos.model.browser;
 
+import cl.minsal.semantikos.model.relationships.RelationshipDefinition;
 import cl.minsal.semantikos.model.relationships.Target;
 import cl.minsal.semantikos.model.relationships.TargetDefinition;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -10,15 +12,17 @@ import java.util.List;
  */
 public class ConceptQueryFilter {
 
-    TargetDefinition definition;
+    RelationshipDefinition definition;
 
-    List<Target> targets;
+    List<Target> targets = new ArrayList<Target>();
 
-    public TargetDefinition getDefinition() {
+    boolean multiple;
+
+    public RelationshipDefinition getDefinition() {
         return definition;
     }
 
-    public void setDefinition(TargetDefinition definition) {
+    public void setDefinition(RelationshipDefinition definition) {
         this.definition = definition;
     }
 
@@ -28,6 +32,14 @@ public class ConceptQueryFilter {
 
     public void setTargets(List<Target> targets) {
         this.targets = targets;
+    }
+
+    public boolean isMultiple() {
+        return multiple;
+    }
+
+    public void setMultiple(boolean multiple) {
+        this.multiple = multiple;
     }
 
 }

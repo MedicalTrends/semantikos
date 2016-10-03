@@ -11,8 +11,11 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
+
+import static java.lang.System.currentTimeMillis;
 
 /**
  * Created by des01c7 on 20-09-16.
@@ -40,6 +43,8 @@ public class RefSetsBean {
 
     private RefSet refSetEdit;
 
+    private Institution institution;
+
 
     @EJB
     private CategoryManager categoryManager;
@@ -65,9 +70,11 @@ public class RefSetsBean {
 
         categories= categoryManager.getCategories();
 
-        Institution institution= new Institution();
+        institution= new Institution();
         institution.setId(1);
         institution.setName("MINSAL");
+
+        user.getInstitutions().add(institution);
 
 
         conceptsToCategory = null;
@@ -82,9 +89,18 @@ public class RefSetsBean {
 
     public void createRefset(){
 
-        refSetToCreate=refSetManager.createRefSet(refSetToCreate.getName(),refSetToCreate.getInstitution(),user);
-        refSetManager.updateRefSet(refSetToCreate,user);
+        refSetToCreate=refSetManager.createRefSet(refSetToCreate,user);
+        refSetToCreate = new RefSet(null,institution,null);
+        conceptsToCategory = null;
+        conceptsToDescription= null;
+        refSetList= refSetManager.getAllRefSets();
 
+    }
+
+    public void invalidRefset(){
+        refSetEdit.setValidityUntil(new Timestamp(currentTimeMillis()));
+        refSetManager.updateRefSet(refSetEdit,user);
+        refSetList= refSetManager.getAllRefSets();
     }
 
     public void selectCategoryEvent(){
@@ -139,10 +155,16 @@ public class RefSetsBean {
 
     public void addConcept(RefSet refSet, ConceptSMTK conceptSMTK){
         refSet.bindConceptTo(conceptSMTK);
+        if(refSet.isPersistent()){
+            refSetManager.bindConceptToRefSet(conceptSMTK,refSet,user);
+        }
     }
 
     public void removeConcept(RefSet refSet, ConceptSMTK conceptSMTK){
         refSet.unbindConceptTo(conceptSMTK);
+        if(refSet.isPersistent()){
+            refSetManager.unbindConceptToRefSet(conceptSMTK,refSet,user);
+        }
     }
 
 
