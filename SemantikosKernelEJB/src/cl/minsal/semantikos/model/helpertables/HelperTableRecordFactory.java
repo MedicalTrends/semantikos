@@ -77,7 +77,7 @@ public class HelperTableRecordFactory {
     public HelperTable createHelperTableFromJSON(String jsonExpression) throws IOException {
         HelperTableJSON jsonHelperTable = mapper.readValue(jsonExpression, HelperTableJSON.class);
 
-        return new HelperTable(jsonHelperTable.getName(), jsonHelperTable.getDescription(), jsonHelperTable.getTablaName(), jsonHelperTable.getColumns());
+        return new HelperTable(jsonHelperTable.getTableId(),jsonHelperTable.getName(), jsonHelperTable.getDescription(), jsonHelperTable.getTablaName(), jsonHelperTable.getColumns());
     }
 }
 
@@ -165,6 +165,9 @@ class JSONHelperTableRecords {
  */
 class HelperTableJSON {
 
+    /** El nombre de la tabla auxiliar */
+    private long tableId;
+
     /** Un nombre legible por humanos para la Tabla Auxiliar */
     private String name;
 
@@ -179,6 +182,14 @@ class HelperTableJSON {
 
 
     public HelperTableJSON() {
+    }
+
+    public long getTableId() {
+        return tableId;
+    }
+
+    public void setTableId(long tableId) {
+        this.tableId = tableId;
     }
 
     public String getName() {
