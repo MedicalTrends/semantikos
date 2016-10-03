@@ -86,9 +86,6 @@ public class TagBean implements Serializable{
         parentTagToCreate= new Tag(-1,null,null,null,null);
         tagEdit= new Tag(-1,null,null,null,null);
 
-
-
-
     }
 
     /**
@@ -264,7 +261,9 @@ public class TagBean implements Serializable{
             }
             conceptBean.getConcept().getTags().add(tagSelected);
             tagSelected= null;
+            tagListToConcept=  tagManager.getAllTags();
         }
+
 
     }
 
