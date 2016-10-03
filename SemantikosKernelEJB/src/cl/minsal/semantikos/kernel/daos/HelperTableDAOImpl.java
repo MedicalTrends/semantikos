@@ -272,8 +272,11 @@ public class HelperTableDAOImpl implements HelperTableDAO {
                 throw new EJBException(e);
             }
 
+            /* Se agrega al mapa de tablas */
+            helperTablesMap.put(recordFromJSON.getId(), recordFromJSON);
         }
 
+        /* Se retorna la tabla desde le mapa */
         return helperTablesMap.get(id);
     }
 }

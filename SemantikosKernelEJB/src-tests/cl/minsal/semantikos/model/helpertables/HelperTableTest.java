@@ -12,15 +12,10 @@ public class HelperTableTest {
 
     @Test
     public void testIsBasicType() throws Exception {
-        
     }
     
     @Test
     public void testConstructor() throws Exception {
-        
-
         Multiplicity multiplicity = MultiplicityFactory.ONE_TO_MANY;
     }
-    
-    
 }
