@@ -44,6 +44,8 @@ public class RelationshipDefinitionDAOImpl implements RelationshipDefinitionDAO 
     @EJB
     private RelationshipAttributeDefinitionFactory factory;
 
+    @EJB
+    private HelperTableDAO helperTableDAO;
 
     @Override
     public List<RelationshipDefinition> getRelationshipDefinitionsByCategory(long idCategory) {
@@ -164,7 +166,7 @@ public class RelationshipDefinitionDAOImpl implements RelationshipDefinitionDAO 
      * Este método es responsable de retornar una instancia del target Definition adecuado.
      *
      * @param idCategory      Identificador de la categoría destino.
-     * @param idAccesoryTable Identificador de la Tabla auxiliar.
+     * @param idHelperTable Identificador de la Tabla auxiliar.
      * @param idBasicType     Identificador del tipo básico.
      * @param isSCTType       Indicador booleano (<code>"true"</code> o "<code>false</code>").
      *
@@ -172,7 +174,7 @@ public class RelationshipDefinitionDAOImpl implements RelationshipDefinitionDAO 
      *
      * @throws IllegalArgumentException Arrojado si todos los parámetros son nulos.
      */
-    protected TargetDefinition getTargetDefinition(String idCategory, String idAccesoryTable, String idExternTable, String idBasicType, String isSCTType) throws IllegalArgumentException {
+    protected TargetDefinition getTargetDefinition(String idCategory, Long idHelperTable, String idExternTable, String idBasicType, String isSCTType) throws IllegalArgumentException {
 
         /* Se testea si es un tipo básico */
 
@@ -186,9 +188,8 @@ public class RelationshipDefinitionDAOImpl implements RelationshipDefinitionDAO 
             return categoryDAO.getCategoryById(id);
         }
 
-        if (idAccesoryTable != null) {
-            long id = Long.parseLong(idAccesoryTable);
-            return HelperTableFactory.getInstance().getHelperTable(id);
+        if (idHelperTable != null) {
+            return helperTableDAO.getHelperTableByID(idHelperTable);
         }
 
         throw new IllegalArgumentException("Todos los parámetros eran nulos.");

@@ -78,6 +78,13 @@ public class ConceptManagerImpl implements ConceptManager {
     }
 
     @Override
+    public List<ConceptSMTK> findConceptBy(Category category, int pageNumber, int pageSize) {
+
+        //Búsqueda por categoría y patron o concept ID
+        return conceptDAO.getConceptBy(category, pageSize, pageNumber);
+    }
+
+    @Override
     public List<ConceptSMTK> findConceptBy(String patternOrConceptID, Long[] categories, int pageNumber, int pageSize) {
 
 
@@ -178,6 +185,12 @@ public class ConceptManagerImpl implements ConceptManager {
             return conceptDAO.countConceptBy((String[]) null, categories, isModeled);
         }
         return conceptDAO.countConceptBy((String[]) null, categories, isModeled);
+
+    }
+
+    @Override
+    public List<ConceptSMTK> getConceptBy(RefSet refSet) {
+        return conceptDAO.getConceptBy(refSet);
 
     }
 
@@ -344,6 +357,8 @@ public class ConceptManagerImpl implements ConceptManager {
     public List<ConceptSMTK> getConceptDraft() {
         return conceptDAO.getConceptDraft();
     }
+
+
 
     /**
      * Método encargado de convertir un string en una lista de string.

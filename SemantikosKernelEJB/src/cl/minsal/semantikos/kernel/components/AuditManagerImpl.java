@@ -14,6 +14,7 @@ import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.List;
 
+import static cl.minsal.semantikos.model.DescriptionType.PREFERIDA;
 import static cl.minsal.semantikos.model.audit.AuditActionType.*;
 
 /**
@@ -46,19 +47,22 @@ public class AuditManagerImpl implements AuditManager {
         /* Se validan las reglas de negocio para realizar el registro */
         new HistoryRecordBL().validate(conceptAuditAction);
 
-        // TODO: Implement this.
+        auditDAO.recordAuditAction(conceptAuditAction);
     }
 
     @Override
     public void recordDescriptionMovement(ConceptSMTK sourceConcept, ConceptSMTK targetConcept, Description description, User user) {
 
         /* Se crea el registro de historial, para poder validar Reglas de Negocio */
-        ConceptAuditAction conceptAuditAction = new ConceptAuditAction(sourceConcept, CONCEPT_DESCRIPTION_MOVEMENT, now(), user, description);
+        ConceptAuditAction conceptAuditMovement = new ConceptAuditAction(sourceConcept, CONCEPT_DESCRIPTION_MOVEMENT, now(), user, description);
+        ConceptAuditAction conceptAuditAddingDescription = new ConceptAuditAction(targetConcept, CONCEPT_DESCRIPTION_CREATION, now(), user, description);
 
         /* Se validan las reglas de negocio para realizar el registro */
-        new HistoryRecordBL().validate(conceptAuditAction);
+        new HistoryRecordBL().validate(conceptAuditMovement);
+        new HistoryRecordBL().validate(conceptAuditAddingDescription);
 
-        // TODO: Implement this.
+        auditDAO.recordAuditAction(conceptAuditMovement);
+        auditDAO.recordAuditAction(conceptAuditAddingDescription);
     }
 
     @Override
@@ -73,6 +77,11 @@ public class AuditManagerImpl implements AuditManager {
 
     @Override
     public void recordFavouriteDescriptionUpdate(ConceptSMTK conceptSMTK, Description originalDescription, User user) {
+
+        /* Condición sobre la cual se debe registrar el cambio */
+        if(!conceptSMTK.isModeled() || !originalDescription.getDescriptionType().equals(PREFERIDA)){
+            return;
+        }
 
         /* Se validan las reglas de negocio para realizar el registro */
         ConceptAuditAction auditAction = new ConceptAuditAction(conceptSMTK, CONCEPT_FAVOURITE_DESCRIPTION_CHANGE, now(), user, originalDescription);

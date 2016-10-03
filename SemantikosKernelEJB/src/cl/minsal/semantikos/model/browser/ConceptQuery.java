@@ -19,9 +19,7 @@ public class ConceptQuery {
 
     private Boolean modeled;
 
-
-
-    private Integer tagId;
+    private Tag tag;
 
     private Date creationDateSince;
     private Date creationDateTo;
@@ -74,12 +72,12 @@ public class ConceptQuery {
         this.modeled = modeled;
     }
 
-    public Integer getTagId() {
-        return tagId;
+    public Tag getTag() {
+        return tag;
     }
 
-    public void setTagId(Integer tagId) {
-        this.tagId = tagId;
+    public void setTag(Tag tag) {
+        this.tag = tag;
     }
 
     public Date getCreationDateSince() {

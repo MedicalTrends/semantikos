@@ -5,6 +5,7 @@ import cl.minsal.semantikos.model.helpertables.HelperTableRecord;
 import cl.minsal.semantikos.model.helpertables.HelperTableWhereCondition;
 
 import javax.ejb.Local;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -76,4 +77,20 @@ public interface HelperTableDAO {
      * @return Un registro (<code>HelperTableRecord</code>).
      */
     public HelperTableRecord getHelperTableRecordFromId(long idHelperTableRecord);
+
+    /**
+     * Este método recupera todas las tablas auxiliares.
+     *
+     * @return Las tablas auxiliares.
+     */
+    public Collection<HelperTable> getHelperTables();
+
+    /**
+     * Este método es responsable de recuperar una tabla auxiliar por su ID.
+     *
+     * @param id el ID en la bdd
+     *
+     * @return La tabla auxiliar.
+     */
+    public HelperTable getHelperTableByID(long id);
 }

@@ -1,9 +1,6 @@
 package cl.minsal.semantikos.kernel.daos;
 
-import cl.minsal.semantikos.model.Category;
-import cl.minsal.semantikos.model.ConceptSMTK;
-import cl.minsal.semantikos.model.Tag;
-import cl.minsal.semantikos.model.User;
+import cl.minsal.semantikos.model.*;
 
 import javax.ejb.Local;
 import java.util.List;
@@ -59,6 +56,10 @@ public interface ConceptDAO {
      */
     public List<ConceptSMTK> getConceptBy(Long[] categories, boolean modeled, int pageSize, int pageNumber);
 
+    /*Método temporal para trabajar con el navegador de conceptos*/
+    @Deprecated
+    public List<ConceptSMTK> getConceptBy(Category category, int pageSize, int pageNumber);
+
     public List<ConceptSMTK> getConceptBy(String[] pattern, boolean isModeled, int pageSize, int pageNumber);
 
     public List<ConceptSMTK> getConceptBy(String PatternOrConceptId, Long[] Category, int pageNumber, int pageSize, boolean isModeled);
@@ -103,6 +104,8 @@ public interface ConceptDAO {
      * @param conceptSMTK El concepto cuya información básica se actualizará.
      */
     public void update(ConceptSMTK conceptSMTK);
+
+    public List<ConceptSMTK> getConceptBy(RefSet refSet);
 
     public List<ConceptSMTK> getConceptDraft();
 }

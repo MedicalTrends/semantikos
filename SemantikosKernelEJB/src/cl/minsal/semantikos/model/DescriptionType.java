@@ -91,7 +91,7 @@ public class DescriptionType {
 
         DescriptionType that = (DescriptionType) o;
 
-        if (!name.equals(that.name)) return false;
+        if (getId() != that.getId()) return false;
 
         return true;
     }

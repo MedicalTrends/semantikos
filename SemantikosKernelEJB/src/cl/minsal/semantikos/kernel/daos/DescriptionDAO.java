@@ -53,16 +53,6 @@ public interface DescriptionDAO {
     public Description persist(Description description, User user);
 
     /**
-     * Este método es responsable de asociar una descripción ya persistida a un concepto, la descripción
-     * es actualizada con su llave foránea al concepto asociado
-     *
-     * @param description La descripción que será actualizada.
-     * @param concept     El concepto al cual asociar la descripción
-     * @param user        El usuario que persiste la descripción.
-     */
-    public void bind(Description description, ConceptSMTK concept, User user);
-
-    /**
      * Este método es responsable de persistir y asociar a un concepto todas las descripciones que no están
      * persistidas,
      * del conjunto de descripciones dadas como parámetro.

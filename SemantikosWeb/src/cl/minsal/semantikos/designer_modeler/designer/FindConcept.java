@@ -4,12 +4,15 @@ import cl.minsal.semantikos.kernel.components.CategoryManager;
 import cl.minsal.semantikos.kernel.components.ConceptManager;
 import cl.minsal.semantikos.model.Category;
 import cl.minsal.semantikos.model.ConceptSMTK;
+import org.primefaces.context.RequestContext;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import java.io.Serializable;
+import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,14 +58,26 @@ public class FindConcept implements Serializable{
         return findConcepts;
     }
     public List<ConceptSMTK> getConceptSearchInputAndCategories(String pattern) {
-
+        RequestContext.getCurrentInstance().update("::conceptTranslate");
         if (pattern != null) {
-            if (pattern.length() > 2) {
+            if (pattern.trim().length() > 2) {
+                if(standardizationPattern(pattern).length()<2)return null;
                 findConcepts=conceptManager.findConceptBy(pattern,categoryArrayID,0,conceptManager.countConceptBy(pattern,categoryArrayID));
                 return findConcepts;
             }
         }
-        return findConcepts;
+        return null;
+    }
+
+    private String standardizationPattern(String pattern) {
+
+        if (pattern != null) {
+            pattern = Normalizer.normalize(pattern, Normalizer.Form.NFD);
+            pattern = pattern.toLowerCase();
+            pattern = pattern.replaceAll("[^\\p{ASCII}]", "");
+            pattern = pattern.replaceAll("\\p{Punct}+", "");
+        }
+        return pattern;
     }
 
     public List<ConceptSMTK> getFindConcepts() {

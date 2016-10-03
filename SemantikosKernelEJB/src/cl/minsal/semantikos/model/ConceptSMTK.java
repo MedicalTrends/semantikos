@@ -3,7 +3,10 @@ package cl.minsal.semantikos.model;
 import cl.minsal.semantikos.model.audit.AuditableEntity;
 import cl.minsal.semantikos.model.businessrules.ConceptStateBusinessRulesContainer;
 import cl.minsal.semantikos.model.exceptions.BusinessRuleException;
-import cl.minsal.semantikos.model.relationships.*;
+import cl.minsal.semantikos.model.relationships.Relationship;
+import cl.minsal.semantikos.model.relationships.RelationshipDefinition;
+import cl.minsal.semantikos.model.relationships.Target;
+import cl.minsal.semantikos.model.relationships.TargetType;
 
 import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
@@ -546,11 +549,7 @@ public class ConceptSMTK extends PersistentEntity implements Target, AuditableEn
     public boolean belongsTo(Category category) {
 
         /* Si no tiene categoría, no pertenece a ninguna */
-        if (this.category == null) {
-            return false;
-        }
-
-        return this.category.equals(category);
+        return this.category != null && this.category.equals(category);
     }
 
     /**
@@ -613,29 +612,6 @@ public class ConceptSMTK extends PersistentEntity implements Target, AuditableEn
 
     public void setModeled(boolean modeled) {
         this.modeled = modeled;
-    }
-
-    /**
-     * Este método es responsable de buscar y retornar, de existir, una descripción con un cierto DESCRIPTION_ID y con
-     * una validez dada.
-     *
-     * @param descriptionId El DESCRIPTION_ID.
-     * @param isActive      Si la descripción buscada debe encontrarse vigente o no.
-     *
-     * @return La descripción que cumple esto.
-     *
-     * @throws IllegalArgumentException Lanzada si no existe estrictamente una (osea cero o más de una) que satisfaga
-     *                                  las condiciones.
-     */
-    public Description getDescriptionByDescriptionID(String descriptionId, boolean isActive) throws IllegalArgumentException {
-
-        for (Description description : descriptions) {
-            if (description.getDescriptionId().equalsIgnoreCase(descriptionId) && description.isActive() == isActive) {
-                return description;
-            }
-        }
-
-        throw new IllegalArgumentException("No existe una descripción con las características deseadas");
     }
 
     /**

@@ -77,10 +77,6 @@ public class BasicTypeValue<T extends Comparable> implements Target {
             return "null";
     }
 
-    public String asString(){
-        return value.toString();
-    }
-
     public boolean isDate() {
         return this.value.getClass().equals(Timestamp.class);
     }

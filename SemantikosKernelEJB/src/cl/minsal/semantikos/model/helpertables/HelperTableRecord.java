@@ -27,6 +27,12 @@ public class HelperTableRecord implements Target {
     private Map<String, String> fields;
 
     /**
+     * Este constructor vacío se provee para JSON.
+     */
+    public HelperTableRecord() {
+    }
+
+    /**
      * Este constructor permite crear un objeto no persistido (aun) con valores para un registro de una tabla auxiliar.
      *
      * @param helperTable La tabla auxiliar a la que pertenece el registro.
@@ -47,13 +53,6 @@ public class HelperTableRecord implements Target {
     public HelperTableRecord(HelperTable helperTable, long id) {
         this.helperTable = helperTable;
         this.id = id;
-    }
-
-    /**
-     * Este constructor vacío se provee para JSON.
-     */
-    public HelperTableRecord() {
-        this(HelperTableFactory.getInstance().getHelperTableATC(), -1);
     }
 
     public long getId() {

@@ -1,7 +1,7 @@
 package cl.minsal.semantikos.designer_modeler.designer;
 
 
-import cl.minsal.semantikos.kernel.components.HelperTableManagerInterface;
+import cl.minsal.semantikos.kernel.components.HelperTableManager;
 import cl.minsal.semantikos.model.helpertables.HelperTable;
 import cl.minsal.semantikos.model.helpertables.HelperTableRecord;
 
@@ -21,7 +21,7 @@ import java.util.List;
 public class HelperTableBean implements Serializable{
 
     @EJB
-    HelperTableManagerInterface helperTableManager;
+    HelperTableManager helperTableManager;
 
 
     public List<HelperTableRecord> searchHelperTableRecords(String query){

@@ -115,7 +115,7 @@ public class RelationshipDAOImpl implements RelationshipDAO {
     @Override
     public void update(Relationship relationship) {
         ConnectionBD connect = new ConnectionBD();
-        String sql = "{call semantikos.delete_relationship(?,?,?,?,?)}";
+        String sql = "{call semantikos.update_relation(?,?,?,?,?)}";
 
         try (Connection connection = connect.getConnection();
              CallableStatement call = connection.prepareCall(sql)) {
@@ -135,12 +135,13 @@ public class RelationshipDAOImpl implements RelationshipDAO {
     @Override
     public void invalidate(Relationship relationship) {
         ConnectionBD connect = new ConnectionBD();
-        String sql = "{call semantikos.invalidate_relationship(?)}";
+        String sql = "{call semantikos.invalidate_relationship(?,?)}";
 
         try (Connection connection = connect.getConnection();
              CallableStatement call = connection.prepareCall(sql)) {
 
             call.setLong(1, relationship.getId());
+            call.setTimestamp(2, relationship.getValidityUntil());
             call.execute();
         } catch (SQLException e) {
             throw new EJBException(e);

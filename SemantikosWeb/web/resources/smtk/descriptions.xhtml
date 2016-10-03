@@ -27,34 +27,34 @@
 
         <p:fieldset legend="Agregar descripción" toggleable="true" collapsed="true">
             <div class="ui-g">
-            <div class="ui-g-12 ui-md-6 ui-lg-1">
-                <p:outputLabel for="otherTermino" value="Término"/>
-            </div>
+                <div class="ui-g-12 ui-md-6 ui-lg-1">
+                    <p:outputLabel for="otherTermino" value="Término"/>
+                </div>
 
-            <div class="ui-g-12 ui-md-6 ui-lg-4">
-                <p:inputText id="otherTermino" value="#{cc.attrs.otherTermino}" style="width:90%"/>
-            </div>
-            <div class="ui-g-12 ui-md-6 ui-lg-3">
-                <p:selectOneRadio id="radio4" value="#{cc.attrs.otherSensibilidad}" layout="responsive"
-                                  columns="2" style="width:100%">
-                    <f:selectItem itemValue="#{true}" itemLabel="Sensible"/>
-                    <f:selectItem itemValue="#{false}" itemLabel="Insensible"/>
-                </p:selectOneRadio>
-            </div>
-            <div class="ui-g-12 ui-md-6 ui-lg-2">
-                <p:selectOneMenu id="console" value="#{cc.attrs.otherDescriptionType}"
-                                 converter="omnifaces.SelectItemsConverter" style="width:60%">
-                    <f:selectItem itemLabel="Seleccione tipo" itemValue=""/>
-                    <f:selectItems value="#{cc.attrs.descriptionTypes}" var="descriptionType"
-                                   itemLabel="#{descriptionType.name}" itemValue="#{descriptionType}"/>
-                </p:selectOneMenu>
-            </div>
-            <div class="ui-g-12 ui-md-6 ui-lg-2">
-                <p:commandButton value="Agregar" id="btn" action="#{conceptBean.addDescription()}"
-                                 process="@(.otherDescriptionsPanel)"
-                                 update="@(.otherDescriptionsPanel)"
-                                 style="float: right"/>
-            </div>
+                <div class="ui-g-12 ui-md-6 ui-lg-4">
+                    <p:inputText id="otherTermino" value="#{cc.attrs.otherTermino}" style="width:90%"/>
+                </div>
+                <div class="ui-g-12 ui-md-6 ui-lg-3">
+                    <p:selectOneRadio id="radio4" value="#{cc.attrs.otherSensibilidad}" layout="responsive"
+                                      columns="2" style="width:100%">
+                        <f:selectItem itemValue="#{true}" itemLabel="Sensible"/>
+                        <f:selectItem itemValue="#{false}" itemLabel="Insensible"/>
+                    </p:selectOneRadio>
+                </div>
+                <div class="ui-g-12 ui-md-6 ui-lg-2">
+                    <p:selectOneMenu id="console" value="#{cc.attrs.otherDescriptionType}"
+                                     converter="omnifaces.SelectItemsConverter" style="width:60%">
+                        <f:selectItem itemLabel="Seleccione tipo" itemValue=""/>
+                        <f:selectItems value="#{cc.attrs.descriptionTypes}" var="descriptionType"
+                                       itemLabel="#{descriptionType.name}" itemValue="#{descriptionType}"/>
+                    </p:selectOneMenu>
+                </div>
+                <div class="ui-g-12 ui-md-6 ui-lg-2">
+                    <p:commandButton value="Agregar" id="btn" action="#{conceptBean.addDescription()}"
+                                     process="@(.otherDescriptionsPanel)"
+                                     update="@(.otherDescriptionsPanel)"
+                                     style="float: right"/>
+                </div>
             </div>
         </p:fieldset>
 
@@ -67,11 +67,15 @@
                          editable="true"
                          reflow="true">
 
+
+                <p:ajax listener="#{conceptBean.descriptionEditRow}" event="rowEdit"
+                        update="otherDescriptions,:mainForm:conceptHeader"/>
+
                 <!--Columnas por defecto -->
 
                 <p:column headerText="DescId" style="width:5%">
                     <div style="text-align: center;">
-                        <h:outputText value="-"/>
+                        <h:outputText value="#{description.descriptionId}"/>
                     </div>
                 </p:column>
 
@@ -101,7 +105,7 @@
                             <f:facet name="input">
                                 <p:selectOneMenu value="#{description.descriptionType}"
                                                  converter="omnifaces.SelectItemsConverter" style="width:60%">
-                                    <f:selectItems value="#{conceptBean.descriptionTypes}"
+                                    <f:selectItems value="#{conceptBean.descriptionTypesEdit}"
                                                    var="descriptionType" itemLabel="#{descriptionType.name}"
                                                    itemValue="#{descriptionType}"/>
                                 </p:selectOneMenu>
@@ -145,16 +149,18 @@
                                    process="@this"
                                    update="@(.otherDescriptions)"
                                    style="float: right">
-                        <i class="fa fa-trash fa-lg" />
-                        <p:confirm header="Confirmation" message="¿Desea eliminar esta descripción?" icon="ui-icon-alert" />
+                        <i class="fa fa-trash fa-lg"/>
+                        <p:confirm header="Confirmation" message="¿Desea eliminar esta descripción?"
+                                   icon="ui-icon-alert"/>
                     </p:commandLink>
-                    <p:commandLink  rendered="#{conceptBean.concept.persistent}"
-                                    process="@this"
-                                    update=":#{cc.clientId}:conceptTranslate"
-                                    oncomplete="PF('dialogTDC').show()">
-                        <i class="fa fa-exchange fa-lg" />
-                        <f:setPropertyActionListener value="#{description}" target="#{conceptBean.descriptionToTranslate}" />
-
+                    <p:commandLink rendered="#{conceptBean.concept.persistent}"
+                                   process="@this"
+                                   update=":#{cc.clientId}:conceptTranslate"
+                                   oncomplete="PF('dialogTDC').show()">
+                        <i class="fa fa-exchange fa-lg"/>
+                        <f:setPropertyActionListener value="#{description}"
+                                                     target="#{conceptBean.descriptionToTranslate}"/>
+                        <f:setPropertyActionListener value="" target="#{conceptBean.conceptSMTKTranslateDes}"/>
                     </p:commandLink>
                     <p:rowEditor id="rowEditor" style="display: inline"/>
                 </p:column>
@@ -168,80 +174,112 @@
               showEffect="fade" hideEffect="fade">
 
 
-        <p:panel id="conceptTranslate" header="Destino" style="width: 100%;">
-            <div class="ui-g">
-                <div class="ui-g-12 ui-md-6 ui-lg-6">
-                    <p:autoComplete id="inputFindConcept" scrollHeight="200" size="5" style="width: 300px;"
-                                    inputStyle="width: 300px;"
-                                    converter="conceptConverter" var="concept"
-                                    value="#{conceptBean.conceptSMTKTranslateDes}"
-                                    completeMethod="#{findConceptBean.getConceptSearchInputAndCategories}"
-                                    itemLabel="#{concept.descriptionFavorite.term}" itemValue="#{concept}"
-                                    emptyMessage="No se encontraron conceptos relacionados"
-                    >
-                        <p:ajax event="itemSelect" update=":#{cc.clientId}:conceptTranslate"></p:ajax>
-                    </p:autoComplete>
-                </div>
-                <div class="ui-g-12 ui-md-6 ui-lg-6">
-                    <p:selectCheckboxMenu style="width: 300px;" id="menu"
-                                          value="#{findConceptBean.categoryArrayID}" label="Categorías"
-                                          filter="true" filterMatchMode="startsWith">
-                        <f:selectItems value="#{findConceptBean.categoryList}" var="category"
-                                       itemLabel="#{category.name}" itemValue="#{category.id}"/>
-                    </p:selectCheckboxMenu>
-                </div>
-            </div>
+        <p:panel id="conceptTranslate" style="width: 100%; border: hidden;">
 
-            <h3>Descripcion a trasladar</h3>
-            <div class="ui-g">
-                <div class="ui-g-12 ui-md-6 ui-lg-2">
-                    DESCID:
-                </div>
-                <div class="ui-g-12 ui-md-6 ui-lg-10">
-                    <h:outputText value="#{conceptBean.descriptionToTranslate.descriptionId}"/>
-                </div>
-            </div>
-            <div class="ui-g">
-                <div class="ui-g-12 ui-md-6 ui-lg-2">
-                    Tipo:
-                </div>
-                <div class="ui-g-12 ui-md-6 ui-lg-10">
-                    <h:outputText value="#{conceptBean.descriptionToTranslate.descriptionType.name}"/>
-                </div>
-            </div>
-            <div class="ui-g">
-                <div class="ui-g-12 ui-md-6 ui-lg-2">
-                    Término:
-                </div>
-                <div class="ui-g-12 ui-md-6 ui-lg-10">
-                    <h:outputText value="#{conceptBean.descriptionToTranslate.term}"/>
-                </div>
-            </div>
+            <p:panel style="width: 100%;">
 
-            <h3>Concepto de destino</h3>
-            <div class="ui-g">
-                <div class="ui-g-12 ui-md-6 ui-lg-2">
-                    Concept ID:
+                <h3>Descripcion a trasladar</h3>
+                <div class="ui-g">
+                    <div class="ui-g-12 ui-md-6 ui-lg-2">
+                        DESCID:
+                    </div>
+                    <div class="ui-g-12 ui-md-6 ui-lg-10">
+                        <h:outputText value="#{conceptBean.descriptionToTranslate.descriptionId}"/>
+                    </div>
                 </div>
-                <div class="ui-g-12 ui-md-6 ui-lg-10">
-                    <h:outputText value="#{conceptBean.conceptSMTKTranslateDes.conceptID}"/>
+                <div class="ui-g">
+                    <div class="ui-g-12 ui-md-6 ui-lg-2">
+                        Tipo:
+                    </div>
+                    <div class="ui-g-12 ui-md-6 ui-lg-10">
+                        <h:outputText value="#{conceptBean.descriptionToTranslate.descriptionType.name}"/>
+                    </div>
                 </div>
-            </div>
+                <div class="ui-g">
+                    <div class="ui-g-12 ui-md-6 ui-lg-2">
+                        Término:
+                    </div>
+                    <div class="ui-g-12 ui-md-6 ui-lg-10">
+                        <h:outputText value="#{conceptBean.descriptionToTranslate.term}"/>
+                    </div>
+                </div>
 
-            <div class="ui-g">
-                <div class="ui-g-12 ui-md-6 ui-lg-2">
-                    Descripción:
-                </div>
-                <div class="ui-g-12 ui-md-6 ui-lg-10">
-                    <h:outputText value="#{conceptBean.conceptSMTKTranslateDes.descriptionFavorite.term}"/>
-                </div>
-            </div>
+            </p:panel>
+            <br/>
 
+            <p:panel style="width: 100%;">
+                <h3>Destino</h3>
+
+                <div class="ui-g">
+                    <div class="ui-g-12 ui-md-6 ui-lg-6">
+                        <p:autoComplete id="inputFindConcept" scrollHeight="200" size="5" style="width: 300px;"
+                                        inputStyle="width: 300px;"
+                                        converter="conceptConverter" var="concept"
+                                        value="#{conceptBean.conceptSMTKTranslateDes}"
+                                        completeMethod="#{findConceptBean.getConceptSearchInputAndCategories}"
+                                        itemLabel="#{concept.descriptionFavorite.term}" itemValue="#{concept}"
+                                        emptyMessage="No se encontraron conceptos relacionados"
+                                        placeholder="Buscar concepto por término"
+                                        disabled="#{conceptBean.conceptSMTKTranslateDes!=null}"
+                        >
+                            <p:ajax event="itemSelect" update=":#{cc.clientId}:conceptTranslate"></p:ajax>
+
+                        </p:autoComplete>
+                        </div>
+                    <div class="ui-g-12 ui-md-6 ui-lg-6">
+                        <p:selectCheckboxMenu style="width: 300px;" id="menu"
+                                              value="#{findConceptBean.categoryArrayID}" label="Filtro categorías"
+                                              filter="true" filterMatchMode="startsWith"
+                        disabled="#{conceptBean.conceptSMTKTranslateDes!=null}">
+
+                            <f:selectItems value="#{findConceptBean.categoryList}" var="category"
+                                           itemLabel="#{category.name}" itemValue="#{category.id}"/>
+                            <p:ajax listener="#{findConceptBean.getConceptSearchInputAndCategories}"></p:ajax>
+                        </p:selectCheckboxMenu>
+
+                    </div>
+                </div>
+
+
+                <h3>Concepto de destino</h3>
+
+
+                <div class="ui-g">
+                    <div class="ui-g-12 ui-md-6 ui-lg-2">
+                        Concept ID:
+                    </div>
+                    <div class="ui-g-12 ui-md-6 ui-lg-4">
+                        <h:outputText value="#{conceptBean.conceptSMTKTranslateDes.conceptID}"/>
+                    </div>
+                    <div class="ui-g-12 ui-md-6 ui-lg-2">
+                        Descripción:
+                    </div>
+                    <div class="ui-g-12 ui-md-6 ui-lg-4">
+                        <h:outputText value="#{conceptBean.conceptSMTKTranslateDes.descriptionFavorite.term}"/>
+                    </div>
+                </div>
+
+                <div class="ui-g">
+                    <div class="ui-g-12 ui-md-6 ui-lg-2">
+                        Categoría:
+                    </div>
+                    <div class="ui-g-12 ui-md-6 ui-lg-4">
+                        <h:outputText value="#{conceptBean.conceptSMTKTranslateDes.category.name}"/>
+                    </div>
+                    <div class="ui-g-12 ui-md-6 ui-lg-6">
+                    <p:commandButton rendered="#{conceptBean.conceptSMTKTranslateDes!=null}" update=":#{cc.clientId}:conceptTranslate" value="Cambiar Concepto"><f:setPropertyActionListener value="" target="#{conceptBean.conceptSMTKTranslateDes}"/></p:commandButton>
+
+                    </div>
+                </div>
+
+
+            </p:panel>
 
         </p:panel>
 
         <div style="text-align: center;">
-            <p:commandButton update="createEdit"  icon="fa fa-exchange" value="Trasladar" actionListener="#{conceptBean.translateDescription}">
+            <p:commandButton update="createEdit" icon="fa fa-exchange" value="Trasladar"
+                             actionListener="#{conceptBean.translateDescription}">
             </p:commandButton>
         </div>
 
@@ -249,19 +287,19 @@
 
     <h:outputStylesheet id="_customCSS">
 
-        .ui-row-editor span.ui-icon.ui-icon-pencil{
+        .ui-row-editor span.ui-icon.ui-icon-pencil {
             width: 18px !important;
             height: 18px !important;
             margin-right: 10px !important;
         }
 
-        .ui-row-editor span.ui-icon.ui-icon-check{
+        .ui-row-editor span.ui-icon.ui-icon-check {
             width: 18px !important;
             height: 18px !important;
             margin-right: 10px !important;
         }
 
-        .ui-row-editor span.ui-icon.ui-icon-close{
+        .ui-row-editor span.ui-icon.ui-icon-close {
             width: 18px !important;
             height: 18px !important;
             margin-right: 10px !important;
