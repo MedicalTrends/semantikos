@@ -19,7 +19,11 @@ public class HelperTableFactory {
     /** Tabla Auxiliar Tipo Recomendaciones */
     private HelperTable recommendationTypeHT;
 
+    /** Tabla Auxiliar ADM Route */
+    private HelperTable adm_Route;
 
+    /** Tabla Auxiliar Via Administracion */
+    private HelperTable viaAdministracion;
 
     private Map<String, HelperTable> helperTablesByTableName = new HashMap<>();
 
@@ -35,6 +39,7 @@ public class HelperTableFactory {
         HelperTable dciHelperTable = createDCI();
         HelperTable rec = createRecommendation();
         HelperTable rectype = createRecommendationType();
+        HelperTable adm_route = createRecommendationType();
 
         helperTablesByTableName.put(atcHelperTable.getTablaName(), atcHelperTable);
         helperTablesByTableName.put(dciHelperTable.getTablaName(), dciHelperTable);
@@ -61,7 +66,6 @@ public class HelperTableFactory {
 
         return this.atcHT;
     }
-
 
 
     /**
@@ -97,11 +101,6 @@ public class HelperTableFactory {
         return this.recommendationTypeHT;
     }
 
-
-
-
-
-
     /**
      * Este método es responsable de crear una Tabla Auxiliar ATC.
      *
@@ -121,6 +120,45 @@ public class HelperTableFactory {
         return this.dciHT;
     }
 
+    /**
+     * Este método es responsable de crear una Tabla Auxiliar ADM_Route.
+     *
+     * @return Una tabla ADM_ROute.
+     */
+    private HelperTable createADM_Route() {
+        HelperTableColumn idColumn = new HelperTableColumn("id", true, false, true);
+        HelperTableColumn descriptionColumn = new HelperTableColumn("description", false, true, true);
+        HelperTableColumn creation_dateColumn = new HelperTableColumn("creation_date", false, true, true);
+        HelperTableColumn user_registerColumn = new HelperTableColumn("user_register", false, true, true);
+        HelperTableColumn is_validColumn = new HelperTableColumn("is_valid", false, true, true);
+        HelperTableColumn delete_dateColumn = new HelperTableColumn("delete_date", false, true, true);
+
+        HelperTableColumn[] columns = {idColumn, descriptionColumn, creation_dateColumn, user_registerColumn, is_validColumn, delete_dateColumn};
+        this.adm_Route = new HelperTable((long) 5, "ADM Route", "Tabla ADM Route ", "helper_table_adm_route", Arrays.asList(columns));
+
+        return this.adm_Route;
+    }
+
+
+    /**
+     * Este método es responsable de crear una Tabla Auxiliar ADM_Route.
+     *
+     * @return Una tabla ADM_ROute.
+     */
+    private HelperTable createViaAdministracion() {
+        HelperTableColumn idColumn = new HelperTableColumn("id", true, false, true);
+        HelperTableColumn descriptionColumn = new HelperTableColumn("description", false, true, true);
+        HelperTableColumn creation_dateColumn = new HelperTableColumn("creation_date", false, true, true);
+        HelperTableColumn user_registerColumn = new HelperTableColumn("user_register", false, true, true);
+        HelperTableColumn is_validColumn = new HelperTableColumn("is_valid", false, true, true);
+        HelperTableColumn delete_dateColumn = new HelperTableColumn("delete_date", false, true, true);
+
+        HelperTableColumn[] columns = {idColumn, descriptionColumn, creation_dateColumn, user_registerColumn, is_validColumn, delete_dateColumn};
+        this.viaAdministracion = new HelperTable((long) 6, "Via Administracion", "Tabla Via Administracion", "helper_table_via_admis", Arrays.asList(columns));
+
+        return this.viaAdministracion;
+    }
+
     public HelperTable getHelperTableATC() {
         return atcHT;
     }
@@ -135,6 +173,14 @@ public class HelperTableFactory {
 
     public HelperTable getHelperTableRecommendationType() {
         return recommendationTypeHT;
+    }
+
+    public HelperTable getAdm_Route() {
+        return adm_Route;
+    }
+
+    public HelperTable getViaAdministracion() {
+        return viaAdministracion;
     }
 
     public static HelperTableFactory getInstance() {
@@ -164,6 +210,12 @@ public class HelperTableFactory {
 
             case 4:
                 return this.recommendationTypeHT;
+
+            case 5:
+                return this.adm_Route;
+
+            case 6:
+                return this.viaAdministracion;
         }
 
         throw new IllegalArgumentException("No existe tabla auxiliar con ID = " + idHelperTable);
