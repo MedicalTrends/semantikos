@@ -333,6 +333,14 @@ public class TagBean implements Serializable{
         tagListTable= tagManager.getAllTags();
     }
 
+    public void removeTag() {
+
+        tagManager.removeTag(tagEdit);
+        conceptBean.getConcept().setTags(tagManager.getTagByConcept( conceptBean.getConcept()));
+        tagListTable= tagManager.getAllTags();
+
+    }
+
     public void onRowEdit(CellEditEvent event) {
 
         FacesContext context = FacesContext.getCurrentInstance();
@@ -346,6 +354,9 @@ public class TagBean implements Serializable{
 
     public void updateTag(){
         tagManager.update(tagEdit);
+
+        tagListToConcept= tagManager.getAllTags();
+
         FacesContext context = FacesContext.getCurrentInstance();
         context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Etiqueta actualizada", "La etiqueta se actualizo exitosamente"));
 

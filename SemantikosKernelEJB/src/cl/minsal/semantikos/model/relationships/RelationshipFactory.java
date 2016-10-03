@@ -145,10 +145,11 @@ public class RelationshipFactory {
         if (relationshipDefinition.getTargetDefinition().isBasicType()) {
             target = basicTypeDAO.getBasicTypeValueByID(idTarget);
         }
+        //TODO arreglar el obtener target
 
         /* El target puede ser a un registro de una tabla auxiliar */
         else if (relationshipDefinition.getTargetDefinition().isHelperTable()) {
-            target = helperTableDAO.getHelperTableRecordFromId(idTarget);
+            target = targetDAO.getTargetByID(idTarget);
         }
 
         /* El target puede ser un concepto SMTK */

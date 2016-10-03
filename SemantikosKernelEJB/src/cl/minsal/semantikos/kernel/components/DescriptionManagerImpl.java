@@ -194,7 +194,7 @@ public class DescriptionManagerImpl implements DescriptionManager {
         descriptionDAO.update(description);
 
         /* Se registra en el Audit el traslado */
-        auditManager.recordDescriptionMovement(sourceConcept, targetConcept, description, user);
+        if(targetConcept.isModeled())auditManager.recordDescriptionMovement(sourceConcept, targetConcept, description, user);
     }
 
     @Override

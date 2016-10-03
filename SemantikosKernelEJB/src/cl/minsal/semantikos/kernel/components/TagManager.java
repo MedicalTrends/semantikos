@@ -43,6 +43,9 @@ public interface TagManager {
      */
     public List<Tag> getOtherTags(Tag tag);
 
+    //TODO arreglar esto
+    public List<Tag> getTagByConcept(ConceptSMTK conceptSMTK);
+
     public void assignTag(ConceptSMTK conceptSMTK, Tag tag);
 
     public void unassignTag(ConceptSMTK conceptSMTK, Tag tag);
