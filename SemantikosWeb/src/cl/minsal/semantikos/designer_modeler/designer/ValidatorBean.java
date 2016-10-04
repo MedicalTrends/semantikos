@@ -1,6 +1,7 @@
 package cl.minsal.semantikos.designer_modeler.designer;
 
-import cl.minsal.semantikos.model.ConceptSMTK;
+import cl.minsal.semantikos.model.*;
+import cl.minsal.semantikos.model.exceptions.BusinessRuleException;
 import cl.minsal.semantikos.model.relationships.RelationshipDefinition;
 
 import javax.faces.application.FacesMessage;
@@ -56,6 +57,55 @@ public class ValidatorBean {
 
         if(concept.getValidRelationshipsByRelationDefinition(relationshipDefinition).size()<relationshipDefinition.getMultiplicity().getLowerBoundary()){
             throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, msg, msg));
+        }
+
+    }
+
+    /**
+     * Este metodo es responsable de realizar las validaciones vista de un termino perteneciente a una descripcion, a saber:
+     * 1.- Que un término no esté vacío
+     * 2.- Que un término no esté siendo utilizado por otra descripción del concepto que la posee
+     * @return
+     */
+    public void validateTerm(FacesContext context, UIComponent component, Object value) throws ValidatorException {
+
+        String msg;
+
+        DescriptionWeb aDescription = (DescriptionWeb) component.getAttributes().get("description");
+        String term = (String) value;
+
+        if(term.trim().equals("")) {
+            msg = "Debe ingresar un término";
+            throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, msg, msg));
+        }
+
+        for (Description description : aDescription.getConceptSMTK().getDescriptions()) {
+            if(!description.getDescriptionType().equals(aDescription.getDescriptionType()) && description.getTerm().trim().equals(term.trim())){
+                msg = "El concepto ya contiene una descripción que está usando este término";
+                throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, msg, msg));
+            }
+        }
+
+    }
+
+    /**
+     * Este metodo es responsable de realizar las validaciones vista de un tipo de descripción, a saber:
+     * 1.- Que un término no esté vacía
+     * 2.- Que un término no esté siendo utilizado por otra descripción del concepto que la posee
+     * @return
+     */
+    public void validateDescriptionType(FacesContext context, UIComponent component, Object value) throws ValidatorException {
+
+        String msg;
+
+        DescriptionWeb aDescription = (DescriptionWeb) component.getAttributes().get("description");
+        DescriptionType descriptionType = (DescriptionType) value;
+
+        for (Description description : aDescription.getConceptSMTK().getDescriptions()) {
+            if(description.getDescriptionType().equals(descriptionType) && descriptionType.getName().equalsIgnoreCase("abreviada")){
+                msg = "Un concepto no puede tener más de una descripción abreviada";
+                throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, msg, msg));
+            }
         }
 
     }

@@ -67,7 +67,6 @@
                          editable="true"
                          reflow="true">
 
-
                 <p:ajax listener="#{conceptBean.descriptionEditRow}" event="rowEdit"
                         update="otherDescriptions,:mainForm:conceptHeader"/>
 
@@ -84,8 +83,13 @@
                         <p:cellEditor>
                             <f:facet name="output"><h:outputText value="#{description.term}"/></f:facet>
                             <f:facet name="input"><p:inputText id="otrasTermino"
+                                                               validator="#{validatorBean.validateTerm}"
                                                                value="#{description.term}"
-                                                               style="width:100%"/></f:facet>
+                                                               style="width:100%">
+                                                    <f:attribute name="description" value="#{description}"  />
+                                                    <p:growl id="otherDescriptionsError" showDetail="true"/>
+                                                  </p:inputText>
+                            </f:facet>
                         </p:cellEditor>
                     </div>
                 </p:column>
@@ -104,10 +108,12 @@
                                     value="#{description.descriptionType.name}"/></f:facet>
                             <f:facet name="input">
                                 <p:selectOneMenu value="#{description.descriptionType}"
+                                                 validator="#{validatorBean.validateDescriptionType}"
                                                  converter="omnifaces.SelectItemsConverter" style="width:60%">
                                     <f:selectItems value="#{conceptBean.descriptionTypesEdit}"
                                                    var="descriptionType" itemLabel="#{descriptionType.name}"
                                                    itemValue="#{descriptionType}"/>
+                                    <f:attribute name="description" value="#{description}"  />
                                 </p:selectOneMenu>
                             </f:facet>
                         </p:cellEditor>

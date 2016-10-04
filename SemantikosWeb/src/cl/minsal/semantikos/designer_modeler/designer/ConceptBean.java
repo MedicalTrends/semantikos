@@ -408,7 +408,7 @@ public class ConceptBean implements Serializable {
 
     public boolean containDescription(DescriptionWeb descriptionWeb) {
         for (DescriptionWeb description : concept.getDescriptionsWeb()) {
-            if (description.getTerm().equals(descriptionWeb.getTerm())) {
+            if (description.getTerm().trim().equals(descriptionWeb.getTerm().trim())) {
                 return true;
             }
         }
@@ -639,9 +639,14 @@ public class ConceptBean implements Serializable {
      */
 
     public void descriptionEditRow(RowEditEvent event) {
+
         long SYNONYMOUS_ID = 3;
+        DescriptionWeb descriptionWeb = (DescriptionWeb) event.getObject();
+
+        FacesContext context = FacesContext.getCurrentInstance();
+
         for (DescriptionWeb descriptionRowEdit : concept.getDescriptionsWeb()) {
-            if (descriptionRowEdit.equals(event.getObject()) || descriptionRowEdit.getId() == ((DescriptionWeb) event.getObject()).getId()) {
+            if (descriptionRowEdit.equals(descriptionWeb) /*|| descriptionRowEdit.getId() == ((DescriptionWeb) event.getObject()).getId()*/) {
                 if (descriptionRowEdit.getDescriptionType().equals(descriptionTypeFactory.getFavoriteDescriptionType())) {
                     descriptionRowEdit.setDescriptionType(descriptionTypeFactory.getDescriptionTypeByID(SYNONYMOUS_ID));
                     DescriptionWeb descriptionFavorite = concept.getValidDescriptionFavorite();
