@@ -1,8 +1,6 @@
 package cl.minsal.semantikos.model.helpertables;
 
 import cl.minsal.semantikos.kernel.components.HelperTableManager;
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import javax.ejb.EJB;
@@ -22,8 +20,8 @@ public class HelperTableRecordFactory {
 
     private ObjectMapper mapper = new ObjectMapper();
 
-    public HelperTableRecordFactory() {}
-
+    public HelperTableRecordFactory() {
+    }
 
 
     /**
@@ -73,11 +71,19 @@ public class HelperTableRecordFactory {
         return Arrays.asList(jsonHelperTables);
     }
 
-
+    /**
+     * Este método transforma una expresión JSON a un HelperTable.
+     *
+     * @param jsonExpression La expresión JSON con el Helper Table
+     *
+     * @return Una instancia del Helper Table.
+     *
+     * @throws IOException
+     */
     public HelperTable createHelperTableFromJSON(String jsonExpression) throws IOException {
         HelperTableJSON jsonHelperTable = mapper.readValue(jsonExpression, HelperTableJSON.class);
 
-        return new HelperTable(jsonHelperTable.getTableId(),jsonHelperTable.getName(), jsonHelperTable.getDescription(), jsonHelperTable.getTablaName(), jsonHelperTable.getColumns());
+        return new HelperTable(jsonHelperTable.getTableId(), jsonHelperTable.getName(), jsonHelperTable.getDescription(), jsonHelperTable.getTablaName(), jsonHelperTable.getColumns());
     }
 }
 
@@ -107,9 +113,13 @@ class JSONHelperTableRecord {
         this.tableId = tableId;
     }
 
-    public long getId() { return id; }
+    public long getId() {
+        return id;
+    }
 
-    public void setId(long id) { this.id = id; }
+    public void setId(long id) {
+        this.id = id;
+    }
 
     public Map<String, String> getFields() {
         return fields;
@@ -146,9 +156,13 @@ class JSONHelperTableRecords {
         this.tableId = tableId;
     }
 
-    public long getId() { return id; }
+    public long getId() {
+        return id;
+    }
 
-    public void setId(long id) { this.id = id; }
+    public void setId(long id) {
+        this.id = id;
+    }
 
     public List<Map<String, String>> getRecords() {
         return records;
@@ -180,8 +194,8 @@ class HelperTableJSON {
     /** El nombre de las columnas que posee la tabla física */
     private Collection<HelperTableColumn> columns;
 
-
     public HelperTableJSON() {
+        this.columns = new ArrayList<>();
     }
 
     public long getTableId() {
@@ -221,7 +235,11 @@ class HelperTableJSON {
     }
 
     public void setColumns(Collection<HelperTableColumn> columns) {
-        this.columns = columns;
+        if (columns == null) {
+            this.columns = new ArrayList<>();
+        } else {
+            this.columns = columns;
+        }
     }
 }
 

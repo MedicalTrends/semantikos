@@ -12,6 +12,8 @@ import java.io.IOException;
 import java.sql.*;
 import java.util.*;
 
+import static java.util.Collections.emptyList;
+
 /**
  * @author Andrés Farías
  */
@@ -117,7 +119,12 @@ public class HelperTableDAOImpl implements HelperTableDAO {
 
             ResultSet rs = call.getResultSet();
             while (rs.next()) {
-                helperTableRecords = this.helperTableRecordFactory.createHelperRecordsFromJSON(rs.getString(1));
+                String jsonExpression = rs.getString(1);
+                if (jsonExpression != null) {
+                    helperTableRecords = this.helperTableRecordFactory.createHelperRecordsFromJSON(jsonExpression);
+                } else {
+                    helperTableRecords = emptyList();
+                }
             }
             rs.close();
         } catch (SQLException e) {
@@ -164,7 +171,12 @@ public class HelperTableDAOImpl implements HelperTableDAO {
 
             ResultSet rs = call.getResultSet();
             while (rs.next()) {
-                helperTableRecords = this.helperTableRecordFactory.createHelperRecordsFromJSON(rs.getString(1));
+                String jsonExpression = rs.getString(1);
+                if(jsonExpression != null) {
+                    helperTableRecords = this.helperTableRecordFactory.createHelperRecordsFromJSON(jsonExpression);
+                } else {
+                    helperTableRecords = emptyList();
+                }
             }
             rs.close();
         } catch (SQLException e) {
