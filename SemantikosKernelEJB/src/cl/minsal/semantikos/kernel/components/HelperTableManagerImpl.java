@@ -40,6 +40,11 @@ public class HelperTableManagerImpl implements HelperTableManager {
     }
 
     @Override
+    public List<HelperTableRecord> getAllRecords(HelperTable helperTable) {
+        return helperTableDAO.getAllRecords(helperTable);
+    }
+
+    @Override
     public List<HelperTableRecord> getAllRecords(HelperTable helperTable, List<String> columnNames) {
 
         logger.debug("Se solicitan los registros de la tabla " + helperTable);
@@ -105,11 +110,6 @@ public class HelperTableManagerImpl implements HelperTableManager {
             allColumns.add(systemColumn.getColumnName());
         }
         return allColumns;
-    }
-
-    @Override
-    public List<HelperTableRecord> getAllRecords(HelperTable helperTable) {
-        return helperTableDAO.getAllRecords(helperTable);
     }
 
     @Override
