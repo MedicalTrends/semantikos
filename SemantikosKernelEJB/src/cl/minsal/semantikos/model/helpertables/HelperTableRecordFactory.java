@@ -83,7 +83,10 @@ public class HelperTableRecordFactory {
     public HelperTable createHelperTableFromJSON(String jsonExpression) throws IOException {
         HelperTableJSON jsonHelperTable = mapper.readValue(jsonExpression, HelperTableJSON.class);
 
-        return new HelperTable(jsonHelperTable.getTableId(), jsonHelperTable.getName(), jsonHelperTable.getDescription(), jsonHelperTable.getTablaName(), jsonHelperTable.getColumns());
+        // Se crean las columnas por defecto que debe especificar esta definición de helperTable
+        Collection<HelperTableColumn> columns = Arrays.asList(new HelperTableColumn[]{new HelperTableColumn("description", false, true, true)});;
+
+        return new HelperTable(jsonHelperTable.getTableId(), jsonHelperTable.getName(), jsonHelperTable.getDescription(), jsonHelperTable.getTablaName(), columns);
     }
 }
 
