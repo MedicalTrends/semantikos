@@ -32,7 +32,7 @@ public interface HelperTableDAO {
      * @param helperTable La tabla en la cual buscar.
      * @param pattern     El patrón a buscar en los registros.
      *
-     * @return Los registros que satisfacen el criterio de búsquda.
+     * @return Los registros que satisfacen el criterio de búsqueda.
      */
     public List<Map<String, String>> findRecordsByPattern(HelperTable helperTable, String pattern);
 

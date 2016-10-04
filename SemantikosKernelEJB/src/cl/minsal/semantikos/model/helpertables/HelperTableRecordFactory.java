@@ -14,7 +14,6 @@ import java.util.*;
 @Singleton
 public class HelperTableRecordFactory {
 
-
     @EJB
     HelperTableManager helperTableManager;
 
