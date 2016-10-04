@@ -9,10 +9,9 @@ import javax.ejb.EJBException;
 import javax.ejb.Singleton;
 import java.io.IOException;
 import java.sql.Timestamp;
-import java.util.Arrays;
+import java.util.ArrayList;
 
 import static cl.minsal.semantikos.kernel.util.StringUtils.underScoreToCamelCaseJSON;
-import static cl.minsal.semantikos.model.relationships.BasicTypeType.STRING_TYPE;
 import static java.util.Arrays.asList;
 
 /**
@@ -24,7 +23,7 @@ public class BasicTypeDefinitionFactory {
     /** El logger para esta clase */
     private static final Logger logger = LoggerFactory.getLogger(BasicTypeDefinitionFactory.class);
 
-     /**
+    /**
      * Crea un BasicTypeDefinition en su forma básica: sin dominio ni intervalos
      *
      * @param jsonResult El JSON a partir del cual se crea el dominio.
@@ -55,8 +54,13 @@ public class BasicTypeDefinitionFactory {
             case STRING_TYPE:
                 BasicTypeDefinition<String> stringBasicTypeDefinition;
                 stringBasicTypeDefinition = new BasicTypeDefinition<>(idBasicType, nameBasicType, descriptionBasicType, basicTypeType);
+
                 String[] domain = basicTypeDefinitionDTO.getDomain();
-                stringBasicTypeDefinition.setDomain(asList(domain));
+                if (domain != null) {
+                    stringBasicTypeDefinition.setDomain(asList(domain));
+                } else {
+                    stringBasicTypeDefinition.setDomain(new ArrayList<String>());
+                }
                 return stringBasicTypeDefinition;
 
             case BOOLEAN_TYPE:
