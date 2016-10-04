@@ -55,7 +55,8 @@ public class BasicTypeDefinitionFactory {
             case STRING_TYPE:
                 BasicTypeDefinition<String> stringBasicTypeDefinition;
                 stringBasicTypeDefinition = new BasicTypeDefinition<>(idBasicType, nameBasicType, descriptionBasicType, basicTypeType);
-                stringBasicTypeDefinition.setDomain(asList(basicTypeDefinitionDTO.getDomain()));
+                String[] domain = basicTypeDefinitionDTO.getDomain();
+                stringBasicTypeDefinition.setDomain(asList(domain));
                 return stringBasicTypeDefinition;
 
             case BOOLEAN_TYPE:
