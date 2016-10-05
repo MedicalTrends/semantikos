@@ -214,7 +214,7 @@ public class TagBean implements Serializable{
         tagCreate= new Tag(-1,null,null,null,null);
         parentTagToCreate= new Tag(-1,null,null,null,null);
 
-        FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Etiqueta creada", "La etiqueta se creo exitosamente");
+        FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Etiqueta creada", "La etiqueta se creó exitosamente");
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
 
@@ -224,7 +224,7 @@ public class TagBean implements Serializable{
     public void createTagToConcept(){
         if(tagCreate.getName()== null || tagCreate.getName().length()==0 || tagCreate.getColorBackground()==null || tagCreate.getColorLetter()==null){
             FacesContext context = FacesContext.getCurrentInstance();
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Complete la informacion de la etiqueta"));
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Complete la información de la etiqueta"));
 
 
         }else{
@@ -243,7 +243,7 @@ public class TagBean implements Serializable{
             tagCreate= new Tag(-1,null,null,null,null);
             parentTagSelect= null;
             parentTagToCreate= new Tag(-1,null,null,null,null);
-            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Etiqueta creada", "La etiqueta se creo exitosamente");
+            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Etiqueta creada", "La etiqueta se creó exitosamente");
             FacesContext.getCurrentInstance().addMessage(null, msg);
         }
 
@@ -262,6 +262,9 @@ public class TagBean implements Serializable{
             conceptBean.getConcept().getTags().add(tagSelected);
             tagSelected= null;
             tagListToConcept=  tagManager.getAllTags();
+        }else{
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se selecciono una etiqueta para agregar"));
         }
 
 

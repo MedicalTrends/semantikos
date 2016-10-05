@@ -236,8 +236,8 @@ public class AuditManagerImpl implements AuditManager {
     }
 
     @Override
-    public List<ConceptAuditAction> getConceptAuditActions(ConceptSMTK conceptSMTK, int numberOfChanges, boolean changes) {
-        return auditDAO.getConceptAuditActions(conceptSMTK.getId(), numberOfChanges, changes);
+    public List<ConceptAuditAction> getConceptAuditActions(ConceptSMTK conceptSMTK, boolean changes) {
+        return auditDAO.getConceptAuditActions(conceptSMTK.getId(), changes);
     }
 
     private Timestamp now() {

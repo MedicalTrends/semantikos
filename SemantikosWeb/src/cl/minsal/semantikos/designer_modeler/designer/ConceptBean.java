@@ -1,5 +1,6 @@
 package cl.minsal.semantikos.designer_modeler.designer;
 
+import cl.minsal.semantikos.designer_modeler.auth.AuthenticationBean;
 import cl.minsal.semantikos.kernel.components.*;
 import cl.minsal.semantikos.model.*;
 import cl.minsal.semantikos.model.audit.ConceptAuditAction;
@@ -131,6 +132,18 @@ public class ConceptBean implements Serializable {
     @ManagedProperty(value = "#{conceptExport}")
     private ConceptExportMBean conceptBeanExport;
 
+
+    @ManagedProperty(value="#{authenticationBean}")
+    private AuthenticationBean authenticationBean;
+
+    public AuthenticationBean getAuthenticationBean() {
+        return authenticationBean;
+    }
+
+    public void setAuthenticationBean(AuthenticationBean authenticationBean) {
+        this.authenticationBean = authenticationBean;
+    }
+
     public ConceptExportMBean getConceptBeanExport() {
         return conceptBeanExport;
     }
@@ -144,14 +157,13 @@ public class ConceptBean implements Serializable {
     @PostConstruct
     protected void initialize() throws ParseException {
 
-        // TODO: Manejar el usuario desde la sesión
+        // TODO: Terminar esto o cambiar en el futuro
 
-        user = new User();
-        user.setIdUser(1);
-        user.setUsername("amauro");
-        user.setPassword("amauro");
+        user = authenticationBean.getLoggedUser();
         Profile designerProfile = new Profile(2, "Diseñador", "Usuario Diseñador");
         user.getProfiles().add(designerProfile);
+
+        Description d;
 
 
         // Iniciar cuadro de dialogo
@@ -242,7 +254,7 @@ public class ConceptBean implements Serializable {
         // Se crea una copia con la imagen original del concepto
         _concept = new ConceptSMTKWeb(conceptSMTK);
 
-        auditAction = auditManager.getConceptAuditActions(concept, 10, true);
+        auditAction = auditManager.getConceptAuditActions(concept,  true);
         category = concept.getCategory();
         conceptBeanExport.setConceptSMTK(concept);
         conceptBeanExport.loadConcept();
@@ -627,7 +639,7 @@ public class ConceptBean implements Serializable {
             concept = new ConceptSMTKWeb(conceptManager.getConceptByID(concept.getId()));
             conceptSMTKTranslateDes = null;
             descriptionToTranslate = null;
-            auditAction = auditManager.getConceptAuditActions(concept, 10, true);
+            auditAction = auditManager.getConceptAuditActions(concept,  true);
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Successful", "La descripción se ha trasladado a otro concepto correctamente"));
         }
 
