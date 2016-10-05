@@ -29,9 +29,9 @@ public class AuditDAOImpl implements AuditDAO {
     private ConceptAuditActionFactory conceptAuditActionFactory;
 
     @Override
-    public List<ConceptAuditAction> getConceptAuditActions(long idConcept, int numberOfChanges, boolean changes) {
+    public List<ConceptAuditAction> getConceptAuditActions(long idConcept, boolean changes) {
         ConnectionBD connect = new ConnectionBD();
-        String sqlQuery = "{call semantikos.get_concept_audit_actions(?,?,?)}";
+        String sqlQuery = "{call semantikos.get_concept_audit_actions(?,?)}";
 
         List<ConceptAuditAction> auditActions;
         try (Connection connection = connect.getConnection();
@@ -39,8 +39,7 @@ public class AuditDAOImpl implements AuditDAO {
 
             /* Se invoca la consulta para recuperar las relaciones */
             call.setLong(1, idConcept);
-            call.setInt(2, numberOfChanges);
-            call.setBoolean(3, changes);
+            call.setBoolean(2, changes);
             call.execute();
 
             ResultSet rs = call.getResultSet();

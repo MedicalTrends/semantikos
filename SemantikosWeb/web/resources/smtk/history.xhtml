@@ -18,7 +18,7 @@
 
     <p:panel id="historyConcept" header="Historial" toggleable="true" toggleSpeed="500" closeSpeed="500" >
         <p:dataTable var="history"
-                     value="#{conceptBean.auditAction}">
+                     value="#{conceptBean.auditAction}" paginator="true" rows="10">
             <p:column style="width:16px">
                 <p:rowToggler />
             </p:column>
