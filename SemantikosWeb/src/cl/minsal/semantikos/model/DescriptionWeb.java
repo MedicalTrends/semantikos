@@ -1,13 +1,11 @@
 package cl.minsal.semantikos.model;
 
 
-import cl.minsal.semantikos.model.exceptions.BusinessRuleException;
-
 public class DescriptionWeb extends Description {
 
     public boolean hasBeenModified;
 
-    // Este atributo corresponde al valor de la descripción en la vista
+    /** Este atributo corresponde al valor de la descripción en la vista */
     public String representation;
 
     public DescriptionWeb(){
