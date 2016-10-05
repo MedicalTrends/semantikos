@@ -111,6 +111,11 @@ public class ConceptBean implements Serializable {
 
     ////////////////////////////////////////////////////
 
+    // Placeholders para los atributos de relacion
+    private RelationshipWeb relationshipWeb;
+
+    private Map<RelationshipDefinition, RelationshipWeb> relationshipPlaceholders  = new HashMap<RelationshipDefinition, RelationshipWeb>();
+
     private Map<RelationshipDefinition, List<RelationshipAttribute>> relationshipAttributesPlaceholder = new HashMap<RelationshipDefinition, List<RelationshipAttribute>>();
 
 
@@ -188,6 +193,13 @@ public class ConceptBean implements Serializable {
         } else {
             getConceptById(idconceptselect);
             context.execute("PF('dialogNameConcept').hide();");
+        }
+        // Una vez que se ha inicializado el concepto, inicializar los placeholders para las relaciones
+        for (RelationshipDefinition relationshipDefinition : category.getRelationshipDefinitions()) {
+            Target target = null;
+
+            Relationship relationship = new Relationship(concept, target, relationshipDefinition, new ArrayList<RelationshipAttribute>());
+            relationshipPlaceholders.put(relationshipDefinition, new RelationshipWeb(relationship));
         }
     }
 
@@ -337,6 +349,38 @@ public class ConceptBean implements Serializable {
         conceptSelected = null;
     }
 
+    public void setTarget(RelationshipDefinition relationshipDefinition, Target target){
+
+        RelationshipWeb relationshipWeb = relationshipPlaceholders.get(relationshipDefinition);
+
+        relationshipWeb.setTarget(target);
+    }
+
+    /**
+     * Este método se encarga de agregar o cambiar el atributo para el caso de multiplicidad 1.
+     */
+    public void setTargetAttribute(RelationshipDefinition relationshipDefinition, RelationshipAttributeDefinition relationshipAttributeDefinition, Target target) {
+
+        //relationshipWeb.getRelationshipAttributes().add()
+
+        RelationshipWeb relationshipWeb = relationshipPlaceholders.get(relationshipDefinition);
+
+        boolean isAttributeFound = false;
+
+        // Se busca el atributo
+        for (RelationshipAttribute attribute : relationshipWeb.getRelationshipAttributes()) {
+            if(attribute.getRelationAttributeDefinition().equals(relationshipAttributeDefinition)) {
+                attribute.setTarget(target);
+                isAttributeFound = true;
+                break;
+            }
+        }
+        // Si no se encuentra el atributo, se crea uno nuevo
+        if (!isAttributeFound) {
+            relationshipWeb.getRelationshipAttributes().add(new RelationshipAttribute(relationshipAttributeDefinition, relationshipWeb, target));
+        }
+    }
+
     /**
      * Este método es el encargado de remover una relación específica del concepto.
      */
@@ -380,6 +424,7 @@ public class ConceptBean implements Serializable {
                 concept.addDescriptionWeb(description);
 
                 otherTermino = "";
+                otherDescriptionType = null;
             } else {
                 context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se ha seleccionado el tipo de descripción"));
             }
@@ -878,6 +923,10 @@ public class ConceptBean implements Serializable {
 
     public void setDescriptionTypesEdit(List<DescriptionType> descriptionTypesEdit) {
         this.descriptionTypesEdit = descriptionTypesEdit;
+    }
+
+    public Map<RelationshipDefinition, RelationshipWeb> getRelationshipPlaceholders() {
+        return relationshipPlaceholders;
     }
 }
 

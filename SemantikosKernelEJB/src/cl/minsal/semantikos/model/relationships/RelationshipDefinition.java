@@ -146,6 +146,10 @@ public class RelationshipDefinition {
         this.relationshipAttributeDefinitions = relationshipAttributeDefinitions;
     }
 
+    public boolean hasRelationshipAttributeDefinitions(){
+        return !relationshipAttributeDefinitions.isEmpty();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
