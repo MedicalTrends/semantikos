@@ -590,7 +590,9 @@ public class ConceptBean implements Serializable {
                 || !_concept.getTagSMTK().equals(concept.getTagSMTK());
     }
 
-    public void deleteConcept() {
+
+
+    public String deleteConcept() {
 
         FacesContext context = FacesContext.getCurrentInstance();
 
@@ -598,9 +600,11 @@ public class ConceptBean implements Serializable {
         if (concept.isPersistent() && !concept.isModeled()) {
             conceptManager.delete(concept, user);
             context.addMessage(null, new FacesMessage("Successful", "Concepto eliminado"));
+            return "mainMenu.xhtml";
         } else {
             conceptManager.invalidate(concept, user);
             context.addMessage(null, new FacesMessage("Successful", "Concepto invalidado"));
+            return "mainMenu.xhtml";
         }
 
     }
