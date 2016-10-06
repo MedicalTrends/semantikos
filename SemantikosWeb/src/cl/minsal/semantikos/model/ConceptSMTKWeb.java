@@ -2,14 +2,11 @@ package cl.minsal.semantikos.model;
 
 import cl.minsal.semantikos.model.exceptions.BusinessRuleException;
 import cl.minsal.semantikos.model.relationships.Relationship;
-import cl.minsal.semantikos.model.relationships.RelationshipAttribute;
 import cl.minsal.semantikos.model.relationships.RelationshipAttributeDefinition;
 import cl.minsal.semantikos.model.relationships.RelationshipDefinition;
 import cl.minsal.semantikos.util.Pair;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Iterator;
 import java.util.List;
 
@@ -191,7 +188,7 @@ public class ConceptSMTKWeb extends ConceptSMTK {
      * @return Un <code>java.lang.boolean</code>
      */
     public boolean hasRelationshipAttributes(RelationshipAttributeDefinition relationshipAttributeDefinition) {
-        return !getRelationshipAttributesByAttributeDefinition(relationshipAttributeDefinition).isEmpty();
+        return !getAttributesByAttributeDefinition(relationshipAttributeDefinition).isEmpty();
     }
 
     @Override

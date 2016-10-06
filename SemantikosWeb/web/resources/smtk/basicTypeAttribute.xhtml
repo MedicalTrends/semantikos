@@ -19,22 +19,14 @@
 
     <div class="ui-g-12 ui-md-6 ui-lg-2">
 
-        <p:panel
-                id="basicTypeAttributeSimple"
-                styleClass="basic#{cc.attrs.relationshipDefinition.id}"
-                style="width: 100%; border: hidden; padding: 0em"
-                rendered="#{cc.attrs.relationshipAttributeDefinition.multiplicity.simple and not cc.attrs.concept.hasRelationshipAttributes(cc.attrs.relationshipAttributeDefinition)}"
-        >
-
             <p:selectOneMenu id="basicTypeValue11"
                              value="#{conceptBean.basicTypeValue.value}"
+                             validator="#{validatorBean.validateRequired}"
                              var="value1"
                              converter="omnifaces.SelectItemsConverter"
                              rendered="#{cc.attrs.targetDefinition.discreteDomain}"
                              styleClass="relationships">
-                <p:ajax event="itemSelect"
-                        listener="#{conceptBean.addOrChangeRelationship(cc.attrs.relationshipDefinition,conceptBean.basicTypeValue)}"
-                        process="@this" />
+                <p:ajax event="itemSelect" listener="#{conceptBean.setTargetAttribute(cc.attrs.relationshipDefinition, cc.attrs.relationshipAttributeDefinition, conceptBean.basicTypeValue)}" process="@this" />
                 <f:selectItem itemLabel="Seleccione"
                               itemValue=""
                 />
@@ -46,6 +38,7 @@
             <p:inputNumber id="basicTypeValue12"
                            value="#{conceptBean.basicTypeValue.value}"
                            var="value"
+                           validator="#{validatorBean.validateRequired}"
                            minValue="#{cc.attrs.targetDefinition.interval.lowerBoundary}"
                            maxValue="#{cc.attrs.targetDefinition.interval.upperBoundary}"
                            decimalPlaces="0"
@@ -55,13 +48,13 @@
                            styleClass="relationships">
                 <f:attribute name="concept" value="#{cc.attrs.concept}"  />
                 <f:attribute name="relationshipDefinition" value="#{cc.attrs.relationshipDefinition}"  />
-                <p:ajax event="blur"
-                        listener="#{conceptBean.setTargetAttribute(cc.attrs.relationshipDefinition, cc.attrs.relationshipAttributeDefinition, conceptBean.basicTypeValue)}" />
+                <p:ajax event="blur" listener="#{conceptBean.setTargetAttribute(cc.attrs.relationshipDefinition, cc.attrs.relationshipAttributeDefinition, conceptBean.basicTypeValue)}" />
             </p:inputNumber>
 
             <p:inputNumber id="basicTypeValue13"
                            value="#{conceptBean.basicTypeValue.value}"
                            var="value"
+                           validator="#{validatorBean.validateRequired}"
                            minValue="#{cc.attrs.targetDefinition.interval.lowerBoundary}"
                            maxValue="#{cc.attrs.targetDefinition.interval.upperBoundary}"
                            decimalSeparator=","
@@ -71,21 +64,23 @@
                            styleClass="relationships">
                 <f:attribute name="concept" value="#{cc.attrs.concept}"  />
                 <f:attribute name="relationshipDefinition" value="#{cc.attrs.relationshipDefinition}"  />
-                <p:ajax listener="#{conceptBean.addOrChangeRelationship(cc.attrs.relationshipDefinition,conceptBean.basicTypeValue)}" />
+                <p:ajax event="blur" listener="#{conceptBean.setTargetAttribute(cc.attrs.relationshipDefinition, cc.attrs.relationshipAttributeDefinition, conceptBean.basicTypeValue)}" />
             </p:inputNumber>
             <p:inputText id="basicTypeValue14"
                          value="#{conceptBean.basicTypeValue.value}"
                          var="value"
+                         validator="#{validatorBean.validateRequired}"
                          minValue="#{cc.attrs.targetDefinition.interval.lowerBoundary}"
                          maxValue="#{cc.attrs.targetDefinition.interval.upperBoundary}"
                          rendered="#{cc.attrs.targetDefinition.type.typeName=='string' and not cc.attrs.targetDefinition.discreteDomain}"
                          styleClass="relationships"
             >
-                <p:ajax listener="#{conceptBean.addOrChangeRelationship(cc.attrs.relationshipDefinition,conceptBean.basicTypeValue)}" />
+                <p:ajax event="blur" listener="#{conceptBean.setTargetAttribute(cc.attrs.relationshipDefinition, cc.attrs.relationshipAttributeDefinition, conceptBean.basicTypeValue)}" />
             </p:inputText>
             <p:calendar id="basicTypeValue15"
                         value="#{conceptBean.basicTypeValue.value}"
                         var="value"
+                        validator="#{validatorBean.validateRequired}"
                         showOn="button"
                         mindate="#{cc.attrs.targetDefinition.interval.lowerBoundary}"
                         maxdate="#{cc.attrs.targetDefinition.interval.upperBoundary}"
@@ -93,9 +88,8 @@
                         styleClass="relationships">
                 <f:attribute name="concept" value="#{cc.attrs.concept}"  />
                 <f:attribute name="relationshipDefinition" value="#{cc.attrs.relationshipDefinition}"  />
-                <p:ajax event="dateSelect" listener="#{conceptBean.addOrChangeRelationship(cc.attrs.relationshipDefinition,conceptBean.basicTypeValue)}" />
+                <p:ajax event="blur" listener="#{conceptBean.setTargetAttribute(cc.attrs.relationshipDefinition, cc.attrs.relationshipAttributeDefinition, conceptBean.basicTypeValue)}" />
             </p:calendar>
-        </p:panel>
 
     </div>
 

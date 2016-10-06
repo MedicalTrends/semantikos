@@ -28,7 +28,7 @@ public class ValidatorBean {
      */
     public void validateRequired(FacesContext context, UIComponent component, Object value) throws ValidatorException {
 
-        String msg = "Debe ingresar un término";
+        String msg = "Debe ingresar un valor";
 
         //component.getParent().getAttributes().
         if(value == null)
