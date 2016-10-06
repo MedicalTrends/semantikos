@@ -212,7 +212,7 @@ public class ConceptSMTK extends PersistentEntity implements Target, AuditableEn
      *
      * @return Una <code>java.util.List</code> de atributos de tipo <code>relationshipAttributeDefinition</code>.
      */
-    public List<RelationshipAttribute> getRelationshipAttributesByAttributeDefinition(RelationshipAttributeDefinition relationshipAttributeDefinition) {
+    public List<RelationshipAttribute> getAttributesByAttributeDefinition(RelationshipAttributeDefinition relationshipAttributeDefinition) {
 
         List<RelationshipAttribute> someAttributes = new ArrayList<>();
 
@@ -221,6 +221,21 @@ public class ConceptSMTK extends PersistentEntity implements Target, AuditableEn
                 if(relationshipAttribute.getRelationAttributeDefinition().equals(relationshipAttributeDefinition))
                     someAttributes.add(relationshipAttribute);
             }
+        }
+        return someAttributes;
+    }
+
+    /**
+     * Este método es responsable de retornar todos los atributos de relacion de este concepto
+     *
+     * @return Una <code>java.util.List</code> de atributos.
+     */
+    public List<RelationshipAttribute> getAllAttributes() {
+
+        List<RelationshipAttribute> someAttributes = new ArrayList<>();
+
+        for (Relationship relationship :  getValidRelationships()) {
+            someAttributes.addAll(relationship.getRelationshipAttributes());
         }
         return someAttributes;
     }

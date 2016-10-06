@@ -202,6 +202,8 @@
 
         <div class="ui-g">
 
+
+
             <div class="ui-g-12 ui-md-6 ui-lg-2">
 
                 <p:autoComplete id="findConceptSMTK3" scrollHeight="200" style="width: 90%;"
@@ -249,13 +251,10 @@
             <div class="ui-g-12 ui-md-6 ui-lg-2">
                 <p:commandButton
                         process="@this"
-                        action="#{conceptBean.addRelationship(cc.attrs.relationshipDefinition)}"
+                        action="#{conceptBean.addRelationshipWithAttributes(cc.attrs.relationshipDefinition)}"
                         update="@(.tablas3)"
-                        style="float: right"
                         value="Agregar">
                 </p:commandButton>
-            </div>
-            <div class="ui-g-12 ui-md-6 ui-lg-3">
                 <smtk:info relationshipDefinition="#{cc.attrs.relationshipDefinition}" />
             </div>
         </div>
@@ -277,13 +276,15 @@
                     <h:outputText value="#{rel.target.descriptionFavorite.term}"/>
                 </p:column>
 
-                <p:column headerText="Orden">
+                <p:columns value="#{cc.attrs.concept.getAllAttributes()}"
+                           var="attribute"
+                           >
+                    <f:facet name="header">
+                        <h:outputText value="#{attribute.getRelationAttributeDefinition().name}" />
+                    </f:facet>
+                    <h:outputText value="#{attribute.target}" />
+                </p:columns>
 
-                </p:column>
-
-                <p:column headerText="Estado">
-                    <h:outputText value="#{rel.target.modeled}"/>
-                </p:column>
                 <p:column headerText="Eliminar" style="width:60px;text-align: center;">
                     <p:commandButton icon="fa fa-trash" title="Eliminar"
                                      action="#{conceptBean.removeRelationship(cc.attrs.relationshipDefinition,rel)}"

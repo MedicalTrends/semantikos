@@ -308,6 +308,18 @@ public class ConceptBean implements Serializable {
     }
 
     /**
+     * Este método es el encargado de agregar relaciones al concepto recibiendo como parámetro un Relationship
+     * Definition. Este método es utilizado por el componente BasicType, el cual agrega relaciones con target sin valor
+     */
+    public void addRelationshipWithAttributes(RelationshipDefinition relationshipDefinition) {
+
+        RelationshipWeb relationshipWeb = relationshipPlaceholders.get(relationshipDefinition);
+        // Se utiliza el constructor mínimo (sin id)
+        this.concept.addRelationshipWeb(relationshipWeb);
+
+    }
+
+    /**
      * Este método es el encargado de agregar una nuva relacion con los parémetros que se indican.
      */
     public void addRelationship(RelationshipDefinition relationshipDefinition, Target target) {
