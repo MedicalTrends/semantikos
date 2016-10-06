@@ -13,9 +13,11 @@ public class RelationshipDefinitionWeb extends RelationshipDefinition {
     /** Establece el orden o posición */
     private int order;
 
-    public RelationshipDefinitionWeb(long id, String name, String description, TargetDefinition targetDefinition, Multiplicity multiplicity, long compositeID) {
+    public RelationshipDefinitionWeb(long id, String name, String description, TargetDefinition targetDefinition, Multiplicity multiplicity, long compositeID, int order) {
         super(id, name, description, targetDefinition, multiplicity);
+
         this.compositeID = compositeID;
+        this.order = order;
     }
 
     public long getCompositeID() {
