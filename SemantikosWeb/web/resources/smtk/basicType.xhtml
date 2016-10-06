@@ -16,6 +16,7 @@
 </composite:interface>
 <composite:implementation>
     <!-- Multiplicidad 1 y Nueva relacion -->
+
     <p:panel
             id="basicTypeSimple"
             styleClass="basic#{cc.attrs.relationshipDefinition.id}"
@@ -196,7 +197,7 @@
          id="basicTypeCollection"
          styleClass="basic#{cc.attrs.relationshipDefinition.id}"
          widgetVar="panelBasicTypeCollection#{cc.attrs.relationshipDefinition.id}"
-         rendered="#{cc.attrs.relationshipDefinition.multiplicity.collection and cc.attrs.concept.hasRelationships(cc.attrs.relationshipDefinition)}">
+         rendered="#{cc.attrs.relationshipDefinition.multiplicity.collection}">
             <div class="ui-g">
                 <div class="ui-g-12 ui-md-6 ui-lg-2">
                     <p:outputLabel value="#{cc.attrs.relationshipDefinition.name}"/>
@@ -310,6 +311,7 @@
             </div>
         </p:repeat>
     </p:panel>
+
 
     <h:outputStylesheet id="customCSS">
         .ui-selectonemenu .ui-selectonemenu-label {

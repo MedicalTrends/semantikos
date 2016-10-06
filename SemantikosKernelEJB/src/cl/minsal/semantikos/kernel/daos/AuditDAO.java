@@ -17,14 +17,12 @@ public interface AuditDAO {
      * que ha tenido un concepto.
      *
      * @param idConcept       El ID del concepto cuyos cambios se desean recuperar.
-     * @param numberOfChanges La cantidad de cambios que se desea recuperar (ordenados de más reciente a menos
-     *                        reciente).
      * @param changes         Indica si se desean las acciones auditables registradas que son cambios
      *
      * @return Una lista con los últimos <code>numberOfChanges</code> realizados sobre el concepto
      * <code>conceptSMTK</code>
      */
-    public List<ConceptAuditAction> getConceptAuditActions(long idConcept, int numberOfChanges, boolean changes);
+    public List<ConceptAuditAction> getConceptAuditActions(long idConcept, boolean changes);
 
     /**
      * Este método es responsable de registrar una acción de auditoría (historial) en la base de datos.

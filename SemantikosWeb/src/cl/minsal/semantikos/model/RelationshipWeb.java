@@ -12,7 +12,8 @@ public class RelationshipWeb extends Relationship {
     public boolean hasBeenModified;
 
     public RelationshipWeb(Relationship r) {
-        super(r.getSourceConcept(), r.getTarget(), r.getRelationshipDefinition(), new ArrayList<RelationshipAttribute>());
+        //super(r.getSourceConcept(), r.getTarget(), r.getRelationshipDefinition(), new ArrayList<RelationshipAttribute>());
+        super(r.getSourceConcept(), r.getTarget(), r.getRelationshipDefinition(), r.getRelationshipAttributes());
         this.hasBeenModified = false;
 
     }
