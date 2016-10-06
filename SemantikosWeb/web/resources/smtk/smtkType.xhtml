@@ -202,7 +202,7 @@
 
         <div class="ui-g">
 
-
+            <p:panel id="attrs" styleClass="attributes" style="width:100%">
 
             <div class="ui-g-12 ui-md-6 ui-lg-2">
 
@@ -248,15 +248,19 @@
                                          rendered="#{relationshipAttributeDefinition.targetDefinition.basicType}"
                 />
             </p:repeat>
-            <div class="ui-g-12 ui-md-6 ui-lg-2">
+            <div class="ui-g-12 ui-md-6 ui-lg-1">
                 <p:commandButton
                         process="@this"
                         action="#{conceptBean.addRelationshipWithAttributes(cc.attrs.relationshipDefinition)}"
-                        update="@(.tablas3)"
+                        update="@(.tablas3),@(.attributes)"
                         value="Agregar">
                 </p:commandButton>
+            </div>
+
+            <div class="ui-g-12 ui-md-6 ui-lg-3">
                 <smtk:info relationshipDefinition="#{cc.attrs.relationshipDefinition}" />
             </div>
+            </p:panel>
         </div>
 
 
