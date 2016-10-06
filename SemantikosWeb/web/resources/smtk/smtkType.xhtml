@@ -198,11 +198,14 @@
     <p:panel id="multiplicityN_with_attributes"
              styleClass="tablas2"
              rendered="#{cc.attrs.relationshipDefinition.multiplicity.collection and cc.attrs.relationshipDefinition.hasRelationshipAttributeDefinitions()}">
+
         <h3>#{cc.attrs.relationshipDefinition.name}</h3>
+
+        <p:spacer />
 
         <div class="ui-g">
 
-            <p:panel id="attrs" styleClass="attributes" style="width:100%">
+            <p:panel id="attrs" styleClass="attributes_#{cc.attrs.relationshipDefinition.name})" style="width:100%">
                 <p:growl id="growl" showDetail="true" showSummary="true"/>
 
             <div class="ui-g-12 ui-md-6 ui-lg-2">
@@ -211,7 +214,7 @@
                                 inputStyle="width: 90%;"
                                 completeMethod="#{smtkBean.getConceptSearchInput}"
                                 converter="conceptConverter"
-                                validator="#{validatorBean.validateRequired}"
+                                validator="#{validatorBean.validateRequiredInput}"
                                 var="concept"
                                 disabled="#{conceptBean.limitRelationship(cc.attrs.relationshipDefinition)}"
                                 value="#{conceptBean.conceptSelected}"
@@ -249,12 +252,17 @@
                                          targetDefinition="#{relationshipAttributeDefinition.targetDefinition}"
                                          rendered="#{relationshipAttributeDefinition.targetDefinition.basicType}"
                 />
+                <smtk:helperTableTypeAttribute relationshipDefinition="#{cc.attrs.relationshipDefinition}"
+                                               relationshipAttributeDefinition="#{relationshipAttributeDefinition}"
+                                               targetDefinition="#{relationshipAttributeDefinition.targetDefinition}"
+                                               rendered="#{relationshipAttributeDefinition.targetDefinition.helperTable}"
+                />
             </p:repeat>
             <div class="ui-g-12 ui-md-6 ui-lg-1">
                 <p:commandButton
                         process="@(.attributes)"
                         action="#{conceptBean.addRelationshipWithAttributes(cc.attrs.relationshipDefinition)}"
-                        update="@(.tablas3),@(.attributes)"
+                        update="@(.relationshipsWithAttributes_#{cc.attrs.relationshipDefinition.name}),@(.attributes_#{cc.attrs.relationshipDefinition.name})"
                         value="Agregar">
                 </p:commandButton>
             </div>
@@ -270,7 +278,7 @@
             <p:spacer />
             <p:dataTable emptyMessage="No existen relaciones, se debe agregar al menos: #{cc.attrs.relationshipDefinition.multiplicity.lowerBoundary}."
                          id="tableRelationship3"
-                         styleClass="tablas3"
+                         styleClass="relationshipsWithAttributes_#{cc.attrs.relationshipDefinition.name}"
                          draggableRows="true" style="margin: 10px;"
                          value="#{conceptBean.concept.getValidRelationshipsWebByRelationDefinition(cc.attrs.relationshipDefinition)}"
                          var="rel">

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:composite="http://java.sun.com/jsf/composite"
+      xmlns:smtk="http://java.sun.com/jsf/composite/smtk"
+      xmlns:p="http://primefaces.org/ui">
+
+<composite:interface>
+    <composite:attribute name="relationshipDefinition" type="cl.minsal.semantikos.model.relationships.RelationshipDefinition" />
+    <composite:attribute name="relationshipAttributeDefinition" type="cl.minsal.semantikos.model.relationships.RelationshipAttributeDefinition" />
+    <composite:attribute name="targetDefinition" type="cl.minsal.semantikos.model.helpertables.HelperTable" />
+    <composite:attribute name="concept" type="cl.minsal.semantikos.model.ConceptSMTKWeb" />
+</composite:interface>
+
+<composite:implementation>
+
+    <div class="ui-g-12 ui-md-6 ui-lg-2">
+
+        <p:selectOneMenu id="helperTableTypeSimpleSelection"
+                         value="#{conceptBean.selectedHelperTableRecord}"
+                         converter="omnifaces.SelectItemsConverter"
+                         var="selection"
+                         label="#{cc.attrs.relationshipAttributeDefinition.name}"
+                         autoWidth="false"
+                         style="margin-right:10px; width: 70%">
+            <p:ajax event="itemSelect"
+                    listener="#{conceptBean.setTargetAttribute(cc.attrs.relationshipDefinition, cc.attrs.relationshipAttributeDefinition, conceptBean.selectedHelperTableRecord)}"
+                    process="@this" />
+
+            <f:selectItems value="#{conceptBrowserBean.helperTableManager.getAllRecords(cc.attrs.relationshipAttributeDefinition.targetDefinition)}"
+                           var="helperTableRecord"
+                           itemLabel="#{helperTableRecord.fields['description']}"
+                           itemValue="#{helperTableRecord}"/>
+        </p:selectOneMenu>
+
+    </div>
+
+
+</composite:implementation>
+</html>

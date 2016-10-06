@@ -190,7 +190,6 @@ public class ConceptBean implements Serializable {
 
     //Methods
 
-
     public void createConcept() throws ParseException {
         RequestContext context = RequestContext.getCurrentInstance();
         if (idconceptselect == 0) {
@@ -207,9 +206,8 @@ public class ConceptBean implements Serializable {
             context.execute("PF('dialogNameConcept').hide();");
         }
         // Una vez que se ha inicializado el concepto, inicializar los placeholders para las relaciones
-        for (RelationshipDefinition relationshipDefinition : category.getRelationshipDefinitions()) {
+        for (RelationshipDefinition relationshipDefinition : category.getRelationshipDefinitions())
             relationshipPlaceholders.put(relationshipDefinition, new Relationship(concept, null, relationshipDefinition, new ArrayList<RelationshipAttribute>()));
-        }
     }
 
     //Este método es responsable de a partir de un concepto SMTK y un término, devolver un concepto WEB con su FSN y su Preferida
@@ -317,6 +315,7 @@ public class ConceptBean implements Serializable {
         relationshipPlaceholders.put(relationshipDefinition, new Relationship(concept, null, relationshipDefinition, new ArrayList<RelationshipAttribute>()));
         // Resetear placeholder targets
         basicTypeValue = new BasicTypeValue(null);
+        selectedHelperTableRecord = new HelperTableRecord();
         conceptSelected = null;
     }
 
@@ -375,9 +374,8 @@ public class ConceptBean implements Serializable {
     }
 
     public void setTarget(RelationshipDefinition relationshipDefinition, Target target){
-
         relationshipPlaceholders.get(relationshipDefinition).setTarget(target);
-        }
+    }
 
     /**
      * Este método se encarga de agregar o cambiar el atributo para el caso de multiplicidad 1.
@@ -833,9 +831,6 @@ public class ConceptBean implements Serializable {
     }
 
     public HelperTableRecord getSelectedHelperTableRecord() {
-        if (selectedHelperTableRecord == null)
-            selectedHelperTableRecord = new HelperTableRecord();
-
         return selectedHelperTableRecord;
     }
 

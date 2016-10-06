@@ -24,7 +24,7 @@
             <p:inputText id="FSN"
                          styleClass="terms FSN"
                          name="description"
-                         validator="#{validatorBean.validateRequired}"
+                         validator="#{validatorBean.validateRequiredInput}"
                          value="#{cc.attrs.description.representation}"
                          style="width:90%" disabled="#{cc.attrs.description.conceptSMTK.modeled}">
                 <p:ajax event="blur" update="@this" process="@this" delay="100" />

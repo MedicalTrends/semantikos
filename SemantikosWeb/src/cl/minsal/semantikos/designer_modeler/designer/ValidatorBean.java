@@ -2,6 +2,8 @@ package cl.minsal.semantikos.designer_modeler.designer;
 
 import cl.minsal.semantikos.model.*;
 import cl.minsal.semantikos.model.exceptions.BusinessRuleException;
+import cl.minsal.semantikos.model.helpertables.HelperTable;
+import cl.minsal.semantikos.model.helpertables.HelperTableRecord;
 import cl.minsal.semantikos.model.relationships.RelationshipDefinition;
 
 import javax.faces.application.FacesMessage;
@@ -26,7 +28,7 @@ public class ValidatorBean {
      *
      * @return
      */
-    public void validateRequired(FacesContext context, UIComponent component, Object value) throws ValidatorException {
+    public void validateRequiredInput(FacesContext context, UIComponent component, Object value) throws ValidatorException {
 
         String msg = "Debe ingresar un valor";
 
@@ -36,6 +38,43 @@ public class ValidatorBean {
 
         if (value.toString().trim().equals(""))
             throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, msg, msg));
+    }
+
+    /**
+     * Este metodo revisa que las relaciones cumplan el lower_boundary del
+     * relationship definition, en caso de no cumplir la condicion se retorna falso.
+     *
+     * @return
+     */
+    public void validateRequiredConceptSelect(FacesContext context, UIComponent component, Object value) throws ValidatorException {
+
+        String msg = "Debe ingresar un valor";
+
+        ConceptSMTK concept = (ConceptSMTK) value;
+
+        //component.getParent().getAttributes().
+        if(concept == null)
+            throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, msg, msg));
+
+    }
+
+    /**
+     * Este metodo revisa que las relaciones cumplan el lower_boundary del
+     * relationship definition, en caso de no cumplir la condicion se retorna falso.
+     *
+     * @return
+     */
+    public void validateRequiredRecordSelect(FacesContext context, UIComponent component, Object value) throws ValidatorException {
+
+        String msg = "Debe ingresar un valor";
+
+        HelperTable helperTable = (HelperTable) UIComponent.getCurrentComponent(context).getAttributes().get("helperTable");
+        HelperTableRecord record = (HelperTableRecord) value;;
+
+        //component.getParent().getAttributes().
+        if(record == null || record.getId() == 0)
+            throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, msg, msg));
+
     }
 
     /**
