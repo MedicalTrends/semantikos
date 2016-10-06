@@ -203,6 +203,7 @@
         <div class="ui-g">
 
             <p:panel id="attrs" styleClass="attributes" style="width:100%">
+                <p:growl id="growl" showDetail="true" showSummary="true"/>
 
             <div class="ui-g-12 ui-md-6 ui-lg-2">
 
@@ -210,6 +211,7 @@
                                 inputStyle="width: 90%;"
                                 completeMethod="#{smtkBean.getConceptSearchInput}"
                                 converter="conceptConverter"
+                                validator="#{validatorBean.validateRequired}"
                                 var="concept"
                                 disabled="#{conceptBean.limitRelationship(cc.attrs.relationshipDefinition)}"
                                 value="#{conceptBean.conceptSelected}"
@@ -250,7 +252,7 @@
             </p:repeat>
             <div class="ui-g-12 ui-md-6 ui-lg-1">
                 <p:commandButton
-                        process="@this"
+                        process="@(.attributes)"
                         action="#{conceptBean.addRelationshipWithAttributes(cc.attrs.relationshipDefinition)}"
                         update="@(.tablas3),@(.attributes)"
                         value="Agregar">
