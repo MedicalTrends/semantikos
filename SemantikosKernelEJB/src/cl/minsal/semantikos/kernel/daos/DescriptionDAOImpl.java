@@ -257,7 +257,7 @@ public class DescriptionDAOImpl implements DescriptionDAO {
     public void update(Description description) {
 
         ConnectionBD connect = new ConnectionBD();
-        String sql = "{call semantikos.update_description(?,?,?,?,?,?,?,?,?,?,?)}";
+        String sql = "{call semantikos.update_description(?,?,?,?,?,?,?,?,?,?,?,?)}";
         try (Connection connection = connect.getConnection();
              CallableStatement call = connection.prepareCall(sql)) {
 
