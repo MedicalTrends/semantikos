@@ -206,8 +206,10 @@ public class ConceptBean implements Serializable {
             context.execute("PF('dialogNameConcept').hide();");
         }
         // Una vez que se ha inicializado el concepto, inicializar los placeholders para las relaciones
-        for (RelationshipDefinition relationshipDefinition : category.getRelationshipDefinitions())
-            relationshipPlaceholders.put(relationshipDefinition, new Relationship(concept, null, relationshipDefinition, new ArrayList<RelationshipAttribute>()));
+        for (RelationshipDefinition relationshipDefinition : category.getRelationshipDefinitions()) {
+            if(!relationshipDefinition.getRelationshipAttributeDefinitions().isEmpty())
+                relationshipPlaceholders.put(relationshipDefinition, new Relationship(concept, null, relationshipDefinition, new ArrayList<RelationshipAttribute>()));
+        }
     }
 
     //Este método es responsable de a partir de un concepto SMTK y un término, devolver un concepto WEB con su FSN y su Preferida

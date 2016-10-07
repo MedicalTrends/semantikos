@@ -22,22 +22,37 @@
 
         <p:selectOneMenu id="helperTableTypeSimpleSelection"
                          value="#{conceptBean.selectedHelperTableRecord}"
-                         converter="omnifaces.SelectItemsConverter"
-                         var="selection"
-                         label="#{cc.attrs.relationshipAttributeDefinition.name}"
+                         validator="#{validatorBean.validateRequiredRecordSelect}"
+                         converter="helperTableRecordConverter"
+                         panelStyle="display: inline;"
+                         var="htRecord"
                          autoWidth="false"
                          style="margin-right:10px; width: 70%">
             <p:ajax event="itemSelect"
                     listener="#{conceptBean.setTargetAttribute(cc.attrs.relationshipDefinition, cc.attrs.relationshipAttributeDefinition, conceptBean.selectedHelperTableRecord)}"
                     process="@this" />
 
-            <f:selectItems value="#{conceptBrowserBean.helperTableManager.getAllRecords(cc.attrs.relationshipAttributeDefinition.targetDefinition)}"
+            <f:selectItem itemLabel="#{cc.attrs.relationshipAttributeDefinition.name}"
+                          itemValue="#{helperTableBean.recordPlaceHolder}"
+                          noSelectionOption="true"
+            />
+
+            <f:selectItems value="#{helperTableBean.getRecordList(cc.attrs.relationshipAttributeDefinition.targetDefinition)}"
                            var="helperTableRecord"
                            itemLabel="#{helperTableRecord.fields['description']}"
-                           itemValue="#{helperTableRecord}"/>
+                           itemValue="#{helperTableRecord}">
+            </f:selectItems>
+            <p:column>
+                <h:outputText value="#{htRecord.fields['description']}" rendered="#{htRecord != null}" />
+            </p:column>
+
+            <f:attribute name="helperTable" value="#{cc.attrs.relationshipAttributeDefinition.targetDefinition}"  />
         </p:selectOneMenu>
 
     </div>
+
+    <h:outputStylesheet id="customCSS">
+    </h:outputStylesheet>
 
 
 </composite:implementation>

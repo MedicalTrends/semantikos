@@ -3,6 +3,7 @@ package cl.minsal.semantikos.designer_modeler.converters;
 import cl.minsal.semantikos.designer_modeler.designer.HelperTableBean;
 import cl.minsal.semantikos.designer_modeler.designer.SMTKTypeBean;
 import cl.minsal.semantikos.model.ConceptSMTK;
+import cl.minsal.semantikos.model.helpertables.HelperTable;
 import cl.minsal.semantikos.model.helpertables.HelperTableRecord;
 
 import javax.el.ELContext;
@@ -23,12 +24,14 @@ public class HelperTableRecordConverter implements Converter{
 
     public Object getAsObject(FacesContext fc, UIComponent uic, String value) {
 
+        HelperTable helperTable = (HelperTable) UIComponent.getCurrentComponent(fc).getAttributes().get("helperTable");
+
         if(value != null && value.trim().length() > 0) {
             try {
 
                 ELContext elContext = fc.getELContext();
                 HelperTableBean bean = (HelperTableBean) FacesContext.getCurrentInstance().getApplication() .getELResolver().getValue(elContext, null, "helperTableBean");
-                return bean.getRecordById(Long.parseLong(value));
+                return bean.getRecordById(helperTable, Long.parseLong(value));
 
             } catch(NumberFormatException e) {
                 throw new ConverterException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Debe ingresar un valor."));

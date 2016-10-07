@@ -56,10 +56,7 @@ public class HelperTableRecord implements Target {
     }
 
     public long getId() {
-        if(this.getFields() == null)
-            return id;
-        else
-            return new Long(this.getFields().get("id"));
+        return id;
     }
 
     @Override

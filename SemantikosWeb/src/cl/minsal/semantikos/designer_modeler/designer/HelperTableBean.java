@@ -33,15 +33,19 @@ public class HelperTableBean implements Serializable {
 
     private String pattern;
 
-    private HelperTableRecord recordSelected;
+    private HelperTableRecord recordPlaceHolder = new HelperTableRecord();
 
-    private List<HelperTableRecord> recordSearchList;
-
-    private HelperTableRecord recordSel;
+    private Map<HelperTable, List<HelperTableRecord> > recordSearchLists = new HashMap<HelperTable, List<HelperTableRecord>>();
 
     @EJB
     private HelperTableManager helperTableManager;
 
+    public List<HelperTableRecord> getRecordList(HelperTable helperTable){
+        if(!recordSearchLists.containsKey(helperTable))
+            recordSearchLists.put(helperTable, helperTableManager.getAllRecords(helperTable));
+
+        return recordSearchLists.get(helperTable);
+    }
 
     public List<HelperTableRecord> getRecordSearchInput(String patron) {
 
@@ -51,10 +55,12 @@ public class HelperTableBean implements Serializable {
         FacesContext context = FacesContext.getCurrentInstance();
         HelperTable helperTable = (HelperTable) UIComponent.getCurrentComponent(context).getAttributes().get("helperTable");
 
+        if(!recordSearchLists.containsKey(helperTable))
+            recordSearchLists.put(helperTable, helperTableManager.getAllRecords(helperTable));
+
         List<HelperTableRecord> someRecords = new ArrayList<HelperTableRecord>();
 
-        if(recordSearchList == null)
-            recordSearchList = helperTableManager.getAllRecords(helperTable);
+        List<HelperTableRecord> recordSearchList = recordSearchLists.get(helperTable);
 
         for (HelperTableRecord record : recordSearchList) {
             if(record.getFields().get("description").toLowerCase().contains(patron.trim().toLowerCase()))
@@ -64,10 +70,15 @@ public class HelperTableBean implements Serializable {
         return someRecords;
     }
 
-    public HelperTableRecord getRecordById(Long id){
+    public HelperTableRecord getRecordById(HelperTable helperTable, Long id){
 
         if(id==null)
             return null;
+
+        if(!recordSearchLists.containsKey(helperTable))
+            recordSearchLists.put(helperTable, helperTableManager.getAllRecords(helperTable));
+
+        List<HelperTableRecord> recordSearchList = recordSearchLists.get(helperTable);
 
         for (HelperTableRecord record : recordSearchList) {
             if(id.equals(new Long(record.getFields().get("id"))))
@@ -96,5 +107,14 @@ public class HelperTableBean implements Serializable {
     public void setHelperTableManager(HelperTableManager helperTableManager) {
         this.helperTableManager = helperTableManager;
     }
+
+    public HelperTableRecord getRecordPlaceHolder() {
+        return recordPlaceHolder;
+    }
+
+    public void setRecordPlaceHolder(HelperTableRecord recordPlaceHolder) {
+        this.recordPlaceHolder = recordPlaceHolder;
+    }
+
 
 }

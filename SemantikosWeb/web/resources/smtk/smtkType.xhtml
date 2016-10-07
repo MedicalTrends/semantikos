@@ -205,7 +205,7 @@
 
         <div class="ui-g">
 
-            <p:panel id="attrs" styleClass="attributes_#{cc.attrs.relationshipDefinition.name})" style="width:100%">
+            <p:panel id="attrs" styleClass="attributes_#{cc.attrs.relationshipDefinition.name}" style="width:100%">
                 <p:growl id="growl" showDetail="true" showSummary="true"/>
 
             <div class="ui-g-12 ui-md-6 ui-lg-2">
@@ -213,6 +213,7 @@
                 <p:autoComplete id="findConceptSMTK3" scrollHeight="200" style="width: 90%;"
                                 inputStyle="width: 90%;"
                                 completeMethod="#{smtkBean.getConceptSearchInput}"
+                                placeholder="Buscar..."
                                 converter="conceptConverter"
                                 validator="#{validatorBean.validateRequiredInput}"
                                 var="concept"
@@ -232,7 +233,7 @@
                     <p:column>
                         <h:outputText value="#{concept.descriptionFavorite.term}"/>
                     </p:column>
-                    <p:ajax update="@(.tablas2)" event="itemSelect"
+                    <p:ajax event="itemSelect"
                             listener="#{conceptBean.setTarget(cc.attrs.relationshipDefinition,conceptBean.conceptSelected)}"
                             process="@this"/>
 
@@ -260,7 +261,7 @@
             </p:repeat>
             <div class="ui-g-12 ui-md-6 ui-lg-1">
                 <p:commandButton
-                        process="@(.attributes)"
+                        process="@(.attributes_#{cc.attrs.relationshipDefinition.name})"
                         action="#{conceptBean.addRelationshipWithAttributes(cc.attrs.relationshipDefinition)}"
                         update="@(.relationshipsWithAttributes_#{cc.attrs.relationshipDefinition.name}),@(.attributes_#{cc.attrs.relationshipDefinition.name})"
                         value="Agregar">
@@ -290,13 +291,14 @@
                     <h:outputText value="#{rel.target.descriptionFavorite.term}"/>
                 </p:column>
 
-                <p:columns value="#{cc.attrs.concept.getAllAttributes()}"
+                <p:columns value="#{cc.attrs.relationshipDefinition.relationshipAttributeDefinitions}"
                            var="attribute"
+                           columnIndexVar="colIndex"
                            >
                     <f:facet name="header">
-                        <h:outputText value="#{attribute.getRelationAttributeDefinition().name}" />
+                        <h:outputText value="#{attribute.name}" />
                     </f:facet>
-                    <h:outputText value="#{attribute.target}" />
+                    <h:outputText value="#{rel.relationshipAttributes.get(colIndex).target}" />
                 </p:columns>
 
                 <p:column headerText="Eliminar" style="width:60px;text-align: center;">

@@ -186,6 +186,7 @@
                                     inputStyle="width: 90%;"
                                     completeMethod="#{helperTableBean.getRecordSearchInput}"
                                     var="record"
+                                    placeholder="Buscar..."
                                     converter="helperTableRecordConverter"
                                     validator="#{validatorBean.validateRequiredRecordSelect}"
                                     value="#{conceptBean.selectedHelperTableRecord}"
@@ -263,6 +264,17 @@
                     </f:facet>
                     <h:outputText value="#{relationship.target.fields.get(column.columnName)}" />
                 </p:columns>
+
+                <p:columns value="#{cc.attrs.relationshipDefinition.relationshipAttributeDefinitions}"
+                           var="attribute"
+                           columnIndexVar="colIndex"
+                >
+                    <f:facet name="header">
+                        <h:outputText value="#{attribute.name}" />
+                    </f:facet>
+                    <h:outputText value="#{rel.relationshipAttributes.get(colIndex).target}" />
+                </p:columns>
+
                 <p:column style="width: 4%">
                     <p:commandButton
                             icon="fa fa-trash"
