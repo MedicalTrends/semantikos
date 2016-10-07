@@ -902,7 +902,7 @@ public class ConceptBean implements Serializable {
 
         List<RelationshipDefinitionWeb> relationshipDefinitionWebs = new ArrayList<>();
         for (RelationshipDefinition relationshipDefinition : category.getRelationshipDefinitions()) {
-            relationshipDefinitionWebs.add(viewAugmenter.augmentRelationshipDefinition(relationshipDefinition));
+            relationshipDefinitionWebs.add(viewAugmenter.augmentRelationshipDefinition(category, relationshipDefinition));
         }
 
         Collections.sort(relationshipDefinitionWebs);
