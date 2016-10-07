@@ -11,6 +11,10 @@ import javax.ejb.Local;
 @Local
 public interface ViewAugmenter {
 
-
+    /**
+     * Blablabla
+     * @param relationshipDefinition bla bla
+     * @return blabla
+     */
     public RelationshipDefinitionWeb augmentRelationshipDefinition(RelationshipDefinition relationshipDefinition);
 }
