@@ -25,7 +25,7 @@ public class SemantikosWebDAOImpl implements SemantikosWebDAO {
     public ExtendedRelationshipDefinitionInfo getCompositeOf(Category category, RelationshipDefinition relationshipDefinition) {
 
         ConnectionBD connect = new ConnectionBD();
-        String sql = "{call semantikos.get_viewinfo_by_relationship_definition(?,?)}";
+        String sql = "{call semantikos.get_view_info_by_relationship_definition(?,?)}";
         long idComposite;
         int order;
         try (Connection connection = connect.getConnection();
