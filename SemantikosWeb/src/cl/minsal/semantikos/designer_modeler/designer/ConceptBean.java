@@ -443,6 +443,7 @@ public class ConceptBean implements Serializable {
 
 
                 description.setModeled(false);
+                description.setCreatorUser(user);
                 description.setDescriptionId(descriptionManager.generateDescriptionId());
                 concept.addDescriptionWeb(description);
 
