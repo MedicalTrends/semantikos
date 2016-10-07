@@ -1,20 +1,9 @@
 package cl.minsal.semantikos.view.daos;
 
-import cl.minsal.semantikos.kernel.util.ConnectionBD;
-import cl.minsal.semantikos.model.DescriptionType;
+import cl.minsal.semantikos.model.Category;
 import cl.minsal.semantikos.model.relationships.RelationshipDefinition;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
-import javax.ejb.EJBException;
 import javax.ejb.Local;
-import java.io.IOException;
-import java.sql.CallableStatement;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.Arrays;
-
-import static cl.minsal.semantikos.kernel.util.StringUtils.underScoreToCamelCaseJSON;
 
 /**
  * @author Andrés Farías on 10/5/16.
@@ -27,8 +16,9 @@ public interface SemantikosWebDAO {
      * RelationshipDefinition.
      *
      * @param relationshipDefinition El RelationshipDefinition que requiere ser completado.
+     * @param category               La categoría para la cual se ordenan las relaciones.
      *
      * @return El Identificador del Composite asociado a dicho RelationshipDefinition.
      */
-    public ExtendedRelationshipDefinitionInfo getCompositeOf(RelationshipDefinition relationshipDefinition);
+    public ExtendedRelationshipDefinitionInfo getCompositeOf(Category category, RelationshipDefinition relationshipDefinition);
 }
