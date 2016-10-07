@@ -19,8 +19,8 @@
 
     <p:panel
             id="basicTypeSimple"
-            styleClass="basic#{cc.attrs.relationshipDefinition.id}"
-            rendered="#{cc.attrs.relationshipDefinition.multiplicity.simple and not cc.attrs.concept.hasRelationships(cc.attrs.relationshipDefinition)}"
+            styleClass="panel_#{cc.attrs.relationshipDefinition.id}"
+            rendered="#{cc.attrs.relationshipDefinition.multiplicity.simple and empty cc.attrs.concept.relationships}"
             widgetVar="panelBasicTypeSimple#{cc.attrs.relationshipDefinition.id}">
             <div class="ui-g">
                 <div class="ui-g-12 ui-md-6 ui-lg-2">
@@ -58,7 +58,7 @@
                                    styleClass="relationships">
                         <f:attribute name="concept" value="#{cc.attrs.concept}"  />
                         <f:attribute name="relationshipDefinition" value="#{cc.attrs.relationshipDefinition}"  />
-                        <p:ajax listener="#{conceptBean.addOrChangeRelationship(cc.attrs.relationshipDefinition,conceptBean.basicTypeValue)}" />
+                        <p:ajax listener="#{conceptBean.addOrChangeRelationship(cc.attrs.relationshipDefinition,conceptBean.basicTypeValue)}" update="@(.panel_#{cc.attrs.relationshipDefinition.id})" />
                     </p:inputNumber>
 
                     <p:inputNumber id="basicTypeValue13"
@@ -107,8 +107,8 @@
     <!-- Multiplicidad 1 y relacion existente -->
     <p:panel
             id="basicTypeSimple2"
-            styleClass="basic#{cc.attrs.relationshipDefinition.id}"
-            rendered="#{cc.attrs.relationshipDefinition.multiplicity.simple and cc.attrs.concept.hasRelationships(cc.attrs.relationshipDefinition)}"
+            styleClass="panel_#{cc.attrs.relationshipDefinition.id}"
+            rendered="#{cc.attrs.relationshipDefinition.multiplicity.simple and not empty cc.attrs.concept.relationships }"
             widgetVar="panelBasicTypeSimple#{cc.attrs.relationshipDefinition.id}">
         <p:repeat  value="#{cc.attrs.concept.getValidRelationshipsWebByRelationDefinition(cc.attrs.relationshipDefinition)}"
                    offset="0"
@@ -195,7 +195,7 @@
     <!-- Multiplicidad N-->
     <p:panel
          id="basicTypeCollection"
-         styleClass="basic#{cc.attrs.relationshipDefinition.id}"
+         styleClass="panel_#{cc.attrs.relationshipDefinition.id}"
          widgetVar="panelBasicTypeCollection#{cc.attrs.relationshipDefinition.id}"
          rendered="#{cc.attrs.relationshipDefinition.multiplicity.collection}">
             <div class="ui-g">
@@ -207,8 +207,8 @@
                     <p:commandButton
                             id="addRelationshipButton"
                             value="Agregar"
-                            process="@(.basic#{cc.attrs.relationshipDefinition.id})"
-                            update="@(.basic#{cc.attrs.relationshipDefinition.id})"
+                            process="@(.panel_#{cc.attrs.relationshipDefinition.id})"
+                            update="@(.panel_#{cc.attrs.relationshipDefinition.id})"
                             action="#{conceptBean.addRelationship(cc.attrs.relationshipDefinition)}"
                             disabled="#{cc.attrs.relationshipDefinition.multiplicity.isUpperBoundaryReached(cc.attrs.concept.getRelationshipsByRelationDefinition(cc.attrs.relationshipDefinition).size())}">
                     </p:commandButton>
@@ -297,7 +297,7 @@
                     <p:commandButton
                             icon="fa fa-trash" title="Eliminar"
                             process="@this"
-                            update="@(.basic#{cc.attrs.relationshipDefinition.id})"
+                            update="@(.panel_#{cc.attrs.relationshipDefinition.id})"
                             styleClass="ui-datepicker-trigger ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only"
                             actionListener="#{conceptBean.removeRelationship(cc.attrs.relationshipDefinition, relationship)}"
                             rendered="#{!cc.attrs.relationshipDefinition.multiplicity.isRequired(var.index) and var.index>0}"

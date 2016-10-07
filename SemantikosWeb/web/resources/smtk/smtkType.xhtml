@@ -19,6 +19,7 @@
 <composite:implementation>
 
     <p:panel id="panelSMTK"
+             styleClass="panel_#{cc.attrs.relationshipDefinition.id}"
              style="margin:20px;"
              rendered="#{cc.attrs.relationshipDefinition.multiplicity.upperBoundary==1000}">
 
@@ -31,7 +32,7 @@
                 <p:inputText value="#{smtkBean.pattern}" style="width: 90%; margin: 10px;"
                              placeholder="Buscar...">
                     <p:ajax event="keyup"
-                            update="@(.tablas)"/>
+                            update="@(.panel_#{cc.attrs.relationshipDefinition.id})"/>
                 </p:inputText>
             </div>
             <div class="ui-g-12 ui-md-6 ui-lg-3">
@@ -68,7 +69,7 @@
                     <p:commandButton
                             process="@this"
                             action="#{conceptBean.addRelationship(cc.attrs.relationshipDefinition, concept)}"
-                            update="@(.tablas)"
+                            update="@(.panel_#{cc.attrs.relationshipDefinition.id})"
                             icon="fa fa-plus"
                             title="Agregar"
                             disabled="#{conceptBean.limitRelationship(cc.attrs.relationshipDefinition)}"
@@ -106,7 +107,7 @@
                 <p:column headerText="Eliminar" style="width:60px;text-align: center;">
                     <p:commandButton icon="fa fa-trash" title="Eliminar"
                                      action="#{conceptBean.removeRelationship(cc.attrs.relationshipDefinition,rel)}"
-                                     update="@(.tablas)"
+                                     update="@(.panel_#{cc.attrs.relationshipDefinition.id})"
                                      process="@this">
                     </p:commandButton>
                 </p:column>
@@ -117,7 +118,7 @@
     </p:panel>
 
     <p:panel id="multiplicityN"
-             styleClass="tablas2"
+             styleClass="panel_#{cc.attrs.relationshipDefinition.name}"
              style="margin:20px;"
              rendered="#{cc.attrs.relationshipDefinition.multiplicity.collection and not cc.attrs.relationshipDefinition.hasRelationshipAttributeDefinitions()}">
         <h3>#{cc.attrs.relationshipDefinition.name}</h3>
@@ -147,7 +148,7 @@
                     <p:column>
                         <h:outputText value="#{concept.descriptionFavorite.term}"/>
                     </p:column>
-                    <p:ajax update="@(.tablas2)" event="itemSelect"
+                    <p:ajax update="@(.panel_#{cc.attrs.relationshipDefinition.id})" event="itemSelect"
                             listener="#{conceptBean.addRelationship(cc.attrs.relationshipDefinition,conceptBean.conceptSelected)}"
                             process="@this"/>
 
@@ -163,7 +164,7 @@
             <p:spacer />
             <p:dataTable emptyMessage="No existen relaciones, se debe agregar al menos: #{cc.attrs.relationshipDefinition.multiplicity.lowerBoundary}."
                          id="tableRelationship2"
-                         styleClass="tablas2"
+                         styleClass="panel_#{cc.attrs.relationshipDefinition.id}"
                          draggableRows="true" style="margin: 10px;"
                          value="#{conceptBean.concept.getValidRelationshipsWebByRelationDefinition(cc.attrs.relationshipDefinition)}"
                          var="rel">
@@ -185,7 +186,7 @@
                 <p:column headerText="Eliminar" style="width:60px;text-align: center;">
                     <p:commandButton icon="fa fa-trash" title="Eliminar"
                                      action="#{conceptBean.removeRelationship(cc.attrs.relationshipDefinition,rel)}"
-                                     update="@(.tablas2)"
+                                     update="@(.panel_#{cc.attrs.relationshipDefinition.id})"
                                      process="@this">
                     </p:commandButton>
                 </p:column>
@@ -196,7 +197,7 @@
     </p:panel>
 
     <p:panel id="multiplicityN_with_attributes"
-             styleClass="tablas2"
+             styleClass="panel_#{cc.attrs.relationshipDefinition.name}"
              rendered="#{cc.attrs.relationshipDefinition.multiplicity.collection and cc.attrs.relationshipDefinition.hasRelationshipAttributeDefinitions()}">
 
         <h3>#{cc.attrs.relationshipDefinition.name}</h3>
@@ -205,7 +206,7 @@
 
         <div class="ui-g">
 
-            <p:panel id="attrs" styleClass="attributes_#{cc.attrs.relationshipDefinition.name}" style="width:100%">
+            <p:panel id="attrs" styleClass="attributes_#{cc.attrs.relationshipDefinition.id}" style="width:100%">
                 <p:growl id="growl" showDetail="true" showSummary="true"/>
 
             <div class="ui-g-12 ui-md-6 ui-lg-2">
@@ -261,9 +262,9 @@
             </p:repeat>
             <div class="ui-g-12 ui-md-6 ui-lg-1">
                 <p:commandButton
-                        process="@(.attributes_#{cc.attrs.relationshipDefinition.name})"
+                        process="@(.attributes_#{cc.attrs.relationshipDefinition.id})"
                         action="#{conceptBean.addRelationshipWithAttributes(cc.attrs.relationshipDefinition)}"
-                        update="@(.relationshipsWithAttributes_#{cc.attrs.relationshipDefinition.name}),@(.attributes_#{cc.attrs.relationshipDefinition.name})"
+                        update="@(.relationshipsWithAttributes_#{cc.attrs.relationshipDefinition.id}),@(.attributes_#{cc.attrs.relationshipDefinition.id})"
                         value="Agregar">
                 </p:commandButton>
             </div>
@@ -279,7 +280,7 @@
             <p:spacer />
             <p:dataTable emptyMessage="No existen relaciones, se debe agregar al menos: #{cc.attrs.relationshipDefinition.multiplicity.lowerBoundary}."
                          id="tableRelationship3"
-                         styleClass="relationshipsWithAttributes_#{cc.attrs.relationshipDefinition.name}"
+                         styleClass="relationshipsWithAttributes_#{cc.attrs.relationshipDefinition.id}"
                          draggableRows="true" style="margin: 10px;"
                          value="#{conceptBean.concept.getValidRelationshipsWebByRelationDefinition(cc.attrs.relationshipDefinition)}"
                          var="rel">
@@ -304,7 +305,7 @@
                 <p:column headerText="Eliminar" style="width:60px;text-align: center;">
                     <p:commandButton icon="fa fa-trash" title="Eliminar"
                                      action="#{conceptBean.removeRelationship(cc.attrs.relationshipDefinition,rel)}"
-                                     update="@(.tablas2)"
+                                     update="@(.panel_#{cc.attrs.relationshipDefinition.name})"
                                      process="@this">
                     </p:commandButton>
                 </p:column>

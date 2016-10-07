@@ -34,10 +34,10 @@
                 </smtk:descriptions>
 
                 <!--Relaciones -->
-                <p:panel id="atributos" header="Atributos" toggleable="true" toggleSpeed="500" closeSpeed="500"
+                <p:panel id="atributos" header="Atributos" toggleable="true" toggleSpeed="500" closeSpeed="500" styleClass="panelAttributes"
                          widgetVar="panelAtributos" rendered="#{conceptBean.category.hasRelationshipDefinitions}">
 
-                    <h:dataTable style="width: 100%;" value="#{conceptBean.category.relationshipDefinitions}"
+                    <p:dataTable style="width: 100%;" value="#{conceptBean.category.relationshipDefinitions}"
                                  var="relationshipDefinition">
 
                         <h:column>
@@ -61,7 +61,7 @@
                                     rendered="#{relationshipDefinition.targetDefinition.basicType}"/>
 
                         </h:column>
-                    </h:dataTable>
+                    </p:dataTable>
                 </p:panel>
 
 

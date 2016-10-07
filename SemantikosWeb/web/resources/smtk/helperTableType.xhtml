@@ -15,44 +15,71 @@
     <composite:attribute name="concept" type="cl.minsal.semantikos.model.ConceptSMTKWeb" />
 </composite:interface>
 <composite:implementation>
-    <!-- Multiplicidad 1 y Nueva relacion -->
+    <!-- Multiplicidad 1 + Nueva relacion -->
     <p:panel id="helperTableTypeSimpleNew"
+             styleClass="panel_#{cc.attrs.relationshipDefinition.id}"
              widgetVar="panelHelperTableTypeSimple#{cc.attrs.relationshipDefinition.id}"
-             rendered="#{cc.attrs.relationshipDefinition.multiplicity.simple and not cc.attrs.concept.hasRelationships(cc.attrs.relationshipDefinition)}">
+             rendered="#{ cc.attrs.relationshipDefinition.multiplicity.simple and empty cc.attrs.concept.relationships }">
 
         <div class="ui-g">
             <div class="ui-g-12 ui-md-6 ui-lg-2">
-                <p:outputLabel for="helperTableRecordsSimple" value="#{cc.attrs.relationshipDefinition.name}"/>
+                <p:outputLabel for="findHTRecords1" value="#{cc.attrs.relationshipDefinition.name}"/>
                 <p:outputLabel value=" *" rendered="#{not cc.attrs.relationshipDefinition.multiplicity.optional}" />
             </div>
-            <div class="ui-g-12 ui-md-6 ui-lg-10">
-                <p:dataTable id="helperTableRecordsSimple"
-                             var="helperTableRecord"
-                             value="#{conceptBean.helperTableManager.getAllRecords(cc.attrs.targetDefinition)}"
-                             selection="#{conceptBean.selectedHelperTableRecord}"
-                             selectionMode="single"
-                             reflow="true"
-                             rowKey="#{helperTableRecord.fields.id}"
-                             styleClass="relationships">
-                    <p:ajax event="rowSelect" listener="#{conceptBean.addOrChangeRelationship(cc.attrs.relationshipDefinition,conceptBean.selectedHelperTableRecord)}" />
-                    <p:columns value="#{cc.attrs.targetDefinition.showableColumns}"
-                               var="column"
-                               sortBy="#{helperTableRecord.fields[column.columnName]}"
-                               rendered="#{column.columnName!='id'}">
-                        <f:facet name="header">
-                            <h:outputText value="#{column.columnName}" />
-                        </f:facet>
-                        <h:outputText value="#{helperTableRecord.fields.get(column.columnName)}" />
-                    </p:columns>
-                </p:dataTable>
+            <div class="ui-g-12 ui-md-6 ui-lg-2">
+                <p:autoComplete id="findHTRecords1" scrollHeight="200" style="width: 90%;"
+                                inputStyle="width: 90%;"
+                                completeMethod="#{helperTableBean.getRecordSearchInput}"
+                                var="record"
+                                placeholder="#{cc.attrs.relationshipDefinition.name}..."
+                                converter="helperTableRecordConverter"
+                                validator="#{validatorBean.validateRequiredRecordSelect}"
+                                value="#{conceptBean.selectedHelperTableRecord}"
+                                itemLabel="#{record.fields['description']}"
+                                itemValue="#{record}">
+                    <!-- Parámetros del buscador -->
+                    <f:attribute name="helperTable" value="#{cc.attrs.relationshipDefinition.targetDefinition}"  />
+                    <!-- Parámetros del validador -->
+                    <f:attribute name="helperTableRecord" value="#{conceptBean.selectedHelperTableRecord}"  />
+                    <!---->
+                    <p:column>
+                        <h:outputText value="#{record.fields['description']}"/>
+                    </p:column>
+
+                    <p:ajax event="itemSelect"
+                            listener="#{conceptBean.addOrChangeRelationship(cc.attrs.relationshipDefinition, conceptBean.selectedHelperTableRecord)}"
+                            update="@(.panel_#{cc.attrs.relationshipDefinition.id})"
+                            process="@this"/>
+
+                </p:autoComplete>
             </div>
+            <!-- Atributos de relación -->
+            <p:repeat
+                    offset="0"
+                    size="#{cc.attrs.relationshipDefinition.relationshipAttributeDefinitions.size()}"
+                    step="1"
+                    varStatus="var"
+                    value="#{cc.attrs.relationshipDefinition.relationshipAttributeDefinitions}"
+                    var="relationshipAttributeDefinition">
+                <smtk:basicTypeAttribute relationshipDefinition="#{cc.attrs.relationshipDefinition}"
+                                         relationshipAttributeDefinition="#{relationshipAttributeDefinition}"
+                                         targetDefinition="#{relationshipAttributeDefinition.targetDefinition}"
+                                         rendered="#{relationshipAttributeDefinition.targetDefinition.basicType}"
+                />
+                <smtk:helperTableTypeAttribute relationshipDefinition="#{cc.attrs.relationshipDefinition}"
+                                               relationshipAttributeDefinition="#{relationshipAttributeDefinition}"
+                                               targetDefinition="#{relationshipAttributeDefinition.targetDefinition}"
+                                               rendered="#{relationshipAttributeDefinition.targetDefinition.helperTable}"
+                />
+            </p:repeat>
         </div>
     </p:panel>
 
     <!-- Multiplicidad 1 y relacion existente -->
     <p:panel id="helperTableTypeSimple"
+             styleClass="panel_#{cc.attrs.relationshipDefinition.id}"
              widgetVar="panelHelperTableTypeSimple#{cc.attrs.relationshipDefinition.id}"
-             rendered="#{cc.attrs.relationshipDefinition.multiplicity.simple and cc.attrs.concept.hasRelationships(cc.attrs.relationshipDefinition)}">
+             rendered="#{cc.attrs.relationshipDefinition.multiplicity.simple and not empty cc.attrs.concept.relationships }">
 
         <ui:repeat value="#{cc.attrs.concept.getValidRelationshipsWebByRelationDefinition(cc.attrs.relationshipDefinition)}"
                    var="relationship"
@@ -86,49 +113,49 @@
         </ui:repeat>
     </p:panel>
 
-
     <!-- Multiplicidad N sin atributos-->
     <p:panel id="helperTableTypeCollection"
-             styleClass="helper#{cc.attrs.relationshipDefinition.id}"
+             styleClass="panel_#{cc.attrs.relationshipDefinition.id}"
              rendered="#{cc.attrs.relationshipDefinition.multiplicity.collection and empty cc.attrs.relationshipDefinition.relationshipAttributeDefinitions}">
-        <smtk:relationshipValidator relationships="#{cc.attrs.concept.getValidRelationshipsWebByRelationDefinition(cc.attrs.relationshipDefinition)}"
-                                    relationshipDefinition="#{cc.attrs.relationshipDefinition}"
-        />
+
+        <h3>#{cc.attrs.relationshipDefinition.name}</h3>
+
+        <p:spacer />
+
         <div class="ui-g">
+
             <div class="ui-g-12 ui-md-6 ui-lg-2">
-                <p:outputLabel for="helperTableRecordsCollection" value="#{cc.attrs.relationshipDefinition.name}"/>
-                <p:outputLabel value=" *" rendered="#{not cc.attrs.relationshipDefinition.multiplicity.optional}" />
-            </div>
-            <div class="ui-g-12 ui-md-6 ui-lg-10">
-                <p:dataTable id="helperTableRecordsCollection"
-                             var="helperTableRecord"
-                             value="#{conceptBean.helperTableManager.getAllRecords(cc.attrs.targetDefinition)}"
-                             reflow="true"
-                             >
-                    <p:columns value="#{cc.attrs.targetDefinition.showableColumns}"
-                               var="column"
-                               columnIndexVar="colIndex"
-                               sortBy="#{helperTableRecord.fields[column.columnName]}"
-                               rendered="#{column.columnName!='id'}">
-                        <f:facet name="header">
-                            <h:outputText value="#{column.columnName}" />
-                        </f:facet>
-                        <h:outputText value="#{helperTableRecord.fields.get(column.columnName)}" />
-                    </p:columns>
-                    <p:column style="width: 4%">
-                        <p:commandButton
-                                id="addHelperTableRelationship"
-                                process="@this"
-                                style="float: right"
+
+                <p:autoComplete id="findHTRecords2" scrollHeight="200" style="width: 90%;"
+                                inputStyle="width: 90%;"
+                                completeMethod="#{helperTableBean.getRecordSearchInput}"
+                                var="helperTableRecord"
+                                placeholder="#{cc.attrs.relationshipDefinition.name}..."
+                                converter="helperTableRecordConverter"
+                                validator="#{validatorBean.validateRequiredRecordSelect}"
                                 disabled="#{cc.attrs.relationshipDefinition.multiplicity.isUpperBoundaryReached(cc.attrs.concept.getRelationshipsByRelationDefinition(cc.attrs.relationshipDefinition).size())}"
-                                update="@(.helper#{cc.attrs.relationshipDefinition.id})"
-                                action="#{conceptBean.addRelationship(cc.attrs.relationshipDefinition,helperTableRecord)}"
-                                icon="fa fa-plus"
-                                title="Agregar"
-                        />
+                                value="#{conceptBean.selectedHelperTableRecord}"
+                                itemLabel="#{record.fields['description']}"
+                                itemValue="#{record}">
+                    <!-- Parámetros del buscador -->
+                    <f:attribute name="helperTable" value="#{cc.attrs.relationshipDefinition.targetDefinition}"  />
+                    <!-- Parámetros del validador -->
+                    <f:attribute name="helperTableRecord" value="#{conceptBean.selectedHelperTableRecord}"  />
+                    <!---->
+                    <p:column>
+                        <h:outputText value="#{helperTableRecord.fields['description']}"/>
                     </p:column>
-                </p:dataTable>
-                <p:spacer />
+
+                    <p:ajax event="itemSelect"
+                            update="@(.panel_#{cc.attrs.relationshipDefinition.name})"
+                            listener="#{conceptBean.addRelationship(cc.attrs.relationshipDefinition,helperTableRecord)}"
+                            process="@this"/>
+
+                </p:autoComplete>
+            </div>
+        </div>
+        <div class="ui-g">
+            <div class="ui-g-12 ui-md-6 ui-lg-12">
                 <p:dataTable id="collectionValues12"
                              styleClass="tablas"
                              var="relationship"
@@ -149,7 +176,7 @@
                         <p:commandButton
                                 icon="fa fa-trash"
                                 title="Eliminar"
-                                update="@(.helper#{cc.attrs.relationshipDefinition.id})"
+                                update="@(.panel_#{cc.attrs.relationshipDefinition.name})"
                                 style="float: right"
                                 process="@this"
                                 immediate="true"
@@ -164,11 +191,8 @@
 
     <!-- Multiplicidad N con atributos-->
     <p:panel id="helperTableTypeCollectionWithAttributes"
-             styleClass="helper#{cc.attrs.relationshipDefinition.id}"
+             styleClass="panel_#{cc.attrs.relationshipDefinition.id}"
              rendered="#{cc.attrs.relationshipDefinition.multiplicity.collection and not empty cc.attrs.relationshipDefinition.relationshipAttributeDefinitions}">
-        <smtk:relationshipValidator relationships="#{cc.attrs.concept.getValidRelationshipsWebByRelationDefinition(cc.attrs.relationshipDefinition)}"
-                                    relationshipDefinition="#{cc.attrs.relationshipDefinition}"
-        />
 
         <h3>#{cc.attrs.relationshipDefinition.name}</h3>
 
@@ -176,7 +200,7 @@
 
         <div class="ui-g">
 
-            <p:panel id="attrs" styleClass="attributes_#{cc.attrs.relationshipDefinition.name}" style="width:100%">
+            <p:panel id="attrs" styleClass="attributes_#{cc.attrs.relationshipDefinition.id}" style="width:100%">
 
                 <p:growl id="growl" showDetail="true" showSummary="true"/>
 
@@ -186,7 +210,7 @@
                                     inputStyle="width: 90%;"
                                     completeMethod="#{helperTableBean.getRecordSearchInput}"
                                     var="record"
-                                    placeholder="Buscar..."
+                                    placeholder="#{cc.attrs.relationshipDefinition.name}+6..."
                                     converter="helperTableRecordConverter"
                                     validator="#{validatorBean.validateRequiredRecordSelect}"
                                     value="#{conceptBean.selectedHelperTableRecord}"
@@ -233,9 +257,9 @@
 
                 <div class="ui-g-12 ui-md-6 ui-lg-1">
                     <p:commandButton
-                            process="@(.attributes_#{cc.attrs.relationshipDefinition.name})"
+                            process="@(.attributes_#{cc.attrs.relationshipDefinition.id})"
                             action="#{conceptBean.addRelationshipWithAttributes(cc.attrs.relationshipDefinition)}"
-                            update="@(.relationshipsWithAttributes_#{cc.attrs.relationshipDefinition.name}),@(.attributes_#{cc.attrs.relationshipDefinition.name})"
+                            update="@(.relationshipsWithAttributes_#{cc.attrs.relationshipDefinition.id}),@(.attributes_#{cc.attrs.relationshipDefinition.id})"
                             value="Agregar">
                     </p:commandButton>
                 </div>
@@ -249,7 +273,7 @@
         <div class="ui-g">
             <p:spacer />
             <p:dataTable id="collectionValuesWithAttributes"
-                         styleClass="relationshipsWithAttributes_#{cc.attrs.relationshipDefinition.name}"
+                         styleClass="relationshipsWithAttributes_#{cc.attrs.relationshipDefinition.id}"
                          var="relationship"
                          value="#{cc.attrs.concept.getValidRelationshipsWebByRelationDefinition(cc.attrs.relationshipDefinition)}"
                          style="width: 100%"
@@ -279,7 +303,7 @@
                     <p:commandButton
                             icon="fa fa-trash"
                             title="Eliminar"
-                            update="@(.helper#{cc.attrs.relationshipDefinition.id})"
+                            update="@(.panel_#{cc.attrs.relationshipDefinition.id})"
                             style="float: right"
                             process="@this"
                             immediate="true"

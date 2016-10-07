@@ -40,6 +40,10 @@ public class HelperTableBean implements Serializable {
     @EJB
     private HelperTableManager helperTableManager;
 
+    @PostConstruct
+    public void init() {
+    }
+
     public List<HelperTableRecord> getRecordList(HelperTable helperTable){
         if(!recordSearchLists.containsKey(helperTable))
             recordSearchLists.put(helperTable, helperTableManager.getAllRecords(helperTable));
@@ -49,9 +53,6 @@ public class HelperTableBean implements Serializable {
 
     public List<HelperTableRecord> getRecordSearchInput(String patron) {
 
-        if(patron.trim().length()==0)
-            return emptyList();
-
         FacesContext context = FacesContext.getCurrentInstance();
         HelperTable helperTable = (HelperTable) UIComponent.getCurrentComponent(context).getAttributes().get("helperTable");
 
@@ -60,9 +61,7 @@ public class HelperTableBean implements Serializable {
 
         List<HelperTableRecord> someRecords = new ArrayList<HelperTableRecord>();
 
-        List<HelperTableRecord> recordSearchList = recordSearchLists.get(helperTable);
-
-        for (HelperTableRecord record : recordSearchList) {
+        for (HelperTableRecord record : recordSearchLists.get(helperTable)) {
             if(record.getFields().get("description").toLowerCase().contains(patron.trim().toLowerCase()))
                 someRecords.add(record);
         }
@@ -78,18 +77,12 @@ public class HelperTableBean implements Serializable {
         if(!recordSearchLists.containsKey(helperTable))
             recordSearchLists.put(helperTable, helperTableManager.getAllRecords(helperTable));
 
-        List<HelperTableRecord> recordSearchList = recordSearchLists.get(helperTable);
-
-        for (HelperTableRecord record : recordSearchList) {
+        for (HelperTableRecord record : recordSearchLists.get(helperTable)) {
             if(id.equals(new Long(record.getFields().get("id"))))
                 return record;
         }
 
         return null;
-    }
-
-    @PostConstruct
-    public void init() {
     }
 
     public String getPattern() {
