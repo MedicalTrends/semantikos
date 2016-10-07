@@ -7,10 +7,20 @@ import javax.persistence.Column;
  * Created by root on 08-07-16.
  */
 public class RelationshipAttribute {
+
     private Long idRelationshipAttribute;
     private RelationshipAttributeDefinition relationAttributeDefinition;
     private Relationship Relationship;
     private Target target;
+
+    public RelationshipAttribute() {
+    }
+
+    public RelationshipAttribute(RelationshipAttributeDefinition relationAttributeDefinition, cl.minsal.semantikos.model.relationships.Relationship relationship, Target target) {
+        this.relationAttributeDefinition = relationAttributeDefinition;
+        Relationship = relationship;
+        this.target = target;
+    }
 
     public Long getIdRelationshipAttribute() {
         return idRelationshipAttribute;

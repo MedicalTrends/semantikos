@@ -96,21 +96,20 @@
                                      value="Guardar"
                                      update="growl, mainForm"/>
 
-                    <p:commandButton actionListener="#{conceptBean.deleteConcept}" icon="ui-icon-trash"
-                                     styleClass="ui-priority-primary"
-                                     value="Eliminar" type="submit" process="mainForm"
-                                     rendered="#{conceptBean.concept.persistent and not conceptBean.concept.modeled}"
-                                     update="growl, mainForm">
-                        <p:confirm header="Confirmation" message="¿Desea eliminar este concepto?" icon="ui-icon-alert"/>
-                    </p:commandButton>
-                    <p:commandButton actionListener="#{conceptBean.deleteConcept}" icon="ui-icon-trash"
-                                     styleClass="ui-priority-primary"
-                                     value="Invalidar" type="submit" process="mainForm"
-                                     rendered="#{conceptBean.concept.persistent and conceptBean.concept.modeled}"
-                                     update="growl, mainForm">
-                        <p:confirm header="Confirmation" message="¿Desea invalidar este concepto?"
-                                   icon="ui-icon-alert"/>
-                    </p:commandButton>
+                <p:commandButton actionListener="#{conceptBean.deleteConcept}" icon="ui-icon-trash"
+                                 styleClass="ui-priority-primary"
+                                 value="Eliminar" type="submit" process="mainForm"
+                                 rendered="#{conceptBean.concept.persistent and not conceptBean.concept.modeled}"
+                                 update="growl, mainForm">
+                    <p:confirm header="Confirmation" message="¿Desea eliminar este concepto?" icon="ui-icon-alert"/>
+                </p:commandButton>
+                <p:commandButton actionListener="#{conceptBean.deleteConcept}" icon="ui-icon-trash"
+                                 styleClass="ui-priority-primary"
+                                 value="Invalidar" type="submit" process="mainForm"
+                                 rendered="#{conceptBean.concept.persistent and conceptBean.concept.modeled}"
+                                 update="growl, mainForm">
+                    <p:confirm header="Confirmation" message="¿Desea invalidar este concepto?" icon="ui-icon-alert"/>
+                </p:commandButton>
 
                     <p:commandButton actionListener="#{conceptBean.cancelConcept}" icon="ui-icon-cancel"
                                      styleClass="ui-priority-primary"
@@ -121,14 +120,10 @@
                                    icon="ui-icon-alert"/>
                     </p:commandButton>
 
-                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-                        <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes"
-                                         icon="ui-icon-check"/>
-                        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no"
-                                         icon="ui-icon-close"/>
-                    </p:confirmDialog>
-                    <smtk:export-xls/>
-                </div>
+                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                    <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>
+                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>
+                </p:confirmDialog>
 
 
             </h:form>

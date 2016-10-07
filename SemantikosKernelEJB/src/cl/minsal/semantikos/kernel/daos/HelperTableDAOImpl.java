@@ -122,6 +122,9 @@ public class HelperTableDAOImpl implements HelperTableDAO {
                 String jsonExpression = rs.getString(1);
                 if (jsonExpression != null) {
                     helperTableRecords = this.helperTableRecordFactory.createHelperRecordsFromJSON(jsonExpression);
+                    for (HelperTableRecord helperTableRecord : helperTableRecords) {
+                        helperTableRecord.setId(new Long(helperTableRecord.getFields().get("id")));
+                    }
                 } else {
                     helperTableRecords = emptyList();
                 }

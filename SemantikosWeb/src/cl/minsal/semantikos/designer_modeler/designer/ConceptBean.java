@@ -109,6 +109,11 @@ public class ConceptBean implements Serializable {
 
     ////////////////////////////////////////////////////
 
+    // Placeholders para los atributos de relacion
+    private RelationshipWeb relationshipWeb;
+
+    private Map<RelationshipDefinition, Relationship> relationshipPlaceholders  = new HashMap<RelationshipDefinition, Relationship>();
+
     private Map<RelationshipDefinition, List<RelationshipAttribute>> relationshipAttributesPlaceholder = new HashMap<RelationshipDefinition, List<RelationshipAttribute>>();
 
 
@@ -200,6 +205,11 @@ public class ConceptBean implements Serializable {
             }
         } else {
             getConceptById(idconceptselect);
+        }
+        // Una vez que se ha inicializado el concepto, inicializar los placeholders para las relaciones
+        for (RelationshipDefinition relationshipDefinition : category.getRelationshipDefinitions()) {
+            if(!relationshipDefinition.getRelationshipAttributeDefinitions().isEmpty())
+                relationshipPlaceholders.put(relationshipDefinition, new Relationship(concept, null, relationshipDefinition, new ArrayList<RelationshipAttribute>()));
         }
         context.execute("PF('dialogNameConcept').hide();");
     }
@@ -297,6 +307,23 @@ public class ConceptBean implements Serializable {
     }
 
     /**
+     * Este método es el encargado de agregar relaciones al concepto recibiendo como parámetro un Relationship
+     * Definition. Este método es utilizado por el componente BasicType, el cual agrega relaciones con target sin valor
+     */
+    public void addRelationshipWithAttributes(RelationshipDefinition relationshipDefinition) {
+
+        Relationship relationship = relationshipPlaceholders.get(relationshipDefinition);
+        // Se utiliza el constructor mínimo (sin id)
+        this.concept.addRelationshipWeb(new RelationshipWeb(relationship));
+        // Reinicializar placeholder relaciones
+        relationshipPlaceholders.put(relationshipDefinition, new Relationship(concept, null, relationshipDefinition, new ArrayList<RelationshipAttribute>()));
+        // Resetear placeholder targets
+        basicTypeValue = new BasicTypeValue(null);
+        selectedHelperTableRecord = new HelperTableRecord();
+        conceptSelected = null;
+    }
+
+    /**
      * Este método es el encargado de agregar una nuva relacion con los parémetros que se indican.
      */
     public void addRelationship(RelationshipDefinition relationshipDefinition, Target target) {
@@ -350,6 +377,35 @@ public class ConceptBean implements Serializable {
         conceptSelected = null;
     }
 
+    public void setTarget(RelationshipDefinition relationshipDefinition, Target target){
+        relationshipPlaceholders.get(relationshipDefinition).setTarget(target);
+    }
+
+    /**
+     * Este método se encarga de agregar o cambiar el atributo para el caso de multiplicidad 1.
+     */
+    public void setTargetAttribute(RelationshipDefinition relationshipDefinition, RelationshipAttributeDefinition relationshipAttributeDefinition, Target target) {
+
+        //relationshipWeb.getRelationshipAttributes().add()
+
+        Relationship relationship = relationshipPlaceholders.get(relationshipDefinition);
+
+        boolean isAttributeFound = false;
+
+        // Se busca el atributo
+        for (RelationshipAttribute attribute : relationship.getRelationshipAttributes()) {
+            if(attribute.getRelationAttributeDefinition().equals(relationshipAttributeDefinition)) {
+                attribute.setTarget(target);
+                isAttributeFound = true;
+                break;
+            }
+        }
+        // Si no se encuentra el atributo, se crea uno nuevo
+        if (!isAttributeFound) {
+            relationship.getRelationshipAttributes().add(new RelationshipAttribute(relationshipAttributeDefinition, relationship, target));
+        }
+    }
+
     /**
      * Este método es el encargado de remover una relación específica del concepto.
      */
@@ -389,10 +445,12 @@ public class ConceptBean implements Serializable {
 
 
                 description.setModeled(false);
+                description.setCreatorUser(user);
                 description.setDescriptionId(descriptionManager.generateDescriptionId());
                 concept.addDescriptionWeb(description);
 
                 otherTermino = "";
+                otherDescriptionType = null;
             } else {
                 context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se ha seleccionado el tipo de descripción"));
             }
@@ -603,7 +661,9 @@ public class ConceptBean implements Serializable {
                 || !_concept.getTagSMTK().equals(concept.getTagSMTK());
     }
 
-    public void deleteConcept() {
+
+
+    public String deleteConcept() {
 
         FacesContext context = FacesContext.getCurrentInstance();
 
@@ -611,9 +671,11 @@ public class ConceptBean implements Serializable {
         if (concept.isPersistent() && !concept.isModeled()) {
             conceptManager.delete(concept, user);
             context.addMessage(null, new FacesMessage("Successful", "Concepto eliminado"));
+            return "mainMenu.xhtml";
         } else {
             conceptManager.invalidate(concept, user);
             context.addMessage(null, new FacesMessage("Successful", "Concepto invalidado"));
+            return "mainMenu.xhtml";
         }
 
     }
@@ -778,9 +840,6 @@ public class ConceptBean implements Serializable {
     }
 
     public HelperTableRecord getSelectedHelperTableRecord() {
-        if (selectedHelperTableRecord == null)
-            selectedHelperTableRecord = new HelperTableRecord();
-
         return selectedHelperTableRecord;
     }
 
@@ -891,6 +950,10 @@ public class ConceptBean implements Serializable {
 
     public void setDescriptionTypesEdit(List<DescriptionType> descriptionTypesEdit) {
         this.descriptionTypesEdit = descriptionTypesEdit;
+    }
+
+    public Map<RelationshipDefinition, Relationship> getRelationshipPlaceholders() {
+        return relationshipPlaceholders;
     }
 
     /**
