@@ -37,7 +37,7 @@
                 <p:panel id="atributos" header="Atributos" toggleable="true" toggleSpeed="500" closeSpeed="500"
                          widgetVar="panelAtributos" rendered="#{conceptBean.category.hasRelationshipDefinitions}">
 
-                    <h:dataTable style="width: 100%;" value="#{conceptBean.category.relationshipDefinitions}"
+                    <h:dataTable style="width: 100%;" value="#{conceptBean.orderedRelationshipDefinitions}"
                                  var="relationshipDefinition">
 
                         <h:column>

@@ -16,17 +16,17 @@ import java.sql.SQLException;
  * @author Andrés Farías on 10/5/16.
  */
 @Stateless
-public class SemantikosWebImpl implements SemantikosWeb {
+public class SemantikosWebDAOImpl implements SemantikosWebDAO {
 
-    private static final Logger logger = LoggerFactory.getLogger(SemantikosWebImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(SemantikosWebDAOImpl.class);
 
     @Override
-    public long getCompositeOf(RelationshipDefinition relationshipDefinition) {
+    public ExtendedRelationshipDefinitionInfo getCompositeOf(RelationshipDefinition relationshipDefinition) {
 
         ConnectionBD connect = new ConnectionBD();
-        // TODO: Implementar esta función SQL.
         String sql = "{call semantikos.get_composite_by_relationship_definition(?)}";
         long idComposite;
+        int order;
         try (Connection connection = connect.getConnection();
              CallableStatement call = connection.prepareCall(sql)) {
 
@@ -35,8 +35,9 @@ public class SemantikosWebImpl implements SemantikosWeb {
             ResultSet rs = call.getResultSet();
             if (rs.next()) {
                 idComposite = rs.getLong(1);
+                order = rs.getInt(2);
             } else {
-                return -1;
+                return ExtendedRelationshipDefinitionInfo.DEFAULT_CONFIGURATION;
             }
         } catch (SQLException e) {
             String errorMsg = "Error al recuperar descripciones de la BDD.";
@@ -44,6 +45,6 @@ public class SemantikosWebImpl implements SemantikosWeb {
             throw new EJBException(e);
         }
 
-        return idComposite;
+        return new ExtendedRelationshipDefinitionInfo(idComposite, order);
     }
 }

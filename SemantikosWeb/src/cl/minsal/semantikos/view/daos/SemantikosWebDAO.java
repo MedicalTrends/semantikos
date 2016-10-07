@@ -20,7 +20,7 @@ import static cl.minsal.semantikos.kernel.util.StringUtils.underScoreToCamelCase
  * @author Andrés Farías on 10/5/16.
  */
 @Local
-public interface SemantikosWeb {
+public interface SemantikosWebDAO {
 
     /**
      * Este método es responsable de recuperar la información del objeto composite asociado a un
@@ -30,5 +30,5 @@ public interface SemantikosWeb {
      *
      * @return El Identificador del Composite asociado a dicho RelationshipDefinition.
      */
-    public long getCompositeOf(RelationshipDefinition relationshipDefinition);
+    public ExtendedRelationshipDefinitionInfo getCompositeOf(RelationshipDefinition relationshipDefinition);
 }
