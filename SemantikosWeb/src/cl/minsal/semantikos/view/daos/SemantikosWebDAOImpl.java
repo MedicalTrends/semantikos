@@ -1,6 +1,7 @@
 package cl.minsal.semantikos.view.daos;
 
 import cl.minsal.semantikos.kernel.util.ConnectionBD;
+import cl.minsal.semantikos.model.Category;
 import cl.minsal.semantikos.model.relationships.RelationshipDefinition;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,21 +22,22 @@ public class SemantikosWebDAOImpl implements SemantikosWebDAO {
     private static final Logger logger = LoggerFactory.getLogger(SemantikosWebDAOImpl.class);
 
     @Override
-    public ExtendedRelationshipDefinitionInfo getCompositeOf(RelationshipDefinition relationshipDefinition) {
+    public ExtendedRelationshipDefinitionInfo getCompositeOf(Category category, RelationshipDefinition relationshipDefinition) {
 
         ConnectionBD connect = new ConnectionBD();
-        String sql = "{call semantikos.get_composite_by_relationship_definition(?)}";
+        String sql = "{call semantikos.get_viewinfo_by_relationship_definition(?,?)}";
         long idComposite;
         int order;
         try (Connection connection = connect.getConnection();
              CallableStatement call = connection.prepareCall(sql)) {
 
-            call.setLong(1, relationshipDefinition.getId());
+            call.setLong(1, category.getId());
+            call.setLong(2, relationshipDefinition.getId());
             call.execute();
             ResultSet rs = call.getResultSet();
             if (rs.next()) {
-                idComposite = rs.getLong(1);
-                order = rs.getInt(2);
+                order = rs.getInt(1);
+                idComposite = rs.getLong(2);
             } else {
                 return ExtendedRelationshipDefinitionInfo.DEFAULT_CONFIGURATION;
             }
