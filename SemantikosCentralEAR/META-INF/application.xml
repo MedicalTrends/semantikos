@@ -4,4 +4,28 @@
              xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/application_6.xsd"
              version="6">
 
+    <module>
+        <web>
+            <web-uri>SemantikosWeb-0.5.0.war</web-uri>
+            <context-root>designer</context-root>
+        </web>
+    </module>
+    <module>
+        <web>
+            <web-uri>SemantikosBrowser-0.5.0.war</web-uri>
+            <context-root>browser</context-root>
+        </web>
+    </module>
+    <module>
+        <web>
+            <web-uri>SemantikosWS-0.5.0.war</web-uri>
+            <context-root>ws</context-root>
+        </web>
+    </module>
+    <module>
+        <ejb>SemantikosKernelEJB-0.5.0.jar</ejb>
+    </module>
+    <module>
+        <ejb>SemantikosWSEJB-0.5.0.jar</ejb>
+    </module>
 </application>

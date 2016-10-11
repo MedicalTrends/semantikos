@@ -14,7 +14,7 @@
         <setting name="provider-name" value="Hibernate" />
         <datasource-mapping>
           <factory-entry name="NewPersistenceUnit" />
-          <factory-entry name="SEMANTIKOS_PU" />
+          <factory-entry name="SEMANTIKOS_PU" value="1395c29a-31f1-4581-b3a5-85c86bf224fc" />
         </datasource-mapping>
         <deploymentDescriptor name="persistence.xml" url="file://$MODULE_DIR$/src/main/resources/META-INF/persistence.xml" />
       </configuration>
