@@ -14,6 +14,7 @@ import javax.persistence.PersistenceContext;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 /**
  * @author Gusatvo Punucura on 13-07-16.
@@ -96,6 +97,11 @@ public class ConceptDAOImpl implements ConceptDAO {
         }
 
         return concepts;
+    }
+
+    @Override
+    public List<ConceptSMTK> getModeledConceptBy(Long categoryId, int pageSize, int pageNumber) {
+        return this.getConceptBy(new Long[]{categoryId}, true, pageSize, pageNumber);
     }
 
     @Override
@@ -351,6 +357,11 @@ public class ConceptDAOImpl implements ConceptDAO {
             e.printStackTrace();
         }
         return count;
+    }
+
+    @Override
+    public int countModeledConceptBy(Long categoryId) {
+        return this.countConceptBy((String[]) null, new Long[]{categoryId}, true);
     }
 
     @Override
