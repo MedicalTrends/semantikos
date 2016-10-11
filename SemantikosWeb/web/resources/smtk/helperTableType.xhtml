@@ -89,26 +89,51 @@
                     <p:outputLabel for="helperTableRecordsSimple2" value="#{cc.attrs.relationshipDefinition.name}"/>
                 </div>
                 <div class="ui-g-12 ui-md-6 ui-lg-10">
-                    <p:dataTable id="helperTableRecordsSimple2"
-                                 var="helperTableRecord"
-                                 value="#{conceptBean.helperTableManager.getAllRecords(cc.attrs.targetDefinition)}"
-                                 selection="#{relationship.target}"
-                                 reflow="true"
-                                 rowKey="#{helperTableRecord.fields.id}"
-                                 styleClass="relationships"
-                    >
-                        <p:column selectionMode="single" style="width:16px;text-align:center"/>
-                        <p:columns value="#{cc.attrs.targetDefinition.showableColumns}"
-                                   var="column"
-                                   sortBy="#{helperTableRecord.fields[column.columnName]}"
-                                   rendered="#{column.columnName!='id'}">
-                            <f:facet name="header">
-                                <h:outputText value="#{column.columnName}" />
-                            </f:facet>
-                            <h:outputText value="#{helperTableRecord.fields.get(column.columnName)}" />
-                        </p:columns>
-                    </p:dataTable>
+                    <p:autoComplete id="findHTRecords2" scrollHeight="200" style="width: 90%;"
+                                    inputStyle="width: 90%;"
+                                    completeMethod="#{helperTableBean.getRecordSearchInput}"
+                                    var="record"
+                                    placeholder="#{cc.attrs.relationshipDefinition.name}..."
+                                    converter="helperTableRecordConverter"
+                                    validator="#{validatorBean.validateRequiredRecordSelect}"
+                                    value="#{relationship.target}"
+                                    itemLabel="#{record.fields['description']}"
+                                    itemValue="#{record}">
+                        <!-- Parámetros del buscador -->
+                        <f:attribute name="helperTable" value="#{cc.attrs.relationshipDefinition.targetDefinition}"  />
+                        <!-- Parámetros del validador -->
+                        <f:attribute name="helperTableRecord" value="#{conceptBean.selectedHelperTableRecord}"  />
+                        <!---->
+                        <p:column>
+                            <h:outputText value="#{record.fields['description']}"/>
+                        </p:column>
+
+                        <p:ajax event="itemSelect"
+                                listener="#{conceptBean.addOrChangeRelationship(cc.attrs.relationshipDefinition, conceptBean.selectedHelperTableRecord)}"
+                                update="@(.panel_#{cc.attrs.relationshipDefinition.id})"
+                                process="@this"/>
+
+                    </p:autoComplete>
                 </div>
+                <!-- Atributos de relación -->
+                <p:repeat
+                        offset="0"
+                        size="#{cc.attrs.relationshipDefinition.relationshipAttributeDefinitions.size()}"
+                        step="1"
+                        varStatus="var"
+                        value="#{cc.attrs.relationshipDefinition.relationshipAttributeDefinitions}"
+                        var="relationshipAttributeDefinition">
+                    <smtk:basicTypeAttribute relationshipDefinition="#{cc.attrs.relationshipDefinition}"
+                                             relationshipAttributeDefinition="#{relationshipAttributeDefinition}"
+                                             targetDefinition="#{relationshipAttributeDefinition.targetDefinition}"
+                                             rendered="#{relationshipAttributeDefinition.targetDefinition.basicType}"
+                    />
+                    <smtk:helperTableTypeAttribute relationshipDefinition="#{cc.attrs.relationshipDefinition}"
+                                                   relationshipAttributeDefinition="#{relationshipAttributeDefinition}"
+                                                   targetDefinition="#{relationshipAttributeDefinition.targetDefinition}"
+                                                   rendered="#{relationshipAttributeDefinition.targetDefinition.helperTable}"
+                    />
+                </p:repeat>
             </div>
         </ui:repeat>
     </p:panel>
@@ -126,7 +151,7 @@
 
             <div class="ui-g-12 ui-md-6 ui-lg-2">
 
-                <p:autoComplete id="findHTRecords2" scrollHeight="200" style="width: 90%;"
+                <p:autoComplete id="findHTRecords3" scrollHeight="200" style="width: 90%;"
                                 inputStyle="width: 90%;"
                                 completeMethod="#{helperTableBean.getRecordSearchInput}"
                                 var="helperTableRecord"
@@ -206,7 +231,7 @@
 
                 <div class="ui-g-12 ui-md-6 ui-lg-2">
 
-                    <p:autoComplete id="findHTRecords3" scrollHeight="200" style="width: 90%;"
+                    <p:autoComplete id="findHTRecords4" scrollHeight="200" style="width: 90%;"
                                     inputStyle="width: 90%;"
                                     completeMethod="#{helperTableBean.getRecordSearchInput}"
                                     var="record"
