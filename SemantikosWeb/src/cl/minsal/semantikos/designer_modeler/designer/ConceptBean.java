@@ -9,6 +9,7 @@ import cl.minsal.semantikos.model.exceptions.BusinessRuleException;
 import cl.minsal.semantikos.model.helpertables.HelperTableRecord;
 import cl.minsal.semantikos.model.relationships.*;
 import cl.minsal.semantikos.util.Pair;
+import cl.minsal.semantikos.view.components.ViewAugmenter;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.RowEditEvent;
 import org.slf4j.Logger;
@@ -70,11 +71,10 @@ public class ConceptBean implements Serializable {
 
     private ConceptSMTKWeb concept;
 
-    /**
-     * El concepto original
-     */
+    /** El concepto original */
     private ConceptSMTKWeb _concept;
 
+    /** La categoría asociada a la vista, de la cual se crea un nuevo concepto */
     private Category category;
 
     private List<DescriptionType> descriptionTypes = new ArrayList<DescriptionType>();
@@ -112,11 +112,9 @@ public class ConceptBean implements Serializable {
     // Placeholders para los atributos de relacion
     private RelationshipWeb relationshipWeb;
 
-    private Map<RelationshipDefinition, Relationship> relationshipPlaceholders  = new HashMap<RelationshipDefinition, Relationship>();
+    private Map<Long, Relationship> relationshipPlaceholders  = new HashMap<Long, Relationship>();
 
     private Map<RelationshipDefinition, List<RelationshipAttribute>> relationshipAttributesPlaceholder = new HashMap<RelationshipDefinition, List<RelationshipAttribute>>();
-
-    private Map<RelationshipDefinition, List<Target>> targetPlaceholders = new HashMap<RelationshipDefinition, List<Target>>();
 
 
     //Parametros del formulario
@@ -137,8 +135,11 @@ public class ConceptBean implements Serializable {
     private ConceptExportMBean conceptBeanExport;
 
 
-    @ManagedProperty(value="#{authenticationBean}")
+    @ManagedProperty(value = "#{authenticationBean}")
     private AuthenticationBean authenticationBean;
+
+    @EJB
+    private ViewAugmenter viewAugmenter;
 
     public AuthenticationBean getAuthenticationBean() {
         return authenticationBean;
@@ -182,33 +183,35 @@ public class ConceptBean implements Serializable {
         descriptionTypesEdit = descriptionTypeFactory.getDescriptionTypesButFSN();
 
         tagSMTKs = tagSMTKManager.getAllTagSMTKs();
-
-
-        // TODO: Inicializar lista de estados de descripción con todos los estados posibles
     }
 
-    //Methods
-
+    /**
+     * Este método se ejecuta al inicio del proceso de creación de un concepto.
+     *
+     * @throws ParseException
+     */
     public void createConcept() throws ParseException {
         RequestContext context = RequestContext.getCurrentInstance();
         if (idconceptselect == 0) {
-            category = categorySelected;
+
+            setCategory(categorySelected);
+
+            /* Se valida que el término propuesto no exista previamente */
             if (categoryManager.categoryContains(category, favoriteDescription)) {
                 FacesContext c = FacesContext.getCurrentInstance();
                 c.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "La descripción " + favoriteDescription + " ya existe dentro de la categoría " + category.getName()));
             } else {
                 newConcept(category, favoriteDescription);
-                context.execute("PF('dialogNameConcept').hide();");
             }
         } else {
             getConceptById(idconceptselect);
-            context.execute("PF('dialogNameConcept').hide();");
         }
         // Una vez que se ha inicializado el concepto, inicializar los placeholders para las relaciones
         for (RelationshipDefinition relationshipDefinition : category.getRelationshipDefinitions()) {
             if(!relationshipDefinition.getRelationshipAttributeDefinitions().isEmpty())
-                relationshipPlaceholders.put(relationshipDefinition, new Relationship(concept, null, relationshipDefinition, new ArrayList<RelationshipAttribute>()));
+                relationshipPlaceholders.put(relationshipDefinition.getId(), new Relationship(concept, null, relationshipDefinition, new ArrayList<RelationshipAttribute>()));
         }
+        context.execute("PF('dialogNameConcept').hide();");
     }
 
     //Este método es responsable de a partir de un concepto SMTK y un término, devolver un concepto WEB con su FSN y su Preferida
@@ -262,7 +265,7 @@ public class ConceptBean implements Serializable {
         // Se crea una copia con la imagen original del concepto
         _concept = new ConceptSMTKWeb(conceptSMTK);
 
-        auditAction = auditManager.getConceptAuditActions(concept,  true);
+        auditAction = auditManager.getConceptAuditActions(concept, true);
         category = concept.getCategory();
         conceptBeanExport.setConceptSMTK(concept);
         conceptBeanExport.loadConcept();
@@ -309,11 +312,11 @@ public class ConceptBean implements Serializable {
      */
     public void addRelationshipWithAttributes(RelationshipDefinition relationshipDefinition) {
 
-        Relationship relationship = relationshipPlaceholders.get(relationshipDefinition);
+        Relationship relationship = relationshipPlaceholders.get(relationshipDefinition.getId());
         // Se utiliza el constructor mínimo (sin id)
         this.concept.addRelationshipWeb(new RelationshipWeb(relationship));
         // Reinicializar placeholder relaciones
-        relationshipPlaceholders.put(relationshipDefinition, new Relationship(concept, null, relationshipDefinition, new ArrayList<RelationshipAttribute>()));
+        relationshipPlaceholders.put(relationshipDefinition.getId(), new Relationship(concept, null, relationshipDefinition, new ArrayList<RelationshipAttribute>()));
         // Resetear placeholder targets
         basicTypeValue = new BasicTypeValue(null);
         selectedHelperTableRecord = new HelperTableRecord();
@@ -357,6 +360,9 @@ public class ConceptBean implements Serializable {
         // Se busca la relación
         for (Relationship relationshipWeb : concept.getRelationshipsWeb()) {
             if (relationshipWeb.getRelationshipDefinition().equals(relationshipDefinition)) {
+                concept.removeRelationshipWeb(relationshipWeb);
+                relationshipWeb = new RelationshipWeb(relationshipWeb);
+                concept.addRelationshipWeb(relationshipWeb);
                 relationshipWeb.setTarget(target);
                 isRelationshipFound = true;
                 break;
@@ -371,50 +377,8 @@ public class ConceptBean implements Serializable {
         conceptSelected = null;
     }
 
-    /**
-     * Este método se encarga de agregar o cambiar el atributo para el caso de multiplicidad 1.
-     */
-    public void addOrChangeRelationshipAttribute(RelationshipDefinition relationshipDefinition, RelationshipAttributeDefinition relationshipAttributeDefinition, Target target) {
-
-        boolean isRelationshipFound = false;
-        boolean isAttributeFound = false;
-
-        // Se busca la relación y el atributo
-        for (Relationship relationship : concept.getRelationshipsWeb()) {
-            if (relationship.getRelationshipDefinition().equals(relationshipDefinition)) {
-                isRelationshipFound = true;
-                for (RelationshipAttribute attribute : relationship.getRelationshipAttributes()) {
-                    if(attribute.getRelationAttributeDefinition().equals(relationshipAttributeDefinition)) {
-                        attribute.setTarget(target);
-                        isAttributeFound = true;
-                        break;
-                    }
-                }
-                // Si se encuentra la relación, pero no el atributo, se crea un nuevo atributo
-                if (!isAttributeFound) {
-                    RelationshipAttribute attribute = new RelationshipAttribute(relationshipAttributeDefinition, relationship, target);
-                    relationship.getRelationshipAttributes().add(attribute);
-                }
-            }
-        }
-
-        // Si no se encuentra la relación, se crea una nueva relación con el atributo y target vacio
-        if(!isRelationshipFound){
-            Relationship relationship = new Relationship(this.concept, null, relationshipDefinition, new ArrayList<RelationshipAttribute>());
-            RelationshipAttribute attribute = new RelationshipAttribute(relationshipAttributeDefinition, relationship, target);
-            relationship.getRelationshipAttributes().add(attribute);
-            this.concept.addRelationshipWeb(relationship); //  new ArrayList<RelationshipAttribute>()));
-        }
-
-        // Se resetean los placeholder para los target de las relaciones
-        basicTypeValue = new BasicTypeValue(null);
-        conceptSelected = null;
-        selectedHelperTableRecord = new HelperTableRecord();
-    }
-
-
     public void setTarget(RelationshipDefinition relationshipDefinition, Target target){
-        relationshipPlaceholders.get(relationshipDefinition).setTarget(target);
+        relationshipPlaceholders.get(relationshipDefinition.getId()).setTarget(target);
     }
 
     /**
@@ -422,7 +386,9 @@ public class ConceptBean implements Serializable {
      */
     public void setTargetAttribute(RelationshipDefinition relationshipDefinition, RelationshipAttributeDefinition relationshipAttributeDefinition, Target target) {
 
-        Relationship relationship = relationshipPlaceholders.get(relationshipDefinition);
+        //relationshipWeb.getRelationshipAttributes().add()
+
+        Relationship relationship = relationshipPlaceholders.get(relationshipDefinition.getId());
 
         boolean isAttributeFound = false;
 
@@ -736,7 +702,7 @@ public class ConceptBean implements Serializable {
             concept = new ConceptSMTKWeb(conceptManager.getConceptByID(concept.getId()));
             conceptSMTKTranslateDes = null;
             descriptionToTranslate = null;
-            auditAction = auditManager.getConceptAuditActions(concept,  true);
+            auditAction = auditManager.getConceptAuditActions(concept, true);
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Successful", "La descripción se ha trasladado a otro concepto correctamente"));
         }
 
@@ -986,8 +952,24 @@ public class ConceptBean implements Serializable {
         this.descriptionTypesEdit = descriptionTypesEdit;
     }
 
-    public Map<RelationshipDefinition, Relationship> getRelationshipPlaceholders() {
+    public Map<Long, Relationship> getRelationshipPlaceholders() {
         return relationshipPlaceholders;
     }
-}
 
+    /**
+     * Este método retorna una lista ordenada de relaciones.
+     *
+     * @return Una lista ordenada de las relaciones de la categoría.
+     */
+    public List<RelationshipDefinitionWeb> getOrderedRelationshipDefinitions() {
+
+        List<RelationshipDefinitionWeb> relationshipDefinitionWebs = new ArrayList<>();
+        for (RelationshipDefinition relationshipDefinition : category.getRelationshipDefinitions()) {
+            relationshipDefinitionWebs.add(viewAugmenter.augmentRelationshipDefinition(category, relationshipDefinition));
+        }
+
+        Collections.sort(relationshipDefinitionWebs);
+
+        return relationshipDefinitionWebs;
+    }
+}

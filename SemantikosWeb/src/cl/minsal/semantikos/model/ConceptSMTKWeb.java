@@ -19,6 +19,7 @@ public class ConceptSMTKWeb extends ConceptSMTK {
 
     //Descripciones que son pasadas a la vista
     List<DescriptionWeb> descriptionsWeb = new ArrayList<DescriptionWeb>();
+
     //Relaciones que son pasadas a la vista
     List<RelationshipWeb> relationshipsWeb = new ArrayList<RelationshipWeb>();
 
