@@ -71,10 +71,14 @@ public class ConceptBean implements Serializable {
 
     private ConceptSMTKWeb concept;
 
-    /** El concepto original */
+    /**
+     * El concepto original
+     */
     private ConceptSMTKWeb _concept;
 
-    /** La categoría asociada a la vista, de la cual se crea un nuevo concepto */
+    /**
+     * La categoría asociada a la vista, de la cual se crea un nuevo concepto
+     */
     private Category category;
 
     private List<DescriptionType> descriptionTypes = new ArrayList<DescriptionType>();
@@ -112,7 +116,7 @@ public class ConceptBean implements Serializable {
     // Placeholders para los atributos de relacion
     private RelationshipWeb relationshipWeb;
 
-    private Map<Long, Relationship> relationshipPlaceholders  = new HashMap<Long, Relationship>();
+    private Map<Long, Relationship> relationshipPlaceholders = new HashMap<Long, Relationship>();
 
     private Map<RelationshipDefinition, List<RelationshipAttribute>> relationshipAttributesPlaceholder = new HashMap<RelationshipDefinition, List<RelationshipAttribute>>();
 
@@ -140,6 +144,11 @@ public class ConceptBean implements Serializable {
 
     @EJB
     private ViewAugmenter viewAugmenter;
+
+    /**
+     * Un map para almacenar localmente las relaciones aumentadas
+     */
+    private List<RelationshipDefinitionWeb> orderedRelationshipDefinitionsList;
 
     public AuthenticationBean getAuthenticationBean() {
         return authenticationBean;
@@ -183,6 +192,8 @@ public class ConceptBean implements Serializable {
         descriptionTypesEdit = descriptionTypeFactory.getDescriptionTypesButFSN();
 
         tagSMTKs = tagSMTKManager.getAllTagSMTKs();
+
+        orderedRelationshipDefinitionsList = new ArrayList<>();
     }
 
     /**
@@ -208,7 +219,7 @@ public class ConceptBean implements Serializable {
         }
         // Una vez que se ha inicializado el concepto, inicializar los placeholders para las relaciones
         for (RelationshipDefinition relationshipDefinition : category.getRelationshipDefinitions()) {
-            if(!relationshipDefinition.getRelationshipAttributeDefinitions().isEmpty())
+            if (!relationshipDefinition.getRelationshipAttributeDefinitions().isEmpty())
                 relationshipPlaceholders.put(relationshipDefinition.getId(), new Relationship(concept, null, relationshipDefinition, new ArrayList<RelationshipAttribute>()));
         }
         context.execute("PF('dialogNameConcept').hide();");
@@ -392,7 +403,7 @@ public class ConceptBean implements Serializable {
             if (relationship.getRelationshipDefinition().equals(relationshipDefinition)) {
                 isRelationshipFound = true;
                 for (RelationshipAttribute attribute : relationship.getRelationshipAttributes()) {
-                    if(attribute.getRelationAttributeDefinition().equals(relationshipAttributeDefinition)) {
+                    if (attribute.getRelationAttributeDefinition().equals(relationshipAttributeDefinition)) {
                         attribute.setTarget(target);
                         isAttributeFound = true;
                         break;
@@ -407,7 +418,7 @@ public class ConceptBean implements Serializable {
         }
 
         // Si no se encuentra la relación, se crea una nueva relación con el atributo y target vacio
-        if(!isRelationshipFound){
+        if (!isRelationshipFound) {
             Relationship relationship = new Relationship(this.concept, null, relationshipDefinition, new ArrayList<RelationshipAttribute>());
             RelationshipAttribute attribute = new RelationshipAttribute(relationshipAttributeDefinition, relationship, target);
             relationship.getRelationshipAttributes().add(attribute);
@@ -420,7 +431,7 @@ public class ConceptBean implements Serializable {
         selectedHelperTableRecord = new HelperTableRecord();
     }
 
-    public void setTarget(RelationshipDefinition relationshipDefinition, Target target){
+    public void setTarget(RelationshipDefinition relationshipDefinition, Target target) {
         relationshipPlaceholders.get(relationshipDefinition.getId()).setTarget(target);
     }
 
@@ -437,7 +448,7 @@ public class ConceptBean implements Serializable {
 
         // Se busca el atributo
         for (RelationshipAttribute attribute : relationship.getRelationshipAttributes()) {
-            if(attribute.getRelationAttributeDefinition().equals(relationshipAttributeDefinition)) {
+            if (attribute.getRelationAttributeDefinition().equals(relationshipAttributeDefinition)) {
                 attribute.setTarget(target);
                 isAttributeFound = true;
                 break;
@@ -703,7 +714,6 @@ public class ConceptBean implements Serializable {
                 || !_concept.getObservation().equalsIgnoreCase(concept.getObservation())
                 || !_concept.getTagSMTK().equals(concept.getTagSMTK());
     }
-
 
 
     public String deleteConcept() {
@@ -1006,13 +1016,14 @@ public class ConceptBean implements Serializable {
      */
     public List<RelationshipDefinitionWeb> getOrderedRelationshipDefinitions() {
 
-        List<RelationshipDefinitionWeb> relationshipDefinitionWebs = new ArrayList<>();
-        for (RelationshipDefinition relationshipDefinition : category.getRelationshipDefinitions()) {
-            relationshipDefinitionWebs.add(viewAugmenter.augmentRelationshipDefinition(category, relationshipDefinition));
+        if (orderedRelationshipDefinitionsList.isEmpty()) {
+            for (RelationshipDefinition relationshipDefinition : category.getRelationshipDefinitions()) {
+                orderedRelationshipDefinitionsList.add(viewAugmenter.augmentRelationshipDefinition(category, relationshipDefinition));
+            }
+
+            Collections.sort(orderedRelationshipDefinitionsList);
         }
 
-        Collections.sort(relationshipDefinitionWebs);
-
-        return relationshipDefinitionWebs;
+        return orderedRelationshipDefinitionsList;
     }
 }

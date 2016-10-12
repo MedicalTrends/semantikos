@@ -132,37 +132,6 @@
 
         </p:outputPanel>
 
-        <p:outputPanel rendered="#{ cc.attrs.relationshipDefinition.multiplicity.collection and cc.attrs.relationshipAttributeDefinition.multiplicity.collection }">
-
-            <p:selectCheckboxMenu id="helperTableTypeAttributeCollection2"
-                                  value="#{conceptBean.relationshipPlaceholders.get(cc.attrs.relationshipDefinition.id).relationshipAttributes}"
-                                  converter="helperTableRecordConverter"
-                                  panelStyle="display: inline;"
-                                  autoWidth="false"
-                                  label="#{cc.attrs.relationshipAttributeDefinition.name}"
-                                  filter="true"
-                                  filterMatchMode="startsWith"
-                                  style="margin-right:10px; width: 70%">
-
-                <p:ajax event="change"
-                        process="@this" />
-
-
-                <f:selectItems value="#{helperTableBean.getRecordList(cc.attrs.relationshipAttributeDefinition.targetDefinition)}"
-                               var="helperTableRecord"
-                               itemLabel="#{helperTableRecord.fields['description']}"
-                               itemValue="#{helperTableRecord}">
-                </f:selectItems>
-                <p:column>
-                    <h:outputText value="#{htRecord.fields['description']}" />
-                </p:column>
-
-                <f:attribute name="helperTable" value="#{cc.attrs.relationshipAttributeDefinition.targetDefinition}"  />
-
-            </p:selectCheckboxMenu>
-
-        </p:outputPanel>
-
     </div>
 
     <h:outputStylesheet id="customCSS">

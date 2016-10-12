@@ -105,6 +105,7 @@ public class TargetDAOImpl implements TargetDAO {
 
             /* Almacenar registro Tabla auxiliar */
             else if (targetDefinition.isHelperTable()) {
+
                 call.setLong(6, targetDefinition.getId());
                 call.setLong(10, HelperTable.getIdTargetType());
             }
