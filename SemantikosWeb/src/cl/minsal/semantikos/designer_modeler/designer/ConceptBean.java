@@ -383,11 +383,9 @@ public class ConceptBean implements Serializable {
             this.concept.addRelationshipWeb(new Relationship(this.concept, target, relationshipDefinition, new ArrayList<RelationshipAttribute>()));
 
         // Se resetean los placeholder para los target de las relaciones
-        /*
         basicTypeValue = new BasicTypeValue(null);
         selectedHelperTableRecord = new HelperTableRecord();
         conceptSelected = null;
-        */
     }
 
     /**
@@ -458,6 +456,11 @@ public class ConceptBean implements Serializable {
         if (!isAttributeFound) {
             relationship.getRelationshipAttributes().add(new RelationshipAttribute(relationshipAttributeDefinition, relationship, target));
         }
+
+        // Se resetean los placeholder para los target de las relaciones
+        basicTypeValue = new BasicTypeValue(null);
+        conceptSelected = null;
+        selectedHelperTableRecord = new HelperTableRecord();
     }
 
     /**

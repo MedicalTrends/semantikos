@@ -154,9 +154,7 @@
                     <f:attribute name="targetDef" value="#{cc.attrs.targetDefinition}" />
                 </p:autoComplete>
             </div>
-            <div class="ui-g-12 ui-md-6 ui-lg-3">
-                <smtk:info relationshipDefinition="#{cc.attrs.relationshipDefinition}" />
-            </div>
+            <smtk:info relationshipDefinition="#{cc.attrs.relationshipDefinition}" />
         </div>
 
         <div class="ui-g">
@@ -266,9 +264,7 @@
                 </p:commandButton>
             </div>
 
-            <div class="ui-g-12 ui-md-6 ui-lg-3">
-                <smtk:info relationshipDefinition="#{cc.attrs.relationshipDefinition}" />
-            </div>
+            <smtk:info relationshipDefinition="#{cc.attrs.relationshipDefinition}" />
             </p:panel>
         </div>
 
@@ -291,12 +287,12 @@
 
                 <p:columns value="#{cc.attrs.relationshipDefinition.relationshipAttributeDefinitions}"
                            var="attribute"
-                           columnIndexVar="colIndex"
-                           >
+                           columnIndexVar="colIndex">
                     <f:facet name="header">
                         <h:outputText value="#{attribute.name}" />
                     </f:facet>
-                    <h:outputText value="#{rel.relationshipAttributes.get(colIndex).target}" />
+                    <h:outputText rendered="#{attribute.targetDefinition.basicType}" value="#{rel.relationshipAttributes.get(colIndex).target}" />
+                    <h:outputText rendered="#{attribute.targetDefinition.helperTable}" value="#{rel.relationshipAttributes.get(colIndex).target.fields['description']}" />
                 </p:columns>
 
                 <p:column headerText="Eliminar" style="width:60px;text-align: center;">
@@ -318,7 +314,7 @@
 
         <div class="ui-g">
 
-            <p:panel  style="border: hidden; width: 100%;"  rendered="#{not cc.attrs.concept.hasRelationships(cc.attrs.relationshipDefinition)}">
+            <p:outputPanel style="width: 100%" rendered="#{not cc.attrs.concept.hasRelationships(cc.attrs.relationshipDefinition)}">
 
                 <div class="ui-g-12 ui-md-6 ui-lg-2">
 
@@ -327,7 +323,7 @@
 
                 </div>
 
-                <div class="ui-g-12 ui-md-6 ui-lg-6">
+                <div class="ui-g-12 ui-md-6 ui-lg-2">
                     <p:autoComplete emptyMessage="No se encontraron conceptos relacionados"
                                     forceSelection="true"
                                     id="findConceptSMTK" scrollHeight="200" size="5" style="width: 85%;"
@@ -362,9 +358,9 @@
                 <div class="ui-g-12 ui-md-6 ui-lg-4">
                 </div>
 
-            </p:panel>
+            </p:outputPanel>
 
-            <p:panel  style="border: hidden; width: 100%;" rendered="#{cc.attrs.concept.hasRelationships(cc.attrs.relationshipDefinition)}">
+            <p:outputPanel style="width: 100%" rendered="#{cc.attrs.concept.hasRelationships(cc.attrs.relationshipDefinition)}">
                     <ui:repeat value="#{cc.attrs.concept.getValidRelationshipsWebByRelationDefinition(cc.attrs.relationshipDefinition)}"
                                var="relationship"
                                varStatus="var">
@@ -373,8 +369,8 @@
                             <p:outputLabel rendered="#{not cc.attrs.relationshipDefinition.multiplicity.optional}" value="#{cc.attrs.relationshipDefinition.name}: (*)" for="itemSelected"/>
                         </div>
 
-                        <div class="ui-g-12 ui-md-6 ui-lg-6">
-                            <p:inputText style="width: 72%;" disabled="true" id="itemSelected" value="#{relationship.target.descriptionFavorite.term}" />
+                        <div class="ui-g-12 ui-md-6 ui-lg-2">
+                            <p:inputText style="width: 70%;" disabled="true" id="itemSelected" value="#{relationship.target.descriptionFavorite.term}" />
                             <p:commandButton icon="fa fa-trash" title="Eliminar"
                                              action="#{conceptBean.removeRelationship(cc.attrs.relationshipDefinition,relationship)}"
                                              styleClass="ui-datepicker-trigger ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only"
@@ -388,7 +384,7 @@
                         </div>
 
                     </ui:repeat>
-            </p:panel>
+            </p:outputPanel>
 
         </div>
 
