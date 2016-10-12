@@ -19,7 +19,6 @@
 
     <p:panel
             id="basicTypeSimple"
-            styleClass="panel_#{cc.attrs.relationshipDefinition.id}"
             rendered="#{cc.attrs.relationshipDefinition.multiplicity.simple and empty cc.attrs.concept.relationships}"
             widgetVar="panelBasicTypeSimple#{cc.attrs.relationshipDefinition.id}">
             <div class="ui-g">
@@ -107,7 +106,6 @@
     <!-- Multiplicidad 1 y relacion existente -->
     <p:panel
             id="basicTypeSimple2"
-            styleClass="panel_#{cc.attrs.relationshipDefinition.id}"
             rendered="#{cc.attrs.relationshipDefinition.multiplicity.simple and not empty cc.attrs.concept.relationships }"
             widgetVar="panelBasicTypeSimple#{cc.attrs.relationshipDefinition.id}">
         <p:repeat  value="#{cc.attrs.concept.getValidRelationshipsWebByRelationDefinition(cc.attrs.relationshipDefinition)}"
@@ -195,7 +193,6 @@
     <!-- Multiplicidad N-->
     <p:panel
          id="basicTypeCollection"
-         styleClass="panel_#{cc.attrs.relationshipDefinition.id}"
          widgetVar="panelBasicTypeCollection#{cc.attrs.relationshipDefinition.id}"
          rendered="#{cc.attrs.relationshipDefinition.multiplicity.collection}">
             <div class="ui-g">

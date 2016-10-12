@@ -19,7 +19,6 @@
 <composite:implementation>
 
     <p:panel id="panelSMTK"
-             styleClass="panel_#{cc.attrs.relationshipDefinition.id}"
              style="margin:20px;"
              rendered="#{cc.attrs.relationshipDefinition.multiplicity.upperBoundary==1000}">
 
@@ -118,7 +117,6 @@
     </p:panel>
 
     <p:panel id="multiplicityN"
-             styleClass="panel_#{cc.attrs.relationshipDefinition.name}"
              style="margin:20px;"
              rendered="#{cc.attrs.relationshipDefinition.multiplicity.collection and not cc.attrs.relationshipDefinition.hasRelationshipAttributeDefinitions()}">
         <h3>#{cc.attrs.relationshipDefinition.name}</h3>
@@ -164,7 +162,6 @@
             <p:spacer />
             <p:dataTable emptyMessage="No existen relaciones, se debe agregar al menos: #{cc.attrs.relationshipDefinition.multiplicity.lowerBoundary}."
                          id="tableRelationship2"
-                         styleClass="panel_#{cc.attrs.relationshipDefinition.id}"
                          draggableRows="true" style="margin: 10px;"
                          value="#{conceptBean.concept.getValidRelationshipsWebByRelationDefinition(cc.attrs.relationshipDefinition)}"
                          var="rel">
@@ -197,7 +194,6 @@
     </p:panel>
 
     <p:panel id="multiplicityN_with_attributes"
-             styleClass="panel_#{cc.attrs.relationshipDefinition.name}"
              rendered="#{cc.attrs.relationshipDefinition.multiplicity.collection and cc.attrs.relationshipDefinition.hasRelationshipAttributeDefinitions()}">
 
         <h3>#{cc.attrs.relationshipDefinition.name}</h3>
@@ -206,7 +202,7 @@
 
         <div class="ui-g">
 
-            <p:panel id="attrs" styleClass="attributes_#{cc.attrs.relationshipDefinition.id}" style="width:100%">
+            <p:panel id="attrs" styleClass="attributes_#{cc.attrs.relationshipDefinition.id} fragments" style="width:100%">
                 <p:growl id="growl" showDetail="true" showSummary="true"/>
 
             <div class="ui-g-12 ui-md-6 ui-lg-2">

@@ -18,7 +18,8 @@ import javax.faces.convert.FacesConverter;
  * Created by des01c7 on 04-08-16.
  */
 
-@FacesConverter("helperTableRecordConverter")
+//@FacesConverter("helperTableRecordConverter")
+@FacesConverter(value="helperTableRecordConverter",forClass = HelperTableRecord.class)
 public class HelperTableRecordConverter implements Converter{
 
 
@@ -26,7 +27,7 @@ public class HelperTableRecordConverter implements Converter{
 
         HelperTable helperTable = (HelperTable) UIComponent.getCurrentComponent(fc).getAttributes().get("helperTable");
 
-        if(value != null && value.trim().length() > 0) {
+        if(value != null /*&& value.trim().length() > 0*/ ) {
             try {
 
                 ELContext elContext = fc.getELContext();

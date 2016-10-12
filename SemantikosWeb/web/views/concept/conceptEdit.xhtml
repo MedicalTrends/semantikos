@@ -51,6 +51,7 @@
                         <!--Relaciones -->
                         <p:panel id="atributos"
                                  widgetVar="panelAtributos"
+                                 styleClass="attributes"
                                  rendered="#{conceptBean.category.hasRelationshipDefinitions}">
 
                             <h:dataTable style="width: 100%;" value="#{conceptBean.orderedRelationshipDefinitions}"
@@ -58,23 +59,30 @@
 
                                 <h:column>
 
-                                    <smtk:smtkType
-                                            rendered="#{relationshipDefinition.targetDefinition.SMTKType}"
-                                            targetDefinition="#{relationshipDefinition.targetDefinition}"
-                                            relationshipDefinition="#{relationshipDefinition}"
-                                            concept="#{conceptBean.concept}"/>
+                                    <p:outputPanel
+                                             id="panelRelationshipDefiniton"
+                                             style="border:0px; margin: 0px; padding: 0px;"
+                                             styleClass="panel_#{relationshipDefinition.id}">
 
-                                    <smtk:helperTableType
-                                            rendered="#{relationshipDefinition.targetDefinition.helperTable}"
-                                            relationshipDefinition="#{relationshipDefinition}"
-                                            targetDefinition="#{relationshipDefinition.targetDefinition}"
-                                            concept="#{conceptBean.concept}"/>
+                                        <smtk:smtkType
+                                                rendered="#{relationshipDefinition.targetDefinition.SMTKType}"
+                                                targetDefinition="#{relationshipDefinition.targetDefinition}"
+                                                relationshipDefinition="#{relationshipDefinition}"
+                                                concept="#{conceptBean.concept}"/>
 
-                                    <smtk:basicType
-                                            targetDefinition="#{relationshipDefinition.targetDefinition}"
-                                            relationshipDefinition="#{relationshipDefinition}"
-                                            concept="#{conceptBean.concept}"
-                                            rendered="#{relationshipDefinition.targetDefinition.basicType}"/>
+                                        <smtk:helperTableType
+                                                rendered="#{relationshipDefinition.targetDefinition.helperTable}"
+                                                relationshipDefinition="#{relationshipDefinition}"
+                                                targetDefinition="#{relationshipDefinition.targetDefinition}"
+                                                concept="#{conceptBean.concept}"/>
+
+                                        <smtk:basicType
+                                                targetDefinition="#{relationshipDefinition.targetDefinition}"
+                                                relationshipDefinition="#{relationshipDefinition}"
+                                                concept="#{conceptBean.concept}"
+                                                rendered="#{relationshipDefinition.targetDefinition.basicType}"/>
+
+                                    </p:outputPanel>
 
                                 </h:column>
                             </h:dataTable>
@@ -87,6 +95,7 @@
                         <smtk:history/>
                     </p:tab>
                 </p:tabView>
+
                 <!-- Botonera Acciones -->
 
                 <br/>
@@ -94,7 +103,7 @@
                     <p:commandButton actionListener="#{conceptBean.saveConcept}" icon="ui-icon-check"
                                      styleClass="ui-priority-primary"
                                      value="Guardar"
-                                     update="growl, mainForm"/>
+                                     update="growl, @(mainForm :input:not(.fragments)"/>
 
                     <p:commandButton actionListener="#{conceptBean.deleteConcept}" icon="ui-icon-trash"
                                      styleClass="ui-priority-primary"
@@ -103,6 +112,7 @@
                                      update="growl, mainForm">
                         <p:confirm header="Confirmation" message="¿Desea eliminar este concepto?" icon="ui-icon-alert"/>
                     </p:commandButton>
+
                     <p:commandButton actionListener="#{conceptBean.deleteConcept}" icon="ui-icon-trash"
                                      styleClass="ui-priority-primary"
                                      value="Invalidar" type="submit" process="mainForm"

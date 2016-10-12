@@ -303,7 +303,6 @@ public class ConceptBean implements Serializable {
         Relationship relationship = new Relationship(this.concept, target, relationshipDefinition, new ArrayList<RelationshipAttribute>());
         // Se utiliza el constructor mínimo (sin id)
         this.concept.addRelationshipWeb(relationship);
-
     }
 
     /**
@@ -331,6 +330,9 @@ public class ConceptBean implements Serializable {
         Relationship relationship = new Relationship(this.concept, target, relationshipDefinition, new ArrayList<RelationshipAttribute>());
         // Se utiliza el constructor mínimo (sin id)
         this.concept.addRelationshipWeb(relationship);
+        // Resetear placeholder targets
+        basicTypeValue = new BasicTypeValue(null);
+        selectedHelperTableRecord = new HelperTableRecord();
         conceptSelected = null;
     }
 
@@ -360,21 +362,62 @@ public class ConceptBean implements Serializable {
         // Se busca la relación
         for (Relationship relationshipWeb : concept.getRelationshipsWeb()) {
             if (relationshipWeb.getRelationshipDefinition().equals(relationshipDefinition)) {
-                concept.removeRelationshipWeb(relationshipWeb);
-                relationshipWeb = new RelationshipWeb(relationshipWeb);
-                concept.addRelationshipWeb(relationshipWeb);
                 relationshipWeb.setTarget(target);
                 isRelationshipFound = true;
                 break;
             }
         }
         // Si no se encuentra la relación, se crea una nueva
-        if (!isRelationshipFound) {
+        if (!isRelationshipFound)
             this.concept.addRelationshipWeb(new Relationship(this.concept, target, relationshipDefinition, new ArrayList<RelationshipAttribute>()));
+
+        // Se resetean los placeholder para los target de las relaciones
+        /*
+        basicTypeValue = new BasicTypeValue(null);
+        selectedHelperTableRecord = new HelperTableRecord();
+        conceptSelected = null;
+        */
+    }
+
+    /**
+     * Este método se encarga de agregar o cambiar el atributo para el caso de multiplicidad 1.
+     */
+    public void addOrChangeRelationshipAttribute(RelationshipDefinition relationshipDefinition, RelationshipAttributeDefinition relationshipAttributeDefinition, Target target) {
+
+        boolean isRelationshipFound = false;
+        boolean isAttributeFound = false;
+
+        // Se busca la relación y el atributo
+        for (Relationship relationship : concept.getRelationshipsWeb()) {
+            if (relationship.getRelationshipDefinition().equals(relationshipDefinition)) {
+                isRelationshipFound = true;
+                for (RelationshipAttribute attribute : relationship.getRelationshipAttributes()) {
+                    if(attribute.getRelationAttributeDefinition().equals(relationshipAttributeDefinition)) {
+                        attribute.setTarget(target);
+                        isAttributeFound = true;
+                        break;
+                    }
+                }
+                // Si se encuentra la relación, pero no el atributo, se crea un nuevo atributo
+                if (!isAttributeFound) {
+                    RelationshipAttribute attribute = new RelationshipAttribute(relationshipAttributeDefinition, relationship, target);
+                    relationship.getRelationshipAttributes().add(attribute);
+                }
+            }
         }
+
+        // Si no se encuentra la relación, se crea una nueva relación con el atributo y target vacio
+        if(!isRelationshipFound){
+            Relationship relationship = new Relationship(this.concept, null, relationshipDefinition, new ArrayList<RelationshipAttribute>());
+            RelationshipAttribute attribute = new RelationshipAttribute(relationshipAttributeDefinition, relationship, target);
+            relationship.getRelationshipAttributes().add(attribute);
+            this.concept.addRelationshipWeb(relationship); //  new ArrayList<RelationshipAttribute>()));
+        }
+
         // Se resetean los placeholder para los target de las relaciones
         basicTypeValue = new BasicTypeValue(null);
         conceptSelected = null;
+        selectedHelperTableRecord = new HelperTableRecord();
     }
 
     public void setTarget(RelationshipDefinition relationshipDefinition, Target target){
