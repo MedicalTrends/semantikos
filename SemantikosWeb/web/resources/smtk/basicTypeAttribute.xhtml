@@ -221,12 +221,13 @@
 
             <p:selectOneMenu id="basicTypeValue11"
                              value="#{conceptBean.basicTypeValue.value}"
-                             validator="#{validatorBean.validateRequiredInput}"
                              var="value1"
                              converter="omnifaces.SelectItemsConverter"
                              rendered="#{cc.attrs.targetDefinition.discreteDomain and cc.attrs.relationshipDefinition.multiplicity.collection}"
-                             styleClass="relationships">
-                <p:ajax event="itemSelect" listener="#{conceptBean.setTargetAttribute(cc.attrs.relationshipDefinition, cc.attrs.relationshipAttributeDefinition, conceptBean.basicTypeValue)}" process="@this" />
+                             styleClass="fragments">
+                <p:ajax event="itemSelect"
+                        listener="#{conceptBean.setTargetAttribute(cc.attrs.relationshipDefinition, cc.attrs.relationshipAttributeDefinition, conceptBean.basicTypeValue)}"
+                        process="@this" />
                 <f:selectItem itemLabel="Seleccione"
                               itemValue=""
                 />
@@ -239,14 +240,13 @@
             <p:inputNumber id="basicTypeValue12"
                            value="#{conceptBean.basicTypeValue.value}"
                            var="value"
-                           validator="#{validatorBean.validateRequiredInput}"
                            minValue="#{cc.attrs.targetDefinition.interval.lowerBoundary}"
                            maxValue="#{cc.attrs.targetDefinition.interval.upperBoundary}"
                            decimalPlaces="0"
                            decimalSeparator=","
                            thousandSeparator="."
                            rendered="#{cc.attrs.targetDefinition.type.typeName=='int' and not cc.attrs.targetDefinition.discreteDomain and cc.attrs.relationshipDefinition.multiplicity.collection}"
-                           styleClass="relationships">
+                           styleClass="fragments">
                 <f:attribute name="concept" value="#{cc.attrs.concept}"  />
                 <f:attribute name="relationshipDefinition" value="#{cc.attrs.relationshipDefinition}"  />
                 <p:ajax event="blur" listener="#{conceptBean.setTargetAttribute(cc.attrs.relationshipDefinition, cc.attrs.relationshipAttributeDefinition, conceptBean.basicTypeValue)}" />
@@ -255,14 +255,13 @@
             <p:inputNumber id="basicTypeValue13"
                            value="#{conceptBean.basicTypeValue.value}"
                            var="value"
-                           validator="#{validatorBean.validateRequiredInput}"
                            minValue="#{cc.attrs.targetDefinition.interval.lowerBoundary}"
                            maxValue="#{cc.attrs.targetDefinition.interval.upperBoundary}"
                            decimalSeparator=","
                            thousandSeparator="."
                            decimalPlaces="2"
                            rendered="#{cc.attrs.targetDefinition.type.typeName=='float' and not cc.attrs.targetDefinition.discreteDomain and cc.attrs.relationshipDefinition.multiplicity.collection}"
-                           styleClass="relationships">
+                           styleClass="fragments">
                 <f:attribute name="concept" value="#{cc.attrs.concept}"  />
                 <f:attribute name="relationshipDefinition" value="#{cc.attrs.relationshipDefinition}"  />
                 <p:ajax event="blur" listener="#{conceptBean.setTargetAttribute(cc.attrs.relationshipDefinition, cc.attrs.relationshipAttributeDefinition, conceptBean.basicTypeValue)}" />
@@ -275,7 +274,7 @@
                          minValue="#{cc.attrs.targetDefinition.interval.lowerBoundary}"
                          maxValue="#{cc.attrs.targetDefinition.interval.upperBoundary}"
                          rendered="#{cc.attrs.targetDefinition.type.typeName=='string' and not cc.attrs.targetDefinition.discreteDomain and cc.attrs.relationshipDefinition.multiplicity.collection}"
-                         styleClass="relationships">
+                         styleClass="fragments">
                 <p:ajax event="blur" listener="#{conceptBean.setTargetAttribute(cc.attrs.relationshipDefinition, cc.attrs.relationshipAttributeDefinition, conceptBean.basicTypeValue)}" />
             </p:inputText>
 
@@ -287,7 +286,7 @@
                         mindate="#{cc.attrs.targetDefinition.interval.lowerBoundary}"
                         maxdate="#{cc.attrs.targetDefinition.interval.upperBoundary}"
                         rendered="#{cc.attrs.targetDefinition.type.typeName=='date' and not cc.attrs.targetDefinition.discreteDomain and cc.attrs.relationshipDefinition.multiplicity.collection}"
-                        styleClass="relationships">
+                        styleClass="fragments">
                 <f:attribute name="concept" value="#{cc.attrs.concept}"  />
                 <f:attribute name="relationshipDefinition" value="#{cc.attrs.relationshipDefinition}"  />
                 <p:ajax event="blur" listener="#{conceptBean.setTargetAttribute(cc.attrs.relationshipDefinition, cc.attrs.relationshipAttributeDefinition, conceptBean.basicTypeValue)}" />

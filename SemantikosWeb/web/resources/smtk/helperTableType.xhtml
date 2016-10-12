@@ -196,7 +196,6 @@
                                     var="record"
                                     placeholder="#{cc.attrs.relationshipDefinition.name}..."
                                     converter="helperTableRecordConverter"
-                                    validator="#{validatorBean.validateRequiredRecordSelect}"
                                     value="#{relationship.target}"
                                     itemLabel="#{record.fields['description']}"
                                     itemValue="#{record}">
@@ -254,6 +253,7 @@
 
             <div class="ui-g-12 ui-md-6 ui-lg-2">
                 <p:autoComplete id="findHTRecords5" scrollHeight="200" style="width: 90%;"
+                                styleClass="fragments"
                                 inputStyle="width: 90%;"
                                 completeMethod="#{helperTableBean.getRecordSearchInput}"
                                 dropdown="true"
@@ -261,7 +261,6 @@
                                 var="helperTableRecord"
                                 placeholder="#{cc.attrs.relationshipDefinition.name}..."
                                 converter="helperTableRecordConverter"
-                                validator="#{validatorBean.validateRequiredRecordSelect}"
                                 disabled="#{cc.attrs.relationshipDefinition.multiplicity.isUpperBoundaryReached(cc.attrs.concept.getRelationshipsByRelationDefinition(cc.attrs.relationshipDefinition).size())}"
                                 value="#{conceptBean.selectedHelperTableRecord}"
                                 itemLabel="#{helperTableRecord.fields['description']}"
@@ -329,13 +328,14 @@
 
         <div class="ui-g">
 
-            <p:panel id="attrs" styleClass="attributes_#{cc.attrs.relationshipDefinition.id} fragments" style="width:100%">
+            <p:panel id="attrs" styleClass="attributes_#{cc.attrs.relationshipDefinition.id}" style="width:100%">
 
                 <p:growl id="growl" showDetail="true" showSummary="true"/>
 
                 <div class="ui-g-12 ui-md-6 ui-lg-2">
 
                     <p:autoComplete id="findHTRecords6" scrollHeight="200" style="width: 90%;"
+                                    styleClass="fragments"
                                     inputStyle="width: 90%;"
                                     completeMethod="#{helperTableBean.getRecordSearchInput}"
                                     var="record"
@@ -343,7 +343,6 @@
                                     forceSelection="true"
                                     placeholder="#{cc.attrs.relationshipDefinition.name}..."
                                     converter="helperTableRecordConverter"
-                                    validator="#{validatorBean.validateRequiredRecordSelect}"
                                     value="#{conceptBean.selectedHelperTableRecord}"
                                     itemLabel="#{record.fields['description']}"
                                     itemValue="#{record}"

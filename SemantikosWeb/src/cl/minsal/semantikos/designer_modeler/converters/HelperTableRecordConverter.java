@@ -48,7 +48,7 @@ public class HelperTableRecordConverter implements Converter{
             return String.valueOf(((HelperTableRecord) object).getId());
         }
         else {
-            return null;
+            return "";
         }
     }
 
