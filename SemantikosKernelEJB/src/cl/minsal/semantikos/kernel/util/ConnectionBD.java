@@ -28,8 +28,8 @@ public class ConnectionBD {
         return connection;
     }
 
-    public void closeConnection(){
-        try{
+    public void closeConnection() {
+        try {
             connection.close();
         } catch (SQLException e) {
             System.out.println(e.toString());

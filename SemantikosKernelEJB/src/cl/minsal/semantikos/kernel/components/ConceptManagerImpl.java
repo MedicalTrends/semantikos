@@ -2,10 +2,12 @@ package cl.minsal.semantikos.kernel.components;
 
 import cl.minsal.semantikos.kernel.daos.ConceptDAO;
 import cl.minsal.semantikos.kernel.daos.DescriptionDAO;
+import cl.minsal.semantikos.kernel.daos.RelationshipAttributeDAO;
 import cl.minsal.semantikos.kernel.daos.RelationshipDAO;
 import cl.minsal.semantikos.model.*;
 import cl.minsal.semantikos.model.businessrules.*;
 import cl.minsal.semantikos.model.relationships.Relationship;
+import cl.minsal.semantikos.model.relationships.RelationshipAttribute;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -51,6 +53,9 @@ public class ConceptManagerImpl implements ConceptManager {
 
     @EJB
     private RelationshipManager relationshipManager;
+
+
+
 
     @Override
     public ConceptSMTK getConceptByCONCEPT_ID(String conceptId) {
@@ -217,7 +222,7 @@ public class ConceptManagerImpl implements ConceptManager {
 
         /* Y sus relaciones */
         for (Relationship relationship : conceptSMTK.getRelationships()) {
-            relationshipDAO.persist(relationship);
+            relationshipManager.createRelationship(relationship);
         }
 
         /* Y sus tags */

@@ -1,8 +1,10 @@
 package cl.minsal.semantikos.model.relationships;
 
 import cl.minsal.semantikos.kernel.components.ConceptManager;
+import cl.minsal.semantikos.kernel.components.HelperTableManager;
 import cl.minsal.semantikos.kernel.daos.*;
 import cl.minsal.semantikos.model.ConceptSMTK;
+import cl.minsal.semantikos.model.helpertables.HelperTable;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,6 +52,12 @@ public class RelationshipFactory {
 
     @EJB
     private CrossMapDAO crossmapDAO;
+
+    @EJB
+    private HelperTableManager helperTableManager;
+
+    @EJB
+    private RelationshipAttributeDAO relationshipAttributeDAO;
 
 
     public Relationship createFromJSON(String jsonExpression) throws EJBException {
@@ -149,6 +157,7 @@ public class RelationshipFactory {
 
         /* El target puede ser a un registro de una tabla auxiliar */
         else if (relationshipDefinition.getTargetDefinition().isHelperTable()) {
+            //target = helperTableManager.getRecord(idTarget);
             target = targetDAO.getTargetByID(idTarget);
         }
 
@@ -175,8 +184,12 @@ public class RelationshipFactory {
             throw new EJBException(msg);
         }
 
+        List<RelationshipAttribute> relationshipAttributes= relationshipAttributeDAO.getRelationshipAttribute(relationshipDTO.getId());
 
-        return new Relationship(relationshipDTO.getId(), sourceConceptSMTK, target, relationshipDefinition, relationshipDTO.validityUntil,new ArrayList<RelationshipAttribute>());
+
+        Relationship relationship= new Relationship(relationshipDTO.getId(), sourceConceptSMTK, target, relationshipDefinition, relationshipDTO.validityUntil,new ArrayList<RelationshipAttribute>());
+        relationship.setRelationshipAttributes(relationshipAttributes);
+        return relationship;
     }
 
 }

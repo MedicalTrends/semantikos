@@ -12,6 +12,7 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.ValidatorException;
+import java.util.List;
 
 /**
  * Created by root on 02-09-16.
@@ -34,10 +35,10 @@ public class ValidatorBean {
 
         //component.getParent().getAttributes().
         if(value == null)
-            throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, msg, msg));
+            throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", msg));
 
         if (value.toString().trim().equals(""))
-            throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, msg, msg));
+            throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", msg));
     }
 
     /**
@@ -54,7 +55,7 @@ public class ValidatorBean {
 
         //component.getParent().getAttributes().
         if(concept == null)
-            throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, msg, msg));
+            throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", msg));
 
     }
 
@@ -73,7 +74,7 @@ public class ValidatorBean {
 
         //component.getParent().getAttributes().
         if(record == null || record.getId() == 0 || record.getId() == -1)
-            throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, msg, msg));
+            throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", msg));
 
     }
 
@@ -95,7 +96,7 @@ public class ValidatorBean {
             return;
 
         if(concept.getValidRelationshipsByRelationDefinition(relationshipDefinition).size()<relationshipDefinition.getMultiplicity().getLowerBoundary()){
-            throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, msg, msg));
+            throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", msg));
         }
 
     }
@@ -115,13 +116,13 @@ public class ValidatorBean {
 
         if(term.trim().equals("")) {
             msg = "Debe ingresar un término";
-            throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, msg, msg));
+            throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", msg));
         }
 
         for (Description description : aDescription.getConceptSMTK().getDescriptions()) {
             if(!description.getDescriptionType().equals(aDescription.getDescriptionType()) && description.getTerm().trim().equals(term.trim())){
                 msg = "El concepto ya contiene una descripción que está usando este término";
-                throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, msg, msg));
+                throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", msg));
             }
         }
 
@@ -137,16 +138,22 @@ public class ValidatorBean {
 
         String msg;
 
-        DescriptionWeb aDescription = (DescriptionWeb) component.getAttributes().get("description");
-        DescriptionType descriptionType = (DescriptionType) value;
+        List<Description> aDescription = ((DescriptionWeb) component.getAttributes().get("description")).getConceptSMTK().getDescriptions();
 
-        for (Description description : aDescription.getConceptSMTK().getDescriptions()) {
-            if(description.getDescriptionType().equals(descriptionType) && descriptionType.getName().equalsIgnoreCase("abreviada")){
+            if(countAbbreviatedDescription(aDescription)>1){
                 msg = "Un concepto no puede tener más de una descripción abreviada";
-                throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, msg, msg));
+                throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", msg));
             }
+
+    }
+
+    public int countAbbreviatedDescription(List<Description> descriptionList){
+        int count=0;
+        for (int i = 0; i < descriptionList.size(); i++) {
+            if(descriptionList.get(i).getDescriptionType().getName().equalsIgnoreCase("abreviada"))count++;
         }
 
+        return count;
     }
 
     public String getUiState() {

@@ -1,27 +1,45 @@
 package cl.minsal.semantikos.kernel.daos;
 
 import cl.minsal.semantikos.kernel.util.ConnectionBD;
+import cl.minsal.semantikos.model.relationships.Relationship;
+import cl.minsal.semantikos.model.relationships.RelationshipAttribute;
+import cl.minsal.semantikos.model.relationships.RelationshipAttributeDefinition;
+import cl.minsal.semantikos.model.relationships.Target;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.ejb.EJB;
 import javax.ejb.EJBException;
+import javax.ejb.Stateless;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * Created by des01c7 on 16-08-16.
+ * @author Gustavo Punucura
  */
+@Stateless
 public class RelationshipAttributeDAOImpl implements RelationshipAttributeDAO {
 
     /** El logger para esta clase */
     private static final Logger logger = LoggerFactory.getLogger(RelationshipDAOImpl.class);
 
-    @Override
-    public long createRelationshipAttribute(long idRelationshipAttributeDefinition, long idRelationship, long idDestiny) {
-        long idRelationShipAttribute;
+    @EJB
+    private TargetDAO targetDAO;
 
+    @EJB
+    private RelationshipDAO relationshipDAO;
+
+
+
+    @Override
+    public RelationshipAttribute createRelationshipAttribute(RelationshipAttribute relationshipAttribute) {
+        long idRelationShipAttribute;
+        long idTarget=targetDAO.persist(relationshipAttribute.getTarget(),relationshipAttribute.getRelationAttributeDefinition().getTargetDefinition());
+        ;
         ConnectionBD connect = new ConnectionBD();
 
         String sql = "{call semantikos.create_relationship_attribute(?,?,?)}";
@@ -29,9 +47,9 @@ public class RelationshipAttributeDAOImpl implements RelationshipAttributeDAO {
         try (Connection connection = connect.getConnection();
              CallableStatement call = connection.prepareCall(sql)) {
 
-            call.setLong(1, idRelationshipAttributeDefinition);
-            call.setLong(2,idRelationship);
-            call.setLong(3,idDestiny);
+            call.setLong(1, relationshipAttribute.getRelationAttributeDefinition().getId() );
+            call.setLong(2, relationshipAttribute.getRelationship().getId());
+            call.setLong(3, idTarget);
             call.execute();
 
             ResultSet rs = call.getResultSet();
@@ -43,6 +61,7 @@ public class RelationshipAttributeDAOImpl implements RelationshipAttributeDAO {
                     logger.error(errorMsg);
                     throw new EJBException(errorMsg);
                 }
+                relationshipAttribute.setIdRelationshipAttribute(idRelationShipAttribute);
             } else {
                 String errorMsg = "La relacion no fue creada";
                 logger.error(errorMsg);
@@ -53,6 +72,46 @@ public class RelationshipAttributeDAOImpl implements RelationshipAttributeDAO {
             throw new EJBException(e);
         }
 
-        return idRelationShipAttribute;
+        return relationshipAttribute;
+    }
+
+    @Override
+    public List<RelationshipAttribute> getRelationshipAttribute(long id) {
+
+        ConnectionBD connect = new ConnectionBD();
+
+        String sql = "{call semantikos.get_relationship_attribute_by_relationship(?)}";
+        ResultSet rs;
+        List<RelationshipAttribute> relationshipAttributeList= new ArrayList<>();
+
+        try (Connection connection = connect.getConnection();
+             CallableStatement call = connection.prepareCall(sql)) {
+
+            call.setLong(1, id);
+            call.execute();
+
+            rs = call.getResultSet();
+
+            while(rs.next()) {
+                relationshipAttributeList.add(createRelationshipAttribute(rs));
+            }
+            rs.close();
+        } catch (SQLException e) {
+            throw new EJBException(e);
+        }
+
+        return relationshipAttributeList;
+    }
+
+    private RelationshipAttribute createRelationshipAttribute(ResultSet rs) throws SQLException {
+
+        Target target= targetDAO.getTargetByID(rs.getLong("id_destiny"));
+        Relationship relationship= relationshipDAO.getRelationshipByID(rs.getLong("id_relationship"));
+
+        RelationshipAttributeDefinition relationshipAttributeDefinition= null;
+
+         RelationshipAttribute relationshipAttribute= new RelationshipAttribute(relationshipAttributeDefinition,relationship,target);
+
+        return relationshipAttribute;
     }
 }
