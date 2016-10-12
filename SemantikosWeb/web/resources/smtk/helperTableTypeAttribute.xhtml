@@ -19,49 +19,13 @@
 
 <composite:implementation>
 
+
     <div class="ui-g-12 ui-md-6 ui-lg-2">
 
-        <p:selectOneMenu id="helperTableTypeAttributeSimple"
-                         value="#{conceptBean.selectedHelperTableRecord}"
-                         validator="#{validatorBean.validateRequiredRecordSelect}"
-                         converter="helperTableRecordConverter"
-                         rendered="#{cc.attrs.relationshipDefinition.multiplicity.simple and empty cc.attrs.relationshipDefinition.relationshipAttributeDefinitions}"
-                         panelStyle="display: inline;"
-                         var="htRecord"
-                         autoWidth="false"
-                         style="margin-right:10px; width: 70%">
-            <p:ajax event="itemSelect"
-                    update="panel_#{cc.attrs.relationshipDefinition.id}"
-                    listener="#{conceptBean.addOrChangeRelationshipAttribute(cc.attrs.relationshipDefinition, cc.attrs.relationshipAttributeDefinition, conceptBean.selectedHelperTableRecord)}"
-                    process="@this" />
+        <p:outputPanel rendered="#{cc.attrs.relationshipDefinition.multiplicity.simple and empty cc.attrs.relationship.relationshipAttributes }">
 
-            <f:selectItem itemLabel="#{cc.attrs.relationshipAttributeDefinition.name}"
-                          itemValue="#{helperTableBean.recordPlaceHolder}"
-                          noSelectionOption="true"
-            />
-
-            <f:selectItems value="#{helperTableBean.getRecordList(cc.attrs.relationshipAttributeDefinition.targetDefinition)}"
-                           var="helperTableRecord"
-                           itemLabel="#{helperTableRecord.fields['description']}"
-                           itemValue="#{helperTableRecord}">
-            </f:selectItems>
-            <p:column>
-                <h:outputText value="#{htRecord.fields['description']}" />
-            </p:column>
-
-            <f:attribute name="helperTable" value="#{cc.attrs.relationshipAttributeDefinition.targetDefinition}"  />
-        </p:selectOneMenu>
-
-        <p:repeat
-                offset="0"
-                size="#{cc.attrs.relationshipDefinition.relationshipAttributeDefinitions.size()}"
-                step="1"
-                varStatus="var"
-                value="#{cc.attrs.relationship.relationshipAttributes}"
-                var="relationshipAttribute">
-
-            <p:selectOneMenu id="helperTableTypeAttributeSimple2"
-                             value="#{relationshipAttribute.target}"
+            <p:selectOneMenu id="helperTableTypeAttributeSimple"
+                             value="#{conceptBean.selectedHelperTableRecord}"
                              validator="#{validatorBean.validateRequiredRecordSelect}"
                              converter="helperTableRecordConverter"
                              panelStyle="display: inline;"
@@ -89,36 +53,115 @@
 
                 <f:attribute name="helperTable" value="#{cc.attrs.relationshipAttributeDefinition.targetDefinition}"  />
             </p:selectOneMenu>
-        </p:repeat>
 
-        <p:selectOneMenu id="helperTableTypeAttributeCollection"
-                         value="#{conceptBean.selectedHelperTableRecord}"
-                         converter="helperTableRecordConverter"
-                         rendered="#{cc.attrs.relationshipDefinition.multiplicity.collection}"
-                         panelStyle="display: inline;"
-                         var="htRecord"
-                         autoWidth="false"
-                         style="margin-right:10px; width: 70%">
-            <p:ajax event="itemSelect"
-                    listener="#{conceptBean.setTargetAttribute(cc.attrs.relationshipDefinition, cc.attrs.relationshipAttributeDefinition, conceptBean.selectedHelperTableRecord)}"
-                    process="@this" />
+        </p:outputPanel>
 
-            <f:selectItem itemLabel="#{cc.attrs.relationshipAttributeDefinition.name}"
-                          itemValue="#{helperTableBean.recordPlaceHolder}"
-                          noSelectionOption="true"
-            />
+        <p:outputPanel rendered="#{cc.attrs.relationshipDefinition.multiplicity.simple and not empty cc.attrs.relationship.relationshipAttributes }">
 
-            <f:selectItems value="#{helperTableBean.getRecordList(cc.attrs.relationshipAttributeDefinition.targetDefinition)}"
-                           var="helperTableRecord"
-                           itemLabel="#{helperTableRecord.fields['description']}"
-                           itemValue="#{helperTableRecord}">
-            </f:selectItems>
-            <p:column>
-                <h:outputText value="#{htRecord.fields['description']}" />
-            </p:column>
+            <p:repeat
+                    offset="0"
+                    size="#{cc.attrs.relationshipDefinition.relationshipAttributeDefinitions.size()}"
+                    step="1"
+                    varStatus="var"
+                    value="#{cc.attrs.relationship.relationshipAttributes}"
+                    var="relationshipAttribute">
 
-            <f:attribute name="helperTable" value="#{cc.attrs.relationshipAttributeDefinition.targetDefinition}"  />
-        </p:selectOneMenu>
+                <p:selectOneMenu id="helperTableTypeAttributeSimple2"
+                                 value="#{relationshipAttribute.target}"
+                                 validator="#{validatorBean.validateRequiredRecordSelect}"
+                                 converter="helperTableRecordConverter"
+                                 panelStyle="display: inline;"
+                                 var="htRecord"
+                                 autoWidth="false"
+                                 style="margin-right:10px; width: 70%">
+                    <p:ajax event="itemSelect"
+                            update="panel_#{cc.attrs.relationshipDefinition.id}"
+                            listener="#{conceptBean.addOrChangeRelationshipAttribute(cc.attrs.relationshipDefinition, cc.attrs.relationshipAttributeDefinition, conceptBean.selectedHelperTableRecord)}"
+                            process="@this" />
+
+                    <f:selectItem itemLabel="#{cc.attrs.relationshipAttributeDefinition.name}"
+                                  itemValue="#{helperTableBean.recordPlaceHolder}"
+                                  noSelectionOption="true"
+                    />
+
+                    <f:selectItems value="#{helperTableBean.getRecordList(cc.attrs.relationshipAttributeDefinition.targetDefinition)}"
+                                   var="helperTableRecord"
+                                   itemLabel="#{helperTableRecord.fields['description']}"
+                                   itemValue="#{helperTableRecord}">
+                    </f:selectItems>
+                    <p:column>
+                        <h:outputText value="#{htRecord.fields['description']}" />
+                    </p:column>
+
+                    <f:attribute name="helperTable" value="#{cc.attrs.relationshipAttributeDefinition.targetDefinition}"  />
+                </p:selectOneMenu>
+
+            </p:repeat>
+
+        </p:outputPanel>
+
+        <p:outputPanel rendered="#{ cc.attrs.relationshipDefinition.multiplicity.collection and not cc.attrs.relationshipAttributeDefinition.multiplicity.collection }">
+
+            <p:selectOneMenu id="helperTableTypeAttributeCollection"
+                             value="#{conceptBean.selectedHelperTableRecord}"
+                             converter="helperTableRecordConverter"
+                             panelStyle="display: inline;"
+                             var="htRecord"
+                             autoWidth="false"
+                             style="margin-right:10px; width: 70%">
+                <p:ajax event="itemSelect"
+                        listener="#{conceptBean.setTargetAttribute(cc.attrs.relationshipDefinition, cc.attrs.relationshipAttributeDefinition, conceptBean.selectedHelperTableRecord)}"
+                        process="@this" />
+
+                <f:selectItem itemLabel="#{cc.attrs.relationshipAttributeDefinition.name}"
+                              itemValue="#{helperTableBean.recordPlaceHolder}"
+                              noSelectionOption="true"
+                />
+
+                <f:selectItems value="#{helperTableBean.getRecordList(cc.attrs.relationshipAttributeDefinition.targetDefinition)}"
+                               var="helperTableRecord"
+                               itemLabel="#{helperTableRecord.fields['description']}"
+                               itemValue="#{helperTableRecord}">
+                </f:selectItems>
+                <p:column>
+                    <h:outputText value="#{htRecord.fields['description']}" />
+                </p:column>
+
+                <f:attribute name="helperTable" value="#{cc.attrs.relationshipAttributeDefinition.targetDefinition}"  />
+            </p:selectOneMenu>
+
+        </p:outputPanel>
+
+        <p:outputPanel rendered="#{ cc.attrs.relationshipDefinition.multiplicity.collection and cc.attrs.relationshipAttributeDefinition.multiplicity.collection }">
+
+            <p:selectCheckboxMenu id="helperTableTypeAttributeCollection2"
+                                  value="#{conceptBean.relationshipPlaceholders.get(cc.attrs.relationshipDefinition.id).relationshipAttributes}"
+                                  converter="helperTableRecordConverter"
+                                  panelStyle="display: inline;"
+                                  autoWidth="false"
+                                  label="#{cc.attrs.relationshipAttributeDefinition.name}"
+                                  filter="true"
+                                  filterMatchMode="startsWith"
+                                  style="margin-right:10px; width: 70%">
+
+                <p:ajax event="change"
+                        process="@this" />
+
+
+                <f:selectItems value="#{helperTableBean.getRecordList(cc.attrs.relationshipAttributeDefinition.targetDefinition)}"
+                               var="helperTableRecord"
+                               itemLabel="#{helperTableRecord.fields['description']}"
+                               itemValue="#{helperTableRecord}">
+                </f:selectItems>
+                <p:column>
+                    <h:outputText value="#{htRecord.fields['description']}" />
+                </p:column>
+
+                <f:attribute name="helperTable" value="#{cc.attrs.relationshipAttributeDefinition.targetDefinition}"  />
+
+            </p:selectCheckboxMenu>
+
+        </p:outputPanel>
 
     </div>
 
