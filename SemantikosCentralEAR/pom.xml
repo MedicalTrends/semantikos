@@ -26,15 +26,12 @@
             <version>1.7.21</version>
         </dependency>
 
-
-
         <dependency>
             <groupId>cl.minsal.semantikos</groupId>
             <artifactId>SemantikosWeb</artifactId>
             <version>0.7.0</version>
             <type>war</type>
         </dependency>
-
 
         <dependency>
             <groupId>cl.minsal.semantikos</groupId>
@@ -43,10 +40,23 @@
             <type>war</type>
         </dependency>
 
-
         <dependency>
             <groupId>cl.minsal.semantikos</groupId>
             <artifactId>SemantikosKernelEJB</artifactId>
+            <version>0.7.0</version>
+            <type>ejb</type>
+        </dependency>
+
+        <dependency>
+            <groupId>cl.minsal.semantikos</groupId>
+            <artifactId>SemantikosWS</artifactId>
+            <version>0.7.0</version>
+            <type>war</type>
+        </dependency>
+
+        <dependency>
+            <groupId>cl.minsal.semantikos</groupId>
+            <artifactId>SemantikosWSEJB</artifactId>
             <version>0.7.0</version>
             <type>ejb</type>
         </dependency>
