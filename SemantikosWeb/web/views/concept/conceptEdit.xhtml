@@ -20,16 +20,18 @@
 
                     <!--p:messages autoUpdate="true"></p:messages-->
                     <smtk:title concept="#{conceptBean.concept}"/>
-                    <p:panel id="conceptHeader" style="border: hidden;">
-                        <smtk:conceptHeader concept="#{conceptBean.concept}"/>
-                    </p:panel>
+
 
                 </p:panel>
 
                 <br/>
 
                 <p:tabView>
-
+                    <p:tab title="General">
+                        <p:panel id="conceptHeader" style="border: hidden;" styleClass="conceptHeader">
+                            <smtk:conceptHeader concept="#{conceptBean.concept}"/>
+                        </p:panel>
+                    </p:tab>
 
                     <!-- Etiquetas -->
                     <p:tab title="Etiquetas">
@@ -51,6 +53,7 @@
                         <!--Relaciones -->
                         <p:panel id="atributos"
                                  widgetVar="panelAtributos"
+                                 styleClass="attributes"
                                  rendered="#{conceptBean.category.hasRelationshipDefinitions}">
 
                             <h:dataTable style="width: 100%;" value="#{conceptBean.orderedRelationshipDefinitions}"
@@ -58,23 +61,30 @@
 
                                 <h:column>
 
-                                    <smtk:smtkType
-                                            rendered="#{relationshipDefinition.targetDefinition.SMTKType}"
-                                            targetDefinition="#{relationshipDefinition.targetDefinition}"
-                                            relationshipDefinition="#{relationshipDefinition}"
-                                            concept="#{conceptBean.concept}"/>
+                                    <p:outputPanel
+                                             id="panelRelationshipDefiniton"
+                                             style="border:0px; margin: 0px; padding: 0px;"
+                                             styleClass="panel_#{relationshipDefinition.id}">
 
-                                    <smtk:helperTableType
-                                            rendered="#{relationshipDefinition.targetDefinition.helperTable}"
-                                            relationshipDefinition="#{relationshipDefinition}"
-                                            targetDefinition="#{relationshipDefinition.targetDefinition}"
-                                            concept="#{conceptBean.concept}"/>
+                                        <smtk:smtkType
+                                                rendered="#{relationshipDefinition.targetDefinition.SMTKType}"
+                                                targetDefinition="#{relationshipDefinition.targetDefinition}"
+                                                relationshipDefinition="#{relationshipDefinition}"
+                                                concept="#{conceptBean.concept}"/>
 
-                                    <smtk:basicType
-                                            targetDefinition="#{relationshipDefinition.targetDefinition}"
-                                            relationshipDefinition="#{relationshipDefinition}"
-                                            concept="#{conceptBean.concept}"
-                                            rendered="#{relationshipDefinition.targetDefinition.basicType}"/>
+                                        <smtk:helperTableType
+                                                rendered="#{relationshipDefinition.targetDefinition.helperTable}"
+                                                relationshipDefinition="#{relationshipDefinition}"
+                                                targetDefinition="#{relationshipDefinition.targetDefinition}"
+                                                concept="#{conceptBean.concept}"/>
+
+                                        <smtk:basicType
+                                                targetDefinition="#{relationshipDefinition.targetDefinition}"
+                                                relationshipDefinition="#{relationshipDefinition}"
+                                                concept="#{conceptBean.concept}"
+                                                rendered="#{relationshipDefinition.targetDefinition.basicType}"/>
+
+                                    </p:outputPanel>
 
                                 </h:column>
                             </h:dataTable>
@@ -87,6 +97,7 @@
                         <smtk:history/>
                     </p:tab>
                 </p:tabView>
+
                 <!-- Botonera Acciones -->
 
                 <br/>
@@ -96,20 +107,22 @@
                                      value="Guardar"
                                      update="growl, mainForm"/>
 
-                <p:commandButton actionListener="#{conceptBean.deleteConcept}" icon="ui-icon-trash"
-                                 styleClass="ui-priority-primary"
-                                 value="Eliminar" type="submit" process="mainForm"
-                                 rendered="#{conceptBean.concept.persistent and not conceptBean.concept.modeled}"
-                                 update="growl, mainForm">
-                    <p:confirm header="Confirmation" message="¿Desea eliminar este concepto?" icon="ui-icon-alert"/>
-                </p:commandButton>
-                <p:commandButton actionListener="#{conceptBean.deleteConcept}" icon="ui-icon-trash"
-                                 styleClass="ui-priority-primary"
-                                 value="Invalidar" type="submit" process="mainForm"
-                                 rendered="#{conceptBean.concept.persistent and conceptBean.concept.modeled}"
-                                 update="growl, mainForm">
-                    <p:confirm header="Confirmation" message="¿Desea invalidar este concepto?" icon="ui-icon-alert"/>
-                </p:commandButton>
+                    <p:commandButton actionListener="#{conceptBean.deleteConcept}" icon="ui-icon-trash"
+                                     styleClass="ui-priority-primary"
+                                     value="Eliminar" type="submit" process="mainForm"
+                                     rendered="#{conceptBean.concept.persistent and not conceptBean.concept.modeled}"
+                                     update="growl, mainForm">
+                        <p:confirm header="Confirmation" message="¿Desea eliminar este concepto?" icon="ui-icon-alert"/>
+                    </p:commandButton>
+
+                    <p:commandButton actionListener="#{conceptBean.deleteConcept}" icon="ui-icon-trash"
+                                     styleClass="ui-priority-primary"
+                                     value="Invalidar" type="submit" process="mainForm"
+                                     rendered="#{conceptBean.concept.persistent and conceptBean.concept.modeled}"
+                                     update="growl, mainForm">
+                        <p:confirm header="Confirmation" message="¿Desea invalidar este concepto?"
+                                   icon="ui-icon-alert"/>
+                    </p:commandButton>
 
                     <p:commandButton actionListener="#{conceptBean.cancelConcept}" icon="ui-icon-cancel"
                                      styleClass="ui-priority-primary"
@@ -120,11 +133,13 @@
                                    icon="ui-icon-alert"/>
                     </p:commandButton>
 
-                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-                    <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>
-                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>
-                </p:confirmDialog>
-
+                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                        <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes"
+                                         icon="ui-icon-check"/>
+                        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no"
+                                         icon="ui-icon-close"/>
+                    </p:confirmDialog>
+                </div>
 
             </h:form>
 

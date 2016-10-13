@@ -205,43 +205,6 @@ public class ConceptSMTK extends PersistentEntity implements Target, AuditableEn
     }
 
     /**
-     * Este método es responsable de retornar todos los atributos de relacion de este concepto que son de un cierto tipo de
-     * atributo de relación.
-     *
-     * @param relationshipAttributeDefinition El tipo de atributo de relación al que pertenecen los atributos a retornar.
-     *
-     * @return Una <code>java.util.List</code> de atributos de tipo <code>relationshipAttributeDefinition</code>.
-     */
-    public List<RelationshipAttribute> getAttributesByAttributeDefinition(RelationshipAttributeDefinition relationshipAttributeDefinition) {
-
-        List<RelationshipAttribute> someAttributes = new ArrayList<>();
-
-        for (Relationship relationship :  getValidRelationships()) {
-            for (RelationshipAttribute relationshipAttribute : relationship.getRelationshipAttributes()) {
-                if(relationshipAttribute.getRelationAttributeDefinition().equals(relationshipAttributeDefinition))
-                    someAttributes.add(relationshipAttribute);
-            }
-        }
-        return someAttributes;
-    }
-
-    /**
-     * Este método es responsable de retornar todos los atributos de relacion, que son de cierto tipo de relación, de este concepto
-     *
-     * @return Una <code>java.util.List</code> de atributos.
-     */
-    public List<RelationshipAttribute> getAttributesByRelationshipDefinition(RelationshipDefinition relationshipDefinition) {
-
-        List<RelationshipAttribute> someAttributes = new ArrayList<>();
-
-        for (Relationship relationship :  getValidRelationships()) {
-            if(relationship.getRelationshipDefinition().equals(relationshipDefinition))
-                someAttributes.addAll(relationship.getRelationshipAttributes());
-        }
-        return someAttributes;
-    }
-
-    /**
      * Este método es responsable de retornar las relaciones de tipo SNOMED_CT.
      * @return Una lista de relaciones a SnomedCT
      */

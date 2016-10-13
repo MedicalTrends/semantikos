@@ -27,19 +27,25 @@ public class DescriptionEditionBR implements BusinessRulesContainer {
     /**
      * Este método implementa la regla de negocio REQ-DES-004.
      * <p>
-     * ﻿REQ-DES-004: La descripciones FSN y Preferidas no se pueden modificar si se encuentran en un concepto Modelado.
+     * ﻿REQ-DES-004: La descripcion FSN no se pueden modificar si se encuentran en un concepto Modelado y la Preferida no puede cambiar su termino.
      * </p>
      */
     private void brDescriptionEdition002(Description original, Description changed) {
 
         /* Si la descripción es FSN y está modelado es OK */
         if (original.getDescriptionType().equals(FSN) & original.getConceptSMTK().isModeled()) {
-            throw new BusinessRuleException("No se puede modificar la descripción FSN de un concepto modelado");
+            if(original.equals(changed)){
+                throw new BusinessRuleException("No se puede modificar la descripción FSN de un concepto modelado");
+            }
+
         }
 
         /* Si la descripción es Preferida y está modelado es OK también */
         if (original.getDescriptionType().equals(PREFERIDA) && original.getConceptSMTK().isModeled()) {
-            throw new BusinessRuleException("No se puede modificar la descripción Preferida de un concepto modelado");
+            if(!original.getTerm().equals(changed.getTerm())){
+                throw new BusinessRuleException("No se puede modificar la descripción Preferida de un concepto modelado");
+            }
+
         }
     }
 

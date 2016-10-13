@@ -113,7 +113,7 @@ public class HelperTableManagerImpl implements HelperTableManager {
     }
 
     @Override
-    public HelperTableRecord getRecord( int recordId) {
+    public HelperTableRecord getRecord( long recordId) {
         return helperTableDAO.getHelperTableRecordFromId(recordId);
     }
 

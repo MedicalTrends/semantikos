@@ -9,6 +9,7 @@ import cl.minsal.semantikos.model.helpertables.HelperTableRecord;
 
 import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -118,7 +119,6 @@ public class Relationship extends PersistentEntity implements AuditableEntity {
         if(target!=null){
             this.target = target;
         }
-
     }
 
     public boolean isToBeUpdated() {
@@ -199,6 +199,24 @@ public class Relationship extends PersistentEntity implements AuditableEntity {
         result = 31 * result + (validityUntil != null ? validityUntil.hashCode() : 0);
         result = 31 * result + (toBeUpdated ? 1 : 0);
         return result;
+    }
+
+    /**
+     * Este método es responsable de retornar todas las relaciones de este concepto que son de un cierto tipo de
+     * relación.
+     *
+     * @param relationshipAttributeDefinition El tipo de relación al que pertenecen las relaciones a retornar.
+     *
+     * @return Una <code>java.util.List</code> de relaciones de tipo <code>relationshipAttribute</code>.
+     */
+    public List<RelationshipAttribute> getAttributesByAttributeDefinition(RelationshipAttributeDefinition relationshipAttributeDefinition) {
+        List<RelationshipAttribute> someAttributes = new ArrayList<>();
+        for (RelationshipAttribute attribute : relationshipAttributes) {
+            if (attribute.getRelationAttributeDefinition().equals(relationshipAttributeDefinition)) {
+                someAttributes.add(attribute);
+            }
+        }
+        return someAttributes;
     }
 
     /**

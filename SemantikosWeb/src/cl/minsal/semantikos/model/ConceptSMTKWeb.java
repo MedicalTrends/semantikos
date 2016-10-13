@@ -181,16 +181,6 @@ public class ConceptSMTKWeb extends ConceptSMTK {
         return !getRelationshipsByRelationDefinition(relationshipDefinition).isEmpty();
     }
 
-    /**
-     * Este método determina si existen instancias de atributos de relacion asociadas a una definición de atributo de relación
-     *
-     * @param relationshipAttributeDefinition El tipo de atributo de relación al que pertenecen los atributos a retornar.
-     *
-     * @return Un <code>java.lang.boolean</code>
-     */
-    public boolean hasRelationshipAttributes(RelationshipAttributeDefinition relationshipAttributeDefinition) {
-        return !getAttributesByAttributeDefinition(relationshipAttributeDefinition).isEmpty();
-    }
 
     @Override
     public String toString() {

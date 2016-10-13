@@ -22,7 +22,8 @@ public class ViewAugmenterImpl implements ViewAugmenter {
     public RelationshipDefinitionWeb augmentRelationshipDefinition(Category category, RelationshipDefinition relDef) {
 
         ExtendedRelationshipDefinitionInfo extendedRelationshipDefinitionInfo = semantikosWebDAODAO.getCompositeOf(category, relDef);
-
-        return new RelationshipDefinitionWeb(relDef.getId(), relDef.getName(), relDef.getDescription(), relDef.getTargetDefinition(), relDef.getMultiplicity(), extendedRelationshipDefinitionInfo.getIdComposite(), extendedRelationshipDefinitionInfo.getOrder());
+        RelationshipDefinitionWeb relationshipDefinitionWeb = new RelationshipDefinitionWeb(relDef.getId(), relDef.getName(), relDef.getDescription(), relDef.getTargetDefinition(), relDef.getMultiplicity(), extendedRelationshipDefinitionInfo.getIdComposite(), extendedRelationshipDefinitionInfo.getOrder());
+        relationshipDefinitionWeb.setRelationshipAttributeDefinitions(relDef.getRelationshipAttributeDefinitions());
+        return relationshipDefinitionWeb;
     }
 }

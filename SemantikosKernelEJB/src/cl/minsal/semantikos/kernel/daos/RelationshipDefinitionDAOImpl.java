@@ -194,4 +194,32 @@ public class RelationshipDefinitionDAOImpl implements RelationshipDefinitionDAO 
 
         throw new IllegalArgumentException("Todos los parámetros eran nulos.");
     }
+
+    @Override
+    public RelationshipAttributeDefinition getRelationshipAttributeDefinitionBy(long id) {
+        ConnectionBD connect = new ConnectionBD();
+        String sqlQuery = "{call semantikos.get_relationship_attribute_definition_by_id(?)}";
+        RelationshipAttributeDefinition relationshipAttributeDefinition;
+
+        try (Connection connection = connect.getConnection();
+             CallableStatement call = connection.prepareCall(sqlQuery)) {
+
+            /* Se invoca la consulta para recuperar el atributo */
+            call.setLong(1, id);
+            call.execute();
+
+            ResultSet resultSet = call.getResultSet();
+            resultSet.next();
+            String jsonExpression = resultSet.getString(1);
+            resultSet.close();
+            relationshipAttributeDefinition = factory.createFromRelationshipAttributeDefinitionJSON(jsonExpression);
+
+        } catch (SQLException e) {
+            String errorMsg = "Erro al invocar get_relationship_attribute_definition_by_id(" + id + ")";
+            logger.error(errorMsg, e);
+            throw new EJBException(errorMsg, e);
+        }
+
+        return relationshipAttributeDefinition;
+    }
 }

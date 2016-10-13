@@ -33,6 +33,10 @@ public class TargetDAOImpl implements TargetDAO {
     @EJB
     private TargetFactory targetFactory;
 
+    @EJB
+    private HelperTableDAO helperTableDAO;
+
+
     @Override
     public Target getTargetByID(long idTarget) {
 
@@ -105,7 +109,7 @@ public class TargetDAOImpl implements TargetDAO {
 
             /* Almacenar registro Tabla auxiliar */
             else if (targetDefinition.isHelperTable()) {
-                call.setLong(6, targetDefinition.getId());
+                call.setLong(6, helperTableDAO.persistAuxilary(target.getId(),targetDefinition.getId()));
                 call.setLong(10, HelperTable.getIdTargetType());
             }
 

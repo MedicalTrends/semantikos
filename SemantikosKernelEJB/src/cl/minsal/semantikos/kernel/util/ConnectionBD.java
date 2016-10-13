@@ -9,7 +9,7 @@ import java.sql.SQLException;
  */
 public class ConnectionBD {
     private String driver = "org.postgresql.Driver";
-    private String ruta = "jdbc:postgresql://192.168.0.187:5432/semantikos";
+    private String ruta = "jdbc:postgresql://localhost:5432/semantikos";
     private String user = "postgres";
     private String password = "postgres";
     private Connection connection;
@@ -28,8 +28,8 @@ public class ConnectionBD {
         return connection;
     }
 
-    public void closeConnection(){
-        try{
+    public void closeConnection() {
+        try {
             connection.close();
         } catch (SQLException e) {
             System.out.println(e.toString());
