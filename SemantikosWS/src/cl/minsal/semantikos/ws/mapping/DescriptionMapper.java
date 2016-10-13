@@ -3,6 +3,9 @@ package cl.minsal.semantikos.ws.mapping;
 import cl.minsal.semantikos.model.Description;
 import cl.minsal.semantikos.ws.response.DescriptionResponse;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by Development on 2016-10-13.
  *
@@ -20,6 +23,12 @@ public class DescriptionMapper {
             return res;
         } else {
             return null;
+        }
+    }
+
+    public static void appendDescriptionType(DescriptionResponse descriptionResponse, Description description) {
+        if ( descriptionResponse != null && description != null ) {
+            descriptionResponse.setDescriptionType(DescriptionTypeMapper.map(description.getDescriptionType()));
         }
     }
 

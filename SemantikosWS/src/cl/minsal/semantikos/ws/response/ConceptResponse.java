@@ -15,8 +15,6 @@ public class ConceptResponse implements Serializable {
 
     @XmlElement(name="id")
     private Long id;
-    @XmlElement(name="categoria")
-    private CategoryResponse category;
     @XmlElement(name="idConcepto")
     private String conceptId;
     @XmlElement(name="aSerRevisado")
@@ -35,6 +33,8 @@ public class ConceptResponse implements Serializable {
     private String observation;
     @XmlElement(name="tagSMTK")
     private TagSMTKResponse tagSMTK;
+    @XmlElement(name="categoria")
+    private CategoryResponse category;
     @XmlElement(name="descripcionPreferida")
     private DescriptionResponse preferedDescription;
     @XmlElement(name="descripcionFSN")
@@ -49,14 +49,6 @@ public class ConceptResponse implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public CategoryResponse getCategory() {
-        return category;
-    }
-
-    public void setCategory(CategoryResponse category) {
-        this.category = category;
     }
 
     public String getConceptId() {
@@ -129,6 +121,14 @@ public class ConceptResponse implements Serializable {
 
     public void setTagSMTK(TagSMTKResponse tagSMTK) {
         this.tagSMTK = tagSMTK;
+    }
+
+    public CategoryResponse getCategory() {
+        return category;
+    }
+
+    public void setCategory(CategoryResponse category) {
+        this.category = category;
     }
 
     public DescriptionResponse getPreferedDescription() {

@@ -2,8 +2,10 @@ package cl.minsal.semantikos.ws.service;
 
 import cl.minsal.semantikos.kernel.daos.CategoryDAO;
 import cl.minsal.semantikos.kernel.daos.ConceptDAO;
+import cl.minsal.semantikos.kernel.daos.DescriptionDAO;
 import cl.minsal.semantikos.model.Category;
 import cl.minsal.semantikos.model.ConceptSMTK;
+import cl.minsal.semantikos.model.Description;
 import cl.minsal.semantikos.ws.fault.NotFoundFault;
 import cl.minsal.semantikos.ws.mapping.CategoryMapper;
 import cl.minsal.semantikos.ws.mapping.ConceptMapper;
@@ -34,6 +36,36 @@ public class ConceptsWebService {
     @EJB
     private CategoryDAO categoryDAO;
 
+    @EJB
+    private DescriptionDAO descriptionDAO;
+
+    @WebMethod(operationName = "conceptoPorIdDescripcion")
+    @WebResult(name = "concepto")
+    public ConceptResponse conceptoPorIdDescripcion(
+            @XmlElement(required = true)
+            @WebParam(name = "idDescripcion")
+            Long descriptionId
+    ) throws NotFoundFault {
+        Description description = null;
+        try {
+            description = this.descriptionDAO.getDescriptionBy(descriptionId);
+        } catch (Exception ignored) {}
+
+        if ( description == null ) {
+            throw new NotFoundFault("Descripcion no encontrada");
+        }
+
+        ConceptSMTK conceptSMTK = description.getConceptSMTK();
+
+        if ( conceptSMTK == null ) {
+            throw new NotFoundFault("Concepto no encontrado");
+        }
+
+        ConceptResponse res = ConceptMapper.map(conceptSMTK);
+        ConceptMapper.appendDescriptions(res, conceptSMTK);
+        return res;
+    }
+
     @WebMethod(operationName = "conceptosPorCategoria")
     @WebResult(name = "conceptosPorCategoria")
     public ConceptsByCategoryResponse conceptosPorCategoria(
@@ -47,13 +79,11 @@ public class ConceptsWebService {
             @WebParam(name = "tamanoPagina")
                     Integer pageSize
     ) throws NotFoundFault {
-        Category category;
+        Category category = null;
 
         try {
             category = this.categoryDAO.getCategoryById(categoryId);
-        } catch (Exception e) {
-            throw new NotFoundFault("No se encuentra la categoria");
-        }
+        } catch (Exception ignored) {}
 
         if (category == null) {
             throw new NotFoundFault("No se encuentra la categoria");

@@ -2,6 +2,7 @@ package cl.minsal.semantikos.ws.mapping;
 
 import cl.minsal.semantikos.model.ConceptSMTK;
 import cl.minsal.semantikos.model.Description;
+import cl.minsal.semantikos.model.DescriptionType;
 import cl.minsal.semantikos.ws.response.ConceptResponse;
 import cl.minsal.semantikos.ws.response.DescriptionResponse;
 
@@ -41,6 +42,25 @@ public class ConceptMapper {
             return res;
         } else {
             return null;
+        }
+    }
+
+    public static void appendDescriptions(ConceptResponse conceptResponse, ConceptSMTK conceptSMTK) {
+        if ( conceptResponse != null
+                && conceptSMTK != null
+                && conceptSMTK.getDescriptions() != null ) {
+            List<DescriptionResponse> descriptions = new ArrayList<>();
+            for ( Description description : conceptSMTK.getDescriptions() ) {
+                DescriptionType type = description.getDescriptionType();
+                if ( type != null
+                        && !"preferida".equalsIgnoreCase(type.getName())
+                        && !"FSN".equalsIgnoreCase(type.getName()) ) {
+                    DescriptionResponse descriptionResponse = DescriptionMapper.map(description);
+                    DescriptionMapper.appendDescriptionType(descriptionResponse, description);
+                    descriptions.add(descriptionResponse);
+                }
+            }
+            conceptResponse.setDescriptions(descriptions);
         }
     }
 
