@@ -25,17 +25,6 @@ public class PaginationResponse implements Serializable {
     @XmlElement(name="mostrandoHasta")
     private Integer showingTo;
 
-    public PaginationResponse() {
-    }
-
-    public PaginationResponse(Integer totalCount, Integer currentPage, Integer pageSize) {
-        this.totalCount = totalCount;
-        this.currentPage = currentPage;
-        this.pageSize = pageSize;
-        this.showingFrom = currentPage * pageSize;
-        this.showingTo = this.showingFrom + pageSize - 1;
-    }
-
     public Integer getTotalCount() {
         return totalCount;
     }

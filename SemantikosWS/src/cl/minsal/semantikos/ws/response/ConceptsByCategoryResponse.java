@@ -1,9 +1,6 @@
 package cl.minsal.semantikos.ws.response;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.*;
 import java.io.Serializable;
 import java.util.List;
 
@@ -19,7 +16,8 @@ public class ConceptsByCategoryResponse implements Serializable {
     private CategoryResponse categoryResponse;
     @XmlElement(name="paginacion")
     private PaginationResponse paginationResponse;
-    @XmlElement(name="conceptos")
+    @XmlElementWrapper(name="conceptos")
+    @XmlElement(name="concepto")
     private List<ConceptResponse> conceptResponses;
 
     public CategoryResponse getCategoryResponse() {

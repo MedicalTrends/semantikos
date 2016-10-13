@@ -22,12 +22,12 @@ public class CategoryResponse implements Serializable {
     private String nameAbbreviated;
     @XmlElement(name="restringido")
     private Boolean restriction;
-    @XmlElement(name="tagSMTK")
-    private TagSMTKResponse tagSMTKResponse;
     @XmlElement(name="vigente")
     private Boolean isValid;
     @XmlElement(name="color")
     private String color;
+    @XmlElement(name="tagSMTK")
+    private TagSMTKResponse tagSMTKResponse;
 
     public Long getId() {
         return id;
@@ -61,14 +61,6 @@ public class CategoryResponse implements Serializable {
         this.restriction = restriction;
     }
 
-    public TagSMTKResponse getTagSMTKResponse() {
-        return tagSMTKResponse;
-    }
-
-    public void setTagSMTKResponse(TagSMTKResponse tagSMTKResponse) {
-        this.tagSMTKResponse = tagSMTKResponse;
-    }
-
     public Boolean getValid() {
         return isValid;
     }
@@ -84,4 +76,13 @@ public class CategoryResponse implements Serializable {
     public void setColor(String color) {
         this.color = color;
     }
+
+    public TagSMTKResponse getTagSMTKResponse() {
+        return tagSMTKResponse;
+    }
+
+    public void setTagSMTKResponse(TagSMTKResponse tagSMTKResponse) {
+        this.tagSMTKResponse = tagSMTKResponse;
+    }
+
 }
