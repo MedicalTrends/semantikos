@@ -35,7 +35,7 @@
                         listener="#{conceptBean.addOrChangeRelationshipAttribute(cc.attrs.relationshipDefinition, cc.attrs.relationshipAttributeDefinition, conceptBean.basicTypeValue)}"
                         update="@(.panel_#{cc.attrs.relationshipDefinition.id})"
                         process="@this" />
-                <f:selectItem itemLabel="#{cc.attrs.relationshipAttributeDefinition.name}"
+                <f:selectItem itemLabel="#{cc.attrs.relationshipAttributeDefinition.name}..."
                               itemValue=""
                 />
                 <f:selectItems value="#{cc.attrs.targetDefinition.domain}"
@@ -138,7 +138,7 @@
                     <p:ajax event="itemSelect"
                             listener="#{conceptBean.addOrChangeRelationshipAttribute(cc.attrs.relationshipDefinition, cc.attrs.relationshipAttributeDefinition, relationshipAttribute.target)}"
                             process="@this" />
-                    <f:selectItem itemLabel="Seleccione"
+                    <f:selectItem itemLabel="#{cc.attrs.relationshipAttributeDefinition.name}..."
                                   itemValue=""
                     />
                     <f:selectItems value="#{cc.attrs.targetDefinition.domain}"
@@ -235,7 +235,7 @@
                 <p:ajax event="itemSelect"
                         listener="#{conceptBean.setTargetAttribute(cc.attrs.relationshipDefinition, cc.attrs.relationshipAttributeDefinition, conceptBean.basicTypeValue)}"
                         process="@this" />
-                <f:selectItem itemLabel="Seleccione"
+                <f:selectItem itemLabel="#{cc.attrs.relationshipAttributeDefinition.name}..."
                               itemValue=""
                 />
                 <f:selectItems value="#{cc.attrs.targetDefinition.domain}"
