@@ -21,7 +21,9 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import java.io.IOException;
 import java.io.Serializable;
 import java.text.ParseException;
 import java.util.*;
@@ -70,6 +72,8 @@ public class ConceptBean implements Serializable {
     private Category categorySelected;
 
     private ConceptSMTKWeb concept;
+
+    private List<Description> descriptionsToTraslate;
 
     /**
      * El concepto original
@@ -194,6 +198,8 @@ public class ConceptBean implements Serializable {
         tagSMTKs = tagSMTKManager.getAllTagSMTKs();
 
         orderedRelationshipDefinitionsList = new ArrayList<>();
+
+        descriptionsToTraslate = new ArrayList<>();
     }
 
     /**
@@ -687,7 +693,7 @@ public class ConceptBean implements Serializable {
         /* Se invalidan las descripciones eliminadas */
         List<DescriptionWeb> descriptionsForDelete = concept.getRemovedDescriptionsWeb(_concept);
         for (Description description : descriptionsForDelete) {
-            descriptionManager.deleteDescription(description, user);
+            if(!containDescriptionToTranslate(description))descriptionManager.deleteDescription(description, user);
             _concept.removeDescription(description);
         }
 
@@ -719,7 +725,7 @@ public class ConceptBean implements Serializable {
     }
 
 
-    public String deleteConcept() {
+    public String deleteConcept() throws IOException {
 
         FacesContext context = FacesContext.getCurrentInstance();
 
@@ -727,6 +733,8 @@ public class ConceptBean implements Serializable {
         if (concept.isPersistent() && !concept.isModeled()) {
             conceptManager.delete(concept, user);
             context.addMessage(null, new FacesMessage("Successful", "Concepto eliminado"));
+            ExternalContext eContext = FacesContext.getCurrentInstance().getExternalContext();
+            eContext.redirect(eContext.getRequestContextPath() + "/views/concept/conceptEdit.xhtml");
             return "mainMenu.xhtml";
         } else {
             conceptManager.invalidate(concept, user);
@@ -754,6 +762,8 @@ public class ConceptBean implements Serializable {
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se seleccionó el concepto de destino"));
 
         } else {
+            descriptionToTranslate.setConceptSMTK(conceptSMTKTranslateDes);
+            descriptionsToTraslate.add(descriptionToTranslate);
             descriptionManager.moveDescriptionToConcept(conceptSMTKTranslateDes, descriptionToTranslate, user);
             concept = new ConceptSMTKWeb(conceptManager.getConceptByID(concept.getId()));
             conceptSMTKTranslateDes = null;
@@ -763,6 +773,15 @@ public class ConceptBean implements Serializable {
         }
 
 
+    }
+
+
+    public boolean containDescriptionToTranslate(Description description){
+        for (Description descriptionTraslate: descriptionsToTraslate) {
+            if(descriptionTraslate.getId()==description.getId()){
+                return true;
+            }
+        }return false;
     }
 
     /**
