@@ -24,35 +24,33 @@
 
         <p:outputPanel rendered="#{cc.attrs.relationshipDefinition.multiplicity.simple and empty cc.attrs.relationship.relationshipAttributes }">
 
-            <p:selectOneMenu id="helperTableTypeAttributeSimple"
-                             value="#{conceptBean.selectedHelperTableRecord}"
-                             validator="#{validatorBean.validateRequiredRecordSelect}"
-                             converter="helperTableRecordConverter"
-                             panelStyle="display: inline;"
-                             var="htRecord"
-                             autoWidth="false"
-                             style="margin-right:10px; width: 70%">
+            <p:autoComplete id="helperTableTypeAttributeSimple" scrollHeight="200" style="width: 90%;"
+                            inputStyle="width: 90%;"
+                            completeMethod="#{helperTableBean.getRecordSearchInput}"
+                            dropdown="true"
+                            forceSelection="true"
+                            var="record"
+                            placeholder="#{cc.attrs.relationshipAttributeDefinition.name}..."
+                            converter="helperTableRecordConverter"
+                            value="#{conceptBean.selectedHelperTableRecord}"
+                            validator="#{validatorBean.validateRequiredRecordSelect}"
+                            itemLabel="#{record.fields['description']}"
+                            itemValue="#{record}">
+                <!-- Parámetros del buscador -->
+                <f:attribute name="helperTable" value="#{cc.attrs.relationshipAttributeDefinition.targetDefinition}"  />
+                <!-- Parámetros del validador -->
+                <f:attribute name="helperTableRecord" value="#{conceptBean.selectedHelperTableRecord}"  />
+                <!---->
+                <p:column>
+                    <h:outputText value="#{record.fields['description']}"/>
+                </p:column>
+
                 <p:ajax event="itemSelect"
-                        update="panel_#{cc.attrs.relationshipDefinition.id}"
+                        update="@(.panel_#{cc.attrs.relationshipDefinition.id})"
                         listener="#{conceptBean.addOrChangeRelationshipAttribute(cc.attrs.relationshipDefinition, cc.attrs.relationshipAttributeDefinition, conceptBean.selectedHelperTableRecord)}"
                         process="@this" />
 
-                <f:selectItem itemLabel="#{cc.attrs.relationshipAttributeDefinition.name}"
-                              itemValue="#{helperTableBean.recordPlaceHolder}"
-                              noSelectionOption="true"
-                />
-
-                <f:selectItems value="#{helperTableBean.getRecordList(cc.attrs.relationshipAttributeDefinition.targetDefinition)}"
-                               var="helperTableRecord"
-                               itemLabel="#{helperTableRecord.fields['description']}"
-                               itemValue="#{helperTableRecord}">
-                </f:selectItems>
-                <p:column>
-                    <h:outputText value="#{htRecord.fields['description']}" />
-                </p:column>
-
-                <f:attribute name="helperTable" value="#{cc.attrs.relationshipAttributeDefinition.targetDefinition}"  />
-            </p:selectOneMenu>
+            </p:autoComplete>
 
         </p:outputPanel>
 
@@ -66,35 +64,33 @@
                     value="#{cc.attrs.relationship.relationshipAttributes}"
                     var="relationshipAttribute">
 
-                <p:selectOneMenu id="helperTableTypeAttributeSimple2"
-                                 value="#{relationshipAttribute.target}"
-                                 validator="#{validatorBean.validateRequiredRecordSelect}"
-                                 converter="helperTableRecordConverter"
-                                 panelStyle="display: inline;"
-                                 var="htRecord"
-                                 autoWidth="false"
-                                 style="margin-right:10px; width: 70%">
-                    <p:ajax event="itemSelect"
-                            update="panel_#{cc.attrs.relationshipDefinition.id}"
-                            listener="#{conceptBean.addOrChangeRelationshipAttribute(cc.attrs.relationshipDefinition, cc.attrs.relationshipAttributeDefinition, conceptBean.selectedHelperTableRecord)}"
-                            process="@this" />
-
-                    <f:selectItem itemLabel="#{cc.attrs.relationshipAttributeDefinition.name}"
-                                  itemValue="#{helperTableBean.recordPlaceHolder}"
-                                  noSelectionOption="true"
-                    />
-
-                    <f:selectItems value="#{helperTableBean.getRecordList(cc.attrs.relationshipAttributeDefinition.targetDefinition)}"
-                                   var="helperTableRecord"
-                                   itemLabel="#{helperTableRecord.fields['description']}"
-                                   itemValue="#{helperTableRecord}">
-                    </f:selectItems>
+                <p:autoComplete id="helperTableTypeAttributeSimple2" scrollHeight="200" style="width: 90%;"
+                                inputStyle="width: 90%;"
+                                completeMethod="#{helperTableBean.getRecordSearchInput}"
+                                dropdown="true"
+                                forceSelection="true"
+                                var="record"
+                                placeholder="#{cc.attrs.relationshipAttributeDefinition.name}..."
+                                converter="helperTableRecordConverter"
+                                value="#{relationshipAttribute.target}"
+                                itemLabel="#{record.fields['description']}"
+                                itemValue="#{record}">
+                    <!-- Parámetros del buscador -->
+                    <f:attribute name="helperTable" value="#{cc.attrs.relationshipAttributeDefinition.targetDefinition}"  />
+                    <!-- Parámetros del validador -->
+                    <f:attribute name="helperTableRecord" value="#{conceptBean.selectedHelperTableRecord}"  />
+                    <!---->
                     <p:column>
-                        <h:outputText value="#{htRecord.fields['description']}" />
+                        <h:outputText value="#{record.fields['description']}"/>
                     </p:column>
 
-                    <f:attribute name="helperTable" value="#{cc.attrs.relationshipAttributeDefinition.targetDefinition}"  />
-                </p:selectOneMenu>
+
+                    <p:ajax event="itemSelect"
+                            update="@(.panel_#{cc.attrs.relationshipDefinition.id})"
+                            listener="#{conceptBean.addOrChangeRelationshipAttribute(cc.attrs.relationshipDefinition, cc.attrs.relationshipAttributeDefinition, relationshipAttribute.target)}"
+                            process="@this" />
+
+                </p:autoComplete>
 
             </p:repeat>
 
@@ -102,33 +98,33 @@
 
         <p:outputPanel rendered="#{ cc.attrs.relationshipDefinition.multiplicity.collection and not cc.attrs.relationshipAttributeDefinition.multiplicity.collection }">
 
-            <p:selectOneMenu id="helperTableTypeAttributeCollection"
-                             value="#{conceptBean.selectedHelperTableRecord}"
-                             converter="helperTableRecordConverter"
-                             panelStyle="display: inline;"
-                             var="htRecord"
-                             autoWidth="false"
-                             style="margin-right:10px; width: 70%">
+            <p:autoComplete id="helperTableTypeAttributeCollection" scrollHeight="200" style="width: 90%;"
+                            inputStyle="width: 90%;"
+                            completeMethod="#{helperTableBean.getRecordSearchInput}"
+                            dropdown="true"
+                            forceSelection="true"
+                            var="record"
+                            placeholder="#{cc.attrs.relationshipAttributeDefinition.name}..."
+                            converter="helperTableRecordConverter"
+                            value="#{conceptBean.selectedHelperTableRecord}"
+                            itemLabel="#{record.fields['description']}"
+                            itemValue="#{record}">
+                <!-- Parámetros del buscador -->
+                <f:attribute name="helperTable" value="#{cc.attrs.relationshipAttributeDefinition.targetDefinition}"  />
+                <!-- Parámetros del validador -->
+                <f:attribute name="helperTableRecord" value="#{conceptBean.selectedHelperTableRecord}"  />
+                <!---->
+                <p:column>
+                    <h:outputText value="#{record.fields['description']}"/>
+                </p:column>
+
+
                 <p:ajax event="itemSelect"
                         listener="#{conceptBean.setTargetAttribute(cc.attrs.relationshipDefinition, cc.attrs.relationshipAttributeDefinition, conceptBean.selectedHelperTableRecord)}"
                         process="@this" />
 
-                <f:selectItem itemLabel="#{cc.attrs.relationshipAttributeDefinition.name}"
-                              itemValue="#{helperTableBean.recordPlaceHolder}"
-                              noSelectionOption="true"
-                />
 
-                <f:selectItems value="#{helperTableBean.getRecordList(cc.attrs.relationshipAttributeDefinition.targetDefinition)}"
-                               var="helperTableRecord"
-                               itemLabel="#{helperTableRecord.fields['description']}"
-                               itemValue="#{helperTableRecord}">
-                </f:selectItems>
-                <p:column>
-                    <h:outputText value="#{htRecord.fields['description']}" />
-                </p:column>
-
-                <f:attribute name="helperTable" value="#{cc.attrs.relationshipAttributeDefinition.targetDefinition}"  />
-            </p:selectOneMenu>
+            </p:autoComplete>
 
         </p:outputPanel>
 
