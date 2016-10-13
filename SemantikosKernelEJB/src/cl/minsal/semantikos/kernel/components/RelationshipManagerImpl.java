@@ -1,6 +1,7 @@
 package cl.minsal.semantikos.kernel.components;
 
 import cl.minsal.semantikos.kernel.daos.ConceptDAO;
+import cl.minsal.semantikos.kernel.daos.RelationshipAttributeDAO;
 import cl.minsal.semantikos.kernel.daos.RelationshipDAO;
 import cl.minsal.semantikos.model.ConceptSMTK;
 import cl.minsal.semantikos.model.User;
@@ -9,6 +10,7 @@ import cl.minsal.semantikos.model.businessrules.RelationshipBindingBR;
 import cl.minsal.semantikos.model.businessrules.RelationshipEditionBR;
 import cl.minsal.semantikos.model.businessrules.RelationshipRemovalBR;
 import cl.minsal.semantikos.model.relationships.Relationship;
+import cl.minsal.semantikos.model.relationships.RelationshipAttribute;
 import cl.minsal.semantikos.model.relationships.RelationshipDefinition;
 import cl.minsal.semantikos.model.relationships.Target;
 import cl.minsal.semantikos.model.snomedct.ConceptSCT;
@@ -37,6 +39,9 @@ public class RelationshipManagerImpl implements RelationshipManager {
     @EJB
     private AuditManager auditManager;
 
+    @EJB
+    private RelationshipAttributeDAO relationshipAttributeDAO;
+
     @Override
     public Relationship bindRelationshipToConcept(ConceptSMTK concept, Relationship relationship, User user) {
 
@@ -60,6 +65,16 @@ public class RelationshipManagerImpl implements RelationshipManager {
         new RelationshipBindingBR().postActions(relationship, conceptDAO);
 
         /* Se retorna persistida */
+        return relationship;
+    }
+
+    @Override
+    public Relationship createRelationship(Relationship relationship) {
+        relationship = relationshipDAO.persist(relationship);
+        for(RelationshipAttribute relationshipAttribute: relationship.getRelationshipAttributes()){
+            relationshipAttribute.setRelationship(relationship);
+            relationshipAttributeDAO.createRelationshipAttribute(relationshipAttribute);
+        }
         return relationship;
     }
 

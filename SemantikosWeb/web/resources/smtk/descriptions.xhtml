@@ -94,7 +94,7 @@
 
                 <p:column headerText="Estado">
                     <div style="text-align: center;">
-                        <h:outputText value="Borrador" rendered="#{not description.modeled}"/>
+                        <h:outputText value="Borrador" rendered="#{!description.modeled}"/>
                         <h:outputText value="Modelado" rendered="#{description.modeled}"/>
                     </div>
                 </p:column>

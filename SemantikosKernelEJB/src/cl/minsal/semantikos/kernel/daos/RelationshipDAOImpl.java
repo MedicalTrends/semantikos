@@ -36,7 +36,7 @@ public class RelationshipDAOImpl implements RelationshipDAO {
     private TargetDAO targetDAO;
 
     @Override
-    public void persist(Relationship relationship) {
+    public Relationship persist(Relationship relationship) {
 
         long idTarget= targetDAO.persist(relationship.getTarget(),relationship.getRelationshipDefinition().getTargetDefinition());
 
@@ -63,6 +63,7 @@ public class RelationshipDAOImpl implements RelationshipDAO {
         } catch (SQLException e) {
             throw new EJBException(e);
         }
+        return relationship;
     }
 
     @Override

@@ -93,4 +93,11 @@ public interface HelperTableDAO {
      * @return La tabla auxiliar.
      */
     public HelperTable getHelperTableByID(long id);
+
+    /**
+     * Este metodo es encargado de persistir el valor seleccionado de un helper table
+     * @param idRecord id del registro
+     * @param idTableName id del nombre de la tabla
+     */
+    public long persistAuxilary(long idRecord, long idTableName);
 }

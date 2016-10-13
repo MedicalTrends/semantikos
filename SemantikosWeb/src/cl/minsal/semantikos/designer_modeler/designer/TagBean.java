@@ -264,7 +264,7 @@ public class TagBean implements Serializable{
             tagListToConcept=  tagManager.getAllTags();
         }else{
             FacesContext context = FacesContext.getCurrentInstance();
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se selecciono una etiqueta para agregar"));
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se seleccionó una etiqueta para agregar"));
         }
 
 

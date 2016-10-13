@@ -1,5 +1,6 @@
 package cl.minsal.semantikos.model.relationships;
 
+import cl.minsal.semantikos.kernel.components.HelperTableManager;
 import cl.minsal.semantikos.kernel.daos.ConceptDAO;
 import cl.minsal.semantikos.kernel.daos.ConceptSCTDAO;
 import cl.minsal.semantikos.kernel.daos.HelperTableDAO;
@@ -33,6 +34,9 @@ public class TargetFactory {
     private HelperTableDAO helperTableDAO;
 
     @EJB
+    private HelperTableManager helperTableManager;
+
+    @EJB
     private ConceptSCTDAO conceptSCTDAO;
 
     @EJB
@@ -64,7 +68,7 @@ public class TargetFactory {
 
         /* Se evalúa caso a caso. Helper Tables: */
         if (idHelperTableRecord > 0) {
-            target = helperTableDAO.getHelperTableRecordFromId(idHelperTableRecord);
+            target = helperTableManager.getRecord(idHelperTableRecord);
         } else if (idConceptSct > 0) {
             target = conceptSCTDAO.getConceptCSTByID(idConceptSct);
         } else if (idConceptStk > 0) {
