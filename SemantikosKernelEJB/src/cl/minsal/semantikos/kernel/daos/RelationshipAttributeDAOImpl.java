@@ -24,7 +24,9 @@ import java.util.List;
 @Stateless
 public class RelationshipAttributeDAOImpl implements RelationshipAttributeDAO {
 
-    /** El logger para esta clase */
+    /**
+     * El logger para esta clase
+     */
     private static final Logger logger = LoggerFactory.getLogger(RelationshipDAOImpl.class);
 
     @EJB
@@ -33,12 +35,13 @@ public class RelationshipAttributeDAOImpl implements RelationshipAttributeDAO {
     @EJB
     private RelationshipDAO relationshipDAO;
 
-
+    @EJB
+    private RelationshipDefinitionDAO relationshipDefinitionDAO;
 
     @Override
     public RelationshipAttribute createRelationshipAttribute(RelationshipAttribute relationshipAttribute) {
         long idRelationShipAttribute;
-        long idTarget=targetDAO.persist(relationshipAttribute.getTarget(),relationshipAttribute.getRelationAttributeDefinition().getTargetDefinition());
+        long idTarget = targetDAO.persist(relationshipAttribute.getTarget(), relationshipAttribute.getRelationAttributeDefinition().getTargetDefinition());
         ;
         ConnectionBD connect = new ConnectionBD();
 
@@ -47,7 +50,7 @@ public class RelationshipAttributeDAOImpl implements RelationshipAttributeDAO {
         try (Connection connection = connect.getConnection();
              CallableStatement call = connection.prepareCall(sql)) {
 
-            call.setLong(1, relationshipAttribute.getRelationAttributeDefinition().getId() );
+            call.setLong(1, relationshipAttribute.getRelationAttributeDefinition().getId());
             call.setLong(2, relationshipAttribute.getRelationship().getId());
             call.setLong(3, idTarget);
             call.execute();
@@ -56,7 +59,7 @@ public class RelationshipAttributeDAOImpl implements RelationshipAttributeDAO {
 
             if (rs.next()) {
                 idRelationShipAttribute = rs.getLong(1);
-                if(idRelationShipAttribute==-1){
+                if (idRelationShipAttribute == -1) {
                     String errorMsg = "La relacion no fue creada";
                     logger.error(errorMsg);
                     throw new EJBException(errorMsg);
@@ -82,7 +85,7 @@ public class RelationshipAttributeDAOImpl implements RelationshipAttributeDAO {
 
         String sql = "{call semantikos.get_relationship_attribute_by_relationship(?)}";
         ResultSet rs;
-        List<RelationshipAttribute> relationshipAttributeList= new ArrayList<>();
+        List<RelationshipAttribute> relationshipAttributeList = new ArrayList<>();
 
         try (Connection connection = connect.getConnection();
              CallableStatement call = connection.prepareCall(sql)) {
@@ -92,7 +95,7 @@ public class RelationshipAttributeDAOImpl implements RelationshipAttributeDAO {
 
             rs = call.getResultSet();
 
-            while(rs.next()) {
+            while (rs.next()) {
                 relationshipAttributeList.add(createRelationshipAttribute(rs));
             }
             rs.close();
@@ -105,12 +108,12 @@ public class RelationshipAttributeDAOImpl implements RelationshipAttributeDAO {
 
     private RelationshipAttribute createRelationshipAttribute(ResultSet rs) throws SQLException {
 
-        Target target= targetDAO.getTargetByID(rs.getLong("id_destiny"));
-        Relationship relationship= relationshipDAO.getRelationshipByID(rs.getLong("id_relationship"));
+        Target target = targetDAO.getTargetByID(rs.getLong("id_destiny"));
+        Relationship relationship = relationshipDAO.getRelationshipByID(rs.getLong("id_relationship"));
 
-        RelationshipAttributeDefinition relationshipAttributeDefinition= null;
+        RelationshipAttributeDefinition relationshipAttributeDefinition = relationshipDefinitionDAO.getRelationshipAttributeDefinitionBy(rs.getLong("id_relation_attribute_definition")) ;
 
-         RelationshipAttribute relationshipAttribute= new RelationshipAttribute(relationshipAttributeDefinition,relationship,target);
+        RelationshipAttribute relationshipAttribute = new RelationshipAttribute(relationshipAttributeDefinition, relationship, target);
 
         return relationshipAttribute;
     }
