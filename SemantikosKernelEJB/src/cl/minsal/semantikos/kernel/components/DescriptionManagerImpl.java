@@ -45,7 +45,7 @@ public class DescriptionManagerImpl implements DescriptionManager {
         /* Reglas de negocio previas */
         ConceptSMTK conceptSMTK = description.getConceptSMTK();
         DescriptionCreationBR descriptionCreationBR1 = new DescriptionCreationBR();
-        descriptionCreationBR1.validatePreConditions(conceptSMTK, description.getTerm(), description.getDescriptionType(), categoryManager, editionMode);
+        descriptionCreationBR1.validatePreConditions(conceptSMTK, description, categoryManager, editionMode);
 
         descriptionCreationBR1.applyRules(conceptSMTK, description.getTerm(), description.getDescriptionType(), user, categoryManager);
         if (!description.isPersistent()) {
@@ -82,7 +82,7 @@ public class DescriptionManagerImpl implements DescriptionManager {
          * Se aplican las pre-condiciones para asociar la descripción al concepto. En particular hay que validar que
          * no exista el término dentro de la misma categoría
          */
-        descriptionCreationBR.validatePreConditions(concept, description.getTerm(), description.getDescriptionType(), categoryManager, editionMode);
+        descriptionCreationBR.validatePreConditions(concept, description, categoryManager, editionMode);
 
         /* Se aplican las reglas de negocio para crear la Descripción y se persiste y asocia al concepto */
         new DescriptionBindingBR().applyRules(concept, description, user);
