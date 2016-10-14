@@ -5,6 +5,7 @@ import cl.minsal.semantikos.kernel.components.HelperTableManager;
 import cl.minsal.semantikos.kernel.daos.*;
 import cl.minsal.semantikos.model.ConceptSMTK;
 import cl.minsal.semantikos.model.helpertables.HelperTable;
+import cl.minsal.semantikos.model.helpertables.HelperTableRecord;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,6 +41,9 @@ public class RelationshipFactory {
 
     @EJB
     private RelationshipDAO relationshipDAO;
+
+    @EJB
+    private RelationshipDefinitionDAO relationshipDefinitionDAO;
 
     @EJB
     private RelationshipDefinitionDAO relDefDAO;
@@ -159,6 +163,12 @@ public class RelationshipFactory {
         else if (relationshipDefinition.getTargetDefinition().isHelperTable()) {
             //target = helperTableManager.getRecord(idTarget);
             target = targetDAO.getTargetByID(idTarget);
+            /**
+             * Se setea el id desde el fields para ser utilizado por el custom converter
+             */
+            HelperTableRecord helperTableRecord = (HelperTableRecord) target;
+            helperTableRecord.setId(new Long(helperTableRecord.getFields().get("id")));
+            target = helperTableRecord;
         }
 
         /* El target puede ser un concepto SMTK */
@@ -186,6 +196,7 @@ public class RelationshipFactory {
 
         List<RelationshipAttribute> relationshipAttributes= relationshipAttributeDAO.getRelationshipAttribute(relationshipDTO.getId());
 
+        relationshipDefinition.setRelationshipAttributeDefinitions(relationshipDefinitionDAO.getRelationshipAttributeDefinitionsByRelationshipDefinition(relationshipDefinition));
 
         Relationship relationship= new Relationship(relationshipDTO.getId(), sourceConceptSMTK, target, relationshipDefinition, relationshipDTO.validityUntil,new ArrayList<RelationshipAttribute>());
         relationship.setRelationshipAttributes(relationshipAttributes);

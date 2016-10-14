@@ -37,6 +37,11 @@ public class HelperTableRecordFactory {
         JSONHelperTableRecord jsonHelperTableRecord = mapper.readValue(jsonExpression, JSONHelperTableRecord.class);
 
         HelperTable helperTable = helperTableManager.findHelperTableByID(jsonHelperTableRecord.getTableId());
+        HelperTableRecord helperTableRecord = new HelperTableRecord(helperTable, jsonHelperTableRecord.getFields());
+        /**
+         * Se setea el id desde el fields para ser utilizado por el custom converter
+         */
+        helperTableRecord.setId(new Long(helperTableRecord.getFields().get("id")));
         return new HelperTableRecord(helperTable, jsonHelperTableRecord.getFields());
     }
 
@@ -58,6 +63,10 @@ public class HelperTableRecordFactory {
         List<HelperTableRecord> records = new ArrayList<>();
         for (Map<String, String> fields : jsonHelperTableRecord.getRecords()) {
             HelperTableRecord helperTableRecord = new HelperTableRecord(helperTable, fields);
+            /**
+             * Se setea el id desde el fields para ser utilizado por el custom converter
+             */
+            helperTableRecord.setId(new Long(helperTableRecord.getFields().get("id")));
             records.add(helperTableRecord);
         }
 

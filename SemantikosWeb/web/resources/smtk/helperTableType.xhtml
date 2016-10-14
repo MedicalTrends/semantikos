@@ -91,7 +91,7 @@
                         <!-- Parámetros del buscador -->
                         <f:attribute name="helperTable" value="#{cc.attrs.relationshipDefinition.targetDefinition}"  />
                         <!-- Parámetros del validador -->
-                        <f:attribute name="helperTableRecord" value="#{conceptBean.selectedHelperTableRecord}"  />
+                        <f:attribute name="helperTableRecord" value="#{relationship.target}"  />
                         <!---->
                         <p:column>
                             <h:outputText value="#{record.fields['description']}"/>
@@ -379,7 +379,7 @@
                     <smtk:basicTypeAttribute relationshipDefinition="#{cc.attrs.relationshipDefinition}"
                                              relationshipAttributeDefinition="#{relationshipAttributeDefinition}"
                                              targetDefinition="#{relationshipAttributeDefinition.targetDefinition}"
-                                             rendered="#{relationshipAttributeDefinition.targetDefinition.basicType}"
+                                             rendered="#{relationshipAttributeDefinition.targetDefinition.basicType and not relationshipAttributeDefinition.isOrderAttribute()}"
                     />
                     <smtk:helperTableTypeAttribute relationshipDefinition="#{cc.attrs.relationshipDefinition}"
                                                    relationshipAttributeDefinition="#{relationshipAttributeDefinition}"
@@ -406,6 +406,7 @@
             <p:spacer />
             <p:dataTable id="collectionValuesWithAttributes"
                          styleClass="relationshipsWithAttributes_#{cc.attrs.relationshipDefinition.id}"
+                         draggableRows="#{cc.attrs.relationshipDefinition.getAttributeOrder() != null}"
                          var="relationship"
                          value="#{cc.attrs.concept.getValidRelationshipsWebByRelationDefinition(cc.attrs.relationshipDefinition)}"
                          style="width: 100%"
@@ -427,8 +428,8 @@
                     <f:facet name="header">
                         <h:outputText value="#{attribute.name}" />
                     </f:facet>
-                    <h:outputText rendered="#{attribute.targetDefinition.basicType}" value="#{relationship.relationshipAttributes.get(colIndex).target}" />
-                    <h:outputText rendered="#{attribute.targetDefinition.helperTable}" value="#{relationship.relationshipAttributes.get(colIndex).target.fields['description']}" />
+                    <h:outputText rendered="#{attribute.targetDefinition.basicType}" value="#{relationship.getAttributesByAttributeDefinition(attribute).get(0).target}" />
+                    <h:outputText rendered="#{attribute.targetDefinition.helperTable}" value="#{relationship.getAttributesByAttributeDefinition(attribute).get(0).target.fields['description']}" />
                 </p:columns>
 
                 <p:column style="width: 4%">

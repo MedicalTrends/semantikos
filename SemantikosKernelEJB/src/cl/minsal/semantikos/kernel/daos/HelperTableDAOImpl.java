@@ -54,6 +54,7 @@ public class HelperTableDAOImpl implements HelperTableDAO {
 
                 record.put(columnName, columnValue);
             }
+
         } catch (SQLException e) {
             logger.error("Error al realizar una transacción sobre las tablas auxiliares", e);
         }
@@ -122,9 +123,11 @@ public class HelperTableDAOImpl implements HelperTableDAO {
                 String jsonExpression = rs.getString(1);
                 if (jsonExpression != null) {
                     helperTableRecords = this.helperTableRecordFactory.createHelperRecordsFromJSON(jsonExpression);
-                    for (HelperTableRecord helperTableRecord : helperTableRecords) {
+                    /**
+                     * Se setea el id desde el fields para ser utilizado por el custom converter
+                     */
+                    for (HelperTableRecord helperTableRecord : helperTableRecords)
                         helperTableRecord.setId(new Long(helperTableRecord.getFields().get("id")));
-                    }
                 } else {
                     helperTableRecords = emptyList();
                 }

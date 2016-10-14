@@ -10,7 +10,9 @@ import cl.minsal.semantikos.model.helpertables.HelperTableRecord;
 import cl.minsal.semantikos.model.relationships.*;
 import cl.minsal.semantikos.util.Pair;
 import cl.minsal.semantikos.view.components.ViewAugmenter;
+import org.primefaces.component.datatable.DataTable;
 import org.primefaces.context.RequestContext;
+import org.primefaces.event.ReorderEvent;
 import org.primefaces.event.RowEditEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -329,6 +331,10 @@ public class ConceptBean implements Serializable {
     public void addRelationshipWithAttributes(RelationshipDefinition relationshipDefinition) {
 
         Relationship relationship = relationshipPlaceholders.get(relationshipDefinition.getId());
+        if(relationshipDefinition.getAttributeOrder()!=null) {
+            RelationshipAttribute attribute = new RelationshipAttribute(relationshipDefinition.getAttributeOrder(), relationship, new BasicTypeValue(concept.getValidRelationshipsByRelationDefinition(relationshipDefinition).size()+1));
+            relationship.getRelationshipAttributes().add(attribute);
+        }
         // Se utiliza el constructor mínimo (sin id)
         this.concept.addRelationshipWeb(new RelationshipWeb(relationship));
         // Reinicializar placeholder relaciones
@@ -807,6 +813,16 @@ public class ConceptBean implements Serializable {
             }
         }
     }
+
+    public void onRowReorder(ReorderEvent event) {
+        FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Row Moved", "From: " + event.getFromIndex() + ", To:" + event.getToIndex());
+
+        RelationshipAttribute att1 = concept.getRelationshipByAttributeOrder(event.getFromIndex()+1);
+        RelationshipAttribute att2 = concept.getRelationshipByAttributeOrder(event.getToIndex()+1);
+        att1.setTarget(new BasicTypeValue(event.getToIndex()+1));
+        att2.setTarget(new BasicTypeValue(event.getFromIndex()+1));
+    }
+
 
     // Getter and Setter
 
