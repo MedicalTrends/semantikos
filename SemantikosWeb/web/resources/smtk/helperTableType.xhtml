@@ -93,6 +93,7 @@
                         <!-- Parámetros del validador -->
                         <f:attribute name="helperTableRecord" value="#{conceptBean.selectedHelperTableRecord}"  />
                         <!---->
+
                         <p:column>
                             <h:outputText value="#{record.fields['description']}"/>
                         </p:column>
@@ -297,7 +298,7 @@
                     <p:columns value="#{cc.attrs.targetDefinition.showableColumns}"
                                var="column"
                                columnIndexVar="colIndex"
-                               rendered="#{column.columnName!='id'}">
+                               >
                         <f:facet name="header">
                             <h:outputText value="#{column.columnName}" />
                         </f:facet>
@@ -414,7 +415,7 @@
                 <p:columns value="#{cc.attrs.targetDefinition.showableColumns}"
                            var="column"
                            columnIndexVar="colIndex"
-                           rendered="#{column.columnName!='id'}">
+                           >
                     <f:facet name="header">
                         <h:outputText value="#{column.columnName}" />
                     </f:facet>

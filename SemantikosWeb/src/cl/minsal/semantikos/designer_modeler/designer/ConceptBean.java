@@ -765,7 +765,8 @@ public class ConceptBean implements Serializable {
             descriptionToTranslate.setConceptSMTK(conceptSMTKTranslateDes);
             descriptionsToTraslate.add(descriptionToTranslate);
             descriptionManager.moveDescriptionToConcept(conceptSMTKTranslateDes, descriptionToTranslate, user);
-            concept = new ConceptSMTKWeb(conceptManager.getConceptByID(concept.getId()));
+            ConceptSMTKWeb conceptnew = new ConceptSMTKWeb(conceptManager.getConceptByID(concept.getId()));
+            concept.setDescriptionsWeb(conceptnew.getDescriptionsWeb());
             conceptSMTKTranslateDes = null;
             descriptionToTranslate = null;
             auditAction = auditManager.getConceptAuditActions(concept, true);
@@ -802,7 +803,6 @@ public class ConceptBean implements Serializable {
                     DescriptionWeb descriptionFavorite = concept.getValidDescriptionFavorite();
                     descriptionFavorite.setDescriptionType(descriptionTypeFactory.getDescriptionTypeByID(SYNONYMOUS_ID));
                     descriptionRowEdit.setDescriptionType(descriptionTypeFactory.getFavoriteDescriptionType());
-                    break;
                 }
             }
         }
