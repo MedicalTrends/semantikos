@@ -11,7 +11,7 @@
       xmlns:c="http://java.sun.com/jsp/jstl/core">
 
 <composite:interface>
-    <composite:attribute name="relationshipDefinition" type="cl.minsal.semantikos.model.relationships.RelationshipDefinition"/>
+    <composite:attribute name="relationshipDefinition" type="cl.minsal.semantikos.model.relationships.RelationshipDefinitionWeb"/>
     <composite:attribute name="targetDefinition" type="cl.minsal.semantikos.model.Category"/>
     <composite:attribute name="concept" type="cl.minsal.semantikos.model.ConceptSMTKWeb" />
 </composite:interface>
@@ -314,10 +314,10 @@
              styleClass="concept"
              rendered="#{cc.attrs.relationshipDefinition.multiplicity.simple}">
 
-        <div class="ui-g">
+
 
             <p:outputPanel style="width: 100%" rendered="#{not cc.attrs.concept.hasRelationships(cc.attrs.relationshipDefinition)}">
-
+                <div class="ui-g">
                 <div class="ui-g-12 ui-md-6 ui-lg-2">
 
                     <p:outputLabel rendered="#{cc.attrs.relationshipDefinition.multiplicity.optional}"  value="#{cc.attrs.relationshipDefinition.name}: " for="findConceptSMTK"/>
@@ -356,13 +356,15 @@
                         <f:attribute name="targetDef" value="#{cc.attrs.targetDefinition}" />
                     </p:autoComplete>
                 </div>
-
                 <div class="ui-g-12 ui-md-6 ui-lg-4">
-                </div>
 
+                </div>
+                </div>
             </p:outputPanel>
 
             <p:outputPanel style="width: 100%" rendered="#{cc.attrs.concept.hasRelationships(cc.attrs.relationshipDefinition)}">
+                <div class="ui-g">
+
                     <ui:repeat value="#{cc.attrs.concept.getValidRelationshipsWebByRelationDefinition(cc.attrs.relationshipDefinition)}"
                                var="relationship"
                                varStatus="var">
@@ -371,7 +373,7 @@
                             <p:outputLabel rendered="#{not cc.attrs.relationshipDefinition.multiplicity.optional}" value="#{cc.attrs.relationshipDefinition.name}: (*)" for="itemSelected"/>
                         </div>
 
-                        <div class="ui-g-12 ui-md-6 ui-lg-2">
+                        <div class="ui-g-12 ui-md-6 ui-lg-3">
                             <p:inputText style="width: 70%;" disabled="true" id="itemSelected" value="#{relationship.target.descriptionFavorite.term}" />
                             <p:commandButton icon="fa fa-trash" title="Eliminar"
                                              action="#{conceptBean.removeRelationship(cc.attrs.relationshipDefinition,relationship)}"
@@ -381,14 +383,20 @@
                                              process="@this">
                             </p:commandButton>
                         </div>
-
-                        <div class="ui-g-12 ui-md-6 ui-lg-4">
+                        <div class="ui-g-12 ui-md-6 ui-lg-1">
+                            <h:outputText value="Concept ID"/>
                         </div>
+                        <div class="ui-g-12 ui-md-6 ui-lg-2">
+                            <p:inputText value="#{relationship.target.conceptID}" disabled="true"></p:inputText>
+                        </div>
+                        <smtk:compositeAditional relationshipDefinition="#{cc.attrs.relationshipDefinition}" concept="#{relationship.target}" ></smtk:compositeAditional>
 
                     </ui:repeat>
+
+                </div>
             </p:outputPanel>
 
-        </div>
+
 
     </p:panel>
 

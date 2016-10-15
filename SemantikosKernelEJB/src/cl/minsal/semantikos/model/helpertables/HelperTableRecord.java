@@ -96,7 +96,7 @@ public class HelperTableRecord implements Target {
     public String getValueColumn(String columnName) throws IllegalArgumentException {
 
         /* Si la columna no existe es lanzada la excepción */
-        if (this.fields.containsKey(columnName)) {
+        if (!this.fields.containsKey(columnName)) {
             String messageError = "Se solicita columan que no existe: " + columnName;
             logger.error(messageError);
             throw new IllegalArgumentException(messageError);
