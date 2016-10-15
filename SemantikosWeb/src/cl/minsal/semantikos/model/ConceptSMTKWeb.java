@@ -39,7 +39,7 @@ public class ConceptSMTKWeb extends ConceptSMTK {
                 addDescriptionWeb(new DescriptionWeb(this, description.getId(), description));
             // Si el concepto esta persistido clonar las relaciones con su id
             for (Relationship relationship : conceptSMTK.getValidRelationships())
-                addRelationshipWeb(new RelationshipWeb(relationship.getId(), relationship));
+                addRelationshipWeb(new RelationshipWeb(relationship.getId(), relationship, relationship.getRelationshipAttributes()));
             for (Tag tag: conceptSMTK.getTags()) {
                 addTag(tag);
             }
@@ -236,7 +236,7 @@ public class ConceptSMTKWeb extends ConceptSMTK {
     public void addRelationshipWeb(Relationship relationship) {
         super.addRelationship(relationship);
         if(relationship.isPersistent())
-            this.relationshipsWeb.add(new RelationshipWeb(relationship.getId(), relationship));
+            this.relationshipsWeb.add(new RelationshipWeb(relationship.getId(), relationship, relationship.getRelationshipAttributes()));
         else
             this.relationshipsWeb.add(new RelationshipWeb(relationship));
     }

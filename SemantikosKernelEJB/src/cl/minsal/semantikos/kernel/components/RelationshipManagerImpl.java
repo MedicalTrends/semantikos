@@ -90,7 +90,14 @@ public class RelationshipManagerImpl implements RelationshipManager {
 
             /* Se validan las reglas de negocio */
             new ConceptCreationBR().apply(concept, user);
+
             relationshipDAO.persist(relationship);
+
+            /* Se persisten los atributos */
+            for(RelationshipAttribute relationshipAttribute: relationship.getRelationshipAttributes()){
+                relationshipAttribute.setRelationship(relationship);
+                relationshipAttributeDAO.createRelationshipAttribute(relationshipAttribute);
+            }
 
             /* Se registra en el historial si el concepto fuente de la relación está modelado */
             if (relationship.getSourceConcept().isModeled()) {

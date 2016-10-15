@@ -663,8 +663,10 @@ public class ConceptBean implements Serializable {
      */
     private int updateConceptRelationships() {
 
+        List<RelationshipWeb> newRelationshipsWeb = concept.getUnpersistedRelationshipsWeb();
+
         /* Se persisten las nuevas relaciones */
-        for (RelationshipWeb relationshipWeb : concept.getUnpersistedRelationshipsWeb()) {
+        for (RelationshipWeb relationshipWeb : newRelationshipsWeb) {
             relationshipManager.bindRelationshipToConcept(concept, relationshipWeb, user);
         }
 
@@ -680,7 +682,7 @@ public class ConceptBean implements Serializable {
         for (Pair<RelationshipWeb, RelationshipWeb> relationship : relationshipsForUpdate)
             relationshipManager.updateRelationship(concept, relationship.getFirst(), relationship.getSecond(), user);
 
-        return concept.getUnpersistedRelationshipsWeb().size() + removedRelationshipsWeb.size() + relationshipsForUpdate.size();
+        return newRelationshipsWeb.size() + removedRelationshipsWeb.size() + relationshipsForUpdate.size();
     }
 
     /**

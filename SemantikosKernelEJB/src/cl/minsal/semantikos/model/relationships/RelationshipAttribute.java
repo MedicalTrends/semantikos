@@ -16,10 +16,15 @@ public class RelationshipAttribute {
     public RelationshipAttribute() {
     }
 
-    public RelationshipAttribute(RelationshipAttributeDefinition relationAttributeDefinition, cl.minsal.semantikos.model.relationships.Relationship relationship, Target target) {
+    public RelationshipAttribute(RelationshipAttributeDefinition relationAttributeDefinition, Relationship relationship, Target target) {
         this.relationAttributeDefinition = relationAttributeDefinition;
         Relationship = relationship;
         this.target = target;
+    }
+
+    public RelationshipAttribute(Long idRelationshipAttribute, RelationshipAttributeDefinition relationAttributeDefinition, Relationship relationship, Target target) {
+        this(relationAttributeDefinition,relationship, target);
+        this.idRelationshipAttribute = idRelationshipAttribute;
     }
 
     public Long getIdRelationshipAttribute() {

@@ -42,7 +42,8 @@ public class HelperTableRecordFactory {
          * Se setea el id desde el fields para ser utilizado por el custom converter
          */
         helperTableRecord.setId(new Long(helperTableRecord.getFields().get("id")));
-        return new HelperTableRecord(helperTable, jsonHelperTableRecord.getFields());
+        //return new HelperTableRecord(helperTable, jsonHelperTableRecord.getFields());
+        return helperTableRecord;
     }
 
     /**
