@@ -67,6 +67,9 @@ public class ConceptBean implements Serializable {
     @ManagedProperty(value = "#{smtkBean}")
     private SMTKTypeBean smtkTypeBean;
 
+    @ManagedProperty(value = "#{compositeAditionalBean}")
+    private CompositeAditional compositeAditionalBean;
+
     DescriptionTypeFactory descriptionTypeFactory = DescriptionTypeFactory.getInstance();
 
     public User user;
@@ -173,6 +176,8 @@ public class ConceptBean implements Serializable {
     public void setConceptBeanExport(ConceptExportMBean conceptBean) {
         this.conceptBeanExport = conceptBean;
     }
+
+    private List<String> autoGenerateList = new ArrayList<>();
 
     //Inicializacion del Bean
 
@@ -332,11 +337,20 @@ public class ConceptBean implements Serializable {
      */
     public void addRelationshipWithAttributes(RelationshipDefinition relationshipDefinition) {
 
+
         Relationship relationship = relationshipPlaceholders.get(relationshipDefinition.getId());
         if(relationshipDefinition.getAttributeOrder()!=null) {
             RelationshipAttribute attribute = new RelationshipAttribute(relationshipDefinition.getAttributeOrder(), relationship, new BasicTypeValue(concept.getValidRelationshipsByRelationDefinition(relationshipDefinition).size()+1));
             relationship.getRelationshipAttributes().add(attribute);
         }
+
+        if(autogenerateMB(relationshipDefinition)){
+            autoGenerateList.add(((ConceptSMTK)relationship.getTarget()).getDescriptionFavorite().getTerm());
+            concept.getDescriptionFavorite().setTerm(autogenerate());
+        }
+
+
+
         // Se utiliza el constructor mínimo (sin id)
         this.concept.addRelationshipWeb(new RelationshipWeb(relationship));
         // Reinicializar placeholder relaciones
@@ -381,21 +395,29 @@ public class ConceptBean implements Serializable {
      * Este método se encarga de agregar o cambiar la relación para el caso de multiplicidad 1.
      */
     public void addOrChangeRelationship(RelationshipDefinition relationshipDefinition, Target target) {
-
+        Relationship relationship=null;
         boolean isRelationshipFound = false;
 
         // Se busca la relación
         for (Relationship relationshipWeb : concept.getRelationshipsWeb()) {
             if (relationshipWeb.getRelationshipDefinition().equals(relationshipDefinition)) {
                 relationshipWeb.setTarget(target);
+                relationship= relationshipWeb;
                 isRelationshipFound = true;
                 break;
             }
         }
         // Si no se encuentra la relación, se crea una nueva
         if (!isRelationshipFound)
-            this.concept.addRelationshipWeb(new Relationship(this.concept, target, relationshipDefinition, new ArrayList<RelationshipAttribute>()));
+            relationship= new Relationship(this.concept, target, relationshipDefinition, new ArrayList<RelationshipAttribute>());
+            this.concept.addRelationshipWeb(relationship);
 
+        if(autogenerateMCCE(relationshipDefinition)){
+            autoGenerateList.add(((ConceptSMTK)relationship.getTarget()).getDescriptionFavorite().getTerm());
+            autoGenerateList.add(compositeAditionalBean.getCantidadMC((ConceptSMTK)relationship.getTarget()));
+            autoGenerateList.add(compositeAditionalBean.getUnidadCantidadMC(((ConceptSMTK)relationship.getTarget())));
+            concept.getDescriptionFavorite().setTerm(autogenerateMCCE());
+        }
         // Se resetean los placeholder para los target de las relaciones
         basicTypeValue = new BasicTypeValue(null);
         selectedHelperTableRecord = new HelperTableRecord();
@@ -821,22 +843,86 @@ public class ConceptBean implements Serializable {
     }
 
     public void onRowReorder(ReorderEvent event) {
-        FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Row Moved", "From: " + event.getFromIndex() + ", To:" + event.getToIndex());
+
+        /*RelationshipAttribute att1 = concept.getRelationshipByAttributeOrder(event.getFromIndex()+1);
+        RelationshipAttribute att2 = concept.getRelationshipByAttributeOrder(event.getToIndex()+1);*/
         FacesContext context = FacesContext.getCurrentInstance();
+        RelationshipDefinition relationshipDefinitionRowEdit= (RelationshipDefinition) UIComponent.getCurrentComponent(context).getAttributes().get("relationshipDefinitionRowEdit");
+        List<Relationship> relationshipList= concept.getRelationshipsByRelationDefinition(relationshipDefinitionRowEdit);
 
-        RelationshipDefinition relationshipDefinition = (RelationshipDefinition) UIComponent.getCurrentComponent(context).getAttributes().get("relationshipDefinition");
 
-        int sourceOrder = event.getFromIndex()+1;
-        int targetOrder = event.getToIndex()+1;
 
-        RelationshipAttribute att1 = concept.getAttributeOrder(relationshipDefinition, sourceOrder);
-        RelationshipAttribute att2 = concept.getAttributeOrder(relationshipDefinition, targetOrder);
+        List<String> autoNuevoOrden = new ArrayList<>();
 
-        RelationshipAttribute _att1 = _concept.getAttributeOrder(relationshipDefinition, sourceOrder);
-        RelationshipAttribute _att2 = _concept.getAttributeOrder(relationshipDefinition, targetOrder);
+        for (int i = 0; i < autoGenerateList.size(); i++) {
+            if(i!=event.getFromIndex()){
+                if(i==event.getToIndex()){
+                    if(event.getFromIndex()<event.getToIndex()){
+                        autoNuevoOrden.add(autoGenerateList.get(i));
+                        autoNuevoOrden.add(autoGenerateList.get(event.getFromIndex()));
+                    }else{
 
-        att1.setTarget(new BasicTypeValue(targetOrder));
-        att2.setTarget(new BasicTypeValue(sourceOrder));
+                        autoNuevoOrden.add(autoGenerateList.get(event.getFromIndex()));
+                        autoNuevoOrden.add(autoGenerateList.get(i));
+                    }
+
+                }else{
+                    autoNuevoOrden.add(autoGenerateList.get(i));
+                }
+
+            }
+
+        }
+        autoGenerateList=autoNuevoOrden;
+        concept.getDescriptionFavorite().setTerm(autogenerate());
+
+
+        /*att1.setTarget(new BasicTypeValue(event.getToIndex()+1));
+        att2.setTarget(new BasicTypeValue(event.getFromIndex()+1));*/
+    }
+
+    public boolean autogenerateMB(RelationshipDefinition relationshipDefinition){
+
+        if(relationshipDefinition.getId()==45) return true;
+
+        return false;
+    }
+
+    public boolean autogenerateMCCE(RelationshipDefinition relationshipDefinition){
+
+        if(relationshipDefinition.getId()==48) return true;
+
+        return false;
+    }
+
+    public String autogenerate(){
+
+        String autogenerateString="";
+
+        for (int i = 0; i < autoGenerateList.size(); i++) {
+            if(i==0){
+                autogenerateString=autoGenerateList.get(i);
+            }else{
+                autogenerateString=autogenerateString+" + "+autoGenerateList.get(i);
+            }
+
+        }
+        return autogenerateString;
+    }
+
+    public String autogenerateMCCE(){
+
+        String autogenerateString="";
+
+        for (int i = 0; i < autoGenerateList.size(); i++) {
+            if(i==0){
+                autogenerateString=autoGenerateList.get(i);
+            }else{
+                autogenerateString=autogenerateString+" "+autoGenerateList.get(i);
+            }
+
+        }
+        return autogenerateString;
     }
 
 
@@ -1057,6 +1143,14 @@ public class ConceptBean implements Serializable {
 
     public void setDescriptionTypesEdit(List<DescriptionType> descriptionTypesEdit) {
         this.descriptionTypesEdit = descriptionTypesEdit;
+    }
+
+    public CompositeAditional getCompositeAditionalBean() {
+        return compositeAditionalBean;
+    }
+
+    public void setCompositeAditionalBean(CompositeAditional compositeAditionalBean) {
+        this.compositeAditionalBean = compositeAditionalBean;
     }
 
     public Map<Long, Relationship> getRelationshipPlaceholders() {

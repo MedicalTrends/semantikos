@@ -20,16 +20,15 @@
 
                     <!--p:messages autoUpdate="true"></p:messages-->
                     <smtk:title concept="#{conceptBean.concept}"/>
-
+                    <p:spacer></p:spacer>
+                    <p:panel id="conceptHeader" style="border: hidden;" styleClass="conceptHeader">
+                        <smtk:conceptHeader concept="#{conceptBean.concept}"/>
+                    </p:panel>
 
                 </p:panel>
 
+                <br/>
                 <p:tabView>
-                    <p:tab title="General">
-                        <p:panel id="conceptHeader" style="border: hidden;" styleClass="conceptHeader">
-                            <smtk:conceptHeader concept="#{conceptBean.concept}"/>
-                        </p:panel>
-                    </p:tab>
 
                     <!-- Etiquetas -->
                     <p:tab title="Etiquetas">

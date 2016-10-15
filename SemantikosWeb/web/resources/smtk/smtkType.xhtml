@@ -257,7 +257,7 @@
                 <p:commandButton
                         process="@(.attributes_#{cc.attrs.relationshipDefinition.id})"
                         action="#{conceptBean.addRelationshipWithAttributes(cc.attrs.relationshipDefinition)}"
-                        update="@(.relationshipsWithAttributes_#{cc.attrs.relationshipDefinition.id}),@(.attributes_#{cc.attrs.relationshipDefinition.id})"
+                        update="@(.relationshipsWithAttributes_#{cc.attrs.relationshipDefinition.id}),@(.attributes_#{cc.attrs.relationshipDefinition.id}),@(.conceptHeader)"
                         value="Agregar">
                 </p:commandButton>
             </div>
@@ -280,7 +280,10 @@
                 <f:attribute name="relationshipDefinition" value="#{cc.attrs.relationshipDefinition}"  />
                 <!---->
 
-                <p:ajax event="rowReorder" listener="#{conceptBean.onRowReorder}"/>
+                <p:ajax event="rowReorder" listener="#{conceptBean.onRowReorder}" update="@(.conceptHeader)">
+
+                </p:ajax>
+                <f:attribute name="relationshipDefinitionRowEdit" value="#{cc.attrs.relationshipDefinition}"></f:attribute>
 
                 <p:column headerText="ID">
                     <h:outputText value="#{rel.target.id}"/>
@@ -354,7 +357,7 @@
                             <h:outputText value="#{concept.descriptionFavorite.term}"/>
                         </p:column>
 
-                        <p:ajax update="@(.concept)" event="itemSelect"
+                        <p:ajax update="@(.concept), @(.conceptHeader)" event="itemSelect"
                                 listener="#{conceptBean.addOrChangeRelationship(cc.attrs.relationshipDefinition,conceptBean.conceptSelected)}"
                                 process="@this"/>
 
