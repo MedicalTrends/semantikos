@@ -71,9 +71,10 @@ public class ValidatorBean {
 
         HelperTable helperTable = (HelperTable) UIComponent.getCurrentComponent(context).getAttributes().get("helperTable");
         HelperTableRecord record = (HelperTableRecord) UIComponent.getCurrentComponent(context).getAttributes().get("helperTableRecord");;;
+        HelperTableRecord record2 = (HelperTableRecord) value;;
 
         //component.getParent().getAttributes().
-        if(record == null || record.getId() == 0 || record.getId() == -1)
+        if( record == null && record2 == null )
             throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", msg));
 
     }

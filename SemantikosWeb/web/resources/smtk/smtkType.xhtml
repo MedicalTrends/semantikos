@@ -161,9 +161,10 @@
             <p:spacer />
             <p:dataTable emptyMessage="No existen relaciones, se debe agregar al menos: #{cc.attrs.relationshipDefinition.multiplicity.lowerBoundary}."
                          id="tableRelationship2"
-                         draggableRows="#{conceptBean.attributeOrder(cc.attrs.relationshipDefinition)}" style="margin: 10px;"
+                         draggableRows="#{cc.attrs.relationshipDefinition.getAttributeOrder() != null}" style="margin: 10px;"
                          value="#{conceptBean.concept.getValidRelationshipsWebByRelationDefinition(cc.attrs.relationshipDefinition)}"
                          var="rel">
+
                 <p:column headerText="ID">
                     <h:outputText value="#{rel.target.id}"/>
                 </p:column>
@@ -274,6 +275,10 @@
                          draggableRows="#{cc.attrs.relationshipDefinition.getAttributeOrder() != null}" style="margin: 10px;"
                          value="#{conceptBean.concept.getValidRelationshipsWebByRelationDefinition(cc.attrs.relationshipDefinition)}"
                          var="rel">
+
+                <!-- Parámetros del validador -->
+                <f:attribute name="relationshipDefinition" value="#{cc.attrs.relationshipDefinition}"  />
+                <!---->
 
                 <p:ajax event="rowReorder" listener="#{conceptBean.onRowReorder}"/>
 

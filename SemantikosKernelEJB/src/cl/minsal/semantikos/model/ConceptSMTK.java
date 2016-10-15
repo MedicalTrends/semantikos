@@ -630,24 +630,4 @@ public class ConceptSMTK extends PersistentEntity implements Target, AuditableEn
         this.tagSMTK = tagSMTK;
     }
 
-    /**
-     * Este método es responsable de obtener una relación dado su atributo de orden,
-     * @param order
-     * @return
-     */
-    public RelationshipAttribute getRelationshipByAttributeOrder(int order){
-
-        for (Relationship relationship : relationships) {
-            if(relationship.getRelationshipDefinition().getAttributeOrder() != null){
-                for (RelationshipAttribute attribute : relationship.getRelationshipAttributes()) {
-                    if(attribute.getRelationAttributeDefinition().isOrderAttribute()){
-                        BasicTypeValue basicTypeValue = (BasicTypeValue) attribute.getTarget();
-                        if(basicTypeValue.getValue().equals(new Integer(order)))
-                            return attribute;
-                    }
-                }
-            }
-        }
-        return null;
-    }
 }

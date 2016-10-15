@@ -6,6 +6,7 @@ import cl.minsal.semantikos.model.*;
 import cl.minsal.semantikos.model.audit.ConceptAuditAction;
 import cl.minsal.semantikos.model.basictypes.BasicTypeValue;
 import cl.minsal.semantikos.model.exceptions.BusinessRuleException;
+import cl.minsal.semantikos.model.helpertables.HelperTable;
 import cl.minsal.semantikos.model.helpertables.HelperTableRecord;
 import cl.minsal.semantikos.model.relationships.*;
 import cl.minsal.semantikos.util.Pair;
@@ -23,6 +24,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.component.UIComponent;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import java.io.IOException;
@@ -432,7 +434,7 @@ public class ConceptBean implements Serializable {
             Relationship relationship = new Relationship(this.concept, null, relationshipDefinition, new ArrayList<RelationshipAttribute>());
             RelationshipAttribute attribute = new RelationshipAttribute(relationshipAttributeDefinition, relationship, target);
             relationship.getRelationshipAttributes().add(attribute);
-            this.concept.addRelationshipWeb(relationship); //  new ArrayList<RelationshipAttribute>()));
+            this.concept.addRelationshipWeb(new RelationshipWeb(relationship, relationship.getRelationshipAttributes())); //  new ArrayList<RelationshipAttribute>()));
         }
 
         // Se resetean los placeholder para los target de las relaciones
@@ -663,26 +665,28 @@ public class ConceptBean implements Serializable {
      */
     private int updateConceptRelationships() {
 
-        List<RelationshipWeb> newRelationshipsWeb = concept.getUnpersistedRelationshipsWeb();
+        List<RelationshipWeb> relationshipsForPersist = concept.getUnpersistedRelationshipsWeb();
 
         /* Se persisten las nuevas relaciones */
-        for (RelationshipWeb relationshipWeb : newRelationshipsWeb) {
+        for (RelationshipWeb relationshipWeb : relationshipsForPersist) {
             relationshipManager.bindRelationshipToConcept(concept, relationshipWeb, user);
         }
 
         /* Se elimina las relaciones eliminadas */
-        List<RelationshipWeb> removedRelationshipsWeb = concept.getRemovedRelationshipsWeb(_concept);
-        for (RelationshipWeb relationshipWeb : removedRelationshipsWeb) {
+        List<RelationshipWeb> relationshipsForDelete = concept.getRemovedRelationshipsWeb(_concept);
+        for (RelationshipWeb relationshipWeb : relationshipsForDelete) {
             relationshipManager.removeRelationship(relationshipWeb, user);
             _concept.removeRelationship(relationshipWeb);
         }
 
         /* Se actualizan las relaciones actualizadas */
         List<Pair<RelationshipWeb, RelationshipWeb>> relationshipsForUpdate = concept.getModifiedRelationships(_concept);
-        for (Pair<RelationshipWeb, RelationshipWeb> relationship : relationshipsForUpdate)
-            relationshipManager.updateRelationship(concept, relationship.getFirst(), relationship.getSecond(), user);
+        for (Pair<RelationshipWeb, RelationshipWeb> relationship : relationshipsForUpdate) {
 
-        return newRelationshipsWeb.size() + removedRelationshipsWeb.size() + relationshipsForUpdate.size();
+            relationshipManager.updateRelationship(concept, relationship.getFirst(), relationship.getSecond(), user);
+        }
+
+        return relationshipsForPersist.size() + relationshipsForDelete.size() + relationshipsForUpdate.size();
     }
 
     /**
@@ -818,11 +822,21 @@ public class ConceptBean implements Serializable {
 
     public void onRowReorder(ReorderEvent event) {
         FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Row Moved", "From: " + event.getFromIndex() + ", To:" + event.getToIndex());
+        FacesContext context = FacesContext.getCurrentInstance();
 
-        RelationshipAttribute att1 = concept.getRelationshipByAttributeOrder(event.getFromIndex()+1);
-        RelationshipAttribute att2 = concept.getRelationshipByAttributeOrder(event.getToIndex()+1);
-        att1.setTarget(new BasicTypeValue(event.getToIndex()+1));
-        att2.setTarget(new BasicTypeValue(event.getFromIndex()+1));
+        RelationshipDefinition relationshipDefinition = (RelationshipDefinition) UIComponent.getCurrentComponent(context).getAttributes().get("relationshipDefinition");
+
+        int sourceOrder = event.getFromIndex()+1;
+        int targetOrder = event.getToIndex()+1;
+
+        RelationshipAttribute att1 = concept.getAttributeOrder(relationshipDefinition, sourceOrder);
+        RelationshipAttribute att2 = concept.getAttributeOrder(relationshipDefinition, targetOrder);
+
+        RelationshipAttribute _att1 = _concept.getAttributeOrder(relationshipDefinition, sourceOrder);
+        RelationshipAttribute _att2 = _concept.getAttributeOrder(relationshipDefinition, targetOrder);
+
+        att1.setTarget(new BasicTypeValue(targetOrder));
+        att2.setTarget(new BasicTypeValue(sourceOrder));
     }
 
 

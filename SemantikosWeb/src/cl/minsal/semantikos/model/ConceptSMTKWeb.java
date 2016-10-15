@@ -1,7 +1,9 @@
 package cl.minsal.semantikos.model;
 
+import cl.minsal.semantikos.model.basictypes.BasicTypeValue;
 import cl.minsal.semantikos.model.exceptions.BusinessRuleException;
 import cl.minsal.semantikos.model.relationships.Relationship;
+import cl.minsal.semantikos.model.relationships.RelationshipAttribute;
 import cl.minsal.semantikos.model.relationships.RelationshipAttributeDefinition;
 import cl.minsal.semantikos.model.relationships.RelationshipDefinition;
 import cl.minsal.semantikos.util.Pair;
@@ -238,7 +240,7 @@ public class ConceptSMTKWeb extends ConceptSMTK {
         if(relationship.isPersistent())
             this.relationshipsWeb.add(new RelationshipWeb(relationship.getId(), relationship, relationship.getRelationshipAttributes()));
         else
-            this.relationshipsWeb.add(new RelationshipWeb(relationship));
+            this.relationshipsWeb.add(new RelationshipWeb(relationship, relationship.getRelationshipAttributes()));
     }
 
     /**
@@ -461,6 +463,27 @@ public class ConceptSMTKWeb extends ConceptSMTK {
         }
 
         //TODO: Hacer lo mismo para las relaciones y presumiblemente tambien para los tags
+    }
+
+    /**
+     * Este método es responsable de obtener el atributo orden, dada la definicion de relacion y el orden en cuestion
+     * @param order
+     * @return
+     */
+    public RelationshipAttribute getAttributeOrder(RelationshipDefinition relationshipDefinition, int order){
+
+        for (RelationshipWeb relationshipWeb : getValidRelationshipsWebByRelationDefinition(relationshipDefinition)) {
+            if(relationshipWeb.getRelationshipDefinition().getAttributeOrder() != null){
+                for (RelationshipAttribute attribute : relationshipWeb.getRelationshipAttributes()) {
+                    if(attribute.getRelationAttributeDefinition().isOrderAttribute()){
+                        BasicTypeValue basicTypeValue = (BasicTypeValue) attribute.getTarget();
+                        if(basicTypeValue.getValue().equals(new Integer(order)))
+                            return attribute;
+                    }
+                }
+            }
+        }
+        return null;
     }
 
 }
