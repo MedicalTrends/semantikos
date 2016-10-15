@@ -70,7 +70,7 @@ public class ValidatorBean {
         String msg = "Debe ingresar un valor";
 
         HelperTable helperTable = (HelperTable) UIComponent.getCurrentComponent(context).getAttributes().get("helperTable");
-        HelperTableRecord record = (HelperTableRecord) value;;
+        HelperTableRecord record = (HelperTableRecord) UIComponent.getCurrentComponent(context).getAttributes().get("helperTableRecord");;;
 
         //component.getParent().getAttributes().
         if(record == null || record.getId() == 0 || record.getId() == -1)

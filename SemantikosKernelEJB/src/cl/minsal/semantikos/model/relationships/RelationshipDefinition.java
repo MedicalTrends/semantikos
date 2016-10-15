@@ -175,4 +175,13 @@ public class RelationshipDefinition {
     public boolean isAttribute() {
         return targetDefinition.isBasicType() || targetDefinition.isCrossMapType() || targetDefinition.isHelperTable() || targetDefinition.isSMTKType();
     }
+
+    public RelationshipAttributeDefinition getAttributeOrder(){
+        for (RelationshipAttributeDefinition relationshipAttributeDefinition : getRelationshipAttributeDefinitions()) {
+            if(relationshipAttributeDefinition.getName().equalsIgnoreCase("orden")){
+                return relationshipAttributeDefinition;
+            }
+        }
+        return null;
+    }
 }

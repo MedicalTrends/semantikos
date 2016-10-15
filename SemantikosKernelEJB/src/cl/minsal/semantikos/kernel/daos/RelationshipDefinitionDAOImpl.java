@@ -96,7 +96,7 @@ public class RelationshipDefinitionDAOImpl implements RelationshipDefinitionDAO 
      *
      * @return Una lista de Definición de Atributos.
      */
-    private List<RelationshipAttributeDefinition> getRelationshipAttributeDefinitionsByRelationshipDefinition(RelationshipDefinition relationshipDefinition) {
+    public List<RelationshipAttributeDefinition> getRelationshipAttributeDefinitionsByRelationshipDefinition(RelationshipDefinition relationshipDefinition) {
 
         ConnectionBD connect = new ConnectionBD();
         String sqlQuery = "{call semantikos.get_relationship_attribute_definitions_json_by_id(?)}";

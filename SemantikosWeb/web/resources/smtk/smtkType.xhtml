@@ -161,7 +161,7 @@
             <p:spacer />
             <p:dataTable emptyMessage="No existen relaciones, se debe agregar al menos: #{cc.attrs.relationshipDefinition.multiplicity.lowerBoundary}."
                          id="tableRelationship2"
-                         draggableRows="true" style="margin: 10px;"
+                         draggableRows="#{conceptBean.attributeOrder(cc.attrs.relationshipDefinition)}" style="margin: 10px;"
                          value="#{conceptBean.concept.getValidRelationshipsWebByRelationDefinition(cc.attrs.relationshipDefinition)}"
                          var="rel">
                 <p:column headerText="ID">
@@ -172,9 +172,6 @@
                     <h:outputText value="#{rel.target.descriptionFavorite.term}"/>
                 </p:column>
 
-                <p:column headerText="Orden">
-
-                </p:column>
 
                 <p:column headerText="Estado">
                     <h:outputText value="#{rel.target.modeled}"/>
@@ -247,7 +244,7 @@
                 <smtk:basicTypeAttribute relationshipDefinition="#{cc.attrs.relationshipDefinition}"
                                          relationshipAttributeDefinition="#{relationshipAttributeDefinition}"
                                          targetDefinition="#{relationshipAttributeDefinition.targetDefinition}"
-                                         rendered="#{relationshipAttributeDefinition.targetDefinition.basicType}"
+                                         rendered="#{relationshipAttributeDefinition.targetDefinition.basicType and not relationshipAttributeDefinition.isOrderAttribute()}"
                 />
                 <smtk:helperTableTypeAttribute relationshipDefinition="#{cc.attrs.relationshipDefinition}"
                                                relationshipAttributeDefinition="#{relationshipAttributeDefinition}"
@@ -274,9 +271,12 @@
             <p:dataTable emptyMessage="No existen relaciones, se debe agregar al menos: #{cc.attrs.relationshipDefinition.multiplicity.lowerBoundary}."
                          id="tableRelationship3"
                          styleClass="relationshipsWithAttributes_#{cc.attrs.relationshipDefinition.id}"
-                         draggableRows="true" style="margin: 10px;"
+                         draggableRows="#{cc.attrs.relationshipDefinition.getAttributeOrder() != null}" style="margin: 10px;"
                          value="#{conceptBean.concept.getValidRelationshipsWebByRelationDefinition(cc.attrs.relationshipDefinition)}"
                          var="rel">
+
+                <p:ajax event="rowReorder" listener="#{conceptBean.onRowReorder}"/>
+
                 <p:column headerText="ID">
                     <h:outputText value="#{rel.target.id}"/>
                 </p:column>
@@ -291,14 +291,16 @@
                     <f:facet name="header">
                         <h:outputText value="#{attribute.name}" />
                     </f:facet>
-                    <h:outputText rendered="#{attribute.targetDefinition.basicType}" value="#{rel.relationshipAttributes.get(colIndex).target}" />
-                    <h:outputText rendered="#{attribute.targetDefinition.helperTable}" value="#{rel.relationshipAttributes.get(colIndex).target.fields['description']}" />
+                    <p:outputPanel rendered="#{not empty rel.getAttributesByAttributeDefinition(attribute)}">
+                        <h:outputText rendered="#{attribute.targetDefinition.basicType }" value="#{rel.getAttributesByAttributeDefinition(attribute).get(0).target}" />
+                        <h:outputText rendered="#{attribute.targetDefinition.helperTable}" value="#{rel.getAttributesByAttributeDefinition(attribute).get(0).target.fields['description']}" />
+                    </p:outputPanel>
                 </p:columns>
 
                 <p:column headerText="Eliminar" style="width:60px;text-align: center;">
                     <p:commandButton icon="fa fa-trash" title="Eliminar"
                                      action="#{conceptBean.removeRelationship(cc.attrs.relationshipDefinition,rel)}"
-                                     update="@(.panel_#{cc.attrs.relationshipDefinition.name})"
+                                     update="@(.panel_#{cc.attrs.relationshipDefinition.id})"
                                      process="@this">
                     </p:commandButton>
                 </p:column>

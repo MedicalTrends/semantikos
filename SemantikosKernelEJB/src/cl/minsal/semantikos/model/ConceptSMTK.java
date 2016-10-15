@@ -1,6 +1,7 @@
 package cl.minsal.semantikos.model;
 
 import cl.minsal.semantikos.model.audit.AuditableEntity;
+import cl.minsal.semantikos.model.basictypes.BasicTypeValue;
 import cl.minsal.semantikos.model.businessrules.ConceptStateBusinessRulesContainer;
 import cl.minsal.semantikos.model.exceptions.BusinessRuleException;
 import cl.minsal.semantikos.model.relationships.*;
@@ -627,5 +628,26 @@ public class ConceptSMTK extends PersistentEntity implements Target, AuditableEn
 
     public void setTagSMTK(TagSMTK tagSMTK) {
         this.tagSMTK = tagSMTK;
+    }
+
+    /**
+     * Este método es responsable de obtener una relación dado su atributo de orden,
+     * @param order
+     * @return
+     */
+    public RelationshipAttribute getRelationshipByAttributeOrder(int order){
+
+        for (Relationship relationship : relationships) {
+            if(relationship.getRelationshipDefinition().getAttributeOrder() != null){
+                for (RelationshipAttribute attribute : relationship.getRelationshipAttributes()) {
+                    if(attribute.getRelationAttributeDefinition().isOrderAttribute()){
+                        BasicTypeValue basicTypeValue = (BasicTypeValue) attribute.getTarget();
+                        if(basicTypeValue.getValue().equals(new Integer(order)))
+                            return attribute;
+                    }
+                }
+            }
+        }
+        return null;
     }
 }
