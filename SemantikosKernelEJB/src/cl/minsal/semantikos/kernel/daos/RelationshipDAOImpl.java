@@ -123,7 +123,7 @@ public class RelationshipDAOImpl implements RelationshipDAO {
 
             call.setLong(1, relationship.getId());
             call.setLong(2, relationship.getSourceConcept().getId());
-            call.setLong(3, relationship.getTarget().getId());
+            call.setLong(3, getTargetByRelationship(relationship));
             call.setLong(4, relationship.getRelationshipDefinition().getId());
             call.setTimestamp(5, relationship.getValidityUntil());
             call.execute();

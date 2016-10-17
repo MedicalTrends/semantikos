@@ -197,16 +197,17 @@ public class TargetDAOImpl implements TargetDAO {
         String sql = "{call semantikos.update_target(?,?,?,?,?,?,?,?,?,?,?)}";
         long idTarget = relationshipDAO.getTargetByRelationship(relationship);
 
+
+
         try (Connection connection = connect.getConnection();
              CallableStatement call = connection.prepareCall(sql)) {
-
             setDefaultValuesForUpdateTargetFunction(call);
-
             /* Almacenar el tipo básico */
             if (relationship.getRelationshipDefinition().getTargetDefinition().isBasicType()) {
 
                 BasicTypeDefinition basicTypeDefinition = (BasicTypeDefinition) relationship.getRelationshipDefinition().getTargetDefinition();
                 BasicTypeValue value = (BasicTypeValue) relationship.getTarget();
+
 
                 //TODO: FIX
 
@@ -265,14 +266,14 @@ public class TargetDAOImpl implements TargetDAO {
 
     private void setTargetCall(BasicTypeValue target, BasicTypeDefinition targetDefinition, CallableStatement call) throws SQLException {
 
-        BasicTypeValue value = (BasicTypeValue) target;
+
         if (targetDefinition.getType().getTypeName().equals("date")) {
             java.util.Date d = (java.util.Date) target.getValue();
             call.setTimestamp(2, new Timestamp(d.getTime()) );
         } else if (targetDefinition.getType().getTypeName().equals("float")) {
             call.setFloat(1, (Float) target.getValue());
         } else if (targetDefinition.getType().getTypeName().equals("int")) {
-            call.setInt(5, (Integer) target.getValue());
+            call.setInt(5, (Integer.parseInt((String) target.getValue())));
         } else if (targetDefinition.getType().getTypeName().equals("string")) {
             call.setString(3, (String) target.getValue());
         } else if (targetDefinition.getType().getTypeName().equals("boolean")) {
