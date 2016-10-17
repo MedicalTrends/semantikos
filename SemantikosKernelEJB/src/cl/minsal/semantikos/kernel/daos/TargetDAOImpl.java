@@ -201,13 +201,13 @@ public class TargetDAOImpl implements TargetDAO {
 
         try (Connection connection = connect.getConnection();
              CallableStatement call = connection.prepareCall(sql)) {
-
+            setDefaultValuesForUpdateTargetFunction(call);
             /* Almacenar el tipo básico */
             if (relationship.getRelationshipDefinition().getTargetDefinition().isBasicType()) {
 
                 BasicTypeDefinition basicTypeDefinition = (BasicTypeDefinition) relationship.getRelationshipDefinition().getTargetDefinition();
                 BasicTypeValue value = (BasicTypeValue) relationship.getTarget();
-                setDefaultValuesForUpdateTargetFunction(call);
+
 
                 //TODO: FIX
 
@@ -229,7 +229,7 @@ public class TargetDAOImpl implements TargetDAO {
 
             /* Almacenar concepto SMTK */
             if (relationship.getRelationshipDefinition().getTargetDefinition().isSMTKType()) {
-                call.setFloat(9, relationship.getTarget().getId());
+                call.setLong(9, relationship.getTarget().getId());
                 call.setLong(10, SMTK.getIdTargetType());
             }
 
@@ -266,7 +266,7 @@ public class TargetDAOImpl implements TargetDAO {
 
     private void setTargetCall(BasicTypeValue target, BasicTypeDefinition targetDefinition, CallableStatement call) throws SQLException {
 
-        BasicTypeValue value = (BasicTypeValue) target;
+
         if (targetDefinition.getType().getTypeName().equals("date")) {
             java.util.Date d = (java.util.Date) target.getValue();
             call.setTimestamp(2, new Timestamp(d.getTime()) );
