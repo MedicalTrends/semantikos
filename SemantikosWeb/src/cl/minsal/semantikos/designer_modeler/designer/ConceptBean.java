@@ -288,6 +288,8 @@ public class ConceptBean implements Serializable {
         conceptSMTK.setRelationships(conceptManager.loadRelationships(conceptSMTK));
         // Se crea el concepto WEB a partir del concepto SMTK
         concept = new ConceptSMTKWeb(conceptSMTK);
+
+
         // Se crea una copia con la imagen original del concepto
         _concept = new ConceptSMTKWeb(conceptSMTK);
 
@@ -352,7 +354,7 @@ public class ConceptBean implements Serializable {
 
 
         // Se utiliza el constructor mínimo (sin id)
-        this.concept.addRelationshipWeb(new RelationshipWeb(relationship));
+        this.concept.addRelationshipWeb(new RelationshipWeb(relationship,relationship.getRelationshipAttributes()));
         // Reinicializar placeholder relaciones
         relationshipPlaceholders.put(relationshipDefinition.getId(), new Relationship(concept, null, relationshipDefinition, new ArrayList<RelationshipAttribute>()));
         // Resetear placeholder targets
@@ -401,6 +403,7 @@ public class ConceptBean implements Serializable {
         // Se busca la relación
         for (Relationship relationshipWeb : concept.getRelationshipsWeb()) {
             if (relationshipWeb.getRelationshipDefinition().equals(relationshipDefinition)) {
+
                 relationshipWeb.setTarget(target);
                 relationship= relationshipWeb;
                 isRelationshipFound = true;
@@ -408,10 +411,10 @@ public class ConceptBean implements Serializable {
             }
         }
         // Si no se encuentra la relación, se crea una nueva
-        if (!isRelationshipFound)
-            relationship= new Relationship(this.concept, target, relationshipDefinition, new ArrayList<RelationshipAttribute>());
+        if (!isRelationshipFound) {
+            relationship = new Relationship(this.concept, target, relationshipDefinition, new ArrayList<RelationshipAttribute>());
             this.concept.addRelationshipWeb(relationship);
-
+        }
         if(autogenerateMCCE(relationshipDefinition)){
             autoGenerateList.add(((ConceptSMTK)relationship.getTarget()).getDescriptionFavorite().getTerm());
             autoGenerateList.add(compositeAditionalBean.getCantidadMC((ConceptSMTK)relationship.getTarget()));
@@ -649,6 +652,13 @@ public class ConceptBean implements Serializable {
     private void persistConcept(FacesContext context) {
         // TODO: Investigar cómo capturar la excepción de negocio
         try {
+            for (RelationshipWeb relationshipWebC: concept.getRelationshipsWeb()) {
+                for (Relationship relationshipC: concept.getRelationships()) {
+                    if(relationshipWebC.getRelationshipDefinition().getId()==relationshipC.getRelationshipDefinition().getId()){
+                        relationshipC.setRelationshipAttributes(relationshipWebC.getRelationshipAttributes());
+                    }
+                }
+            }
             conceptManager.persist(concept, user);
             context.addMessage(null, new FacesMessage("Successful", "Concepto guardado "));
             // Se resetea el concepto, como el concepto está persistido, se le pasa su id
