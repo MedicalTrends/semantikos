@@ -166,7 +166,7 @@ public class RelationshipManagerImpl implements RelationshipManager {
             /* Se actualiza la relación original */
             relationshipDAO.update(originalRelationship);
 
-            targetDAO.update(editedRelationship.getTarget(), editedRelationship.getRelationshipDefinition().getTargetDefinition());
+            targetDAO.update(editedRelationship);
         }
 
         /* Si el concepto está modelado, se versiona y actualiza */

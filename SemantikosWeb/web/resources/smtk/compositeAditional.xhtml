@@ -29,7 +29,7 @@
             </div>
             <div class="ui-g-12 ui-md-6 ui-lg-2">
                 <h:outputText
-                        value="#{compositeAditionalBean.getCantidadMC(cc.attrs.concept)}"/>
+                        value="#{compositeAditionalBean.getAditionalInfo(cc.attrs.concept,69).target}"/>
             </div>
 
             <div class="ui-g-12 ui-md-6 ui-lg-1">
@@ -37,7 +37,7 @@
             </div>
             <div class="ui-g-12 ui-md-6 ui-lg-2">
                 <h:outputText
-                        value="#{compositeAditionalBean.getUnidadCantidadMC(cc.attrs.concept)}"/>
+                        value="#{compositeAditionalBean.getAditionalInfo(cc.attrs.concept,69,12).getValueColumn('description')}"/>
             </div>
 
         </div>
