@@ -5,8 +5,7 @@ import cl.minsal.semantikos.model.ConceptSMTK;
 import cl.minsal.semantikos.model.ConceptSMTKWeb;
 import cl.minsal.semantikos.model.RelationshipWeb;
 import cl.minsal.semantikos.model.helpertables.HelperTableRecord;
-import cl.minsal.semantikos.model.relationships.Relationship;
-import cl.minsal.semantikos.model.relationships.RelationshipAttribute;
+import cl.minsal.semantikos.model.relationships.*;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -23,24 +22,47 @@ import java.util.Map;
 @ManagedBean(name = "compositeAditionalBean")
 @ViewScoped
 public class CompositeAditional {
- //TODO: refactorizar
+    //TODO: refactorizar
     @EJB
     private ConceptManager conceptManager;
 
     private Map<Long, List<Relationship>> relationships;
 
     @PostConstruct
-    public void init(){
-        relationships= new HashMap<>();
+    public void init() {
+        relationships = new HashMap<>();
+    }
+
+    public Target getAditionalInfo(ConceptSMTK conceptSMTK, long relationshipDefinition, long relationshipAttributeDefinition) {
+
+        Relationship relationship = getAditionalInfo(conceptSMTK, relationshipDefinition);
+        for (RelationshipAttribute relationshipAttribute : relationship.getRelationshipAttributes()) {
+            if (relationshipAttribute.getRelationAttributeDefinition().getId() == relationshipAttributeDefinition) {
+                return relationshipAttribute.getTarget();
+            }
+        }
+        return null;
     }
 
 
-    public String getCantidadMC(ConceptSMTK conceptSMTK){
+    public Relationship getAditionalInfo(ConceptSMTK conceptSMTK, long relationshipDefinition) {
         conceptSMTK.setRelationships(getRelationships(conceptSMTK));
-        ConceptSMTKWeb conceptSMTKWeb= new ConceptSMTKWeb(conceptSMTK);
+        ConceptSMTKWeb conceptSMTKWeb = new ConceptSMTKWeb(conceptSMTK);
+        for (RelationshipWeb relationshipWeb : conceptSMTKWeb.getValidPersistedRelationshipsWeb()) {
+            if (relationshipWeb.getRelationshipDefinition().getId() == relationshipDefinition) {
+                return relationshipWeb;
+            }
+        }
+        return null;
+    }
 
-        for (RelationshipWeb relationshipWeb: conceptSMTKWeb.getValidPersistedRelationshipsWeb()) {
-            if(relationshipWeb.getRelationshipDefinition().getId()==69){
+
+    public String getCantidadMC(ConceptSMTK conceptSMTK) {
+        conceptSMTK.setRelationships(getRelationships(conceptSMTK));
+        ConceptSMTKWeb conceptSMTKWeb = new ConceptSMTKWeb(conceptSMTK);
+
+        for (RelationshipWeb relationshipWeb : conceptSMTKWeb.getValidPersistedRelationshipsWeb()) {
+            if (relationshipWeb.getRelationshipDefinition().getId() == 69) {
 
                 return relationshipWeb.getTarget().toString();
             }
@@ -49,14 +71,14 @@ public class CompositeAditional {
         return null;
     }
 
-    public String getUnidadCantidadMC(ConceptSMTK conceptSMTK){
+    public String getUnidadCantidadMC(ConceptSMTK conceptSMTK) {
 
         conceptSMTK.setRelationships(getRelationships(conceptSMTK));
-        ConceptSMTKWeb conceptSMTKWeb= new ConceptSMTKWeb(conceptSMTK);
-        for (RelationshipWeb relationshipWeb: conceptSMTKWeb.getValidPersistedRelationshipsWeb()) {
-            if(relationshipWeb.getRelationshipDefinition().getId()==69){
-                for (RelationshipAttribute relationshipAttribute:relationshipWeb.getRelationshipAttributes()){
-                    if(relationshipAttribute.getRelationAttributeDefinition().getId()==12){
+        ConceptSMTKWeb conceptSMTKWeb = new ConceptSMTKWeb(conceptSMTK);
+        for (RelationshipWeb relationshipWeb : conceptSMTKWeb.getValidPersistedRelationshipsWeb()) {
+            if (relationshipWeb.getRelationshipDefinition().getId() == 69) {
+                for (RelationshipAttribute relationshipAttribute : relationshipWeb.getRelationshipAttributes()) {
+                    if (relationshipAttribute.getRelationAttributeDefinition().getId() == 12) {
                         HelperTableRecord helperRecord = (HelperTableRecord) relationshipAttribute.getTarget();
                         return helperRecord.getValueColumn("description");
                     }
@@ -70,14 +92,12 @@ public class CompositeAditional {
     }
 
 
-
-
-    public String getTipoMCCE(ConceptSMTK conceptSMTK){
+    public String getTipoMCCE(ConceptSMTK conceptSMTK) {
         conceptSMTK.setRelationships(getRelationships(conceptSMTK));
-        ConceptSMTKWeb conceptSMTKWeb= new ConceptSMTKWeb(conceptSMTK);
+        ConceptSMTKWeb conceptSMTKWeb = new ConceptSMTKWeb(conceptSMTK);
 
-        for (RelationshipWeb relationshipWeb: conceptSMTKWeb.getValidPersistedRelationshipsWeb()) {
-            if(relationshipWeb.getRelationshipDefinition().getId()==75){
+        for (RelationshipWeb relationshipWeb : conceptSMTKWeb.getValidPersistedRelationshipsWeb()) {
+            if (relationshipWeb.getRelationshipDefinition().getId() == 75) {
 
                 HelperTableRecord helperRecord = (HelperTableRecord) relationshipWeb.getTarget();
                 return helperRecord.getValueColumn("description");
@@ -87,12 +107,12 @@ public class CompositeAditional {
         return null;
     }
 
-    public String getPackMultiCant(ConceptSMTK conceptSMTK){
+    public String getPackMultiCant(ConceptSMTK conceptSMTK) {
         conceptSMTK.setRelationships(getRelationships(conceptSMTK));
-        ConceptSMTKWeb conceptSMTKWeb= new ConceptSMTKWeb(conceptSMTK);
+        ConceptSMTKWeb conceptSMTKWeb = new ConceptSMTKWeb(conceptSMTK);
 
-        for (RelationshipWeb relationshipWeb: conceptSMTKWeb.getValidPersistedRelationshipsWeb()) {
-            if(relationshipWeb.getRelationshipDefinition().getId()==77){
+        for (RelationshipWeb relationshipWeb : conceptSMTKWeb.getValidPersistedRelationshipsWeb()) {
+            if (relationshipWeb.getRelationshipDefinition().getId() == 77) {
 
                 return relationshipWeb.getTarget().toString();
             }
@@ -101,13 +121,13 @@ public class CompositeAditional {
         return null;
     }
 
-    public String getPackMultiUnidad(ConceptSMTK conceptSMTK){
+    public String getPackMultiUnidad(ConceptSMTK conceptSMTK) {
         conceptSMTK.setRelationships(getRelationships(conceptSMTK));
-        ConceptSMTKWeb conceptSMTKWeb= new ConceptSMTKWeb(conceptSMTK);
-        for (RelationshipWeb relationshipWeb: conceptSMTKWeb.getValidPersistedRelationshipsWeb()) {
-            if(relationshipWeb.getRelationshipDefinition().getId()==77){
-                for (RelationshipAttribute relationshipAttribute:relationshipWeb.getRelationshipAttributes()){
-                    if(relationshipAttribute.getRelationAttributeDefinition().getId()==16){
+        ConceptSMTKWeb conceptSMTKWeb = new ConceptSMTKWeb(conceptSMTK);
+        for (RelationshipWeb relationshipWeb : conceptSMTKWeb.getValidPersistedRelationshipsWeb()) {
+            if (relationshipWeb.getRelationshipDefinition().getId() == 77) {
+                for (RelationshipAttribute relationshipAttribute : relationshipWeb.getRelationshipAttributes()) {
+                    if (relationshipAttribute.getRelationAttributeDefinition().getId() == 16) {
                         HelperTableRecord helperRecord = (HelperTableRecord) relationshipAttribute.getTarget();
                         return helperRecord.getValueColumn("description");
                     }
@@ -115,27 +135,30 @@ public class CompositeAditional {
                 }
 
             }
-        }return null;
+        }
+        return null;
     }
 
-    public String getVolumentTotalCant(ConceptSMTK conceptSMTK){
+    public String getVolumentTotalCant(ConceptSMTK conceptSMTK) {
         conceptSMTK.setRelationships(getRelationships(conceptSMTK));
-        ConceptSMTKWeb conceptSMTKWeb= new ConceptSMTKWeb(conceptSMTK);
+        ConceptSMTKWeb conceptSMTKWeb = new ConceptSMTKWeb(conceptSMTK);
 
-        for (RelationshipWeb relationshipWeb: conceptSMTKWeb.getValidPersistedRelationshipsWeb()) {
-            if(relationshipWeb.getRelationshipDefinition().getId()==93){
+        for (RelationshipWeb relationshipWeb : conceptSMTKWeb.getValidPersistedRelationshipsWeb()) {
+            if (relationshipWeb.getRelationshipDefinition().getId() == 93) {
 
                 return relationshipWeb.getTarget().toString();
             }
-        }return null;
+        }
+        return null;
     }
-    public String getVolumentTotalUnidad(ConceptSMTK conceptSMTK){
+
+    public String getVolumentTotalUnidad(ConceptSMTK conceptSMTK) {
         conceptSMTK.setRelationships(getRelationships(conceptSMTK));
-        ConceptSMTKWeb conceptSMTKWeb= new ConceptSMTKWeb(conceptSMTK);
-        for (RelationshipWeb relationshipWeb: conceptSMTKWeb.getValidPersistedRelationshipsWeb()) {
-            if(relationshipWeb.getRelationshipDefinition().getId()==93){
-                for (RelationshipAttribute relationshipAttribute:relationshipWeb.getRelationshipAttributes()){
-                    if(relationshipAttribute.getRelationAttributeDefinition().getId()==17){
+        ConceptSMTKWeb conceptSMTKWeb = new ConceptSMTKWeb(conceptSMTK);
+        for (RelationshipWeb relationshipWeb : conceptSMTKWeb.getValidPersistedRelationshipsWeb()) {
+            if (relationshipWeb.getRelationshipDefinition().getId() == 93) {
+                for (RelationshipAttribute relationshipAttribute : relationshipWeb.getRelationshipAttributes()) {
+                    if (relationshipAttribute.getRelationAttributeDefinition().getId() == 17) {
                         HelperTableRecord helperRecord = (HelperTableRecord) relationshipAttribute.getTarget();
                         return helperRecord.getValueColumn("description");
                     }
@@ -143,49 +166,50 @@ public class CompositeAditional {
                 }
 
             }
-        }return null;
+        }
+        return null;
     }
 
 
-
-    public String getCantidadMCToPCCE(ConceptSMTK conceptSMTK){
+    public String getCantidadMCToPCCE(ConceptSMTK conceptSMTK) {
         conceptSMTK.setRelationships(getRelationships(conceptSMTK));
-        ConceptSMTKWeb conceptSMTKWeb= new ConceptSMTKWeb(conceptSMTK);
+        ConceptSMTKWeb conceptSMTKWeb = new ConceptSMTKWeb(conceptSMTK);
 
-        for (RelationshipWeb relationshipWeb: conceptSMTKWeb.getValidPersistedRelationshipsWeb()) {
-            if(relationshipWeb.getRelationshipDefinition().getId()==48){
+        for (RelationshipWeb relationshipWeb : conceptSMTKWeb.getValidPersistedRelationshipsWeb()) {
+            if (relationshipWeb.getRelationshipDefinition().getId() == 48) {
 
 
                 return getCantidadMC((ConceptSMTK) relationshipWeb.getTarget());
             }
-        }return null;
+        }
+        return null;
 
     }
 
-    public String getUnidadCantidadMCToPCCE(ConceptSMTK conceptSMTK){
+    public String getUnidadCantidadMCToPCCE(ConceptSMTK conceptSMTK) {
         conceptSMTK.setRelationships(getRelationships(conceptSMTK));
-        ConceptSMTKWeb conceptSMTKWeb= new ConceptSMTKWeb(conceptSMTK);
+        ConceptSMTKWeb conceptSMTKWeb = new ConceptSMTKWeb(conceptSMTK);
 
-        for (RelationshipWeb relationshipWeb: conceptSMTKWeb.getValidPersistedRelationshipsWeb()) {
-            if(relationshipWeb.getRelationshipDefinition().getId()==48){
+        for (RelationshipWeb relationshipWeb : conceptSMTKWeb.getValidPersistedRelationshipsWeb()) {
+            if (relationshipWeb.getRelationshipDefinition().getId() == 48) {
                 return getUnidadCantidadMC((ConceptSMTK) relationshipWeb.getTarget());
             }
-        }return null;
+        }
+        return null;
     }
 
 
-    public List<Relationship> getRelationships(ConceptSMTK conceptSMTK){
+    public List<Relationship> getRelationships(ConceptSMTK conceptSMTK) {
 
-        if(!relationships.containsKey(conceptSMTK.getId())){
-            List <Relationship> relationshipsList = conceptManager.loadRelationships(conceptSMTK);
-            relationships.put(conceptSMTK.getId(),relationshipsList);
+        if (!relationships.containsKey(conceptSMTK.getId())) {
+            List<Relationship> relationshipsList = conceptManager.loadRelationships(conceptSMTK);
+            relationships.put(conceptSMTK.getId(), relationshipsList);
             return relationshipsList;
-        }else{
+        } else {
             return relationships.get(conceptSMTK.getId());
         }
 
     }
-
 
 
 }

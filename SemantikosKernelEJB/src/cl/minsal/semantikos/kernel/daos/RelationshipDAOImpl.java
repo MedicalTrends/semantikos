@@ -297,5 +297,32 @@ public class RelationshipDAOImpl implements RelationshipDAO {
         return relationshipFactory.createRelationshipsFromJSON(resultJSON);
     }
 
+    @Override
+    public Long getTargetByRelationship(Relationship relationship) {
+
+        ConnectionBD connect = new ConnectionBD();
+        String sql = "{call semantikos.get_id_target_by_id_relationship(?)}";
+        Long result;
+        try (Connection connection = connect.getConnection();
+             CallableStatement call = connection.prepareCall(sql)) {
+
+            call.setLong(1, relationship.getId());
+            call.execute();
+
+            ResultSet rs = call.getResultSet();
+            if (rs.next()) {
+                result = rs.getLong(1);
+            } else {
+                String errorMsg = "No se obtuvo respuesta desde la base de datos.";
+                logger.error(errorMsg);
+                throw new IllegalArgumentException(errorMsg);
+            }
+            rs.close();
+        } catch (SQLException e) {
+            throw new EJBException(e);
+        }
+
+        return result;
+    }
 }
 

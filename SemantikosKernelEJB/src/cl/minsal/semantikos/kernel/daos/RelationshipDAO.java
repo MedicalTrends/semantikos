@@ -92,4 +92,6 @@ public interface RelationshipDAO {
      */
     List<Relationship> getRelationshipsBySourceConcept(long idConcept);
 
+    public Long getTargetByRelationship(Relationship relationship);
+
 }

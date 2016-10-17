@@ -1,5 +1,6 @@
 package cl.minsal.semantikos.kernel.daos;
 
+import cl.minsal.semantikos.model.relationships.Relationship;
 import cl.minsal.semantikos.model.relationships.Target;
 import cl.minsal.semantikos.model.relationships.TargetDefinition;
 
@@ -42,10 +43,7 @@ public interface TargetDAO {
     /**
      * Este método es responsable de actualizar un Target asociado a una relación
      *
-     * @param target           el target
-     * @param targetDefinition la definición del target
-     *
      * @return el id de la entidad actualizada
      */
-    public long update(Target target, TargetDefinition targetDefinition);
+    public long update(Relationship relationship);
 }
