@@ -1147,4 +1147,48 @@ public class ConceptBean implements Serializable {
 
         return orderedRelationshipDefinitionsList;
     }
+
+    public boolean autogenerateMB(RelationshipDefinition relationshipDefinition){
+
+        if(relationshipDefinition.getId()==45) return true;
+
+        return false;
+    }
+
+    public boolean autogenerateMCCE(RelationshipDefinition relationshipDefinition){
+
+        if(relationshipDefinition.getId()==48) return true;
+
+        return false;
+    }
+
+    public String autogenerate(){
+
+        String autogenerateString="";
+
+        for (int i = 0; i < autoGenerateList.size(); i++) {
+            if(i==0){
+                autogenerateString=autoGenerateList.get(i);
+            }else{
+                autogenerateString=autogenerateString+" + "+autoGenerateList.get(i);
+            }
+
+        }
+        return autogenerateString;
+    }
+
+    public String autogenerateMCCE(){
+
+        String autogenerateString="";
+
+        for (int i = 0; i < autoGenerateList.size(); i++) {
+            if(i==0){
+                autogenerateString=autoGenerateList.get(i);
+            }else{
+                autogenerateString=autogenerateString+" "+autoGenerateList.get(i);
+            }
+
+        }
+        return autogenerateString;
+    }
 }
