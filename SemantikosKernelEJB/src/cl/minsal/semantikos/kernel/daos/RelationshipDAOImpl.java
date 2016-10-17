@@ -101,7 +101,7 @@ public class RelationshipDAOImpl implements RelationshipDAO {
     public void delete(Relationship relationship) {
 
         ConnectionBD connect = new ConnectionBD();
-        String sql = "{call semantikos.update_relationship(?)}";
+        String sql = "{call semantikos.invalidate_relationship(?)}";
 
         try (Connection connection = connect.getConnection();
              CallableStatement call = connection.prepareCall(sql)) {

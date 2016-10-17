@@ -14,7 +14,7 @@ public class RelationshipWeb extends Relationship {
 
 
     public RelationshipWeb(Relationship r) {
-        super(r.getSourceConcept(), r.getTarget(), r.getRelationshipDefinition(), new ArrayList<RelationshipAttribute>());
+        super(r.getSourceConcept(), r.getTarget().copy(), r.getRelationshipDefinition(), new ArrayList<RelationshipAttribute>());
         //super(r.getSourceConcept(), r.getTarget(), r.getRelationshipDefinition(), r.getRelationshipAttributes());
         this.hasBeenModified = false;
 
@@ -35,6 +35,16 @@ public class RelationshipWeb extends Relationship {
     public RelationshipWeb(long id, Relationship r, List<RelationshipAttribute> ra) {
         this(r, ra);
         this.setId(id);
+    }
+
+    public RelationshipWeb(ConceptSMTKWeb concept, long id, Relationship r) {
+        this(id, r);
+        super.setSourceConcept(concept);
+    }
+
+    public RelationshipWeb(ConceptSMTKWeb concept, long id, Relationship r, List<RelationshipAttribute> ra) {
+        this(id, r, ra);
+        super.setSourceConcept(concept);
     }
 
     @Override
@@ -73,11 +83,11 @@ public class RelationshipWeb extends Relationship {
         boolean result = true;
 
         result = (this.getSourceConcept().getId() == relationshipWeb.getSourceConcept().getId() && this.getRelationshipDefinition().getId() == relationshipWeb.getRelationshipDefinition().getId() &&
-                  this.getTarget().getId() == relationshipWeb.getTarget().getId());
+                  this.getTarget().equals(relationshipWeb.getTarget()));
 
         for (RelationshipAttribute attribute : this.getRelationshipAttributes()) {
             RelationshipAttribute otherAttribute = relationshipWeb.getAttributeById(attribute.getIdRelationshipAttribute());
-            result = result && attribute.getTarget().getId() == otherAttribute.getTarget().getId();
+            result = result && attribute.getTarget().equals(otherAttribute.getTarget());
         }
 
         return result;

@@ -3,6 +3,7 @@ package cl.minsal.semantikos.kernel.components;
 import cl.minsal.semantikos.kernel.daos.ConceptDAO;
 import cl.minsal.semantikos.kernel.daos.RelationshipAttributeDAO;
 import cl.minsal.semantikos.kernel.daos.RelationshipDAO;
+import cl.minsal.semantikos.kernel.daos.TargetDAO;
 import cl.minsal.semantikos.model.ConceptSMTK;
 import cl.minsal.semantikos.model.User;
 import cl.minsal.semantikos.model.businessrules.ConceptCreationBR;
@@ -35,6 +36,9 @@ public class RelationshipManagerImpl implements RelationshipManager {
 
     @EJB
     private ConceptDAO conceptDAO;
+
+    @EJB
+    private TargetDAO targetDAO;
 
     @EJB
     private AuditManager auditManager;
@@ -153,12 +157,16 @@ public class RelationshipManagerImpl implements RelationshipManager {
             mergeRelationship(originalRelationship, editedRelationship);
 
             /* Si el concepto editado está persistido se elimina */
+            /*
             if (editedRelationship.isPersistent()){
                 relationshipDAO.delete(editedRelationship);
             }
+            */
 
             /* Se actualiza la relación original */
             relationshipDAO.update(originalRelationship);
+
+            targetDAO.update(editedRelationship.getTarget(), editedRelationship.getRelationshipDefinition().getTargetDefinition());
         }
 
         /* Si el concepto está modelado, se versiona y actualiza */
@@ -177,7 +185,7 @@ public class RelationshipManagerImpl implements RelationshipManager {
         }
 
         /* Registrar en el Historial si es preferida (Historial BR) */
-        if (editedRelationship.isAttribute()) {
+        if (editedRelationship.isAttribute() && editedRelationship.getSourceConcept().isModeled()) {
             auditManager.recordAttributeChange(conceptSMTK, originalRelationship, user);
         }
     }

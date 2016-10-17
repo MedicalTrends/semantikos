@@ -323,7 +323,7 @@ public class ConceptBean implements Serializable {
 
         Relationship relationship = new Relationship(this.concept, target, relationshipDefinition, new ArrayList<RelationshipAttribute>());
         // Se utiliza el constructor mínimo (sin id)
-        this.concept.addRelationshipWeb(relationship);
+        this.concept.addRelationshipWeb(new RelationshipWeb(relationship, relationship.getRelationshipAttributes()));
     }
 
     /**
@@ -338,7 +338,7 @@ public class ConceptBean implements Serializable {
             relationship.getRelationshipAttributes().add(attribute);
         }
         // Se utiliza el constructor mínimo (sin id)
-        this.concept.addRelationshipWeb(new RelationshipWeb(relationship));
+        this.concept.addRelationshipWeb(new RelationshipWeb(relationship, relationship.getRelationshipAttributes()));
         // Reinicializar placeholder relaciones
         relationshipPlaceholders.put(relationshipDefinition.getId(), new Relationship(concept, null, relationshipDefinition, new ArrayList<RelationshipAttribute>()));
         // Resetear placeholder targets
@@ -354,7 +354,7 @@ public class ConceptBean implements Serializable {
 
         Relationship relationship = new Relationship(this.concept, target, relationshipDefinition, new ArrayList<RelationshipAttribute>());
         // Se utiliza el constructor mínimo (sin id)
-        this.concept.addRelationshipWeb(relationship);
+        this.concept.addRelationshipWeb(new RelationshipWeb(relationship, relationship.getRelationshipAttributes()));
         // Resetear placeholder targets
         basicTypeValue = new BasicTypeValue(null);
         selectedHelperTableRecord = new HelperTableRecord();
@@ -373,7 +373,7 @@ public class ConceptBean implements Serializable {
         Relationship relationship = new Relationship(this.concept, record, relationshipDefinition, getRelationshipAttributesByRelationshipDefinition(relationshipDefinition));
 
         // Se utiliza el constructor mínimo (sin id)
-        this.concept.addRelationshipWeb(relationship);
+        this.concept.addRelationshipWeb(new RelationshipWeb(relationship, relationship.getRelationshipAttributes()));
         conceptSelected = null;
     }
 
@@ -393,8 +393,10 @@ public class ConceptBean implements Serializable {
             }
         }
         // Si no se encuentra la relación, se crea una nueva
-        if (!isRelationshipFound)
-            this.concept.addRelationshipWeb(new Relationship(this.concept, target, relationshipDefinition, new ArrayList<RelationshipAttribute>()));
+        if (!isRelationshipFound) {
+            Relationship r = new Relationship(this.concept, target, relationshipDefinition, new ArrayList<RelationshipAttribute>());
+            this.concept.addRelationshipWeb(new RelationshipWeb(r, r.getRelationshipAttributes()));
+        }
 
         // Se resetean los placeholder para los target de las relaciones
         basicTypeValue = new BasicTypeValue(null);

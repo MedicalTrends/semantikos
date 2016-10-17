@@ -128,5 +128,7 @@ public class HelperTableRecord implements Target {
             return String.format("%s[id=%d]", getClass().getSimpleName(), new Long(this.getFields().get("id")));
     }
 
-
+    public HelperTableRecord copy() {
+        return new HelperTableRecord(this.helperTable, this.fields);
+    }
 }

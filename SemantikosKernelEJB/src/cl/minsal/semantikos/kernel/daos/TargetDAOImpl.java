@@ -189,7 +189,7 @@ public class TargetDAOImpl implements TargetDAO {
     @Override
     public long update(Target target, TargetDefinition targetDefinition) {
         ConnectionBD connect = new ConnectionBD();
-        String sql = "{call semantikos.update_target(?,?,?,?,?,?,?,?,?,?,?)}";
+        String sql = "{call semantikos.update_target(?,?,?,?,?,?,?,?,?,?)}";
         long idTarget = -1;
 
         try (Connection connection = connect.getConnection();
@@ -200,48 +200,55 @@ public class TargetDAOImpl implements TargetDAO {
 
                 BasicTypeDefinition basicTypeDefinition = (BasicTypeDefinition) targetDefinition;
                 BasicTypeValue value = (BasicTypeValue) target;
+                setDefaultValuesForCreateTargetFunction(call);
 
+                //TODO: FIX
+                /*
                 if (value.isDate()) {
                     call.setTimestamp(2, (Timestamp) value.getValue());
                 }
+                */
                 if (value.isFloat()) {
                     call.setFloat(1, (Float) value.getValue());
                 }
                 if (value.isInteger()) {
-                    call.setInt(5, (Integer) value.getValue());
+                    call.setInt(4, (Integer) value.getValue());
                 }
                 if (value.isString()) {
-                    call.setString(3, (String) value.getValue());
+                    call.setString(2, (String) value.getValue());
                 }
-
-                call.setNull(4, 1);
 
             }
 
             /* Almacenar concepto SMTK */
             if (targetDefinition.isSMTKType()) {
-                call.setFloat(9, SMTK.getIdTargetType());
+                call.setFloat(8, target.getId());
+                call.setLong(9, SMTK.getIdTargetType());
             }
 
             /* Almacenar registro Tabla auxiliar */
             else if (targetDefinition.isHelperTable()) {
-                call.setLong(6, target.getId());
-                call.setLong(10, HelperTable.getIdTargetType());
+                call.setLong(5, target.getId());
+                call.setLong(9, HelperTable.getIdTargetType());
             }
 
             /* Almacenar concepto SCT */
             else if (targetDefinition.isSnomedCTType()) {
                 call.setLong(8, target.getId());
-                call.setLong(10, SnomedCT.getIdTargetType());
+                call.setLong(9, SnomedCT.getIdTargetType());
             }
+
+            call.setLong(10, target.getId());
 
             call.execute();
 
             ResultSet rs = call.getResultSet();
 
+            /*
             if (rs.next()) {
                 idTarget = rs.getLong(1);
             }
+            */
             rs.close();
 
         } catch (SQLException e) {
@@ -277,15 +284,16 @@ public class TargetDAOImpl implements TargetDAO {
      */
     private void setDefaultValuesForCreateTargetFunction(CallableStatement call) throws SQLException {
         call.setNull(1, REAL);
-        call.setNull(2, TIMESTAMP);
-        call.setNull(3, VARCHAR);
-        call.setNull(4, BOOLEAN);
-        call.setNull(5, INTEGER);
-        call.setNull(6, INTEGER);
-        call.setNull(7, INTEGER);
-        call.setNull(8, INTEGER);
-        call.setNull(9, INTEGER);
-        call.setNull(10, INTEGER);
+        //call.setNull(2, TIMESTAMP);
+        call.setNull(2, VARCHAR);
+        call.setNull(3, BOOLEAN);
+        call.setNull(4, BIGINT);
+        call.setNull(5, BIGINT);
+        call.setNull(6, BIGINT);
+        call.setNull(7, BIGINT);
+        call.setNull(8, BIGINT);
+        call.setNull(9, BIGINT);
+        call.setNull(10, BIGINT);
     }
 
 }
