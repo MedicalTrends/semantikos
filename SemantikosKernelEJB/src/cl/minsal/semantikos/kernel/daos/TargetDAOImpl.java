@@ -197,17 +197,16 @@ public class TargetDAOImpl implements TargetDAO {
         String sql = "{call semantikos.update_target(?,?,?,?,?,?,?,?,?,?,?)}";
         long idTarget = relationshipDAO.getTargetByRelationship(relationship);
 
-
-
         try (Connection connection = connect.getConnection();
              CallableStatement call = connection.prepareCall(sql)) {
+
+            setDefaultValuesForUpdateTargetFunction(call);
 
             /* Almacenar el tipo básico */
             if (relationship.getRelationshipDefinition().getTargetDefinition().isBasicType()) {
 
                 BasicTypeDefinition basicTypeDefinition = (BasicTypeDefinition) relationship.getRelationshipDefinition().getTargetDefinition();
                 BasicTypeValue value = (BasicTypeValue) relationship.getTarget();
-                setDefaultValuesForUpdateTargetFunction(call);
 
                 //TODO: FIX
 
@@ -229,7 +228,7 @@ public class TargetDAOImpl implements TargetDAO {
 
             /* Almacenar concepto SMTK */
             if (relationship.getRelationshipDefinition().getTargetDefinition().isSMTKType()) {
-                call.setFloat(9, relationship.getTarget().getId());
+                call.setLong(9, relationship.getTarget().getId());
                 call.setLong(10, SMTK.getIdTargetType());
             }
 

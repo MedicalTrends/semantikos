@@ -273,7 +273,7 @@ public class ConceptSMTKWeb extends ConceptSMTK {
      */
     public void removeRelationshipWeb(Relationship relationship) {
         this.getRelationships().remove(relationship);
-        this.relationshipsWeb.remove(new RelationshipWeb(relationship.getId(), relationship));
+        this.relationshipsWeb.remove(relationship);
     }
 
 

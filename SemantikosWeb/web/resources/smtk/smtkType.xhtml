@@ -322,9 +322,7 @@
              styleClass="concept"
              rendered="#{cc.attrs.relationshipDefinition.multiplicity.simple}">
 
-
-
-            <p:outputPanel style="width: 100%" rendered="#{not cc.attrs.concept.hasRelationships(cc.attrs.relationshipDefinition)}">
+            <p:outputPanel id="panel_autocomplete" style="width: 100%" rendered="#{empty cc.attrs.concept.getValidRelationshipsWebByRelationDefinition(cc.attrs.relationshipDefinition)}">
                 <div class="ui-g">
                 <div class="ui-g-12 ui-md-6 ui-lg-2">
 
@@ -370,7 +368,7 @@
                 </div>
             </p:outputPanel>
 
-            <p:outputPanel style="width: 100%" rendered="#{cc.attrs.concept.hasRelationships(cc.attrs.relationshipDefinition)}">
+            <p:outputPanel id="panel_input" style="width: 100%" rendered="#{not empty cc.attrs.concept.getValidRelationshipsWebByRelationDefinition(cc.attrs.relationshipDefinition)}">
                 <div class="ui-g">
 
                     <ui:repeat value="#{cc.attrs.concept.getValidRelationshipsWebByRelationDefinition(cc.attrs.relationshipDefinition)}"
