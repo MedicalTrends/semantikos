@@ -309,8 +309,9 @@ public class ConceptSMTK extends PersistentEntity implements Target, AuditableEn
     @Override
     public Target copy() {
         ConceptSMTK conceptSMTK = new ConceptSMTK(this.getCategory());
+        conceptSMTK.setId(this.getId());
         conceptSMTK.setDescriptions(this.getDescriptions());
-        conceptSMTK.setRelationships(this.getRelationships());
+        conceptSMTK.setRelationships(this.relationships);
         return conceptSMTK;
     }
 

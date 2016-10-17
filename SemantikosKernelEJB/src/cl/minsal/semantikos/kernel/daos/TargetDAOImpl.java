@@ -189,35 +189,19 @@ public class TargetDAOImpl implements TargetDAO {
     @Override
     public long update(Target target, TargetDefinition targetDefinition) {
         ConnectionBD connect = new ConnectionBD();
-        String sql = "{call semantikos.update_target(?,?,?,?,?,?,?,?,?,?)}";
+        String sql = "{call semantikos.update_target(?,?,?,?,?,?,?,?,?,?,?)}";
         long idTarget = -1;
 
         try (Connection connection = connect.getConnection();
              CallableStatement call = connection.prepareCall(sql)) {
 
+            /* Se fijan de los argumentos por defecto */
+            setDefaultValuesForUpdateTargetFunction(call);
+
             /* Almacenar el tipo básico */
             if (targetDefinition.isBasicType()) {
-
-                BasicTypeDefinition basicTypeDefinition = (BasicTypeDefinition) targetDefinition;
-                BasicTypeValue value = (BasicTypeValue) target;
-                setDefaultValuesForCreateTargetFunction(call);
-
-                //TODO: FIX
-                /*
-                if (value.isDate()) {
-                    call.setTimestamp(2, (Timestamp) value.getValue());
-                }
-                */
-                if (value.isFloat()) {
-                    call.setFloat(1, (Float) value.getValue());
-                }
-                if (value.isInteger()) {
-                    call.setInt(4, (Integer) value.getValue());
-                }
-                if (value.isString()) {
-                    call.setString(2, (String) value.getValue());
-                }
-
+                setTargetCall((BasicTypeValue) target, (BasicTypeDefinition) targetDefinition, call);
+                call.setLong(11, BasicType.getIdTargetType());
             }
 
             /* Almacenar concepto SMTK */
@@ -284,16 +268,34 @@ public class TargetDAOImpl implements TargetDAO {
      */
     private void setDefaultValuesForCreateTargetFunction(CallableStatement call) throws SQLException {
         call.setNull(1, REAL);
-        //call.setNull(2, TIMESTAMP);
-        call.setNull(2, VARCHAR);
-        call.setNull(3, BOOLEAN);
-        call.setNull(4, BIGINT);
+        call.setNull(2, TIMESTAMP);
+        call.setNull(3, VARCHAR);
+        call.setNull(4, BOOLEAN);
         call.setNull(5, BIGINT);
         call.setNull(6, BIGINT);
         call.setNull(7, BIGINT);
         call.setNull(8, BIGINT);
         call.setNull(9, BIGINT);
         call.setNull(10, BIGINT);
+    }
+
+    /**
+     * Este método es responsable de fijar los valores por defectos NULOS de la función crear concepto.
+     *
+     * @throws SQLException
+     */
+    private void setDefaultValuesForUpdateTargetFunction(CallableStatement call) throws SQLException {
+        call.setNull(1, REAL);
+        call.setNull(2, TIMESTAMP);
+        call.setNull(3, VARCHAR);
+        call.setNull(4, BOOLEAN);
+        call.setNull(5, BIGINT);
+        call.setNull(6, BIGINT);
+        call.setNull(7, BIGINT);
+        call.setNull(8, BIGINT);
+        call.setNull(9, BIGINT);
+        call.setNull(10, BIGINT);
+        call.setNull(11, BIGINT);
     }
 
 }

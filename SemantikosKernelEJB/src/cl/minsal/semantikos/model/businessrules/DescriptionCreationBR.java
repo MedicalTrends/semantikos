@@ -59,7 +59,7 @@ public class DescriptionCreationBR {
         Category category = concept.getCategory();
 
         if (categoryManager.categoryContains(category, term)) {
-            throw new BusinessRuleException("Un término sólo puede existir una vez en una categoría.");
+                throw new BusinessRuleException("Un término sólo puede existir una vez en una categoría.");
         }
     }
 
