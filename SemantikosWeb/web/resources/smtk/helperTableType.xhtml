@@ -407,7 +407,7 @@
             <p:spacer />
             <p:dataTable id="collectionValuesWithAttributes"
                          styleClass="relationshipsWithAttributes_#{cc.attrs.relationshipDefinition.id}"
-                         draggableRows="#{cc.attrs.relationshipDefinition.getAttributeOrder() != null}"
+                         draggableRows="#{cc.attrs.relationshipDefinition.orderAttributeDefinition() != null}"
                          var="relationship"
                          value="#{cc.attrs.concept.getValidRelationshipsWebByRelationDefinition(cc.attrs.relationshipDefinition)}"
                          style="width: 100%"

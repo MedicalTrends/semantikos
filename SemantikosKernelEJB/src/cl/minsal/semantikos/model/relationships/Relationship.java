@@ -253,4 +253,13 @@ public class Relationship extends PersistentEntity implements AuditableEntity {
     public void setRelationshipAttributes(List<RelationshipAttribute> relationshipAttributes) {
         this.relationshipAttributes = relationshipAttributes;
     }
+
+    public RelationshipAttribute getOrderAttribute(){
+        for (RelationshipAttribute relationshipAttribute : getRelationshipAttributes()) {
+            if(relationshipAttribute.getRelationAttributeDefinition().getName().equalsIgnoreCase("orden")){
+                return relationshipAttribute;
+            }
+        }
+        return null;
+    }
 }

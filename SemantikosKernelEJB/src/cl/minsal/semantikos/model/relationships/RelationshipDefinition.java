@@ -176,7 +176,7 @@ public class RelationshipDefinition {
         return targetDefinition.isBasicType() || targetDefinition.isCrossMapType() || targetDefinition.isHelperTable() || targetDefinition.isSMTKType();
     }
 
-    public RelationshipAttributeDefinition getAttributeOrder(){
+    public RelationshipAttributeDefinition getOrderAttributeDefinition(){
         for (RelationshipAttributeDefinition relationshipAttributeDefinition : getRelationshipAttributeDefinitions()) {
             if(relationshipAttributeDefinition.getName().equalsIgnoreCase("orden")){
                 return relationshipAttributeDefinition;

@@ -161,7 +161,8 @@
             <p:spacer />
             <p:dataTable emptyMessage="No existen relaciones, se debe agregar al menos: #{cc.attrs.relationshipDefinition.multiplicity.lowerBoundary}."
                          id="tableRelationship2"
-                         draggableRows="#{cc.attrs.relationshipDefinition.getAttributeOrder() != null}" style="margin: 10px;"
+                         sortBy="#{rel.getOrderAttribute()}"
+                         draggableRows="#{cc.attrs.relationshipDefinition.getOrderAttributeDefinition() != null}" style="margin: 10px;"
                          value="#{conceptBean.concept.getValidRelationshipsWebByRelationDefinition(cc.attrs.relationshipDefinition)}"
                          var="rel">
 
@@ -272,7 +273,7 @@
             <p:dataTable emptyMessage="No existen relaciones, se debe agregar al menos: #{cc.attrs.relationshipDefinition.multiplicity.lowerBoundary}."
                          id="tableRelationship3"
                          styleClass="relationshipsWithAttributes_#{cc.attrs.relationshipDefinition.id}"
-                         draggableRows="#{cc.attrs.relationshipDefinition.getAttributeOrder() != null}" style="margin: 10px;"
+                         draggableRows="#{cc.attrs.relationshipDefinition.orderAttributeDefinition() != null}" style="margin: 10px;"
                          value="#{conceptBean.concept.getValidRelationshipsWebByRelationDefinition(cc.attrs.relationshipDefinition)}"
                          var="rel">
 

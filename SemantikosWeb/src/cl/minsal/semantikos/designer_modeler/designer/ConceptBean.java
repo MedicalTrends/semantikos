@@ -6,12 +6,10 @@ import cl.minsal.semantikos.model.*;
 import cl.minsal.semantikos.model.audit.ConceptAuditAction;
 import cl.minsal.semantikos.model.basictypes.BasicTypeValue;
 import cl.minsal.semantikos.model.exceptions.BusinessRuleException;
-import cl.minsal.semantikos.model.helpertables.HelperTable;
 import cl.minsal.semantikos.model.helpertables.HelperTableRecord;
 import cl.minsal.semantikos.model.relationships.*;
 import cl.minsal.semantikos.util.Pair;
 import cl.minsal.semantikos.view.components.ViewAugmenter;
-import org.primefaces.component.datatable.DataTable;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.ReorderEvent;
 import org.primefaces.event.RowEditEvent;
@@ -339,8 +337,8 @@ public class ConceptBean implements Serializable {
 
         Relationship relationship = relationshipPlaceholders.get(relationshipDefinition.getId());
 
-        if(relationshipDefinition.getAttributeOrder()!=null) {
-            RelationshipAttribute attribute = new RelationshipAttribute(relationshipDefinition.getAttributeOrder(), relationship, new BasicTypeValue(concept.getValidRelationshipsByRelationDefinition(relationshipDefinition).size()+1));
+        if(relationshipDefinition.getOrderAttributeDefinition()!=null) {
+            RelationshipAttribute attribute = new RelationshipAttribute(relationshipDefinition.getOrderAttributeDefinition(), relationship, new BasicTypeValue(concept.getValidRelationshipsByRelationDefinition(relationshipDefinition).size()+1));
             relationship.getRelationshipAttributes().add(attribute);
         }
 
@@ -649,6 +647,7 @@ public class ConceptBean implements Serializable {
     private void persistConcept(FacesContext context) {
         // TODO: Investigar cómo capturar la excepción de negocio
         try {
+            /*
             for (RelationshipWeb relationshipWebC: concept.getRelationshipsWeb()) {
                 for (Relationship relationshipC: concept.getRelationships()) {
                     if(relationshipWebC.getRelationshipDefinition().getId()==relationshipC.getRelationshipDefinition().getId()){
@@ -656,6 +655,7 @@ public class ConceptBean implements Serializable {
                     }
                 }
             }
+            */
             conceptManager.persist(concept, user);
             context.addMessage(null, new FacesMessage("Successful", "Concepto guardado "));
             // Se resetea el concepto, como el concepto está persistido, se le pasa su id

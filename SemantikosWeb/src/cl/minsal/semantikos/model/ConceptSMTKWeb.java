@@ -4,7 +4,6 @@ import cl.minsal.semantikos.model.basictypes.BasicTypeValue;
 import cl.minsal.semantikos.model.exceptions.BusinessRuleException;
 import cl.minsal.semantikos.model.relationships.Relationship;
 import cl.minsal.semantikos.model.relationships.RelationshipAttribute;
-import cl.minsal.semantikos.model.relationships.RelationshipAttributeDefinition;
 import cl.minsal.semantikos.model.relationships.RelationshipDefinition;
 import cl.minsal.semantikos.util.Pair;
 
@@ -470,7 +469,7 @@ public class ConceptSMTKWeb extends ConceptSMTK {
     public RelationshipAttribute getAttributeOrder(RelationshipDefinition relationshipDefinition, int order){
 
         for (RelationshipWeb relationshipWeb : getValidRelationshipsWebByRelationDefinition(relationshipDefinition)) {
-            if(relationshipWeb.getRelationshipDefinition().getAttributeOrder() != null){
+            if(relationshipWeb.getRelationshipDefinition().getOrderAttributeDefinition() != null){
                 for (RelationshipAttribute attribute : relationshipWeb.getRelationshipAttributes()) {
                     if(attribute.getRelationAttributeDefinition().isOrderAttribute()){
                         BasicTypeValue basicTypeValue = (BasicTypeValue) attribute.getTarget();
