@@ -4,6 +4,7 @@ import cl.minsal.semantikos.model.audit.AuditableEntity;
 import cl.minsal.semantikos.model.basictypes.BasicTypeValue;
 import cl.minsal.semantikos.model.businessrules.ConceptStateBusinessRulesContainer;
 import cl.minsal.semantikos.model.exceptions.BusinessRuleException;
+import cl.minsal.semantikos.model.helpertables.HelperTableRecord;
 import cl.minsal.semantikos.model.relationships.*;
 
 import javax.validation.constraints.NotNull;
@@ -638,6 +639,13 @@ public class ConceptSMTK extends PersistentEntity implements Target, AuditableEn
 
     public void setTagSMTK(TagSMTK tagSMTK) {
         this.tagSMTK = tagSMTK;
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        return (other instanceof ConceptSMTK) && (String.valueOf(conceptID) != null)
+                ? String.valueOf(conceptID).equals(String.valueOf(((ConceptSMTK) other).conceptID))
+                : (other == this);
     }
 
 }

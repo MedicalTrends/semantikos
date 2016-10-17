@@ -338,6 +338,7 @@ public class ConceptBean implements Serializable {
     public void addRelationshipWithAttributes(RelationshipDefinition relationshipDefinition) {
 
         Relationship relationship = relationshipPlaceholders.get(relationshipDefinition.getId());
+
         if(relationshipDefinition.getAttributeOrder()!=null) {
             RelationshipAttribute attribute = new RelationshipAttribute(relationshipDefinition.getAttributeOrder(), relationship, new BasicTypeValue(concept.getValidRelationshipsByRelationDefinition(relationshipDefinition).size()+1));
             relationship.getRelationshipAttributes().add(attribute);
@@ -347,8 +348,6 @@ public class ConceptBean implements Serializable {
             autoGenerateList.add(((ConceptSMTK)relationship.getTarget()).getDescriptionFavorite().getTerm());
             concept.getDescriptionFavorite().setTerm(autogenerate());
         }
-
-
 
         // Se utiliza el constructor mínimo (sin id)
         this.concept.addRelationshipWeb(new RelationshipWeb(relationship,relationship.getRelationshipAttributes()));

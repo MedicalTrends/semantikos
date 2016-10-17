@@ -129,6 +129,8 @@ public class HelperTableRecord implements Target {
     }
 
     public HelperTableRecord copy() {
-        return new HelperTableRecord(this.helperTable, this.fields);
+        HelperTableRecord helperTableRecord = new HelperTableRecord(this.helperTable, this.fields);
+        helperTableRecord.setId(this.getId());
+        return helperTableRecord;
     }
 }
