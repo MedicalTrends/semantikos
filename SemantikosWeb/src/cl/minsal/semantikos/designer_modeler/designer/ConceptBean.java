@@ -408,8 +408,9 @@ public class ConceptBean implements Serializable {
         }
         // Si no se encuentra la relación, se crea una nueva
         if (!isRelationshipFound) {
-            Relationship r = new Relationship(this.concept, target, relationshipDefinition, new ArrayList<RelationshipAttribute>());
-            this.concept.addRelationshipWeb(new RelationshipWeb(r, r.getRelationshipAttributes()));
+            relationship = new Relationship(this.concept, target, relationshipDefinition, new ArrayList<RelationshipAttribute>());
+
+            this.concept.addRelationshipWeb(new RelationshipWeb(relationship, relationship.getRelationshipAttributes()));
         }
 
         if(autogenerateMCCE(relationshipDefinition)){
