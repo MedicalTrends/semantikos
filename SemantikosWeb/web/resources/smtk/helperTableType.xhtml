@@ -413,6 +413,15 @@
                          style="width: 100%"
                          reflow="true">
 
+                <!-- Parámetros del validador -->
+                <f:attribute name="relationshipDefinition" value="#{cc.attrs.relationshipDefinition}"  />
+                <!---->
+
+                <p:ajax event="rowReorder" listener="#{conceptBean.onRowReorder}"
+                        update="@(.conceptHeader),@(.relationshipsWithAttributes_#{cc.attrs.relationshipDefinition.id})">
+
+                </p:ajax>
+
                 <p:columns value="#{cc.attrs.targetDefinition.showableColumns}"
                            var="column"
                            columnIndexVar="colIndex"
