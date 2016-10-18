@@ -20,8 +20,9 @@
 
 
     <p:panel style="width: 100%" rendered="#{cc.attrs.relationshipDefinition.compositeID==2}">
+    <p:panel style="border: hidden;" rendered="#{compositeAditionalBean.getAditionalInfo(cc.attrs.concept,69)!=null}">
 
-        <div class="ui-g">
+    <div class="ui-g">
 
 
             <div class="ui-g-12 ui-md-6 ui-lg-1">
@@ -41,6 +42,8 @@
             </div>
 
         </div>
+        </p:panel>
+
     </p:panel>
 
 
@@ -78,7 +81,7 @@
             </div>
 
         </div>
-
+        <p:panel style="border: hidden;" rendered="#{compositeAditionalBean.getAditionalInfo(cc.attrs.concept,77)!=null}">
         <div class="ui-g">
 
             <div class="ui-g-12 ui-md-6 ui-lg-1">
@@ -98,6 +101,8 @@
             </div>
 
         </div>
+        </p:panel>
+        <p:panel style="border: hidden;" rendered="#{compositeAditionalBean.getAditionalInfo(cc.attrs.concept,93)!=null}">
         <div class="ui-g">
 
             <div class="ui-g-12 ui-md-6 ui-lg-1">
@@ -117,6 +122,7 @@
             </div>
 
         </div>
+            </p:panel>
     </p:panel>
 
 

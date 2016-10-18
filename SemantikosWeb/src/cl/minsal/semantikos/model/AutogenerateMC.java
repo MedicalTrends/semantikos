@@ -97,10 +97,10 @@ public class AutogenerateMC {
             if(i==0){
                 term=sustancias.get(i);
             }else{
-                term= term+" "+ sustancias.get(i);
+                term= term+" + "+ sustancias.get(i);
             }
         }
-
+        term=" "+term;
         for (int i = 0; i < ffa.size(); i++) {
 
                 term=term+" "+ffa.get(i);

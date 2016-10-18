@@ -32,7 +32,12 @@ public class AutogenerateMCCE {
     }
 
     public String getCantidad() {
-        return cantidad;
+
+        if(cantidad!=null){
+            return "";
+        }else{
+            return cantidad;
+        }
     }
 
     public void setCantidad(String cantidad) {
@@ -40,7 +45,11 @@ public class AutogenerateMCCE {
     }
 
     public String getUnidadMedidaCantidad() {
-        return unidadMedidaCantidad;
+        if(unidadMedidaCantidad!=null){
+            return "";
+        }else{
+            return unidadMedidaCantidad;
+        }
     }
 
     public void setUnidadMedidaCantidad(String unidadMedidaCantidad) {
@@ -48,7 +57,12 @@ public class AutogenerateMCCE {
     }
 
     public String getVolumen() {
-        return volumen;
+        if(volumen!=null){
+            return "";
+        }else{
+            return volumen;
+        }
+
     }
 
     public void setVolumen(String volumen) {
@@ -56,7 +70,11 @@ public class AutogenerateMCCE {
     }
 
     public String getVolumenUnidad() {
-        return volumenUnidad;
+        if(volumenUnidad!=null){
+            return "";
+        }else{
+            return volumenUnidad;
+        }
     }
 
     public void setVolumenUnidad(String volumenUnidad) {
@@ -64,7 +82,12 @@ public class AutogenerateMCCE {
     }
 
     public String getPack() {
-        return pack;
+
+        if(pack!=null){
+            return "";
+        }else{
+            return pack;
+        }
     }
 
     public void setPack(String pack) {
@@ -72,7 +95,12 @@ public class AutogenerateMCCE {
     }
 
     public String getPackUnidad() {
-        return packUnidad;
+        if(packUnidad!=null){
+            return "";
+        }else{
+            return packUnidad;
+        }
+
     }
 
     public void setPackUnidad(String packUnidad) {
@@ -81,6 +109,6 @@ public class AutogenerateMCCE {
 
     @Override
     public String toString() {
-        return  MC + ' '  + cantidad + ' ' + unidadMedidaCantidad + ' ' +  volumen + ' ' + volumenUnidad + ' ' + pack + ' '+ packUnidad;
+        return  MC + ' '  + getCantidad() + ' ' + getUnidadMedidaCantidad() + ' ' +  getVolumen() + ' ' + getVolumenUnidad() + ' ' + getPack() + ' '+ getPackUnidad();
     }
 }
