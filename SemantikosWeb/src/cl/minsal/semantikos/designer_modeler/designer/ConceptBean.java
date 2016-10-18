@@ -669,13 +669,26 @@ public class ConceptBean implements Serializable {
 
             // Si el concepto no está persistido, persistirlo
             else {
-                persistConcept(context);
+                if(!containDescriptionCategory(concept,context)){
+                    persistConcept(context);
+                }
             }
         } else {
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Las relaciones no cumplen con el minimo requerido"));
 
         }
 
+    }
+
+    private boolean containDescriptionCategory(ConceptSMTKWeb conceptSMTK, FacesContext context){
+        boolean contain=false;
+        for (Description description: conceptSMTK.getDescriptionsWeb() ) {
+            if(categoryManager.categoryContains(conceptSMTK.getCategory(),description.getTerm())){
+                context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Ya existe la descripción "+description.getTerm()+ " en la categoría "+category.getName()));
+                contain=true;
+            }
+        }
+        return contain;
     }
 
     private void persistConcept(FacesContext context) {
