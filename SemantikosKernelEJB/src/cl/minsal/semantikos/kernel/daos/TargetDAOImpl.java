@@ -301,7 +301,7 @@ public class TargetDAOImpl implements TargetDAO {
             /* Almacenar registro Tabla auxiliar */
             else if (relationshipAttribute.getRelationAttributeDefinition().getTargetDefinition().isHelperTable()) {
                 //helperTableDAO.updateAuxiliary(relationship.getId(), relationship.getTarget().getId());
-                call.setLong(6, relationshipAttribute.getTarget().getId());
+                call.setLong(6, helperTableDAO.updateAuxiliary(relationshipAttribute.getIdRelationshipAttribute(), relationshipAttribute.getTarget().getId()));
                 call.setLong(10, HelperTable.getIdTargetType());
             }
 
