@@ -190,6 +190,10 @@ public class DescriptionManagerImpl implements DescriptionManager {
         /* Se aplican las reglas de negocio asociadas al movimiento de un concepto */
         descriptionTranslationBR.apply(targetConcept, description);
 
+        /*Se cambia el estado de la descripción segun el concepto*/
+
+        description.setModeled(targetConcept.isModeled());
+
         /* Luego se persiste el cambio */
         descriptionDAO.update(description);
 

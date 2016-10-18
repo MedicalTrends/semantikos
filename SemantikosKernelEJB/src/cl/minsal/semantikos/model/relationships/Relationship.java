@@ -269,7 +269,7 @@ public class Relationship extends PersistentEntity implements AuditableEntity {
 
         if(attribute != null){
             BasicTypeValue basicTypeValue = (BasicTypeValue) attribute.getTarget();
-            return (Integer)basicTypeValue.getValue();
+            return Integer.parseInt(basicTypeValue.getValue().toString());
         }
         else{
             return 0;
