@@ -281,7 +281,8 @@
                 <f:attribute name="relationshipDefinition" value="#{cc.attrs.relationshipDefinition}"  />
                 <!---->
 
-                <p:ajax event="rowReorder" listener="#{conceptBean.onRowReorder}" update="@(.conceptHeader)">
+                <p:ajax event="rowReorder" listener="#{conceptBean.onRowReorder}"
+                        update="@(.conceptHeader),@(.relationshipsWithAttributes_#{cc.attrs.relationshipDefinition.id})">
 
                 </p:ajax>
                 <f:attribute name="relationshipDefinitionRowEdit" value="#{cc.attrs.relationshipDefinition}"></f:attribute>

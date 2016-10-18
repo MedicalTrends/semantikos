@@ -14,7 +14,9 @@ public class RelationshipWeb extends Relationship implements Comparable<Relation
 
 
     public RelationshipWeb(Relationship r) {
-        super(r.getSourceConcept(), r.getTarget().copy(), r.getRelationshipDefinition(), new ArrayList<RelationshipAttribute>());
+        super(r.getSourceConcept(),  r.getRelationshipDefinition(), new ArrayList<RelationshipAttribute>());
+        if(r.getTarget() != null)
+            this.setTarget(r.getTarget().copy());
         //super(r.getSourceConcept(), r.getTarget(), r.getRelationshipDefinition(), r.getRelationshipAttributes());
         this.hasBeenModified = false;
 
@@ -85,10 +87,8 @@ public class RelationshipWeb extends Relationship implements Comparable<Relation
         result = (this.getSourceConcept().getId() == relationshipWeb.getSourceConcept().getId() && this.getRelationshipDefinition().getId() == relationshipWeb.getRelationshipDefinition().getId() &&
                   this.getTarget().equals(relationshipWeb.getTarget()));
 
-        for (RelationshipAttribute attribute : this.getRelationshipAttributes()) {
-            RelationshipAttribute otherAttribute = relationshipWeb.getAttributeById(attribute.getIdRelationshipAttribute());
-            result = result && attribute.getTarget().equals(otherAttribute.getTarget());
-        }
+        for (RelationshipAttribute attribute : this.getRelationshipAttributes())
+            result = result && relationshipWeb.getRelationshipAttributes().contains(attribute);
 
         return result;
     }

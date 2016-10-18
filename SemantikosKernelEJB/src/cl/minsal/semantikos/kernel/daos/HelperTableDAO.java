@@ -100,4 +100,12 @@ public interface HelperTableDAO {
      * @param idTableName id del nombre de la tabla
      */
     public long persistAuxilary(long idRecord, long idTableName);
+
+    /**
+     * Este metodo es encargado de actualizar el valor seleccionado de un helper table
+     * @param idRelationship id del registro
+     * @param idHelperTableRecord id del nombre de la tabla
+     */
+    public long updateAuxiliary(long idRelationship, long idHelperTableRecord);
+
 }
