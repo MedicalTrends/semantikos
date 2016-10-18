@@ -339,7 +339,7 @@ public class HelperTableDAOImpl implements HelperTableDAO {
 
         ConnectionBD connectionBD = new ConnectionBD();
         String updateAuxiliary = "{call semantikos.update_auxiliary(?,?)}";
-        long idPersist;
+        long idAuxiliary;
         try (Connection connection = connectionBD.getConnection();
              CallableStatement call = connection.prepareCall(updateAuxiliary)) {
 
@@ -349,8 +349,8 @@ public class HelperTableDAOImpl implements HelperTableDAO {
             call.execute();
             ResultSet rs = call.getResultSet();
             rs.next();
-            idPersist=rs.getLong(1);
-            if (idPersist==-1){
+            idAuxiliary=rs.getLong(1);
+            if (idAuxiliary==-1){
                 throw new EJBException("Error, no se pudo persistir auxiliary");
             }
             rs.close();
@@ -358,7 +358,7 @@ public class HelperTableDAOImpl implements HelperTableDAO {
             logger.error("Hubo un error al acceder a la base de datos.", e);
             throw new EJBException(e);
         }
-        return idPersist;
+        return idAuxiliary;
     }
 
 

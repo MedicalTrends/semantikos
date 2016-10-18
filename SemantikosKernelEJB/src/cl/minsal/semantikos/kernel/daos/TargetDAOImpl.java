@@ -196,8 +196,6 @@ public class TargetDAOImpl implements TargetDAO {
         String sql = "{call semantikos.update_target(?,?,?,?,?,?,?,?,?,?,?)}";
         long idTarget = relationshipDAO.getTargetByRelationship(relationship);
 
-
-
         try (Connection connection = connect.getConnection();
              CallableStatement call = connection.prepareCall(sql)) {
             setDefaultValuesForUpdateTargetFunction(call);
@@ -234,8 +232,7 @@ public class TargetDAOImpl implements TargetDAO {
 
             /* Almacenar registro Tabla auxiliar */
             else if (relationship.getRelationshipDefinition().getTargetDefinition().isHelperTable()) {
-                helperTableDAO.updateAuxiliary(relationship.getId(), relationship.getTarget().getId());
-                //call.setLong(6, relationship.getTarget().getId());
+                call.setLong(6, helperTableDAO.updateAuxiliary(relationship.getId(), relationship.getTarget().getId()));
                 call.setLong(10, HelperTable.getIdTargetType());
             }
 
