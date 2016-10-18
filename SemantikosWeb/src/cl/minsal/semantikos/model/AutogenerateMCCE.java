@@ -33,7 +33,7 @@ public class AutogenerateMCCE {
 
     public String getCantidad() {
 
-        if(cantidad!=null){
+        if(cantidad==null){
             return "";
         }else{
             return cantidad;
@@ -45,7 +45,7 @@ public class AutogenerateMCCE {
     }
 
     public String getUnidadMedidaCantidad() {
-        if(unidadMedidaCantidad!=null){
+        if(unidadMedidaCantidad==null){
             return "";
         }else{
             return unidadMedidaCantidad;
@@ -57,7 +57,7 @@ public class AutogenerateMCCE {
     }
 
     public String getVolumen() {
-        if(volumen!=null){
+        if(volumen==null){
             return "";
         }else{
             return volumen;
@@ -70,7 +70,7 @@ public class AutogenerateMCCE {
     }
 
     public String getVolumenUnidad() {
-        if(volumenUnidad!=null){
+        if(volumenUnidad==null){
             return "";
         }else{
             return volumenUnidad;
@@ -83,7 +83,7 @@ public class AutogenerateMCCE {
 
     public String getPack() {
 
-        if(pack!=null){
+        if(pack==null){
             return "";
         }else{
             return pack;
@@ -95,7 +95,7 @@ public class AutogenerateMCCE {
     }
 
     public String getPackUnidad() {
-        if(packUnidad!=null){
+        if(packUnidad==null){
             return "";
         }else{
             return packUnidad;

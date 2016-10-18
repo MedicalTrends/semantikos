@@ -437,8 +437,10 @@ public class ConceptBean implements Serializable {
 
                 if(relationshipDefinition.getId()==48){
                     autogenerateMCCE.setMC(((ConceptSMTK)relationship.getTarget()).getDescriptionFavorite().getTerm());
-                    autogenerateMCCE.setCantidad(compositeAditionalBean.getCantidadMC((ConceptSMTK)relationship.getTarget()));
-                    autogenerateMCCE.setUnidadMedidaCantidad(compositeAditionalBean.getUnidadCantidadMC(((ConceptSMTK)relationship.getTarget())));
+                    concept.getDescriptionFavorite().setTerm(autogenerateMCCE());
+                }
+                if(relationshipDefinition.getId()==92){
+                    autogenerateMCCE.setCantidad(relationship.getTarget().toString());
                     concept.getDescriptionFavorite().setTerm(autogenerateMCCE());
                 }
                 if(relationshipDefinition.getId()==93){
@@ -466,8 +468,6 @@ public class ConceptBean implements Serializable {
         //Autogerado MCCE
         if(relationshipDefinition.getId()==48){
             autogenerateMCCE.setMC(((ConceptSMTK)relationship.getTarget()).getDescriptionFavorite().getTerm());
-            autogenerateMCCE.setCantidad(compositeAditionalBean.getCantidadMC((ConceptSMTK)relationship.getTarget()));
-            autogenerateMCCE.setUnidadMedidaCantidad(compositeAditionalBean.getUnidadCantidadMC(((ConceptSMTK)relationship.getTarget())));
             concept.getDescriptionFavorite().setTerm(autogenerateMCCE());
         }
         if(relationshipDefinition.getId()==93){
@@ -483,6 +483,10 @@ public class ConceptBean implements Serializable {
             concept.getDescriptionFavorite().setTerm(autogenerateMC.toString());
         }
 
+        if(relationshipDefinition.getId()==92){
+            autogenerateMCCE.setCantidad(relationship.getTarget().toString());
+            concept.getDescriptionFavorite().setTerm(autogenerateMCCE());
+        }
 
 
         // Se resetean los placeholder para los target de las relaciones
@@ -519,6 +523,11 @@ public class ConceptBean implements Serializable {
                             autogenerateMC.setUnidadVolumen(attribute);
                             concept.getDescriptionFavorite().setTerm(autogenerateMC.toString());
                         }
+                        if(relationshipAttributeDefinition.getId()==15){
+                            autogenerateMCCE.setUnidadMedidaCantidad(((HelperTableRecord)target).getValueColumn("description"));
+                            concept.getDescriptionFavorite().setTerm(autogenerateMCCE());
+                        }
+
                         break;
                     }
                 }
@@ -537,6 +546,10 @@ public class ConceptBean implements Serializable {
                     if(relationshipAttributeDefinition.getId()==12){
                         autogenerateMC.setUnidadVolumen(attribute);
                         concept.getDescriptionFavorite().setTerm(autogenerateMC.toString());
+                    }
+                    if(relationshipAttributeDefinition.getId()==15){
+                        autogenerateMCCE.setUnidadMedidaCantidad(((HelperTableRecord)target).getValueColumn("description"));
+                        concept.getDescriptionFavorite().setTerm(autogenerateMCCE());
                     }
                 }
             }
