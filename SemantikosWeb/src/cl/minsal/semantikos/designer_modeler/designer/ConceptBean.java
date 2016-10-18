@@ -387,8 +387,6 @@ public class ConceptBean implements Serializable {
         basicTypeValue = new BasicTypeValue(null);
         selectedHelperTableRecord = new HelperTableRecord();
         conceptSelected = null;
-
-        Ajax.update("@(.panel_"+relationshipDefinition.getId()+")");
     }
 
     /**
