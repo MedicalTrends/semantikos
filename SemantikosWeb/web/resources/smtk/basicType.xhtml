@@ -242,7 +242,7 @@
                     <f:attribute name="concept" value="#{cc.attrs.concept}"  />
                     <f:attribute name="relationshipDefinition" value="#{cc.attrs.relationshipDefinition}"  />
                     <p:ajax listener="#{conceptBean.addOrChangeRelationship(cc.attrs.relationshipDefinition,conceptBean.basicTypeValue)}"
-                            update="@(.panel_#{cc.attrs.relationshipDefinition.id})" />
+                            update="@(.panel_#{cc.attrs.relationshipDefinition.id}),@(.conceptHeader)" />
                 </p:inputNumber>
 
                 <p:inputNumber id="basicTypeValue21"

@@ -154,6 +154,8 @@ public class ConceptBean implements Serializable {
     @EJB
     private ViewAugmenter viewAugmenter;
 
+    private AutogenerateMCCE autogenerateMCCE;
+
     /**
      * Un map para almacenar localmente las relaciones aumentadas
      */
@@ -187,7 +189,7 @@ public class ConceptBean implements Serializable {
         user = authenticationBean.getLoggedUser();
         Profile designerProfile = new Profile(2, "Diseñador", "Usuario Diseñador");
         user.getProfiles().add(designerProfile);
-
+        autogenerateMCCE = new AutogenerateMCCE();
         Description d;
 
 
@@ -410,12 +412,24 @@ public class ConceptBean implements Serializable {
             this.concept.addRelationshipWeb(new RelationshipWeb(relationship, relationship.getRelationshipAttributes()));
         }
 
-        if(autogenerateMCCE(relationshipDefinition)){
-            autoGenerateList.add(((ConceptSMTK)relationship.getTarget()).getDescriptionFavorite().getTerm());
-            autoGenerateList.add(compositeAditionalBean.getCantidadMC((ConceptSMTK)relationship.getTarget()));
-            autoGenerateList.add(compositeAditionalBean.getUnidadCantidadMC(((ConceptSMTK)relationship.getTarget())));
+        //Autogerado MCCE
+        if(relationshipDefinition.getId()==48){
+            autogenerateMCCE.setMC(((ConceptSMTK)relationship.getTarget()).getDescriptionFavorite().getTerm());
+            autogenerateMCCE.setCantidad(compositeAditionalBean.getCantidadMC((ConceptSMTK)relationship.getTarget()));
+            autogenerateMCCE.setUnidadMedidaCantidad(compositeAditionalBean.getUnidadCantidadMC(((ConceptSMTK)relationship.getTarget())));
             concept.getDescriptionFavorite().setTerm(autogenerateMCCE());
         }
+        if(relationshipDefinition.getId()==93){
+            autogenerateMCCE.setVolumen(target.toString());
+            concept.getDescriptionFavorite().setTerm(autogenerateMCCE());
+        }
+        if(relationshipDefinition.getId()==77){
+            autogenerateMCCE.setPack(target.toString());
+            concept.getDescriptionFavorite().setTerm(autogenerateMCCE());
+        }
+
+
+
         // Se resetean los placeholder para los target de las relaciones
         basicTypeValue = new BasicTypeValue(null);
         selectedHelperTableRecord = new HelperTableRecord();
@@ -438,6 +452,14 @@ public class ConceptBean implements Serializable {
                     if (attribute.getRelationAttributeDefinition().equals(relationshipAttributeDefinition)) {
                         attribute.setTarget(target);
                         isAttributeFound = true;
+                        if(relationshipAttributeDefinition.getId()==16){
+                            autogenerateMCCE.setPackUnidad(((HelperTableRecord)target).getValueColumn("description"));
+                            concept.getDescriptionFavorite().setTerm(autogenerateMCCE());
+                        }
+                        if(relationshipAttributeDefinition.getId()==17){
+                            autogenerateMCCE.setVolumenUnidad(((HelperTableRecord)target).getValueColumn("description"));
+                            concept.getDescriptionFavorite().setTerm(autogenerateMCCE());
+                        }
                         break;
                     }
                 }
@@ -455,6 +477,18 @@ public class ConceptBean implements Serializable {
             RelationshipAttribute attribute = new RelationshipAttribute(relationshipAttributeDefinition, relationship, target);
             relationship.getRelationshipAttributes().add(attribute);
             this.concept.addRelationshipWeb(new RelationshipWeb(relationship, relationship.getRelationshipAttributes())); //  new ArrayList<RelationshipAttribute>()));
+        }
+
+
+        //Autogenerado MCCE
+
+        if(relationshipAttributeDefinition.getId()==16){
+            autogenerateMCCE.setPackUnidad(((HelperTableRecord)target).getValueColumn("description"));
+            concept.getDescriptionFavorite().setTerm(autogenerateMCCE());
+        }
+        if(relationshipAttributeDefinition.getId()==17){
+            autogenerateMCCE.setVolumenUnidad(((HelperTableRecord)target).getValueColumn("description"));
+            concept.getDescriptionFavorite().setTerm(autogenerateMCCE());
         }
 
         // Se resetean los placeholder para los target de las relaciones
@@ -1159,32 +1193,18 @@ public class ConceptBean implements Serializable {
     }
 
     public String autogenerate(){
-
         String autogenerateString="";
-
         for (int i = 0; i < autoGenerateList.size(); i++) {
             if(i==0){
                 autogenerateString=autoGenerateList.get(i);
             }else{
                 autogenerateString=autogenerateString+" + "+autoGenerateList.get(i);
             }
-
         }
         return autogenerateString;
     }
 
     public String autogenerateMCCE(){
-
-        String autogenerateString="";
-
-        for (int i = 0; i < autoGenerateList.size(); i++) {
-            if(i==0){
-                autogenerateString=autoGenerateList.get(i);
-            }else{
-                autogenerateString=autogenerateString+" "+autoGenerateList.get(i);
-            }
-
-        }
-        return autogenerateString;
+        return autogenerateMCCE.toString();
     }
 }
