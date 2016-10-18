@@ -850,6 +850,7 @@ public class ConceptBean implements Serializable {
     }
 
     public void onRowReorder(ReorderEvent event) {
+
         FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Row Moved", "From: " + event.getFromIndex() + ", To:" + event.getToIndex());
         FacesContext context = FacesContext.getCurrentInstance();
 
@@ -861,16 +862,11 @@ public class ConceptBean implements Serializable {
         RelationshipAttribute att1 = concept.getAttributeOrder(relationshipDefinition, sourceOrder);
         RelationshipAttribute att2 = concept.getAttributeOrder(relationshipDefinition, targetOrder);
 
-        RelationshipAttribute _att1 = _concept.getAttributeOrder(relationshipDefinition, sourceOrder);
-        RelationshipAttribute _att2 = _concept.getAttributeOrder(relationshipDefinition, targetOrder);
-
         att1.setTarget(new BasicTypeValue(targetOrder));
         att2.setTarget(new BasicTypeValue(sourceOrder));
 
         RelationshipDefinition relationshipDefinitionRowEdit= (RelationshipDefinition) UIComponent.getCurrentComponent(context).getAttributes().get("relationshipDefinitionRowEdit");
         List<Relationship> relationshipList= concept.getRelationshipsByRelationDefinition(relationshipDefinitionRowEdit);
-
-
 
         List<String> autoNuevoOrden = new ArrayList<>();
 

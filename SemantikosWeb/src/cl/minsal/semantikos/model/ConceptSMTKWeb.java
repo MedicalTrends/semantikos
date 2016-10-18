@@ -8,6 +8,7 @@ import cl.minsal.semantikos.model.relationships.RelationshipDefinition;
 import cl.minsal.semantikos.util.Pair;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -41,6 +42,7 @@ public class ConceptSMTKWeb extends ConceptSMTK {
             // Si el concepto esta persistido clonar las relaciones con su id
             for (Relationship relationship : conceptSMTK.getValidRelationships())
                 addRelationshipWeb(new RelationshipWeb(this, relationship.getId(), relationship, relationship.getRelationshipAttributes()));
+            Collections.sort(relationshipsWeb);
             for (Tag tag: conceptSMTK.getTags()) {
                 addTag(tag);
             }

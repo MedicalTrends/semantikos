@@ -262,4 +262,17 @@ public class Relationship extends PersistentEntity implements AuditableEntity {
         }
         return null;
     }
+
+    public Integer getOrder(){
+
+        RelationshipAttribute attribute = getOrderAttribute();
+
+        if(attribute != null){
+            BasicTypeValue basicTypeValue = (BasicTypeValue) attribute.getTarget();
+            return (Integer)basicTypeValue.getValue();
+        }
+        else{
+            return 0;
+        }
+    }
 }

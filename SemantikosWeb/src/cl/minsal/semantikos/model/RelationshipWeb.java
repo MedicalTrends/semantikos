@@ -8,7 +8,7 @@ import cl.minsal.semantikos.model.relationships.Target;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RelationshipWeb extends Relationship {
+public class RelationshipWeb extends Relationship implements Comparable<RelationshipWeb> {
 
     public boolean hasBeenModified;
 
@@ -110,5 +110,10 @@ public class RelationshipWeb extends Relationship {
         }
 
         return null;
+    }
+
+    @Override
+    public int compareTo(RelationshipWeb o) {
+        return this.getOrder() - o.getOrder();
     }
 }
