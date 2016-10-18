@@ -54,7 +54,7 @@
             </div>
             <div class="ui-g-12 ui-md-6 ui-lg-2">
                 <h:outputText
-                        value="#{compositeAditionalBean.getTipoMCCE(cc.attrs.concept)}"/>
+                        value="#{compositeAditionalBean.getAditionalInfo(cc.attrs.concept,75).target.getValueColumn('description')}"/>
             </div>
 
         </div>
@@ -86,7 +86,7 @@
             </div>
             <div class="ui-g-12 ui-md-6 ui-lg-2">
                 <h:outputText
-                        value="#{compositeAditionalBean.getPackMultiCant(cc.attrs.concept)}"/>
+                        value="#{compositeAditionalBean.getAditionalInfo(cc.attrs.concept,77).target}"/>
             </div>
 
             <div class="ui-g-12 ui-md-6 ui-lg-1">
@@ -94,7 +94,7 @@
             </div>
             <div class="ui-g-12 ui-md-6 ui-lg-2">
                 <h:outputText
-                        value="#{compositeAditionalBean.getPackMultiUnidad(cc.attrs.concept)}"/>
+                        value="#{compositeAditionalBean.getAditionalInfo(cc.attrs.concept,77,16).getValueColumn('description')}"/>
             </div>
 
         </div>
@@ -105,7 +105,7 @@
             </div>
             <div class="ui-g-12 ui-md-6 ui-lg-2">
                 <h:outputText
-                        value="#{compositeAditionalBean.getVolumentTotalCant(cc.attrs.concept)}"/>
+                        value="#{compositeAditionalBean.getAditionalInfo(cc.attrs.concept,93).target}"/>
             </div>
 
             <div class="ui-g-12 ui-md-6 ui-lg-1">
@@ -113,7 +113,7 @@
             </div>
             <div class="ui-g-12 ui-md-6 ui-lg-2">
                 <h:outputText
-                        value="#{compositeAditionalBean.getVolumentTotalUnidad(cc.attrs.concept)}"/>
+                        value="#{compositeAditionalBean.getAditionalInfo(cc.attrs.concept,93,17).getValueColumn('description')}"/>
             </div>
 
         </div>

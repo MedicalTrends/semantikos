@@ -46,7 +46,7 @@
                 </p:column>
 
                 <p:ajax event="itemSelect"
-                        update="@(.panel_#{cc.attrs.relationshipDefinition.id})"
+                        update="@(.panel_#{cc.attrs.relationshipDefinition.id}),@(.conceptHeader)"
                         listener="#{conceptBean.addOrChangeRelationshipAttribute(cc.attrs.relationshipDefinition, cc.attrs.relationshipAttributeDefinition, conceptBean.selectedHelperTableRecord)}"
                         process="@this" />
 
