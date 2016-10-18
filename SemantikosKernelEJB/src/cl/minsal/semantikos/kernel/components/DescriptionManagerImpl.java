@@ -266,7 +266,7 @@ public class DescriptionManagerImpl implements DescriptionManager {
 
     @Override
     public String generateDescriptionId() {
-        return UUID.randomUUID().toString();
+        return UUID.randomUUID().toString().substring(0,10);
     }
 
     @Override

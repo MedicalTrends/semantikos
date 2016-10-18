@@ -343,7 +343,7 @@ public class ConceptManagerImpl implements ConceptManager {
 
     @Override
     public String generateConceptId() {
-        return UUID.randomUUID().toString();
+        return UUID.randomUUID().toString().substring(0, 10);
     }
 
     @Override
