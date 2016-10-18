@@ -65,10 +65,14 @@ public class RelationshipAttribute {
 
         RelationshipAttribute that = (RelationshipAttribute) o;
 
+        /*
         if (idRelationshipAttribute != null ? !idRelationshipAttribute.equals(that.idRelationshipAttribute) : that.idRelationshipAttribute != null)
             return false;
+        */
 
-        return true;
+        return this.getRelationAttributeDefinition().equals(that.getRelationAttributeDefinition()) && this.getTarget().equals(that.getTarget());
+
+        //return true;
     }
 
     @Override

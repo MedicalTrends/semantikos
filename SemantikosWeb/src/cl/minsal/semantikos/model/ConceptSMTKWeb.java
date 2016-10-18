@@ -42,7 +42,6 @@ public class ConceptSMTKWeb extends ConceptSMTK {
             // Si el concepto esta persistido clonar las relaciones con su id
             for (Relationship relationship : conceptSMTK.getValidRelationships())
                 addRelationshipWeb(new RelationshipWeb(this, relationship.getId(), relationship, relationship.getRelationshipAttributes()));
-            Collections.sort(relationshipsWeb);
             for (Tag tag: conceptSMTK.getTags()) {
                 addTag(tag);
             }
@@ -207,6 +206,7 @@ public class ConceptSMTKWeb extends ConceptSMTK {
                 someRelationships.add(relationship);
             }
         }
+        Collections.sort(someRelationships);
         return someRelationships;
     }
 

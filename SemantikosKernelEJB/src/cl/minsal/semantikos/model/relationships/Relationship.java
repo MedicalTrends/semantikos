@@ -51,6 +51,24 @@ public class Relationship extends PersistentEntity implements AuditableEntity {
      * Este es el constructor mínimo con el cual se crean las Relaciones
      *
      * @param sourceConcept           El concepto origen de la relación.
+     * @param relationshipDefinition  Definición de la relación.
+     * @param  relationshipAttributes Lista de Atributos
+     */
+    @Deprecated
+    public Relationship(ConceptSMTK sourceConcept, RelationshipDefinition relationshipDefinition,List<RelationshipAttribute> relationshipAttributes) {
+
+        /* No está persistido originalmente */
+        this.id = NON_PERSISTED_ID;
+
+        this.sourceConcept = sourceConcept;
+        this.relationshipDefinition = relationshipDefinition;
+        this.relationshipAttributes = relationshipAttributes;
+    }
+
+    /**
+     * Este es el constructor mínimo con el cual se crean las Relaciones
+     *
+     * @param sourceConcept           El concepto origen de la relación.
      * @param target                  El valor de la relación (destino)
      * @param relationshipDefinition  Definición de la relación.
      * @param  relationshipAttributes Lista de Atributos

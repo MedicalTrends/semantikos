@@ -349,6 +349,7 @@
                                    rendered="#{cc.attrs.targetDefinition.type.typeName=='int' and not cc.attrs.targetDefinition.discreteDomain}">
                         <f:attribute name="concept" value="#{cc.attrs.concept}"  />
                         <f:attribute name="relationshipDefinition" value="#{cc.attrs.relationshipDefinition}"  />
+                        <p:ajax listener="#{conceptBean.addOrChangeRelationship(cc.attrs.relationshipDefinition,relationship.target)}" />
                     </p:inputNumber>
 
                     <p:inputNumber id="basicTypeValue26"
@@ -362,6 +363,7 @@
                                    rendered="#{cc.attrs.targetDefinition.type.typeName=='float' and not cc.attrs.targetDefinition.discreteDomain}">
                         <f:attribute name="concept" value="#{cc.attrs.concept}"  />
                         <f:attribute name="relationshipDefinition" value="#{cc.attrs.relationshipDefinition}"  />
+                        <p:ajax listener="#{conceptBean.addOrChangeRelationship(cc.attrs.relationshipDefinition,relationship.target)}" />
                     </p:inputNumber>
                     <p:inputText id="basicTypeValue27"
                                  value="#{relationship.target.value}"
@@ -369,6 +371,9 @@
                                  minValue="#{cc.attrs.targetDefinition.interval.lowerBoundary}"
                                  maxValue="#{cc.attrs.targetDefinition.interval.upperBoundary}"
                                  rendered="#{cc.attrs.targetDefinition.type.typeName=='string' and not cc.attrs.targetDefinition.discreteDomain}">
+                        <f:attribute name="concept" value="#{cc.attrs.concept}"  />
+                        <f:attribute name="relationshipDefinition" value="#{cc.attrs.relationshipDefinition}"  />
+                        <p:ajax listener="#{conceptBean.addOrChangeRelationship(cc.attrs.relationshipDefinition,relationship.target)}" />
                     </p:inputText>
                     <p:calendar id="basicTypeValue28"
                                 value="#{relationship.target.value}"
@@ -379,6 +384,9 @@
                                 rendered="#{cc.attrs.targetDefinition.type.typeName=='date' and not cc.attrs.targetDefinition.discreteDomain}">
                         <f:attribute name="concept" value="#{cc.attrs.concept}"  />
                         <f:attribute name="relationshipDefinition" value="#{cc.attrs.relationshipDefinition}"  />
+                        <f:attribute name="concept" value="#{cc.attrs.concept}"  />
+                        <f:attribute name="relationshipDefinition" value="#{cc.attrs.relationshipDefinition}"  />
+                        <p:ajax event="dateSelect" listener="#{conceptBean.addOrChangeRelationship(cc.attrs.relationshipDefinition,relationship.target)}" />
                     </p:calendar>
                 </div>
                 <!-- Atributos de relación -->

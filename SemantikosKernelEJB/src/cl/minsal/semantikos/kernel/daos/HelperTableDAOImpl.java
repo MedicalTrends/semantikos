@@ -334,5 +334,32 @@ public class HelperTableDAOImpl implements HelperTableDAO {
         return idPersist;
     }
 
+    @Override
+    public long updateAuxiliary(long idRelationship, long idHelperTableRecord) {
+
+        ConnectionBD connectionBD = new ConnectionBD();
+        String updateAuxiliary = "{call semantikos.update_auxiliary(?,?)}";
+        long idPersist;
+        try (Connection connection = connectionBD.getConnection();
+             CallableStatement call = connection.prepareCall(updateAuxiliary)) {
+
+            /* Se prepara y realiza la consulta */
+            call.setLong(1, idRelationship);
+            call.setLong(2, idHelperTableRecord);
+            call.execute();
+            ResultSet rs = call.getResultSet();
+            rs.next();
+            idPersist=rs.getLong(1);
+            if (idPersist==-1){
+                throw new EJBException("Error, no se pudo persistir auxiliary");
+            }
+            rs.close();
+        } catch (SQLException e) {
+            logger.error("Hubo un error al acceder a la base de datos.", e);
+            throw new EJBException(e);
+        }
+        return idPersist;
+    }
+
 
 }

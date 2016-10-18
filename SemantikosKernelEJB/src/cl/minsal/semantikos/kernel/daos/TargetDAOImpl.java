@@ -3,10 +3,7 @@ package cl.minsal.semantikos.kernel.daos;
 import cl.minsal.semantikos.kernel.util.ConnectionBD;
 import cl.minsal.semantikos.model.basictypes.BasicTypeDefinition;
 import cl.minsal.semantikos.model.basictypes.BasicTypeValue;
-import cl.minsal.semantikos.model.relationships.Relationship;
-import cl.minsal.semantikos.model.relationships.Target;
-import cl.minsal.semantikos.model.relationships.TargetDefinition;
-import cl.minsal.semantikos.model.relationships.TargetFactory;
+import cl.minsal.semantikos.model.relationships.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,6 +37,8 @@ public class TargetDAOImpl implements TargetDAO {
     @EJB
     private RelationshipDAO relationshipDAO;
 
+    @EJB
+    private RelationshipAttributeDAO relationshipAttributeDAO;
 
 
     @Override
@@ -235,13 +234,83 @@ public class TargetDAOImpl implements TargetDAO {
 
             /* Almacenar registro Tabla auxiliar */
             else if (relationship.getRelationshipDefinition().getTargetDefinition().isHelperTable()) {
-                call.setLong(6, relationship.getTarget().getId());
+                helperTableDAO.updateAuxiliary(relationship.getId(), relationship.getTarget().getId());
+                //call.setLong(6, relationship.getTarget().getId());
                 call.setLong(10, HelperTable.getIdTargetType());
             }
 
             /* Almacenar concepto SCT */
             else if (relationship.getRelationshipDefinition().getTargetDefinition().isSnomedCTType()) {
                 call.setLong(9, relationship.getTarget().getId());
+                call.setLong(10, SnomedCT.getIdTargetType());
+            }
+
+            call.setLong(11, idTarget);
+
+            call.execute();
+
+            ResultSet rs = call.getResultSet();
+
+            /*
+            if (rs.next()) {
+                idTarget = rs.getLong(1);
+            }
+            */
+            rs.close();
+
+        } catch (SQLException e) {
+            throw new EJBException(e);
+        }
+        return idTarget;
+    }
+
+    @Override
+    public long update(RelationshipAttribute relationshipAttribute) {
+        ConnectionBD connect = new ConnectionBD();
+        String sql = "{call semantikos.update_target(?,?,?,?,?,?,?,?,?,?,?)}";
+        long idTarget = relationshipAttributeDAO.getTargetByRelationshipAttribute(relationshipAttribute);
+
+        try (Connection connection = connect.getConnection();
+             CallableStatement call = connection.prepareCall(sql)) {
+            setDefaultValuesForUpdateTargetFunction(call);
+            /* Almacenar el tipo básico */
+            if (relationshipAttribute.getRelationAttributeDefinition().getTargetDefinition().isBasicType()) {
+
+                BasicTypeDefinition basicTypeDefinition = (BasicTypeDefinition) relationshipAttribute.getRelationAttributeDefinition().getTargetDefinition();
+                BasicTypeValue value = (BasicTypeValue) relationshipAttribute.getTarget();
+
+                if (value.isDate()) {
+                    call.setTimestamp(2, (Timestamp) value.getValue());
+                }
+
+                if (value.isFloat()) {
+                    call.setFloat(1, (Float) value.getValue());
+                }
+                if (value.isInteger()) {
+                    call.setInt(5, (Integer) value.getValue());
+                }
+                if (value.isString()) {
+                    call.setString(3, (String) value.getValue());
+                }
+
+            }
+
+            /* Almacenar concepto SMTK */
+            if (relationshipAttribute.getRelationAttributeDefinition().getTargetDefinition().isSMTKType()) {
+                call.setLong(9, relationshipAttribute.getTarget().getId());
+                call.setLong(10, SMTK.getIdTargetType());
+            }
+
+            /* Almacenar registro Tabla auxiliar */
+            else if (relationshipAttribute.getRelationAttributeDefinition().getTargetDefinition().isHelperTable()) {
+                //helperTableDAO.updateAuxiliary(relationship.getId(), relationship.getTarget().getId());
+                call.setLong(6, relationshipAttribute.getTarget().getId());
+                call.setLong(10, HelperTable.getIdTargetType());
+            }
+
+            /* Almacenar concepto SCT */
+            else if (relationshipAttribute.getRelationAttributeDefinition().getTargetDefinition().isSnomedCTType()) {
+                call.setLong(9, relationshipAttribute.getTarget().getId());
                 call.setLong(10, SnomedCT.getIdTargetType());
             }
 

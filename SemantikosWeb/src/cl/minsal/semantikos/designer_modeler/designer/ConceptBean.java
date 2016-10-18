@@ -10,6 +10,7 @@ import cl.minsal.semantikos.model.helpertables.HelperTableRecord;
 import cl.minsal.semantikos.model.relationships.*;
 import cl.minsal.semantikos.util.Pair;
 import cl.minsal.semantikos.view.components.ViewAugmenter;
+import org.omnifaces.util.Ajax;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.ReorderEvent;
 import org.primefaces.event.RowEditEvent;
@@ -337,7 +338,22 @@ public class ConceptBean implements Serializable {
      */
     public void addRelationshipWithAttributes(RelationshipDefinition relationshipDefinition) {
 
+        FacesContext context = FacesContext.getCurrentInstance();
+
         Relationship relationship = relationshipPlaceholders.get(relationshipDefinition.getId());
+
+        // Validar placeholders de targets de relacion
+        if(relationship.getTarget()==null) {
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Debe seleccionar un valor para el atributo " + relationshipDefinition.getName()));
+            return;
+        }
+
+        for (RelationshipAttributeDefinition attributeDefinition : relationshipDefinition.getRelationshipAttributeDefinitions()) {
+            if(!attributeDefinition.isOrderAttribute() && relationship.getAttributesByAttributeDefinition(attributeDefinition).isEmpty()) {
+                context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Debe seleccionar un valor para el atributo " + attributeDefinition.getName()));
+                return;
+            }
+        }
 
         if(relationshipDefinition.getOrderAttributeDefinition()!=null) {
             RelationshipAttribute attribute = new RelationshipAttribute(relationshipDefinition.getOrderAttributeDefinition(), relationship, new BasicTypeValue(concept.getValidRelationshipsByRelationDefinition(relationshipDefinition).size()+1));
@@ -351,12 +367,14 @@ public class ConceptBean implements Serializable {
 
         // Se utiliza el constructor mínimo (sin id)
         this.concept.addRelationshipWeb(new RelationshipWeb(relationship,relationship.getRelationshipAttributes()));
-        // Reinicializar placeholder relaciones
+        // Resetear placeholder relacion
         relationshipPlaceholders.put(relationshipDefinition.getId(), new Relationship(concept, null, relationshipDefinition, new ArrayList<RelationshipAttribute>()));
         // Resetear placeholder targets
         basicTypeValue = new BasicTypeValue(null);
         selectedHelperTableRecord = new HelperTableRecord();
         conceptSelected = null;
+
+        Ajax.update("@(.panel_"+relationshipDefinition.getId()+")");
     }
 
     /**
@@ -681,15 +699,6 @@ public class ConceptBean implements Serializable {
     private void persistConcept(FacesContext context) {
         // TODO: Investigar cómo capturar la excepción de negocio
         try {
-            /*
-            for (RelationshipWeb relationshipWebC: concept.getRelationshipsWeb()) {
-                for (Relationship relationshipC: concept.getRelationships()) {
-                    if(relationshipWebC.getRelationshipDefinition().getId()==relationshipC.getRelationshipDefinition().getId()){
-                        relationshipC.setRelationshipAttributes(relationshipWebC.getRelationshipAttributes());
-                    }
-                }
-            }
-            */
             conceptManager.persist(concept, user);
             context.addMessage(null, new FacesMessage("Successful", "Concepto guardado "));
             // Se resetea el concepto, como el concepto está persistido, se le pasa su id
