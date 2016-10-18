@@ -156,6 +156,8 @@ public class ConceptBean implements Serializable {
 
     private AutogenerateMCCE autogenerateMCCE;
 
+    private AutogenerateMC autogenerateMC;
+
     /**
      * Un map para almacenar localmente las relaciones aumentadas
      */
@@ -190,6 +192,7 @@ public class ConceptBean implements Serializable {
         Profile designerProfile = new Profile(2, "Diseñador", "Usuario Diseñador");
         user.getProfiles().add(designerProfile);
         autogenerateMCCE = new AutogenerateMCCE();
+        autogenerateMC= new AutogenerateMC();
         Description d;
 
 
@@ -349,6 +352,15 @@ public class ConceptBean implements Serializable {
             concept.getDescriptionFavorite().setTerm(autogenerate());
         }
 
+        if(relationship.getRelationshipDefinition().getId()==47){
+            autogenerateMC.addSustancia(relationship);
+            concept.getDescriptionFavorite().setTerm(autogenerateMC.toString());
+        }
+        if(relationship.getRelationshipDefinition().getId()==58){
+            autogenerateMC.addFFA(relationship);
+            concept.getDescriptionFavorite().setTerm(autogenerateMC.toString());
+        }
+
         // Se utiliza el constructor mínimo (sin id)
         this.concept.addRelationshipWeb(new RelationshipWeb(relationship,relationship.getRelationshipAttributes()));
         // Reinicializar placeholder relaciones
@@ -402,6 +414,25 @@ public class ConceptBean implements Serializable {
                 relationshipWeb.setTarget(target);
                 relationship= relationshipWeb;
                 isRelationshipFound = true;
+
+                if(relationshipDefinition.getId()==48){
+                    autogenerateMCCE.setMC(((ConceptSMTK)relationship.getTarget()).getDescriptionFavorite().getTerm());
+                    autogenerateMCCE.setCantidad(compositeAditionalBean.getCantidadMC((ConceptSMTK)relationship.getTarget()));
+                    autogenerateMCCE.setUnidadMedidaCantidad(compositeAditionalBean.getUnidadCantidadMC(((ConceptSMTK)relationship.getTarget())));
+                    concept.getDescriptionFavorite().setTerm(autogenerateMCCE());
+                }
+                if(relationshipDefinition.getId()==93){
+                    autogenerateMCCE.setVolumen(target.toString());
+                    concept.getDescriptionFavorite().setTerm(autogenerateMCCE());
+                }
+                if(relationshipDefinition.getId()==77){
+                    autogenerateMCCE.setPack(target.toString());
+                    concept.getDescriptionFavorite().setTerm(autogenerateMCCE());
+                }
+                if(relationshipDefinition.getId()==69){
+                    autogenerateMC.setVolumen(relationship);
+                    concept.getDescriptionFavorite().setTerm(autogenerateMC.toString());
+                }
                 break;
             }
         }
@@ -426,6 +457,10 @@ public class ConceptBean implements Serializable {
         if(relationshipDefinition.getId()==77){
             autogenerateMCCE.setPack(target.toString());
             concept.getDescriptionFavorite().setTerm(autogenerateMCCE());
+        }
+        if(relationshipDefinition.getId()==69){
+            autogenerateMC.setVolumen(relationship);
+            concept.getDescriptionFavorite().setTerm(autogenerateMC.toString());
         }
 
 
@@ -460,6 +495,10 @@ public class ConceptBean implements Serializable {
                             autogenerateMCCE.setVolumenUnidad(((HelperTableRecord)target).getValueColumn("description"));
                             concept.getDescriptionFavorite().setTerm(autogenerateMCCE());
                         }
+                        if(relationshipAttributeDefinition.getId()==12){
+                            autogenerateMC.setUnidadVolumen(attribute);
+                            concept.getDescriptionFavorite().setTerm(autogenerateMC.toString());
+                        }
                         break;
                     }
                 }
@@ -467,6 +506,18 @@ public class ConceptBean implements Serializable {
                 if (!isAttributeFound) {
                     RelationshipAttribute attribute = new RelationshipAttribute(relationshipAttributeDefinition, relationship, target);
                     relationship.getRelationshipAttributes().add(attribute);
+                    if(relationshipAttributeDefinition.getId()==16){
+                        autogenerateMCCE.setPackUnidad(((HelperTableRecord)target).getValueColumn("description"));
+                        concept.getDescriptionFavorite().setTerm(autogenerateMCCE());
+                    }
+                    if(relationshipAttributeDefinition.getId()==17){
+                        autogenerateMCCE.setVolumenUnidad(((HelperTableRecord)target).getValueColumn("description"));
+                        concept.getDescriptionFavorite().setTerm(autogenerateMCCE());
+                    }
+                    if(relationshipAttributeDefinition.getId()==12){
+                        autogenerateMC.setUnidadVolumen(attribute);
+                        concept.getDescriptionFavorite().setTerm(autogenerateMC.toString());
+                    }
                 }
             }
         }
@@ -499,6 +550,7 @@ public class ConceptBean implements Serializable {
 
     public void setTarget(RelationshipDefinition relationshipDefinition, Target target) {
         relationshipPlaceholders.get(relationshipDefinition.getId()).setTarget(target);
+
     }
 
     /**
@@ -915,30 +967,45 @@ public class ConceptBean implements Serializable {
         RelationshipDefinition relationshipDefinitionRowEdit= (RelationshipDefinition) UIComponent.getCurrentComponent(context).getAttributes().get("relationshipDefinitionRowEdit");
         List<Relationship> relationshipList= concept.getRelationshipsByRelationDefinition(relationshipDefinitionRowEdit);
 
-        List<String> autoNuevoOrden = new ArrayList<>();
 
-        for (int i = 0; i < autoGenerateList.size(); i++) {
+
+
+
+        if(relationshipDefinitionRowEdit.getId()==45){
+            autoGenerateList=newOrderList(autoGenerateList,event);
+            concept.getDescriptionFavorite().setTerm(autogenerate());
+        }
+        if(relationshipDefinitionRowEdit.getId()==47){
+            autogenerateMC.setSustancias(newOrderList(autogenerateMC.getSustancias(),event));
+            concept.getDescriptionFavorite().setTerm(autogenerateMC.toString());;
+        }
+        if(relationshipDefinitionRowEdit.getId()==58){
+            autogenerateMC.setFfa(newOrderList(autogenerateMC.getFfa(),event));
+            concept.getDescriptionFavorite().setTerm(autogenerateMC.toString());;
+        }
+
+    }
+
+    public List<String> newOrderList(List<String> list, ReorderEvent event){
+        List<String> autoNuevoOrden = new ArrayList<>();
+        for (int i = 0; i < list.size(); i++) {
             if(i!=event.getFromIndex()){
                 if(i==event.getToIndex()){
                     if(event.getFromIndex()<event.getToIndex()){
-                        autoNuevoOrden.add(autoGenerateList.get(i));
-                        autoNuevoOrden.add(autoGenerateList.get(event.getFromIndex()));
+                        autoNuevoOrden.add(list.get(i));
+                        autoNuevoOrden.add(list.get(event.getFromIndex()));
                     }else{
 
-                        autoNuevoOrden.add(autoGenerateList.get(event.getFromIndex()));
-                        autoNuevoOrden.add(autoGenerateList.get(i));
+                        autoNuevoOrden.add(list.get(event.getFromIndex()));
+                        autoNuevoOrden.add(list.get(i));
                     }
-
                 }else{
-                    autoNuevoOrden.add(autoGenerateList.get(i));
+                    autoNuevoOrden.add(list.get(i));
                 }
-
             }
 
         }
-        autoGenerateList=autoNuevoOrden;
-        concept.getDescriptionFavorite().setTerm(autogenerate());
-
+        return autoNuevoOrden;
     }
 
 
