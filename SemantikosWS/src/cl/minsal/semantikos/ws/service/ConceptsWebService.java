@@ -40,6 +40,7 @@ public class ConceptsWebService {
     @EJB
     private ConceptManager conceptManager;
 
+    // REQ-WS-028
     @WebMethod(operationName = "conceptoPorIdDescripcion")
     @WebResult(name = "concepto")
     public ConceptResponse conceptoPorIdDescripcion(
@@ -70,6 +71,7 @@ public class ConceptsWebService {
         return res;
     }
 
+    // REQ-WS-002
     @WebMethod(operationName = "conceptosPorCategoria")
     @WebResult(name = "conceptosPorCategoria")
     public ConceptsByCategoryResponse conceptosPorCategoria(
