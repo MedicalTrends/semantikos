@@ -108,12 +108,12 @@ public interface HelperTableDAO {
      * Este metodo es encargado de actualizar el valor seleccionado de un helper table
      * @param relationship la relacion
      */
-    public long updateAuxiliaryByRelationship(Relationship relationship);
+    public long updateAuxiliary(Relationship relationship);
 
     /**
      * Este metodo es encargado de actualizar el valor seleccionado de un helper table
      * @param relationshipAttribute la relacion
      */
-    public long updateAuxiliaryByRelationshipAttribute(RelationshipAttribute relationshipAttribute);
+    public long updateAuxiliary(RelationshipAttribute relationshipAttribute);
 
 }

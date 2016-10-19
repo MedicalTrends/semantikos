@@ -683,8 +683,16 @@ public class ConceptBean implements Serializable {
      */
     public boolean validateRelationships() {
 
-        for (RelationshipDefinition relationshipDefinition : category.getRelationshipDefinitions()) {
-            return concept.isMultiplicitySatisfied(relationshipDefinition);
+        FacesContext context = FacesContext.getCurrentInstance();
+
+        for (RelationshipDefinitionWeb relationshipDefinition : getOrderedRelationshipDefinitions()) {
+            if(!concept.isMultiplicitySatisfied(relationshipDefinition)) {
+                relationshipDefinition.setUiState("ui-state-error");
+                context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "El atributo "+relationshipDefinition.getName()+" no cumple con el minimo requerido"));
+                return false;
+            }
+            else
+                relationshipDefinition.setUiState("");
         }
 
         return true;
@@ -761,11 +769,7 @@ public class ConceptBean implements Serializable {
                     persistConcept(context);
                 }
             }
-        } else {
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Las relaciones no cumplen con el minimo requerido"));
-
         }
-
     }
 
     private boolean containDescriptionCategory(ConceptSMTKWeb conceptSMTK, FacesContext context){

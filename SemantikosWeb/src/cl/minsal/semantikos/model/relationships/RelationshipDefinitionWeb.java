@@ -15,6 +15,9 @@ public class RelationshipDefinitionWeb extends RelationshipDefinition implements
     /** Establece el orden o posición */
     private int order;
 
+    /** Establece el estilo para el estado de error */
+    private String uiState = "";
+
     public RelationshipDefinitionWeb(long id, String name, String description, TargetDefinition targetDefinition, Multiplicity multiplicity, long compositeID, int order) {
         super(id, name, description, targetDefinition, multiplicity);
 
@@ -28,6 +31,14 @@ public class RelationshipDefinitionWeb extends RelationshipDefinition implements
 
     public int getOrder() {
         return order;
+    }
+
+    public String getUiState() {
+        return uiState;
+    }
+
+    public void setUiState(String uiState) {
+        this.uiState = uiState;
     }
 
     @Override

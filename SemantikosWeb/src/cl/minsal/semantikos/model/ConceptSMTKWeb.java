@@ -485,7 +485,7 @@ public class ConceptSMTKWeb extends ConceptSMTK {
     }
 
     public boolean isMultiplicitySatisfied(RelationshipDefinition relationshipDefinition){
-        return this.getValidRelationshipsWebByRelationDefinition(relationshipDefinition).size()==relationshipDefinition.getMultiplicity().getLowerBoundary();
+        return this.getValidRelationshipsWebByRelationDefinition(relationshipDefinition).size()>=relationshipDefinition.getMultiplicity().getLowerBoundary();
     }
 
 }

@@ -46,7 +46,7 @@
                         </smtk:descriptions>
                     </p:tab>
                     <br/>
-                    <p:tab title="Atributos" rendered="#{conceptBean.category.hasRelationshipDefinitions}">
+                    <p:tab title="Atributos" rendered="#{not empty conceptBean.category.relationshipDefinitions}">
                         <!--Relaciones -->
                         <p:panel id="atributos"
                                  widgetVar="panelAtributos"
@@ -61,7 +61,7 @@
                                     <p:outputPanel
                                              id="panelRelationshipDefiniton"
                                              style="border:0px; margin: 0px; padding: 0px;"
-                                             styleClass="panel_#{relationshipDefinition.id}">
+                                             styleClass="panel_#{relationshipDefinition.id} #{relationshipDefinition.uiState}">
 
                                         <smtk:smtkType
                                                 rendered="#{relationshipDefinition.targetDefinition.SMTKType}"
@@ -206,6 +206,10 @@
 
                 </h:form>
             </p:dialog>
+
+            <p:dialog id="dialogISP" header="Warning" widgetVar="dialogISP" modal="true" height="100">
+                <h:outputText value="La URL de registro ISP no se encuentra disponible en este momento, por favor intente más tarde." />
+            </p:dialog>
         </p:panel>
 
         <script type="text/javascript">
@@ -220,6 +224,13 @@
             });
 
         </script>
+
+        <h:outputStylesheet id="customCSS">
+            .ui-widget-content .ui-state-error, .ui-widget-header .ui-state-error {
+                border: 1px solid #F03369 !important;
+                color: #F03369;
+            }
+        </h:outputStylesheet>
 
 
     </ui:define>

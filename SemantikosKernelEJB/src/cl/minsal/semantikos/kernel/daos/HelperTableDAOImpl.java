@@ -337,7 +337,7 @@ public class HelperTableDAOImpl implements HelperTableDAO {
     }
 
     @Override
-    public long updateAuxiliaryByRelationship(Relationship relationship) {
+    public long updateAuxiliary(Relationship relationship) {
 
         ConnectionBD connectionBD = new ConnectionBD();
         String updateAuxiliary = "{call semantikos.update_auxiliary_by_relationship(?,?)}";
@@ -364,7 +364,7 @@ public class HelperTableDAOImpl implements HelperTableDAO {
     }
 
     @Override
-    public long updateAuxiliaryByRelationshipAttribute(RelationshipAttribute relationshipAttribute) {
+    public long updateAuxiliary(RelationshipAttribute relationshipAttribute) {
 
         ConnectionBD connectionBD = new ConnectionBD();
         String updateAuxiliary = "{call semantikos.update_auxiliary_by_relationship_attribute(?,?)}";

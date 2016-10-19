@@ -178,10 +178,14 @@ public class RelationshipDefinition {
 
     public RelationshipAttributeDefinition getOrderAttributeDefinition(){
         for (RelationshipAttributeDefinition relationshipAttributeDefinition : getRelationshipAttributeDefinitions()) {
-            if(relationshipAttributeDefinition.getName().equalsIgnoreCase("orden")){
+            if(relationshipAttributeDefinition.isOrderAttribute()){
                 return relationshipAttributeDefinition;
             }
         }
         return null;
+    }
+
+    public boolean isISP(){
+        return this.getName().equalsIgnoreCase("ISP");
     }
 }
