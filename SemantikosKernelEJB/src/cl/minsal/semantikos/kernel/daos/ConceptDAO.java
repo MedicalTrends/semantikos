@@ -108,4 +108,11 @@ public interface ConceptDAO {
     public List<ConceptSMTK> getConceptBy(RefSet refSet);
 
     public List<ConceptSMTK> getConceptDraft();
+
+    /**
+     * Este método es responsable de cambiar el estado de un concepto y sus descripciones al estado Modelado.
+     *
+     * @param idConcept Identificador del concepto.
+     */
+    public void forcedModeledConcept(Long idConcept);
 }

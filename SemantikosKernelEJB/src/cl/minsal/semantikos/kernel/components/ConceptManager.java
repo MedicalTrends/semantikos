@@ -175,6 +175,4 @@ public interface ConceptManager {
      * @return lista de conceptos en borrador
      */
     public List<ConceptSMTK> getConceptDraft();
-
-
 }
