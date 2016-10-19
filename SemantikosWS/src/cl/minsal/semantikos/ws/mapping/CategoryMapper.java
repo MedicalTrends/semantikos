@@ -28,8 +28,4 @@ public class CategoryMapper {
         }
     }
 
-    public static Category map(CategoryResponse categoryResponse) {
-        throw new IllegalStateException("Not implemented yet");
-    }
-
 }

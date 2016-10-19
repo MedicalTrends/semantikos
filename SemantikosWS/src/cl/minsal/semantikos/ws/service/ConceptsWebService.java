@@ -1,5 +1,6 @@
 package cl.minsal.semantikos.ws.service;
 
+import cl.minsal.semantikos.kernel.components.ConceptManager;
 import cl.minsal.semantikos.kernel.daos.CategoryDAO;
 import cl.minsal.semantikos.kernel.daos.ConceptDAO;
 import cl.minsal.semantikos.kernel.daos.DescriptionDAO;
@@ -32,12 +33,12 @@ public class ConceptsWebService {
 
     @EJB
     private ConceptDAO conceptDAO;
-
     @EJB
     private CategoryDAO categoryDAO;
-
     @EJB
     private DescriptionDAO descriptionDAO;
+    @EJB
+    private ConceptManager conceptManager;
 
     @WebMethod(operationName = "conceptoPorIdDescripcion")
     @WebResult(name = "concepto")
@@ -61,8 +62,11 @@ public class ConceptsWebService {
             throw new NotFoundFault("Concepto no encontrado");
         }
 
+        conceptManager.loadRelationships(conceptSMTK);
+
         ConceptResponse res = ConceptMapper.map(conceptSMTK);
         ConceptMapper.appendDescriptions(res, conceptSMTK);
+        ConceptMapper.appendRelationships(res, conceptSMTK);
         return res;
     }
 
@@ -98,7 +102,11 @@ public class ConceptsWebService {
 
         List<ConceptResponse> conceptResponses = new ArrayList<>();
         for ( ConceptSMTK conceptSMTK : concepts ) {
-            conceptResponses.add(ConceptMapper.map(conceptSMTK));
+            conceptManager.loadRelationships(conceptSMTK);
+            ConceptResponse concept = ConceptMapper.map(conceptSMTK);
+            ConceptMapper.appendDescriptions(concept, conceptSMTK);
+            ConceptMapper.appendRelationships(concept, conceptSMTK);
+            conceptResponses.add(concept);
         }
         res.setConceptResponses(conceptResponses);
 

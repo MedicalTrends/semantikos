@@ -32,8 +32,4 @@ public class DescriptionMapper {
         }
     }
 
-    public static Description map(DescriptionResponse descriptionResponse) {
-        throw new IllegalStateException("Not implemented yet");
-    }
-
 }

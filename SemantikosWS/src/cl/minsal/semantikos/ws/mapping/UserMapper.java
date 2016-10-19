@@ -29,8 +29,4 @@ public class UserMapper {
         }
     }
 
-    public static User map(UserResponse userResponse) {
-        throw new IllegalStateException("Not implemented yet");
-    }
-
 }

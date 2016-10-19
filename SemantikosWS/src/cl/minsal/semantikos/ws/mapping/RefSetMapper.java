@@ -23,8 +23,4 @@ public class RefSetMapper {
         }
     }
 
-    public static RefSet map(RefSetResponse refSetResponse) {
-        throw new IllegalStateException("Not implemented yet");
-    }
-
 }

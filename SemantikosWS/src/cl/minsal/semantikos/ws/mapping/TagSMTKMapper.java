@@ -22,8 +22,4 @@ public class TagSMTKMapper {
         }
     }
 
-    public static TagSMTK map(TagSMTKResponse tagSMTKResponse) {
-        throw new IllegalStateException("Not implemented yet");
-    }
-
 }

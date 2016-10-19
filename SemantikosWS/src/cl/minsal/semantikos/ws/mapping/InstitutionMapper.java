@@ -20,8 +20,4 @@ public class InstitutionMapper {
         }
     }
 
-    public static Institution map(InstitutionResponse institutionResponse) {
-        throw new IllegalStateException("Not implemented yet");
-    }
-
 }

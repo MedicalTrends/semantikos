@@ -3,8 +3,10 @@ package cl.minsal.semantikos.ws.mapping;
 import cl.minsal.semantikos.model.ConceptSMTK;
 import cl.minsal.semantikos.model.Description;
 import cl.minsal.semantikos.model.DescriptionType;
+import cl.minsal.semantikos.model.relationships.Relationship;
 import cl.minsal.semantikos.ws.response.ConceptResponse;
 import cl.minsal.semantikos.ws.response.DescriptionResponse;
+import cl.minsal.semantikos.ws.response.RelationshipResponse;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,7 +47,7 @@ public class ConceptMapper {
         }
     }
 
-    public static void appendDescriptions(ConceptResponse conceptResponse, ConceptSMTK conceptSMTK) {
+    public static ConceptResponse appendDescriptions(ConceptResponse conceptResponse, ConceptSMTK conceptSMTK) {
         if ( conceptResponse != null
                 && conceptSMTK != null
                 && conceptSMTK.getDescriptions() != null ) {
@@ -62,10 +64,23 @@ public class ConceptMapper {
             }
             conceptResponse.setDescriptions(descriptions);
         }
+
+        return conceptResponse;
     }
 
-    public static ConceptSMTK map(ConceptResponse conceptResponse) {
-        throw new IllegalStateException("Not implemented yet");
+    public static ConceptResponse appendRelationships(ConceptResponse conceptResponse, ConceptSMTK conceptSMTK) {
+        if ( conceptResponse != null
+                && conceptSMTK != null
+                && conceptSMTK.getRelationships() != null ) {
+            List<RelationshipResponse> relationshipResponses = new ArrayList<>();
+            for (Relationship relationship : conceptSMTK.getRelationships()) {
+                relationshipResponses.add(RelationshipMapper.map(relationship));
+            }
+            conceptResponse.setRelationships(relationshipResponses);
+        }
+
+        return conceptResponse;
     }
+
 
 }
