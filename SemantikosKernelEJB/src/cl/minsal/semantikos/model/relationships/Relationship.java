@@ -264,6 +264,8 @@ public class Relationship extends PersistentEntity implements AuditableEntity {
         return (getValidityUntil() == null || getValidityUntil().after(new Timestamp(System.currentTimeMillis())));
     }
 
+
+
     public List<RelationshipAttribute> getRelationshipAttributes() {
         return relationshipAttributes;
     }

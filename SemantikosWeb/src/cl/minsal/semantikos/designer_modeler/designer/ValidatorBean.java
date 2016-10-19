@@ -148,20 +148,14 @@ public class ValidatorBean {
 
     }
 
-    public int countAbbreviatedDescription(List<Description> descriptionList){
+    private int countAbbreviatedDescription(List<Description> descriptionList){
         int count=0;
-        for (int i = 0; i < descriptionList.size(); i++) {
-            if(descriptionList.get(i).getDescriptionType().getName().equalsIgnoreCase("abreviada"))count++;
+        for (Description aDescriptionList : descriptionList) {
+            if (aDescriptionList.getDescriptionType().getName().equalsIgnoreCase("abreviada")) count++;
         }
 
         return count;
     }
 
-    public String getUiState() {
-        return uiState;
-    }
 
-    public void setUiState(String uiState) {
-        this.uiState = uiState;
-    }
 }

@@ -682,11 +682,11 @@ public class ConceptBean implements Serializable {
      * @return
      */
     public boolean validateRelationships() {
-        for (int i = 0; i < category.getRelationshipDefinitions().size(); i++) {
-            if (!(concept.getValidRelationshipsWebByRelationDefinition(category.getRelationshipDefinitions().get(i)).size() >= category.getRelationshipDefinitions().get(i).getMultiplicity().getLowerBoundary())) {
-                return false;
-            }
+
+        for (RelationshipDefinition relationshipDefinition : category.getRelationshipDefinitions()) {
+            return concept.isMultiplicitySatisfied(relationshipDefinition);
         }
+
         return true;
     }
 
