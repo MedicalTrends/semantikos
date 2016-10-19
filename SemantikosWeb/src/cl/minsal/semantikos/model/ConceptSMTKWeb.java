@@ -5,6 +5,7 @@ import cl.minsal.semantikos.model.exceptions.BusinessRuleException;
 import cl.minsal.semantikos.model.relationships.Relationship;
 import cl.minsal.semantikos.model.relationships.RelationshipAttribute;
 import cl.minsal.semantikos.model.relationships.RelationshipDefinition;
+import cl.minsal.semantikos.model.relationships.RelationshipDefinitionWeb;
 import cl.minsal.semantikos.util.Pair;
 
 import java.util.ArrayList;
@@ -265,6 +266,11 @@ public class ConceptSMTKWeb extends ConceptSMTK {
     public void addDescriptionWeb(DescriptionWeb descriptionWeb) {
         this.addDescription(descriptionWeb);
         this.descriptionsWeb.add(descriptionWeb);
+    }
+
+    public void initRelationship(RelationshipDefinitionWeb relationshipDefinitionWeb){
+        Relationship r = new Relationship(this, relationshipDefinitionWeb.getDefaultValue(), relationshipDefinitionWeb, new ArrayList<RelationshipAttribute>());
+        addRelationshipWeb(new RelationshipWeb(this, r.getId(), r, r.getRelationshipAttributes()));
     }
 
     /**

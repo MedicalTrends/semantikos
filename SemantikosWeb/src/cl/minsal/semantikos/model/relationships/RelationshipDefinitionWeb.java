@@ -18,6 +18,9 @@ public class RelationshipDefinitionWeb extends RelationshipDefinition implements
     /** Establece el estilo para el estado de error */
     private String uiState = "";
 
+    /** Establece el valor por defecto para esta definición */
+    private Target defaultValue;
+
     public RelationshipDefinitionWeb(long id, String name, String description, TargetDefinition targetDefinition, Multiplicity multiplicity, long compositeID, int order) {
         super(id, name, description, targetDefinition, multiplicity);
 
@@ -41,8 +44,21 @@ public class RelationshipDefinitionWeb extends RelationshipDefinition implements
         this.uiState = uiState;
     }
 
+    public Target getDefaultValue() {
+        return defaultValue;
+    }
+
+    public void setDefaultValue(Target defaultValue) {
+        this.defaultValue = defaultValue;
+    }
+
+    public boolean hasDefaultValue(){
+        return getDefaultValue()!=null;
+    }
+
     @Override
     public int compareTo(@NotNull RelationshipDefinitionWeb relationshipDefinitionWeb) {
         return this.order - relationshipDefinitionWeb.order;
     }
+
 }

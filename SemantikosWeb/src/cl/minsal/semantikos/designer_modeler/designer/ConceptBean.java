@@ -1303,9 +1303,11 @@ public class ConceptBean implements Serializable {
 
         if (orderedRelationshipDefinitionsList.isEmpty()) {
             for (RelationshipDefinition relationshipDefinition : category.getRelationshipDefinitions()) {
-                orderedRelationshipDefinitionsList.add(viewAugmenter.augmentRelationshipDefinition(category, relationshipDefinition));
+                RelationshipDefinitionWeb relationshipDefinitionWeb = viewAugmenter.augmentRelationshipDefinition(category, relationshipDefinition);
+                orderedRelationshipDefinitionsList.add(relationshipDefinitionWeb);
+                if(relationshipDefinitionWeb.hasDefaultValue())
+                    concept.initRelationship(relationshipDefinitionWeb);
             }
-
             Collections.sort(orderedRelationshipDefinitionsList);
         }
 

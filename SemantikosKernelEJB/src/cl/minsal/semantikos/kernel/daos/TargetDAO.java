@@ -23,6 +23,15 @@ public interface TargetDAO {
     public Target getTargetByID(long idTarget);
 
     /**
+     * Este método es responsable de recuperar un Target a partir de su ID.
+     *
+     * @param idTarget Identificador único del Target.
+     *
+     * @return Un objeto fresco (ConceptoSMTK, fila de una Tabla Auxiliar, Concepto CST) que es el valor concreto.
+     */
+    public Target getDefaultTargetByID(long idTarget);
+
+    /**
      * Este método es responsable de persistir un Target asociado a una relación
      *
      * @param target           el target

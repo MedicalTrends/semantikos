@@ -75,6 +75,39 @@ public class TargetDAOImpl implements TargetDAO {
     }
 
     @Override
+    public Target getDefaultTargetByID(long idTarget) {
+
+        Target target;
+        ConnectionBD connect = new ConnectionBD();
+        String sqlQuery = "{call semantikos.get_default_target_by_id(?)}";
+        try (Connection connection = connect.getConnection();
+             CallableStatement call = connection.prepareCall(sqlQuery)) {
+
+            /* Se invoca la consulta para recuperar las relaciones */
+            call.setLong(1, idTarget);
+            call.execute();
+
+            /* Cada Fila del ResultSet trae una relación */
+            ResultSet rs = call.getResultSet();
+            if (rs.next()) {
+                String jsonResult = rs.getString(1);
+                target = targetFactory.createTargetFromJSON(jsonResult);
+            } else {
+                String errorMsg = "Un error imposible acaba de ocurrir";
+                logger.error(errorMsg);
+                throw new EJBException(errorMsg);
+            }
+            rs.close();
+        } catch (SQLException e) {
+            String errorMsg = "Erro al invocar get_relationship_definitions_by_category(" + idTarget + ")";
+            logger.error(errorMsg, e);
+            throw new EJBException(errorMsg, e);
+        }
+
+        return target;
+    }
+
+    @Override
     public long persist(Target target, TargetDefinition targetDefinition) {
 
         ConnectionBD connect = new ConnectionBD();
