@@ -69,7 +69,7 @@
             </div>
             <div class="ui-g-12 ui-md-6 ui-lg-2">
                 <h:outputText
-                        value="#{compositeAditionalBean.getCantidadMCToPCCE(cc.attrs.concept)}"/>
+                        value="#{compositeAditionalBean.getAditionalInfo(cc.attrs.concept,92).target}"/>
             </div>
 
             <div class="ui-g-12 ui-md-6 ui-lg-1">
@@ -77,7 +77,7 @@
             </div>
             <div class="ui-g-12 ui-md-6 ui-lg-2">
                 <h:outputText
-                        value="#{compositeAditionalBean.getUnidadCantidadMCToPCCE(cc.attrs.concept)}"/>
+                        value="#{compositeAditionalBean.getAditionalInfo(cc.attrs.concept,92,15).getValueColumn('description')}"/>
             </div>
 
         </div>

@@ -159,6 +159,8 @@ public class ConceptBean implements Serializable {
 
     private AutogenerateMC autogenerateMC;
 
+    private AutogeneratePCCE autogeneratePCCE;
+
     /**
      * Un map para almacenar localmente las relaciones aumentadas
      */
@@ -194,6 +196,7 @@ public class ConceptBean implements Serializable {
         user.getProfiles().add(designerProfile);
         autogenerateMCCE = new AutogenerateMCCE();
         autogenerateMC= new AutogenerateMC();
+        autogeneratePCCE= new AutogeneratePCCE();
         Description d;
 
 
@@ -453,6 +456,16 @@ public class ConceptBean implements Serializable {
                     autogenerateMC.setVolumen(relationship);
                     concept.getDescriptionFavorite().setTerm(autogenerateMC.toString());
                 }
+                if(relationshipDefinition.getId()==52){
+                    ConceptSMTK c= (ConceptSMTK) relationship.getTarget();
+                    c.setRelationships(relationshipManager.getRelationshipsBySourceConcept(c));
+                    autogeneratePCCE.autogeratePCCE((ConceptSMTK) relationship.getTarget());
+                    concept.getDescriptionFavorite().setTerm(autogeneratePCCE.toString());
+                }
+                if(relationshipDefinition.getId()==51){
+                    autogeneratePCCE.setPc(((ConceptSMTK) relationship.getTarget()).getDescriptionFavorite().getTerm());
+                    concept.getDescriptionFavorite().setTerm(autogeneratePCCE.toString());
+                }
                 break;
             }
         }
@@ -484,6 +497,16 @@ public class ConceptBean implements Serializable {
         if(relationshipDefinition.getId()==92){
             autogenerateMCCE.setCantidad(relationship.getTarget().toString());
             concept.getDescriptionFavorite().setTerm(autogenerateMCCE());
+        }
+        if(relationshipDefinition.getId()==52){
+            ConceptSMTK c= (ConceptSMTK) relationship.getTarget();
+            c.setRelationships(relationshipManager.getRelationshipsBySourceConcept(c));
+            autogeneratePCCE.autogeratePCCE((ConceptSMTK) relationship.getTarget());
+            concept.getDescriptionFavorite().setTerm(autogeneratePCCE.toString());
+        }
+        if(relationshipDefinition.getId()==51){
+            autogeneratePCCE.setPc(((ConceptSMTK) relationship.getTarget()).getDescriptionFavorite().getTerm());
+            concept.getDescriptionFavorite().setTerm(autogeneratePCCE.toString());
         }
 
 

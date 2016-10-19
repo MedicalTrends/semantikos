@@ -23,6 +23,7 @@ public class AutogenerateMCCE {
         this.packUnidad = "";
     }
 
+
     public String getMC() {
         return MC;
     }
