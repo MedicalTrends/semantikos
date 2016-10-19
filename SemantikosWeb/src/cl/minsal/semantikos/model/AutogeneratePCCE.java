@@ -33,7 +33,7 @@ public class AutogeneratePCCE {
 
     public void autogeratePCCE(ConceptSMTK conceptSMTK){
         setCVP();
-        autogeneratePCCE= conceptSMTK.getDescriptionFavorite().getTerm();
+
         for (Relationship relationship: conceptSMTK.getRelationships()) {
             if(relationship.getRelationshipDefinition().getId()==92){
                 for (RelationshipAttribute attribute: relationship.getRelationshipAttributes()) {
@@ -58,7 +58,7 @@ public class AutogeneratePCCE {
             }
         }
 
-        autogeneratePCCE= autogeneratePCCE +" "+cantidad+" "+pack+ " "+vol;
+        autogeneratePCCE= cantidad+" "+pack+ " "+vol;
     }
 
     public String getAutogeneratePCCE() {

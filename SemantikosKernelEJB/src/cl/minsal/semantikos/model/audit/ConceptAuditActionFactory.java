@@ -14,7 +14,9 @@ import javax.ejb.Singleton;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.TimeZone;
 
 import static cl.minsal.semantikos.kernel.util.StringUtils.underScoreToCamelCaseJSON;
 
@@ -66,6 +68,7 @@ public class ConceptAuditActionFactory {
             User user = userDAO.getUserById((int) auditActionDTO.getIdUser());
             AuditableEntityType auditableEntityType = AuditableEntityType.valueOf(auditActionDTO.getIdAuditEntityType());
             AuditableEntity auditableEntityByID = auditableEntityFactory.findAuditableEntityByID(auditActionDTO.getIdAuditableEntity(), auditableEntityType);
+
 
             ConceptAuditAction conceptAuditAction = new ConceptAuditAction(concept, auditActionType, auditActionDTO.getDate(), user, auditableEntityByID);
             auditActions.add(conceptAuditAction);
