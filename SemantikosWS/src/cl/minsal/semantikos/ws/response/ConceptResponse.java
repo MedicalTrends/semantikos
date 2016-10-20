@@ -36,9 +36,9 @@ public class ConceptResponse implements Serializable {
     @XmlElementWrapper(name = "descripciones")
     @XmlElement(name="descripcion")
     private List<DescriptionResponse> descriptions;
-    @XmlElementWrapper(name = "relaciones")
-    @XmlElement(name="relacion")
-    private List<RelationshipResponse> relationships;
+    @XmlElementWrapper(name = "atributos")
+    @XmlElement(name="atributo")
+    private List<AttributeResponse> attributes;
 
     public String getConceptId() {
         return conceptId;
@@ -128,11 +128,11 @@ public class ConceptResponse implements Serializable {
         this.descriptions = descriptions;
     }
 
-    public List<RelationshipResponse> getRelationships() {
-        return relationships;
+    public List<AttributeResponse> getAttributes() {
+        return attributes;
     }
 
-    public void setRelationships(List<RelationshipResponse> relationships) {
-        this.relationships = relationships;
+    public void setAttributes(List<AttributeResponse> attributes) {
+        this.attributes = attributes;
     }
 }

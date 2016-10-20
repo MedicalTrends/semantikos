@@ -17,8 +17,12 @@ public class DescriptionResponse implements Serializable, Comparable<Description
 
     @XmlElement(name="id")
     private String descriptionID;
+    @XmlElement(name="tipo")
+    private String type;
     @XmlElement(name="termino")
     private String term;
+    @XmlElement(name="valida")
+    private Boolean isValid;
     @XmlElement(name="esSensibleMayusculas")
     private Boolean isCaseSensitive;
     @XmlElement(name="nombreAutgenerado")
@@ -27,14 +31,12 @@ public class DescriptionResponse implements Serializable, Comparable<Description
     private Boolean isPublished;
     @XmlElement(name="modelado")
     private Boolean modeled;
-    @XmlElement(name="validoHasta")
+    @XmlElement(name="validaHasta")
     private Date validityUntil;
     @XmlElement(name="creado")
     private Date creationDate;
     @XmlElement(name="usos")
     private Long uses;
-    @XmlElement(name="tipo")
-    private String type;
     @XmlElement(name="usuarioCreador")
     private UserResponse creatorUser;
     @XmlElement(name="concepto")
@@ -136,6 +138,14 @@ public class DescriptionResponse implements Serializable, Comparable<Description
         this.type = type;
     }
 
+    public Boolean getValid() {
+        return isValid;
+    }
+
+    public void setValid(Boolean valid) {
+        isValid = valid;
+    }
+
     @Override
     public int compareTo(DescriptionResponse o) {
         if ( this.getType() != null ) {
@@ -147,8 +157,6 @@ public class DescriptionResponse implements Serializable, Comparable<Description
                 } else {
                     return -1;
                 }
-            } else if ( o.getType() != null ) {
-                return this.getType().compareTo(o.getType());
             }
         }
         return 0;

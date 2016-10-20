@@ -23,7 +23,7 @@ public class TargetTypeMapper {
             res.setName(targetType.name());
             res.setDescription(targetType.getDescription());
             if ( targetType.getTargetDefinitions() != null ) {
-                List<TargetDefinitionResponse> targetDefinitions = new ArrayList<>();
+                List<TargetDefinitionResponse> targetDefinitions = new ArrayList<>(targetType.getTargetDefinitions().size());
                 for (TargetDefinition targetDefinition : targetType.getTargetDefinitions() ) {
                     targetDefinitions.add(TargetDefinitionMapper.map(targetDefinition));
                 }
@@ -31,7 +31,7 @@ public class TargetTypeMapper {
             }
 
             if ( targetType.getBasicTypeDefinitions() != null ) {
-                List<BasicTypeDefinitionResponse> basicTypeDefinitions = new ArrayList<>();
+                List<BasicTypeDefinitionResponse> basicTypeDefinitions = new ArrayList<>(targetType.getTargetDefinitions().size());
                 for (BasicTypeDefinition basicTypeDefinition : targetType.getBasicTypeDefinitions()) {
                     basicTypeDefinitions.add(BasicTypeDefinitionMapper.map(basicTypeDefinition));
                 }

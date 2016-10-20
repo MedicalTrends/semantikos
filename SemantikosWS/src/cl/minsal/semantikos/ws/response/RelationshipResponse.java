@@ -13,35 +13,15 @@ import java.util.List;
 @XmlRootElement(name = "relacion")
 public class RelationshipResponse implements Serializable {
 
-    @XmlElement(name="validoHasta")
-    private Date validityUntil;
-    @XmlElement(name="aSerActualizado")
-    private Boolean toBeUpdated;
-    @XmlElement(name="objetivo")
-    private TargetResponse target;
-    @XmlElement(name="definicionRelacion")
+    @XmlElement(name = "definicion")
     private RelationshipDefinitionResponse relationshipDefinition;
-    @XmlElement(name="concepto")
+    @XmlElement(name = "objetivo")
+    private TargetResponse target;
+    @XmlElement(name = "concepto")
     private ConceptResponse concept;
-    @XmlElementWrapper(name = "atributosRelacion")
-    @XmlElement(name="atributoRelacion")
+    @XmlElementWrapper(name = "atributos")
+    @XmlElement(name = "atributo")
     private List<RelationshipAttributeResponse> relationshipAttribute;
-
-    public Date getValidityUntil() {
-        return validityUntil;
-    }
-
-    public void setValidityUntil(Date validityUntil) {
-        this.validityUntil = validityUntil;
-    }
-
-    public Boolean getToBeUpdated() {
-        return toBeUpdated;
-    }
-
-    public void setToBeUpdated(Boolean toBeUpdated) {
-        this.toBeUpdated = toBeUpdated;
-    }
 
     public TargetResponse getTarget() {
         return target;

@@ -12,12 +12,9 @@ public class BasicTypeTypeMapper {
     public static BasicTypeTypeResponse map(BasicTypeType basicTypeType) {
         if ( basicTypeType != null ) {
             BasicTypeTypeResponse res = new BasicTypeTypeResponse();
-
             res.setTypeName(basicTypeType.getTypeName());
-
             return res;
         }
-
         return null;
     }
 

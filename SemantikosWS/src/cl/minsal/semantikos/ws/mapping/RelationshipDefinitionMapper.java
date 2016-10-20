@@ -22,7 +22,7 @@ public class RelationshipDefinitionMapper {
             res.setMultiplicity(MultiplicityMapper.map(relationshipDefinition.getMultiplicity()));
             res.setTargetDefinition(TargetDefinitionMapper.map(relationshipDefinition.getTargetDefinition()));
             if ( relationshipDefinition.getRelationshipAttributeDefinitions() != null ) {
-                List<RelationshipAttributeDefinitionResponse> relationshipAttributeDefinitionResponses = new ArrayList<>();
+                List<RelationshipAttributeDefinitionResponse> relationshipAttributeDefinitionResponses = new ArrayList<>(relationshipDefinition.getRelationshipAttributeDefinitions().size());
                 for (RelationshipAttributeDefinition relationshipAttributeDefinition : relationshipDefinition.getRelationshipAttributeDefinitions() ) {
                     relationshipAttributeDefinitionResponses.add(RelationshipAttributeDefinitionMapper.map(relationshipAttributeDefinition));
                 }

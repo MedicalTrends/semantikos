@@ -21,7 +21,7 @@ public class HelperTableMapper {
             res.setDescription(helperTable.getDescription());
             res.setTablaName(helperTable.getTablaName());
             if ( helperTable.getColumns() != null ) {
-                List<HelperTableColumnResponse> helperTableColumnResponses = new ArrayList<>();
+                List<HelperTableColumnResponse> helperTableColumnResponses = new ArrayList<>(helperTable.getColumns().size());
                 for (HelperTableColumn helperTableColumn : helperTable.getColumns()) {
                     helperTableColumnResponses.add(HelperTableColumnMapper.map(helperTableColumn));
                 }

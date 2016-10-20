@@ -17,6 +17,7 @@ public class DescriptionMapper {
             DescriptionResponse res = new DescriptionResponse();
             res.setDescriptionID(description.getDescriptionId());
             res.setTerm(description.getTerm());
+            res.setValid(description.isValid());
             if ( description.getDescriptionType() != null ) {
                 res.setType(description.getDescriptionType().getName());
             }

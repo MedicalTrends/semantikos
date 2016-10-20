@@ -17,12 +17,10 @@ public class RelationshipMapper {
     public static RelationshipResponse map(Relationship relationship) {
         if ( relationship != null ) {
             RelationshipResponse res = new RelationshipResponse();
-            res.setValidityUntil(MappingUtil.toDate(relationship.getValidityUntil()));
-            res.setToBeUpdated(relationship.isToBeUpdated());
             res.setRelationshipDefinition(RelationshipDefinitionMapper.map(relationship.getRelationshipDefinition()));
             res.setTarget(TargetMapper.map(relationship.getTarget()));
             if ( relationship.getRelationshipAttributes() != null ) {
-                List<RelationshipAttributeResponse> relationshipAttributeResponses = new ArrayList<>();
+                List<RelationshipAttributeResponse> relationshipAttributeResponses = new ArrayList<>(relationship.getRelationshipAttributes().size());
                 for ( RelationshipAttribute ra : relationship.getRelationshipAttributes() ) {
                     relationshipAttributeResponses.add(RelationshipAttributeMapper.map(ra));
                 }

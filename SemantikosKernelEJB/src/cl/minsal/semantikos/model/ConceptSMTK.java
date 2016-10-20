@@ -219,6 +219,17 @@ public class ConceptSMTK extends PersistentEntity implements Target, AuditableEn
         return snomedRelationships;
     }
 
+    public List<Relationship> getRelationshipsBasicType() {
+        List<Relationship> snomedRelationships = new ArrayList<>();
+        for (Relationship relationship : relationships) {
+            if (relationship.getRelationshipDefinition().getTargetDefinition().isBasicType()) {
+                snomedRelationships.add(relationship);
+            }
+        }
+
+        return snomedRelationships;
+    }
+
     /**
      * Este método es responsable de retornar todas las relaciones válidas de este concepto
      *
