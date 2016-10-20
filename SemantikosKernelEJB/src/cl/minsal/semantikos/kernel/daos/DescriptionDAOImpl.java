@@ -88,7 +88,6 @@ public class DescriptionDAOImpl implements DescriptionDAO {
             ResultSet rs = call.getResultSet();
             while (rs.next()) {
                 description = createDescriptionFromResultSet(rs, null);
-
             }
 
         } catch (SQLException e) {

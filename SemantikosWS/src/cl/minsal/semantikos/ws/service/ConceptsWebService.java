@@ -64,10 +64,10 @@ public class ConceptsWebService {
         }
 
         conceptManager.loadRelationships(conceptSMTK);
-
         ConceptResponse res = ConceptMapper.map(conceptSMTK);
         ConceptMapper.appendDescriptions(res, conceptSMTK);
         ConceptMapper.appendAttributes(res, conceptSMTK);
+        ConceptMapper.appendRelationships(res, conceptSMTK);
         return res;
     }
 
@@ -108,6 +108,7 @@ public class ConceptsWebService {
             ConceptResponse concept = ConceptMapper.map(conceptSMTK);
             ConceptMapper.appendDescriptions(concept, conceptSMTK);
             ConceptMapper.appendAttributes(concept, conceptSMTK);
+            ConceptMapper.appendRelationships(concept, conceptSMTK);
             conceptResponses.add(concept);
         }
         res.setConceptResponses(conceptResponses);

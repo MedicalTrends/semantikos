@@ -64,5 +64,20 @@ public class ConceptMapper {
         return conceptResponse;
     }
 
+    public static ConceptResponse appendRelationships(ConceptResponse conceptResponse, ConceptSMTK conceptSMTK) {
+        if ( conceptResponse != null
+                && conceptSMTK != null  ) {
+            List<Relationship> relationships = conceptSMTK.getRelationshipsNonBasicType();
+            if ( relationships != null ) {
+                List<RelationshipResponse> relationshipResponses = new ArrayList<>(relationships.size());
+                for ( Relationship relationship : relationships ) {
+                    relationshipResponses.add(RelationshipMapper.map(relationship));
+                }
+                conceptResponse.setRelationships(relationshipResponses);
+            }
+        }
+        return conceptResponse;
+    }
+
 
 }
