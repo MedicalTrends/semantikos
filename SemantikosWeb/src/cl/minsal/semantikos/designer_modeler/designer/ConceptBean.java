@@ -189,6 +189,10 @@ public class ConceptBean implements Serializable {
     @PostConstruct
     protected void initialize() throws ParseException {
 
+        TimeZone tz = Calendar.getInstance().getTimeZone();
+        System.out.println(tz.getDisplayName()); // (i.e. Moscow Standard Time)
+        System.out.println(tz.getID()); // (i.e. Europe/Moscow)
+
         // TODO: Terminar esto o cambiar en el futuro
 
         user = authenticationBean.getLoggedUser();
