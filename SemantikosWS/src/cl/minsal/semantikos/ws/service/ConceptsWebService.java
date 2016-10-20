@@ -46,7 +46,7 @@ public class ConceptsWebService {
     public ConceptResponse conceptoPorIdDescripcion(
             @XmlElement(required = true)
             @WebParam(name = "idDescripcion")
-            Long descriptionId
+            String descriptionId
     ) throws NotFoundFault {
         Description description = null;
         try {
