@@ -12,8 +12,6 @@ public class UserMapper {
     public static UserResponse map(User user) {
         if ( user != null ) {
             UserResponse res = new UserResponse();
-
-            res.setIdUser(user.getIdUser());
             res.setName(user.getName());
             res.setEmail(user.getEmail());
             res.setLastLogin(user.getLastLogin());
@@ -22,7 +20,6 @@ public class UserMapper {
             res.setRut(user.getRut());
             res.setSecondLastName(user.getSecondLastName());
             res.setUsername(user.getUsername());
-
             return res;
         } else {
             return null;

@@ -12,14 +12,11 @@ public class TargetDefinitionMapper {
     public static TargetDefinitionResponse map(TargetDefinition targetDefinition) {
         if ( targetDefinition != null ) {
             TargetDefinitionResponse res = new TargetDefinitionResponse();
-
-            res.setId(targetDefinition.getId());
             res.setBasicType(targetDefinition.isBasicType());
             res.setSMTKType(targetDefinition.isSMTKType());
             res.setHelperTable(targetDefinition.isHelperTable());
             res.setSnomedCTType(targetDefinition.isSnomedCTType());
             res.setCrossMapType(targetDefinition.isCrossMapType());
-
             return res;
         }
 

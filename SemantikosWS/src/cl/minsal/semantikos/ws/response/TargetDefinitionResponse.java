@@ -14,8 +14,6 @@ import java.io.Serializable;
 @XmlRootElement(name = "definicionObjetivo")
 public class TargetDefinitionResponse implements Serializable {
 
-    @XmlElement(name="id")
-    private Long id;
     @XmlElement(name="esTipoBasico")
     private Boolean isBasicType;
     @XmlElement(name="esTipoSMTK")
@@ -26,14 +24,6 @@ public class TargetDefinitionResponse implements Serializable {
     private Boolean isSnomedCTType;
     @XmlElement(name="esTipoCrossMap")
     private Boolean isCrossMapType;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public Boolean getBasicType() {
         return isBasicType;

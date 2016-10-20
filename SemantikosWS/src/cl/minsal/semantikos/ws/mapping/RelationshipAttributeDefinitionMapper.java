@@ -12,12 +12,9 @@ public class RelationshipAttributeDefinitionMapper {
     public static RelationshipAttributeDefinitionResponse map(RelationshipAttributeDefinition relationshipAttributeDefinition) {
         if ( relationshipAttributeDefinition != null ) {
             RelationshipAttributeDefinitionResponse res = new RelationshipAttributeDefinitionResponse();
-
-            res.setId(relationshipAttributeDefinition.getId());
             res.setName(relationshipAttributeDefinition.getName());
             res.setMultiplicity(MultiplicityMapper.map(relationshipAttributeDefinition.getMultiplicity()));
             res.setTargetDefinition(TargetDefinitionMapper.map(relationshipAttributeDefinition.getTargetDefinition()));
-
             return res;
         }
 

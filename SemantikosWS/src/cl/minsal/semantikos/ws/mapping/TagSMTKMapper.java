@@ -12,10 +12,7 @@ public class TagSMTKMapper {
     public static TagSMTKResponse map(TagSMTK tagSMTK) {
         if ( tagSMTK != null ) {
             TagSMTKResponse res = new TagSMTKResponse();
-
             res.setName(tagSMTK.getName());
-            res.setId(tagSMTK.getId());
-
             return res;
         } else {
             return null;

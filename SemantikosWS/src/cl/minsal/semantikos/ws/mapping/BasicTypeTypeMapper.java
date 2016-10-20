@@ -13,7 +13,6 @@ public class BasicTypeTypeMapper {
         if ( basicTypeType != null ) {
             BasicTypeTypeResponse res = new BasicTypeTypeResponse();
 
-            res.setId(basicTypeType.getId());
             res.setTypeName(basicTypeType.getTypeName());
 
             return res;

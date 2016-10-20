@@ -12,10 +12,8 @@ public class MultiplicityMapper {
     public static MultiplicityResponse map(Multiplicity multiplicity) {
         if ( multiplicity != null ) {
             MultiplicityResponse res = new MultiplicityResponse();
-
             res.setLowerBoundary(multiplicity.getLowerBoundary());
             res.setUpperBoundary(multiplicity.getUpperBoundary());
-
             return res;
         }
 

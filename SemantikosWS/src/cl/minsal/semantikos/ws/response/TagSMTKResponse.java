@@ -14,19 +14,8 @@ import java.io.Serializable;
 @XmlRootElement(name = "tagSMTK")
 public class TagSMTKResponse implements Serializable {
 
-    @XmlElement(name="id")
-    private Long id;
-
     @XmlElement(name="nombre")
     private String name;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;

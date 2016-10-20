@@ -12,8 +12,6 @@ import java.util.List;
 @XmlRootElement(name = "definicionRelacion")
 public class RelationshipDefinitionResponse implements Serializable {
 
-    @XmlElement(name="id")
-    private Long id;
     @XmlElement(name="name")
     private String name;
     @XmlElement(name="description")
@@ -27,14 +25,6 @@ public class RelationshipDefinitionResponse implements Serializable {
     @XmlElementWrapper(name = "definicionesAtributoRelacion")
     @XmlElement(name="definicionAtributoRelacion")
     private List<RelationshipAttributeDefinitionResponse> relationshipAttributeDefinitionResponses;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;

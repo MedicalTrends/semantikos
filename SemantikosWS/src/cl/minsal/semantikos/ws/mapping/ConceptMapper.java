@@ -9,6 +9,7 @@ import cl.minsal.semantikos.ws.response.DescriptionResponse;
 import cl.minsal.semantikos.ws.response.RelationshipResponse;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -25,21 +26,10 @@ public class ConceptMapper {
             res.setModeled(conceptSMTK.isModeled());
             res.setConceptId(conceptSMTK.getConceptID());
             res.setFullyDefined(conceptSMTK.isFullyDefined());
-            res.setId(conceptSMTK.getId());
             res.setObservation(conceptSMTK.getObservation());
             res.setToBeConsulted(conceptSMTK.isToBeConsulted());
             res.setToBeReviewed(conceptSMTK.isToBeReviewed());
             res.setValidUntil(MappingUtil.toDate(conceptSMTK.getValidUntil()));
-
-            try {
-                Description preferedDescription = conceptSMTK.getDescriptionFavorite();
-                res.setPreferedDescription(DescriptionMapper.map(preferedDescription));
-            } catch (Exception ignored) {}
-
-            try {
-                Description fsnDescription = conceptSMTK.getDescriptionFSN();
-                res.setFsnDescription(DescriptionMapper.map(fsnDescription));
-            } catch (Exception ignored) {}
 
             return res;
         } else {
@@ -53,15 +43,9 @@ public class ConceptMapper {
                 && conceptSMTK.getDescriptions() != null ) {
             List<DescriptionResponse> descriptions = new ArrayList<>();
             for ( Description description : conceptSMTK.getDescriptions() ) {
-                DescriptionType type = description.getDescriptionType();
-                if ( type != null
-                        && !"preferida".equalsIgnoreCase(type.getName())
-                        && !"FSN".equalsIgnoreCase(type.getName()) ) {
-                    DescriptionResponse descriptionResponse = DescriptionMapper.map(description);
-                    DescriptionMapper.appendDescriptionType(descriptionResponse, description);
-                    descriptions.add(descriptionResponse);
-                }
+                descriptions.add(DescriptionMapper.map(description));
             }
+            Collections.sort(descriptions);
             conceptResponse.setDescriptions(descriptions);
         }
 

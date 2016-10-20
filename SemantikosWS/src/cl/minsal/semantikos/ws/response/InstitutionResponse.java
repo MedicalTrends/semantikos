@@ -12,21 +12,11 @@ import java.util.List;
 @XmlRootElement(name = "institucion")
 public class InstitutionResponse implements Serializable {
 
-    @XmlElement(name="id")
-    private Long id;
     @XmlElement(name="nombre")
     private String name;
     @XmlElementWrapper(name = "administradores")
     @XmlElement(name="usuario")
     private List<UserResponse> administrators;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;

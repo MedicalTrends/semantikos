@@ -12,8 +12,6 @@ import java.util.List;
 @XmlRootElement(name = "tipoObjetivo")
 public class TargetTypeResponse implements Serializable {
 
-    @XmlElement(name="id")
-    private Long id;
     @XmlElement(name="nombre")
     private String name;
     @XmlElement(name="descripcion")
@@ -24,14 +22,6 @@ public class TargetTypeResponse implements Serializable {
     @XmlElementWrapper(name = "definicionesTipoBasico")
     @XmlElement(name="definicionTipoBasico")
     private List<BasicTypeDefinitionResponse> basicTypeDefinitions;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;

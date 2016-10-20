@@ -17,7 +17,6 @@ public class RelationshipMapper {
     public static RelationshipResponse map(Relationship relationship) {
         if ( relationship != null ) {
             RelationshipResponse res = new RelationshipResponse();
-
             res.setValidityUntil(MappingUtil.toDate(relationship.getValidityUntil()));
             res.setToBeUpdated(relationship.isToBeUpdated());
             res.setRelationshipDefinition(RelationshipDefinitionMapper.map(relationship.getRelationshipDefinition()));
@@ -29,10 +28,8 @@ public class RelationshipMapper {
                 }
                 res.setRelationshipAttribute(relationshipAttributeResponses);
             }
-
             return res;
         }
-
         return null;
     }
 

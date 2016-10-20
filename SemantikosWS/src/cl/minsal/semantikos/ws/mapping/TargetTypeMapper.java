@@ -20,7 +20,6 @@ public class TargetTypeMapper {
         if ( targetType != null ) {
             TargetTypeResponse res = new TargetTypeResponse();
 
-            res.setId(targetType.getIdTargetType());
             res.setName(targetType.name());
             res.setDescription(targetType.getDescription());
             if ( targetType.getTargetDefinitions() != null ) {

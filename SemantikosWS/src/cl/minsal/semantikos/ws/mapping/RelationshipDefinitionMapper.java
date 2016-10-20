@@ -17,8 +17,6 @@ public class RelationshipDefinitionMapper {
     public static RelationshipDefinitionResponse map(RelationshipDefinition relationshipDefinition) {
         if ( relationshipDefinition != null ) {
             RelationshipDefinitionResponse res = new RelationshipDefinitionResponse();
-
-            res.setId(relationshipDefinition.getId());
             res.setName(relationshipDefinition.getName());
             res.setDescription(relationshipDefinition.getDescription());
             res.setMultiplicity(MultiplicityMapper.map(relationshipDefinition.getMultiplicity()));
@@ -30,10 +28,8 @@ public class RelationshipDefinitionMapper {
                 }
                 res.setRelationshipAttributeDefinitionResponses(relationshipAttributeDefinitionResponses);
             }
-
             return res;
         }
-
         return null;
     }
 

@@ -12,8 +12,6 @@ import java.util.List;
 @XmlRootElement(name = "definicionTipoBasico")
 public class BasicTypeDefinitionResponse implements Serializable {
 
-    @XmlElement(name="id")
-    private Long id;
     @XmlElement(name="nombre")
     private String name;
     @XmlElement(name="descripcion")
@@ -25,14 +23,6 @@ public class BasicTypeDefinitionResponse implements Serializable {
     @XmlElementWrapper(name = "dominios")
     @XmlElement(name="dominio")
     private List<String> domain;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;

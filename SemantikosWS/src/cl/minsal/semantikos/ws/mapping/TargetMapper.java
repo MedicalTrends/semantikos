@@ -18,8 +18,6 @@ public class TargetMapper {
     public static TargetResponse map(Target target) {
         if ( target != null ) {
             TargetResponse res = new TargetResponse();
-
-            res.setId(target.getId());
             res.setTargetTypeResponse(TargetTypeMapper.map(target.getTargetType()));
 
             if (target instanceof BasicTypeValue) {
@@ -51,7 +49,6 @@ public class TargetMapper {
 
             return res;
         }
-
         return null;
     }
 

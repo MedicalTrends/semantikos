@@ -14,8 +14,6 @@ import java.util.List;
 public class ConceptResponse implements Serializable {
 
     @XmlElement(name="id")
-    private Long id;
-    @XmlElement(name="idConcepto")
     private String conceptId;
     @XmlElement(name="aSerRevisado")
     private Boolean isToBeReviewed;
@@ -35,24 +33,12 @@ public class ConceptResponse implements Serializable {
     private TagSMTKResponse tagSMTK;
     @XmlElement(name="categoria")
     private CategoryResponse category;
-    @XmlElement(name="descripcionPreferida")
-    private DescriptionResponse preferedDescription;
-    @XmlElement(name="descripcionFSN")
-    private DescriptionResponse fsnDescription;
     @XmlElementWrapper(name = "descripciones")
     @XmlElement(name="descripcion")
     private List<DescriptionResponse> descriptions;
     @XmlElementWrapper(name = "relaciones")
     @XmlElement(name="relacion")
     private List<RelationshipResponse> relationships;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getConceptId() {
         return conceptId;
@@ -132,22 +118,6 @@ public class ConceptResponse implements Serializable {
 
     public void setCategory(CategoryResponse category) {
         this.category = category;
-    }
-
-    public DescriptionResponse getPreferedDescription() {
-        return preferedDescription;
-    }
-
-    public void setPreferedDescription(DescriptionResponse preferedDescription) {
-        this.preferedDescription = preferedDescription;
-    }
-
-    public DescriptionResponse getFsnDescription() {
-        return fsnDescription;
-    }
-
-    public void setFsnDescription(DescriptionResponse fsnDescription) {
-        this.fsnDescription = fsnDescription;
     }
 
     public List<DescriptionResponse> getDescriptions() {

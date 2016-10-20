@@ -14,22 +14,12 @@ import java.io.Serializable;
 @XmlRootElement(name = "definicionRelacionAtributo")
 public class RelationshipAttributeDefinitionResponse implements Serializable {
 
-    @XmlElement(name="id")
-    private Long id;
     @XmlElement(name="name")
     private String name;
     @XmlElement(name="multiplicidad")
     private MultiplicityResponse multiplicity;
     @XmlElement(name="definicionObjetivo")
     private TargetDefinitionResponse targetDefinition;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;

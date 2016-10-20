@@ -13,8 +13,6 @@ import java.util.List;
 @XmlRootElement(name = "refSet")
 public class RefSetResponse implements Serializable {
 
-    @XmlElement(name="id")
-    private Long id;
     @XmlElement(name="nombre")
     private String name;
     @XmlElement(name="validoHasta")
@@ -26,14 +24,6 @@ public class RefSetResponse implements Serializable {
     @XmlElementWrapper(name = "conceptos")
     @XmlElement(name="concepto")
     private List<ConceptResponse> concepts;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;

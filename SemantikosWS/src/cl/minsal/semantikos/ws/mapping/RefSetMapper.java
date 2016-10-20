@@ -12,7 +12,6 @@ public class RefSetMapper {
     public static RefSetResponse map(RefSet refSet) {
         if ( refSet != null ) {
             RefSetResponse res = new RefSetResponse();
-            res.setId(refSet.getId());
             res.setName(refSet.getName());
             res.setValidityUntil(MappingUtil.toDate(refSet.getValidityUntil()));
             res.setCreationDate(MappingUtil.toDate(refSet.getCreationDate()));

@@ -12,7 +12,6 @@ public class InstitutionMapper {
     public static InstitutionResponse map(Institution institution) {
         if ( institution != null ) {
             InstitutionResponse res = new InstitutionResponse();
-            res.setId(institution.getId());
             res.setName(institution.getName());
             return res;
         } else {

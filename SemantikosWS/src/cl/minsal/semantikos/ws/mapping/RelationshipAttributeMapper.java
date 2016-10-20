@@ -12,12 +12,9 @@ public class RelationshipAttributeMapper {
     public static RelationshipAttributeResponse map(RelationshipAttribute relationshipAttribute) {
         if ( relationshipAttribute != null ) {
             RelationshipAttributeResponse res = new RelationshipAttributeResponse();
-
-            res.setId(relationshipAttribute.getIdRelationshipAttribute());
             res.setTarget(TargetMapper.map(relationshipAttribute.getTarget()));
             res.setRelationshipAttributeDefinition(RelationshipAttributeDefinitionMapper.map(relationshipAttribute.getRelationAttributeDefinition()));
             res.setRelationship(RelationshipMapper.map(relationshipAttribute.getRelationship()));
-
             return res;
         }
 

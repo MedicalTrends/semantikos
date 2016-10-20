@@ -15,8 +15,6 @@ import java.util.Date;
 @XmlRootElement(name = "usuario")
 public class UserResponse implements Serializable {
 
-    @XmlElement(name="id")
-    private Long idUser;
     @XmlElement(name="nombreUsuario")
     private String username;
     @XmlElement(name="nombre")
@@ -33,14 +31,6 @@ public class UserResponse implements Serializable {
     private Date lastLogin;
     @XmlElement(name="ultimoCambioPassword")
     private Date lastPasswordChange;
-
-    public Long getIdUser() {
-        return idUser;
-    }
-
-    public void setIdUser(Long idUser) {
-        this.idUser = idUser;
-    }
 
     public String getUsername() {
         return username;

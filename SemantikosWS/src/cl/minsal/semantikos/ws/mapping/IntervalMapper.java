@@ -12,18 +12,14 @@ public class IntervalMapper {
     public static IntervalResponse map(Interval interval) {
         if ( interval != null ) {
             IntervalResponse res = new IntervalResponse();
-
             if ( interval.getLowerBoundary() != null ) {
                 res.setLowerBoundary(String.valueOf(interval.getLowerBoundary()));
             }
-
             if ( interval.getUpperBoundary() != null ) {
                 res.setUpperBoundary(String.valueOf(interval.getUpperBoundary()));
             }
-
             return res;
         }
-
         return null;
     }
 

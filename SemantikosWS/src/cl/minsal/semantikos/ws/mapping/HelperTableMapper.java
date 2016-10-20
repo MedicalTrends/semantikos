@@ -17,7 +17,6 @@ public class HelperTableMapper {
     public static HelperTableResponse map(HelperTable helperTable) {
         if ( helperTable != null ) {
             HelperTableResponse res = new HelperTableResponse();
-            res.setId(helperTable.getId());
             res.setName(helperTable.getName());
             res.setDescription(helperTable.getDescription());
             res.setTablaName(helperTable.getTablaName());

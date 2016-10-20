@@ -13,14 +13,10 @@ public class CategoryMapper {
         if ( category != null ) {
             CategoryResponse res = new CategoryResponse();
 
-            res.setId(category.getId());
             res.setName(category.getName());
             res.setNameAbbreviated(category.getNameAbbreviated());
             res.setRestriction(category.isRestriction());
             res.setValid(category.isValid());
-            if (category.getTagSemantikos() != null) {
-                res.setTagSMTKResponse(TagSMTKMapper.map(category.getTagSemantikos()));
-            }
 
             return res;
         } else {

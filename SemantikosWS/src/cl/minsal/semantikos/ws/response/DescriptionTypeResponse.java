@@ -14,20 +14,10 @@ import java.io.Serializable;
 @XmlRootElement(name = "tipoDescripcion")
 public class DescriptionTypeResponse implements Serializable {
 
-    @XmlElement(name="id")
-    private Long id;
     @XmlElement(name="nombre")
     private String name;
     @XmlElement(name="descripcion")
     private String description;
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;

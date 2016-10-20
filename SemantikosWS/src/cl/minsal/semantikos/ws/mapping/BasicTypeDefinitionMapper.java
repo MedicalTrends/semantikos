@@ -16,7 +16,6 @@ public class BasicTypeDefinitionMapper {
         if ( basicTypeDefinition != null ) {
             BasicTypeDefinitionResponse res = new BasicTypeDefinitionResponse();
 
-            res.setId(basicTypeDefinition.getId());
             res.setName(basicTypeDefinition.getName());
             res.setDescription(basicTypeDefinition.getDescription());
             res.setInterval(IntervalMapper.map(basicTypeDefinition.getInterval()));

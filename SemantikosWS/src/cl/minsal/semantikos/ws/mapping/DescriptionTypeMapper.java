@@ -12,11 +12,8 @@ public class DescriptionTypeMapper {
     public static DescriptionTypeResponse map(DescriptionType descriptionType) {
         if ( descriptionType != null ) {
             DescriptionTypeResponse res = new DescriptionTypeResponse();
-
-            res.setId(descriptionType.getId());
             res.setName(descriptionType.getName());
             res.setDescription(descriptionType.getDescription());
-
             return res;
         } else {
             return null;

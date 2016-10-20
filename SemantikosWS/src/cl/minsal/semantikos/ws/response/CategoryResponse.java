@@ -14,28 +14,14 @@ import java.io.Serializable;
 @XmlRootElement(name = "categoria")
 public class CategoryResponse implements Serializable {
 
-    @XmlElement(name="id")
-    private Long id;
     @XmlElement(name="nombre")
     private String name;
     @XmlElement(name="nombreAbreviado")
     private String nameAbbreviated;
-    @XmlElement(name="restringido")
+    @XmlElement(name="restringida")
     private Boolean restriction;
     @XmlElement(name="vigente")
     private Boolean isValid;
-    @XmlElement(name="color")
-    private String color;
-    @XmlElement(name="tagSMTK")
-    private TagSMTKResponse tagSMTKResponse;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;
@@ -67,22 +53,6 @@ public class CategoryResponse implements Serializable {
 
     public void setValid(Boolean valid) {
         isValid = valid;
-    }
-
-    public String getColor() {
-        return color;
-    }
-
-    public void setColor(String color) {
-        this.color = color;
-    }
-
-    public TagSMTKResponse getTagSMTKResponse() {
-        return tagSMTKResponse;
-    }
-
-    public void setTagSMTKResponse(TagSMTKResponse tagSMTKResponse) {
-        this.tagSMTKResponse = tagSMTKResponse;
     }
 
 }

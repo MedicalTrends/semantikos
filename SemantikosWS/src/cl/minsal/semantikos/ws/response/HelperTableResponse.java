@@ -12,8 +12,6 @@ import java.util.List;
 @XmlRootElement(name = "tablaAuxiliar")
 public class HelperTableResponse implements Serializable {
 
-    @XmlElement(name="id")
-    private Long id;
     @XmlElement(name="nombre")
     private String name;
     @XmlElement(name="descripcion")
@@ -23,14 +21,6 @@ public class HelperTableResponse implements Serializable {
     @XmlElementWrapper(name = "columnaTablaAuxiliar")
     @XmlElement(name="columna")
     private List<HelperTableColumnResponse> columns;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;

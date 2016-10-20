@@ -13,14 +13,12 @@ import java.util.Date;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "descripcion")
-public class DescriptionResponse implements Serializable {
+public class DescriptionResponse implements Serializable, Comparable<DescriptionResponse> {
 
     @XmlElement(name="id")
-    private Long id;
+    private String descriptionID;
     @XmlElement(name="termino")
     private String term;
-    @XmlElement(name="idDescripcion")
-    private String descriptionID;
     @XmlElement(name="esSensibleMayusculas")
     private Boolean isCaseSensitive;
     @XmlElement(name="nombreAutgenerado")
@@ -35,19 +33,19 @@ public class DescriptionResponse implements Serializable {
     private Date creationDate;
     @XmlElement(name="usos")
     private Long uses;
-    @XmlElement(name="tipoDescripcion")
-    private DescriptionTypeResponse descriptionType;
+    @XmlElement(name="tipo")
+    private String type;
     @XmlElement(name="usuarioCreador")
     private UserResponse creatorUser;
     @XmlElement(name="concepto")
     private ConceptResponse conceptSMTK;
 
-    public Long getId() {
-        return id;
+    public String getDescriptionID() {
+        return descriptionID;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setDescriptionID(String descriptionID) {
+        this.descriptionID = descriptionID;
     }
 
     public String getTerm() {
@@ -56,14 +54,6 @@ public class DescriptionResponse implements Serializable {
 
     public void setTerm(String term) {
         this.term = term;
-    }
-
-    public String getDescriptionID() {
-        return descriptionID;
-    }
-
-    public void setDescriptionID(String descriptionID) {
-        this.descriptionID = descriptionID;
     }
 
     public Boolean getCaseSensitive() {
@@ -122,14 +112,6 @@ public class DescriptionResponse implements Serializable {
         this.uses = uses;
     }
 
-    public DescriptionTypeResponse getDescriptionType() {
-        return descriptionType;
-    }
-
-    public void setDescriptionType(DescriptionTypeResponse descriptionType) {
-        this.descriptionType = descriptionType;
-    }
-
     public UserResponse getCreatorUser() {
         return creatorUser;
     }
@@ -144,5 +126,31 @@ public class DescriptionResponse implements Serializable {
 
     public void setConceptSMTK(ConceptResponse conceptSMTK) {
         this.conceptSMTK = conceptSMTK;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    @Override
+    public int compareTo(DescriptionResponse o) {
+        if ( this.getType() != null ) {
+            if ( "preferida".equalsIgnoreCase(this.getType()) ) {
+                return -1;
+            } else if ( "FSN".equalsIgnoreCase(this.getType()) ) {
+                if ( "preferida".equalsIgnoreCase(o.getType()) ) {
+                    return 1;
+                } else {
+                    return -1;
+                }
+            } else if ( o.getType() != null ) {
+                return this.getType().compareTo(o.getType());
+            }
+        }
+        return 0;
     }
 }

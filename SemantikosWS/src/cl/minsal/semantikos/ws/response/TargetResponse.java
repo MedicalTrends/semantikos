@@ -16,8 +16,6 @@ import java.util.Map;
 @XmlRootElement(name = "objetivo")
 public class TargetResponse implements Serializable {
 
-    @XmlElement(name="id")
-    private Long id;
     @XmlElement(name="tipoObjetivo")
     private TargetTypeResponse targetTypeResponse;
     @XmlElement(name="activo")
@@ -40,14 +38,6 @@ public class TargetResponse implements Serializable {
     private HelperTableResponse helperTableResponse;
     @XmlElement(name="campos")
     private Map<String,String> fields;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public TargetTypeResponse getTargetTypeResponse() {
         return targetTypeResponse;
