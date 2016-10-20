@@ -22,7 +22,9 @@ import static java.util.Collections.emptyList;
 @Startup
 public class RelationshipAttributeDefinitionFactory {
 
-    /** El logger para esta clase */
+    /**
+     * El logger para esta clase
+     */
     private static final Logger logger = LoggerFactory.getLogger(RelationshipAttributeDefinitionFactory.class);
 
     @EJB
@@ -40,7 +42,6 @@ public class RelationshipAttributeDefinitionFactory {
      * expresión JSON.
      *
      * @param jsonExpression La expresión JSON a partir de la cual se crea la entidad.
-     *
      * @return La entidad fresca creada a partir del JSON.
      */
     public List<RelationshipAttributeDefinition> createFromJSON(String jsonExpression) {
@@ -63,12 +64,32 @@ public class RelationshipAttributeDefinitionFactory {
         return createFromDTO(relationshipAttributeDefinitionDTOs);
     }
 
+
+    public RelationshipAttributeDefinition createFromRelationshipAttributeDefinitionJSON(String jsonExpression) {
+
+        /* Si la expresión JSON es nula, se retorna una lista vacía */
+        if (jsonExpression == null) {
+            return null;
+        }
+
+        RelationshipAttributeDefinitionDTO relationshipAttributeDefinitionDTO;
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            relationshipAttributeDefinitionDTO = mapper.readValue(underScoreToCamelCaseJSON(jsonExpression), RelationshipAttributeDefinitionDTO.class);
+        } catch (IOException e) {
+            String errorMsg = "Error al parsear un JSON.";
+            logger.error(errorMsg, e);
+            throw new EJBException(errorMsg, e);
+        }
+
+        return createFromDTO(relationshipAttributeDefinitionDTO);
+    }
+
     /**
      * Este método es responsable de crear una entidad de negocio completa a partir del DTO.
      *
      * @param relationshipAttributeDefinitionDTOs El DTO que contiene los identificadores de las entidades
      *                                            relacionadas.
-     *
      * @return Una lista con los atributos creados a partir del DTO.
      */
     private List<RelationshipAttributeDefinition> createFromDTO(RelationshipAttributeDefinitionDTO[] relationshipAttributeDefinitionDTOs) {
@@ -83,6 +104,17 @@ public class RelationshipAttributeDefinitionFactory {
         }
 
         return attributes;
+    }
+
+
+    private RelationshipAttributeDefinition createFromDTO(RelationshipAttributeDefinitionDTO relationshipAttributeDefinitionDTO) {
+
+
+        TargetDefinition targetDefinition = targetDefinitionDAO.getTargetDefinitionById(relationshipAttributeDefinitionDTO.getIdTargetDefinition());
+        Multiplicity multiplicity = new Multiplicity(relationshipAttributeDefinitionDTO.getLowerBoundary(), relationshipAttributeDefinitionDTO.getUpperBoundary());
+        RelationshipAttributeDefinition attribute = new RelationshipAttributeDefinition(relationshipAttributeDefinitionDTO.getId(), targetDefinition, relationshipAttributeDefinitionDTO.getName(), multiplicity);
+
+        return attribute;
     }
 
 }

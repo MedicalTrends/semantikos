@@ -3,6 +3,7 @@ package cl.minsal.semantikos.model.helpertables;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
 
+import javax.ejb.EJB;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -14,7 +15,8 @@ import static org.junit.Assert.assertTrue;
 public class HelperTableRecordFactoryTest {
 
     /** La instancia a probar */
-    private HelperTableRecordFactory helperTableRecordFactory = HelperTableRecordFactory.getInstance();
+    @EJB
+    private HelperTableRecordFactory helperTableRecordFactory;
 
     private ObjectMapper mapper = new ObjectMapper();
 
@@ -39,7 +41,7 @@ public class HelperTableRecordFactoryTest {
     public void transformJSON2Records() throws Exception {
         JSONHelperTableRecords twoRecords = mapper.readValue(createJSONRocords(), JSONHelperTableRecords.class);
 
-        assertTrue(twoRecords.getTableName().equalsIgnoreCase("helper_table_atc"));
+        assertTrue(twoRecords.getTableId()==1);
         assertEquals(twoRecords.getRecords().size(), 2);
     }
 
@@ -53,7 +55,7 @@ public class HelperTableRecordFactoryTest {
     public void transformJSON2IntermediateRecord() throws Exception {
         JSONHelperTableRecord aRecord = mapper.readValue(createJSONRocord(), JSONHelperTableRecord.class);
 
-        assertTrue(aRecord.getTableName().equalsIgnoreCase("helper_table_atc"));
+        assertTrue(aRecord.getTableId()==1);
         assertEquals(aRecord.getFields().size(), 3);
     }
 
@@ -97,7 +99,7 @@ public class HelperTableRecordFactoryTest {
 
         JSONHelperTableRecord jsonHelperTableRecord = new JSONHelperTableRecord();
         jsonHelperTableRecord.setFields(records);
-        jsonHelperTableRecord.setTableName("ACT");
+        jsonHelperTableRecord.setTableId(1);
 
         return jsonHelperTableRecord;
     }
@@ -116,7 +118,7 @@ public class HelperTableRecordFactoryTest {
 
         JSONHelperTableRecords jsonHelperTableRecord = new JSONHelperTableRecords();
         jsonHelperTableRecord.setRecords(records);
-        jsonHelperTableRecord.setTableName("ACT");
+        jsonHelperTableRecord.setTableId(1);
 
         return jsonHelperTableRecord;
     }

@@ -58,10 +58,10 @@ public class AuditManagerImpl implements AuditManager {
         ConceptAuditAction conceptAuditAddingDescription = new ConceptAuditAction(targetConcept, CONCEPT_DESCRIPTION_CREATION, now(), user, description);
 
         /* Se validan las reglas de negocio para realizar el registro */
-        new HistoryRecordBL().validate(conceptAuditMovement);
+        if(sourceConcept.isModeled())new HistoryRecordBL().validate(conceptAuditMovement);
         new HistoryRecordBL().validate(conceptAuditAddingDescription);
 
-        auditDAO.recordAuditAction(conceptAuditMovement);
+        if(sourceConcept.isModeled())auditDAO.recordAuditAction(conceptAuditMovement);
         auditDAO.recordAuditAction(conceptAuditAddingDescription);
     }
 
@@ -236,8 +236,8 @@ public class AuditManagerImpl implements AuditManager {
     }
 
     @Override
-    public List<ConceptAuditAction> getConceptAuditActions(ConceptSMTK conceptSMTK, int numberOfChanges, boolean changes) {
-        return auditDAO.getConceptAuditActions(conceptSMTK.getId(), numberOfChanges, changes);
+    public List<ConceptAuditAction> getConceptAuditActions(ConceptSMTK conceptSMTK, boolean changes) {
+        return auditDAO.getConceptAuditActions(conceptSMTK.getId(), changes);
     }
 
     private Timestamp now() {

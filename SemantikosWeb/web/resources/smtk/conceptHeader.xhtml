@@ -24,9 +24,9 @@
         <div class="ui-g-12 ui-md-6 ui-lg-4">
             <p:panelGrid columns="2" columnClasses="ui-grid-col-5,ui-grid-col-5" layout="grid" styleClass="ui-panelgrid-blank">
                 <p:selectBooleanCheckbox id="toBeReviewedCheck" itemLabel="Revisar"
-                                         value="#{cc.attrs.concept.toBeReviewed}" style="width:100%"/>
+                                         value="#{cc.attrs.concept.toBeReviewed}" style="width:100%;"/>
                 <p:selectBooleanCheckbox id="toBeConsultatedCheck" itemLabel="Consultar"
-                                         value="#{cc.attrs.concept.toBeConsulted}" style="width:100%"/>
+                                         value="#{cc.attrs.concept.toBeConsulted}" style="width:100%;"/>
             </p:panelGrid>
         </div>
         <div class="ui-g-12 ui-md-6 ui-lg-6">
@@ -66,17 +66,16 @@
         <div class="ui-g-12 ui-md-6 ui-lg-2">
             <p:outputLabel for="toBeReviewedCheck" value="Observación"/>
         </div>
-        <div class="ui-g-12 ui-md-6 ui-lg-4">
+        <div class="ui-g-12 ui-md-6 ui-lg-10">
             <p:inputTextarea id="observation"
                              name="observation"
                              value="#{cc.attrs.concept.observation}"
                              style="width:90%">
             </p:inputTextarea>
         </div>
-        <div class="ui-g-12 ui-md-6 ui-lg-6">
-        </div>
     </div>
 
+    <br/>
 
 </composite:implementation>
 </html>

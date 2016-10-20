@@ -146,9 +146,14 @@ public class RelationshipDefinition {
         this.relationshipAttributeDefinitions = relationshipAttributeDefinitions;
     }
 
+    public boolean hasRelationshipAttributeDefinitions(){
+        return !relationshipAttributeDefinitions.isEmpty();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
+        if(o!=null)if(this.id == ((RelationshipDefinition) o).getId()) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
         RelationshipDefinition that = (RelationshipDefinition) o;
@@ -169,5 +174,18 @@ public class RelationshipDefinition {
      */
     public boolean isAttribute() {
         return targetDefinition.isBasicType() || targetDefinition.isCrossMapType() || targetDefinition.isHelperTable() || targetDefinition.isSMTKType();
+    }
+
+    public RelationshipAttributeDefinition getOrderAttributeDefinition(){
+        for (RelationshipAttributeDefinition relationshipAttributeDefinition : getRelationshipAttributeDefinitions()) {
+            if(relationshipAttributeDefinition.isOrderAttribute()){
+                return relationshipAttributeDefinition;
+            }
+        }
+        return null;
+    }
+
+    public boolean isISP(){
+        return this.getName().equalsIgnoreCase("ISP");
     }
 }

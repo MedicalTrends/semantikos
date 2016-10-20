@@ -27,6 +27,12 @@ public class HelperTableRecord implements Target {
     private Map<String, String> fields;
 
     /**
+     * Este constructor vacío se provee para JSON.
+     */
+    public HelperTableRecord() {
+    }
+
+    /**
      * Este constructor permite crear un objeto no persistido (aun) con valores para un registro de una tabla auxiliar.
      *
      * @param helperTable La tabla auxiliar a la que pertenece el registro.
@@ -47,13 +53,6 @@ public class HelperTableRecord implements Target {
     public HelperTableRecord(HelperTable helperTable, long id) {
         this.helperTable = helperTable;
         this.id = id;
-    }
-
-    /**
-     * Este constructor vacío se provee para JSON.
-     */
-    public HelperTableRecord() {
-        this(HelperTableFactory.getInstance().getHelperTableATC(), -1);
     }
 
     public long getId() {
@@ -97,7 +96,7 @@ public class HelperTableRecord implements Target {
     public String getValueColumn(String columnName) throws IllegalArgumentException {
 
         /* Si la columna no existe es lanzada la excepción */
-        if (this.fields.containsKey(columnName)) {
+        if (!this.fields.containsKey(columnName)) {
             String messageError = "Se solicita columan que no existe: " + columnName;
             logger.error(messageError);
             throw new IllegalArgumentException(messageError);
@@ -129,5 +128,9 @@ public class HelperTableRecord implements Target {
             return String.format("%s[id=%d]", getClass().getSimpleName(), new Long(this.getFields().get("id")));
     }
 
-
+    public HelperTableRecord copy() {
+        HelperTableRecord helperTableRecord = new HelperTableRecord(this.helperTable, this.fields);
+        helperTableRecord.setId(this.getId());
+        return helperTableRecord;
+    }
 }

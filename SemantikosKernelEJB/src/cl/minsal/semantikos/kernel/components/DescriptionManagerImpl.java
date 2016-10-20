@@ -45,7 +45,7 @@ public class DescriptionManagerImpl implements DescriptionManager {
         /* Reglas de negocio previas */
         ConceptSMTK conceptSMTK = description.getConceptSMTK();
         DescriptionCreationBR descriptionCreationBR1 = new DescriptionCreationBR();
-        descriptionCreationBR1.validatePreConditions(conceptSMTK, description.getTerm(), description.getDescriptionType(), categoryManager, editionMode);
+        descriptionCreationBR1.validatePreConditions(conceptSMTK, description, categoryManager, editionMode);
 
         descriptionCreationBR1.applyRules(conceptSMTK, description.getTerm(), description.getDescriptionType(), user, categoryManager);
         if (!description.isPersistent()) {
@@ -82,7 +82,7 @@ public class DescriptionManagerImpl implements DescriptionManager {
          * Se aplican las pre-condiciones para asociar la descripción al concepto. En particular hay que validar que
          * no exista el término dentro de la misma categoría
          */
-        descriptionCreationBR.validatePreConditions(concept, description.getTerm(), description.getDescriptionType(), categoryManager, editionMode);
+        descriptionCreationBR.validatePreConditions(concept, description, categoryManager, editionMode);
 
         /* Se aplican las reglas de negocio para crear la Descripción y se persiste y asocia al concepto */
         new DescriptionBindingBR().applyRules(concept, description, user);
@@ -140,7 +140,7 @@ public class DescriptionManagerImpl implements DescriptionManager {
         this.bindDescriptionToConcept(conceptSMTK, finalDescription, true, user);
 
         /* Registrar en el Historial si es preferida (Historial BR) */
-            auditManager.recordFavouriteDescriptionUpdate(conceptSMTK, initDescription, user);
+        auditManager.recordFavouriteDescriptionUpdate(conceptSMTK, initDescription, user);
     }
 
 
@@ -189,6 +189,10 @@ public class DescriptionManagerImpl implements DescriptionManager {
 
         /* Se aplican las reglas de negocio asociadas al movimiento de un concepto */
         descriptionTranslationBR.apply(targetConcept, description);
+
+        /*Se cambia el estado de la descripción segun el concepto*/
+
+        description.setModeled(targetConcept.isModeled());
 
         /* Luego se persiste el cambio */
         descriptionDAO.update(description);
@@ -262,7 +266,7 @@ public class DescriptionManagerImpl implements DescriptionManager {
 
     @Override
     public String generateDescriptionId() {
-        return UUID.randomUUID().toString();
+        return UUID.randomUUID().toString().substring(0,10);
     }
 
     @Override

@@ -577,6 +577,36 @@ public class ConceptDAOImpl implements ConceptDAO {
     }
 
     @Override
+    public List<ConceptSMTK> getConceptBy(RefSet refSet) {
+
+        List<ConceptSMTK> concepts = new ArrayList<ConceptSMTK>();
+
+        ConnectionBD connect = new ConnectionBD();
+
+
+        CallableStatement call;
+
+        try (Connection connection = connect.getConnection();) {
+
+            call = connection.prepareCall("{call semantikos.get_concept_by_refset(?)}");
+            call.setLong(1,refSet.getId());
+            call.execute();
+
+            ResultSet rs = call.getResultSet();
+            concepts = new ArrayList<>();
+            while (rs.next()) {
+                concepts.add(createConceptSMTKFromResultSet(rs));
+            }
+            rs.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return concepts;
+    }
+
+    @Override
     public List<ConceptSMTK> getConceptDraft() {
 
 
@@ -587,7 +617,6 @@ public class ConceptDAOImpl implements ConceptDAO {
 
         CallableStatement call;
 
-        // TODO: TryWithResources
         try (Connection connection = connect.getConnection();) {
 
             call = connection.prepareCall("{call semantikos.get_concept_draft()}");

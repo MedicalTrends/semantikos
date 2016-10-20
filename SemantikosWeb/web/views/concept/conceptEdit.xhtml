@@ -9,97 +9,136 @@
 
     <ui:define name="content">
 
-        <p:panel id="createEdit">
+
+        <p:panel id="createEdit" style="background: rgba(0, 0, 0, 0); border: hidden;">
             <h:form id="mainForm" rendered="#{ not (conceptBean.concept eq null ) }">
 
-                <p:growl id="growl" showDetail="true" showSummary="true"/>
-                <p:growl id="editMsgs" showDetail="true"/>
+                <p:panel>
 
-                <!--p:messages autoUpdate="true"></p:messages-->
-                <smtk:title concept="#{conceptBean.concept}" />
+                    <p:growl id="growl" showDetail="true" showSummary="true"/>
+                    <p:growl id="editMsgs" showDetail="true"/>
 
-                <smtk:conceptHeader concept="#{conceptBean.concept}" />
+                    <!--p:messages autoUpdate="true"></p:messages-->
+                    <smtk:title concept="#{conceptBean.concept}"/>
+                    <p:spacer></p:spacer>
+                    <p:panel id="conceptHeader" style="border: hidden;" styleClass="conceptHeader">
+                        <smtk:conceptHeader concept="#{conceptBean.concept}"/>
+                    </p:panel>
 
-                <!-- Etiquetas -->
-
-                <smtk:tags tagslist="#{conceptBean.concept.tags}" />
-
-                <!-- Otras descripciones -->
-                <smtk:descriptions descriptions="#{conceptBean.concept.getValidDescriptionsButFSNandFavorite()}"
-                                   otherTermino="#{conceptBean.otherTermino}"
-                                   otherSensibilidad="#{conceptBean.otherSensibilidad}"
-                                   otherDescriptionType="#{conceptBean.otherDescriptionType}"
-                                   descriptionTypes="#{conceptBean.descriptionTypes}">
-                </smtk:descriptions>
-
-                <!--Relaciones -->
-                <p:panel id="atributos" header="Atributos" toggleable="true" toggleSpeed="500" closeSpeed="500"
-                         widgetVar="panelAtributos" rendered="#{conceptBean.category.hasRelationshipDefinitions}">
-
-                    <h:dataTable style="width: 100%;" value="#{conceptBean.category.relationshipDefinitions}"
-                                 var="relationshipDefinition">
-
-                        <h:column>
-
-                            <smtk:smtkType
-                                    rendered="#{relationshipDefinition.targetDefinition.SMTKType}"
-                                    targetDefinition="#{relationshipDefinition.targetDefinition}"
-                                    relationshipDefinition="#{relationshipDefinition}"
-                                    concept="#{conceptBean.concept}"/>
-
-                            <smtk:helperTableType
-                                    rendered="#{relationshipDefinition.targetDefinition.helperTable}"
-                                    relationshipDefinition="#{relationshipDefinition}"
-                                    targetDefinition="#{relationshipDefinition.targetDefinition}"
-                                    concept="#{conceptBean.concept}"/>
-
-                            <smtk:basicType
-                                    targetDefinition="#{relationshipDefinition.targetDefinition}"
-                                    relationshipDefinition="#{relationshipDefinition}"
-                                    concept="#{conceptBean.concept}"
-                                    rendered="#{relationshipDefinition.targetDefinition.basicType}"/>
-
-                        </h:column>
-                    </h:dataTable>
                 </p:panel>
 
+                <br/>
+                <p:tabView>
 
-                <!-- Historial -->
+                    <!-- Etiquetas -->
+                    <p:tab title="Etiquetas">
+                        <smtk:tags tagslist="#{conceptBean.concept.tags}"/>
+                    </p:tab>
+                    <br/>
 
-                <smtk:history />
+                    <p:tab title="Otras descripciones">
+                        <!-- Otras descripciones -->
+                        <smtk:descriptions descriptions="#{conceptBean.concept.getValidDescriptionsButFSNandFavorite()}"
+                                           otherTermino="#{conceptBean.otherTermino}"
+                                           otherSensibilidad="#{conceptBean.otherSensibilidad}"
+                                           otherDescriptionType="#{conceptBean.otherDescriptionType}"
+                                           descriptionTypes="#{conceptBean.descriptionTypes}">
+                        </smtk:descriptions>
+                    </p:tab>
+                    <br/>
+                    <p:tab title="Atributos" rendered="#{not empty conceptBean.category.relationshipDefinitions}">
+                        <!--Relaciones -->
+                        <p:panel id="atributos"
+                                 widgetVar="panelAtributos"
+                                 styleClass="attributes"
+                                 rendered="#{conceptBean.category.hasRelationshipDefinitions}">
 
+                            <h:dataTable style="width: 100%;" value="#{conceptBean.orderedRelationshipDefinitions}"
+                                         var="relationshipDefinition">
+
+                                <h:column>
+
+                                    <p:outputPanel
+                                             id="panelRelationshipDefiniton"
+                                             style="border:0px; margin: 0px; padding: 0px;"
+                                             styleClass="panel_#{relationshipDefinition.id} #{relationshipDefinition.uiState}">
+
+                                        <smtk:smtkType
+                                                rendered="#{relationshipDefinition.targetDefinition.SMTKType}"
+                                                targetDefinition="#{relationshipDefinition.targetDefinition}"
+                                                relationshipDefinition="#{relationshipDefinition}"
+                                                concept="#{conceptBean.concept}"/>
+
+                                        <smtk:helperTableType
+                                                rendered="#{relationshipDefinition.targetDefinition.helperTable}"
+                                                relationshipDefinition="#{relationshipDefinition}"
+                                                targetDefinition="#{relationshipDefinition.targetDefinition}"
+                                                concept="#{conceptBean.concept}"/>
+
+                                        <smtk:basicType
+                                                targetDefinition="#{relationshipDefinition.targetDefinition}"
+                                                relationshipDefinition="#{relationshipDefinition}"
+                                                concept="#{conceptBean.concept}"
+                                                rendered="#{relationshipDefinition.targetDefinition.basicType}"/>
+
+                                    </p:outputPanel>
+
+                                </h:column>
+                            </h:dataTable>
+                        </p:panel>
+                    </p:tab>
+                    <br/>
+
+                    <!-- Historial -->
+                    <p:tab title="Historial">
+                        <smtk:history/>
+                    </p:tab>
+                </p:tabView>
 
                 <!-- Botonera Acciones -->
 
-                <p:commandButton actionListener="#{conceptBean.saveConcept}" icon="ui-icon-check" styleClass="ui-priority-primary"
-                                 value="Guardar"
-                                 update="growl, mainForm"/>
+                <br/>
+                <div style="text-align: right;">
+                    <p:commandButton actionListener="#{conceptBean.saveConcept}" icon="ui-icon-check"
+                                     styleClass="ui-priority-primary"
+                                     value="Guardar"
+                                     update="growl, mainForm"/>
 
-                <p:commandButton actionListener="#{conceptBean.deleteConcept}" icon="ui-icon-trash" styleClass="ui-priority-primary"
-                                 value="Eliminar" type="submit" process="mainForm"
-                                 rendered="#{conceptBean.concept.persistent and not conceptBean.concept.modeled}"
-                                 update="growl, mainForm">
-                    <p:confirm header="Confirmation" message="¿Desea eliminar este concepto?" icon="ui-icon-alert" />
-                </p:commandButton>
-                <p:commandButton actionListener="#{conceptBean.deleteConcept}" icon="ui-icon-trash" styleClass="ui-priority-primary"
-                                 value="Invalidar" type="submit" process="mainForm"
-                                 rendered="#{conceptBean.concept.persistent and conceptBean.concept.modeled}"
-                                 update="growl, mainForm">
-                    <p:confirm header="Confirmation" message="¿Desea invalidar este concepto?" icon="ui-icon-alert" />
-                </p:commandButton>
+                    <p:commandButton actionListener="#{conceptBean.deleteConcept}" icon="ui-icon-trash"
+                                     styleClass="ui-priority-primary"
+                                     value="Eliminar" type="submit" process="mainForm"
+                                     rendered="#{conceptBean.concept.persistent and not conceptBean.concept.modeled}"
+                                     update="growl, mainForm">
+                        <p:confirm header="Confirmation" message="¿Desea eliminar este concepto?" icon="ui-icon-alert"/>
+                    </p:commandButton>
 
-                <p:commandButton actionListener="#{conceptBean.cancelConcept}" icon="ui-icon-cancel" styleClass="ui-priority-primary"
-                                 value="Cancelar" type="submit" process="mainForm"
-                                 update="growl, mainForm">
-                    <p:confirm header="Confirmation" message="¿Desea deshacer los cambios realizados en esta sesión?" icon="ui-icon-alert" />
-                </p:commandButton>
+                    <p:commandButton actionListener="#{conceptBean.deleteConcept}" icon="ui-icon-trash"
+                                     styleClass="ui-priority-primary"
+                                     value="Invalidar" type="submit" process="mainForm"
+                                     rendered="#{conceptBean.concept.persistent and conceptBean.concept.modeled}"
+                                     update="growl, mainForm">
+                        <p:confirm header="Confirmation" message="¿Desea invalidar este concepto?"
+                                   icon="ui-icon-alert"/>
+                    </p:commandButton>
 
-                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-                    <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
-                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
-                </p:confirmDialog>
+                    <p:commandButton actionListener="#{conceptBean.cancelConcept}" icon="ui-icon-cancel"
+                                     styleClass="ui-priority-primary"
+                                     value="Cancelar" type="submit" process="mainForm"
+                                     update="growl, mainForm">
+                        <p:confirm header="Confirmation"
+                                   message="¿Desea deshacer los cambios realizados en esta sesión?"
+                                   icon="ui-icon-alert"/>
+                    </p:commandButton>
 
-                <smtk:export-xls />
+                    <smtk:export-xls rendered="#{conceptBean.concept.modeled}"></smtk:export-xls>
+
+                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                        <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes"
+                                         icon="ui-icon-check"/>
+                        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no"
+                                         icon="ui-icon-close"/>
+                    </p:confirmDialog>
+                </div>
 
             </h:form>
 
@@ -117,13 +156,13 @@
 
                 <h:form id="initialForm">
 
-
                     <div style="text-align: center;"><h3>Crear Concepto</h3></div>
                     <div class="ui-g">
                         <div class="ui-g-12 ui-md-6 ui-lg-4">
 
                             <p:outputLabel value="Nombre: " for="NameConcept"/>
-                            <p:inputText style="width: 75%" id="NameConcept" value="#{conceptBean.favoriteDescription}"/>
+                            <p:inputText style="width: 75%" id="NameConcept"
+                                         value="#{conceptBean.favoriteDescription}"/>
                         </div>
                         <div class="ui-g-12 ui-md-6 ui-lg-6">
 
@@ -145,7 +184,6 @@
                             </p:selectOneMenu>
 
 
-
                         </div>
                         <div class="ui-g-12 ui-md-6 ui-lg-2">
                             <p:commandButton actionListener="#{conceptBean.createConcept}" update=":createEdit"
@@ -153,7 +191,7 @@
                         </div>
                     </div>
 
-                    <hr />
+                    <hr/>
 
                     <div style="text-align: center;"><h3>Editar Concepto</h3></div>
                     <div class="ui-g">
@@ -168,23 +206,33 @@
                     </div>
 
 
-
                 </h:form>
+            </p:dialog>
+
+            <p:dialog id="dialogISP" header="Warning" widgetVar="dialogISP" modal="true" height="100">
+                <h:outputText value="La URL de registro ISP no se encuentra disponible en este momento, por favor intente más tarde." />
             </p:dialog>
         </p:panel>
 
-        <script type="text/javascript" >
+        <script type="text/javascript">
 
-            $(document).on("change keyup input", "select[id$=tagSemantikos_input]", function(event) {
+            $(document).on("change keyup input", "select[id$=tagSemantikos_input]", function (event) {
                 $("input[id$=FSN]").trigger("change");
             });
 
-            $(document).on("change keyup input", "input[id$=favorite]", function(event) {
+            $(document).on("change keyup input", "input[id$=favorite]", function (event) {
                 $("input[id$=FSN]").val($(this).val());
                 $("input[id$=FSN]").trigger("change");
             });
 
         </script>
+
+        <h:outputStylesheet id="customCSS">
+            .ui-widget-content .ui-state-error, .ui-widget-header .ui-state-error {
+                border: 1px solid #F03369 !important;
+                color: #F03369;
+            }
+        </h:outputStylesheet>
 
 
     </ui:define>

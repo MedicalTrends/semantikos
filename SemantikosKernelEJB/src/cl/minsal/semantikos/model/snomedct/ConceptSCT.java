@@ -84,4 +84,9 @@ public class ConceptSCT implements Target {
 		return TargetType.SnomedCT;
 	}
 
+	@Override
+	public Target copy() {
+		return new ConceptSCT();
+	}
+
 }

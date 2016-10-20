@@ -32,7 +32,7 @@ public class HistoryConceptBean {
     @PostConstruct
     public void init(){
         conceptSMTK=conceptManager.getConceptByID(80614);
-        auditAction=auditManager.getConceptAuditActions(conceptSMTK,10,true);
+        auditAction=auditManager.getConceptAuditActions(conceptSMTK,true);
     }
 
     public List<ConceptAuditAction> getAuditAction() {

@@ -168,7 +168,13 @@ public interface ConceptManager {
      */
     public List<Relationship> loadRelationships(ConceptSMTK concept);
 
+    public List<ConceptSMTK> getConceptBy(RefSet refSet);
 
+    /**
+     * Metodo encargado de obtener los conceptos en borrador
+     * @return lista de conceptos en borrador
+     */
     public List<ConceptSMTK> getConceptDraft();
+
 
 }

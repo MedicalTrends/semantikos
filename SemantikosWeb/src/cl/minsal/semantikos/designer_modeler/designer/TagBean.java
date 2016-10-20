@@ -84,6 +84,8 @@ public class TagBean implements Serializable{
         listTagSon=tagManager.getAllTagsWithoutParent();
         tagCreate= new Tag(-1,null,null,null,null);
         parentTagToCreate= new Tag(-1,null,null,null,null);
+        tagEdit= new Tag(-1,null,null,null,null);
+
     }
 
     /**
@@ -212,7 +214,7 @@ public class TagBean implements Serializable{
         tagCreate= new Tag(-1,null,null,null,null);
         parentTagToCreate= new Tag(-1,null,null,null,null);
 
-        FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Etiqueta creada", "La etiqueta se creo exitosamente");
+        FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Etiqueta creada", "La etiqueta se creó exitosamente");
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
 
@@ -220,33 +222,52 @@ public class TagBean implements Serializable{
      * Método encargado de agregar la etiqueta que se está creando al concepto.
      */
     public void createTagToConcept(){
+        if(tagCreate.getName()== null || tagCreate.getName().length()==0 || tagCreate.getColorBackground()==null || tagCreate.getColorLetter()==null){
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Complete la información de la etiqueta"));
 
-        if(conceptBean.getConcept().isPersistent()){
-            tagManager.persist(tagCreate);
-            tagManager.assignTag(conceptBean.getConcept(),tagCreate);
+
+        }else{
+            if(tagCreate.getParentTag()!=null){
+                tagCreate.setName(tagCreate.getParentTag().getName()+"/"+tagCreate.getName());
+            }
+            if(conceptBean.getConcept().isPersistent()){
+                tagManager.persist(tagCreate);
+                tagManager.assignTag(conceptBean.getConcept(),tagCreate);
+            }
+            conceptBean.getConcept().getTags().add(tagCreate);
+            tagListTable= tagManager.getAllTags();
+            tagList= tagManager.getAllTags();
+            findSonTagList=tagManager.getAllTagsWithoutParent();
+            listTagSon=tagManager.getAllTagsWithoutParent();
+            tagCreate= new Tag(-1,null,null,null,null);
+            parentTagSelect= null;
+            parentTagToCreate= new Tag(-1,null,null,null,null);
+            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Etiqueta creada", "La etiqueta se creó exitosamente");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
         }
-        conceptBean.getConcept().getTags().add(tagCreate);
-        tagListTable= tagManager.getAllTags();
-        tagList= tagManager.getAllTags();
-        findSonTagList=tagManager.getAllTagsWithoutParent();
-        listTagSon=tagManager.getAllTagsWithoutParent();
-        tagCreate= new Tag(-1,null,null,null,null);
-        parentTagToCreate= new Tag(-1,null,null,null,null);
 
-        FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Etiqueta creada", "La etiqueta se creo exitosamente");
-        FacesContext.getCurrentInstance().addMessage(null, msg);
+
+
     }
 
     /**
      * Método encargado de agregar la etiqueta que se selecciona al concepto.
      */
     public void addTagToConcept(){
-        if(conceptBean.getConcept().isPersistent()){
-            tagManager.assignTag(conceptBean.getConcept(),tagSelected);
+        if(tagSelected!=null){
+            if(conceptBean.getConcept().isPersistent()){
+                tagManager.assignTag(conceptBean.getConcept(),tagSelected);
+            }
+            conceptBean.getConcept().getTags().add(tagSelected);
+            tagSelected= null;
+            tagListToConcept=  tagManager.getAllTags();
+        }else{
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se seleccionó una etiqueta para agregar"));
         }
-        conceptBean.getConcept().getTags().add(tagSelected);
-        tagListToConcept.remove(tagSelected);
-        tagSelected= null;
+
+
     }
 
     /**
@@ -255,15 +276,17 @@ public class TagBean implements Serializable{
      */
     public void deleteTagToConcept(Tag tagToDelete){
         if(conceptBean.getConcept().isPersistent()){
-
             tagManager.unassignTag(conceptBean.getConcept(),tagToDelete);
         }
-        conceptBean.getConcept().getTags().remove(tagToDelete);
-        if(tagToDelete.getId()!=-1){
-            tagListToConcept.add(tagToDelete);
+
+        for (int i = 0; i < conceptBean.getConcept().getTags().size(); i++) {
+            if(conceptBean.getConcept().getTags().get(i).getId()==tagToDelete.getId())
+                conceptBean.getConcept().getTags().remove(i);
         }
 
     }
+
+
 
     /**
      * Método encargado de vincular una etiqueta hijo a la etiqueta que se está editando.
@@ -313,6 +336,14 @@ public class TagBean implements Serializable{
         tagListTable= tagManager.getAllTags();
     }
 
+    public void removeTag() {
+
+        tagManager.removeTag(tagEdit);
+        conceptBean.getConcept().setTags(tagManager.getTagByConcept( conceptBean.getConcept()));
+        tagListTable= tagManager.getAllTags();
+
+    }
+
     public void onRowEdit(CellEditEvent event) {
 
         FacesContext context = FacesContext.getCurrentInstance();
@@ -322,6 +353,30 @@ public class TagBean implements Serializable{
         FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Etiqueta actualizada", "La etiqueta se actualizo exitosamente");
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
+
+
+    public void updateTag(){
+        tagManager.update(tagEdit);
+
+        tagListToConcept= tagManager.getAllTags();
+
+        FacesContext context = FacesContext.getCurrentInstance();
+        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Etiqueta actualizada", "La etiqueta se actualizo exitosamente"));
+
+    }
+
+
+    public  boolean containTagToConcept(Tag tagcontain){
+        for (Tag tagcontainconcept: conceptBean.getConcept().getTags()
+             ) {
+            if(tagcontain.getId()== tagcontainconcept.getId()){
+                return true;
+            }
+
+        }return false;
+    }
+
+
 
 
 

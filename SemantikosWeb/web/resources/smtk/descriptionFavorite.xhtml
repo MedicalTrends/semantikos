@@ -15,6 +15,8 @@
 
 <composite:implementation>
 
+
+
     <div class="ui-g">
         <div class="ui-g-12 ui-md-6 ui-lg-2">
             <p:outputLabel for="favorite" value="#{cc.attrs.description.descriptionType.name} *"/>
@@ -23,7 +25,7 @@
             <p:inputText id="favorite"
                          styleClass="terms"
                          name="description"
-                         validator="#{validatorBean.validateRequired}"
+                         validator="#{validatorBean.validateRequiredInput}"
                          value="#{cc.attrs.description.term}"
                          style="width:90%"
                          disabled="#{cc.attrs.description.conceptSMTK.modeled}">
@@ -46,6 +48,5 @@
             <p:outputLabel value="DESCID: #{cc.attrs.description.descriptionId}" rendered="#{cc.attrs.description.persistent}"/>
         </div>
     </div>
-
 </composite:implementation>
 </html>
