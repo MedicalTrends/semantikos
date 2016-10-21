@@ -76,8 +76,8 @@ public class ConceptsWebService {
     @WebResult(name = "conceptosPorCategoria")
     public ConceptsByCategoryResponse conceptosPorCategoria(
             @XmlElement(required = true)
-            @WebParam(name = "idCateogria")
-                    Long categoryId,
+            @WebParam(name = "nombreCategoria")
+                    String categoryName,
             @XmlElement(required = true)
             @WebParam(name = "numeroPagina")
                     Integer pageNumber,
@@ -88,15 +88,15 @@ public class ConceptsWebService {
         Category category = null;
 
         try {
-            category = this.categoryDAO.getCategoryById(categoryId);
+            category = this.categoryDAO.getCategoryByName(categoryName);
         } catch (Exception ignored) {}
 
         if (category == null) {
             throw new NotFoundFault("No se encuentra la categoria");
         }
 
-        Integer total = this.conceptDAO.countModeledConceptBy(categoryId);
-        List<ConceptSMTK> concepts = this.conceptDAO.getModeledConceptBy(categoryId, pageSize, pageNumber);
+        Integer total = this.conceptDAO.countModeledConceptBy(category.getId());
+        List<ConceptSMTK> concepts = this.conceptDAO.getModeledConceptBy(category.getId(), pageSize, pageNumber);
 
         ConceptsByCategoryResponse res = new ConceptsByCategoryResponse();
 
