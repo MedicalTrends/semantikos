@@ -87,4 +87,12 @@ public interface DescriptionDAO {
      * @param description La descripción que será actualizada.
      */
     public void update(Description description);
+
+    /**
+     * Este método es responsable de persistir la información asociada al traslado de una descripción no válida al
+     * concepto especial No Valido.
+     *
+     * @param noValidDescription La descripción que se mueve.
+     */
+    public void setInvalidDescription(NoValidDescription noValidDescription);
 }

@@ -424,6 +424,12 @@ public class ConceptSMTK extends PersistentEntity implements Target, AuditableEn
      * @param description La descripción a ser agregada.
      */
     public void addDescription(Description description) {
+
+        /** La descripción asume el estado modelado si el concepto está en modelado */
+        if (this.isModeled()){
+            description.setModeled(true);
+        }
+
         this.descriptions.add(description);
     }
 

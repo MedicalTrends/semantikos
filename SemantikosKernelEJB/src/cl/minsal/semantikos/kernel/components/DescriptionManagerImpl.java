@@ -273,4 +273,23 @@ public class DescriptionManagerImpl implements DescriptionManager {
     public List<Description> searchDescriptionsByTerm(String term, List<Category> categories) {
         return descriptionDAO.searchDescriptionsByTerm(term, categories);
     }
+
+    @Override
+    public void invalidateDescription(NoValidDescription noValidDescription, User user) {
+
+        /* Se aplican las reglas de negocio para el traslado */
+        DescriptionInvalidationBR descriptionInvalidationBR = new DescriptionInvalidationBR();
+        descriptionInvalidationBR.validatePreConditions(noValidDescription);
+
+        /* Se realiza el movimiento con la función genérica */
+        ConceptSMTK noValidConcept = conceptManager.getNoValidConcept();
+        Description theInvalidDescription = noValidDescription.getNoValidDescription();
+
+        this.moveDescriptionToConcept(noValidConcept, theInvalidDescription, user);
+
+        /* Luego se persiste el cambio */
+        descriptionDAO.setInvalidDescription(noValidDescription);
+
+        /* No hay registro en el log, porque se registra ya en la función de negocio de mover */
+    }
 }

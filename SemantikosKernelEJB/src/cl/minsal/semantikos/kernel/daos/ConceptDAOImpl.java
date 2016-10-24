@@ -652,4 +652,9 @@ public class ConceptDAOImpl implements ConceptDAO {
             logger.error("Error al tratar de modelar un concepto.", e);
         }
     }
+
+    @Override
+    public ConceptSMTK getNoValidConcept() {
+        return getConceptByID(81223);
+    }
 }

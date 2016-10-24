@@ -363,6 +363,10 @@ public class ConceptManagerImpl implements ConceptManager {
         return conceptDAO.getConceptDraft();
     }
 
+    @Override
+    public ConceptSMTK getNoValidConcept() {
+        return conceptDAO.getNoValidConcept();
+    }
 
 
     /**

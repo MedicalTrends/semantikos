@@ -115,4 +115,11 @@ public interface ConceptDAO {
      * @param idConcept Identificador del concepto.
      */
     public void forcedModeledConcept(Long idConcept);
+
+    /**
+     * Este método es responsable de recuperar el Concepto no Válido.
+     *
+     * @return El concepto no válido.
+     */
+    public ConceptSMTK getNoValidConcept();
 }
