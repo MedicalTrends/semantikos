@@ -294,14 +294,13 @@ public class DescriptionDAOImpl implements DescriptionDAO {
     @Override
     public void setInvalidDescription(NoValidDescription noValidDescription) {
         ConnectionBD connect = new ConnectionBD();
-        List<Description> descriptions = new ArrayList<>();
 
-        String sql = "{call semantikos.move_description_to_invalid_concept(?,?)}";
+        String sql = "{call semantikos.move_description_to_invalid_concept(?,?,?)}";
         try (Connection connection = connect.getConnection();
              CallableStatement call = connection.prepareCall(sql)) {
 
             call.setLong(1, noValidDescription.getNoValidDescription().getId());
-            call.setString(2, noValidDescription.getObservation());
+            call.setLong(2, noValidDescription.getObservation());
             List<ConceptSMTK> suggestedConcepts = noValidDescription.getSuggestedConcepts();
             ConceptSMTK[] entities = suggestedConcepts.toArray(new ConceptSMTK[suggestedConcepts.size()]);
             call.setArray(3, connection.createArrayOf("bigint", convertListPersistentToListID(entities)));
