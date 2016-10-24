@@ -102,11 +102,6 @@ public class RelationshipManagerImpl implements RelationshipManager {
                 relationshipAttribute.setRelationship(relationship);
                 relationshipAttributeDAO.createRelationshipAttribute(relationshipAttribute);
             }
-
-            /* Se registra en el historial si el concepto fuente de la relación está modelado */
-            if (relationship.getSourceConcept().isModeled()) {
-                auditManager.recordRelationshipCreation(relationship, user);
-            }
         }
     }
 

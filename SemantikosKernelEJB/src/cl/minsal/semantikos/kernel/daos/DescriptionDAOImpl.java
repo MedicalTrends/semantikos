@@ -292,6 +292,30 @@ public class DescriptionDAOImpl implements DescriptionDAO {
     }
 
     @Override
+    public List<ObservationNoValid> getObservationsNoValid() {
+        ConnectionBD connect = new ConnectionBD();
+        List<ObservationNoValid> observationNoValids= new ArrayList<>();
+        String sql = "{call semantikos.get_all_not_valid_observation()}";
+        try (Connection connection = connect.getConnection();
+             CallableStatement call = connection.prepareCall(sql)) {
+            call.execute();
+            ResultSet rs = call.getResultSet();
+            while (rs.next()) {
+                Long id = rs.getLong("id");
+                String description = rs.getString("description");
+                observationNoValids.add(new ObservationNoValid(id,description));
+            }
+
+        } catch (SQLException e) {
+            String errorMsg = "Error al recuperar descripciones de la BDD.";
+            logger.error(errorMsg, e);
+            throw new EJBException(e);
+        }
+
+        return observationNoValids;
+    }
+
+    @Override
     public void setInvalidDescription(NoValidDescription noValidDescription) {
         ConnectionBD connect = new ConnectionBD();
 

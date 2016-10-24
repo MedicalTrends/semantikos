@@ -55,7 +55,7 @@ public class AuditManagerImpl implements AuditManager {
 
         /* Se crea el registro de historial, para poder validar Reglas de Negocio */
         ConceptAuditAction conceptAuditMovement = new ConceptAuditAction(sourceConcept, CONCEPT_DESCRIPTION_MOVEMENT, now(), user, description);
-        ConceptAuditAction conceptAuditAddingDescription = new ConceptAuditAction(targetConcept, CONCEPT_DESCRIPTION_CREATION, now(), user, description);
+        ConceptAuditAction conceptAuditAddingDescription = new ConceptAuditAction(targetConcept, CONCEPT_DESCRIPTION_RECEPTION, now(), user, description);
 
         /* Se validan las reglas de negocio para realizar el registro */
         if(sourceConcept.isModeled())new HistoryRecordBL().validate(conceptAuditMovement);

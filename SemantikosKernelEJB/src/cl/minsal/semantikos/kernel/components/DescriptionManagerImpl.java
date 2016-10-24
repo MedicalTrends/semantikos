@@ -164,20 +164,17 @@ public class DescriptionManagerImpl implements DescriptionManager {
     }
 
     @Override
-    public void moveDescriptionToConcept(ConceptSMTK targetConcept, Description description, User user) {
+    public void moveDescriptionToConcept(ConceptSMTK sourceConcept, Description description, User user) {
+
+        ConceptSMTK targetConcept = description.getConceptSMTK();
 
         /* Se aplican las reglas de negocio para el traslado */
         DescriptionTranslationBR descriptionTranslationBR = new DescriptionTranslationBR();
         descriptionTranslationBR.validatePreConditions(description, targetConcept);
 
         /* Se realiza la actualización a nivel del modelo lógico */
-        ConceptSMTK sourceConcept = description.getConceptSMTK();
-        List<Description> sourceConceptDescriptions = sourceConcept.getDescriptions();
 
-        /* Se elimina la descripción del objeto base */
-        if (sourceConceptDescriptions.contains(description)) {
-            sourceConceptDescriptions.remove(description);
-        }
+        List<Description> sourceConceptDescriptions = sourceConcept.getDescriptions();
 
         /* Se agrega al concepto destino */
         if (!targetConcept.getDescriptions().contains(description)) {
@@ -291,5 +288,10 @@ public class DescriptionManagerImpl implements DescriptionManager {
         descriptionDAO.setInvalidDescription(noValidDescription);
 
         /* No hay registro en el log, porque se registra ya en la función de negocio de mover */
+    }
+
+    @Override
+    public List<ObservationNoValid> getObservationsNoValid() {
+        return descriptionDAO.getObservationsNoValid();
     }
 }

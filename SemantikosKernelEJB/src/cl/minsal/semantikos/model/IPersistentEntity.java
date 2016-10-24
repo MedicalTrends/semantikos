@@ -16,4 +16,6 @@ public interface IPersistentEntity {
      * @return <code>true</code> si está persistido y <code>false</code> sino.
      */
     boolean isPersistent();
+
+    String toString();
 }
