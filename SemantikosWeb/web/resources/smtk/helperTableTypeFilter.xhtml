@@ -40,6 +40,7 @@
                          value="#{conceptBrowserBean.helperTableRecord.id}"
                          var="selection"
                          label="#{cc.attrs.relationshipDefinition.name}"
+                         autoWidth="false"
                          style="margin-right:10px; width: 70%"
                          rendered="#{cc.attrs.targets.isEmpty() and not cc.attrs.multiple }">
 
@@ -75,6 +76,7 @@
                              value="#{target.id}"
                              label="#{cc.attrs.relationshipDefinition.name}"
                              var="selection"
+                             autoWidth="false"
                              style="margin-right:10px; width: 70%"
                              rendered="#{ not cc.attrs.targets.isEmpty() and not cc.attrs.multiple }">
 

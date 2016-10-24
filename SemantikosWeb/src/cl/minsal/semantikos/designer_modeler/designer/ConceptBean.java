@@ -77,6 +77,17 @@ public class ConceptBean implements Serializable {
 
     private Category categorySelected;
 
+    private boolean editable;
+
+    private int idCategory;
+
+    /**
+     * id del concepto sobre la cual se esta editando. Usado como enlace entre la petición desde el ConceptBrowser y el
+     * concepto
+     */
+    private int idConcept;
+
+
     private ConceptSMTKWeb concept;
 
     private List<Description> descriptionsToTraslate;
@@ -135,7 +146,7 @@ public class ConceptBean implements Serializable {
 
     private String FSN;
 
-    private String favoriteDescription;
+    private String favoriteDescription = "";
 
     private int categorySelect;
 
@@ -189,10 +200,6 @@ public class ConceptBean implements Serializable {
     @PostConstruct
     protected void initialize() throws ParseException {
 
-        TimeZone tz = Calendar.getInstance().getTimeZone();
-        System.out.println(tz.getDisplayName()); // (i.e. Moscow Standard Time)
-        System.out.println(tz.getID()); // (i.e. Europe/Moscow)
-
         // TODO: Terminar esto o cambiar en el futuro
 
         user = authenticationBean.getLoggedUser();
@@ -206,8 +213,10 @@ public class ConceptBean implements Serializable {
 
         // Iniciar cuadro de dialogo
 
+        /*
         RequestContext context = RequestContext.getCurrentInstance();
         context.execute("PF('dialogNameConcept').show();");
+        */
 
         categoryList = categoryManager.getCategories();
 
@@ -229,9 +238,9 @@ public class ConceptBean implements Serializable {
      */
     public void createConcept() throws ParseException {
         RequestContext context = RequestContext.getCurrentInstance();
-        if (idconceptselect == 0) {
+        if (idConcept == 0) {
 
-            setCategory(categorySelected);
+            setCategory(categoryManager.getCategoryById(idCategory));
 
             /* Se valida que el término propuesto no exista previamente */
             if (categoryManager.categoryContains(category, favoriteDescription)) {
@@ -241,14 +250,14 @@ public class ConceptBean implements Serializable {
                 newConcept(category, favoriteDescription);
             }
         } else {
-            getConceptById(idconceptselect);
+            getConceptById(idConcept);
         }
         // Una vez que se ha inicializado el concepto, inicializar los placeholders para las relaciones
         for (RelationshipDefinition relationshipDefinition : category.getRelationshipDefinitions()) {
             if (!relationshipDefinition.getRelationshipAttributeDefinitions().isEmpty())
                 relationshipPlaceholders.put(relationshipDefinition.getId(), new Relationship(concept, null, relationshipDefinition, new ArrayList<RelationshipAttribute>()));
         }
-        context.execute("PF('dialogNameConcept').hide();");
+        //context.execute("PF('dialogNameConcept').hide();");
     }
 
     //Este método es responsable de a partir de un concepto SMTK y un término, devolver un concepto WEB con su FSN y su Preferida
@@ -285,11 +294,48 @@ public class ConceptBean implements Serializable {
         ConceptSMTK conceptSMTK = new ConceptSMTK(conceptManager.generateConceptId(), category, false, false, false, false, false, observation, tagSMTK);
         // Se crea el concepto WEB a partir del concepto SMTK
         concept = initConcept(conceptSMTK, term);
+        concept.setEditable(editable);
         // Se crea una copia con la imagen original del concepto
         _concept = initConcept(conceptSMTK, term);
 
         conceptBeanExport.setConceptSMTK(concept);
         conceptBeanExport.loadConcept();
+    }
+
+    /**
+     * Este método se encarga de setear el idCategory. En ejecución este metodo es invocado al realizar el request
+     * desde el conceptBrowser cuando se desea crear un nuevo concepto dentro de una categoria
+     * @param idCategory
+     */
+    public void setIdCategory(int idCategory) {
+        this.idCategory = idCategory;
+        try {
+            createConcept();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public int getIdCategory() {
+        return idCategory;
+    }
+
+    /**
+     * Este método se encarga de setear el idConcept. En ejecución este metodo es invocado al realizar el request
+     * desde el conceptBrowser cuando se desea ver o editar un concepto existente
+     * @param idConcept
+     */
+    public void setIdConcept(int idConcept) {
+        this.idConcept = idConcept;
+        try {
+            createConcept();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public int getIdConcept() {
+        return idConcept;
     }
 
     //Este método es responsable de pasarle a la vista un concepto, dado el id del concepto
@@ -301,6 +347,8 @@ public class ConceptBean implements Serializable {
         concept = new ConceptSMTKWeb(conceptSMTK);
         // Se crea una copia con la imagen original del concepto
         _concept = new ConceptSMTKWeb(conceptSMTK);
+
+        concept.setEditable(editable);
 
         auditAction = auditManager.getConceptAuditActions(concept, true);
         category = concept.getCategory();
@@ -407,22 +455,6 @@ public class ConceptBean implements Serializable {
         // Resetear placeholder targets
         basicTypeValue = new BasicTypeValue(null);
         selectedHelperTableRecord = new HelperTableRecord();
-        conceptSelected = null;
-    }
-
-
-    /**
-     * Este método es el encargado de agregar una nuva relacion con los parémetros que se indican.
-     */
-    public void addHelperTableRelationshipWithAttributes(RelationshipDefinition relationshipDefinition) {
-
-
-        HelperTableRecord record = helperTableManager.getRecord(helperTableValuePlaceholder);
-
-        Relationship relationship = new Relationship(this.concept, record, relationshipDefinition, getRelationshipAttributesByRelationshipDefinition(relationshipDefinition));
-
-        // Se utiliza el constructor mínimo (sin id)
-        this.concept.addRelationshipWeb(new RelationshipWeb(relationship, relationship.getRelationshipAttributes()));
         conceptSelected = null;
     }
 
@@ -713,15 +745,14 @@ public class ConceptBean implements Serializable {
         FacesContext context = FacesContext.getCurrentInstance();
 
         for (RelationshipDefinitionWeb relationshipDefinition : getOrderedRelationshipDefinitions()) {
-            if(!concept.isMultiplicitySatisfied(relationshipDefinition)) {
-                relationshipDefinition.setUiState("ui-state-error");
+            boolean isMultiplicitySatisfied =  concept.isMultiplicitySatisfied(relationshipDefinition);
+            relationshipDefinition.setMultiplicitySatisfied(isMultiplicitySatisfied);
+
+            if(!isMultiplicitySatisfied) {
                 context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "El atributo "+relationshipDefinition.getName()+" no cumple con el minimo requerido"));
                 return false;
             }
-            else
-                relationshipDefinition.setUiState("");
         }
-
         return true;
     }
 
@@ -1240,6 +1271,15 @@ public class ConceptBean implements Serializable {
     public void setConceptSMTKTranslateDes(ConceptSMTK conceptSMTKTranslateDes) {
         this.conceptSMTKTranslateDes = conceptSMTKTranslateDes;
     }
+
+    public boolean isEditable() {
+        return editable;
+    }
+
+    public void setEditable(boolean editable) {
+        this.editable = editable;
+    }
+
 
     //TODO: editar concepto
 

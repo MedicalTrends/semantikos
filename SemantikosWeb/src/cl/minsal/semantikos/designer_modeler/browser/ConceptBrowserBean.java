@@ -1,5 +1,6 @@
 package cl.minsal.semantikos.designer_modeler.browser;
 
+import cl.minsal.semantikos.designer_modeler.auth.AuthenticationBean;
 import cl.minsal.semantikos.kernel.components.*;
 import cl.minsal.semantikos.model.*;
 import cl.minsal.semantikos.model.basictypes.BasicTypeValue;
@@ -16,8 +17,13 @@ import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
+import java.io.IOException;
 import java.io.Serializable;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -43,10 +49,10 @@ public class ConceptBrowserBean implements Serializable {
     TagManager tagManager;
 
     @EJB
-    HelperTableManagerInterface helperTableManager;
+    HelperTableManager helperTableManager;
 
     /**
-     * Objeto de consulta: contiene todos los filtros necesarios para el despliegue de los resultados para el navegador
+     * Objeto de consulta: contiene todos los filtros necesarios para el despliegue de los resultados en el navegador
      */
     private ConceptQuery conceptQuery;
 
@@ -67,7 +73,7 @@ public class ConceptBrowserBean implements Serializable {
     private Category category;
 
     /**
-     * id de la categoría sobre la cual se esta navegando. Usado como puente entre la petición desde el MainMenu y la
+     * id de la categoría sobre la cual se esta navegando. Usado como enlace entre la petición desde el MainMenu y la
      * categoría
      */
     private int idCategory;
@@ -76,6 +82,9 @@ public class ConceptBrowserBean implements Serializable {
     private BasicTypeValue basicTypeValue = new BasicTypeValue(null);
 
     private HelperTableRecord helperTableRecord = new HelperTableRecord();
+
+    @ManagedProperty(value = "#{authenticationBean}")
+    private AuthenticationBean authenticationBean;
 
     @EJB
 
@@ -203,11 +212,11 @@ public class ConceptBrowserBean implements Serializable {
         this.tags = tags;
     }
 
-    public HelperTableManagerInterface getHelperTableManager() {
+    public HelperTableManager getHelperTableManager() {
         return helperTableManager;
     }
 
-    public void setHelperTableManager(HelperTableManagerInterface helperTableManager) {
+    public void setHelperTableManager(HelperTableManager helperTableManager) {
         this.helperTableManager = helperTableManager;
     }
 
@@ -228,6 +237,14 @@ public class ConceptBrowserBean implements Serializable {
 
     public void setHelperTableRecord(HelperTableRecord helperTableRecord) {
         this.helperTableRecord = helperTableRecord;
+    }
+
+    public AuthenticationBean getAuthenticationBean() {
+        return authenticationBean;
+    }
+
+    public void setAuthenticationBean(AuthenticationBean authenticationBean) {
+        this.authenticationBean = authenticationBean;
     }
 
     /**
@@ -251,9 +268,29 @@ public class ConceptBrowserBean implements Serializable {
         //Ajax.update("@(.conceptBrowserTable)");
     }
 
-    public void synch(){
-        System.out.println("synch!!");
+
+    public void deleteConcept(ConceptSMTK concept) throws IOException {
+
+        FacesContext context = FacesContext.getCurrentInstance();
+
+        System.out.println(authenticationBean.getLoggedUser().getUsername());
+
+        // Si el concepto está persistido, invalidarlo
+        if (concept.isPersistent() && !concept.isModeled()) {
+            conceptManager.delete(concept, authenticationBean.getLoggedUser());
+            context.addMessage(null, new FacesMessage("Successful", "Concepto eliminado"));
+            //ExternalContext eContext = FacesContext.getCurrentInstance().getExternalContext();
+            //eContext.redirect(eContext.getRequestContextPath() + "/views/concept/conceptEdit.xhtml");
+            //return "mainMenu.xhtml";
+        } else {
+            conceptManager.invalidate(concept, authenticationBean.getLoggedUser());
+            context.addMessage(null, new FacesMessage("Successful", "Concepto invalidado"));
+            //return "mainMenu.xhtml";
+        }
+
     }
+
+
 
 
 }

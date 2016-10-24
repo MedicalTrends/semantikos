@@ -67,7 +67,7 @@
                                       targetDefinition="#{filter.definition.targetDefinition}"
                                       targets="#{filter.targets}"
                                       multiple="#{filter.multiple}"
-                                      rendered="#{filter.definition.targetDefinition.basicType}" />
+                                      rendered="#{filter.definition.targetDefinition.basicType and filter.definition.targetDefinition.discreteDomain}" />
                 <smtk:helperTableTypeFilter
                         relationshipDefinition="#{filter.definition}"
                         targetDefinition="#{filter.definition.targetDefinition}"
@@ -75,6 +75,13 @@
                         multiple="#{filter.multiple}"
                         rendered="#{filter.definition.targetDefinition.helperTable}" />
             </p:repeat>
+            <div class="ui-g-12 ui-md-6 ui-lg-2">
+                <p:button outcome="conceptEdit" icon="fa fa-plus" styleClass="ui-priority-primary" value="Crear Nuevo">
+                    <f:param name="editMode" value="#{true}" />
+                    <f:param name="idCategory" value="#{cc.attrs.conceptQuery.categories.get(0).id}" />
+                    <f:param name="idConcept" value="#{0}" />
+                </p:button>
+            </div>
         </div>
     </p:panel>
 

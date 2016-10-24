@@ -16,7 +16,7 @@ public class RelationshipDefinitionWeb extends RelationshipDefinition implements
     private int order;
 
     /** Establece el estilo para el estado de error */
-    private String uiState = "";
+    private boolean isMultiplicitySatisfied = true;
 
     /** Establece el valor por defecto para esta definición */
     private Target defaultValue;
@@ -36,13 +36,6 @@ public class RelationshipDefinitionWeb extends RelationshipDefinition implements
         return order;
     }
 
-    public String getUiState() {
-        return uiState;
-    }
-
-    public void setUiState(String uiState) {
-        this.uiState = uiState;
-    }
 
     public Target getDefaultValue() {
         return defaultValue;
@@ -55,6 +48,15 @@ public class RelationshipDefinitionWeb extends RelationshipDefinition implements
     public boolean hasDefaultValue(){
         return getDefaultValue()!=null;
     }
+
+    public boolean isMultiplicitySatisfied() {
+        return isMultiplicitySatisfied;
+    }
+
+    public void setMultiplicitySatisfied(boolean multiplicitySatisfied) {
+        isMultiplicitySatisfied = multiplicitySatisfied;
+    }
+
 
     @Override
     public int compareTo(@NotNull RelationshipDefinitionWeb relationshipDefinitionWeb) {
