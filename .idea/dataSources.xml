@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="DataSourceManagerImpl" format="xml" hash="3656790706">
+  <component name="DataSourceManagerImpl" format="xml" hash="1983496404">
     <data-source source="LOCAL" name="pg Semantikos MT" uuid="01f87ae6-2631-4aa0-b29e-efc062530da6">
       <driver-ref>postgresql</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
-      <jdbc-url>jdbc:postgresql://192.168.0.187:5432/semantikos</jdbc-url>
+      <jdbc-url>jdbc:postgresql://192.168.0.188:5432/semantikos</jdbc-url>
       <libraries />
     </data-source>
     <data-source source="LOCAL" name="Oracle" uuid="1815898b-c35a-4f5b-93fd-76f0334345d8">
