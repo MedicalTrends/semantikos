@@ -8,6 +8,7 @@ import cl.minsal.semantikos.model.basictypes.BasicTypeValue;
 import cl.minsal.semantikos.model.exceptions.BusinessRuleException;
 import cl.minsal.semantikos.model.helpertables.HelperTableRecord;
 import cl.minsal.semantikos.model.relationships.*;
+import cl.minsal.semantikos.model.snomedct.ConceptSCT;
 import cl.minsal.semantikos.util.Pair;
 import cl.minsal.semantikos.view.components.ViewAugmenter;
 import org.primefaces.context.RequestContext;
@@ -86,7 +87,6 @@ public class ConceptBean implements Serializable {
      */
     private int idConcept;
 
-
     private ConceptSMTKWeb concept;
 
     private List<DescriptionWeb> descriptionsToTraslate;
@@ -128,6 +128,8 @@ public class ConceptBean implements Serializable {
     private ConceptSMTK conceptSMTK;
 
     private ConceptSMTK conceptSelected;
+
+    private ConceptSCT conceptSCTSelected;
 
     private Map<Long, ConceptSMTK> targetSelected;
 
@@ -476,6 +478,7 @@ public class ConceptBean implements Serializable {
         basicTypeValue = new BasicTypeValue(null);
         selectedHelperTableRecord = new HelperTableRecord();
         conceptSelected = null;
+        conceptSCTSelected = null;
     }
 
     /**
@@ -1154,6 +1157,14 @@ public class ConceptBean implements Serializable {
 
     public void setConceptSelected(ConceptSMTK conceptSelected) {
         this.conceptSelected = conceptSelected;
+    }
+
+    public ConceptSCT getConceptSCTSelected() {
+        return conceptSCTSelected;
+    }
+
+    public void setConceptSCTSelected(ConceptSCT conceptSCTSelected) {
+        this.conceptSCTSelected = conceptSCTSelected;
     }
 
     public SMTKTypeBean getSmtkTypeBean() {
