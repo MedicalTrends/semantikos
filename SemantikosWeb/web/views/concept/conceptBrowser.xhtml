@@ -30,29 +30,30 @@
                                                      value="#{conceptBrowserBean.concepts}"
                                                      var="concept"
                                                      rows="30"
+                                                     sortBy="#{1}"
                                                      paginator="true" lazy="true" dynamic="true"
                                                      paginatorTemplate=" {CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
                                                      emptyMessage="No se han encontrado conceptos con los criterios utilizados">
 
                                             <p:growl id="growl" showDetail="true" showSummary="true"/>
 
-                                            <p:column headerText="ConceptID" sortBy="#{conceptBrowserBean.conceptQuery.columns.get(0)}" style="width:7%">
+                                            <p:column headerText="ConceptID" sortBy="#{1}" style="width:7%">
                                                 <h:outputText value="#{concept.id}"/>
                                             </p:column>
 
-                                            <p:column headerText="Término" sortBy="#{conceptBrowserBean.conceptQuery.columns.get(1)}">
+                                            <p:column headerText="Término" sortBy="#{2}">
                                                 <h:outputText value="#{concept.descriptionFavorite.term}"/>
                                             </p:column>
 
-                                            <p:column headerText="Observación" sortBy="#{conceptBrowserBean.conceptQuery.columns.get(2)}">
+                                            <p:column headerText="Observación">
                                                 <h:outputText value="#{concept.observation}"/>
                                             </p:column>
 
-                                            <p:column headerText="Etiqueta" sortBy="#{conceptBrowserBean.conceptQuery.columns.get(3)}">
+                                            <p:column headerText="Etiqueta">
                                                 <h:outputText value="#{conceptBrowserBean.stringifyList(concept.tags)}"/>
                                             </p:column>
 
-                                            <p:column headerText="Está en" sortBy="#{conceptBrowserBean.conceptQuery.columns.get(4)}">
+                                            <p:column headerText="Está en">
                                                 <h:outputText value="Borrador" rendered="#{not concept.modeled}"/>
                                                 <h:outputText value="Modelado" rendered="#{concept.modeled}"/>
                                             </p:column>

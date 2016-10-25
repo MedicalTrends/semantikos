@@ -16,6 +16,11 @@ import java.util.*;
  */
 public class ConceptQuery {
 
+    /**
+     * Filtros estáticos
+     */
+    private List<Category> categories;
+
     private String query;
 
     private Boolean toBeReviewed;
@@ -28,16 +33,28 @@ public class ConceptQuery {
     private Date creationDateSince;
     private Date creationDateTo;
 
-    private int pageSize;
-    private int pageNumber;
-
-    private String order;
-
+    /**
+     * Filtros dinámicos
+     */
     private List<ConceptQueryFilter> filters = new ArrayList<>();
 
+    /**
+     * Columnas dinámicas
+     */
     private List<ConceptQueryColumn> columns = new ArrayList<>();
 
-    private List<Category> categories;
+    /**
+     * Orden
+     */
+    private int order;
+
+    private String asc;
+
+    /**
+     * Paginación
+     */
+    private int pageSize;
+    private int pageNumber;
 
     public String getQuery() {
         return query;
@@ -119,12 +136,20 @@ public class ConceptQuery {
         this.pageNumber = pageNumber;
     }
 
-    public String getOrder() {
+    public int getOrder() {
         return order;
     }
 
-    public void setOrder(String order) {
+    public void setOrder(int order) {
         this.order = order;
+    }
+
+    public String getAsc() {
+        return asc;
+    }
+
+    public void setAsc(String asc) {
+        this.asc = asc;
     }
 
     public List<Category> getCategories() {
@@ -205,6 +230,8 @@ public class ConceptQuery {
         conceptQueryParameters.add(new ConceptQueryParameter(Long.class, getHelperTableValues(), true));
         conceptQueryParameters.add(new ConceptQueryParameter(Timestamp.class, getCreationDateSince(), false));
         conceptQueryParameters.add(new ConceptQueryParameter(Timestamp.class, getCreationDateTo(), false));
+        conceptQueryParameters.add(new ConceptQueryParameter(Integer.class, getOrder(), false));
+        conceptQueryParameters.add(new ConceptQueryParameter(String.class, getAsc(), false));
         conceptQueryParameters.add(new ConceptQueryParameter(Integer.class, getPageNumber(), false));
         conceptQueryParameters.add(new ConceptQueryParameter(Integer.class, getPageSize(), false));
         //conceptQueryParameters.add(new ConceptQueryParameter(String.class, getOrder(), false));

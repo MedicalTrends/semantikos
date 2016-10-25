@@ -99,7 +99,7 @@ public class ConceptQueryDAOImpl implements ConceptQueryDAO {
                 call.setDate(11, new Date(query.getCreationDateTo().getTime()));
 
 
-            call.setString(12, query.getOrder());
+            //call.setString(12, query.getOrder());
             call.setInt(13, query.getPageNumber());
             call.setInt(14, query.getPageSize());
             call.execute();
@@ -129,7 +129,7 @@ public class ConceptQueryDAOImpl implements ConceptQueryDAO {
 
         //TODO: hacer funcion en pg
         try (Connection connection = connect.getConnection();
-             CallableStatement call = connection.prepareCall("{call semantikos.get_concept_by_query(?,?,?,?,?,?,?,?,?,?,?,?)}" )){
+             CallableStatement call = connection.prepareCall("{call semantikos.get_concept_by_query(?,?,?,?,?,?,?,?,?,?,?,?,?,?)}" )){
 
             /*
                 1. p_id_category integer, --static
