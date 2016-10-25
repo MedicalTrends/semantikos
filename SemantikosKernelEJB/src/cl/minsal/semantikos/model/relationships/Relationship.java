@@ -296,6 +296,10 @@ public class Relationship extends PersistentEntity implements AuditableEntity {
         }
     }
 
+    public boolean isMultiplicitySatisfied(RelationshipAttributeDefinition attributeDefinition){
+        return this.getAttributesByAttributeDefinition(attributeDefinition).size() >= attributeDefinition.getMultiplicity().getLowerBoundary();
+    }
+
     @Override
     public String toString() {
         return relationshipDefinition.getName();

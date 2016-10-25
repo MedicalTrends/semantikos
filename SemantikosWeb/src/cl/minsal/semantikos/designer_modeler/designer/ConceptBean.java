@@ -447,19 +447,19 @@ public class ConceptBean implements Serializable {
             return;
         }
 
-        /*
+
         for (RelationshipAttributeDefinition attributeDefinition : relationshipDefinition.getRelationshipAttributeDefinitions()) {
-            if(!attributeDefinition.isOrderAttribute() && relationship.getAttributesByAttributeDefinition(attributeDefinition).isEmpty()) {
+            if(!attributeDefinition.isOrderAttribute() && !relationship.isMultiplicitySatisfied(attributeDefinition)) {
                 context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Debe seleccionar un valor para el atributo " + attributeDefinition.getName()));
                 return;
             }
         }
-        */
 
         if (relationshipDefinition.getOrderAttributeDefinition() != null) {
             RelationshipAttribute attribute = new RelationshipAttribute(relationshipDefinition.getOrderAttributeDefinition(), relationship, new BasicTypeValue(concept.getValidRelationshipsByRelationDefinition(relationshipDefinition).size() + 1));
             relationship.getRelationshipAttributes().add(attribute);
         }
+
         autogenerateRelationshipWithAttributes(relationshipDefinition,relationship);
 
         // Se utiliza el constructor mínimo (sin id)
