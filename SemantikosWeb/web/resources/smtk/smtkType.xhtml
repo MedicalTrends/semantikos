@@ -303,8 +303,8 @@
                         <h:outputText value="#{attribute.name}" />
                     </f:facet>
                     <p:outputPanel rendered="#{not empty rel.getAttributesByAttributeDefinition(attribute)}">
-                        <h:outputText rendered="#{attribute.targetDefinition.basicType }" value="#{rel.getAttributesByAttributeDefinition(attribute).get(0).target}" />
-                        <h:outputText rendered="#{attribute.targetDefinition.helperTable}" value="#{rel.getAttributesByAttributeDefinition(attribute).get(0).target.fields['description']}" />
+                        <smtk:basicTypeAttributeCell attribute="#{attribute}" relationship="#{rel}" rendered="#{attribute.targetDefinition.basicType}" />
+                        <smtk:helperTableTypeAttributeCell attribute="#{attribute}" relationship="#{rel}" rendered="#{attribute.targetDefinition.helperTable}" />
                     </p:outputPanel>
                 </p:columns>
 

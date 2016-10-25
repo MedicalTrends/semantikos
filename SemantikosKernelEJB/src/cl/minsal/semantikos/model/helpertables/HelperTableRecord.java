@@ -140,6 +140,8 @@ public class HelperTableRecord implements Target, Comparable<HelperTableRecord> 
 
     @Override
     public int compareTo(@NotNull HelperTableRecord helperTableRecord) {
+        if(this.getFields()==null)
+            return 0;
         String descriptionColumnName = SYSTEM_COLUMN_DESCRIPTION.getColumnName();
         return this.getFields().get(descriptionColumnName).compareTo(helperTableRecord.getFields().get(descriptionColumnName));
     }

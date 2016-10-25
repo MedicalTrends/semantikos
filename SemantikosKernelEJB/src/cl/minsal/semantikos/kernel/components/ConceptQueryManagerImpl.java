@@ -50,7 +50,7 @@ public class ConceptQueryManagerImpl implements ConceptQueryManager{
 
     @Override
     public List<RelationshipDefinition> getShowableAttributesByCategory(Category category) {
-//TODO:implement
+        //TODO:implement
         return new ArrayList<RelationshipDefinition>();
     }
 }

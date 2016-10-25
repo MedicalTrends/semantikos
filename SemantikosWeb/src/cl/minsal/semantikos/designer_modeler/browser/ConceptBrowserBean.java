@@ -143,6 +143,8 @@ public class ConceptBrowserBean implements Serializable {
                 List<ConceptSMTK> conceptSMTKs = conceptQueryManager.executeQuery(conceptQuery);
                 this.setRowCount(30);
 
+
+
                 return conceptSMTKs;
             }
 

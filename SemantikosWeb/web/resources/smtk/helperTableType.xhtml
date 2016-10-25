@@ -452,8 +452,8 @@
                     <f:facet name="header">
                         <h:outputText value="#{attribute.name}" />
                     </f:facet>
-                    <h:outputText rendered="#{attribute.targetDefinition.basicType}" value="#{relationship.getAttributesByAttributeDefinition(attribute).get(0).target}" />
-                    <h:outputText rendered="#{attribute.targetDefinition.helperTable}" value="#{relationship.getAttributesByAttributeDefinition(attribute).get(0).target.fields['description']}" />
+                    <smtk:basicTypeAttributeCell attribute="#{attribute}" relationship="#{relationship}" rendered="#{attribute.targetDefinition.basicType}" />
+                    <smtk:helperTableTypeAttributeCell attribute="#{attribute}" relationship="#{relationship}" rendered="#{attribute.targetDefinition.helperTable}" />
                 </p:columns>
 
                 <p:column style="width: 4%" rendered="#{cc.attrs.concept.editable}">

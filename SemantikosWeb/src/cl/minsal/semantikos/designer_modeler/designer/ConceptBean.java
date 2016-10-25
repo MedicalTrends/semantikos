@@ -444,6 +444,7 @@ public class ConceptBean implements Serializable {
         // Validar placeholders de targets de relacion
         if (relationship.getTarget() == null) {
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Debe seleccionar un valor para el atributo " + relationshipDefinition.getName()));
+            resetPlaceHolders();
             return;
         }
 
@@ -451,6 +452,7 @@ public class ConceptBean implements Serializable {
         for (RelationshipAttributeDefinition attributeDefinition : relationshipDefinition.getRelationshipAttributeDefinitions()) {
             if(!attributeDefinition.isOrderAttribute() && !relationship.isMultiplicitySatisfied(attributeDefinition)) {
                 context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Debe seleccionar un valor para el atributo " + attributeDefinition.getName()));
+                resetPlaceHolders();
                 return;
             }
         }
@@ -467,6 +469,10 @@ public class ConceptBean implements Serializable {
         // Resetear placeholder relacion
         relationshipPlaceholders.put(relationshipDefinition.getId(), new Relationship(concept, null, relationshipDefinition, new ArrayList<RelationshipAttribute>()));
         // Resetear placeholder targets
+        resetPlaceHolders();
+    }
+
+    public void resetPlaceHolders(){
         basicTypeValue = new BasicTypeValue(null);
         selectedHelperTableRecord = new HelperTableRecord();
         conceptSelected = null;
@@ -481,9 +487,7 @@ public class ConceptBean implements Serializable {
         // Se utiliza el constructor mínimo (sin id)
         this.concept.addRelationshipWeb(new RelationshipWeb(relationship, relationship.getRelationshipAttributes()));
         // Resetear placeholder targets
-        basicTypeValue = new BasicTypeValue(null);
-        selectedHelperTableRecord = new HelperTableRecord();
-        conceptSelected = null;
+        resetPlaceHolders();
     }
 
     /**
