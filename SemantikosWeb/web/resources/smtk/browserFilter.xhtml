@@ -35,7 +35,7 @@
                 <p:selectOneMenu value="#{cc.attrs.conceptQuery.toBeConsulted}" style="margin-right:10px; width: 60%">
                     <f:selectItem itemLabel="¿Consultar?" itemValue="#{null}"/>
                     <f:selectItem itemLabel="Sin Consultar" itemValue="#{false}"/>
-                    <f:selectItem itemLabel="Revisar" itemValue="#{true}"/>
+                    <f:selectItem itemLabel="Consultar" itemValue="#{true}"/>
                     <p:ajax event="itemSelect" update="@(.conceptBrowserTable)" />
                 </p:selectOneMenu>
             </div>
@@ -50,7 +50,7 @@
             <div class="ui-g-12 ui-md-6 ui-lg-2">
                 <p:selectOneMenu value="#{cc.attrs.conceptQuery.tag}" converter="omnifaces.SelectItemsConverter"
                                  style="margin-right:10px; width: 60%">
-                    <f:selectItem itemLabel="Tag" itemValue="#{null}"/>
+                    <f:selectItem itemLabel="Etiqueta" itemValue="#{null}"/>
                     <f:selectItems value="#{conceptBrowserBean.tags}" var="tag"
                                    itemLabel="#{tag.name}" itemValue="#{tag}"/>
                     <p:ajax event="itemSelect" update="@(.conceptBrowserTable)" />
