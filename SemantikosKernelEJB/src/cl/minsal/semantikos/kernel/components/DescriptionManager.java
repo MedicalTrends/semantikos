@@ -130,7 +130,7 @@ public interface DescriptionManager {
      * @param noValidDescription La descripción no válida con su observación y conceptos sugeridos.
      * @param user               El usuario que realiza la acción.
      */
-    public void invalidateDescription(NoValidDescription noValidDescription, User user);
+    public void invalidateDescription(ConceptSMTK conceptSMTK, NoValidDescription noValidDescription, User user);
 
 
     public List<ObservationNoValid> getObservationsNoValid();

@@ -176,6 +176,8 @@
                         <i class="fa fa-times-circle-o fa-lg"/>
                         <f:setPropertyActionListener value="#{description}"
                                                      target="#{conceptBean.descriptionToTranslate}"/>
+                        <f:setPropertyActionListener value="" target="#{conceptBean.observationNoValid}"/>
+
                     </p:commandLink>
                     <p:rowEditor id="rowEditor" style="display: inline"/>
                 </p:column>
@@ -290,11 +292,8 @@
                                          update=":#{cc.clientId}:conceptTranslate"
                                          value="Cambiar Concepto"><f:setPropertyActionListener value=""
                                                                                                target="#{conceptBean.conceptSMTKTranslateDes}"/></p:commandButton>
-
                     </div>
                 </div>
-
-
             </p:panel>
 
         </p:panel>
@@ -403,7 +402,7 @@
                     </div>
                     <div class="ui-g-12 ui-md-6 ui-lg-3">
                         <p:commandButton rendered="#{conceptBean.observationNoValid!=null}" value="Quitar observacion"  update="@(.observationNoValid)">
-                            <f:setPropertyActionListener value="" target="#{observationNoValid}"/>
+                            <f:setPropertyActionListener value="" target="#{conceptBean.observationNoValid}"/>
                                 </p:commandButton>
                     </div>
                 </div>
@@ -444,7 +443,7 @@
                                      <h:outputText value="#{conceptSuggest.category.name}"></h:outputText>
                                  </p:column>
                                  <p:column headerText="Accion">
-                                     <p:commandButton actionListener="#{conceptBean.removeConceptSuggest(conceptSuggest)}"></p:commandButton>
+                                     <p:commandButton value="Remover" actionListener="#{conceptBean.removeConceptSuggest(conceptSuggest)}"></p:commandButton>
                                  </p:column>
                              </p:dataTable>
                             </div>

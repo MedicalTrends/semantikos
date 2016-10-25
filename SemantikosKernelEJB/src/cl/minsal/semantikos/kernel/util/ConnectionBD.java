@@ -9,7 +9,7 @@ import java.sql.SQLException;
  */
 public class ConnectionBD {
     private String driver = "org.postgresql.Driver";
-    private String ruta = "jdbc:postgresql://192.168.0.188:5432/semantikos";
+    private String ruta = "jdbc:postgresql://192.168.0.242:5432/semantikos";
     private String user = "postgres";
     private String password = "postgres";
     private Connection connection;
