@@ -172,9 +172,19 @@ public interface ConceptManager {
 
     /**
      * Metodo encargado de obtener los conceptos en borrador
+     *
      * @return lista de conceptos en borrador
      */
     public List<ConceptSMTK> getConceptDraft();
 
+    /**
+     * Este método es responsable de retornar todos los conceptos que poseen alguna relación (de cualquier nombre o
+     * tipo) cuyo elemento destino (Target) es un concepto SMTK dado.
+     *
+     * @param conceptSMTK El concepto destino de la relación de los conceptos que se buscan.
+     *
+     * @return Una lista de los conceptos que poseen una relación que tiene como destino el <code>conceptSMTK</code>.
+     */
+    public List<ConceptSMTK> findConceptsByTargetConcept(ConceptSMTK conceptSMTK);
 
 }

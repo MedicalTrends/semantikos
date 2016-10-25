@@ -112,4 +112,14 @@ public interface ConceptDAO {
     public List<ConceptSMTK> getConceptBy(RefSet refSet);
 
     public List<ConceptSMTK> getConceptDraft();
+
+    /**
+     * Este método es responsable de retornar todos los conceptos que poseen alguna relación (de cualquier nombre o
+     * tipo) cuyo elemento destino (Target) es un concepto SMTK dado.
+     *
+     * @param idConcept El ID del concepto destino de la relación de los conceptos que se buscan.
+     *
+     * @return Una lista de los conceptos que poseen una relación que tiene como destino el <code>conceptSMTK</code>.
+     */
+    List<ConceptSMTK> findConceptsByTargetConcept(long idConcept);
 }

@@ -4,10 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
 
 import javax.ejb.EJB;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -71,6 +68,19 @@ public class HelperTableRecordFactoryTest {
         String jsonRocord = createJSONRocord02();
         HelperTableRecord recordFromJSON = this.helperTableRecordFactory.createRecordFromJSON(jsonRocord);
         assertEquals(4, recordFromJSON.getFields().size());
+    }
+
+    /**
+     * Este método es responsable de testear si el ordenamiento funciona, es decir, la función de comparación.
+     * @throws Exception
+     */
+    @Test
+    public void testSorting01() throws Exception {
+
+        // TODO: Finish this SOON!
+        Collection<HelperTableColumn> columns = null;
+        Map<String, String> fields = null;
+        new HelperTableRecord(new HelperTable(1, "Test", "Test", "TEST", columns), fields);
     }
 
     private String createJSONRocords() {

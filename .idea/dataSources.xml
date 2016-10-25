@@ -1,27 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
+  <component name="DataSourceManagerImpl" format="xml" hash="0">
     <data-source source="LOCAL" name="pg Semantikos MT" read-only="true" uuid="01f87ae6-2631-4aa0-b29e-efc062530da6">
       <driver-ref>postgresql</driver-ref>
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
       <jdbc-url>jdbc:postgresql://192.168.0.187:5432/semantikos</jdbc-url>
+      <libraries />
     </data-source>
     <data-source source="LOCAL" name="Oracle" uuid="1815898b-c35a-4f5b-93fd-76f0334345d8">
       <driver-ref>oracle</driver-ref>
       <auto-commit>false</auto-commit>
       <jdbc-driver>oracle.jdbc.OracleDriver</jdbc-driver>
       <jdbc-url>jdbc:oracle:thin:@192.168.0.237:1521:orcl</jdbc-url>
+      <libraries />
     </data-source>
     <data-source source="LOCAL" name="Oracle - @192.168.0.237" uuid="998cdb54-f196-4a3f-97fb-3806d33ca774">
       <driver-ref>oracle</driver-ref>
       <auto-commit>false</auto-commit>
       <jdbc-driver>oracle.jdbc.OracleDriver</jdbc-driver>
       <jdbc-url>jdbc:oracle:thin:@192.168.0.237:1521:orcl</jdbc-url>
+      <libraries />
     </data-source>
     <data-source source="LOCAL" name="PostgreSQL - semantikos@localhost" read-only="true" uuid="1395c29a-31f1-4581-b3a5-85c86bf224fc">
       <driver-ref>postgresql</driver-ref>
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
       <jdbc-url>jdbc:postgresql://localhost:5432/semantikos</jdbc-url>
+      <libraries />
     </data-source>
   </component>
 </project>

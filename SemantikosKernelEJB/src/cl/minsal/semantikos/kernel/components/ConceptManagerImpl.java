@@ -363,6 +363,10 @@ public class ConceptManagerImpl implements ConceptManager {
         return conceptDAO.getConceptDraft();
     }
 
+    @Override
+    public List<ConceptSMTK> findConceptsByTargetConcept(ConceptSMTK conceptSMTK) {
+        return conceptDAO.findConceptsByTargetConcept(conceptSMTK.getId());
+    }
 
 
     /**

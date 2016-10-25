@@ -14,7 +14,6 @@ import javax.persistence.PersistenceContext;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 /**
  * @author Gusatvo Punucura on 13-07-16.
@@ -600,7 +599,7 @@ public class ConceptDAOImpl implements ConceptDAO {
         try (Connection connection = connect.getConnection();) {
 
             call = connection.prepareCall("{call semantikos.get_concept_by_refset(?)}");
-            call.setLong(1,refSet.getId());
+            call.setLong(1, refSet.getId());
             call.execute();
 
             ResultSet rs = call.getResultSet();
@@ -646,5 +645,11 @@ public class ConceptDAOImpl implements ConceptDAO {
 
         return concepts;
 
+    }
+
+    @Override
+    public List<ConceptSMTK> findConceptsByTargetConcept(long idConcept) {
+        //TODO: Terminar esto.
+        return null;
     }
 }
