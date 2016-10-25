@@ -95,4 +95,6 @@ public interface DescriptionDAO {
      * @param noValidDescription La descripción que se mueve.
      */
     public void setInvalidDescription(NoValidDescription noValidDescription);
+
+    public List<ObservationNoValid> getObservationsNoValid();
 }

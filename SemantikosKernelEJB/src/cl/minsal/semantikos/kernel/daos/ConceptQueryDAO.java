@@ -15,4 +15,6 @@ public interface ConceptQueryDAO {
 
     public List<ConceptSMTK> callQuery(ConceptQuery query);
 
+    public List<ConceptSMTK> executeQuery(ConceptQuery query);
+
 }

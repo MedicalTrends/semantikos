@@ -132,6 +132,7 @@
                                 styleClass="fragments"
                                 var="concept"
                                 disabled="#{conceptBean.limitRelationship(cc.attrs.relationshipDefinition)}"
+                                rendered="#{cc.attrs.concept.editable}"
                                 value="#{conceptBean.conceptSelected}"
                                 itemLabel="#{concept.descriptionFavorite.term}"
                                 itemValue="#{concept}">
@@ -162,7 +163,7 @@
             <p:dataTable emptyMessage="No existen relaciones, se debe agregar al menos: #{cc.attrs.relationshipDefinition.multiplicity.lowerBoundary}."
                          id="tableRelationship2"
                          sortBy="#{rel.getOrder()}"
-                         draggableRows="#{cc.attrs.relationshipDefinition.getOrderAttributeDefinition() != null}" style="margin: 10px;"
+                         draggableRows="#{cc.attrs.relationshipDefinition.getOrderAttributeDefinition() != null and cc.attrs.concept.editable}" style="margin: 10px;"
                          value="#{conceptBean.concept.getValidRelationshipsWebByRelationDefinition(cc.attrs.relationshipDefinition)}"
                          var="rel">
 
@@ -178,7 +179,7 @@
                 <p:column headerText="Estado">
                     <h:outputText value="#{rel.target.modeled}"/>
                 </p:column>
-                <p:column headerText="Eliminar" style="width:60px;text-align: center;">
+                <p:column headerText="Eliminar" style="width:60px;text-align: center;" rendered="#{cc.attrs.concept.editable}">
                     <p:commandButton icon="fa fa-trash" title="Eliminar"
                                      action="#{conceptBean.removeRelationship(cc.attrs.relationshipDefinition,rel)}"
                                      update="@(.panel_#{cc.attrs.relationshipDefinition.id})"
@@ -200,7 +201,7 @@
 
         <div class="ui-g">
 
-            <p:panel id="attrs" styleClass="attributes_#{cc.attrs.relationshipDefinition.id} fragments" style="width:100%">
+            <p:panel id="attrs" styleClass="attributes_#{cc.attrs.relationshipDefinition.id} fragments" style="width:100%" rendered="#{cc.attrs.concept.editable}">
                 <p:growl id="growl" showDetail="true" showSummary="true"/>
 
             <div class="ui-g-12 ui-md-6 ui-lg-2">
@@ -273,7 +274,7 @@
             <p:dataTable emptyMessage="No existen relaciones, se debe agregar al menos: #{cc.attrs.relationshipDefinition.multiplicity.lowerBoundary}."
                          id="tableRelationship3"
                          styleClass="relationshipsWithAttributes_#{cc.attrs.relationshipDefinition.id}"
-                         draggableRows="#{cc.attrs.relationshipDefinition.getOrderAttributeDefinition() != null}" style="margin: 10px;"
+                         draggableRows="#{cc.attrs.relationshipDefinition.getOrderAttributeDefinition() != null and cc.attrs.concept.editable}" style="margin: 10px;"
                          value="#{conceptBean.concept.getValidRelationshipsWebByRelationDefinition(cc.attrs.relationshipDefinition)}"
                          var="rel">
 
@@ -307,10 +308,10 @@
                     </p:outputPanel>
                 </p:columns>
 
-                <p:column headerText="Eliminar" style="width:60px;text-align: center;">
+                <p:column headerText="Eliminar" style="width:60px;text-align: center;" rendered="#{cc.attrs.concept.editable}">
                     <p:commandButton icon="fa fa-trash" title="Eliminar"
                                      action="#{conceptBean.removeRelationship(cc.attrs.relationshipDefinition,rel)}"
-                                     update="@(.panel_#{cc.attrs.relationshipDefinition.id})"
+                                     update="@(.relationshipsWithAttributes_#{cc.attrs.relationshipDefinition.id})"
                                      process="@this">
                     </p:commandButton>
                 </p:column>
@@ -343,6 +344,7 @@
                                     var="concept"
                                     value="#{conceptBean.conceptSelected}"
                                     itemLabel="#{concept.descriptionFavorite.term}" itemValue="#{concept}"
+                                    disabled="#{not cc.attrs.concept.editable}"
                                     rendered="#{conceptBean.concept.getRelationshipsByRelationDefinition(cc.attrs.relationshipDefinition).size()==0}">
 
                         <!-- Parámetros del validador -->
@@ -357,7 +359,7 @@
                             <h:outputText value="#{concept.descriptionFavorite.term}"/>
                         </p:column>
 
-                        <p:ajax update="@(.concept), @(.conceptHeader)" event="itemSelect"
+                        <p:ajax update="@(.concept), @(.conceptHeader),:mainForm:editMsgs" event="itemSelect"
                                 listener="#{conceptBean.addOrChangeRelationship(cc.attrs.relationshipDefinition,conceptBean.conceptSelected)}"
                                 process="@this"/>
 

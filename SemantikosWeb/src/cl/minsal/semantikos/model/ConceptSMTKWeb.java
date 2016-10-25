@@ -27,6 +27,9 @@ public class ConceptSMTKWeb extends ConceptSMTK {
     List<RelationshipWeb> relationshipsWeb = new ArrayList<RelationshipWeb>();
 
 
+    boolean editable = false;
+
+
     //Este es el constructor mínimo
     public ConceptSMTKWeb(ConceptSMTK conceptSMTK) {
 
@@ -148,31 +151,6 @@ public class ConceptSMTKWeb extends ConceptSMTK {
         return otherDescriptions;
     }
 
-
-    /**
-     * Este metodo revisa que las relaciones cumplan el lower_boundary del
-     * relationship definition, en caso de no cumplir la condicion se retorna falso.
-     *
-     * @return
-     */
-    public boolean isValid() {
-
-        for (RelationshipDefinition relationshipDef : this.getCategory().getRelationshipDefinitions()) {
-
-            List<Relationship> relationships = this.getValidRelationshipsByRelationDefinition(relationshipDef);
-
-            if (relationships.size() < relationshipDef.getMultiplicity().getLowerBoundary())
-                return false;
-            /*
-            for (Relationship relationship : relationships) {
-                if(relationship.getTarget().)
-            }
-            */
-        }
-
-        return true;
-    }
-
     /**
      * Este método determina si existen instancias de relaciones asociadas a una definición de relación
      *
@@ -269,8 +247,17 @@ public class ConceptSMTKWeb extends ConceptSMTK {
     }
 
     public void initRelationship(RelationshipDefinitionWeb relationshipDefinitionWeb){
-        Relationship r = new Relationship(this, relationshipDefinitionWeb.getDefaultValue(), relationshipDefinitionWeb, new ArrayList<RelationshipAttribute>());
-        addRelationshipWeb(new RelationshipWeb(this, r.getId(), r, r.getRelationshipAttributes()));
+        for (RelationshipWeb relationshipWeb : getValidRelationshipsWebByRelationDefinition(relationshipDefinitionWeb)) {
+            relationshipWeb.setTarget(relationshipDefinitionWeb.getDefaultValue());
+        }
+    }
+
+    public boolean isEditable() {
+        return editable;
+    }
+
+    public void setEditable(boolean editable) {
+        this.editable = editable;
     }
 
     /**
