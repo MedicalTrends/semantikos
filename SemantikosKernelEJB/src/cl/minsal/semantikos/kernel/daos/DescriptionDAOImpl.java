@@ -34,7 +34,6 @@ public class DescriptionDAOImpl implements DescriptionDAO {
     @EJB
     private ConceptDAO conceptDAO;
 
-
     @PostConstruct
     private void init() {
         this.refreshDescriptionTypes();
