@@ -880,7 +880,10 @@ public class ConceptBean implements Serializable {
         /* Se invalidan las descripciones eliminadas */
         List<DescriptionWeb> descriptionsForDelete = concept.getRemovedDescriptionsWeb(_concept);
         for (Description description : descriptionsForDelete) {
-            if (!containDescriptionToTranslate(description)) {
+            if (!containDescriptionToTranslate(description) && descriptionsToTraslate.size()>0) {
+                descriptionManager.deleteDescription(description, user);
+            }
+            if (!containDescriptionNoValidToTranslate(description) && noValidDescriptions.size()>0) {
                 descriptionManager.deleteDescription(description, user);
             }
             _concept.removeDescription(description);
@@ -894,10 +897,9 @@ public class ConceptBean implements Serializable {
         }
 
 
-        //TODO: Terminar esto
-        /*for (NoValidDescription noValidDescription : noValidDescriptions) {
-            descriptionManager.invalidateDescription(noValidDescription,user);
-        }*/
+        for (NoValidDescription noValidDescription : noValidDescriptions) {
+            descriptionManager.invalidateDescription(concept,noValidDescription,user);
+        }
 
 
         return unpersistedDescriptions.size() + descriptionsForDelete.size() + descriptionsForUpdate.size() + descriptionsToTraslate.size() + noValidDescriptions.size();
@@ -972,7 +974,6 @@ public class ConceptBean implements Serializable {
         FacesContext context = FacesContext.getCurrentInstance();
         descriptionToTranslate.setConceptSMTK(conceptSMTKNotValid);
         concept.getDescriptionsWeb().remove(descriptionToTranslate);
-        descriptionsToTraslate.add(new DescriptionWeb(descriptionToTranslate));
         noValidDescriptions.add(new NoValidDescription(descriptionToTranslate,observationNoValid.getId(), conceptSuggestedList));
         context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Successful", "La descripción se trasladará al momento de guardar el concepto"));
         conceptSuggestedList= new ArrayList<>();
@@ -988,7 +989,14 @@ public class ConceptBean implements Serializable {
         return false;
     }
 
-
+    public boolean containDescriptionNoValidToTranslate(Description description) {
+        for (NoValidDescription descriptionTraslate : noValidDescriptions) {
+            if (descriptionTraslate.getNoValidDescription().getId() == description.getId()) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     /**
      * Metodo encargado de hacer el "enroque" con la preferida.

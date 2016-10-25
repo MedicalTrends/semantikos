@@ -272,17 +272,16 @@ public class DescriptionManagerImpl implements DescriptionManager {
     }
 
     @Override
-    public void invalidateDescription(NoValidDescription noValidDescription, User user) {
+    public void invalidateDescription(ConceptSMTK conceptSMTK, NoValidDescription noValidDescription, User user) {
 
         /* Se aplican las reglas de negocio para el traslado */
         DescriptionInvalidationBR descriptionInvalidationBR = new DescriptionInvalidationBR();
         descriptionInvalidationBR.validatePreConditions(noValidDescription);
 
         /* Se realiza el movimiento con la función genérica */
-        ConceptSMTK noValidConcept = conceptManager.getNoValidConcept();
         Description theInvalidDescription = noValidDescription.getNoValidDescription();
 
-        this.moveDescriptionToConcept(noValidConcept, theInvalidDescription, user);
+        this.moveDescriptionToConcept(conceptSMTK, theInvalidDescription, user);
 
         /* Luego se persiste el cambio */
         descriptionDAO.setInvalidDescription(noValidDescription);
