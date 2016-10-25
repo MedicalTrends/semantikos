@@ -4,6 +4,7 @@ import cl.minsal.semantikos.kernel.daos.AuthDAO;
 import cl.minsal.semantikos.kernel.daos.ConceptDAO;
 import cl.minsal.semantikos.model.ConceptSMTK;
 import cl.minsal.semantikos.model.User;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,7 +15,9 @@ import javax.ejb.Singleton;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.TimeZone;
 
 import static cl.minsal.semantikos.kernel.util.StringUtils.underScoreToCamelCaseJSON;
 
@@ -67,6 +70,7 @@ public class ConceptAuditActionFactory {
             AuditableEntityType auditableEntityType = AuditableEntityType.valueOf(auditActionDTO.getIdAuditEntityType());
             AuditableEntity auditableEntityByID = auditableEntityFactory.findAuditableEntityByID(auditActionDTO.getIdAuditableEntity(), auditableEntityType);
 
+
             ConceptAuditAction conceptAuditAction = new ConceptAuditAction(concept, auditActionType, auditActionDTO.getDate(), user, auditableEntityByID);
             auditActions.add(conceptAuditAction);
         }
@@ -83,6 +87,7 @@ class ConceptAuditActionDTO {
     private long idActionType;
 
     /** La fecha en que tomo lugar la acción auditable */
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd'T'HH:mm:ss.SSS", timezone="America/Buenos_Aires")
     private Timestamp date;
 
     /** El usuario que realizó la acción */

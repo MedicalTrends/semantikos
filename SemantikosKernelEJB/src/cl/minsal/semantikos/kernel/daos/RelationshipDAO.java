@@ -20,7 +20,7 @@ public interface RelationshipDAO {
      *
      * @param relationship La relación que se desea persistir.
      */
-    public void persist(Relationship relationship);
+    public Relationship persist(Relationship relationship);
 
     /**
      * Este método es responsable de persistir una definición de una relación asociada a una categoría.
@@ -91,5 +91,8 @@ public interface RelationshipDAO {
      * @return Una lista con las relaciones del concepto.
      */
     List<Relationship> getRelationshipsBySourceConcept(long idConcept);
+
+
+    public Long getTargetByRelationship(Relationship relationship);
 
 }

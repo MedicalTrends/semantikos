@@ -2,10 +2,12 @@ package cl.minsal.semantikos.kernel.components;
 
 import cl.minsal.semantikos.kernel.daos.ConceptDAO;
 import cl.minsal.semantikos.kernel.daos.DescriptionDAO;
+import cl.minsal.semantikos.kernel.daos.RelationshipAttributeDAO;
 import cl.minsal.semantikos.kernel.daos.RelationshipDAO;
 import cl.minsal.semantikos.model.*;
 import cl.minsal.semantikos.model.businessrules.*;
 import cl.minsal.semantikos.model.relationships.Relationship;
+import cl.minsal.semantikos.model.relationships.RelationshipAttribute;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -52,6 +54,9 @@ public class ConceptManagerImpl implements ConceptManager {
     @EJB
     private RelationshipManager relationshipManager;
 
+
+
+
     @Override
     public ConceptSMTK getConceptByCONCEPT_ID(String conceptId) {
 
@@ -75,6 +80,13 @@ public class ConceptManagerImpl implements ConceptManager {
         conceptSMTK.setDescriptions(descriptionDAO.getDescriptionsByConcept(conceptSMTK));
 
         return conceptSMTK;
+    }
+
+    @Override
+    public List<ConceptSMTK> findConceptBy(Category category, int pageNumber, int pageSize) {
+
+        //Búsqueda por categoría y patron o concept ID
+        return conceptDAO.getConceptBy(category, pageSize, pageNumber);
     }
 
     @Override
@@ -182,6 +194,12 @@ public class ConceptManagerImpl implements ConceptManager {
     }
 
     @Override
+    public List<ConceptSMTK> getConceptBy(RefSet refSet) {
+        return conceptDAO.getConceptBy(refSet);
+
+    }
+
+    @Override
     public void persist(@NotNull ConceptSMTK conceptSMTK, User user) {
         logger.debug("El concepto " + conceptSMTK + " será persistido.");
 
@@ -204,7 +222,7 @@ public class ConceptManagerImpl implements ConceptManager {
 
         /* Y sus relaciones */
         for (Relationship relationship : conceptSMTK.getRelationships()) {
-            relationshipDAO.persist(relationship);
+            relationshipManager.createRelationship(relationship);
         }
 
         /* Y sus tags */
@@ -325,7 +343,7 @@ public class ConceptManagerImpl implements ConceptManager {
 
     @Override
     public String generateConceptId() {
-        return UUID.randomUUID().toString();
+        return UUID.randomUUID().toString().substring(0, 10);
     }
 
     @Override
@@ -344,6 +362,12 @@ public class ConceptManagerImpl implements ConceptManager {
     public List<ConceptSMTK> getConceptDraft() {
         return conceptDAO.getConceptDraft();
     }
+
+    @Override
+    public ConceptSMTK getNoValidConcept() {
+        return conceptDAO.getNoValidConcept();
+    }
+
 
     /**
      * Método encargado de convertir un string en una lista de string.

@@ -1,6 +1,7 @@
 package cl.minsal.semantikos.model.businessrules;
 
 import cl.minsal.semantikos.model.ConceptSMTK;
+import cl.minsal.semantikos.model.PersistentEntity;
 import cl.minsal.semantikos.model.audit.ConceptAuditAction;
 import cl.minsal.semantikos.model.audit.RefSetAuditAction;
 import cl.minsal.semantikos.model.exceptions.BusinessRuleException;
@@ -35,8 +36,9 @@ public class HistoryRecordBL {
      * @param refSetAuditAction El refSet sobre el cual se realiza el registro en el historial.
      */
     private void brAud002(RefSetAuditAction refSetAuditAction) {
-        if (!refSetAuditAction.getRefSet().isPersistent())
-            throw new BusinessRuleException("BR-AUD-002: No satisfecha: solo se pueden registrar acciones relativas a Conceptos que se encuentran Modelados");
+        //TODO FIX isPersistent
+        if (refSetAuditAction.getRefSet().getId()  == PersistentEntity.NON_PERSISTED_ID )
+            throw new BusinessRuleException("BR-AUD-002: No satisfecha: solo se pueden registrar acciones relativas a Refsets que se encuentran persistidos");
     }
 
     /**

@@ -8,9 +8,9 @@ import org.slf4j.LoggerFactory;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.validation.constraints.NotNull;
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import static cl.minsal.semantikos.model.helpertables.HelperTable.SYSTEM_COLUMN_VALIDITY_UNTIL;
@@ -23,10 +23,10 @@ import static cl.minsal.semantikos.model.helpertables.HelperTable.SYSTEM_COLUMN_
  * </p>
  *
  * @author Andrés Farías
- * @see cl.minsal.semantikos.kernel.components.HelperTableManagerInterface
+ * @see HelperTableManager
  */
 @Stateless
-public class HelperTableManagerImpl implements HelperTableManagerInterface {
+public class HelperTableManagerImpl implements HelperTableManager {
 
     private static final Logger logger = LoggerFactory.getLogger(HelperTableManagerImpl.class);
 
@@ -37,7 +37,12 @@ public class HelperTableManagerImpl implements HelperTableManagerInterface {
     public Collection<HelperTable> getHelperTables() {
 
         /* Esto se resuelve con delegación sobre el Factory, mientras las tablas estén en duro */
-        return HelperTableFactory.getInstance().getHelperTablesByTableName();
+        return helperTableDAO.getHelperTables();
+    }
+
+    @Override
+    public List<HelperTableRecord> getAllRecords(HelperTable helperTable) {
+        return helperTableDAO.getAllRecords(helperTable);
     }
 
     @Override
@@ -49,6 +54,7 @@ public class HelperTableManagerImpl implements HelperTableManagerInterface {
         List<String> allColumns = joinColumnsWithSystemColumns(columnNames);
 
         List<HelperTableRecord> allRecords = helperTableDAO.getAllRecords(helperTable, allColumns);
+        Collections.sort(allRecords);
         logger.debug("Se recuperan " + allRecords.size() + " registros de la tabla " + helperTable);
 
         return allRecords;
@@ -109,12 +115,12 @@ public class HelperTableManagerImpl implements HelperTableManagerInterface {
     }
 
     @Override
-    public List<HelperTableRecord> getAllRecords(HelperTable helperTable) {
-        return helperTableDAO.getAllRecords(helperTable);
+    public HelperTableRecord getRecord( long recordId) {
+        return helperTableDAO.getHelperTableRecordFromId(recordId);
     }
 
     @Override
-    public HelperTableRecord getRecord( int recordId) {
-        return helperTableDAO.getHelperTableRecordFromId(recordId);
+    public HelperTable findHelperTableByID(long id) {
+        return helperTableDAO.getHelperTableByID(id);
     }
 }

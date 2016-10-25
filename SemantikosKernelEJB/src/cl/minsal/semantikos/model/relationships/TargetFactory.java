@@ -1,5 +1,6 @@
 package cl.minsal.semantikos.model.relationships;
 
+import cl.minsal.semantikos.kernel.components.HelperTableManager;
 import cl.minsal.semantikos.kernel.daos.ConceptDAO;
 import cl.minsal.semantikos.kernel.daos.ConceptSCTDAO;
 import cl.minsal.semantikos.kernel.daos.HelperTableDAO;
@@ -33,6 +34,9 @@ public class TargetFactory {
     private HelperTableDAO helperTableDAO;
 
     @EJB
+    private HelperTableManager helperTableManager;
+
+    @EJB
     private ConceptSCTDAO conceptSCTDAO;
 
     @EJB
@@ -64,7 +68,7 @@ public class TargetFactory {
 
         /* Se evalúa caso a caso. Helper Tables: */
         if (idHelperTableRecord > 0) {
-            target = helperTableDAO.getHelperTableRecordFromId(idHelperTableRecord);
+            target = helperTableManager.getRecord(idHelperTableRecord);
         } else if (idConceptSct > 0) {
             target = conceptSCTDAO.getConceptCSTByID(idConceptSct);
         } else if (idConceptStk > 0) {
@@ -79,15 +83,25 @@ public class TargetFactory {
             Timestamp dateValue = targetDTO.getDateValue();
 
             if (floatValue != null) {
-                target = new BasicTypeValue<Float>(floatValue);
+                BasicTypeValue bt=new BasicTypeValue<Float>(floatValue);
+                bt.setId(targetDTO.getId());
+                target = bt;
             } else if (intValue != null) {
-                target = new BasicTypeValue<Integer>(intValue);
+                BasicTypeValue bt=new BasicTypeValue<Integer>(intValue);
+                bt.setId(targetDTO.getId());
+                target = bt;
             } else if (boolValue != null) {
-                target = new BasicTypeValue<Boolean>(boolValue);
+                BasicTypeValue bt=new BasicTypeValue<Boolean>(boolValue);
+                bt.setId(targetDTO.getId());
+                target = bt;
             } else if (stringValue != null) {
-                target = new BasicTypeValue<String>(stringValue);
+                BasicTypeValue bt=new BasicTypeValue<String>(stringValue);
+                bt.setId(targetDTO.getId());
+                target = bt;
             } else if (dateValue != null) {
-                target = new BasicTypeValue<Timestamp>(dateValue);
+                BasicTypeValue bt=new BasicTypeValue<Timestamp>(dateValue);
+                bt.setId(targetDTO.getId());
+                target = bt;
             } else {
                 String message = "Existe un caso no contemplado";
                 logger.error(message);

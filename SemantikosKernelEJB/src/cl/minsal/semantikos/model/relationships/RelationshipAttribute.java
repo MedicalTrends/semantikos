@@ -7,10 +7,25 @@ import javax.persistence.Column;
  * Created by root on 08-07-16.
  */
 public class RelationshipAttribute {
+
     private Long idRelationshipAttribute;
     private RelationshipAttributeDefinition relationAttributeDefinition;
     private Relationship Relationship;
     private Target target;
+
+    public RelationshipAttribute() {
+    }
+
+    public RelationshipAttribute(RelationshipAttributeDefinition relationAttributeDefinition, Relationship relationship, Target target) {
+        this.relationAttributeDefinition = relationAttributeDefinition;
+        Relationship = relationship;
+        this.target = target;
+    }
+
+    public RelationshipAttribute(Long idRelationshipAttribute, RelationshipAttributeDefinition relationAttributeDefinition, Relationship relationship, Target target) {
+        this(relationAttributeDefinition,relationship, target);
+        this.idRelationshipAttribute = idRelationshipAttribute;
+    }
 
     public Long getIdRelationshipAttribute() {
         return idRelationshipAttribute;
@@ -50,10 +65,14 @@ public class RelationshipAttribute {
 
         RelationshipAttribute that = (RelationshipAttribute) o;
 
+        /*
         if (idRelationshipAttribute != null ? !idRelationshipAttribute.equals(that.idRelationshipAttribute) : that.idRelationshipAttribute != null)
             return false;
+        */
 
-        return true;
+        return this.getRelationAttributeDefinition().equals(that.getRelationAttributeDefinition()) && this.getTarget().equals(that.getTarget());
+
+        //return true;
     }
 
     @Override

@@ -1,8 +1,11 @@
 package cl.minsal.semantikos.model.relationships;
 
 import cl.minsal.semantikos.kernel.components.ConceptManager;
+import cl.minsal.semantikos.kernel.components.HelperTableManager;
 import cl.minsal.semantikos.kernel.daos.*;
 import cl.minsal.semantikos.model.ConceptSMTK;
+import cl.minsal.semantikos.model.helpertables.HelperTable;
+import cl.minsal.semantikos.model.helpertables.HelperTableRecord;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,6 +43,9 @@ public class RelationshipFactory {
     private RelationshipDAO relationshipDAO;
 
     @EJB
+    private RelationshipDefinitionDAO relationshipDefinitionDAO;
+
+    @EJB
     private RelationshipDefinitionDAO relDefDAO;
 
     @EJB
@@ -50,6 +56,12 @@ public class RelationshipFactory {
 
     @EJB
     private CrossMapDAO crossmapDAO;
+
+    @EJB
+    private HelperTableManager helperTableManager;
+
+    @EJB
+    private RelationshipAttributeDAO relationshipAttributeDAO;
 
 
     public Relationship createFromJSON(String jsonExpression) throws EJBException {
@@ -145,15 +157,24 @@ public class RelationshipFactory {
         if (relationshipDefinition.getTargetDefinition().isBasicType()) {
             target = basicTypeDAO.getBasicTypeValueByID(idTarget);
         }
+        //TODO arreglar el obtener target
 
         /* El target puede ser a un registro de una tabla auxiliar */
         else if (relationshipDefinition.getTargetDefinition().isHelperTable()) {
-            target = helperTableDAO.getHelperTableRecordFromId(idTarget);
+            //target = helperTableManager.getRecord(idTarget);
+            target = targetDAO.getTargetByID(idTarget);
+            /**
+             * Se setea el id desde el fields para ser utilizado por el custom converter
+             */
+            HelperTableRecord helperTableRecord = (HelperTableRecord) target;
+            helperTableRecord.setId(new Long(helperTableRecord.getFields().get("id")));
+            target = helperTableRecord;
         }
 
         /* El target puede ser un concepto SMTK */
         else if (relationshipDefinition.getTargetDefinition().isSMTKType()) {
-            target = conceptDAO.getConceptByID(idTarget);
+            //target = conceptDAO.getConceptByID(idTarget);
+            target = targetDAO.getTargetByID(idTarget);
         }
 
         /* El target puede ser un concepto Snomed CT */
@@ -173,7 +194,14 @@ public class RelationshipFactory {
             throw new EJBException(msg);
         }
 
-        return new Relationship(relationshipDTO.getId(), sourceConceptSMTK, target, relationshipDefinition, relationshipDTO.validityUntil,new ArrayList<RelationshipAttribute>());
+        List<RelationshipAttribute> relationshipAttributes= relationshipAttributeDAO.getRelationshipAttribute(relationshipDTO.getId());
+
+        // Se agregan las definiciones de atributo
+        relationshipDefinition.setRelationshipAttributeDefinitions(relationshipDefinitionDAO.getRelationshipAttributeDefinitionsByRelationshipDefinition(relationshipDefinition));
+
+        Relationship relationship= new Relationship(relationshipDTO.getId(), sourceConceptSMTK, target, relationshipDefinition, relationshipDTO.validityUntil,new ArrayList<RelationshipAttribute>());
+        relationship.setRelationshipAttributes(relationshipAttributes);
+        return relationship;
     }
 
 }

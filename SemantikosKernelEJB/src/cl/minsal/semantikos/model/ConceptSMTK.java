@@ -1,12 +1,11 @@
 package cl.minsal.semantikos.model;
 
 import cl.minsal.semantikos.model.audit.AuditableEntity;
+import cl.minsal.semantikos.model.basictypes.BasicTypeValue;
 import cl.minsal.semantikos.model.businessrules.ConceptStateBusinessRulesContainer;
 import cl.minsal.semantikos.model.exceptions.BusinessRuleException;
-import cl.minsal.semantikos.model.relationships.Relationship;
-import cl.minsal.semantikos.model.relationships.RelationshipDefinition;
-import cl.minsal.semantikos.model.relationships.Target;
-import cl.minsal.semantikos.model.relationships.TargetType;
+import cl.minsal.semantikos.model.helpertables.HelperTableRecord;
+import cl.minsal.semantikos.model.relationships.*;
 
 import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
@@ -308,6 +307,16 @@ public class ConceptSMTK extends PersistentEntity implements Target, AuditableEn
         return TargetType.SMTK;
     }
 
+    @Override
+    public Target copy() {
+        ConceptSMTK conceptSMTK = new ConceptSMTK(this.getCategory());
+        conceptSMTK.setId(this.getId());
+        conceptSMTK.setConceptID(this.getConceptID());
+        conceptSMTK.setDescriptions(this.getDescriptions());
+        conceptSMTK.setRelationships(this.relationships);
+        return conceptSMTK;
+    }
+
     public String getConceptID() {
         return conceptID;
     }
@@ -415,6 +424,12 @@ public class ConceptSMTK extends PersistentEntity implements Target, AuditableEn
      * @param description La descripción a ser agregada.
      */
     public void addDescription(Description description) {
+
+        /** La descripción asume el estado modelado si el concepto está en modelado */
+        if (this.isModeled()){
+            description.setModeled(true);
+        }
+
         this.descriptions.add(description);
     }
 
@@ -631,4 +646,12 @@ public class ConceptSMTK extends PersistentEntity implements Target, AuditableEn
     public void setTagSMTK(TagSMTK tagSMTK) {
         this.tagSMTK = tagSMTK;
     }
+
+    @Override
+    public boolean equals(Object other) {
+        return (other instanceof ConceptSMTK) && (String.valueOf(conceptID) != null)
+                ? String.valueOf(conceptID).equals(String.valueOf(((ConceptSMTK) other).conceptID))
+                : (other == this);
+    }
+
 }

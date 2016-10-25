@@ -1,5 +1,6 @@
 package cl.minsal.semantikos.kernel.daos;
 
+import cl.minsal.semantikos.model.relationships.RelationshipAttributeDefinition;
 import cl.minsal.semantikos.model.relationships.RelationshipDefinition;
 
 import javax.ejb.Local;
@@ -29,4 +30,9 @@ public interface RelationshipDefinitionDAO {
      * @return Un objeto fresco que representa el tipo de relación.
      */
     RelationshipDefinition getRelationshipDefinitionByID(long idRelationshipDefinition);
+
+
+    RelationshipAttributeDefinition getRelationshipAttributeDefinitionBy(long id);
+
+    List<RelationshipAttributeDefinition> getRelationshipAttributeDefinitionsByRelationshipDefinition(RelationshipDefinition relationshipDefinition);
 }

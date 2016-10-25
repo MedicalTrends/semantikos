@@ -29,9 +29,9 @@ public class AuditDAOImpl implements AuditDAO {
     private ConceptAuditActionFactory conceptAuditActionFactory;
 
     @Override
-    public List<ConceptAuditAction> getConceptAuditActions(long idConcept, int numberOfChanges, boolean changes) {
+    public List<ConceptAuditAction> getConceptAuditActions(long idConcept, boolean changes) {
         ConnectionBD connect = new ConnectionBD();
-        String sqlQuery = "{call semantikos.get_concept_audit_actions(?,?,?)}";
+        String sqlQuery = "{call semantikos.get_concept_audit_actions(?,?)}";
 
         List<ConceptAuditAction> auditActions;
         try (Connection connection = connect.getConnection();
@@ -39,8 +39,7 @@ public class AuditDAOImpl implements AuditDAO {
 
             /* Se invoca la consulta para recuperar las relaciones */
             call.setLong(1, idConcept);
-            call.setInt(2, numberOfChanges);
-            call.setBoolean(3, changes);
+            call.setBoolean(2, changes);
             call.execute();
 
             ResultSet rs = call.getResultSet();
@@ -116,7 +115,8 @@ public class AuditDAOImpl implements AuditDAO {
          * param 4: El tipo de acción que realiza
          * param 5: La entidad en la que se realizó la acción..
          */
-        String sqlQuery = "{call semantikos.create_refset_audit_actions(?,?,?,?,?)}";
+        //TODO arreglar esto
+        String sqlQuery = "{call semantikos.create_refset_audit_actions(?,?,?,?)}";
         try (Connection connection = connect.getConnection();
              CallableStatement call = connection.prepareCall(sqlQuery)) {
 
@@ -130,7 +130,7 @@ public class AuditDAOImpl implements AuditDAO {
             call.setLong(2, user.getIdUser());
             call.setLong(3, auditActionType.getId());
             call.setLong(4, auditableEntity.getId());
-            call.execute();
+            //call.execute();
 
         } catch (SQLException e) {
             String errorMsg = "Error al registrar en el log.";

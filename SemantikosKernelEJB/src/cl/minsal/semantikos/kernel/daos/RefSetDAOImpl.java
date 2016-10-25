@@ -8,6 +8,7 @@ import cl.minsal.semantikos.model.RefSet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import java.sql.*;
 import java.util.ArrayList;
@@ -20,6 +21,9 @@ import java.util.List;
 public class RefSetDAOImpl implements RefSetDAO {
 
     private static final Logger logger = LoggerFactory.getLogger(RefSetDAO.class);
+
+    @EJB
+    private ConceptDAO conceptDAO;
 
     @Override
     public void persist(RefSet refSet) {
@@ -130,6 +134,7 @@ public class RefSetDAOImpl implements RefSetDAO {
         long id= rs.getLong("id");
         String name = rs.getString("name");
         Timestamp timestamp= rs.getTimestamp("creation_date");
+        Timestamp validity= rs.getTimestamp("validity_until");
 
         Institution institution= new Institution();
         institution.setId(1);
@@ -137,7 +142,8 @@ public class RefSetDAOImpl implements RefSetDAO {
 
         RefSet refSet= new RefSet(name,institution,timestamp);
         refSet.setId(id);
-
+        refSet.setValidityUntil(validity);
+        refSet.setConcepts(conceptDAO.getConceptBy(refSet));
         return refSet;
     }
 }
