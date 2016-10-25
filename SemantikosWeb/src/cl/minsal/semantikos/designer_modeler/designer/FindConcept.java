@@ -69,6 +69,17 @@ public class FindConcept implements Serializable{
         return null;
     }
 
+    public List<ConceptSMTK> findConceptAllCategories(String pattern) {
+        if (pattern != null) {
+            if (pattern.trim().length() > 2) {
+                if(standardizationPattern(pattern).length()<2)return null;
+                findConcepts=conceptManager.findConceptBy(pattern,new Long[0],0,conceptManager.countConceptBy(pattern,new Long[0]));
+                return findConcepts;
+            }
+        }
+        return null;
+    }
+
     private String standardizationPattern(String pattern) {
 
         if (pattern != null) {

@@ -62,18 +62,21 @@ public class AutogenerateMC {
         String[] atributtes= new String[4];
         for (RelationshipAttribute relationshipAttribute: relationship.getRelationshipAttributes()) {
             if(relationshipAttribute.getRelationAttributeDefinition().getId()==8)atributtes[0]=" "+relationshipAttribute.getTarget().toString();
-            if(relationshipAttribute.getRelationAttributeDefinition().getId()==9)atributtes[1]=(((HelperTableRecord)relationshipAttribute.getTarget()).getValueColumn("description"))+"/";
+            if(relationshipAttribute.getRelationAttributeDefinition().getId()==9)atributtes[1]=(((HelperTableRecord)relationshipAttribute.getTarget()).getValueColumn("description"));
             if(relationshipAttribute.getRelationAttributeDefinition().getId()==10){
                 if(Integer.parseInt(relationshipAttribute.getTarget().toString())>1){
-                    atributtes[2]=relationshipAttribute.getTarget().toString();
+                    atributtes[2]=" / "+relationshipAttribute.getTarget().toString();
                 }else{
-                    atributtes[2]="";
+                    atributtes[2]=" / ";
                 }
             }
             if(relationshipAttribute.getRelationAttributeDefinition().getId()==11)atributtes[3]=(((HelperTableRecord)relationshipAttribute.getTarget()).getValueColumn("description"));
         }
         for (int i = 0; i < 4; i++) {
-            sustancia= sustancia + atributtes[i];
+            if(atributtes[i]!=null){
+                sustancia= sustancia + atributtes[i];
+            }
+
         }
         sustancias.add(sustancia);
 

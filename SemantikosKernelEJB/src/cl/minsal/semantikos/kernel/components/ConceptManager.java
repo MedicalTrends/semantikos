@@ -171,10 +171,16 @@ public interface ConceptManager {
     public List<ConceptSMTK> getConceptBy(RefSet refSet);
 
     /**
-     * Metodo encargado de obtener los conceptos en borrador
+     * Método encargado de obtener los conceptos en borrador
+     *
      * @return lista de conceptos en borrador
      */
     public List<ConceptSMTK> getConceptDraft();
 
-
+    /**
+     * Este método es responsable de retornar la instancia del concepto no valido.
+     *
+     * @return La instancia (única) del concepto No Válido.
+     */
+    public ConceptSMTK getNoValidConcept();
 }

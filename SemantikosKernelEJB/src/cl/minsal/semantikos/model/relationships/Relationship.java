@@ -295,4 +295,9 @@ public class Relationship extends PersistentEntity implements AuditableEntity {
             return 0;
         }
     }
+
+    @Override
+    public String toString() {
+        return relationshipDefinition.getName();
+    }
 }

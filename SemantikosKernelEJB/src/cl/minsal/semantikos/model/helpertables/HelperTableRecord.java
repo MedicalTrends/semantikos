@@ -5,12 +5,15 @@ import cl.minsal.semantikos.model.relationships.TargetType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.validation.constraints.NotNull;
 import java.util.Map;
+
+import static cl.minsal.semantikos.model.helpertables.HelperTable.SYSTEM_COLUMN_DESCRIPTION;
 
 /**
  * @author Andrés Farías
  */
-public class HelperTableRecord implements Target {
+public class HelperTableRecord implements Target, Comparable<HelperTableRecord> {
 
     private static final Logger logger = LoggerFactory.getLogger(HelperTableRecord.class);
 
@@ -132,5 +135,12 @@ public class HelperTableRecord implements Target {
         HelperTableRecord helperTableRecord = new HelperTableRecord(this.helperTable, this.fields);
         helperTableRecord.setId(this.getId());
         return helperTableRecord;
+    }
+
+
+    @Override
+    public int compareTo(@NotNull HelperTableRecord helperTableRecord) {
+        String descriptionColumnName = SYSTEM_COLUMN_DESCRIPTION.getColumnName();
+        return this.getFields().get(descriptionColumnName).compareTo(helperTableRecord.getFields().get(descriptionColumnName));
     }
 }
