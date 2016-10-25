@@ -295,16 +295,25 @@ public class DescriptionDAOImpl implements DescriptionDAO {
     public void setInvalidDescription(NoValidDescription noValidDescription) {
         ConnectionBD connect = new ConnectionBD();
 
-        String sql = "{call semantikos.move_description_to_invalid_concept(?,?,?)}";
+        String sql1 = "{call semantikos.persist_observation_to_description_no_valid(?,?)}";
+        String sql2 = "{call semantikos.persist_concept_suggested_to_description_no_valid(?,?)}";
         try (Connection connection = connect.getConnection();
-             CallableStatement call = connection.prepareCall(sql)) {
+             CallableStatement call1 = connection.prepareCall(sql1);
+             CallableStatement call2 = connection.prepareCall(sql2)) {
 
-            call.setLong(1, noValidDescription.getNoValidDescription().getId());
-            call.setLong(2, noValidDescription.getObservation());
+            /* Se registra la observación primero */
+            call1.setLong(1, noValidDescription.getNoValidDescription().getId());
+            call1.setLong(2, noValidDescription.getObservation());
+            call1.execute();
+
+
+            /* Se guardan los conceptos sugeridos para dicha descripción */
             List<ConceptSMTK> suggestedConcepts = noValidDescription.getSuggestedConcepts();
-            ConceptSMTK[] entities = suggestedConcepts.toArray(new ConceptSMTK[suggestedConcepts.size()]);
-            call.setArray(3, connection.createArrayOf("bigint", convertListPersistentToListID(entities)));
-            call.execute();
+            call2.setLong(1, noValidDescription.getNoValidDescription().getId());
+            for (ConceptSMTK suggestedConcept : suggestedConcepts) {
+                call2.setLong(2, suggestedConcept.getId());
+                call2.execute();
+            }
         } catch (SQLException e) {
             String errorMsg = "Error al recuperar descripciones de la BDD.";
             logger.error(errorMsg, e);
