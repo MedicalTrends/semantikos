@@ -1,5 +1,6 @@
-package cl.minsal.semantikos.model;
+package cl.minsal.semantikos.model.relationships;
 
+import cl.minsal.semantikos.model.ConceptSMTK;
 import cl.minsal.semantikos.model.relationships.*;
 
 import javax.validation.constraints.NotNull;

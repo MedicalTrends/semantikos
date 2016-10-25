@@ -2,6 +2,7 @@ package cl.minsal.semantikos.kernel.components;
 
 import cl.minsal.semantikos.model.*;
 import cl.minsal.semantikos.model.relationships.Relationship;
+import cl.minsal.semantikos.model.snomedct.ConceptSCT;
 
 import javax.ejb.Local;
 import javax.validation.constraints.NotNull;

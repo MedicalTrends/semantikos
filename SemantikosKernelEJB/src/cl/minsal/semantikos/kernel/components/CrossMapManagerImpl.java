@@ -1,6 +1,6 @@
 package cl.minsal.semantikos.kernel.components;
 
-import cl.minsal.semantikos.model.CrossMap;
+import cl.minsal.semantikos.model.relationships.CrossMap;
 import cl.minsal.semantikos.model.User;
 import cl.minsal.semantikos.model.businessrules.CrossMapCreationBR;
 import cl.minsal.semantikos.model.businessrules.CrossMapRemovalBR;

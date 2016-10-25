@@ -6,6 +6,7 @@ import cl.minsal.semantikos.model.audit.AuditActionType;
 import cl.minsal.semantikos.model.audit.ConceptAuditAction;
 import cl.minsal.semantikos.model.audit.RefSetAuditAction;
 import cl.minsal.semantikos.model.businessrules.HistoryRecordBL;
+import cl.minsal.semantikos.model.relationships.CrossMap;
 import cl.minsal.semantikos.model.relationships.Relationship;
 
 import javax.ejb.EJB;
@@ -111,11 +112,22 @@ public class AuditManagerImpl implements AuditManager {
 
     @Override
     public void recordRelationshipCreation(Relationship relationship, User user) {
+        ConceptAuditAction auditAction;
+
+        /* Si la relación es atributo */
+        if(relationship.isAttribute()){
+            auditAction = new ConceptAuditAction(relationship.getSourceConcept(), CONCEPT_RELATIONSHIP_ATTRIBUTE_CREATION, now(), user, relationship);
+        }
+
+        /* Si la relación es definitoria */
+        else {
+            auditAction = new ConceptAuditAction(relationship.getSourceConcept(), CONCEPT_RELATIONSHIP_DEFINITION_CREATION, now(), user, relationship);
+        }
 
         /* Se validan las reglas de negocio para realizar el registro */
-        ConceptAuditAction auditAction = new ConceptAuditAction(relationship.getSourceConcept(), CONCEPT_RELATIONSHIP_CREATION, now(), user, relationship);
         new HistoryRecordBL().validate(auditAction);
 
+        /* Si la relación es de tipo Snomed-CT, también se registra, pero de manera separada */
         auditDAO.recordAuditAction(auditAction);
     }
 

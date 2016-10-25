@@ -15,7 +15,6 @@ public enum BasicTypeType {
     FLOAT_TYPE(4, "float"),
     DATE_TYPE(5, "date");
 
-
     private long id;
 
     private String typeName;

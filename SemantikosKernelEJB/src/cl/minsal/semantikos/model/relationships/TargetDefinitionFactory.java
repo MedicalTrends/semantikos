@@ -65,7 +65,7 @@ public class TargetDefinitionFactory {
                 return categoryDAO.getCategoryById(targetDefinitionDTO.idCategory);
 
             case SCT_TYPE_ID:
-                return new SnomedCT();
+                return new SnomedCT("1.0");
 
             case HELPER_TABLE_TYPE_ID:
                 return helperTableDAO.getHelperTableByID(targetDefinitionDTO.idHelperTableName);
@@ -74,7 +74,6 @@ public class TargetDefinitionFactory {
                 throw new EJBException("TIPO DE DEFINICION INCORRECTO. ID Target Type=" + targetDefinitionDTO.idTargetType);
         }
     }
-
 }
 
 /**
