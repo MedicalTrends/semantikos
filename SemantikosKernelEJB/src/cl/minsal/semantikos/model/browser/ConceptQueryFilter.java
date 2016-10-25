@@ -22,6 +22,10 @@ public class ConceptQueryFilter {
 
     boolean multiple;
 
+    public ConceptQueryFilter(RelationshipDefinition definition) {
+        this.definition = definition;
+    }
+
     public RelationshipDefinition getDefinition() {
         return definition;
     }

@@ -36,23 +36,23 @@
 
                                             <p:growl id="growl" showDetail="true" showSummary="true"/>
 
-                                            <p:column headerText="ConceptID" style="width:5%">
+                                            <p:column headerText="ConceptID" sortBy="#{conceptBrowserBean.conceptQuery.columns.get(0)}" style="width:7%">
                                                 <h:outputText value="#{concept.id}"/>
                                             </p:column>
 
-                                            <p:column headerText="Término">
+                                            <p:column headerText="Término" sortBy="#{conceptBrowserBean.conceptQuery.columns.get(1)}">
                                                 <h:outputText value="#{concept.descriptionFavorite.term}"/>
                                             </p:column>
 
-                                            <p:column headerText="Observación">
+                                            <p:column headerText="Observación" sortBy="#{conceptBrowserBean.conceptQuery.columns.get(2)}">
                                                 <h:outputText value="#{concept.observation}"/>
                                             </p:column>
 
-                                            <p:column headerText="Etiqueta">
+                                            <p:column headerText="Etiqueta" sortBy="#{conceptBrowserBean.conceptQuery.columns.get(3)}">
                                                 <h:outputText value="#{conceptBrowserBean.stringifyList(concept.tags)}"/>
                                             </p:column>
 
-                                            <p:column headerText="Está en">
+                                            <p:column headerText="Está en" sortBy="#{conceptBrowserBean.conceptQuery.columns.get(4)}">
                                                 <h:outputText value="Borrador" rendered="#{not concept.modeled}"/>
                                                 <h:outputText value="Modelado" rendered="#{concept.modeled}"/>
                                             </p:column>

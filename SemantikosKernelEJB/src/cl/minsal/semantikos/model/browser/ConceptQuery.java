@@ -17,7 +17,6 @@ import java.util.*;
 public class ConceptQuery {
 
     private String query;
-    private List<ConceptQueryFilter> filters;
 
     private Boolean toBeReviewed;
     private Boolean toBeConsulted;
@@ -33,6 +32,10 @@ public class ConceptQuery {
     private int pageNumber;
 
     private String order;
+
+    private List<ConceptQueryFilter> filters = new ArrayList<>();
+
+    private List<ConceptQueryColumn> columns = new ArrayList<>();
 
     private List<Category> categories;
 
@@ -130,6 +133,14 @@ public class ConceptQuery {
 
     public void setCategories(List<Category> categories) {
         this.categories = categories;
+    }
+
+    public List<ConceptQueryColumn> getColumns() {
+        return columns;
+    }
+
+    public void setColumns(List<ConceptQueryColumn> columns) {
+        this.columns = columns;
     }
 
     public Long[] getCategoryValues(){
