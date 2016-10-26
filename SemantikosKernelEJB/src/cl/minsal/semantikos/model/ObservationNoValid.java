@@ -8,6 +8,8 @@ public class ObservationNoValid {
     private Long id;
     private String description;
 
+    public ObservationNoValid() {
+    }
 
     public ObservationNoValid(Long id, String description) {
         this.id = id;
