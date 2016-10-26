@@ -4,7 +4,10 @@ import cl.minsal.semantikos.kernel.util.ConnectionBD;
 import cl.minsal.semantikos.model.snomedct.ConceptSCT;
 import cl.minsal.semantikos.model.snomedct.DescriptionSCT;
 import cl.minsal.semantikos.model.snomedct.DescriptionSCTType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import javax.ejb.EJBException;
 import javax.ejb.Stateless;
 import java.sql.*;
 import java.util.ArrayList;
@@ -18,9 +21,13 @@ import static cl.minsal.semantikos.model.snomedct.DescriptionSCTType.SYNONYM;
  */
 @Stateless
 public class SnomedCTDAOImpl implements SnomedCTDAO {
+
+    private static final Logger logger = LoggerFactory.getLogger(SnomedCTDAOImpl.class);
+
     @Override
     public List<ConceptSCT> findConceptsBy(String pattern) {
         List<ConceptSCT> concepts = new ArrayList<>();
+
         ConnectionBD connect = new ConnectionBD();
         try (Connection connection = connect.getConnection();
              CallableStatement call = connection.prepareCall("{call semantikos.find_cst_by_pattern(?)}")) {
@@ -36,10 +43,39 @@ public class SnomedCTDAOImpl implements SnomedCTDAO {
             rs.close();
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            String errorMsg = "Error al buscar Snomed CT";
+            logger.error(errorMsg);
+            throw new EJBException(errorMsg, e);
         }
 
         return concepts;
+    }
+
+    @Override
+    public ConceptSCT getConceptByID(long conceptID) {
+
+        ConnectionBD connect = new ConnectionBD();
+        try (Connection connection = connect.getConnection();
+             CallableStatement call = connection.prepareCall("{call semantikos.get_cst_by_concept_id(?)}")) {
+
+            call.setLong(1, conceptID);
+            call.execute();
+
+            ResultSet rs = call.getResultSet();
+            ConceptSCT conceptSCTFromResultSet;
+            if (rs.next()) {
+                conceptSCTFromResultSet = createConceptSCTFromResultSet(rs);
+            } else {
+                throw new EJBException("No se encontró un concepto con ID=" + conceptID);
+            }
+            rs.close();
+
+            return conceptSCTFromResultSet;
+        } catch (SQLException e) {
+            String errorMsg = "Error al buscar Snomed CT por CONCEPT_ID: " + conceptID;
+            logger.error(errorMsg);
+            throw new EJBException(errorMsg, e);
+        }
     }
 
     private ConceptSCT createConceptSCTFromResultSet(ResultSet resultSet) throws SQLException {
