@@ -25,6 +25,11 @@ public class BasicTypeValue<T extends Comparable> implements Target {
         this.id = -1;
     }
 
+    public BasicTypeValue(long id, T value) {
+        this.id = id;
+        this.value = value;
+    }
+
     @Override
     public long getId() {
         return id;
@@ -77,10 +82,6 @@ public class BasicTypeValue<T extends Comparable> implements Target {
             return "null";
     }
 
-    public String asString(){
-        return value.toString();
-    }
-
     public boolean isDate() {
         return this.value.getClass().equals(Timestamp.class);
     }
@@ -95,5 +96,10 @@ public class BasicTypeValue<T extends Comparable> implements Target {
 
     public boolean isString() {
         return this.value.getClass().equals(String.class);
+    }
+
+    @Override
+    public BasicTypeValue copy() {
+        return new BasicTypeValue<>(this.id, this.value);
     }
 }

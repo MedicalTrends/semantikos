@@ -12,19 +12,10 @@ public class HelperTableTest {
 
     @Test
     public void testIsBasicType() throws Exception {
-        
-        HelperTable helperTable = HelperTableFactory.getInstance().getHelperTableATC();
-        assertFalse(helperTable.isBasicType());
     }
     
     @Test
     public void testConstructor() throws Exception {
-        
-        HelperTable helperTable = HelperTableFactory.getInstance().getHelperTableATC();
-
         Multiplicity multiplicity = MultiplicityFactory.ONE_TO_MANY;
-        new RelationshipDefinition("ATC", "Para ATC", multiplicity, helperTable);
     }
-    
-    
 }

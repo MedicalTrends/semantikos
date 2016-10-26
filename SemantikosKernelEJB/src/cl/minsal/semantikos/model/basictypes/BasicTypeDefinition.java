@@ -3,8 +3,6 @@ package cl.minsal.semantikos.model.basictypes;
 import cl.minsal.semantikos.model.PersistentEntity;
 import cl.minsal.semantikos.model.relationships.BasicTypeType;
 import cl.minsal.semantikos.model.relationships.TargetDefinition;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +11,7 @@ import java.util.List;
  * Esta clase representa un dominio de valores básicos.
  * La única restricción, por ahora para el tipo básica
  */
-public class BasicTypeDefinition<T extends Comparable> extends PersistentEntity implements TargetDefinition{
+public class BasicTypeDefinition<T extends Comparable> extends PersistentEntity implements TargetDefinition {
 
     /** Nombre del tipo */
     private String name;
@@ -26,7 +24,7 @@ public class BasicTypeDefinition<T extends Comparable> extends PersistentEntity 
 
     private Interval<T> interval;
 
-    /** El tipo concreto de esta definición **/
+    /** El tipo concreto de esta definición * */
     private BasicTypeType type;
 
     public BasicTypeDefinition() {
@@ -98,7 +96,11 @@ public class BasicTypeDefinition<T extends Comparable> extends PersistentEntity 
 
 
     public void setDomain(List<T> domain) {
-        this.domain = domain;
+        if (domain != null) {
+            this.domain = new ArrayList<>(domain);
+        } else {
+            this.domain = new ArrayList<>();
+        }
     }
 
     public boolean addToDomain(T anElement) {

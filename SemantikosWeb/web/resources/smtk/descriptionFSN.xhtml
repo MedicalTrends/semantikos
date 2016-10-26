@@ -5,11 +5,11 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:composite="http://java.sun.com/jsf/composite"
-      xmlns:smtk="http://java.sun.com/jsf/composite/smtk"
       xmlns:p="http://primefaces.org/ui"
       xmlns:c="http://java.sun.com/jsp/jstl/core">
 
 <composite:interface>
+    <composite:attribute name="editable" type="java.lang.Boolean"/>
     <composite:attribute name="description" type="cl.minsal.semantikos.model.DescriptionWeb"/>
 </composite:interface>
 
@@ -24,10 +24,10 @@
             <p:inputText id="FSN"
                          styleClass="terms FSN"
                          name="description"
-                         validator="#{validatorBean.validateRequired}"
+                         validator="#{validatorBean.validateRequiredInput}"
                          value="#{cc.attrs.description.representation}"
-                         style="width:90%" disabled="#{cc.attrs.description.conceptSMTK.modeled}">
-                <p:ajax event="blur" update="@this" process="@this" delay="100" />
+                         style="width:90%"
+                         disabled="#{cc.attrs.description.conceptSMTK.modeled or not cc.attrs.editable}">
                 <p:ajax event="change" update="@this" process="@this" delay="100" />
             </p:inputText>
         </div>
@@ -38,7 +38,7 @@
                               columns="2"
                               value="#{cc.attrs.description.caseSensitive}"
                               style="width:90%"
-                              disabled="#{cc.attrs.description.conceptSMTK.modeled}">
+                              disabled="#{cc.attrs.description.conceptSMTK.modeled or not cc.attrs.editable}">
                 <f:selectItem itemValue="#{true}" itemLabel="Sensible"/>
                 <f:selectItem itemValue="#{false}" itemLabel="Insensible"/>
             </p:selectOneRadio>

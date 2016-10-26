@@ -117,6 +117,10 @@ public interface ConceptManager {
      */
     public List<ConceptSMTK> findConceptBy(String patternOrConceptID, Long[] categories, int pageNumber, int pageSize);
 
+    /*Método temporal para trabajar con el navegador de conceptos*/
+    @Deprecated
+    public List<ConceptSMTK> findConceptBy(Category category, int pageNumber, int pageSize);
+
     /**
      * Método encargado de realizar la búsqueda de conceptos por patron, en caso de no encontrar un "Perfect Match" por
      * la cadena de texto entregada,
@@ -165,7 +169,19 @@ public interface ConceptManager {
      */
     public List<Relationship> loadRelationships(ConceptSMTK concept);
 
+    public List<ConceptSMTK> getConceptBy(RefSet refSet);
 
+    /**
+     * Método encargado de obtener los conceptos en borrador
+     *
+     * @return lista de conceptos en borrador
+     */
     public List<ConceptSMTK> getConceptDraft();
 
+    /**
+     * Este método es responsable de retornar la instancia del concepto no valido.
+     *
+     * @return La instancia (única) del concepto No Válido.
+     */
+    public ConceptSMTK getNoValidConcept();
 }

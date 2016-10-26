@@ -125,6 +125,11 @@ public class TagManagerImpl implements TagManager {
     }
 
     @Override
+    public List<Tag> getTagByConcept(ConceptSMTK conceptSMTK) {
+        return tagDAO.getTagsByConcept(conceptSMTK.getId());
+    }
+
+    @Override
     public void assignTag(ConceptSMTK conceptSMTK, Tag tag) {
         logger.debug("Asociando el tag " + tag + " al concepto " + conceptSMTK);
 

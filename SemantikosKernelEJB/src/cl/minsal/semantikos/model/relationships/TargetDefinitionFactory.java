@@ -4,7 +4,6 @@ import cl.minsal.semantikos.kernel.daos.BasicTypeDefinitionDAO;
 import cl.minsal.semantikos.kernel.daos.CategoryDAO;
 import cl.minsal.semantikos.kernel.daos.ConceptSCTDAO;
 import cl.minsal.semantikos.kernel.daos.HelperTableDAO;
-import cl.minsal.semantikos.model.helpertables.HelperTableFactory;
 import cl.minsal.semantikos.model.snomedct.SnomedCT;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
@@ -43,7 +42,7 @@ public class TargetDefinitionFactory {
 
     public TargetDefinition createFromJSON(String jsonResult) {
 
-        logger.info("creando target definition de json: {}",jsonResult);
+        logger.info("creando target definition de json: {}", jsonResult);
 
         /* Se parsea el JSON y se lleva a un DTO */
         ObjectMapper mapper = new ObjectMapper();
@@ -69,7 +68,7 @@ public class TargetDefinitionFactory {
                 return new SnomedCT("1.0");
 
             case HELPER_TABLE_TYPE_ID:
-                return HelperTableFactory.getInstance().getHelperTable(targetDefinitionDTO.idHelperTableName);
+                return helperTableDAO.getHelperTableByID(targetDefinitionDTO.idHelperTableName);
 
             default:
                 throw new EJBException("TIPO DE DEFINICION INCORRECTO. ID Target Type=" + targetDefinitionDTO.idTargetType);

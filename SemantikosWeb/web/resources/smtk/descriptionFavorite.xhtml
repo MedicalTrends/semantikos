@@ -10,6 +10,7 @@
       xmlns:c="http://java.sun.com/jsp/jstl/core">
 
 <composite:interface>
+    <composite:attribute name="editable" type="java.lang.Boolean"/>
     <composite:attribute name="description" type="cl.minsal.semantikos.model.DescriptionWeb"/>
 </composite:interface>
 
@@ -25,10 +26,10 @@
             <p:inputText id="favorite"
                          styleClass="terms"
                          name="description"
-                         validator="#{validatorBean.validateRequired}"
+                         validator="#{validatorBean.validateRequiredInput}"
                          value="#{cc.attrs.description.term}"
                          style="width:90%"
-                         disabled="#{cc.attrs.description.conceptSMTK.modeled}">
+                         disabled="#{cc.attrs.description.conceptSMTK.modeled or not cc.attrs.editable}">
             </p:inputText>
         </div>
         <div class="ui-g-12 ui-md-6 ui-lg-3">
@@ -37,11 +38,12 @@
                               columns="2"
                               value="#{cc.attrs.description.caseSensitive}"
                               style="width:90%"
-                              disabled="#{cc.attrs.description.conceptSMTK.modeled}">
+                              disabled="#{cc.attrs.description.conceptSMTK.modeled or not cc.attrs.editable}">
                 <f:selectItem itemValue="#{true}" itemLabel="Sensible"/>
                 <f:selectItem itemValue="#{false}" itemLabel="Insensible"/>
             </p:selectOneRadio>
         </div>
+        <!-- DescriptionId -->
         <div class="ui-g-12 ui-md-6 ui-lg-3">
             <p:outputLabel value="DESCID " rendered="#{not cc.attrs.description.persistent}"/>
 

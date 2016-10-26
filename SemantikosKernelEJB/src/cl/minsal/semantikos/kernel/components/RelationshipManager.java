@@ -30,6 +30,13 @@ public interface RelationshipManager {
     public RelationshipDefinition createRelationshipDefinition(RelationshipDefinition relationshipDefinition);
 
     /**
+     * Este metodo es responsable de persistir
+     * @param relationship
+     * @return
+     */
+    public Relationship createRelationship(Relationship relationship);
+
+    /**
      * Este método es responsable de asociar (agregar) una relación a un concepto.
      *
      * @param concept      El concepto al cual se agrega la descripción.

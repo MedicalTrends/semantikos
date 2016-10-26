@@ -19,6 +19,8 @@ public interface ConceptQueryManager {
 
     public List<ConceptSMTK> executeQuery(cl.minsal.semantikos.model.browser.ConceptQuery query);
 
+    public List<RelationshipDefinition> getSearchableAttributesByCategory(Category category);
+
     public List<RelationshipDefinition> getShowableAttributesByCategory(Category category);
 
 }

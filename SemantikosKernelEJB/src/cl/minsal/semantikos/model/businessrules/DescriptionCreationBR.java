@@ -33,17 +33,17 @@ public class DescriptionCreationBR {
      * Este método aplica las pre-condiciones a la creación.
      *
      * @param concept         El concepto al cual se agrega la descripción.
-     * @param term            El término que se desea agregar.
+     * @param description     La descripción que se desea agregar.
      * @param categoryManager El Manager.
      */
-    public void validatePreConditions(ConceptSMTK concept, String term, DescriptionType type, CategoryManager categoryManager, boolean edition) {
+    public void validatePreConditions(ConceptSMTK concept, Description description, CategoryManager categoryManager, boolean edition) {
 
-        brDescriptionCreation001(concept, term, categoryManager);
-        brDescriptionCreation003(concept, type);
+        brDescriptionCreation001(concept, description.getTerm(), categoryManager);
+        brDescriptionCreation003(concept, description.getDescriptionType());
 
         /* Reglas para modo edición */
         if(edition){
-            brDescriptionEdition003(concept, type);
+            brDescriptionEdition003(concept, description.getDescriptionType());
         }
     }
 
@@ -59,7 +59,7 @@ public class DescriptionCreationBR {
         Category category = concept.getCategory();
 
         if (categoryManager.categoryContains(category, term)) {
-            throw new BusinessRuleException("Un término sólo puede existir una vez en una categoría.");
+                throw new BusinessRuleException("Un término sólo puede existir una vez en una categoría.");
         }
     }
 
@@ -78,11 +78,11 @@ public class DescriptionCreationBR {
     private void brDescriptionEdition003(ConceptSMTK concept, DescriptionType type) {
 
         if (concept.isPersistent()) {
-            if (type.equals(ABREVIADA) || type.equals(SYNONYMOUS) || type.equals(AMBIGUA) || type.equals(GENERAL) || type.equals(BAD_WRITTEN)) {
+            if (type.equals(ABREVIADA) || type.equals(SYNONYMOUS) || type.equals(AMBIGUA) || type.equals(GENERAL) || type.equals(BAD_WRITTEN) || type.equals(PREFERIDA)) {
                 return;
             }
 
-            if(!concept.isModeled() && type.equals(FSN) || !concept.isModeled() && type.equals(PREFERIDA)){
+            if(!concept.isModeled() && type.equals(FSN) ){
                 return;
             }
 
@@ -99,9 +99,16 @@ public class DescriptionCreationBR {
      */
     private void brDescriptionCreation003(ConceptSMTK concept, DescriptionType type) {
 
-        /* Si se está editando y es una abreviada.... */
-        if (concept.isPersistent() && type.equals(ABREVIADA)) {
-            throw new BusinessRuleException("Cuando se edita un concepto no es posible agregarle una descripción de tipo 'Abreviada'.");
+        for (Description description: concept.getDescriptions()) {
+            if(description.getDescriptionType().equals(ABREVIADA) && description.isPersistent()){
+                /* Si se está editando y es una abreviada.... */
+                if (concept.isPersistent() && type.equals(ABREVIADA)) {
+                    throw new BusinessRuleException("Cuando se edita un concepto no es posible agregarle una descripción de tipo 'Abreviada'.");
+                }
+            }
         }
+
+
     }
+
 }

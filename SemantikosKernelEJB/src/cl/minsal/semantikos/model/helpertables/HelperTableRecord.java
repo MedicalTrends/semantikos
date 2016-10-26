@@ -5,12 +5,15 @@ import cl.minsal.semantikos.model.relationships.TargetType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.validation.constraints.NotNull;
 import java.util.Map;
+
+import static cl.minsal.semantikos.model.helpertables.HelperTable.SYSTEM_COLUMN_DESCRIPTION;
 
 /**
  * @author Andrés Farías
  */
-public class HelperTableRecord implements Target {
+public class HelperTableRecord implements Target, Comparable<HelperTableRecord> {
 
     private static final Logger logger = LoggerFactory.getLogger(HelperTableRecord.class);
 
@@ -25,6 +28,12 @@ public class HelperTableRecord implements Target {
 
     /** Los campos de la tabla */
     private Map<String, String> fields;
+
+    /**
+     * Este constructor vacío se provee para JSON.
+     */
+    public HelperTableRecord() {
+    }
 
     /**
      * Este constructor permite crear un objeto no persistido (aun) con valores para un registro de una tabla auxiliar.
@@ -47,13 +56,6 @@ public class HelperTableRecord implements Target {
     public HelperTableRecord(HelperTable helperTable, long id) {
         this.helperTable = helperTable;
         this.id = id;
-    }
-
-    /**
-     * Este constructor vacío se provee para JSON.
-     */
-    public HelperTableRecord() {
-        this(HelperTableFactory.getInstance().getHelperTableATC(), -1);
     }
 
     public long getId() {
@@ -97,7 +99,7 @@ public class HelperTableRecord implements Target {
     public String getValueColumn(String columnName) throws IllegalArgumentException {
 
         /* Si la columna no existe es lanzada la excepción */
-        if (this.fields.containsKey(columnName)) {
+        if (!this.fields.containsKey(columnName)) {
             String messageError = "Se solicita columan que no existe: " + columnName;
             logger.error(messageError);
             throw new IllegalArgumentException(messageError);
@@ -129,5 +131,18 @@ public class HelperTableRecord implements Target {
             return String.format("%s[id=%d]", getClass().getSimpleName(), new Long(this.getFields().get("id")));
     }
 
+    public HelperTableRecord copy() {
+        HelperTableRecord helperTableRecord = new HelperTableRecord(this.helperTable, this.fields);
+        helperTableRecord.setId(this.getId());
+        return helperTableRecord;
+    }
 
+
+    @Override
+    public int compareTo(@NotNull HelperTableRecord helperTableRecord) {
+        if(this.getFields()==null)
+            return 0;
+        String descriptionColumnName = SYSTEM_COLUMN_DESCRIPTION.getColumnName();
+        return this.getFields().get(descriptionColumnName).compareTo(helperTableRecord.getFields().get(descriptionColumnName));
+    }
 }

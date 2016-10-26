@@ -9,6 +9,7 @@ import cl.minsal.semantikos.model.helpertables.HelperTableRecord;
 
 import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -45,6 +46,24 @@ public class Relationship extends PersistentEntity implements AuditableEntity {
 
     /** Lista de Atributos de la relacion **/
     private List<RelationshipAttribute> relationshipAttributes;
+
+    /**
+     * Este es el constructor mínimo con el cual se crean las Relaciones
+     *
+     * @param sourceConcept           El concepto origen de la relación.
+     * @param relationshipDefinition  Definición de la relación.
+     * @param  relationshipAttributes Lista de Atributos
+     */
+    @Deprecated
+    public Relationship(ConceptSMTK sourceConcept, RelationshipDefinition relationshipDefinition,List<RelationshipAttribute> relationshipAttributes) {
+
+        /* No está persistido originalmente */
+        this.id = NON_PERSISTED_ID;
+
+        this.sourceConcept = sourceConcept;
+        this.relationshipDefinition = relationshipDefinition;
+        this.relationshipAttributes = relationshipAttributes;
+    }
 
     /**
      * Este es el constructor mínimo con el cual se crean las Relaciones
@@ -115,8 +134,9 @@ public class Relationship extends PersistentEntity implements AuditableEntity {
     }
 
     public void setTarget(Target target) {
-
-        this.target = target;
+        if(target!=null){
+            this.target = target;
+        }
     }
 
     public boolean isToBeUpdated() {
@@ -200,6 +220,24 @@ public class Relationship extends PersistentEntity implements AuditableEntity {
     }
 
     /**
+     * Este método es responsable de retornar todas las relaciones de este concepto que son de un cierto tipo de
+     * relación.
+     *
+     * @param relationshipAttributeDefinition El tipo de relación al que pertenecen las relaciones a retornar.
+     *
+     * @return Una <code>java.util.List</code> de relaciones de tipo <code>relationshipAttribute</code>.
+     */
+    public List<RelationshipAttribute> getAttributesByAttributeDefinition(RelationshipAttributeDefinition relationshipAttributeDefinition) {
+        List<RelationshipAttribute> someAttributes = new ArrayList<>();
+        for (RelationshipAttribute attribute : relationshipAttributes) {
+            if (attribute.getRelationAttributeDefinition().equals(relationshipAttributeDefinition)) {
+                someAttributes.add(attribute);
+            }
+        }
+        return someAttributes;
+    }
+
+    /**
      * Este método es responsable de determinar si esta instancia tiene un ID de bdd distinto de nulo, y por ende se
      * entiende que se encuentra persistido.
      *
@@ -226,11 +264,44 @@ public class Relationship extends PersistentEntity implements AuditableEntity {
         return (getValidityUntil() == null || getValidityUntil().after(new Timestamp(System.currentTimeMillis())));
     }
 
+
+
     public List<RelationshipAttribute> getRelationshipAttributes() {
         return relationshipAttributes;
     }
 
     public void setRelationshipAttributes(List<RelationshipAttribute> relationshipAttributes) {
         this.relationshipAttributes = relationshipAttributes;
+    }
+
+    public RelationshipAttribute getOrderAttribute(){
+        for (RelationshipAttribute relationshipAttribute : getRelationshipAttributes()) {
+            if(relationshipAttribute.getRelationAttributeDefinition().getName().equalsIgnoreCase("orden")){
+                return relationshipAttribute;
+            }
+        }
+        return null;
+    }
+
+    public Integer getOrder(){
+
+        RelationshipAttribute attribute = getOrderAttribute();
+
+        if(attribute != null){
+            BasicTypeValue basicTypeValue = (BasicTypeValue) attribute.getTarget();
+            return Integer.parseInt(basicTypeValue.getValue().toString());
+        }
+        else{
+            return 0;
+        }
+    }
+
+    public boolean isMultiplicitySatisfied(RelationshipAttributeDefinition attributeDefinition){
+        return this.getAttributesByAttributeDefinition(attributeDefinition).size() >= attributeDefinition.getMultiplicity().getLowerBoundary();
+    }
+
+    @Override
+    public String toString() {
+        return relationshipDefinition.getName();
     }
 }

@@ -86,9 +86,6 @@ public class TagBean implements Serializable{
         parentTagToCreate= new Tag(-1,null,null,null,null);
         tagEdit= new Tag(-1,null,null,null,null);
 
-
-
-
     }
 
     /**
@@ -217,7 +214,7 @@ public class TagBean implements Serializable{
         tagCreate= new Tag(-1,null,null,null,null);
         parentTagToCreate= new Tag(-1,null,null,null,null);
 
-        FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Etiqueta creada", "La etiqueta se creo exitosamente");
+        FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Etiqueta creada", "La etiqueta se creó exitosamente");
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
 
@@ -227,7 +224,7 @@ public class TagBean implements Serializable{
     public void createTagToConcept(){
         if(tagCreate.getName()== null || tagCreate.getName().length()==0 || tagCreate.getColorBackground()==null || tagCreate.getColorLetter()==null){
             FacesContext context = FacesContext.getCurrentInstance();
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Complete la informacion de la etiqueta"));
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Complete la información de la etiqueta"));
 
 
         }else{
@@ -246,7 +243,7 @@ public class TagBean implements Serializable{
             tagCreate= new Tag(-1,null,null,null,null);
             parentTagSelect= null;
             parentTagToCreate= new Tag(-1,null,null,null,null);
-            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Etiqueta creada", "La etiqueta se creo exitosamente");
+            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Etiqueta creada", "La etiqueta se creó exitosamente");
             FacesContext.getCurrentInstance().addMessage(null, msg);
         }
 
@@ -264,7 +261,12 @@ public class TagBean implements Serializable{
             }
             conceptBean.getConcept().getTags().add(tagSelected);
             tagSelected= null;
+            tagListToConcept=  tagManager.getAllTags();
+        }else{
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se seleccionó una etiqueta para agregar"));
         }
+
 
     }
 
@@ -334,6 +336,14 @@ public class TagBean implements Serializable{
         tagListTable= tagManager.getAllTags();
     }
 
+    public void removeTag() {
+
+        tagManager.removeTag(tagEdit);
+        conceptBean.getConcept().setTags(tagManager.getTagByConcept( conceptBean.getConcept()));
+        tagListTable= tagManager.getAllTags();
+
+    }
+
     public void onRowEdit(CellEditEvent event) {
 
         FacesContext context = FacesContext.getCurrentInstance();
@@ -347,6 +357,9 @@ public class TagBean implements Serializable{
 
     public void updateTag(){
         tagManager.update(tagEdit);
+
+        tagListToConcept= tagManager.getAllTags();
+
         FacesContext context = FacesContext.getCurrentInstance();
         context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Etiqueta actualizada", "La etiqueta se actualizo exitosamente"));
 

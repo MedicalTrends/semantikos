@@ -16,11 +16,21 @@
 
 <composite:implementation>
 
-    <p:panel id="historyConcept" header="Historial" toggleable="true" toggleSpeed="500" closeSpeed="500" >
-        <p:dataTable var="history"
-                     value="#{conceptBean.auditAction}">
-            <p:column headerText="Fecha">
-                <h:outputText value="#{history.actionDate}"></h:outputText>
+    <p:panel id="historyConcept" styleClass="historyClass" >
+        <p:dataTable id="historyDateTable" var="history"
+                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
+                     value="#{conceptBean.auditAction}" paginator="true" rows="10">
+
+
+            <f:facet name="{Exporters}">
+                <p:commandButton icon="fa fa-file-excel-o" styleClass="ui-priority-primary" ajax="false" value="Exportar">
+                    <p:dataExporter type="xls" target="historyDateTable" fileName="history" />
+                </p:commandButton>
+            </f:facet>
+
+
+            <p:column style="width:16px" exportable="false">
+                <p:rowToggler />
             </p:column>
             <p:column headerText="Tipo de cambio">
                 <h:outputText value="#{history.auditActionType.name}"></h:outputText>
@@ -31,6 +41,24 @@
             <p:column headerText="Fecha">
                 <h:outputText value="#{history.actionDate}"></h:outputText>
             </p:column>
+            <p:rowExpansion>
+                <p:panelGrid  columns="2" columnClasses="label,value" >
+                    <f:facet name="header">
+                        <h3>Detalle del cambio</h3>
+                    </f:facet>
+
+
+
+                    <h:outputText value="ID Atributo:" />
+                    <h:outputText value="#{history.auditableEntity.id}" />
+
+                    <h:outputText value="Atributo:" />
+                    <h:outputText value="#{history.auditableEntity}" />
+
+
+
+                </p:panelGrid>
+            </p:rowExpansion>
         </p:dataTable>
 
     </p:panel>

@@ -45,7 +45,7 @@ public class DescriptionManagerImpl implements DescriptionManager {
         /* Reglas de negocio previas */
         ConceptSMTK conceptSMTK = description.getConceptSMTK();
         DescriptionCreationBR descriptionCreationBR1 = new DescriptionCreationBR();
-        descriptionCreationBR1.validatePreConditions(conceptSMTK, description.getTerm(), description.getDescriptionType(), categoryManager, editionMode);
+        descriptionCreationBR1.validatePreConditions(conceptSMTK, description, categoryManager, editionMode);
 
         descriptionCreationBR1.applyRules(conceptSMTK, description.getTerm(), description.getDescriptionType(), user, categoryManager);
         if (!description.isPersistent()) {
@@ -82,7 +82,7 @@ public class DescriptionManagerImpl implements DescriptionManager {
          * Se aplican las pre-condiciones para asociar la descripción al concepto. En particular hay que validar que
          * no exista el término dentro de la misma categoría
          */
-        descriptionCreationBR.validatePreConditions(concept, description.getTerm(), description.getDescriptionType(), categoryManager, editionMode);
+        descriptionCreationBR.validatePreConditions(concept, description, categoryManager, editionMode);
 
         /* Se aplican las reglas de negocio para crear la Descripción y se persiste y asocia al concepto */
         new DescriptionBindingBR().applyRules(concept, description, user);
@@ -164,20 +164,17 @@ public class DescriptionManagerImpl implements DescriptionManager {
     }
 
     @Override
-    public void moveDescriptionToConcept(ConceptSMTK targetConcept, Description description, User user) {
+    public void moveDescriptionToConcept(ConceptSMTK sourceConcept, Description description, User user) {
+
+        ConceptSMTK targetConcept = description.getConceptSMTK();
 
         /* Se aplican las reglas de negocio para el traslado */
         DescriptionTranslationBR descriptionTranslationBR = new DescriptionTranslationBR();
         descriptionTranslationBR.validatePreConditions(description, targetConcept);
 
         /* Se realiza la actualización a nivel del modelo lógico */
-        ConceptSMTK sourceConcept = description.getConceptSMTK();
-        List<Description> sourceConceptDescriptions = sourceConcept.getDescriptions();
 
-        /* Se elimina la descripción del objeto base */
-        if (sourceConceptDescriptions.contains(description)) {
-            sourceConceptDescriptions.remove(description);
-        }
+        List<Description> sourceConceptDescriptions = sourceConcept.getDescriptions();
 
         /* Se agrega al concepto destino */
         if (!targetConcept.getDescriptions().contains(description)) {
@@ -189,6 +186,10 @@ public class DescriptionManagerImpl implements DescriptionManager {
 
         /* Se aplican las reglas de negocio asociadas al movimiento de un concepto */
         descriptionTranslationBR.apply(targetConcept, description);
+
+        /*Se cambia el estado de la descripción segun el concepto*/
+
+        description.setModeled(targetConcept.isModeled());
 
         /* Luego se persiste el cambio */
         descriptionDAO.update(description);
@@ -262,11 +263,34 @@ public class DescriptionManagerImpl implements DescriptionManager {
 
     @Override
     public String generateDescriptionId() {
-        return UUID.randomUUID().toString();
+        return UUID.randomUUID().toString().substring(0,10);
     }
 
     @Override
     public List<Description> searchDescriptionsByTerm(String term, List<Category> categories) {
         return descriptionDAO.searchDescriptionsByTerm(term, categories);
+    }
+
+    @Override
+    public void invalidateDescription(ConceptSMTK conceptSMTK, NoValidDescription noValidDescription, User user) {
+
+        /* Se aplican las reglas de negocio para el traslado */
+        DescriptionInvalidationBR descriptionInvalidationBR = new DescriptionInvalidationBR();
+        descriptionInvalidationBR.validatePreConditions(noValidDescription);
+
+        /* Se realiza el movimiento con la función genérica */
+        Description theInvalidDescription = noValidDescription.getNoValidDescription();
+
+        this.moveDescriptionToConcept(conceptSMTK, theInvalidDescription, user);
+
+        /* Luego se persiste el cambio */
+        descriptionDAO.setInvalidDescription(noValidDescription);
+
+        /* No hay registro en el log, porque se registra ya en la función de negocio de mover */
+    }
+
+    @Override
+    public List<ObservationNoValid> getObservationsNoValid() {
+        return descriptionDAO.getObservationsNoValid();
     }
 }

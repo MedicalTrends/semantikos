@@ -15,6 +15,10 @@ import static cl.minsal.semantikos.model.relationships.TargetType.SnomedCT;
  *
  * @author Andrés Farías
  */
+
+
+
+
 public class SnomedCT extends PersistentEntity implements TargetDefinition{
 
     /** Descripción del concepto */
