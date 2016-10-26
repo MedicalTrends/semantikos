@@ -128,7 +128,7 @@ public class HelperTableRecord implements Target, Comparable<HelperTableRecord> 
         if (this.getFields() == null)
             return "null";
         else
-            return String.format("%s[id=%d]", getClass().getSimpleName(), new Long(this.getFields().get("id")));
+            return getValueColumn("description");
     }
 
     public HelperTableRecord copy() {

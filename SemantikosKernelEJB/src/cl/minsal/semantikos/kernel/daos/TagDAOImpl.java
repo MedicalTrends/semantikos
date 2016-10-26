@@ -113,16 +113,10 @@ public class TagDAOImpl implements TagDAO {
     public void remove(Tag tag) {
         ConnectionBD connect = new ConnectionBD();
 
-        Tag tagRoot = (tag.getParentTag()==null)?tag:tag.getParentTag();
-        while(tagRoot.getParentTag()!=null){
-
-            tagRoot =tagRoot.getParentTag();
-        }
-
         try (Connection connection = connect.getConnection();
              CallableStatement call = connection.prepareCall("{call semantikos.delete_tag(?)}")) {
 
-            call.setLong(1, tagRoot.getId());
+            call.setLong(1, tag.getId());
             call.execute();
         } catch (SQLException e) {
             String errorMsg = "Error al persistir el tag " + tag;
@@ -384,5 +378,34 @@ public class TagDAOImpl implements TagDAO {
         }
 
         return tagFactory.createTagFromJSON(json);
+    }
+
+    @Override
+    public boolean containTag(String tagName) {
+        ConnectionBD connect = new ConnectionBD();
+        Long contain;
+        try (Connection connection = connect.getConnection();
+             CallableStatement call = connection.prepareCall("{call semantikos.contain_tag(?)}")) {
+
+            call.setString(1, tagName);
+            call.execute();
+
+            ResultSet rs = call.getResultSet();
+            if (rs.next()) {
+                contain = rs.getLong(1);
+            } else {
+                String errorMsg = "Error imposible!";
+                logger.error(errorMsg);
+                throw new EJBException(errorMsg);
+            }
+            rs.close();
+
+        } catch (SQLException e) {
+            String errorMsg = "Error al consultar si contiene el registro";
+            logger.error(errorMsg, e);
+            throw new EJBException(errorMsg, e);
+        }
+
+        return (contain>0)?true: false;
     }
 }

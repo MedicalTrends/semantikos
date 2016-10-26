@@ -57,4 +57,6 @@ public interface TagManager {
     public void link(Tag tag, Tag tagLink);
 
     public void unlink(Tag tag, Tag tagUnlink);
+
+    public boolean containTag(String nameTag);
 }
