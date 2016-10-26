@@ -5,7 +5,7 @@ package cl.minsal.semantikos.model.snomedct;
  */
 public enum DescriptionSCTType {
 
-    SYNONYM(900000000000003001L), FSN(0L);
+    SYNONYM(900000000000013009L), FSN(900000000000003001L);
 
     private long typeId;
 

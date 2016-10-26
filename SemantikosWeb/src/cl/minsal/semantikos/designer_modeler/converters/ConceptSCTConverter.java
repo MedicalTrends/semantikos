@@ -3,6 +3,7 @@ package cl.minsal.semantikos.designer_modeler.converters;
 import cl.minsal.semantikos.designer_modeler.designer.SCTTypeBean;
 import cl.minsal.semantikos.designer_modeler.designer.SMTKTypeBean;
 import cl.minsal.semantikos.model.ConceptSMTK;
+import cl.minsal.semantikos.model.snomedct.ConceptSCT;
 
 import javax.el.ELContext;
 import javax.faces.application.FacesMessage;
@@ -26,8 +27,7 @@ public class ConceptSCTConverter implements Converter{
 
                 ELContext elContext = fc.getELContext();
                 SCTTypeBean bean = (SCTTypeBean) FacesContext.getCurrentInstance().getApplication() .getELResolver().getValue(elContext, null, "sctBean");
-                //return bean.getCstManager().getConceptByID(Long.parseLong(value));
-                return null;
+                return bean.getCstManager().getConceptByID(Long.parseLong(value));
 
             } catch(NumberFormatException e) {
                 throw new ConverterException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se seleccionó el concepto de destino."));
@@ -40,7 +40,7 @@ public class ConceptSCTConverter implements Converter{
 
     public String getAsString(FacesContext fc, UIComponent uic, Object object) {
         if(object != null) {
-            return String.valueOf(((ConceptSMTK) object).getId());
+            return String.valueOf(((ConceptSCT) object).getIdSnomedCT());
         }
         else {
             return null;

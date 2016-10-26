@@ -30,7 +30,7 @@ public class SnomedCTDAOImpl implements SnomedCTDAO {
 
         ConnectionBD connect = new ConnectionBD();
         try (Connection connection = connect.getConnection();
-             CallableStatement call = connection.prepareCall("{call semantikos.find_cst_by_pattern(?)}")) {
+             CallableStatement call = connection.prepareCall("{call semantikos.find_sct_by_pattern(?)}")) {
 
             call.setString(1, pattern);
             call.execute();
@@ -81,10 +81,10 @@ public class SnomedCTDAOImpl implements SnomedCTDAO {
     private ConceptSCT createConceptSCTFromResultSet(ResultSet resultSet) throws SQLException {
 
         long id = resultSet.getLong("id");
-        Timestamp effectiveTime = resultSet.getTimestamp("effectivetime");
+        Timestamp effectiveTime = resultSet.getTimestamp("effectiveTime");
         boolean active = resultSet.getBoolean("active");
-        long moduleID = resultSet.getLong("moduleid");
-        long definitionStatusID = resultSet.getLong("definitionstatusid");
+        long moduleID = resultSet.getLong("moduleId");
+        long definitionStatusID = resultSet.getLong("definitionStatusId");
 
         ConceptSCT conceptSCT = new ConceptSCT(id, effectiveTime, active, moduleID, definitionStatusID);
 

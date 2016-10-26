@@ -126,8 +126,11 @@ public class ConceptSCT extends PersistentEntity implements Target {
         return toString + " - Sin descripción FSN o Preferida";
     }
 
-
-    private DescriptionSCT getDescriptionFavouriteSynonymous() {
+    /**
+     * Este método es encargado de obtener la descripción favorita del concepto SCT
+     * @return
+     */
+    public DescriptionSCT getDescriptionFavouriteSynonymous() {
 
         for (DescriptionSCT synonym : this.getDescriptionSynonymous()) {
             if (synonym.isFavourite()) {

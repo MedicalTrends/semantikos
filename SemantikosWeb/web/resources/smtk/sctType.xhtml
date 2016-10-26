@@ -27,21 +27,21 @@
                 <div class="ui-g">
                 <div class="ui-g-12 ui-md-6 ui-lg-2">
 
-                    <p:outputLabel rendered="#{cc.attrs.relationshipDefinition.multiplicity.optional}"  value="#{cc.attrs.relationshipDefinition.name}: " for="findConceptSMTK"/>
-                    <p:outputLabel rendered="#{not cc.attrs.relationshipDefinition.multiplicity.optional}" value="#{cc.attrs.relationshipDefinition.name}: (*)" for="findConceptSMTK"/>
+                    <p:outputLabel rendered="#{cc.attrs.relationshipDefinition.multiplicity.optional}"  value="#{cc.attrs.relationshipDefinition.name}" for="findConceptSCT"/>
+                    <p:outputLabel rendered="#{not cc.attrs.relationshipDefinition.multiplicity.optional}" value="#{cc.attrs.relationshipDefinition.name} *" for="findConceptSCT"/>
 
                 </div>
 
                 <div class="ui-g-12 ui-md-6 ui-lg-2">
                     <p:autoComplete emptyMessage="No se encontraron conceptos relacionados"
                                     forceSelection="true"
-                                    id="findConceptSMTK" scrollHeight="200" size="5" style="width: 85%;"
+                                    id="findConceptSCT" scrollHeight="200" size="5" style="width: 85%;"
                                     inputStyle="width: 85%;"
                                     completeMethod="#{sctBean.getConceptSearchInput}"
-                                    converter="conceptConverter"
+                                    converter="conceptSCTConverter"
                                     var="concept"
                                     value="#{conceptBean.conceptSCTSelected}"
-                                    itemLabel="#{concept.getDescriptionFavouriteSynonymous().term}" itemValue="#{concept}"
+                                    itemLabel="#{concept.descriptionFSN.term}" itemValue="#{concept}"
                                     disabled="#{not cc.attrs.concept.editable}"
                                     rendered="#{conceptBean.concept.getRelationshipsByRelationDefinition(cc.attrs.relationshipDefinition).size()==0}">
 
@@ -50,11 +50,11 @@
                         <f:attribute name="relationshipDefinition" value="#{cc.attrs.relationshipDefinition}"  />
                         <!---->
                         <p:column>
-                            <h:outputText value="#{concept.getDescriptionFavouriteSynonymous().idSnomedCT}"/>
+                            <h:outputText value="#{concept.descriptionFSN.idSnomedCT}"/>
                         </p:column>
 
                         <p:column>
-                            <h:outputText value="#{concept.getDescriptionFavouriteSynonymous().term}"/>
+                            <h:outputText value="#{concept.descriptionFSN.term}"/>
                         </p:column>
 
                         <p:ajax update="@(.concept), @(.conceptHeader),:mainForm:editMsgs" event="itemSelect"
