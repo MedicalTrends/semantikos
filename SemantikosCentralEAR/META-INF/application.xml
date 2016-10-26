@@ -6,26 +6,26 @@
 
     <module>
         <web>
-            <web-uri>SemantikosWeb-0.7.0.war</web-uri>
+            <web-uri>SemantikosWeb-1.0.0.war</web-uri>
             <context-root>designer</context-root>
         </web>
     </module>
     <module>
         <web>
-            <web-uri>SemantikosBrowser-0.7.0.war</web-uri>
+            <web-uri>SemantikosBrowser-1.0.0.war</web-uri>
             <context-root>browser</context-root>
         </web>
     </module>
     <module>
         <web>
-            <web-uri>SemantikosWS-0.7.0.war</web-uri>
+            <web-uri>SemantikosWS-1.0.0.war</web-uri>
             <context-root>ws</context-root>
         </web>
     </module>
     <module>
-        <ejb>SemantikosKernelEJB-0.7.0.jar</ejb>
+        <ejb>SemantikosKernelEJB-1.0.0.jar</ejb>
     </module>
     <module>
-        <ejb>SemantikosWSEJB-0.7.0.jar</ejb>
+        <ejb>SemantikosWSEJB-1.0.0.jar</ejb>
     </module>
 </application>
