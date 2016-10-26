@@ -478,6 +478,18 @@ public class ConceptSMTKWeb extends ConceptSMTK {
     }
 
     public boolean isMultiplicitySatisfied(RelationshipDefinition relationshipDefinition){
+        for (RelationshipWeb relationshipWeb : getValidRelationshipsWebByRelationDefinition(relationshipDefinition)) {
+            if(relationshipDefinition.getTargetDefinition().isSMTKType()){
+                if(relationshipWeb.getTarget()==null)
+                    return false;
+            }
+            if(relationshipDefinition.getTargetDefinition().isBasicType()){
+                BasicTypeValue basicTypeValue = (BasicTypeValue)relationshipWeb.getTarget();
+                if(basicTypeValue.getValue().equals(""))
+                    return false;
+            }
+
+        }
         return this.getValidRelationshipsWebByRelationDefinition(relationshipDefinition).size()>=relationshipDefinition.getMultiplicity().getLowerBoundary();
     }
 
