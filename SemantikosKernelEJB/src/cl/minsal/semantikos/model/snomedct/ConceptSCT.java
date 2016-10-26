@@ -8,6 +8,9 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+import static cl.minsal.semantikos.model.snomedct.DescriptionSCTType.FSN;
+import static cl.minsal.semantikos.model.snomedct.DescriptionSCTType.SYNONYM;
+
 
 /**
  * Esta clase representa un concepto Snomed-CT.
@@ -135,11 +138,10 @@ public class ConceptSCT extends PersistentEntity implements Target {
         return null;
     }
 
-
     private List<DescriptionSCT> getDescriptionSynonymous() {
         List<DescriptionSCT> synonyms = new ArrayList<>();
         for (DescriptionSCT description : descriptions) {
-            if (SnomedCTMetadata.SYNONIM.getId()==description.getTypeId()) {
+            if (description.getDescriptionType().equals(SYNONYM)) {
                 synonyms.add(description);
             }
         }
@@ -154,8 +156,9 @@ public class ConceptSCT extends PersistentEntity implements Target {
      * @return La descripción del concepto.
      */
     public String getDescriptionFSN() {
+
         for (DescriptionSCT description : descriptions) {
-            if (SnomedCTMetadata.FSN.getId()==description.getTypeId()) {
+            if (description.getDescriptionType().equals(FSN)) {
                 return description.getTerm();
             }
         }
@@ -171,9 +174,9 @@ public class ConceptSCT extends PersistentEntity implements Target {
         return descriptions;
     }
 
-	@Override
-	public Target copy() {
-		return new ConceptSCT();
-	}
+    @Override
+    public Target copy() {
+        return new ConceptSCT();
+    }
 
 }

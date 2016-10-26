@@ -13,6 +13,7 @@ import java.sql.Timestamp;
  */
 public class DescriptionSCT extends PersistentEntity {
 
+    private DescriptionSCTType descriptionType;
     /**
      * Definition: Specifies the inclusive date at which the component version's state became the then current valid
      * state of the component
@@ -45,12 +46,6 @@ public class DescriptionSCT extends PersistentEntity {
     private String languageCode;
 
     /**
-     * Identifies whether the description is an FSN, Synonym or other description type.
-     * This field is set to a child of 900000000000446008 | Description type | in the Metadata hierarchy.
-     */
-    private long typeId;
-
-    /**
      * The description version's text value, represented in UTF-8 encoding.
      */
     private long caseSignificanceId;
@@ -71,18 +66,17 @@ public class DescriptionSCT extends PersistentEntity {
      * @param moduleId
      * @param conceptId
      * @param languageCode
-     * @param typeId
      * @param caseSignificanceId
      * @param term
      */
-    public DescriptionSCT(long id, Timestamp effectiveTime, boolean active, long moduleId, long conceptId, String languageCode, long typeId, String term, long caseSignificanceId) {
+    public DescriptionSCT(long id, DescriptionSCTType type, Timestamp effectiveTime, boolean active, long moduleId, long conceptId, String languageCode, String term, long caseSignificanceId) {
         super(id);
+        this.descriptionType = type;
         this.effectiveTime = effectiveTime;
         this.active = active;
         this.moduleId = moduleId;
         this.conceptId = conceptId;
         this.languageCode = languageCode;
-        this.typeId = typeId;
         this.term = term;
         this.caseSignificanceId = caseSignificanceId;
     }
@@ -151,11 +145,7 @@ public class DescriptionSCT extends PersistentEntity {
         this.caseSignificanceId = caseSignificanceId;
     }
 
-    public long getTypeId() {
-        return typeId;
-    }
-
-    public void setTypeId(long typeId) {
-        this.typeId = typeId;
+    public DescriptionSCTType getDescriptionType() {
+        return descriptionType;
     }
 }
