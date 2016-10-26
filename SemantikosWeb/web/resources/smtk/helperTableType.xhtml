@@ -39,10 +39,12 @@
                                 converter="helperTableRecordConverter"
                                 validator="#{validatorBean.validateRequiredRecordSelect}"
                                 value="#{conceptBean.selectedHelperTableRecord}"
+                                disabled="#{not cc.attrs.concept.editable}"
                                 itemLabel="#{record.fields['description']}"
                                 itemValue="#{record}">
                     <!-- Parámetros del buscador -->
                     <f:attribute name="helperTable" value="#{cc.attrs.relationshipDefinition.targetDefinition}"  />
+                    <f:attribute name="relationshipDefinition" value="#{cc.attrs.relationshipDefinition}"  />
                     <!-- Parámetros del validador -->
                     <f:attribute name="helperTableRecord" value="#{conceptBean.selectedHelperTableRecord}"  />
                     <!---->
@@ -85,14 +87,17 @@
                                     placeholder="#{cc.attrs.relationshipDefinition.name}..."
                                     converter="helperTableRecordConverter"
                                     validator="#{validatorBean.validateRequiredRecordSelect}"
+                                    disabled="#{not cc.attrs.concept.editable}"
                                     value="#{relationship.target}"
                                     itemLabel="#{record.fields['description']}"
                                     itemValue="#{record}">
                         <!-- Parámetros del buscador -->
                         <f:attribute name="helperTable" value="#{cc.attrs.relationshipDefinition.targetDefinition}"  />
+                        <f:attribute name="relationshipDefinition" value="#{cc.attrs.relationshipDefinition}"  />
                         <!-- Parámetros del validador -->
-                        <f:attribute name="helperTableRecord" value="#{conceptBean.selectedHelperTableRecord}"  />
+                        <f:attribute name="helperTableRecord" value="#{relationship.target}"  />
                         <!---->
+
                         <p:column>
                             <h:outputText value="#{record.fields['description']}"/>
                         </p:column>
@@ -131,11 +136,13 @@
                                 placeholder="#{cc.attrs.relationshipDefinition.name}..."
                                 converter="helperTableRecordConverter"
                                 validator="#{validatorBean.validateRequiredRecordSelect}"
+                                disabled="#{not cc.attrs.concept.editable}"
                                 value="#{conceptBean.selectedHelperTableRecord}"
                                 itemLabel="#{record.fields['description']}"
                                 itemValue="#{record}">
                     <!-- Parámetros del buscador -->
                     <f:attribute name="helperTable" value="#{cc.attrs.relationshipDefinition.targetDefinition}"  />
+                    <f:attribute name="relationshipDefinition" value="#{cc.attrs.relationshipDefinition}"  />
                     <!-- Parámetros del validador -->
                     <f:attribute name="helperTableRecord" value="#{conceptBean.selectedHelperTableRecord}"  />
                     <!---->
@@ -197,10 +204,12 @@
                                     placeholder="#{cc.attrs.relationshipDefinition.name}..."
                                     converter="helperTableRecordConverter"
                                     value="#{relationship.target}"
+                                    disabled="#{not cc.attrs.concept.editable}"
                                     itemLabel="#{record.fields['description']}"
                                     itemValue="#{record}">
                         <!-- Parámetros del buscador -->
                         <f:attribute name="helperTable" value="#{cc.attrs.relationshipDefinition.targetDefinition}"  />
+                        <f:attribute name="relationshipDefinition" value="#{cc.attrs.relationshipDefinition}"  />
                         <!-- Parámetros del validador -->
                         <f:attribute name="helperTableRecord" value="#{conceptBean.selectedHelperTableRecord}"  />
                         <!---->
@@ -256,11 +265,14 @@
                                 styleClass="fragments"
                                 inputStyle="width: 90%;"
                                 completeMethod="#{helperTableBean.getRecordSearchInput}"
-                                dropdown="true"
+                                dropdown="#{not cc.attrs.relationshipDefinition.isISP()}"
+                                queryDelay="#{cc.attrs.relationshipDefinition.isISP()? 1000 : 0}"
+                                minQueryLength="#{cc.attrs.relationshipDefinition.isISP()? 3 : 0}"
                                 forceSelection="true"
                                 var="helperTableRecord"
                                 placeholder="#{cc.attrs.relationshipDefinition.name}..."
                                 converter="helperTableRecordConverter"
+                                rendered="#{cc.attrs.concept.editable}"
                                 disabled="#{cc.attrs.relationshipDefinition.multiplicity.isUpperBoundaryReached(cc.attrs.concept.getRelationshipsByRelationDefinition(cc.attrs.relationshipDefinition).size())}"
                                 value="#{conceptBean.selectedHelperTableRecord}"
                                 itemLabel="#{helperTableRecord.fields['description']}"
@@ -268,6 +280,7 @@
 
                     <!-- Parámetros del buscador -->
                     <f:attribute name="helperTable" value="#{cc.attrs.relationshipDefinition.targetDefinition}"  />
+                    <f:attribute name="relationshipDefinition" value="#{cc.attrs.relationshipDefinition}"  />
                     <!-- Parámetros del validador -->
                     <f:attribute name="helperTableRecord" value="#{conceptBean.selectedHelperTableRecord}"  />
                     <!---->
@@ -297,13 +310,13 @@
                     <p:columns value="#{cc.attrs.targetDefinition.showableColumns}"
                                var="column"
                                columnIndexVar="colIndex"
-                               rendered="#{column.columnName!='id'}">
+                               >
                         <f:facet name="header">
                             <h:outputText value="#{column.columnName}" />
                         </f:facet>
                         <h:outputText value="#{relationship.target.fields.get(column.columnName)}" />
                     </p:columns>
-                    <p:column style="width: 4%">
+                    <p:column style="width: 4%" rendered="#{cc.attrs.concept.editable}">
                         <p:commandButton
                                 icon="fa fa-trash"
                                 title="Eliminar"
@@ -331,18 +344,19 @@
 
         <div class="ui-g">
 
-            <p:panel id="attrs" styleClass="attributes_#{cc.attrs.relationshipDefinition.id}" style="width:100%">
+            <p:panel id="attrs" styleClass="attributes_#{cc.attrs.relationshipDefinition.id}" rendered="#{cc.attrs.concept.editable}" style="width:100%">
 
                 <p:growl id="growl" showDetail="true" showSummary="true"/>
 
                 <div class="ui-g-12 ui-md-6 ui-lg-2">
 
                     <p:autoComplete id="findHTRecords6" scrollHeight="200" style="width: 90%;"
-                                    styleClass="fragments"
                                     inputStyle="width: 90%;"
                                     completeMethod="#{helperTableBean.getRecordSearchInput}"
                                     var="record"
-                                    dropdown="true"
+                                    dropdown="#{not cc.attrs.relationshipDefinition.isISP()}"
+                                    queryDelay="#{cc.attrs.relationshipDefinition.isISP()? 1000 : 0}"
+                                    minQueryLength="#{cc.attrs.relationshipDefinition.isISP()? 3 : 0}"
                                     forceSelection="true"
                                     placeholder="#{cc.attrs.relationshipDefinition.name}..."
                                     converter="helperTableRecordConverter"
@@ -352,6 +366,7 @@
                     >
                         <!-- Parámetros del buscador -->
                         <f:attribute name="helperTable" value="#{cc.attrs.relationshipDefinition.targetDefinition}"  />
+                        <f:attribute name="relationshipDefinition" value="#{cc.attrs.relationshipDefinition}"  />
                         <!-- Parámetros del validador -->
                         <f:attribute name="helperTableRecord" value="#{conceptBean.selectedHelperTableRecord}"  />
                         <!---->
@@ -379,7 +394,7 @@
                     <smtk:basicTypeAttribute relationshipDefinition="#{cc.attrs.relationshipDefinition}"
                                              relationshipAttributeDefinition="#{relationshipAttributeDefinition}"
                                              targetDefinition="#{relationshipAttributeDefinition.targetDefinition}"
-                                             rendered="#{relationshipAttributeDefinition.targetDefinition.basicType}"
+                                             rendered="#{relationshipAttributeDefinition.targetDefinition.basicType and not relationshipAttributeDefinition.isOrderAttribute()}"
                     />
                     <smtk:helperTableTypeAttribute relationshipDefinition="#{cc.attrs.relationshipDefinition}"
                                                    relationshipAttributeDefinition="#{relationshipAttributeDefinition}"
@@ -392,7 +407,7 @@
                     <p:commandButton
                             process="@(.attributes_#{cc.attrs.relationshipDefinition.id})"
                             action="#{conceptBean.addRelationshipWithAttributes(cc.attrs.relationshipDefinition)}"
-                            update="@(.relationshipsWithAttributes_#{cc.attrs.relationshipDefinition.id}),@(.attributes_#{cc.attrs.relationshipDefinition.id})"
+                            update="@(.relationshipsWithAttributes_#{cc.attrs.relationshipDefinition.id}),@(.attributes_#{cc.attrs.relationshipDefinition.id}),@(.conceptHeader)"
                             value="Agregar">
                     </p:commandButton>
                 </div>
@@ -406,15 +421,25 @@
             <p:spacer />
             <p:dataTable id="collectionValuesWithAttributes"
                          styleClass="relationshipsWithAttributes_#{cc.attrs.relationshipDefinition.id}"
+                         draggableRows="#{cc.attrs.relationshipDefinition.getOrderAttributeDefinition() != null}"
                          var="relationship"
                          value="#{cc.attrs.concept.getValidRelationshipsWebByRelationDefinition(cc.attrs.relationshipDefinition)}"
                          style="width: 100%"
                          reflow="true">
 
+                <!-- Parámetros del validador -->
+                <f:attribute name="relationshipDefinition" value="#{cc.attrs.relationshipDefinition}"  />
+                <!---->
+
+                <p:ajax event="rowReorder" listener="#{conceptBean.onRowReorder}"
+                        update="@(.conceptHeader),@(.relationshipsWithAttributes_#{cc.attrs.relationshipDefinition.id})">
+
+                </p:ajax>
+
                 <p:columns value="#{cc.attrs.targetDefinition.showableColumns}"
                            var="column"
                            columnIndexVar="colIndex"
-                           rendered="#{column.columnName!='id'}">
+                           >
                     <f:facet name="header">
                         <h:outputText value="#{column.columnName}" />
                     </f:facet>
@@ -427,11 +452,11 @@
                     <f:facet name="header">
                         <h:outputText value="#{attribute.name}" />
                     </f:facet>
-                    <h:outputText rendered="#{attribute.targetDefinition.basicType}" value="#{relationship.relationshipAttributes.get(colIndex).target}" />
-                    <h:outputText rendered="#{attribute.targetDefinition.helperTable}" value="#{relationship.relationshipAttributes.get(colIndex).target.fields['description']}" />
+                    <smtk:basicTypeAttributeCell attribute="#{attribute}" relationship="#{relationship}" rendered="#{attribute.targetDefinition.basicType}" />
+                    <smtk:helperTableTypeAttributeCell attribute="#{attribute}" relationship="#{relationship}" rendered="#{attribute.targetDefinition.helperTable}" />
                 </p:columns>
 
-                <p:column style="width: 4%">
+                <p:column style="width: 4%" rendered="#{cc.attrs.concept.editable}">
                     <p:commandButton
                             icon="fa fa-trash"
                             title="Eliminar"
@@ -447,5 +472,17 @@
         </div>
     </p:panel>
 
+    <script type="text/javascript">
+        /*
+        $(document).on("change keyup input", "select[id$=tagSemantikos_input]", function (event) {
+            $("input[id$=FSN]").trigger("change");
+        });
+
+        $(document).on("change keyup input", "input[id$=favorite]", function (event) {
+            $("input[id$=FSN]").val($(this).val());
+            $("input[id$=FSN]").trigger("change");
+        });
+        */
+    </script>
 </composite:implementation>
 </html>

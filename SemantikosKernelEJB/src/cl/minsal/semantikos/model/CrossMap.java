@@ -30,4 +30,11 @@ public class CrossMap extends Relationship implements Target {
     public TargetType getTargetType() {
         return TargetType.CrossMap;
     }
+
+    @Override
+    public Target copy() {
+        return new CrossMap(this.getSourceConcept(), this.getTarget(), this.getRelationshipDefinition());
+    }
+
+
 }

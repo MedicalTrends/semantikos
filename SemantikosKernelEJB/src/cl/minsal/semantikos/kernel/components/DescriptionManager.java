@@ -14,8 +14,8 @@ public interface DescriptionManager {
 
     /**
      * Este método es responsable de crear en el repositorio terminológico una nueva descripción.
+     *
      * @param description La descripción que se desea crear.
-     * @param editionMode
      * @param user        El usuario que realiza la acción.
      */
     public void createDescription(Description description, boolean editionMode, User user);
@@ -37,9 +37,9 @@ public interface DescriptionManager {
      *
      * @param concept     El concepto al cual se agrega la descripción.
      * @param description La descripción que será asociada al concepto. Esta puede o no estar persistida.
-     * @param editionMode
-     *@param user        El usuario que agrega el término
-     *  @return La descripción creada a partir del término dado.
+     * @param user        El usuario que agrega el término
+     *
+     * @return La descripción creada a partir del término dado.
      */
     public Description bindDescriptionToConcept(ConceptSMTK concept, Description description, boolean editionMode, User user);
 
@@ -66,7 +66,8 @@ public interface DescriptionManager {
 
     /**
      * Este método es responsable de eliminar lógicamente una descripción.
-     *  @param description La descripción que se desea eliminar.
+     *
+     * @param description La descripción que se desea eliminar.
      * @param user        El usuario que realiza la eliminación.
      */
     public void deleteDescription(Description description, User user);
@@ -75,11 +76,11 @@ public interface DescriptionManager {
      * Este método es responsable de mover una descripción (<code>description</code>) asociada a un concepto
      * (<code>sourceConcept</code>) a otro concepto (<code>targetConcept</code>)
      *
-     * @param targetConcept El concepto al cual se quiere mover la descripción.
+     * @param sourceConcept Concepto que contiene a la descripcion.
      * @param description   La descripción que se desea trasladar.
      * @param user          El usuario que realiza el traslado.
      */
-    public void moveDescriptionToConcept(ConceptSMTK targetConcept, Description description, User user);
+    public void moveDescriptionToConcept(ConceptSMTK sourceConcept, Description description, User user);
 
     public String getIdDescription(String tipoDescription);
 
@@ -122,4 +123,15 @@ public interface DescriptionManager {
      * @return Todas las descripciones que poseen exactamente el término <code>term</code>.
      */
     public List<Description> searchDescriptionsByTerm(String term, List<Category> categories);
+
+    /**
+     * Este método es responsable de hacer que una descripción sea no válida en el sistema.
+     *
+     * @param noValidDescription La descripción no válida con su observación y conceptos sugeridos.
+     * @param user               El usuario que realiza la acción.
+     */
+    public void invalidateDescription(ConceptSMTK conceptSMTK, NoValidDescription noValidDescription, User user);
+
+
+    public List<ObservationNoValid> getObservationsNoValid();
 }

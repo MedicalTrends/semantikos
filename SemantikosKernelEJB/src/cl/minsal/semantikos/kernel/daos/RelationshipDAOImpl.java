@@ -101,7 +101,7 @@ public class RelationshipDAOImpl implements RelationshipDAO {
     public void delete(Relationship relationship) {
 
         ConnectionBD connect = new ConnectionBD();
-        String sql = "{call semantikos.update_relationship(?)}";
+        String sql = "{call semantikos.invalidate_relationship(?)}";
 
         try (Connection connection = connect.getConnection();
              CallableStatement call = connection.prepareCall(sql)) {
@@ -123,7 +123,7 @@ public class RelationshipDAOImpl implements RelationshipDAO {
 
             call.setLong(1, relationship.getId());
             call.setLong(2, relationship.getSourceConcept().getId());
-            call.setLong(3, relationship.getTarget().getId());
+            call.setLong(3, getTargetByRelationship(relationship));
             call.setLong(4, relationship.getRelationshipDefinition().getId());
             call.setTimestamp(5, relationship.getValidityUntil());
             call.execute();
@@ -297,5 +297,32 @@ public class RelationshipDAOImpl implements RelationshipDAO {
         return relationshipFactory.createRelationshipsFromJSON(resultJSON);
     }
 
+    @Override
+    public Long getTargetByRelationship(Relationship relationship) {
+
+        ConnectionBD connect = new ConnectionBD();
+        String sql = "{call semantikos.get_id_target_by_id_relationship(?)}";
+        Long result;
+        try (Connection connection = connect.getConnection();
+             CallableStatement call = connection.prepareCall(sql)) {
+
+            call.setLong(1, relationship.getId());
+            call.execute();
+
+            ResultSet rs = call.getResultSet();
+            if (rs.next()) {
+                result = rs.getLong(1);
+            } else {
+                String errorMsg = "No se obtuvo respuesta desde la base de datos.";
+                logger.error(errorMsg);
+                throw new IllegalArgumentException(errorMsg);
+            }
+            rs.close();
+        } catch (SQLException e) {
+            throw new EJBException(e);
+        }
+
+        return result;
+    }
 }
 

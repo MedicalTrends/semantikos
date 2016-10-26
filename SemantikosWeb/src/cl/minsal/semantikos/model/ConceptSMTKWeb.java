@@ -1,12 +1,15 @@
 package cl.minsal.semantikos.model;
 
+import cl.minsal.semantikos.model.basictypes.BasicTypeValue;
 import cl.minsal.semantikos.model.exceptions.BusinessRuleException;
 import cl.minsal.semantikos.model.relationships.Relationship;
-import cl.minsal.semantikos.model.relationships.RelationshipAttributeDefinition;
+import cl.minsal.semantikos.model.relationships.RelationshipAttribute;
 import cl.minsal.semantikos.model.relationships.RelationshipDefinition;
+import cl.minsal.semantikos.model.relationships.RelationshipDefinitionWeb;
 import cl.minsal.semantikos.util.Pair;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -24,6 +27,9 @@ public class ConceptSMTKWeb extends ConceptSMTK {
     List<RelationshipWeb> relationshipsWeb = new ArrayList<RelationshipWeb>();
 
 
+    boolean editable = false;
+
+
     //Este es el constructor mínimo
     public ConceptSMTKWeb(ConceptSMTK conceptSMTK) {
 
@@ -39,7 +45,7 @@ public class ConceptSMTKWeb extends ConceptSMTK {
                 addDescriptionWeb(new DescriptionWeb(this, description.getId(), description));
             // Si el concepto esta persistido clonar las relaciones con su id
             for (Relationship relationship : conceptSMTK.getValidRelationships())
-                addRelationshipWeb(new RelationshipWeb(relationship.getId(), relationship));
+                addRelationshipWeb(new RelationshipWeb(this, relationship.getId(), relationship, relationship.getRelationshipAttributes()));
             for (Tag tag: conceptSMTK.getTags()) {
                 addTag(tag);
             }
@@ -145,31 +151,6 @@ public class ConceptSMTKWeb extends ConceptSMTK {
         return otherDescriptions;
     }
 
-
-    /**
-     * Este metodo revisa que las relaciones cumplan el lower_boundary del
-     * relationship definition, en caso de no cumplir la condicion se retorna falso.
-     *
-     * @return
-     */
-    public boolean isValid() {
-
-        for (RelationshipDefinition relationshipDef : this.getCategory().getRelationshipDefinitions()) {
-
-            List<Relationship> relationships = this.getValidRelationshipsByRelationDefinition(relationshipDef);
-
-            if (relationships.size() < relationshipDef.getMultiplicity().getLowerBoundary())
-                return false;
-            /*
-            for (Relationship relationship : relationships) {
-                if(relationship.getTarget().)
-            }
-            */
-        }
-
-        return true;
-    }
-
     /**
      * Este método determina si existen instancias de relaciones asociadas a una definición de relación
      *
@@ -204,6 +185,7 @@ public class ConceptSMTKWeb extends ConceptSMTK {
                 someRelationships.add(relationship);
             }
         }
+        Collections.sort(someRelationships);
         return someRelationships;
     }
 
@@ -233,12 +215,9 @@ public class ConceptSMTKWeb extends ConceptSMTK {
      *
      * @param relationship La relación que es agregada.
      */
-    public void addRelationshipWeb(Relationship relationship) {
-        super.addRelationship(relationship);
-        if(relationship.isPersistent())
-            this.relationshipsWeb.add(new RelationshipWeb(relationship.getId(), relationship));
-        else
-            this.relationshipsWeb.add(new RelationshipWeb(relationship));
+    public void addRelationshipWeb(RelationshipWeb relationship) {
+        this.addRelationship(relationship);
+        this.relationshipsWeb.add(relationship);
     }
 
     /**
@@ -267,6 +246,20 @@ public class ConceptSMTKWeb extends ConceptSMTK {
         this.descriptionsWeb.add(descriptionWeb);
     }
 
+    public void initRelationship(RelationshipDefinitionWeb relationshipDefinitionWeb){
+        for (RelationshipWeb relationshipWeb : getValidRelationshipsWebByRelationDefinition(relationshipDefinitionWeb)) {
+            relationshipWeb.setTarget(relationshipDefinitionWeb.getDefaultValue());
+        }
+    }
+
+    public boolean isEditable() {
+        return editable;
+    }
+
+    public void setEditable(boolean editable) {
+        this.editable = editable;
+    }
+
     /**
      * Este método es responsable de remover una relación a un concepto.
      *
@@ -274,7 +267,7 @@ public class ConceptSMTKWeb extends ConceptSMTK {
      */
     public void removeRelationshipWeb(Relationship relationship) {
         this.getRelationships().remove(relationship);
-        this.relationshipsWeb.remove(new RelationshipWeb(relationship.getId(), relationship));
+        this.relationshipsWeb.remove(relationship);
     }
 
 
@@ -461,6 +454,31 @@ public class ConceptSMTKWeb extends ConceptSMTK {
         }
 
         //TODO: Hacer lo mismo para las relaciones y presumiblemente tambien para los tags
+    }
+
+    /**
+     * Este método es responsable de obtener el atributo orden, dada la definicion de relacion y el orden en cuestion
+     * @param order
+     * @return
+     */
+    public RelationshipAttribute getAttributeOrder(RelationshipDefinition relationshipDefinition, int order){
+
+        for (RelationshipWeb relationshipWeb : getValidRelationshipsWebByRelationDefinition(relationshipDefinition)) {
+            if(relationshipWeb.getRelationshipDefinition().getOrderAttributeDefinition() != null){
+                for (RelationshipAttribute attribute : relationshipWeb.getRelationshipAttributes()) {
+                    if(attribute.getRelationAttributeDefinition().isOrderAttribute()){
+                        BasicTypeValue basicTypeValue = (BasicTypeValue) attribute.getTarget();
+                        if(basicTypeValue.getValue().equals(new Integer(order)))
+                            return attribute;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    public boolean isMultiplicitySatisfied(RelationshipDefinition relationshipDefinition){
+        return this.getValidRelationshipsWebByRelationDefinition(relationshipDefinition).size()>=relationshipDefinition.getMultiplicity().getLowerBoundary();
     }
 
 }

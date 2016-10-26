@@ -15,6 +15,12 @@ public class RelationshipDefinitionWeb extends RelationshipDefinition implements
     /** Establece el orden o posición */
     private int order;
 
+    /** Establece el estilo para el estado de error */
+    private boolean isMultiplicitySatisfied = true;
+
+    /** Establece el valor por defecto para esta definición */
+    private Target defaultValue;
+
     public RelationshipDefinitionWeb(long id, String name, String description, TargetDefinition targetDefinition, Multiplicity multiplicity, long compositeID, int order) {
         super(id, name, description, targetDefinition, multiplicity);
 
@@ -30,8 +36,31 @@ public class RelationshipDefinitionWeb extends RelationshipDefinition implements
         return order;
     }
 
+
+    public Target getDefaultValue() {
+        return defaultValue;
+    }
+
+    public void setDefaultValue(Target defaultValue) {
+        this.defaultValue = defaultValue;
+    }
+
+    public boolean hasDefaultValue(){
+        return getDefaultValue()!=null;
+    }
+
+    public boolean isMultiplicitySatisfied() {
+        return isMultiplicitySatisfied;
+    }
+
+    public void setMultiplicitySatisfied(boolean multiplicitySatisfied) {
+        isMultiplicitySatisfied = multiplicitySatisfied;
+    }
+
+
     @Override
     public int compareTo(@NotNull RelationshipDefinitionWeb relationshipDefinitionWeb) {
         return this.order - relationshipDefinitionWeb.order;
     }
+
 }

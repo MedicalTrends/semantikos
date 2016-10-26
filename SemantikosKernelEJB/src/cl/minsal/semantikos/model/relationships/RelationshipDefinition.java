@@ -175,4 +175,17 @@ public class RelationshipDefinition {
     public boolean isAttribute() {
         return targetDefinition.isBasicType() || targetDefinition.isCrossMapType() || targetDefinition.isHelperTable() || targetDefinition.isSMTKType();
     }
+
+    public RelationshipAttributeDefinition getOrderAttributeDefinition(){
+        for (RelationshipAttributeDefinition relationshipAttributeDefinition : getRelationshipAttributeDefinitions()) {
+            if(relationshipAttributeDefinition.isOrderAttribute()){
+                return relationshipAttributeDefinition;
+            }
+        }
+        return null;
+    }
+
+    public boolean isISP(){
+        return this.getName().equalsIgnoreCase("ISP");
+    }
 }

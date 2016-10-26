@@ -57,4 +57,22 @@ public class RelationshipAttributeDefinition {
     public void setMultiplicity(Multiplicity multiplicity) {
         this.multiplicity = multiplicity;
     }
+
+    public boolean isOrderAttribute(){
+        return this.getName().equalsIgnoreCase("orden");
+    }
+
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        RelationshipAttributeDefinition that = (RelationshipAttributeDefinition) o;
+
+        return (id == that.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return new Long(id).hashCode();
+    }
 }

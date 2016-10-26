@@ -3,6 +3,7 @@ package cl.minsal.semantikos.kernel.components;
 import cl.minsal.semantikos.kernel.daos.ConceptDAO;
 import cl.minsal.semantikos.kernel.daos.RelationshipAttributeDAO;
 import cl.minsal.semantikos.kernel.daos.RelationshipDAO;
+import cl.minsal.semantikos.kernel.daos.TargetDAO;
 import cl.minsal.semantikos.model.ConceptSMTK;
 import cl.minsal.semantikos.model.User;
 import cl.minsal.semantikos.model.businessrules.ConceptCreationBR;
@@ -37,6 +38,9 @@ public class RelationshipManagerImpl implements RelationshipManager {
     private ConceptDAO conceptDAO;
 
     @EJB
+    private TargetDAO targetDAO;
+
+    @EJB
     private AuditManager auditManager;
 
     @EJB
@@ -49,9 +53,9 @@ public class RelationshipManagerImpl implements RelationshipManager {
         new RelationshipBindingBR().verifyPreConditions(concept, relationship, user);
 
         /* Se hace la relación a nivel del modelo */
-        if (!concept.getRelationships().contains(relationship)) {
-            concept.addRelationship(relationship);
-        }
+        //if (!concept.getRelationships().contains(relationship)) {
+            //concept.addRelationship(relationship);
+        //}
 
         /* Se asegura la persistencia de la entidad */
         assurePersistence(concept, relationship, user);
@@ -90,11 +94,13 @@ public class RelationshipManagerImpl implements RelationshipManager {
 
             /* Se validan las reglas de negocio */
             new ConceptCreationBR().apply(concept, user);
+
             relationshipDAO.persist(relationship);
 
-            /* Se registra en el historial si el concepto fuente de la relación está modelado */
-            if (relationship.getSourceConcept().isModeled()) {
-                auditManager.recordRelationshipCreation(relationship, user);
+            /* Se persisten los atributos */
+            for(RelationshipAttribute relationshipAttribute: relationship.getRelationshipAttributes()){
+                relationshipAttribute.setRelationship(relationship);
+                relationshipAttributeDAO.createRelationshipAttribute(relationshipAttribute);
             }
         }
     }
@@ -146,12 +152,25 @@ public class RelationshipManagerImpl implements RelationshipManager {
             mergeRelationship(originalRelationship, editedRelationship);
 
             /* Si el concepto editado está persistido se elimina */
+            /*
             if (editedRelationship.isPersistent()){
                 relationshipDAO.delete(editedRelationship);
             }
+            */
 
             /* Se actualiza la relación original */
             relationshipDAO.update(originalRelationship);
+
+            targetDAO.update(editedRelationship);
+
+            /* Se actualizan los atributos */
+
+            for (RelationshipAttribute attribute : editedRelationship.getRelationshipAttributes()) {
+                relationshipAttributeDAO.update(attribute);
+
+                targetDAO.update(attribute);
+            }
+
         }
 
         /* Si el concepto está modelado, se versiona y actualiza */
@@ -170,7 +189,7 @@ public class RelationshipManagerImpl implements RelationshipManager {
         }
 
         /* Registrar en el Historial si es preferida (Historial BR) */
-        if (editedRelationship.isAttribute()) {
+        if (editedRelationship.isAttribute() && editedRelationship.getSourceConcept().isModeled()) {
             auditManager.recordAttributeChange(conceptSMTK, originalRelationship, user);
         }
     }

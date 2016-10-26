@@ -648,6 +648,27 @@ public class ConceptDAOImpl implements ConceptDAO {
     }
 
     @Override
+    public void forcedModeledConcept(Long idConcept) {
+
+        logger.info("Pasando a modelado el concepto de ID=" + idConcept);
+        ConnectionBD connect = new ConnectionBD();
+
+        try (Connection connection = connect.getConnection();
+             CallableStatement call = connection.prepareCall("{call semantikos.force_modeled_concept(?)}")) {
+
+            call.setLong(1, idConcept);
+            call.execute();
+        } catch (SQLException e) {
+            logger.error("Error al tratar de modelar un concepto.", e);
+        }
+    }
+
+    @Override
+    public ConceptSMTK getNoValidConcept() {
+        return getConceptByID(81223);
+    }
+
+    @Override
     public List<ConceptSMTK> findConceptsByTargetConcept(long idConcept) {
         //TODO: Terminar esto.
         return null;

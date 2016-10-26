@@ -343,7 +343,7 @@ public class ConceptManagerImpl implements ConceptManager {
 
     @Override
     public String generateConceptId() {
-        return UUID.randomUUID().toString();
+        return UUID.randomUUID().toString().substring(0, 10);
     }
 
     @Override
@@ -366,6 +366,11 @@ public class ConceptManagerImpl implements ConceptManager {
     @Override
     public List<ConceptSMTK> findConceptsByTargetConcept(ConceptSMTK conceptSMTK) {
         return conceptDAO.findConceptsByTargetConcept(conceptSMTK.getId());
+    }
+
+    @Override
+    public ConceptSMTK getNoValidConcept() {
+        return conceptDAO.getNoValidConcept();
     }
 
 
