@@ -41,4 +41,6 @@ public interface SnomedCTManager {
      * @return La lista de conceptos que satisfacen el criterio de búsqueda.
      */
     public List<ConceptSCT> findConceptsBy(String patron);
+
+
 }

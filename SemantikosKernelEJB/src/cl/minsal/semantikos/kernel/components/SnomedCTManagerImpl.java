@@ -45,7 +45,7 @@ public class SnomedCTManagerImpl implements SnomedCTManager {
         List<ConceptSCT> concepts = new ArrayList<>();
         ConnectionBD connect = new ConnectionBD();
         try (Connection connection = connect.getConnection();
-             CallableStatement call = connection.prepareCall("{call semantikos.find_cst_by_pattern(?)}")) {
+             CallableStatement call = connection.prepareCall("{call semantikos.find_sct_by_pattern(?)}")) {
 
             call.setString(1, pattern);
             call.execute();

@@ -72,6 +72,14 @@ public class SCTTypeBean implements Serializable {
         return cstManager.findConceptsBy(patron);
     }
 
+    public SnomedCTManager getCstManager() {
+        return cstManager;
+    }
+
+    public void setCstManager(SnomedCTManager cstManager) {
+        this.cstManager = cstManager;
+    }
+
     @PostConstruct
     public void init() {
     }

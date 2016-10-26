@@ -87,6 +87,12 @@
                                                 concept="#{conceptBean.concept}"
                                                 rendered="#{relationshipDefinition.targetDefinition.basicType}"/>
 
+                                        <smtk:sctType
+                                                targetDefinition="#{relationshipDefinition.targetDefinition}"
+                                                relationshipDefinition="#{relationshipDefinition}"
+                                                concept="#{conceptBean.concept}"
+                                                rendered="#{relationshipDefinition.targetDefinition.snomedCTType}"/>
+
                                     </p:outputPanel>
 
                                 </h:column>
