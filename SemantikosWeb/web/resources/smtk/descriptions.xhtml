@@ -24,7 +24,7 @@
         <p:growl id="growl" showDetail="true" showSummary="true"/>
         <p:growl id="editMsgs" showDetail="true"/>
 
-        <p:fieldset legend="Agregar descripción" toggleable="true" collapsed="true">
+        <p:fieldset legend="Agregar descripción" toggleable="true" collapsed="true" rendered="#{cc.attrs.editable}">
             <div class="ui-g">
                 <div class="ui-g-12 ui-md-6 ui-lg-1">
                     <p:outputLabel for="otherTermino" value="Término"/>
@@ -149,7 +149,7 @@
                     </div>
                 </p:column>
 
-                <p:column headerText="Acción" style="width: 6%">
+                <p:column headerText="Acción" style="width: 6%" rendered="#{cc.attrs.editable}">
                     <p:commandLink actionListener="#{conceptBean.removeDescription(description)}"
                                    ajax="true"
                                    process="@this"
