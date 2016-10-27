@@ -50,6 +50,11 @@ public class SnomedCTManagerImpl implements SnomedCTManager {
     }
 
     @Override
+    public List<ConceptSCT> findConceptsByConceptID(long conceptIdPattern) {
+        return snomedctDAO.findConceptsByConceptID(conceptIdPattern);
+    }
+
+    @Override
     public ConceptSCT getConceptByID(long conceptID) {
         return snomedctDAO.getConceptByID(conceptID);
     }
