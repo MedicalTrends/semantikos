@@ -305,21 +305,6 @@ public class ConceptSMTK extends PersistentEntity implements Target, AuditableEn
         this.relationshipsLoaded = true;
     }
 
-    @Override
-    public TargetType getTargetType() {
-        return TargetType.SMTK;
-    }
-
-    @Override
-    public Target copy() {
-        ConceptSMTK conceptSMTK = new ConceptSMTK(this.getCategory());
-        conceptSMTK.setId(this.getId());
-        conceptSMTK.setConceptID(this.getConceptID());
-        conceptSMTK.setDescriptions(this.getDescriptions());
-        conceptSMTK.setRelationships(this.relationships);
-        return conceptSMTK;
-    }
-
     public String getConceptID() {
         return conceptID;
     }
@@ -655,6 +640,21 @@ public class ConceptSMTK extends PersistentEntity implements Target, AuditableEn
         return (other instanceof ConceptSMTK) && (String.valueOf(conceptID) != null)
                 ? String.valueOf(conceptID).equals(String.valueOf(((ConceptSMTK) other).conceptID))
                 : (other == this);
+    }
+
+    @Override
+    public TargetType getTargetType() {
+        return TargetType.SMTK;
+    }
+
+    @Override
+    public Target copy() {
+        ConceptSMTK conceptSMTK = new ConceptSMTK(this.getCategory());
+        conceptSMTK.setId(this.getId());
+        conceptSMTK.setConceptID(this.getConceptID());
+        conceptSMTK.setDescriptions(this.getDescriptions());
+        conceptSMTK.setRelationships(this.relationships);
+        return conceptSMTK;
     }
 
 }

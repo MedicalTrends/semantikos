@@ -161,9 +161,12 @@ public class SnomedCTDAOImpl implements SnomedCTDAO {
          * Identifies whether the description is an FSN, Synonym or other description type.
          * This field is set to a child of 900000000000446008 | Description type | in the Metadata hierarchy.
          */
-        DescriptionSCTType type = typeID == 1 ? FSN : SYNONYM;
-
-        return new DescriptionSCT(id, type, effectiveTime, active, moduleID, conceptID, languageCode, term, caseSignificanceID);
+        try {
+            return new DescriptionSCT(id, DescriptionSCTType.valueOf(typeID), effectiveTime, active, moduleID, conceptID, languageCode, term, caseSignificanceID);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
 }

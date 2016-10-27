@@ -158,11 +158,11 @@ public class ConceptSCT extends PersistentEntity implements Target {
      *
      * @return La descripción del concepto.
      */
-    public String getDescriptionFSN() {
+    public DescriptionSCT getDescriptionFSN() {
 
         for (DescriptionSCT description : descriptions) {
             if (description.getDescriptionType().equals(FSN)) {
-                return description.getTerm();
+                return description;
             }
         }
 
@@ -179,7 +179,15 @@ public class ConceptSCT extends PersistentEntity implements Target {
 
     @Override
     public Target copy() {
-        return new ConceptSCT();
+        ConceptSCT conceptSCT = new ConceptSCT();
+        conceptSCT.setId(this.getId());
+        conceptSCT.setIdSnomedCT(this.idSnomedCT);
+        conceptSCT.setActive(this.isActive);
+        conceptSCT.setDefinitionStatusId(this.definitionStatusId);
+        conceptSCT.setEffectiveTime(this.effectiveTime);
+        conceptSCT.setModuleId(this.moduleId);
+        conceptSCT.setDescriptions(this.getDescriptions());
+        return conceptSCT;
     }
 
 }

@@ -526,9 +526,7 @@ public class ConceptBean implements Serializable {
             autogenerateRelationship(relationshipDefinition, relationship,target);
 
             // Se resetean los placeholder para los target de las relaciones
-            basicTypeValue = new BasicTypeValue(null);
-            selectedHelperTableRecord = new HelperTableRecord();
-            conceptSelected = null;
+            resetPlaceHolders();
         }
 
 
