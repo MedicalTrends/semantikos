@@ -15,7 +15,7 @@ begin
 	c.tag_semantikos,
 	c.color
     from semantikos.smtk_category c
-    where c.name=p_name;
+    where c.name ILIKE p_name;
 END;
 $BODY$
   LANGUAGE plpgsql VOLATILE

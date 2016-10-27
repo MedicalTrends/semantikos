@@ -120,6 +120,8 @@ public interface ConceptManager {
     @Deprecated
     public List<ConceptSMTK> findConceptBy(Category category, int pageNumber, int pageSize);
 
+    public List<ConceptSMTK> findModeledConceptBy(Category category, int pageSize, int pageNumber);
+
     /**
      * Método encargado de realizar la búsqueda de conceptos por patron, en caso de no encontrar un "Perfect Match" por
      * la cadena de texto entregada,
@@ -142,6 +144,8 @@ public interface ConceptManager {
      * @return retorna un entero con la cantidad
      */
     public int countConceptBy(String pattern, Long[] categories);
+
+    public int countModeledConceptBy(Category category);
 
     /**
      * Método encargado de generar el concept ID

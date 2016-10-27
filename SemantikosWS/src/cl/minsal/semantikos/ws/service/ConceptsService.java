@@ -1,6 +1,8 @@
 package cl.minsal.semantikos.ws.service;
 
+import cl.minsal.semantikos.kernel.components.CategoryManager;
 import cl.minsal.semantikos.kernel.components.ConceptManager;
+import cl.minsal.semantikos.kernel.components.DescriptionManager;
 import cl.minsal.semantikos.kernel.daos.CategoryDAO;
 import cl.minsal.semantikos.kernel.daos.ConceptDAO;
 import cl.minsal.semantikos.kernel.daos.DescriptionDAO;
@@ -32,9 +34,7 @@ import java.util.List;
 public class ConceptsService {
 
     @EJB
-    private ConceptDAO conceptDAO;
-    @EJB
-    private CategoryDAO categoryDAO;
+    private CategoryManager categoryManager;
     @EJB
     private DescriptionDAO descriptionDAO;
     @EJB
@@ -88,15 +88,16 @@ public class ConceptsService {
         Category category = null;
 
         try {
-            category = this.categoryDAO.getCategoryByName(categoryName);
+            category = this.categoryManager.getCategoryByName(categoryName);
         } catch (Exception ignored) {}
 
         if (category == null) {
             throw new NotFoundFault("No se encuentra la categoria");
         }
 
-        Integer total = this.conceptDAO.countModeledConceptBy(category.getId());
-        List<ConceptSMTK> concepts = this.conceptDAO.getModeledConceptBy(category.getId(), pageSize, pageNumber);
+
+        Integer total = this.conceptManager.countModeledConceptBy(category);
+        List<ConceptSMTK> concepts = this.conceptManager.findModeledConceptBy(category, pageSize, pageNumber);
 
         ConceptsByCategoryResponse res = new ConceptsByCategoryResponse();
 
