@@ -38,6 +38,8 @@ public class SCTTypeBean implements Serializable {
 
     private List<ConceptSMTK> conceptSel;
 
+    private String searchOption = "term";
+
     /**
      * Constructor por defecto para la inicialización de componentes.
      */
@@ -69,7 +71,17 @@ public class SCTTypeBean implements Serializable {
         }
 
         /* La búsqueda empieza aquí */
-        return cstManager.findConceptsBy(patron);
+        if(searchOption.equals("term"))
+            return cstManager.findConceptsBy(patron);
+        else{
+            try{
+                return cstManager.findConceptsByConceptID(Long.getLong(patron));
+            }
+            catch (NumberFormatException e){
+                return null;
+            }
+        }
+
     }
 
     public SnomedCTManager getCstManager() {
@@ -92,12 +104,12 @@ public class SCTTypeBean implements Serializable {
         this.pattern = pattern;
     }
 
-    public ConceptSCT getConceptSelected() {
-        return conceptSelected;
+    public String getSearchOption() {
+        return searchOption;
     }
 
-    public void setConceptSelected(ConceptSCT conceptSelected) {
-        this.conceptSelected = conceptSelected;
+    public void setSearchOption(String searchOption) {
+        this.searchOption = searchOption;
     }
 
 

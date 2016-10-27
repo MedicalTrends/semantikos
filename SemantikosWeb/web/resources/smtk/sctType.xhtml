@@ -118,11 +118,22 @@
 
                 <div class="ui-g-12 ui-md-6 ui-lg-2">
 
+                    <p:selectOneRadio id="searchOptions" value="#{sctBean.searchOption}" layout="grid" columns="2" >
+                        <f:selectItem itemLabel="Término" itemValue="term" />
+                        <f:selectItem itemLabel="ConceptId" itemValue="conceptId" />
+                    </p:selectOneRadio>
+
+                </div>
+
+
+                <div class="ui-g-12 ui-md-6 ui-lg-2">
+
                     <p:autoComplete emptyMessage="No se encontraron conceptos relacionados"
                                     forceSelection="true"
                                     id="findConceptSCT2" scrollHeight="200" size="5" style="width: 85%;"
                                     inputStyle="width: 85%;"
                                     completeMethod="#{sctBean.getConceptSearchInput}"
+                                    placeholder="#{sctBean.searchOption}..."
                                     converter="conceptSCTConverter"
                                     var="concept"
                                     value="#{conceptBean.conceptSCTSelected}"
@@ -148,6 +159,7 @@
                                 process="@this"/>
 
                         <f:attribute name="targetDef" value="#{cc.attrs.targetDefinition}" />
+
                     </p:autoComplete>
 
                 </div>
