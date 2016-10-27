@@ -428,6 +428,7 @@ public class ConceptBean implements Serializable {
         // Validar placeholders de targets de relacion
         if (relationship.getTarget() == null) {
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Debe seleccionar un valor para el atributo " + relationshipDefinition.getName()));
+            relationshipPlaceholders.put(relationshipDefinition.getId(), new Relationship(concept, null, relationshipDefinition, new ArrayList<RelationshipAttribute>()));
             resetPlaceHolders();
             return;
         }
@@ -435,6 +436,7 @@ public class ConceptBean implements Serializable {
         for (RelationshipAttributeDefinition attributeDefinition : relationshipDefinition.getRelationshipAttributeDefinitions()) {
             if(!attributeDefinition.isOrderAttribute() && !relationship.isMultiplicitySatisfied(attributeDefinition)) {
                 context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Debe seleccionar un valor para el atributo " + attributeDefinition.getName()));
+                relationshipPlaceholders.put(relationshipDefinition.getId(), new Relationship(concept, null, relationshipDefinition, new ArrayList<RelationshipAttribute>()));
                 resetPlaceHolders();
                 return;
             }
@@ -453,6 +455,7 @@ public class ConceptBean implements Serializable {
         relationshipPlaceholders.put(relationshipDefinition.getId(), new Relationship(concept, null, relationshipDefinition, new ArrayList<RelationshipAttribute>()));
         // Resetear placeholder targets
         resetPlaceHolders();
+
     }
 
     public void resetPlaceHolders(){
