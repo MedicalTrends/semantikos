@@ -25,7 +25,7 @@ public class FindSnomedCT {
     private List<ConceptSCT> conceptSCTs;
 
     public String getConcept(String pattern) {
-        this.conceptSCTs = snomedCTManager.findConceptsBy(pattern);
+        this.conceptSCTs = snomedCTManager.findConceptsByPattern(pattern);
 
         logger.info("Se encontraron " + this.conceptSCTs.size() + " conceptos SnomedCT");
         return "Todos";

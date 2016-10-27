@@ -1,18 +1,12 @@
 package cl.minsal.semantikos.kernel.components;
 
 import cl.minsal.semantikos.kernel.daos.SnomedCTDAO;
-import cl.minsal.semantikos.kernel.util.ConnectionBD;
-import cl.minsal.semantikos.model.Category;
-import cl.minsal.semantikos.model.ConceptSMTK;
-import cl.minsal.semantikos.model.Description;
-import cl.minsal.semantikos.model.TagSMTK;
 import cl.minsal.semantikos.model.snomedct.*;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
-import java.sql.*;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import static java.util.Collections.emptyList;
 
@@ -45,8 +39,13 @@ public class SnomedCTManagerImpl implements SnomedCTManager {
     }
 
     @Override
-    public List<ConceptSCT> findConceptsBy(String pattern) {
+    public List<ConceptSCT> findConceptsByPattern(String pattern) {
         return snomedctDAO.findConceptsBy(pattern);
+    }
+
+    @Override
+    public Map<DescriptionSCT, ConceptSCT> findDescriptionsByPattern(String patternID) {
+        return snomedctDAO.findDescriptionsByPattern(patternID);
     }
 
     @Override

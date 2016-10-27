@@ -11,7 +11,9 @@ import javax.ejb.EJBException;
 import javax.ejb.Stateless;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static cl.minsal.semantikos.model.snomedct.DescriptionSCTType.FSN;
 import static cl.minsal.semantikos.model.snomedct.DescriptionSCTType.SYNONYM;
@@ -103,6 +105,36 @@ public class SnomedCTDAOImpl implements SnomedCTDAO {
         }
 
         return conceptSCTs;
+    }
+
+    @Override
+    public Map<DescriptionSCT, ConceptSCT> findDescriptionsByPattern(String pattern) {
+
+        Map<DescriptionSCT, ConceptSCT> result = new HashMap<>();
+        ConnectionBD connect = new ConnectionBD();
+        try (Connection connection = connect.getConnection();
+             CallableStatement call = connection.prepareCall("{call semantikos.find_descriptions_sct_by_pattern(?)}")) {
+
+            call.setString(1, pattern);
+            call.execute();
+
+            ResultSet rs = call.getResultSet();
+            while (rs.next()) {
+                DescriptionSCT descriptionSCT = createDescriptionSCTFromResultSet(rs);
+                ConceptSCT conceptByID = this.getConceptByID(rs.getLong("conceptId"));
+
+                result.put(descriptionSCT, conceptByID);
+            }
+            rs.close();
+
+        } catch (SQLException e) {
+            String errorMsg = "Error al buscar conceptos SCT por Patrón de ID.";
+            logger.error(errorMsg);
+            throw new EJBException(errorMsg, e);
+        }
+
+        return result;
+
     }
 
     private ConceptSCT createConceptSCTFromResultSet(ResultSet resultSet) throws SQLException {

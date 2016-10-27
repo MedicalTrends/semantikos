@@ -69,7 +69,7 @@ public class SCTTypeBean implements Serializable {
         }
 
         /* La búsqueda empieza aquí */
-        return cstManager.findConceptsBy(patron);
+        return cstManager.findConceptsByPattern(patron);
     }
 
     @PostConstruct
