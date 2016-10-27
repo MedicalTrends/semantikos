@@ -983,20 +983,23 @@ public class ConceptBean implements Serializable {
         RelationshipDefinition relationshipDefinitionRowEdit = (RelationshipDefinition) UIComponent.getCurrentComponent(context).getAttributes().get("relationshipDefinitionRowEdit");
         List<Relationship> relationshipList = concept.getRelationshipsByRelationDefinition(relationshipDefinitionRowEdit);
 
-        if (relationshipDefinitionRowEdit.getId() == 45) {
-            autoGenerateList = newOrderList(autoGenerateList, event);
-            concept.getDescriptionFavorite().setTerm(autogenerate());
-            concept.getDescriptionFSN().setTerm(concept.getDescriptionFavorite().getTerm());
-        }
-        if (relationshipDefinitionRowEdit.getId() == 47) {
-            autogenerateMC.setSustancias(newOrderList(autogenerateMC.getSustancias(), event));
-            concept.getDescriptionFavorite().setTerm(autogenerateMC.toString());
-            concept.getDescriptionFSN().setTerm(concept.getDescriptionFavorite().getTerm());
-        }
-        if (relationshipDefinitionRowEdit.getId() == 58) {
-            autogenerateMC.setFfa(newOrderList(autogenerateMC.getFfa(), event));
-            concept.getDescriptionFavorite().setTerm(autogenerateMC.toString());
-            concept.getDescriptionFSN().setTerm(concept.getDescriptionFavorite().getTerm());
+        if(!concept.isPersistent()){
+
+            if (relationshipDefinitionRowEdit.getId() == 45) {
+                autoGenerateList = newOrderList(autoGenerateList, event);
+                concept.getDescriptionFavorite().setTerm(autogenerate());
+                concept.getDescriptionFSN().setTerm(concept.getDescriptionFavorite().getTerm());
+            }
+            if (relationshipDefinitionRowEdit.getId() == 47) {
+                autogenerateMC.setSustancias(newOrderList(autogenerateMC.getSustancias(), event));
+                concept.getDescriptionFavorite().setTerm(autogenerateMC.toString());
+                concept.getDescriptionFSN().setTerm(concept.getDescriptionFavorite().getTerm());
+            }
+            if (relationshipDefinitionRowEdit.getId() == 58) {
+                autogenerateMC.setFfa(newOrderList(autogenerateMC.getFfa(), event));
+                concept.getDescriptionFavorite().setTerm(autogenerateMC.toString());
+                concept.getDescriptionFSN().setTerm(concept.getDescriptionFavorite().getTerm());
+            }
         }
 
     }
@@ -1322,84 +1325,91 @@ public class ConceptBean implements Serializable {
     }
 
     public void autogenerateAttributeDefinition(RelationshipAttributeDefinition relationshipAttributeDefinition,Target target, RelationshipAttribute attribute){
-        if (relationshipAttributeDefinition.getId() == 16) {
-            autogenerateMCCE.setPackUnidad(((HelperTableRecord) target).getValueColumn("description"));
-            concept.getDescriptionFavorite().setTerm(autogenerateMCCE());
-            concept.getDescriptionFSN().setTerm(concept.getDescriptionFavorite().getTerm());
-        }
-        if (relationshipAttributeDefinition.getId() == 17) {
-            autogenerateMCCE.setVolumenUnidad(((HelperTableRecord) target).getValueColumn("description"));
-            concept.getDescriptionFavorite().setTerm(autogenerateMCCE());
-            concept.getDescriptionFSN().setTerm(concept.getDescriptionFavorite().getTerm());
-        }
-        if (relationshipAttributeDefinition.getId() == 12) {
-            autogenerateMC.setUnidadVolumen(attribute);
-            concept.getDescriptionFavorite().setTerm(autogenerateMC.toString());
-            concept.getDescriptionFSN().setTerm(concept.getDescriptionFavorite().getTerm());
-        }
-        if (relationshipAttributeDefinition.getId() == 15) {
-            autogenerateMCCE.setUnidadMedidaCantidad(((HelperTableRecord) target).getValueColumn("description"));
-            concept.getDescriptionFavorite().setTerm(autogenerateMCCE());
-            concept.getDescriptionFSN().setTerm(concept.getDescriptionFavorite().getTerm());
+        if(!concept.isPersistent()) {
+            if (relationshipAttributeDefinition.getId() == 16) {
+                autogenerateMCCE.setPackUnidad(((HelperTableRecord) target).getValueColumn("description"));
+                concept.getDescriptionFavorite().setTerm(autogenerateMCCE());
+                concept.getDescriptionFSN().setTerm(concept.getDescriptionFavorite().getTerm());
+            }
+            if (relationshipAttributeDefinition.getId() == 17) {
+                autogenerateMCCE.setVolumenUnidad(((HelperTableRecord) target).getValueColumn("description"));
+                concept.getDescriptionFavorite().setTerm(autogenerateMCCE());
+                concept.getDescriptionFSN().setTerm(concept.getDescriptionFavorite().getTerm());
+            }
+            if (relationshipAttributeDefinition.getId() == 12) {
+                autogenerateMC.setUnidadVolumen(attribute);
+                concept.getDescriptionFavorite().setTerm(autogenerateMC.toString());
+                concept.getDescriptionFSN().setTerm(concept.getDescriptionFavorite().getTerm());
+            }
+            if (relationshipAttributeDefinition.getId() == 15) {
+                autogenerateMCCE.setUnidadMedidaCantidad(((HelperTableRecord) target).getValueColumn("description"));
+                concept.getDescriptionFavorite().setTerm(autogenerateMCCE());
+                concept.getDescriptionFSN().setTerm(concept.getDescriptionFavorite().getTerm());
+            }
         }
     }
 
     public void autogenerateRelationshipWithAttributes(RelationshipDefinition relationshipDefinition, Relationship relationship){
-        if (relationshipDefinition.getId() == 45) {
-            autoGenerateList.add(((ConceptSMTK) relationship.getTarget()).getDescriptionFavorite().getTerm());
-            concept.getDescriptionFavorite().setTerm(autogenerate());
-            concept.getDescriptionFSN().setTerm(concept.getDescriptionFavorite().getTerm());
-        }
+        if(!concept.isPersistent()) {
+            if (relationshipDefinition.getId() == 45) {
+                autoGenerateList.add(((ConceptSMTK) relationship.getTarget()).getDescriptionFavorite().getTerm());
+                concept.getDescriptionFavorite().setTerm(autogenerate());
+                concept.getDescriptionFSN().setTerm(concept.getDescriptionFavorite().getTerm());
+            }
 
-        if (relationshipDefinition.getId() == 47) {
-            autogenerateMC.addSustancia(relationship);
-            concept.getDescriptionFavorite().setTerm(autogenerateMC.toString());
-            concept.getDescriptionFSN().setTerm(concept.getDescriptionFavorite().getTerm());
-        }
-        if (relationshipDefinition.getId() == 58) {
-            autogenerateMC.addFFA(relationship);
-            concept.getDescriptionFavorite().setTerm(autogenerateMC.toString());
-            concept.getDescriptionFSN().setTerm(concept.getDescriptionFavorite().getTerm());
+            if (relationshipDefinition.getId() == 47) {
+                autogenerateMC.addSustancia(relationship);
+                concept.getDescriptionFavorite().setTerm(autogenerateMC.toString());
+                concept.getDescriptionFSN().setTerm(concept.getDescriptionFavorite().getTerm());
+            }
+            if (relationshipDefinition.getId() == 58) {
+                autogenerateMC.addFFA(relationship);
+                concept.getDescriptionFavorite().setTerm(autogenerateMC.toString());
+                concept.getDescriptionFSN().setTerm(concept.getDescriptionFavorite().getTerm());
+            }
         }
     }
 
     public void autogenerateRelationship(RelationshipDefinition relationshipDefinition, Relationship relationship, Target target){
-        if (relationshipDefinition.getId() == 48) {
-            autogenerateMCCE.setMC(((ConceptSMTK) relationship.getTarget()).getDescriptionFavorite().getTerm());
-            concept.getDescriptionFavorite().setTerm(autogenerateMCCE());
-            concept.getDescriptionFSN().setTerm(concept.getDescriptionFavorite().getTerm());
-        }
-        if (relationshipDefinition.getId() == 92) {
-            autogenerateMCCE.setCantidad(relationship.getTarget().toString());
-            concept.getDescriptionFavorite().setTerm(autogenerateMCCE());
-            concept.getDescriptionFSN().setTerm(concept.getDescriptionFavorite().getTerm());
-        }
-        if (relationshipDefinition.getId() == 93) {
-            autogenerateMCCE.setVolumen(target.toString());
-            concept.getDescriptionFavorite().setTerm(autogenerateMCCE());
-            concept.getDescriptionFSN().setTerm(concept.getDescriptionFavorite().getTerm());
-        }
-        if (relationshipDefinition.getId() == 77) {
-            autogenerateMCCE.setPack(target.toString());
-            concept.getDescriptionFavorite().setTerm(autogenerateMCCE());
-            concept.getDescriptionFSN().setTerm(concept.getDescriptionFavorite().getTerm());
-        }
-        if (relationshipDefinition.getId() == 69) {
-            autogenerateMC.setVolumen(relationship);
-            concept.getDescriptionFavorite().setTerm(autogenerateMC.toString());
-            concept.getDescriptionFSN().setTerm(concept.getDescriptionFavorite().getTerm());
-        }
-        if (relationshipDefinition.getId() == 52) {
-            ConceptSMTK c = (ConceptSMTK) relationship.getTarget();
-            c.setRelationships(relationshipManager.getRelationshipsBySourceConcept(c));
-            autogeneratePCCE.autogeratePCCE((ConceptSMTK) relationship.getTarget());
-            concept.getDescriptionFavorite().setTerm(autogeneratePCCE.toString());
-            concept.getDescriptionFSN().setTerm(concept.getDescriptionFavorite().getTerm());
-        }
-        if (relationshipDefinition.getId() == 51) {
-            autogeneratePCCE.setPc(((ConceptSMTK) relationship.getTarget()).getDescriptionFavorite().getTerm());
-            concept.getDescriptionFavorite().setTerm(autogeneratePCCE.toString());
-            concept.getDescriptionFSN().setTerm(concept.getDescriptionFavorite().getTerm());
+        if(!concept.isPersistent()) {
+
+            if (relationshipDefinition.getId() == 48) {
+                autogenerateMCCE.setMC(((ConceptSMTK) relationship.getTarget()).getDescriptionFavorite().getTerm());
+                concept.getDescriptionFavorite().setTerm(autogenerateMCCE());
+                concept.getDescriptionFSN().setTerm(concept.getDescriptionFavorite().getTerm());
+            }
+            if (relationshipDefinition.getId() == 92) {
+                autogenerateMCCE.setCantidad(relationship.getTarget().toString());
+                concept.getDescriptionFavorite().setTerm(autogenerateMCCE());
+                concept.getDescriptionFSN().setTerm(concept.getDescriptionFavorite().getTerm());
+            }
+            if (relationshipDefinition.getId() == 93) {
+                autogenerateMCCE.setVolumen(target.toString());
+                concept.getDescriptionFavorite().setTerm(autogenerateMCCE());
+                concept.getDescriptionFSN().setTerm(concept.getDescriptionFavorite().getTerm());
+            }
+            if (relationshipDefinition.getId() == 77) {
+                autogenerateMCCE.setPack(target.toString());
+                concept.getDescriptionFavorite().setTerm(autogenerateMCCE());
+                concept.getDescriptionFSN().setTerm(concept.getDescriptionFavorite().getTerm());
+            }
+            if (relationshipDefinition.getId() == 69) {
+                autogenerateMC.setVolumen(relationship);
+                concept.getDescriptionFavorite().setTerm(autogenerateMC.toString());
+                concept.getDescriptionFSN().setTerm(concept.getDescriptionFavorite().getTerm());
+            }
+            if (relationshipDefinition.getId() == 52) {
+                ConceptSMTK c = (ConceptSMTK) relationship.getTarget();
+                c.setRelationships(relationshipManager.getRelationshipsBySourceConcept(c));
+                autogeneratePCCE.autogeratePCCE((ConceptSMTK) relationship.getTarget());
+                concept.getDescriptionFavorite().setTerm(autogeneratePCCE.toString());
+                concept.getDescriptionFSN().setTerm(concept.getDescriptionFavorite().getTerm());
+            }
+            if (relationshipDefinition.getId() == 51) {
+                autogeneratePCCE.setPc(((ConceptSMTK) relationship.getTarget()).getDescriptionFavorite().getTerm());
+                concept.getDescriptionFavorite().setTerm(autogeneratePCCE.toString());
+                concept.getDescriptionFSN().setTerm(concept.getDescriptionFavorite().getTerm());
+            }
         }
     }
 
