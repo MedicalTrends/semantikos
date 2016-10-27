@@ -78,6 +78,33 @@ public class SnomedCTDAOImpl implements SnomedCTDAO {
         }
     }
 
+    @Override
+    public List<ConceptSCT> findConceptsByConceptID(long conceptIdPattern) {
+
+        List<ConceptSCT> conceptSCTs = new ArrayList<>();
+        ConnectionBD connect = new ConnectionBD();
+        try (Connection connection = connect.getConnection();
+             CallableStatement call = connection.prepareCall("{call semantikos.get_concepts_sct_by_pattern_id(?)}")) {
+
+            call.setLong(1, conceptIdPattern);
+            call.execute();
+
+            ResultSet rs = call.getResultSet();
+            while (rs.next()) {
+                ConceptSCT conceptSCT = createConceptSCTFromResultSet(rs);
+                conceptSCTs.add(conceptSCT);
+            }
+            rs.close();
+
+        } catch (SQLException e) {
+            String errorMsg = "Error al buscar conceptos SCT por Patrón de ID.";
+            logger.error(errorMsg);
+            throw new EJBException(errorMsg, e);
+        }
+
+        return conceptSCTs;
+    }
+
     private ConceptSCT createConceptSCTFromResultSet(ResultSet resultSet) throws SQLException {
 
         long id = resultSet.getLong("id");

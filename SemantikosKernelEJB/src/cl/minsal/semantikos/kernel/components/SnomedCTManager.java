@@ -34,14 +34,22 @@ public interface SnomedCTManager {
 
     /**
      * Este método es responsable de buscar aquellos conceptos que posean al menos una descripción cuyo término
-     * coincide
-     * con el patrón dado como parámetro.
+     * coincide con el patrón dado como parámetro.
      *
      * @param patron El patrón de búsqueda.
      *
      * @return La lista de conceptos que satisfacen el criterio de búsqueda.
      */
     public List<ConceptSCT> findConceptsBy(String patron);
+
+    /**
+     * Este método es responsable de buscar aquellos conceptos que posean un CONCEPT_ID que coincida con el <code>conceptIdPattern</code> dado como parámetro. El patron
+     *
+     * @param conceptIdPattern El concept ID por el cual se realiza la búsqueda.
+     *
+     * @return La lista de conceptos que satisfacen el criterio de búsqueda.
+     */
+    public List<ConceptSCT> findConceptsByConceptID(long conceptIdPattern);
 
     /**
      * Este método es responsable de recuperar un concepto por su CONCEPT_ID.
