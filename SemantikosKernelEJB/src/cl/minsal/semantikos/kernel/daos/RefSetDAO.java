@@ -50,4 +50,10 @@ public interface RefSetDAO {
      * @return Lista de refsets
      */
     public List<RefSet> getReftsets();
+
+    /**
+     * @param pattern Patron de nombre del REFSET buscado
+     * @return Lista de REFSETs con nombre LIKE el patron ingresado (se espera lista con un solo elemento)
+     */
+    public List<RefSet> findRefsetsByName(String pattern);
 }

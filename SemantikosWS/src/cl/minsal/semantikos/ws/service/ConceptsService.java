@@ -29,7 +29,7 @@ import java.util.List;
  *
  */
 @WebService
-public class ConceptsWebService {
+public class ConceptsService {
 
     @EJB
     private ConceptDAO conceptDAO;

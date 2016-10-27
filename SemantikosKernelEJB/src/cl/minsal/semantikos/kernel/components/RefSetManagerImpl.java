@@ -1,6 +1,7 @@
 package cl.minsal.semantikos.kernel.components;
 
 import cl.minsal.semantikos.kernel.daos.RefSetDAO;
+import cl.minsal.semantikos.kernel.util.StringUtils;
 import cl.minsal.semantikos.model.*;
 import cl.minsal.semantikos.model.businessrules.*;
 
@@ -119,5 +120,20 @@ public class RefSetManagerImpl implements RefSetManager {
     public List<RefSet> getAllRefSets() {
 
         return refsetDAO.getReftsets();
+    }
+
+    @Override
+    public List<RefSet> findRefsetsByName(String pattern) {
+        return this.refsetDAO.findRefsetsByName(StringUtils.toSQLLikePattern(pattern));
+    }
+
+    @Override
+    public RefSet getRefsetByName(String pattern) {
+        List<RefSet> found = this.findRefsetsByName(pattern);
+        if ( found != null && !found.isEmpty() ) {
+            return found.get(0);
+        }
+
+        return null;
     }
 }

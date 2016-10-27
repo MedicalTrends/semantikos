@@ -23,7 +23,7 @@ public class AttributeMapper {
                     res.setValue(String.valueOf(btv.getValue()));
                 }
                 if (  btv.getTargetType() != null ) {
-                    res.setType(btv.getTargetType().getNombre());
+                    res.setType(btv.getTargetType().toString());
                 }
             }
             return res;
