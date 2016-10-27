@@ -26,6 +26,7 @@ import java.util.List;
  */
 public class Relationship extends PersistentEntity implements AuditableEntity {
 
+    // TODO: Normalizar esta clase
     /** Identificador único de la base de datos */
     private long id;
 

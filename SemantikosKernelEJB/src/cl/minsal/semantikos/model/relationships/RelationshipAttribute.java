@@ -1,11 +1,14 @@
 package cl.minsal.semantikos.model.relationships;
 
+import cl.minsal.semantikos.model.PersistentEntity;
+
 import javax.persistence.Basic;
 import javax.persistence.Column;
 
 /**
  * Created by root on 08-07-16.
  */
+// TODO: Normalizar esta clase
 public class RelationshipAttribute {
 
     private Long idRelationshipAttribute;

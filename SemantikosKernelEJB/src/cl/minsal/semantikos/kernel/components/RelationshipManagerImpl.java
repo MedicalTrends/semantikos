@@ -5,6 +5,7 @@ import cl.minsal.semantikos.kernel.daos.RelationshipAttributeDAO;
 import cl.minsal.semantikos.kernel.daos.RelationshipDAO;
 import cl.minsal.semantikos.kernel.daos.TargetDAO;
 import cl.minsal.semantikos.model.ConceptSMTK;
+import cl.minsal.semantikos.model.PersistentEntity;
 import cl.minsal.semantikos.model.User;
 import cl.minsal.semantikos.model.businessrules.ConceptCreationBR;
 import cl.minsal.semantikos.model.businessrules.RelationshipBindingBR;
@@ -166,9 +167,21 @@ public class RelationshipManagerImpl implements RelationshipManager {
             /* Se actualizan los atributos */
 
             for (RelationshipAttribute attribute : editedRelationship.getRelationshipAttributes()) {
-                relationshipAttributeDAO.update(attribute);
+                // TODO: Normalizar esto cuando se normalice la clase <code>RelationshipAttribute</code>
+                /**
+                 * Si el atributo no esta persistido, persistirlo
+                 */
+                if(attribute.getIdRelationshipAttribute() == null){
+                    relationshipAttributeDAO.createRelationshipAttribute(attribute);
+                }
+                /**
+                 * Si el atributo ya esta persistido, actualizarlo
+                 */
+                else{
+                    relationshipAttributeDAO.update(attribute);
+                    targetDAO.update(attribute);
+                }
 
-                targetDAO.update(attribute);
             }
 
         }
