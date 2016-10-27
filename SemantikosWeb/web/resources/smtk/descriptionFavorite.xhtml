@@ -30,6 +30,7 @@
                          value="#{cc.attrs.description.term}"
                          style="width:90%"
                          disabled="#{cc.attrs.description.conceptSMTK.modeled or not cc.attrs.editable}">
+                <p:ajax event="change" update="@this" process="@this" delay="100" />
             </p:inputText>
         </div>
         <div class="ui-g-12 ui-md-6 ui-lg-3">

@@ -222,15 +222,23 @@ public class TagBean implements Serializable{
      * Método encargado de agregar la etiqueta que se está creando al concepto.
      */
     public void createTagToConcept(){
+        FacesContext context = FacesContext.getCurrentInstance();
+        if(tagCreate.getParentTag()!=null){
+            tagCreate.setName(tagCreate.getParentTag().getName()+"/"+tagCreate.getName());
+        }
+        if( tagManager.containTag(tagCreate.getName()) ){
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "La etiqueta " +tagCreate.getName()+" ya existe"));
+            return;
+        }
+        if( tagCreate.getName().length()<3 ){
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "La etiqueta debe contener al menos 3 caracteres"));
+            return;
+        }
         if(tagCreate.getName()== null || tagCreate.getName().length()==0 || tagCreate.getColorBackground()==null || tagCreate.getColorLetter()==null){
-            FacesContext context = FacesContext.getCurrentInstance();
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Complete la información de la etiqueta"));
 
-
         }else{
-            if(tagCreate.getParentTag()!=null){
-                tagCreate.setName(tagCreate.getParentTag().getName()+"/"+tagCreate.getName());
-            }
+
             if(conceptBean.getConcept().isPersistent()){
                 tagManager.persist(tagCreate);
                 tagManager.assignTag(conceptBean.getConcept(),tagCreate);
