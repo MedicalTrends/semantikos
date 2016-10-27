@@ -1,12 +1,10 @@
 package cl.minsal.semantikos.kernel.components;
 
-import cl.minsal.semantikos.model.snomedct.ConceptSCT;
-import cl.minsal.semantikos.model.snomedct.RelationshipSCT;
-import cl.minsal.semantikos.model.snomedct.SnapshotProcessingResult;
-import cl.minsal.semantikos.model.snomedct.SnomedCTSnapshot;
+import cl.minsal.semantikos.model.snomedct.*;
 
 import javax.ejb.Local;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Andrés Farías on 9/26/16.
@@ -36,14 +34,26 @@ public interface SnomedCTManager {
      * Este método es responsable de buscar aquellos conceptos que posean al menos una descripción cuyo término
      * coincide con el patrón dado como parámetro.
      *
-     * @param patron El patrón de búsqueda.
+     * @param pattern El patrón de búsqueda.
      *
      * @return La lista de conceptos que satisfacen el criterio de búsqueda.
      */
-    public List<ConceptSCT> findConceptsBy(String patron);
+    public List<ConceptSCT> findConceptsByPattern(String pattern);
 
     /**
-     * Este método es responsable de buscar aquellos conceptos que posean un CONCEPT_ID que coincida con el <code>conceptIdPattern</code> dado como parámetro. El patron
+     * Este método es responsable de buscar aquellos conceptos que posean al menos una descripción cuyo término
+     * coincide con el patrón dado como parámetro.
+     *
+     * @param patron El patrón de búsqueda.
+     *
+     * @return La lista de las descripciones que coincidieron con el patrón de búsqueda, junto al concepto al que
+     * pertenecen (dado que una descripción no conoce el concepto al que está asociada).
+     */
+    public Map<DescriptionSCT, ConceptSCT> findDescriptionsByPattern(String patron);
+
+    /**
+     * Este método es responsable de buscar aquellos conceptos que posean un CONCEPT_ID que coincida con el
+     * <code>conceptIdPattern</code> dado como parámetro. El patron
      *
      * @param conceptIdPattern El concept ID por el cual se realiza la búsqueda.
      *
