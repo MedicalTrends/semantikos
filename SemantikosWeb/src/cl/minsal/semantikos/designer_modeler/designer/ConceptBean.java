@@ -482,35 +482,38 @@ public class ConceptBean implements Serializable {
         Relationship relationship = null;
         boolean isRelationshipFound = false;
 
+        if(target.toString().equals(""))
+            target = null;
+
+
         if (relationshipDefinition.getTargetDefinition().isSMTKType() && target.getId() == concept.getId()) {
             FacesContext context = FacesContext.getCurrentInstance();
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No puede seleccionar el mismo concepto que está editando"));
             conceptSelected = null;
-        } else {
-            // Se busca la relación
-            for (Relationship relationshipWeb : concept.getRelationshipsWeb()) {
-                if (relationshipWeb.getRelationshipDefinition().equals(relationshipDefinition)) {
-                    relationshipWeb.setTarget(target);
-                    relationship = relationshipWeb;
-                    isRelationshipFound = true;
-                    autogenerateRelationship(relationshipDefinition, relationship, target);
-
-                    break;
-                }
-            }
-            // Si no se encuentra la relación, se crea una nueva
-            if (!isRelationshipFound) {
-                relationship = new Relationship(this.concept, target, relationshipDefinition, new ArrayList<RelationshipAttribute>());
-                this.concept.addRelationshipWeb(new RelationshipWeb(relationship, relationship.getRelationshipAttributes()));
-            }
-            //Autogerado
-            autogenerateRelationship(relationshipDefinition, relationship,target);
-
-            // Se resetean los placeholder para los target de las relaciones
-            basicTypeValue = new BasicTypeValue(null);
-            selectedHelperTableRecord = new HelperTableRecord();
-            conceptSelected = null;
+            return;
         }
+
+        // Se busca la relación
+        for (Relationship relationshipWeb : concept.getRelationshipsWeb()) {
+            if (relationshipWeb.getRelationshipDefinition().equals(relationshipDefinition)) {
+                relationshipWeb.setTarget(target);
+                relationship = relationshipWeb;
+                isRelationshipFound = true;
+                autogenerateRelationship(relationshipDefinition, relationship, target);
+
+                break;
+            }
+        }
+        // Si no se encuentra la relación, se crea una nueva
+        if (!isRelationshipFound) {
+            relationship = new Relationship(this.concept, target, relationshipDefinition, new ArrayList<RelationshipAttribute>());
+            this.concept.addRelationshipWeb(new RelationshipWeb(relationship, relationship.getRelationshipAttributes()));
+        }
+        //Autogerado
+        autogenerateRelationship(relationshipDefinition, relationship, target);
+
+        // Se resetean los placeholder para los target de las relaciones
+        resetPlaceHolders();
     }
 
     /**

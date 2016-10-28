@@ -655,6 +655,8 @@ public class ConceptDAOImpl implements ConceptDAO {
 
     @Override
     public ConceptSMTK getNoValidConcept() {
-        return getConceptByID(81223);
+        // TODO: Parametrizar esto
+        return getConceptByID(81223); // Desarrollo
+        //return getConceptByID(81340); // Testing
     }
 }

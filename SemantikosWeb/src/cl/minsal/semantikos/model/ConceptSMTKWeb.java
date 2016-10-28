@@ -485,6 +485,8 @@ public class ConceptSMTKWeb extends ConceptSMTK {
             }
             if(relationshipDefinition.getTargetDefinition().isBasicType()){
                 BasicTypeValue basicTypeValue = (BasicTypeValue)relationshipWeb.getTarget();
+                if(basicTypeValue.getValue()==null)
+                    return false;
                 if(basicTypeValue.getValue().equals(""))
                     return false;
             }

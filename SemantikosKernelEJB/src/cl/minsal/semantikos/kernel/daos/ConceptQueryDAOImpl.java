@@ -2,6 +2,7 @@ package cl.minsal.semantikos.kernel.daos;
 
 import cl.minsal.semantikos.kernel.components.ConceptManager;
 import cl.minsal.semantikos.kernel.util.ConnectionBD;
+import cl.minsal.semantikos.model.Category;
 import cl.minsal.semantikos.model.ConceptSMTK;
 import cl.minsal.semantikos.model.Tag;
 import cl.minsal.semantikos.model.browser.ConceptQuery;
@@ -9,6 +10,8 @@ import cl.minsal.semantikos.model.browser.ConceptQueryFilter;
 import cl.minsal.semantikos.model.browser.ConceptQueryParameter;
 import cl.minsal.semantikos.model.helpertables.HelperTable;
 import cl.minsal.semantikos.model.helpertables.HelperTableRecord;
+import cl.minsal.semantikos.model.relationships.RelationshipDefinition;
+import cl.minsal.semantikos.model.relationships.Target;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,96 +32,6 @@ public class ConceptQueryDAOImpl implements ConceptQueryDAO {
 
     @EJB
     ConceptManager conceptManager;
-
-    @Override
-    public List<ConceptSMTK> callQuery(ConceptQuery query) {
-
-
-        List<ConceptSMTK> concepts = new ArrayList<ConceptSMTK>();
-
-        ConnectionBD connect = new ConnectionBD();
-
-
-        //TODO: hacer funcion en pg
-        try (Connection connection = connect.getConnection();
-             CallableStatement call = connection.prepareCall("{call semantikos.find_concept_by_query(?,?,?,?,?,?,?,?,?,?,?,?,?,?)}" )){
-
-            /*
-               1 categories _int4,
-               2 pattern text,
-               3 auxiliary_targets [][],
-               4 auxiliary_tables _int4,
-               5 auxiliary_reldefs _int4,
-               6 modeled bool,
-               7 review bool,
-               8 consult bool,
-               9 tag_id int4,
-               10 creation_date_from date,
-               11 creation_date_to date,
-               12 orden text,
-               13 page int4,
-               14 page_size int4
-            */
-
-
-            call.setArray(1, getArrayCategories(query, connection));
-            call.setString(2,query.getQuery() );
-            call.setArray(3, getArrayAuxTargets(query, connection));
-            call.setArray(4, getArrayAuxTables(query, connection));
-            call.setArray(5, getArrayAuxRefdefs(query, connection));
-
-            if(query.getModeled()==null)
-                call.setNull(6, Types.BOOLEAN );
-            else
-                call.setBoolean(6, query.getModeled());
-
-            if(query.getToBeReviewed()==null)
-                call.setNull(7, Types.BOOLEAN );
-            else
-                call.setBoolean(7, query.getToBeReviewed());
-
-
-            if(query.getToBeConsulted()==null)
-                call.setNull(8, Types.BOOLEAN );
-            else
-                call.setBoolean(8, query.getToBeConsulted());
-
-            if(query.getTag()==null)
-                call.setNull(9, Types.INTEGER );
-            else
-                call.setLong(9, query.getTag().getId());
-
-            if (query.getCreationDateSince()==null)
-                call.setNull(10, Types.DATE );
-            else
-                call.setDate(10, new Date(query.getCreationDateSince().getTime()));
-
-            if(query.getCreationDateTo()==null)
-                call.setNull(11, Types.DATE );
-            else
-                call.setDate(11, new Date(query.getCreationDateTo().getTime()));
-
-
-            //call.setString(12, query.getOrder());
-            call.setInt(13, query.getPageNumber());
-            call.setInt(14, query.getPageSize());
-            call.execute();
-
-            ResultSet rs = call.getResultSet();
-
-            while (rs.next()) {
-
-                ConceptSMTK recoveredConcept = conceptManager.getConceptByID( rs.getLong(1));
-                concepts.add(recoveredConcept);
-            }
-            rs.close();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return concepts;
-    }
 
     @Override
     public List<ConceptSMTK> executeQuery(ConceptQuery query) {
@@ -156,7 +69,6 @@ public class ConceptQueryDAOImpl implements ConceptQueryDAO {
                 paramNumber++;
             }
 
-
             call.execute();
 
             ResultSet rs = call.getResultSet();
@@ -175,100 +87,82 @@ public class ConceptQueryDAOImpl implements ConceptQueryDAO {
         return concepts;
     }
 
-    private Array getArrayAuxTargets(ConceptQuery query, Connection connection) throws SQLException {
+    @Override
+    public List<RelationshipDefinition> getSearchableAttributesByCategory(Category category) {
 
+        ConnectionBD connect = new ConnectionBD();
+        String sql = "{call semantikos.get_view_info_by_relationship_definition(?,?)}";
 
-        ArrayList<Integer> ids = new ArrayList<Integer>();
+        List<RelationshipDefinition> someRelationshipDefinitions = new ArrayList<>();
 
+        try (Connection connection = connect.getConnection();
 
-        int maxTargetsSize = 0;
-         int filters = 0;
+             CallableStatement call = connection.prepareCall(sql)) {
 
+            for (RelationshipDefinition relationshipDefinition : category.getRelationshipDefinitions()) {
 
-        for (ConceptQueryFilter filter:query.getFilters()) {
-            if (filter.getDefinition().getTargetDefinition().isHelperTable() && filter.getTargets().size()>0) {
-                filters++;
+                boolean searchable;
 
-                       if (filter.getTargets().size()>maxTargetsSize)
-                            maxTargetsSize = filter.getTargets().size();
-            }
-        }
+                call.setLong(1, category.getId());
+                call.setLong(2, relationshipDefinition.getId());
+                call.execute();
 
-        if(filters == 0 || maxTargetsSize == 0)
-            return  connection.createArrayOf("integer", new Integer[0]);
+                ResultSet rs = call.getResultSet();
 
-        int[][] auxtargets = new int[filters][maxTargetsSize];
+                if (rs.next()) {
 
-        int i = 0;
-        for (ConceptQueryFilter filter:query.getFilters()) {
+                    searchable = rs.getBoolean("searchable_by_browser");
 
-            if (filter.getDefinition().getTargetDefinition().isHelperTable() && filter.getTargets().size()>0) {
-                for(int j = 0; j < filter.getTargets().size(); j++){
-                    auxtargets[i][j] = (int) ( ( (HelperTableRecord) (filter.getTargets().get(j)) ).getId() );
+                    if(searchable)
+                        someRelationshipDefinitions.add(relationshipDefinition);
                 }
-
-                i++;
-
             }
+
+        } catch (SQLException e) {
+            String errorMsg = "Error al recuperar información adicional sobre esta definición desde la BDD.";
+            logger.error(errorMsg, e);
+            throw new EJBException(e);
         }
-
-
-        return connection.createArrayOf("integer", auxtargets);
+        return someRelationshipDefinitions;
     }
 
+    @Override
+    public List<RelationshipDefinition> getShowableAttributesByCategory(Category category) {
+        ConnectionBD connect = new ConnectionBD();
+        String sql = "{call semantikos.get_view_info_by_relationship_definition(?,?)}";
 
-    private Array getArrayAuxRefdefs(ConceptQuery query, Connection connection) throws SQLException {
+        List<RelationshipDefinition> someRelationshipDefinitions = new ArrayList<>();
 
-        int filters = getValidFilterNumber(query);
+        try (Connection connection = connect.getConnection();
 
-        Integer[] auxtables = new Integer[filters];
+             CallableStatement call = connection.prepareCall(sql)) {
 
-        int i = 0;
-        for (ConceptQueryFilter filter:query.getFilters()) {
-            if (filter.getDefinition().getTargetDefinition().isHelperTable() && filter.getTargets().size()>0) {
-                auxtables[i] =  (int)   filter.getDefinition().getId()   ;
-                i++;
+            for (RelationshipDefinition relationshipDefinition : category.getRelationshipDefinitions()) {
+
+                boolean showable;
+
+                call.setLong(1, category.getId());
+                call.setLong(2, relationshipDefinition.getId());
+                call.execute();
+
+                ResultSet rs = call.getResultSet();
+
+                if (rs.next()) {
+
+                    showable = rs.getBoolean("showable_by_browser");
+
+                    if(showable)
+                        someRelationshipDefinitions.add(relationshipDefinition);
+                }
             }
+
+        } catch (SQLException e) {
+            String errorMsg = "Error al recuperar información adicional sobre esta definición desde la BDD.";
+            logger.error(errorMsg, e);
+            throw new EJBException(e);
         }
-        return connection.createArrayOf("integer", auxtables);
+        return someRelationshipDefinitions;
     }
-
-    private int getValidFilterNumber(ConceptQuery query) {
-        int filters = 0;
-
-        for (ConceptQueryFilter filter:query.getFilters()) {
-            if (filter.getDefinition().getTargetDefinition().isHelperTable() && filter.getTargets().size()>0) {
-                filters++;
-            }
-        }
-        return filters;
-    }
-
-    private Array getArrayAuxTables(ConceptQuery query, Connection connection) throws SQLException {
-
-        int filters = getValidFilterNumber(query);
-
-        Integer[] auxtables = new Integer[filters];
-
-        int i = 0;
-        for (ConceptQueryFilter filter:query.getFilters()) {
-            if (filter.getDefinition().getTargetDefinition().isHelperTable() && filter.getTargets().size()>0) {
-                auxtables[i] =  (int) (  ((HelperTable)filter.getDefinition().getTargetDefinition()).getId()   );
-                i++;
-            }
-        }
-        return connection.createArrayOf("integer", auxtables);
-    }
-
-
-    private Array getArrayCategories(ConceptQuery query, Connection connection) throws SQLException {
-        Long[] categorias = new Long[query.getCategories().size()];
-        for(int i = 0; i < query.getCategories().size();i++){
-            categorias[i]=query.getCategories().get(i).getId();
-        }
-        return connection.createArrayOf("integer", categorias);
-    }
-
 
     private void bindParameter(int paramNumber, CallableStatement call, Connection connection, ConceptQueryParameter param)
             throws SQLException {

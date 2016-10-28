@@ -38,7 +38,8 @@ public class SemantikosWebDAOImpl implements SemantikosWebDAO {
         Target defaultValue = null;
 
         try (Connection connection = connect.getConnection();
-             CallableStatement call = connection.prepareCall(sql)) {
+
+            CallableStatement call = connection.prepareCall(sql)) {
 
             call.setLong(1, category.getId());
             call.setLong(2, relationshipDefinition.getId());
