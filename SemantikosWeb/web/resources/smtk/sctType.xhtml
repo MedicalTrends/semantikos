@@ -138,7 +138,7 @@
                                     value="#{conceptBean.conceptSCTSelected}"
                                     itemLabel="#{concept.descriptionFSN.term}" itemValue="#{concept}"
                                     disabled="#{not cc.attrs.concept.editable}"
-                                    rendered="#{conceptBean.concept.getRelationshipsByRelationDefinition(cc.attrs.relationshipDefinition).size()==0}">
+                                    >
 
                         <!-- Parámetros del validador -->
                         <f:attribute name="concept" value="#{cc.attrs.concept}"  />
@@ -149,12 +149,8 @@
                             <h:outputText value="#{concept.descriptionFSN.term}"/>
                         </p:column>
 
-                        <p:ajax update="@(.concept), @(.conceptHeader),:mainForm:editMsgs" event="itemSelect"
-                                listener="#{conceptBean.addOrChangeRelationship(cc.attrs.relationshipDefinition,conceptBean.conceptSCTSelected)}"
-                                process="@this"/>
-
                         <p:ajax event="itemSelect"
-                                listener="#{conceptBean.setTarget(cc.attrs.relationshipDefinition,conceptBean.conceptSCTSelected)}"
+                                listener="#{conceptBean.setTarget(cc.attrs.relationshipDefinition, conceptBean.conceptSCTSelected)}"
                                 process="@this"/>
 
                         <f:attribute name="targetDef" value="#{cc.attrs.targetDefinition}" />
@@ -215,7 +211,7 @@
                 <f:attribute name="relationshipDefinitionRowEdit" value="#{cc.attrs.relationshipDefinition}" />
 
                 <p:column headerText="ID">
-                    <h:outputText value="#{rel.target.id}"/>
+                    <h:outputText value="#{rel.target.idSnomedCT}"/>
                 </p:column>
 
                 <p:column headerText="Descripción">
