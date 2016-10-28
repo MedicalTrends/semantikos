@@ -15,7 +15,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Created by des01c7 on 01-07-16.
+ * @author Francisco Mendez on 01-07-16.
  */
 
 @Stateless
