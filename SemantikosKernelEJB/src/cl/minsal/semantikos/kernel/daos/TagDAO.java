@@ -102,4 +102,7 @@ public interface TagDAO {
      * @return El Tag con ID <code>id</code>
      */
     public Tag findTagByID(long id);
+
+
+    public boolean containTag(String tagName);
 }

@@ -8,6 +8,10 @@ public class ObservationNoValid {
     private Long id;
     private String description;
 
+    /**
+     * Constructor vacío, utilizado como fix para el comportamiento de jsf-primefaces al actualizar el form en ui-state-error
+     **/
+    @Deprecated
     public ObservationNoValid() {
     }
 

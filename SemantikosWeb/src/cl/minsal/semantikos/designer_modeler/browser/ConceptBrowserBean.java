@@ -138,7 +138,11 @@ public class ConceptBrowserBean implements Serializable {
                 conceptQuery.setPageNumber(first);
                 conceptQuery.setPageSize(pageSize);
                 conceptQuery.setOrder(new Integer(sortField));
-                conceptQuery.setAsc(sortOrder.name().substring(0,3).toLowerCase());
+
+                if(sortOrder.name().substring(0,3).toLowerCase().equals("asc"))
+                    conceptQuery.setAsc(sortOrder.name().substring(0,3).toLowerCase());
+                else
+                    conceptQuery.setAsc(sortOrder.name().substring(0,4).toLowerCase());
 
                 List<ConceptSMTK> conceptSMTKs = conceptQueryManager.executeQuery(conceptQuery);
                 this.setRowCount(30);

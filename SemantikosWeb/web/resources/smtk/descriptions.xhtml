@@ -85,7 +85,8 @@
                             <f:facet name="input"><p:inputText id="otrasTermino"
                                                                validator="#{validatorBean.validateTerm}"
                                                                value="#{description.term}"
-                                                               style="width:100%">
+                                                               style="width:100%"
+                            disabled="#{conceptBean.concept.modeled}">
                                 <f:attribute name="description" value="#{description}"/>
                                 <p:growl id="otherDescriptionsError" showDetail="true"/>
                             </p:inputText>
@@ -154,7 +155,8 @@
                                    ajax="true"
                                    process="@this"
                                    update="@(.otherDescriptions)"
-                                   style="float: right">
+                                   style="float: right"
+                                   disabled="#{conceptBean.concept.modeled}">
                         <i class="fa fa-trash fa-lg"/>
                         <p:confirm header="Confirmation" message="¿Desea eliminar esta descripción?"
                                    icon="ui-icon-alert"/>
@@ -170,6 +172,7 @@
                         <f:setPropertyActionListener value="" target="#{findConceptBean.categoryArrayID}"/>
                     </p:commandLink>
                     <p:commandLink rendered="#{conceptBean.concept.persistent and description.persistent}"
+                                   disabled="#{conceptBean.concept.id==conceptBean.conceptSMTKNotValid.id}"
                                    process="@this"
                                    update=":#{cc.clientId}:conceptTranslateNotValid"
                                    oncomplete="PF('dialogTDNV').show()">
@@ -443,7 +446,7 @@
                                      <h:outputText value="#{conceptSuggest.category.name}"></h:outputText>
                                  </p:column>
                                  <p:column headerText="Accion">
-                                     <p:commandButton value="Remover" actionListener="#{conceptBean.removeConceptSuggest(conceptSuggest)}"></p:commandButton>
+                                     <p:commandButton value="Remover" update="@(.tableConceptSuggest)" actionListener="#{conceptBean.removeConceptSuggest(conceptSuggest)}"></p:commandButton>
                                  </p:column>
                              </p:dataTable>
                             </div>
