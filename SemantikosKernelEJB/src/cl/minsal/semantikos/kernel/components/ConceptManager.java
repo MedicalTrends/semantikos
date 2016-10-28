@@ -147,6 +147,9 @@ public interface ConceptManager {
 
     public int countModeledConceptBy(Category category);
 
+    public List<ConceptSMTK> findModeledConceptsBy(RefSet refSet, int page, int pageSize);
+
+    public Integer countModeledConceptsBy(RefSet refSet);
     /**
      * Método encargado de generar el concept ID
      *

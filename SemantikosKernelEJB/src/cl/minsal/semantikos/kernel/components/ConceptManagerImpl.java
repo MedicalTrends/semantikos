@@ -204,6 +204,16 @@ public class ConceptManagerImpl implements ConceptManager {
     }
 
     @Override
+    public List<ConceptSMTK> findModeledConceptsBy(RefSet refSet, int page, int pageSize) {
+        return this.conceptDAO.findModeledConceptsBy(refSet, page, pageSize);
+    }
+
+    @Override
+    public Integer countModeledConceptsBy(RefSet refSet) {
+        return this.conceptDAO.countModeledConceptsBy(refSet);
+    }
+
+    @Override
     public List<ConceptSMTK> getConceptBy(RefSet refSet) {
         return conceptDAO.getConceptBy(refSet);
 

@@ -23,7 +23,7 @@ public class StringUtils {
     public static String toSQLLikePattern(String pattern) {
         StringBuilder res = new StringBuilder();
 
-        res.append("%");
+//        res.append("%");
         for ( Integer i = 0; i < pattern.length(); ++i ) {
             Character c = pattern.charAt(i);
             if ( isAlphaNumeric(c) ) {
@@ -32,7 +32,7 @@ public class StringUtils {
                 res.append("_");
             }
         }
-        res.append("%");
+//        res.append("%");
 
         return res.toString();
     }
