@@ -9,6 +9,8 @@ import cl.minsal.semantikos.ws.fault.NotFoundFault;
 import cl.minsal.semantikos.ws.mapping.ConceptMapper;
 import cl.minsal.semantikos.ws.mapping.RefSetMapper;
 import cl.minsal.semantikos.ws.response.ConceptResponse;
+import cl.minsal.semantikos.ws.response.ConceptsByRefsetResponse;
+import cl.minsal.semantikos.ws.response.PaginationResponse;
 import cl.minsal.semantikos.ws.response.RefSetResponse;
 
 import javax.ejb.EJB;
@@ -43,9 +45,9 @@ public class RefSetService {
     }
 
     // REQ-WS-023
-    @WebMethod(operationName = "descripcionesDeRefSet")
-    @WebResult(name = "concepto")
-    public List<ConceptResponse> descripcionesDeRefSet(
+    @WebMethod(operationName = "conceptosPorRefSet")
+    @WebResult(name = "conceptosPorRefSet")
+    public ConceptsByRefsetResponse conceptosPorRefSet(
             @XmlElement(required = true)
             @WebParam(name = "nombreRefSet")
                     String refSetName,
@@ -56,14 +58,18 @@ public class RefSetService {
             @WebParam(name = "tamanoPagina")
                     Integer pageSize
     ) throws NotFoundFault {
+        ConceptsByRefsetResponse res = new ConceptsByRefsetResponse();
+
         RefSet refSet = this.refSetManager.getRefsetByName(refSetName);
         if ( refSet == null ) {
             throw new NotFoundFault("No se encuentra RefSet con ese nombre: " + refSetName);
         }
+        res.setRefSet(RefSetMapper.map(refSet));
 
+        List<ConceptResponse> conceptResponses = new ArrayList<>();
         List<ConceptSMTK> concepts = this.conceptManager.findModeledConceptsBy(refSet, pageNumber, pageSize);
         if ( concepts != null ) {
-            List<ConceptResponse> conceptResponses = new ArrayList<>(concepts.size());
+            conceptResponses = new ArrayList<>(concepts.size());
             for (ConceptSMTK conceptSMTK : concepts) {
                 conceptManager.loadRelationships(conceptSMTK);
                 ConceptResponse concept = ConceptMapper.map(conceptSMTK);
@@ -71,10 +77,21 @@ public class RefSetService {
                 ConceptMapper.appendAttributes(concept, conceptSMTK);
                 conceptResponses.add(concept);
             }
-            return conceptResponses;
         }
+        res.setConcepts(conceptResponses);
 
-        return null;
+        Integer count = this.conceptManager.countModeledConceptsBy(refSet);
+        PaginationResponse paginationResponse = new PaginationResponse();
+        paginationResponse.setTotalCount(count);
+        paginationResponse.setCurrentPage(pageNumber);
+        paginationResponse.setPageSize(pageSize);
+        if ( conceptResponses != null && !conceptResponses.isEmpty() ) {
+            paginationResponse.setShowingFrom(pageNumber * pageSize);
+            paginationResponse.setShowingTo(paginationResponse.getShowingFrom() + conceptResponses.size() - 1);
+        }
+        res.setPagination(paginationResponse);
+
+        return res;
     }
 
     private void mapResults(List<RefSetResponse> res, List<RefSet> refSets) {

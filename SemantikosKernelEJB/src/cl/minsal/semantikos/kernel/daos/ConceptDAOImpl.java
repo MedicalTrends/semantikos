@@ -653,6 +653,7 @@ public class ConceptDAOImpl implements ConceptDAO {
         try (Connection connection = connect.getConnection();) {
             call = connection.prepareCall("{call semantikos.count_concepts_by_refset(?,?)}");
             call.setLong(1, refSet.getId());
+            call.setBoolean(2, Boolean.TRUE);
             call.execute();
             ResultSet rs = call.getResultSet();
             while (rs.next()) {
