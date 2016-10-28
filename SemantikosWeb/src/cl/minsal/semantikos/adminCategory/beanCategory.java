@@ -1,5 +1,6 @@
 package cl.minsal.semantikos.adminCategory;
 
+import cl.minsal.semantikos.designer_modeler.auth.AuthenticationBean;
 import cl.minsal.semantikos.kernel.components.CategoryManager;
 import cl.minsal.semantikos.kernel.components.TagManager;
 import cl.minsal.semantikos.kernel.components.TagSMTKManager;
@@ -53,6 +54,9 @@ public class beanCategory {
     @EJB
     private TagSMTKManager tagSMTKManager;
 
+    @EJB
+    private AuthenticationBean authenticationBean;
+
     @PostConstruct
     public void init(){
         category= new Category();
@@ -81,15 +85,8 @@ public class beanCategory {
     }
 
     public void createCategory(){
-
-        User user = new User();
-        user.setIdUser(1);
-        user.setUsername("amauro");
-        user.setPassword("amauro");
-        user.getProfiles().add(DESIGNER_PROFILE);
-
         category.setRelationshipDefinitions(relationshipDefinitions);
-        categoryManager.createCategory(category,user);
+        categoryManager.createCategory(category,authenticationBean.getLoggedUser());
     }
 
     public void createRelationshipDefinition(){
