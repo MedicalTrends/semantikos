@@ -66,16 +66,16 @@ public class SCTTypeBean implements Serializable {
     public List<ConceptSCT> getConceptSearchInput(String patron) {
 
         /* Si el patrón viene vacío o es menor a tres caracteres, no se hace nada */
-        if (patron == null || patron.trim().length() <= 3) {
+        if ( searchOption.equals("term") &&  ( patron == null || patron.trim().length() <= 3 ) ) {
             return emptyList();
         }
 
         /* La búsqueda empieza aquí */
         if(searchOption.equals("term"))
-            return cstManager.findConceptsBy(patron);
+            return cstManager.findConceptsByPattern(patron);
         else{
             try{
-                return cstManager.findConceptsByConceptID(Long.getLong(patron));
+                return cstManager.findConceptsByConceptID(new Long(patron));
             }
             catch (NumberFormatException e){
                 return null;
