@@ -111,6 +111,10 @@ public interface ConceptDAO {
 
     public List<ConceptSMTK> getConceptBy(RefSet refSet);
 
+    public List<ConceptSMTK> findModeledConceptsBy(RefSet refSet, int page, int pageSize);
+
+    public Integer countModeledConceptsBy(RefSet refSet);
+
     public List<ConceptSMTK> getConceptDraft();
 
     /**
