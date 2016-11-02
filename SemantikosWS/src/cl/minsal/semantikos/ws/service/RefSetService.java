@@ -75,6 +75,7 @@ public class RefSetService {
                 ConceptResponse concept = ConceptMapper.map(conceptSMTK);
                 ConceptMapper.appendDescriptions(concept, conceptSMTK);
                 ConceptMapper.appendAttributes(concept, conceptSMTK);
+                ConceptMapper.appendCategory(concept, conceptSMTK);
                 conceptResponses.add(concept);
             }
         }

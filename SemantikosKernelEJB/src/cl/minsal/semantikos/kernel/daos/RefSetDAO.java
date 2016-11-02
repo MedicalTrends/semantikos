@@ -56,4 +56,11 @@ public interface RefSetDAO {
      * @return Lista de REFSETs con nombre LIKE el patron ingresado (se espera lista con un solo elemento)
      */
     public List<RefSet> findRefsetsByName(String pattern);
+
+    /**
+     * RefSets a los que pertenece un concepto
+     * @param
+     * @return
+     */
+    public List<RefSet> findByConcept(ConceptSMTK conceptSMTK);
 }

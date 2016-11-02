@@ -87,4 +87,17 @@ public interface RefSetManager {
      */
     public RefSet getRefsetByName(String pattern);
 
+    /**
+     * Carga los RefSets a los que pertenece el concepto en el atributo refsets del concepto
+     * @param conceptSMTK
+     */
+    public void loadConceptRefSets(ConceptSMTK conceptSMTK);
+
+    /**
+     * Busca los RefSets a los que pertenece el concepto
+     * @param conceptSMTK
+     * @return
+     */
+    public List<RefSet> findByConcept(ConceptSMTK conceptSMTK);
+
 }

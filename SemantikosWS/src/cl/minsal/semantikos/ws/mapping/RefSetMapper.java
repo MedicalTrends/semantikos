@@ -15,7 +15,9 @@ public class RefSetMapper {
             res.setName(refSet.getName());
             res.setValidityUntil(MappingUtil.toDate(refSet.getValidityUntil()));
             res.setCreationDate(MappingUtil.toDate(refSet.getCreationDate()));
-            res.setInstitution(InstitutionMapper.map(refSet.getInstitution()));
+            if ( refSet.getInstitution() != null ) {
+                res.setInstitution(refSet.getInstitution().getName());
+            }
             return res;
         } else {
             return null;

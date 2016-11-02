@@ -10,8 +10,11 @@ import java.util.List;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "tipoObjetivo")
+@XmlType(name = "TipoObjetivo")
 public class TargetTypeResponse implements Serializable {
 
+    @XmlElement(name="tipo")
+    private String type;
     @XmlElement(name="nombre")
     private String name;
     @XmlElement(name="descripcion")
@@ -22,6 +25,14 @@ public class TargetTypeResponse implements Serializable {
     @XmlElementWrapper(name = "definicionesTipoBasico")
     @XmlElement(name="definicionTipoBasico")
     private List<BasicTypeDefinitionResponse> basicTypeDefinitions;
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
 
     public String getName() {
         return name;

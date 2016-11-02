@@ -151,6 +151,28 @@ public class RefSetDAOImpl implements RefSetDAO {
         return refSets;
     }
 
+    @Override
+    public List<RefSet> findByConcept(ConceptSMTK conceptSMTK) {
+        List<RefSet> refSets = new ArrayList<>();
+        ConnectionBD connect = new ConnectionBD();
+        String ALL_REFSETS = "{call semantikos.find_refsets_by_concept(?)}";
+
+        try (Connection connection = connect.getConnection();
+             CallableStatement call = connection.prepareCall(ALL_REFSETS)) {
+            call.setLong(1, conceptSMTK.getId());
+            call.execute();
+
+            ResultSet rs = call.getResultSet();
+            while (rs.next()) {
+                refSets.add(createRefsetFromResultSet(rs));
+            }
+        } catch (SQLException e) {
+            logger.error("Error al buscar los RefSets ", e);
+        }
+
+        return refSets;
+    }
+
 
     private RefSet createRefsetFromResultSet(ResultSet rs) throws SQLException {
 

@@ -3,6 +3,7 @@ package cl.minsal.semantikos.ws.service;
 import cl.minsal.semantikos.kernel.components.CategoryManager;
 import cl.minsal.semantikos.kernel.components.ConceptManager;
 import cl.minsal.semantikos.kernel.components.DescriptionManager;
+import cl.minsal.semantikos.kernel.components.RefSetManager;
 import cl.minsal.semantikos.kernel.daos.CategoryDAO;
 import cl.minsal.semantikos.kernel.daos.ConceptDAO;
 import cl.minsal.semantikos.kernel.daos.DescriptionDAO;
@@ -39,6 +40,8 @@ public class ConceptsService {
     private DescriptionDAO descriptionDAO;
     @EJB
     private ConceptManager conceptManager;
+    @EJB
+    private RefSetManager refSetManager;
 
     // REQ-WS-028
     @WebMethod(operationName = "conceptoPorIdDescripcion")
@@ -64,10 +67,13 @@ public class ConceptsService {
         }
 
         conceptManager.loadRelationships(conceptSMTK);
+        refSetManager.loadConceptRefSets(conceptSMTK);
         ConceptResponse res = ConceptMapper.map(conceptSMTK);
         ConceptMapper.appendDescriptions(res, conceptSMTK);
         ConceptMapper.appendAttributes(res, conceptSMTK);
         ConceptMapper.appendRelationships(res, conceptSMTK);
+        ConceptMapper.appendCategory(res, conceptSMTK);
+        ConceptMapper.appendRefSets(res, conceptSMTK);
         return res;
     }
 
@@ -106,10 +112,12 @@ public class ConceptsService {
         List<ConceptResponse> conceptResponses = new ArrayList<>();
         for ( ConceptSMTK conceptSMTK : concepts ) {
             conceptManager.loadRelationships(conceptSMTK);
+            refSetManager.loadConceptRefSets(conceptSMTK);
             ConceptResponse concept = ConceptMapper.map(conceptSMTK);
             ConceptMapper.appendDescriptions(concept, conceptSMTK);
             ConceptMapper.appendAttributes(concept, conceptSMTK);
             ConceptMapper.appendRelationships(concept, conceptSMTK);
+            ConceptMapper.appendRefSets(concept, conceptSMTK);
             conceptResponses.add(concept);
         }
         res.setConceptResponses(conceptResponses);

@@ -33,6 +33,9 @@ public class ConceptResponse implements Serializable {
     private TagSMTKResponse tagSMTK;
     @XmlElement(name="categoria")
     private CategoryResponse category;
+    @XmlElementWrapper(name = "refSets")
+    @XmlElement(name="refSet")
+    private List<RefSetResponse> refsets;
     @XmlElementWrapper(name = "descripciones")
     @XmlElement(name="descripcion")
     private List<DescriptionResponse> descriptions;
@@ -113,6 +116,14 @@ public class ConceptResponse implements Serializable {
 
     public void setTagSMTK(TagSMTKResponse tagSMTK) {
         this.tagSMTK = tagSMTK;
+    }
+
+    public List<RefSetResponse> getRefsets() {
+        return refsets;
+    }
+
+    public void setRefsets(List<RefSetResponse> refsets) {
+        this.refsets = refsets;
     }
 
     public CategoryResponse getCategory() {

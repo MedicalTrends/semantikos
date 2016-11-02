@@ -20,7 +20,7 @@ public class RefSetResponse implements Serializable {
     @XmlElement(name="creadoEn")
     private Date creationDate;
     @XmlElement(name="institucion")
-    private InstitutionResponse institution;
+    private String institution;
     @XmlElementWrapper(name = "conceptos")
     @XmlElement(name="concepto")
     private List<ConceptResponse> concepts;
@@ -33,11 +33,11 @@ public class RefSetResponse implements Serializable {
         this.name = name;
     }
 
-    public InstitutionResponse getInstitution() {
+    public String getInstitution() {
         return institution;
     }
 
-    public void setInstitution(InstitutionResponse institution) {
+    public void setInstitution(String institution) {
         this.institution = institution;
     }
 

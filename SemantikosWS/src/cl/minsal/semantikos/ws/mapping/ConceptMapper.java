@@ -1,12 +1,11 @@
 package cl.minsal.semantikos.ws.mapping;
 
+import cl.minsal.semantikos.model.Category;
 import cl.minsal.semantikos.model.ConceptSMTK;
 import cl.minsal.semantikos.model.Description;
+import cl.minsal.semantikos.model.RefSet;
 import cl.minsal.semantikos.model.relationships.Relationship;
-import cl.minsal.semantikos.ws.response.AttributeResponse;
-import cl.minsal.semantikos.ws.response.ConceptResponse;
-import cl.minsal.semantikos.ws.response.DescriptionResponse;
-import cl.minsal.semantikos.ws.response.RelationshipResponse;
+import cl.minsal.semantikos.ws.response.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -74,6 +73,29 @@ public class ConceptMapper {
                     relationshipResponses.add(RelationshipMapper.map(relationship));
                 }
                 conceptResponse.setRelationships(relationshipResponses);
+            }
+        }
+        return conceptResponse;
+    }
+
+    public static ConceptResponse appendCategory(ConceptResponse conceptResponse, ConceptSMTK conceptSMTK) {
+        if ( conceptResponse != null
+                && conceptSMTK != null ) {
+            conceptResponse.setCategory(CategoryMapper.map(conceptSMTK.getCategory()));
+        }
+        return conceptResponse;
+    }
+
+    public static ConceptResponse appendRefSets(ConceptResponse conceptResponse, ConceptSMTK conceptSMTK) {
+        if ( conceptResponse != null
+                && conceptSMTK != null ) {
+            List<RefSet> refSets = conceptSMTK.getRefsets();
+            if ( refSets != null ) {
+                List<RefSetResponse> res = new ArrayList<>(refSets.size());
+                for ( RefSet refSet : refSets ) {
+                    res.add(RefSetMapper.map(refSet));
+                }
+                conceptResponse.setRefsets(res);
             }
         }
         return conceptResponse;

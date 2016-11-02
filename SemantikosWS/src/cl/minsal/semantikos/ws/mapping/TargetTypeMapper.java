@@ -20,8 +20,10 @@ public class TargetTypeMapper {
         if ( targetType != null ) {
             TargetTypeResponse res = new TargetTypeResponse();
 
+            res.setType(targetType.toString());
             res.setName(targetType.name());
             res.setDescription(targetType.getDescription());
+
             if ( targetType.getTargetDefinitions() != null ) {
                 List<TargetDefinitionResponse> targetDefinitions = new ArrayList<>(targetType.getTargetDefinitions().size());
                 for (TargetDefinition targetDefinition : targetType.getTargetDefinitions() ) {

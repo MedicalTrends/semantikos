@@ -136,4 +136,16 @@ public class RefSetManagerImpl implements RefSetManager {
 
         return null;
     }
+
+    @Override
+    public void loadConceptRefSets(ConceptSMTK conceptSMTK) {
+        if (conceptSMTK != null) {
+            conceptSMTK.setRefsets(this.findByConcept(conceptSMTK));
+        }
+    }
+
+    @Override
+    public List<RefSet> findByConcept(ConceptSMTK conceptSMTK) {
+        return this.refsetDAO.findByConcept(conceptSMTK);
+    }
 }
