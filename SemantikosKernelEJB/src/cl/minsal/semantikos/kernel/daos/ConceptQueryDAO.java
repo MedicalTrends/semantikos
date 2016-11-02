@@ -17,10 +17,12 @@ public interface ConceptQueryDAO {
 
     //public List<ConceptSMTK> callQuery(ConceptQuery query);
 
-    public List<ConceptSMTK> executeQuery(ConceptQuery query);
+    List<ConceptSMTK> executeQuery(ConceptQuery query);
 
-    public List<RelationshipDefinition> getSearchableAttributesByCategory(Category category);
+    List<RelationshipDefinition> getSearchableAttributesByCategory(Category category);
 
-    public List<RelationshipDefinition> getShowableAttributesByCategory(Category category);
+    List<RelationshipDefinition> getShowableAttributesByCategory(Category category);
+
+    boolean getCustomFilteringValue(Category category);
 
 }

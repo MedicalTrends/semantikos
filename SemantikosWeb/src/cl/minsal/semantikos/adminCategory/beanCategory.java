@@ -11,6 +11,7 @@ import org.primefaces.context.RequestContext;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import java.util.ArrayList;
 import java.util.List;
@@ -54,7 +55,7 @@ public class beanCategory {
     @EJB
     private TagSMTKManager tagSMTKManager;
 
-    @EJB
+    @ManagedProperty(value = "#{authenticationBean}")
     private AuthenticationBean authenticationBean;
 
     @PostConstruct
@@ -196,5 +197,13 @@ public class beanCategory {
 
     public void setTagSMTKList(List<TagSMTK> tagSMTKList) {
         this.tagSMTKList = tagSMTKList;
+    }
+
+    public AuthenticationBean getAuthenticationBean() {
+        return authenticationBean;
+    }
+
+    public void setAuthenticationBean(AuthenticationBean authenticationBean) {
+        this.authenticationBean = authenticationBean;
     }
 }

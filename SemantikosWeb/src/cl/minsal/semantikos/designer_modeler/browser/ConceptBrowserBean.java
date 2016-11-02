@@ -87,7 +87,6 @@ public class ConceptBrowserBean implements Serializable {
     private AuthenticationBean authenticationBean;
 
     @EJB
-
     private CategoryManager categoryManager;
 
     @EJB
