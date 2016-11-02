@@ -164,6 +164,11 @@ public class ConceptQueryDAOImpl implements ConceptQueryDAO {
         return someRelationshipDefinitions;
     }
 
+    @Override
+    public boolean getCustomFilteringValue(Category category) {
+        return false;
+    }
+
     private void bindParameter(int paramNumber, CallableStatement call, Connection connection, ConceptQueryParameter param)
             throws SQLException {
 

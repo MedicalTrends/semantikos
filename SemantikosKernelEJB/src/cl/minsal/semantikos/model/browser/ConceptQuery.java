@@ -2,6 +2,7 @@ package cl.minsal.semantikos.model.browser;
 
 import cl.minsal.semantikos.model.Category;
 import cl.minsal.semantikos.model.Tag;
+import cl.minsal.semantikos.model.User;
 import cl.minsal.semantikos.model.basictypes.BasicTypeValue;
 import cl.minsal.semantikos.model.helpertables.HelperTableRecord;
 import cl.minsal.semantikos.model.relationships.Target;
@@ -30,8 +31,14 @@ public class ConceptQuery {
 
     private Tag tag;
 
+    private boolean customFilterable;
+
+    /**
+     * Custom filters
+     */
     private Date creationDateSince;
     private Date creationDateTo;
+    private User user;
 
     /**
      * Filtros dinámicos
@@ -47,7 +54,6 @@ public class ConceptQuery {
      * Orden
      */
     private int order;
-
     private String asc;
 
     /**
@@ -166,6 +172,22 @@ public class ConceptQuery {
 
     public void setColumns(List<ConceptQueryColumn> columns) {
         this.columns = columns;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public boolean isCustomFilterable() {
+        return customFilterable;
+    }
+
+    public void setCustomFilterable(boolean customFilterable) {
+        this.customFilterable = customFilterable;
     }
 
     public Long[] getCategoryValues(){

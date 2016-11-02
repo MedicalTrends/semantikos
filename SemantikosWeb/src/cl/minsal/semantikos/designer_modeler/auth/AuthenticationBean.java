@@ -27,11 +27,8 @@ public class AuthenticationBean {
 
     static private final Logger logger = LoggerFactory.getLogger(AuthenticationBean.class);
 
-
-
     @EJB(name = "AuthenticationManagerEJB")
     private AuthenticationManager authenticationManager;
-
 
     private String username;
     private String password;

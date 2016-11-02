@@ -13,6 +13,7 @@ import org.primefaces.model.SortOrder;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import java.sql.Timestamp;
 import java.util.List;
@@ -53,13 +54,13 @@ public class RefSetsBean {
     @EJB
     private RefSetManager refSetManager;
 
-    @EJB
+    @ManagedProperty(value = "#{authenticationBean}")
     private AuthenticationBean authenticationBean;
 
     @PostConstruct
     public void init() {
         categories = categoryManager.getCategories();
-        refSetToCreate = new RefSet(null, authenticationBean.getLoggedUser().getInstitutions().get(0), null);
+        //refSetToCreate = new RefSet(null, authenticationBean.getLoggedUser().getInstitutions().get(0), null);
         refSetList = refSetManager.getAllRefSets();
 
     }
@@ -211,5 +212,13 @@ public class RefSetsBean {
 
     public void setRefSetEdit(RefSet refSetEdit) {
         this.refSetEdit = refSetEdit;
+    }
+
+    public AuthenticationBean getAuthenticationBean() {
+        return authenticationBean;
+    }
+
+    public void setAuthenticationBean(AuthenticationBean authenticationBean) {
+        this.authenticationBean = authenticationBean;
     }
 }
