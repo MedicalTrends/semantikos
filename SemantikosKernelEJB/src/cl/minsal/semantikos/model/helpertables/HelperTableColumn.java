@@ -5,43 +5,48 @@ package cl.minsal.semantikos.model.helpertables;
  */
 public class HelperTableColumn {
 
-    private String columnName;
-    private final boolean isPK;
-    private final boolean isSearchable;
-    private final boolean isShowable;
+    private String name;
+    private String type;
+    private HelperTable foreignKeyTarget;
 
     /**
      * This is the default and only constructor for HelperTableColumn.
      *
-     * @param columnName The column physic name.
-     * @param isPK Is it a PK?
-     * @param isSearchable is it searchable?
-     * @param isShowable is to be shown or retrieved?
+     * @param name The column  name.
+     * @param type The column type (int,float,string,date,fk).
      */
-    public HelperTableColumn(String columnName, boolean isPK, boolean isSearchable, boolean isShowable) {
-        this.columnName = columnName;
-        this.isPK = isPK;
-        this.isSearchable = isSearchable;
-        this.isShowable = isShowable;
+    public HelperTableColumn(String name, String type) {
+        this.name = name;
+        this.type = type;
     }
 
-    public String getColumnName() {
-        return columnName;
+    public HelperTableColumn(String name, String type, HelperTable foreignKeyTarget) {
+        this.name = name;
+        this.type = type;
+        this.foreignKeyTarget = foreignKeyTarget;
     }
 
-    public void setColumnName(String columnName) {
-        this.columnName = columnName;
+    public String getName() {
+        return name;
     }
 
-    public boolean isShowable() {
-        return isShowable;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public boolean isPK() {
-        return isPK;
+    public String getType() {
+        return type;
     }
 
-    public boolean isSearchable() {
-        return isSearchable;
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public HelperTable getForeignKeyTarget() {
+        return foreignKeyTarget;
+    }
+
+    public void setForeignKeyTarget(HelperTable foreignKeyTarget) {
+        this.foreignKeyTarget = foreignKeyTarget;
     }
 }
