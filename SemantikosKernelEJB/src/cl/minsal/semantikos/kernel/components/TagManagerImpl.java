@@ -218,4 +218,8 @@ public class TagManagerImpl implements TagManager {
         return new String[0];
     }
 
+    @Override
+    public boolean containTag(String nameTag) {
+        return tagDAO.containTag(nameTag);
+    }
 }

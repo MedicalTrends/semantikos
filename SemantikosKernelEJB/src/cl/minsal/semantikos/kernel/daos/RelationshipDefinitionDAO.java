@@ -33,4 +33,6 @@ public interface RelationshipDefinitionDAO {
 
 
     RelationshipAttributeDefinition getRelationshipAttributeDefinitionBy(long id);
+
+    List<RelationshipAttributeDefinition> getRelationshipAttributeDefinitionsByRelationshipDefinition(RelationshipDefinition relationshipDefinition);
 }

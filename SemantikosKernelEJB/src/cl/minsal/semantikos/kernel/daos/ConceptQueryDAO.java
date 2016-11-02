@@ -1,7 +1,9 @@
 package cl.minsal.semantikos.kernel.daos;
 
+import cl.minsal.semantikos.model.Category;
 import cl.minsal.semantikos.model.ConceptSMTK;
 import cl.minsal.semantikos.model.browser.ConceptQuery;
+import cl.minsal.semantikos.model.relationships.RelationshipDefinition;
 
 import javax.ejb.Local;
 import java.util.List;
@@ -13,6 +15,12 @@ import java.util.List;
 @Local
 public interface ConceptQueryDAO {
 
-    public List<ConceptSMTK> callQuery(ConceptQuery query);
+    //public List<ConceptSMTK> callQuery(ConceptQuery query);
+
+    public List<ConceptSMTK> executeQuery(ConceptQuery query);
+
+    public List<RelationshipDefinition> getSearchableAttributesByCategory(Category category);
+
+    public List<RelationshipDefinition> getShowableAttributesByCategory(Category category);
 
 }

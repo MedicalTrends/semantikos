@@ -10,6 +10,7 @@ import javax.ejb.Stateless;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import static cl.minsal.semantikos.model.helpertables.HelperTable.SYSTEM_COLUMN_VALIDITY_UNTIL;
@@ -53,6 +54,7 @@ public class HelperTableManagerImpl implements HelperTableManager {
         List<String> allColumns = joinColumnsWithSystemColumns(columnNames);
 
         List<HelperTableRecord> allRecords = helperTableDAO.getAllRecords(helperTable, allColumns);
+        Collections.sort(allRecords);
         logger.debug("Se recuperan " + allRecords.size() + " registros de la tabla " + helperTable);
 
         return allRecords;

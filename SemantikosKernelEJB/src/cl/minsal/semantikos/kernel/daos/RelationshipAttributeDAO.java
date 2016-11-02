@@ -1,5 +1,6 @@
 package cl.minsal.semantikos.kernel.daos;
 
+import cl.minsal.semantikos.model.relationships.Relationship;
 import cl.minsal.semantikos.model.relationships.RelationshipAttribute;
 
 import javax.ejb.Local;
@@ -20,10 +21,18 @@ public interface RelationshipAttributeDAO {
     public RelationshipAttribute createRelationshipAttribute(RelationshipAttribute relationshipAttribute);
 
     /**
+     * Este método es responsable de actualizar los atributos de un atributo de relación.
+     * @param relationshipAttribute El atributo que se desea actualizar.
+     */
+    public void update(RelationshipAttribute relationshipAttribute);
+
+    /**
      * Metodo encargado de obtener un relationship attribute por id
      * @param idRelationship id del relationship
      * @return retorna un relationship attribute
      */
 
     public List<RelationshipAttribute> getRelationshipAttribute(long idRelationship);
+
+    public Long getTargetByRelationshipAttribute(RelationshipAttribute relationshipAttribute);
 }

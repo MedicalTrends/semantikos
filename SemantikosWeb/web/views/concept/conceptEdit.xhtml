@@ -9,9 +9,14 @@
 
     <ui:define name="content">
 
+        <f:metadata>
+            <f:viewParam name="editMode" value="#{conceptBean.editable}" />
+            <f:viewParam name="idCategory" value="#{conceptBean.idCategory}" />
+            <f:viewParam name="idConcept" value="#{conceptBean.idConcept}" />
+        </f:metadata>
 
         <p:panel id="createEdit" style="background: rgba(0, 0, 0, 0); border: hidden;">
-            <h:form id="mainForm" rendered="#{ not (conceptBean.concept eq null ) }">
+            <h:form id="mainForm" rendered="#{ not (conceptBean.concept eq null ) }" styleClass="#{conceptBean.editable? '' : 'consult'}">
 
                 <p:panel>
 
@@ -20,22 +25,19 @@
 
                     <!--p:messages autoUpdate="true"></p:messages-->
                     <smtk:title concept="#{conceptBean.concept}"/>
-
+                    <p:separator />
+                    <p:panel id="conceptHeader" style="border: hidden;" styleClass="conceptHeader">
+                        <smtk:conceptHeader concept="#{conceptBean.concept}"/>
+                    </p:panel>
 
                 </p:panel>
 
                 <br/>
-
                 <p:tabView>
-                    <p:tab title="General">
-                        <p:panel id="conceptHeader" style="border: hidden;" styleClass="conceptHeader">
-                            <smtk:conceptHeader concept="#{conceptBean.concept}"/>
-                        </p:panel>
-                    </p:tab>
 
                     <!-- Etiquetas -->
                     <p:tab title="Etiquetas">
-                        <smtk:tags tagslist="#{conceptBean.concept.tags}"/>
+                        <smtk:tags editable="#{conceptBean.concept.editable}" tagslist="#{conceptBean.concept.tags}"/>
                     </p:tab>
                     <br/>
 
@@ -45,11 +47,12 @@
                                            otherTermino="#{conceptBean.otherTermino}"
                                            otherSensibilidad="#{conceptBean.otherSensibilidad}"
                                            otherDescriptionType="#{conceptBean.otherDescriptionType}"
-                                           descriptionTypes="#{conceptBean.descriptionTypes}">
+                                           descriptionTypes="#{conceptBean.descriptionTypes}"
+                                           editable="#{conceptBean.concept.editable}">
                         </smtk:descriptions>
                     </p:tab>
                     <br/>
-                    <p:tab title="Atributos" rendered="#{conceptBean.category.hasRelationshipDefinitions}">
+                    <p:tab title="Atributos" rendered="#{not empty conceptBean.category.relationshipDefinitions}">
                         <!--Relaciones -->
                         <p:panel id="atributos"
                                  widgetVar="panelAtributos"
@@ -64,7 +67,7 @@
                                     <p:outputPanel
                                              id="panelRelationshipDefiniton"
                                              style="border:0px; margin: 0px; padding: 0px;"
-                                             styleClass="panel_#{relationshipDefinition.id}">
+                                             styleClass="panel_#{relationshipDefinition.id} #{relationshipDefinition.multiplicitySatisfied ? '': 'relationshipDefinitionError'}">
 
                                         <smtk:smtkType
                                                 rendered="#{relationshipDefinition.targetDefinition.SMTKType}"
@@ -102,12 +105,13 @@
 
                 <br/>
                 <div style="text-align: right;">
-                    <p:commandButton actionListener="#{conceptBean.saveConcept}" icon="ui-icon-check"
+                    <p:commandButton actionListener="#{conceptBean.saveConcept}" icon="fa fa-check"
                                      styleClass="ui-priority-primary"
+                                     rendered="#{conceptBean.concept.editable}"
                                      value="Guardar"
                                      update="growl, mainForm"/>
 
-                    <p:commandButton actionListener="#{conceptBean.deleteConcept}" icon="ui-icon-trash"
+                    <p:commandButton actionListener="#{conceptBean.deleteConcept}" icon="fa fa-trash"
                                      styleClass="ui-priority-primary"
                                      value="Eliminar" type="submit" process="mainForm"
                                      rendered="#{conceptBean.concept.persistent and not conceptBean.concept.modeled}"
@@ -115,7 +119,7 @@
                         <p:confirm header="Confirmation" message="¿Desea eliminar este concepto?" icon="ui-icon-alert"/>
                     </p:commandButton>
 
-                    <p:commandButton actionListener="#{conceptBean.deleteConcept}" icon="ui-icon-trash"
+                    <p:commandButton actionListener="#{conceptBean.deleteConcept}" icon="fa fa-ban"
                                      styleClass="ui-priority-primary"
                                      value="Invalidar" type="submit" process="mainForm"
                                      rendered="#{conceptBean.concept.persistent and conceptBean.concept.modeled}"
@@ -124,14 +128,17 @@
                                    icon="ui-icon-alert"/>
                     </p:commandButton>
 
-                    <p:commandButton actionListener="#{conceptBean.cancelConcept}" icon="ui-icon-cancel"
+                    <p:commandButton actionListener="#{conceptBean.cancelConcept}" icon="fa fa-undo"
                                      styleClass="ui-priority-primary"
-                                     value="Cancelar" type="submit" process="mainForm"
+                                     value="Deshacer" type="submit" process="mainForm"
+                                     rendered="#{conceptBean.concept.editable}"
                                      update="growl, mainForm">
                         <p:confirm header="Confirmation"
                                    message="¿Desea deshacer los cambios realizados en esta sesión?"
                                    icon="ui-icon-alert"/>
                     </p:commandButton>
+
+                    <smtk:export-xls rendered="#{conceptBean.concept.modeled}" />
 
                     <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
                         <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes"
@@ -209,6 +216,10 @@
 
                 </h:form>
             </p:dialog>
+
+            <p:dialog id="dialogISP" header="Warning" widgetVar="dialogISP" modal="true" height="100">
+                <h:outputText value="La URL de registro ISP no se encuentra disponible en este momento, por favor intente más tarde." />
+            </p:dialog>
         </p:panel>
 
         <script type="text/javascript">
@@ -223,6 +234,10 @@
             });
 
         </script>
+
+        <h:outputStylesheet id="customCSS">
+
+        </h:outputStylesheet>
 
 
     </ui:define>

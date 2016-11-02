@@ -30,16 +30,18 @@
                                                      value="#{conceptBrowserBean.concepts}"
                                                      var="concept"
                                                      rows="30"
+                                                     sortBy="#{1}"
                                                      paginator="true" lazy="true" dynamic="true"
                                                      paginatorTemplate=" {CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
                                                      emptyMessage="No se han encontrado conceptos con los criterios utilizados">
 
+                                            <p:growl id="growl" showDetail="true" showSummary="true"/>
 
-                                            <p:column headerText="ConceptID" style="width:5%">
+                                            <p:column headerText="ConceptID" sortBy="#{1}" style="width:7%">
                                                 <h:outputText value="#{concept.id}"/>
                                             </p:column>
 
-                                            <p:column headerText="Término">
+                                            <p:column headerText="Término" sortBy="#{2}">
                                                 <h:outputText value="#{concept.descriptionFavorite.term}"/>
                                             </p:column>
 
@@ -57,13 +59,32 @@
                                             </p:column>
 
                                             <p:column headerText="Acciones" exportable="false" style="text-align: center">
-                                                <p:commandButton icon="fa fa-eye"  />
-                                                <p:commandButton icon="fa fa-edit" />
+                                                <p:button outcome="conceptEdit" icon="fa fa-eye">
+                                                    <f:param name="editMode" value="#{false}" />
+                                                    <f:param name="idConcept" value="#{concept.id}" />
+                                                </p:button>
+                                                <p:button outcome="conceptEdit" icon="fa fa-edit">
+                                                    <f:param name="editMode" value="#{true}" />
+                                                    <f:param name="idConcept" value="#{concept.id}" />
+                                                </p:button>
                                                 <p:commandButton icon="fa fa-exchange" />
-                                                <p:commandButton icon="fa fa-trash" />
+                                                <p:commandButton actionListener="#{conceptBrowserBean.deleteConcept(concept)}"
+                                                                 ajax="true"
+                                                                 icon="fa fa-trash"
+                                                                 process="@this"
+                                                                 rendered="#{not concept.modeled}"
+                                                                 update="@(.conceptBrowserTable), growl">
+                                                    <p:confirm header="Confirmation" message="¿Desea eliminar este concepto?" icon="ui-icon-alert"/>
+                                                </p:commandButton>
                                             </p:column>
 
                                         </p:dataTable>
+                                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                                            <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes"
+                                                             icon="ui-icon-check"/>
+                                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no"
+                                                             icon="ui-icon-close"/>
+                                        </p:confirmDialog>
                                     </h:form>
                                 </div>
                             </div>

@@ -6,11 +6,14 @@ import cl.minsal.semantikos.model.Category;
 import cl.minsal.semantikos.model.ConceptSMTK;
 import cl.minsal.semantikos.model.helpertables.HelperTable;
 import cl.minsal.semantikos.model.helpertables.HelperTableRecord;
+import cl.minsal.semantikos.model.relationships.RelationshipDefinition;
+import org.primefaces.context.RequestContext;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.component.UIComponent;
@@ -54,7 +57,10 @@ public class HelperTableBean implements Serializable {
     public List<HelperTableRecord> getRecordSearchInput(String patron) {
 
         FacesContext context = FacesContext.getCurrentInstance();
+        RequestContext context2 = RequestContext.getCurrentInstance();
+
         HelperTable helperTable = (HelperTable) UIComponent.getCurrentComponent(context).getAttributes().get("helperTable");
+        RelationshipDefinition relationshipDefinition = (RelationshipDefinition) UIComponent.getCurrentComponent(context).getAttributes().get("relationshipDefinition");
 
         if(!recordSearchLists.containsKey(helperTable))
             recordSearchLists.put(helperTable, helperTableManager.getAllRecords(helperTable));
@@ -64,6 +70,10 @@ public class HelperTableBean implements Serializable {
         for (HelperTableRecord record : recordSearchLists.get(helperTable)) {
             if(record.getFields().get("description").toLowerCase().contains(patron.trim().toLowerCase()))
                 someRecords.add(record);
+        }
+
+        if(relationshipDefinition.isISP() && someRecords.isEmpty()){
+            context2.execute("PF('dialogISP').show();");
         }
 
         return someRecords;

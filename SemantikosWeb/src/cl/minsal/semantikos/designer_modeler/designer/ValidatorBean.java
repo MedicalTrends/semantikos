@@ -21,8 +21,6 @@ import java.util.List;
 @ViewScoped
 public class ValidatorBean {
 
-    String uiState = "";
-
     /**
      * Este metodo revisa que las relaciones cumplan el lower_boundary del
      * relationship definition, en caso de no cumplir la condicion se retorna falso.
@@ -70,10 +68,11 @@ public class ValidatorBean {
         String msg = "Debe ingresar un valor";
 
         HelperTable helperTable = (HelperTable) UIComponent.getCurrentComponent(context).getAttributes().get("helperTable");
-        HelperTableRecord record = (HelperTableRecord) value;;
+        HelperTableRecord record = (HelperTableRecord) UIComponent.getCurrentComponent(context).getAttributes().get("helperTableRecord");;;
+        HelperTableRecord record2 = (HelperTableRecord) value;;
 
         //component.getParent().getAttributes().
-        if(record == null || record.getId() == 0 || record.getId() == -1)
+        if( record == null && record2 == null )
             throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", msg));
 
     }
@@ -147,20 +146,14 @@ public class ValidatorBean {
 
     }
 
-    public int countAbbreviatedDescription(List<Description> descriptionList){
+    private int countAbbreviatedDescription(List<Description> descriptionList){
         int count=0;
-        for (int i = 0; i < descriptionList.size(); i++) {
-            if(descriptionList.get(i).getDescriptionType().getName().equalsIgnoreCase("abreviada"))count++;
+        for (Description aDescriptionList : descriptionList) {
+            if (aDescriptionList.getDescriptionType().getName().equalsIgnoreCase("abreviada")) count++;
         }
 
         return count;
     }
 
-    public String getUiState() {
-        return uiState;
-    }
 
-    public void setUiState(String uiState) {
-        this.uiState = uiState;
-    }
 }

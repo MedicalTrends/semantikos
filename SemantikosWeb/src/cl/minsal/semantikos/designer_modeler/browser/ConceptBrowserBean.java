@@ -1,5 +1,6 @@
 package cl.minsal.semantikos.designer_modeler.browser;
 
+import cl.minsal.semantikos.designer_modeler.auth.AuthenticationBean;
 import cl.minsal.semantikos.kernel.components.*;
 import cl.minsal.semantikos.model.*;
 import cl.minsal.semantikos.model.basictypes.BasicTypeValue;
@@ -7,6 +8,8 @@ import cl.minsal.semantikos.model.browser.ConceptQuery;
 import cl.minsal.semantikos.model.browser.ConceptQueryFilter;
 import cl.minsal.semantikos.model.helpertables.HelperTableRecord;
 import cl.minsal.semantikos.model.relationships.*;
+import org.omnifaces.util.Ajax;
+import org.primefaces.extensions.model.fluidgrid.FluidGridItem;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
 import org.slf4j.Logger;
@@ -14,8 +17,13 @@ import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
+import java.io.IOException;
 import java.io.Serializable;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -44,7 +52,7 @@ public class ConceptBrowserBean implements Serializable {
     HelperTableManager helperTableManager;
 
     /**
-     * Objeto de consulta: contiene todos los filtros necesarios para el despliegue de los resultados para el navegador
+     * Objeto de consulta: contiene todos los filtros necesarios para el despliegue de los resultados en el navegador
      */
     private ConceptQuery conceptQuery;
 
@@ -65,7 +73,7 @@ public class ConceptBrowserBean implements Serializable {
     private Category category;
 
     /**
-     * id de la categoría sobre la cual se esta navegando. Usado como puente entre la petición desde el MainMenu y la
+     * id de la categoría sobre la cual se esta navegando. Usado como enlace entre la petición desde el MainMenu y la
      * categoría
      */
     private int idCategory;
@@ -74,6 +82,9 @@ public class ConceptBrowserBean implements Serializable {
     private BasicTypeValue basicTypeValue = new BasicTypeValue(null);
 
     private HelperTableRecord helperTableRecord = new HelperTableRecord();
+
+    @ManagedProperty(value = "#{authenticationBean}")
+    private AuthenticationBean authenticationBean;
 
     @EJB
 
@@ -96,7 +107,7 @@ public class ConceptBrowserBean implements Serializable {
 
         /**
          * Si la categoría no está seteada, retornar inmediatamente
-         */
+        */
         if(category == null)
             return;
 
@@ -107,13 +118,14 @@ public class ConceptBrowserBean implements Serializable {
 
             conceptQuery = conceptQueryManager.getDefaultQueryByCategory(category);
 
+            /*
             for (RelationshipDefinition relationshipDefinition : category.getRelationshipDefinitions()) {
-                ConceptQueryFilter conceptQueryFilter = new ConceptQueryFilter();
-                conceptQueryFilter.setDefinition(relationshipDefinition);
+                ConceptQueryFilter conceptQueryFilter = new ConceptQueryFilter(relationshipDefinition);
                 conceptQueryFilter.setMultiple(false);
 
                 conceptQuery.getFilters().add(conceptQueryFilter);
             }
+            */
         }
 
         /**
@@ -127,6 +139,12 @@ public class ConceptBrowserBean implements Serializable {
 
                 conceptQuery.setPageNumber(first);
                 conceptQuery.setPageSize(pageSize);
+                conceptQuery.setOrder(new Integer(sortField));
+
+                if(sortOrder.name().substring(0,3).toLowerCase().equals("asc"))
+                    conceptQuery.setAsc(sortOrder.name().substring(0,3).toLowerCase());
+                else
+                    conceptQuery.setAsc(sortOrder.name().substring(0,4).toLowerCase());
 
                 List<ConceptSMTK> conceptSMTKs = conceptQueryManager.executeQuery(conceptQuery);
                 this.setRowCount(30);
@@ -227,6 +245,14 @@ public class ConceptBrowserBean implements Serializable {
         this.helperTableRecord = helperTableRecord;
     }
 
+    public AuthenticationBean getAuthenticationBean() {
+        return authenticationBean;
+    }
+
+    public void setAuthenticationBean(AuthenticationBean authenticationBean) {
+        this.authenticationBean = authenticationBean;
+    }
+
     /**
      * Este método se encarga de agregar o cambiar el filtro para el caso de selección simple
      */
@@ -244,7 +270,31 @@ public class ConceptBrowserBean implements Serializable {
         }
         // Se resetean los placeholder para los target de las relaciones
         basicTypeValue = new BasicTypeValue(null);
+
+        //Ajax.update("@(.conceptBrowserTable)");
     }
+
+
+    public void deleteConcept(ConceptSMTK concept) throws IOException {
+
+        FacesContext context = FacesContext.getCurrentInstance();
+
+        // Si el concepto está persistido, invalidarlo
+        if (concept.isPersistent() && !concept.isModeled()) {
+            conceptManager.delete(concept, authenticationBean.getLoggedUser());
+            context.addMessage(null, new FacesMessage("Successful", "Concepto eliminado"));
+            //ExternalContext eContext = FacesContext.getCurrentInstance().getExternalContext();
+            //eContext.redirect(eContext.getRequestContextPath() + "/views/concept/conceptEdit.xhtml");
+            //return "mainMenu.xhtml";
+        } else {
+            conceptManager.invalidate(concept, authenticationBean.getLoggedUser());
+            context.addMessage(null, new FacesMessage("Successful", "Concepto invalidado"));
+            //return "mainMenu.xhtml";
+        }
+
+    }
+
+
 
 
 }

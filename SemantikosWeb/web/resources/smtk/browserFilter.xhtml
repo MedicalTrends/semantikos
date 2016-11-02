@@ -16,66 +16,74 @@
 </composite:interface>
 <composite:implementation>
 
-    <div class="ui-g">
-        <div class="ui-g-12 ui-md-6 ui-lg-2">
-            <p:inputText value="#{cc.attrs.conceptQuery.query}" style="margin-right:10px; width: 80%" placeholder="Buscar...">
-                <p:ajax event="keyup" update="@(.conceptBrowserTable)" />
-            </p:inputText>
+    <p:panel id="conceptFilters" styleClass="conceptFilters">
+        <div class="ui-g">
+            <div class="ui-g-12 ui-md-6 ui-lg-2">
+                <p:inputText value="#{cc.attrs.conceptQuery.query}" style="margin-right:10px; width: 80%" placeholder="Buscar...">
+                    <p:ajax event="keyup" update="@(.conceptBrowserTable)" />
+                </p:inputText>
+            </div>
+            <div class="ui-g-12 ui-md-6 ui-lg-2">
+                <p:selectOneMenu value="#{cc.attrs.conceptQuery.toBeReviewed}" style="margin-right:10px; width: 60%">
+                    <f:selectItem itemLabel="¿Revisar?" itemValue="#{null}"/>
+                    <f:selectItem itemLabel="Sin Revisar" itemValue="#{false}"/>
+                    <f:selectItem itemLabel="Revisar" itemValue="#{true}"/>
+                    <p:ajax event="itemSelect" update="@(.conceptBrowserTable)" />
+                </p:selectOneMenu>
+            </div>
+            <div class="ui-g-12 ui-md-6 ui-lg-2">
+                <p:selectOneMenu value="#{cc.attrs.conceptQuery.toBeConsulted}" style="margin-right:10px; width: 60%">
+                    <f:selectItem itemLabel="¿Consultar?" itemValue="#{null}"/>
+                    <f:selectItem itemLabel="Sin Consultar" itemValue="#{false}"/>
+                    <f:selectItem itemLabel="Consultar" itemValue="#{true}"/>
+                    <p:ajax event="itemSelect" update="@(.conceptBrowserTable)" />
+                </p:selectOneMenu>
+            </div>
+            <div class="ui-g-12 ui-md-6 ui-lg-2">
+                <p:selectOneMenu value="#{cc.attrs.conceptQuery.modeled}" style="margin-right:10px; width: 60%">
+                    <f:selectItem itemLabel="Estado" itemValue="#{null}"/>
+                    <f:selectItem itemLabel="Borrador" itemValue="#{false}"/>
+                    <f:selectItem itemLabel="Modelado" itemValue="#{true}"/>
+                    <p:ajax event="itemSelect" update="@(.conceptBrowserTable)" />
+                </p:selectOneMenu>
+            </div>
+            <div class="ui-g-12 ui-md-6 ui-lg-2">
+                <p:selectOneMenu value="#{cc.attrs.conceptQuery.tag}" converter="omnifaces.SelectItemsConverter"
+                                 style="margin-right:10px; width: 60%">
+                    <f:selectItem itemLabel="Etiqueta" itemValue="#{null}"/>
+                    <f:selectItems value="#{conceptBrowserBean.tags}" var="tag"
+                                   itemLabel="#{tag.name}" itemValue="#{tag}"/>
+                    <p:ajax event="itemSelect" update="@(.conceptBrowserTable)" />
+                </p:selectOneMenu>
+            </div>
+            <p:repeat
+                    offset="0"
+                    size="#{cc.attrs.conceptQuery.filters.size()}"
+                    step="1"
+                    varStatus="var"
+                    value="#{cc.attrs.conceptQuery.filters}"
+                    var="filter">
+                <smtk:basicTypeFilter relationshipDefinition="#{filter.definition}"
+                                      targetDefinition="#{filter.definition.targetDefinition}"
+                                      targets="#{filter.targets}"
+                                      multiple="#{filter.multiple}"
+                                      rendered="#{filter.definition.targetDefinition.basicType and filter.definition.targetDefinition.discreteDomain}" />
+                <smtk:helperTableTypeFilter
+                        relationshipDefinition="#{filter.definition}"
+                        targetDefinition="#{filter.definition.targetDefinition}"
+                        targets="#{filter.targets}"
+                        multiple="#{filter.multiple}"
+                        rendered="#{filter.definition.targetDefinition.helperTable}" />
+            </p:repeat>
+            <div class="ui-g-12 ui-md-6 ui-lg-2">
+                <p:button outcome="conceptEdit" icon="fa fa-plus" styleClass="ui-priority-primary" value="Crear Nuevo">
+                    <f:param name="editMode" value="#{true}" />
+                    <f:param name="idCategory" value="#{cc.attrs.conceptQuery.categories.get(0).id}" />
+                    <f:param name="idConcept" value="#{0}" />
+                </p:button>
+            </div>
         </div>
-        <div class="ui-g-12 ui-md-6 ui-lg-2">
-            <p:selectOneMenu value="#{cc.attrs.conceptQuery.toBeReviewed}" style="margin-right:10px; width: 60%">
-                <f:selectItem itemLabel="¿Revisar?" itemValue="#{null}"/>
-                <f:selectItem itemLabel="Sin Revisar" itemValue="#{false}"/>
-                <f:selectItem itemLabel="Revisar" itemValue="#{true}"/>
-                <p:ajax event="itemSelect" update="@(.conceptBrowserTable)" />
-            </p:selectOneMenu>
-        </div>
-        <div class="ui-g-12 ui-md-6 ui-lg-2">
-            <p:selectOneMenu value="#{cc.attrs.conceptQuery.toBeConsulted}" style="margin-right:10px; width: 60%">
-                <f:selectItem itemLabel="¿Consultar?" itemValue="#{null}"/>
-                <f:selectItem itemLabel="Sin Consultar" itemValue="#{false}"/>
-                <f:selectItem itemLabel="Revisar" itemValue="#{true}"/>
-                <p:ajax event="itemSelect" update="@(.conceptBrowserTable)" />
-            </p:selectOneMenu>
-        </div>
-        <div class="ui-g-12 ui-md-6 ui-lg-2">
-            <p:selectOneMenu value="#{cc.attrs.conceptQuery.modeled}" style="margin-right:10px; width: 60%">
-                <f:selectItem itemLabel="Estado" itemValue="#{null}"/>
-                <f:selectItem itemLabel="Borrador" itemValue="#{false}"/>
-                <f:selectItem itemLabel="Modelado" itemValue="#{true}"/>
-                <p:ajax event="itemSelect" update="@(.conceptBrowserTable)" />
-            </p:selectOneMenu>
-        </div>
-        <div class="ui-g-12 ui-md-6 ui-lg-2">
-            <p:selectOneMenu value="#{cc.attrs.conceptQuery.tag}" converter="omnifaces.SelectItemsConverter"
-                             style="margin-right:10px; width: 60%">
-                <f:selectItem itemLabel="Tag" itemValue="#{null}"/>
-                <f:selectItems value="#{conceptBrowserBean.tags}" var="tag"
-                               itemLabel="#{tag.name}" itemValue="#{tag}"/>
-                <p:ajax event="itemSelect" update="@(.conceptBrowserTable)" />
-            </p:selectOneMenu>
-        </div>
-
-        <p:repeat
-                offset="0"
-                size="#{cc.attrs.conceptQuery.filters.size()}"
-                step="1"
-                varStatus="var"
-                value="#{cc.attrs.conceptQuery.filters}"
-                var="filter">
-            <smtk:basicTypeFilter relationshipDefinition="#{filter.definition}"
-                                  targetDefinition="#{filter.definition.targetDefinition}"
-                                  targets="#{filter.targets}"
-                                  multiple="#{filter.multiple}"
-                                  rendered="#{filter.definition.targetDefinition.basicType}" />
-            <smtk:helperTableTypeFilter
-                    relationshipDefinition="#{filter.definition}"
-                    targetDefinition="#{filter.definition.targetDefinition}"
-                    targets="#{filter.targets}"
-                    multiple="#{filter.multiple}"
-                    rendered="#{filter.definition.targetDefinition.helperTable}" />
-        </p:repeat>
-    </div>
+    </p:panel>
 
 </composite:implementation>
 </html>

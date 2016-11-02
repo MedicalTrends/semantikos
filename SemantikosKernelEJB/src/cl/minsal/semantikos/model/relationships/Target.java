@@ -18,4 +18,7 @@ public interface Target {
      * @return El <code>TargetType</code> del objeto que recibe el mensaje.
      */
     public TargetType getTargetType();
+
+
+    public Target copy();
 }

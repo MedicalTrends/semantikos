@@ -4,7 +4,9 @@ import cl.minsal.semantikos.kernel.daos.ConceptQueryDAO;
 import cl.minsal.semantikos.model.Category;
 import cl.minsal.semantikos.model.ConceptSMTK;
 import cl.minsal.semantikos.model.browser.ConceptQuery;
+import cl.minsal.semantikos.model.browser.ConceptQueryColumn;
 import cl.minsal.semantikos.model.browser.ConceptQueryFilter;
+import cl.minsal.semantikos.model.browser.Sort;
 import cl.minsal.semantikos.model.relationships.RelationshipDefinition;
 
 import javax.ejb.EJB;
@@ -35,6 +37,14 @@ public class ConceptQueryManagerImpl implements ConceptQueryManager{
         List<ConceptQueryFilter> filters = new ArrayList<ConceptQueryFilter>();
         query.setFilters(filters);
 
+        // Agregar columnas dinámicas
+        for (RelationshipDefinition relationshipDefinition : getShowableAttributesByCategory(category)) {
+            query.getColumns().add(new ConceptQueryColumn(relationshipDefinition.getName(), new Sort(null, false)));
+        }
+        // Agregar filtros dinámicos
+        for (RelationshipDefinition relationshipDefinition : getSearchableAttributesByCategory(category)) {
+            query.getFilters().add(new ConceptQueryFilter(relationshipDefinition));
+        }
 
         return query;
     }
@@ -42,13 +52,18 @@ public class ConceptQueryManagerImpl implements ConceptQueryManager{
     @Override
     public List<ConceptSMTK> executeQuery(ConceptQuery query) {
 
-        return conceptQueryDAO.callQuery(query);
+        //return conceptQueryDAO.callQuery(query);
+        return conceptQueryDAO.executeQuery(query);
 
     }
 
     @Override
     public List<RelationshipDefinition> getShowableAttributesByCategory(Category category) {
-//TODO:implement
-        return new ArrayList<RelationshipDefinition>();
+        return conceptQueryDAO.getShowableAttributesByCategory(category);
+    }
+
+    @Override
+    public List<RelationshipDefinition> getSearchableAttributesByCategory(Category category) {
+        return conceptQueryDAO.getSearchableAttributesByCategory(category);
     }
 }

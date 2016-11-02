@@ -1,6 +1,5 @@
 package cl.minsal.semantikos.kernel.daos;
 
-import cl.minsal.semantikos.kernel.auth.UserManager;
 import cl.minsal.semantikos.kernel.util.ConnectionBD;
 import cl.minsal.semantikos.model.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -75,7 +74,7 @@ public class DescriptionDAOImpl implements DescriptionDAO {
     @Override
     public Description getDescriptionBy(long id) {
         ConnectionBD connect = new ConnectionBD();
-        Description description= null;
+        Description description = null;
 
         String sql = "{call semantikos.get_description_by_id(?)}";
         try (Connection connection = connect.getConnection();
@@ -293,6 +292,60 @@ public class DescriptionDAOImpl implements DescriptionDAO {
     }
 
     @Override
+    public List<ObservationNoValid> getObservationsNoValid() {
+        ConnectionBD connect = new ConnectionBD();
+        List<ObservationNoValid> observationNoValids= new ArrayList<>();
+        String sql = "{call semantikos.get_all_not_valid_observation()}";
+        try (Connection connection = connect.getConnection();
+             CallableStatement call = connection.prepareCall(sql)) {
+            call.execute();
+            ResultSet rs = call.getResultSet();
+            while (rs.next()) {
+                Long id = rs.getLong("id");
+                String description = rs.getString("description");
+                observationNoValids.add(new ObservationNoValid(id,description));
+            }
+
+        } catch (SQLException e) {
+            String errorMsg = "Error al recuperar descripciones de la BDD.";
+            logger.error(errorMsg, e);
+            throw new EJBException(e);
+        }
+
+        return observationNoValids;
+    }
+
+    @Override
+    public void setInvalidDescription(NoValidDescription noValidDescription) {
+        ConnectionBD connect = new ConnectionBD();
+
+        String sql1 = "{call semantikos.persist_observation_to_description_no_valid(?,?)}";
+        String sql2 = "{call semantikos.persist_concept_suggested_to_description_no_valid(?,?)}";
+        try (Connection connection = connect.getConnection();
+             CallableStatement call1 = connection.prepareCall(sql1);
+             CallableStatement call2 = connection.prepareCall(sql2)) {
+
+            /* Se registra la observación primero */
+            call1.setLong(1, noValidDescription.getNoValidDescription().getId());
+            call1.setLong(2, noValidDescription.getObservation());
+            call1.execute();
+
+
+            /* Se guardan los conceptos sugeridos para dicha descripción */
+            List<ConceptSMTK> suggestedConcepts = noValidDescription.getSuggestedConcepts();
+            call2.setLong(1, noValidDescription.getNoValidDescription().getId());
+            for (ConceptSMTK suggestedConcept : suggestedConcepts) {
+                call2.setLong(2, suggestedConcept.getId());
+                call2.execute();
+            }
+        } catch (SQLException e) {
+            String errorMsg = "Error al recuperar descripciones de la BDD.";
+            logger.error(errorMsg, e);
+            throw new EJBException(e);
+        }
+    }
+
+    @Override
     public List<Description> searchDescriptionsByTerm(String term, List<Category> categories) {
         ConnectionBD connect = new ConnectionBD();
         List<Description> descriptions = new ArrayList<>();
@@ -302,7 +355,8 @@ public class DescriptionDAOImpl implements DescriptionDAO {
              CallableStatement call = connection.prepareCall(sql)) {
 
             call.setString(1, term.toLowerCase());
-            call.setArray(2, connection.createArrayOf("bigint", convertListCategoryToListID(categories).toArray(new Long[categories.size()])));
+            Category[] entities = categories.toArray(new Category[categories.size()]);
+            call.setArray(2, connection.createArrayOf("bigint", convertListPersistentToListID(entities)));
             call.execute();
 
             logger.debug("Búsqueda exacta descripciones con término =" + term);
@@ -321,15 +375,15 @@ public class DescriptionDAOImpl implements DescriptionDAO {
         return descriptions;
     }
 
-    private List<Long> convertListCategoryToListID(List<Category> categories) {
+    private Long[] convertListPersistentToListID(PersistentEntity[] entities) {
 
         List<Long> listIDs = new ArrayList<>();
 
-        for (Category category : categories) {
-            listIDs.add(category.getId());
+        for (PersistentEntity entity : entities) {
+            listIDs.add(entity.getId());
         }
-        
-        return listIDs;
+
+        return listIDs.toArray(new Long[entities.length]);
     }
 
     private Description createDescriptionFromResultSet(ResultSet resultSet, ConceptSMTK conceptSMTK) throws SQLException {
@@ -341,7 +395,7 @@ public class DescriptionDAOImpl implements DescriptionDAO {
         boolean isCaseSensitive = resultSet.getBoolean("case_sensitive");
         boolean isAutoGenerated = resultSet.getBoolean("autogenerated");
         boolean isPublished = resultSet.getBoolean("is_published");
-        boolean isModeled= resultSet.getBoolean("is_modeled");
+        boolean isModeled = resultSet.getBoolean("is_modeled");
         Timestamp validityUntil = resultSet.getTimestamp("validity_until");
         Timestamp creationDate = resultSet.getTimestamp("creation_date");
         User user = authDAO.getUserById(resultSet.getLong("id_user"));
@@ -357,7 +411,7 @@ public class DescriptionDAOImpl implements DescriptionDAO {
 
 
         DescriptionType descriptionType = DescriptionTypeFactory.getInstance().getDescriptionTypeByID(idDescriptionType);
-        return new Description(id, conceptByID, descriptionID, descriptionType, term, isCaseSensitive, isAutoGenerated, isPublished, validityUntil, creationDate, user,isModeled);
+        return new Description(id, conceptByID, descriptionID, descriptionType, term, isCaseSensitive, isAutoGenerated, isPublished, validityUntil, creationDate, user, isModeled);
     }
 
     @Override

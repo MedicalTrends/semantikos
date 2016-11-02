@@ -26,6 +26,7 @@ import java.util.List;
  */
 public class Relationship extends PersistentEntity implements AuditableEntity {
 
+    // TODO: Normalizar esta clase
     /** Identificador único de la base de datos */
     private long id;
 
@@ -46,6 +47,24 @@ public class Relationship extends PersistentEntity implements AuditableEntity {
 
     /** Lista de Atributos de la relacion **/
     private List<RelationshipAttribute> relationshipAttributes;
+
+    /**
+     * Este es el constructor mínimo con el cual se crean las Relaciones
+     *
+     * @param sourceConcept           El concepto origen de la relación.
+     * @param relationshipDefinition  Definición de la relación.
+     * @param  relationshipAttributes Lista de Atributos
+     */
+    @Deprecated
+    public Relationship(ConceptSMTK sourceConcept, RelationshipDefinition relationshipDefinition,List<RelationshipAttribute> relationshipAttributes) {
+
+        /* No está persistido originalmente */
+        this.id = NON_PERSISTED_ID;
+
+        this.sourceConcept = sourceConcept;
+        this.relationshipDefinition = relationshipDefinition;
+        this.relationshipAttributes = relationshipAttributes;
+    }
 
     /**
      * Este es el constructor mínimo con el cual se crean las Relaciones
@@ -246,11 +265,44 @@ public class Relationship extends PersistentEntity implements AuditableEntity {
         return (getValidityUntil() == null || getValidityUntil().after(new Timestamp(System.currentTimeMillis())));
     }
 
+
+
     public List<RelationshipAttribute> getRelationshipAttributes() {
         return relationshipAttributes;
     }
 
     public void setRelationshipAttributes(List<RelationshipAttribute> relationshipAttributes) {
         this.relationshipAttributes = relationshipAttributes;
+    }
+
+    public RelationshipAttribute getOrderAttribute(){
+        for (RelationshipAttribute relationshipAttribute : getRelationshipAttributes()) {
+            if(relationshipAttribute.getRelationAttributeDefinition().getName().equalsIgnoreCase("orden")){
+                return relationshipAttribute;
+            }
+        }
+        return null;
+    }
+
+    public Integer getOrder(){
+
+        RelationshipAttribute attribute = getOrderAttribute();
+
+        if(attribute != null){
+            BasicTypeValue basicTypeValue = (BasicTypeValue) attribute.getTarget();
+            return Integer.parseInt(basicTypeValue.getValue().toString());
+        }
+        else{
+            return 0;
+        }
+    }
+
+    public boolean isMultiplicitySatisfied(RelationshipAttributeDefinition attributeDefinition){
+        return this.getAttributesByAttributeDefinition(attributeDefinition).size() >= attributeDefinition.getMultiplicity().getLowerBoundary();
+    }
+
+    @Override
+    public String toString() {
+        return relationshipDefinition.getName();
     }
 }

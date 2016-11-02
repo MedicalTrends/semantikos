@@ -37,7 +37,13 @@ public class HelperTableRecordFactory {
         JSONHelperTableRecord jsonHelperTableRecord = mapper.readValue(jsonExpression, JSONHelperTableRecord.class);
 
         HelperTable helperTable = helperTableManager.findHelperTableByID(jsonHelperTableRecord.getTableId());
-        return new HelperTableRecord(helperTable, jsonHelperTableRecord.getFields());
+        HelperTableRecord helperTableRecord = new HelperTableRecord(helperTable, jsonHelperTableRecord.getFields());
+        /**
+         * Se setea el id desde el fields para ser utilizado por el custom converter
+         */
+        helperTableRecord.setId(new Long(helperTableRecord.getFields().get("id")));
+        //return new HelperTableRecord(helperTable, jsonHelperTableRecord.getFields());
+        return helperTableRecord;
     }
 
     /**
@@ -58,6 +64,10 @@ public class HelperTableRecordFactory {
         List<HelperTableRecord> records = new ArrayList<>();
         for (Map<String, String> fields : jsonHelperTableRecord.getRecords()) {
             HelperTableRecord helperTableRecord = new HelperTableRecord(helperTable, fields);
+            /**
+             * Se setea el id desde el fields para ser utilizado por el custom converter
+             */
+            helperTableRecord.setId(new Long(helperTableRecord.getFields().get("id")));
             records.add(helperTableRecord);
         }
 
@@ -83,7 +93,7 @@ public class HelperTableRecordFactory {
         HelperTableJSON jsonHelperTable = mapper.readValue(jsonExpression, HelperTableJSON.class);
 
         // Se crean las columnas por defecto que debe especificar esta definición de helperTable
-        Collection<HelperTableColumn> columns = Arrays.asList(new HelperTableColumn[]{new HelperTableColumn("description", false, true, true), new HelperTableColumn("id", true, false, false)});;
+        Collection<HelperTableColumn> columns = Arrays.asList(new HelperTableColumn[]{new HelperTableColumn("id", false, true, true),new HelperTableColumn("description", false, true, true)});;
 
         return new HelperTable(jsonHelperTable.getTableId(), jsonHelperTable.getName(), jsonHelperTable.getDescription(), jsonHelperTable.getTablaName(), columns);
     }

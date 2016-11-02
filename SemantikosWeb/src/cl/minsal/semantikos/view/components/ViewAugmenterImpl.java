@@ -16,14 +16,16 @@ import javax.ejb.Stateless;
 public class ViewAugmenterImpl implements ViewAugmenter {
 
     @EJB
-    private SemantikosWebDAO semantikosWebDAODAO;
+    private SemantikosWebDAO semantikosWebDAO;
 
     @Override
     public RelationshipDefinitionWeb augmentRelationshipDefinition(Category category, RelationshipDefinition relDef) {
 
-        ExtendedRelationshipDefinitionInfo extendedRelationshipDefinitionInfo = semantikosWebDAODAO.getCompositeOf(category, relDef);
+        ExtendedRelationshipDefinitionInfo extendedRelationshipDefinitionInfo = semantikosWebDAO.getCompositeOf(category, relDef);
         RelationshipDefinitionWeb relationshipDefinitionWeb = new RelationshipDefinitionWeb(relDef.getId(), relDef.getName(), relDef.getDescription(), relDef.getTargetDefinition(), relDef.getMultiplicity(), extendedRelationshipDefinitionInfo.getIdComposite(), extendedRelationshipDefinitionInfo.getOrder());
         relationshipDefinitionWeb.setRelationshipAttributeDefinitions(relDef.getRelationshipAttributeDefinitions());
+        relationshipDefinitionWeb.setDefaultValue(extendedRelationshipDefinitionInfo.getDefaultValue());
+
         return relationshipDefinitionWeb;
     }
 }

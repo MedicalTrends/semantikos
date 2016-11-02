@@ -3,9 +3,7 @@ package cl.minsal.semantikos.kernel.daos;
 import cl.minsal.semantikos.kernel.util.ConnectionBD;
 import cl.minsal.semantikos.model.basictypes.BasicTypeDefinition;
 import cl.minsal.semantikos.model.basictypes.BasicTypeValue;
-import cl.minsal.semantikos.model.relationships.Target;
-import cl.minsal.semantikos.model.relationships.TargetDefinition;
-import cl.minsal.semantikos.model.relationships.TargetFactory;
+import cl.minsal.semantikos.model.relationships.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,6 +34,12 @@ public class TargetDAOImpl implements TargetDAO {
     @EJB
     private HelperTableDAO helperTableDAO;
 
+    @EJB
+    private RelationshipDAO relationshipDAO;
+
+    @EJB
+    private RelationshipAttributeDAO relationshipAttributeDAO;
+
 
     @Override
     public Target getTargetByID(long idTarget) {
@@ -43,6 +47,39 @@ public class TargetDAOImpl implements TargetDAO {
         Target target;
         ConnectionBD connect = new ConnectionBD();
         String sqlQuery = "{call semantikos.get_target_by_id(?)}";
+        try (Connection connection = connect.getConnection();
+             CallableStatement call = connection.prepareCall(sqlQuery)) {
+
+            /* Se invoca la consulta para recuperar las relaciones */
+            call.setLong(1, idTarget);
+            call.execute();
+
+            /* Cada Fila del ResultSet trae una relación */
+            ResultSet rs = call.getResultSet();
+            if (rs.next()) {
+                String jsonResult = rs.getString(1);
+                target = targetFactory.createTargetFromJSON(jsonResult);
+            } else {
+                String errorMsg = "Un error imposible acaba de ocurrir";
+                logger.error(errorMsg);
+                throw new EJBException(errorMsg);
+            }
+            rs.close();
+        } catch (SQLException e) {
+            String errorMsg = "Erro al invocar get_relationship_definitions_by_category(" + idTarget + ")";
+            logger.error(errorMsg, e);
+            throw new EJBException(errorMsg, e);
+        }
+
+        return target;
+    }
+
+    @Override
+    public Target getDefaultTargetByID(long idTarget) {
+
+        Target target;
+        ConnectionBD connect = new ConnectionBD();
+        String sqlQuery = "{call semantikos.get_default_target_by_id(?)}";
         try (Connection connection = connect.getConnection();
              CallableStatement call = connection.prepareCall(sqlQuery)) {
 
@@ -187,23 +224,27 @@ public class TargetDAOImpl implements TargetDAO {
     }
 
     @Override
-    public long update(Target target, TargetDefinition targetDefinition) {
+    public long update(Relationship relationship) {
         ConnectionBD connect = new ConnectionBD();
         String sql = "{call semantikos.update_target(?,?,?,?,?,?,?,?,?,?,?)}";
-        long idTarget = -1;
+        long idTarget = relationshipDAO.getTargetByRelationship(relationship);
 
         try (Connection connection = connect.getConnection();
              CallableStatement call = connection.prepareCall(sql)) {
-
+            setDefaultValuesForUpdateTargetFunction(call);
             /* Almacenar el tipo básico */
-            if (targetDefinition.isBasicType()) {
+            if (relationship.getRelationshipDefinition().getTargetDefinition().isBasicType()) {
 
-                BasicTypeDefinition basicTypeDefinition = (BasicTypeDefinition) targetDefinition;
-                BasicTypeValue value = (BasicTypeValue) target;
+                BasicTypeDefinition basicTypeDefinition = (BasicTypeDefinition) relationship.getRelationshipDefinition().getTargetDefinition();
+                BasicTypeValue value = (BasicTypeValue) relationship.getTarget();
+
+
+                //TODO: FIX
 
                 if (value.isDate()) {
                     call.setTimestamp(2, (Timestamp) value.getValue());
                 }
+
                 if (value.isFloat()) {
                     call.setFloat(1, (Float) value.getValue());
                 }
@@ -214,34 +255,106 @@ public class TargetDAOImpl implements TargetDAO {
                     call.setString(3, (String) value.getValue());
                 }
 
-                call.setNull(4, 1);
-
             }
 
             /* Almacenar concepto SMTK */
-            if (targetDefinition.isSMTKType()) {
-                call.setFloat(9, SMTK.getIdTargetType());
+            if (relationship.getRelationshipDefinition().getTargetDefinition().isSMTKType()) {
+                call.setLong(9, relationship.getTarget().getId());
+                call.setLong(10, SMTK.getIdTargetType());
             }
 
             /* Almacenar registro Tabla auxiliar */
-            else if (targetDefinition.isHelperTable()) {
-                call.setLong(6, target.getId());
+            else if (relationship.getRelationshipDefinition().getTargetDefinition().isHelperTable()) {
+                call.setLong(6, helperTableDAO.updateAuxiliary(relationship));
                 call.setLong(10, HelperTable.getIdTargetType());
             }
 
             /* Almacenar concepto SCT */
-            else if (targetDefinition.isSnomedCTType()) {
-                call.setLong(8, target.getId());
+            else if (relationship.getRelationshipDefinition().getTargetDefinition().isSnomedCTType()) {
+                call.setLong(9, relationship.getTarget().getId());
                 call.setLong(10, SnomedCT.getIdTargetType());
             }
+
+            call.setLong(11, idTarget);
 
             call.execute();
 
             ResultSet rs = call.getResultSet();
 
+            /*
             if (rs.next()) {
                 idTarget = rs.getLong(1);
             }
+            */
+            rs.close();
+
+        } catch (SQLException e) {
+            throw new EJBException(e);
+        }
+        return idTarget;
+    }
+
+    @Override
+    public long update(RelationshipAttribute relationshipAttribute) {
+        ConnectionBD connect = new ConnectionBD();
+        String sql = "{call semantikos.update_target(?,?,?,?,?,?,?,?,?,?,?)}";
+        long idTarget = relationshipAttributeDAO.getTargetByRelationshipAttribute(relationshipAttribute);
+
+        try (Connection connection = connect.getConnection();
+             CallableStatement call = connection.prepareCall(sql)) {
+            setDefaultValuesForUpdateTargetFunction(call);
+            /* Almacenar el tipo básico */
+            if (relationshipAttribute.getRelationAttributeDefinition().getTargetDefinition().isBasicType()) {
+
+                BasicTypeDefinition basicTypeDefinition = (BasicTypeDefinition) relationshipAttribute.getRelationAttributeDefinition().getTargetDefinition();
+                BasicTypeValue value = (BasicTypeValue) relationshipAttribute.getTarget();
+
+                if (value.isDate()) {
+                    call.setTimestamp(2, (Timestamp) value.getValue());
+                }
+
+                if (value.isFloat()) {
+                    call.setFloat(1, (Float) value.getValue());
+                }
+                if (value.isInteger()) {
+                    call.setInt(5, (Integer) value.getValue());
+                }
+                if (value.isString()) {
+                    call.setString(3, (String) value.getValue());
+                }
+
+            }
+
+            /* Almacenar concepto SMTK */
+            if (relationshipAttribute.getRelationAttributeDefinition().getTargetDefinition().isSMTKType()) {
+                call.setLong(9, relationshipAttribute.getTarget().getId());
+                call.setLong(10, SMTK.getIdTargetType());
+            }
+
+            /* Almacenar registro Tabla auxiliar */
+            else if (relationshipAttribute.getRelationAttributeDefinition().getTargetDefinition().isHelperTable()) {
+                //helperTableDAO.updateAuxiliary(relationship.getId(), relationship.getTarget().getId());
+                call.setLong(6, helperTableDAO.updateAuxiliary(relationshipAttribute));
+                call.setLong(10, HelperTable.getIdTargetType());
+            }
+
+            /* Almacenar concepto SCT */
+            else if (relationshipAttribute.getRelationAttributeDefinition().getTargetDefinition().isSnomedCTType()) {
+                call.setLong(9, relationshipAttribute.getTarget().getId());
+                call.setLong(10, SnomedCT.getIdTargetType());
+            }
+
+            call.setLong(11, idTarget);
+
+            call.execute();
+
+            ResultSet rs = call.getResultSet();
+
+            /*
+            if (rs.next()) {
+                idTarget = rs.getLong(1);
+            }
+            */
             rs.close();
 
         } catch (SQLException e) {
@@ -255,15 +368,14 @@ public class TargetDAOImpl implements TargetDAO {
 
         if (targetDefinition.getType().getTypeName().equals("date")) {
             java.util.Date d = (java.util.Date) target.getValue();
-
             call.setTimestamp(2, new Timestamp(d.getTime()) );
-        } else if (target.getValue().getClass().equals(Float.class) || target.getValue().getClass().equals(Double.class)) {
+        } else if (targetDefinition.getType().getTypeName().equals("float")) {
             call.setFloat(1, (Float) target.getValue());
-        } else if (target.getValue().getClass().equals(Integer.class)) {
-            call.setInt(5, (Integer) target.getValue());
-        } else if (target.getValue().getClass().equals(String.class)) {
+        } else if (targetDefinition.getType().getTypeName().equals("int")) {
+            call.setInt(5, (Integer.parseInt(target.getValue().toString())));
+        } else if (targetDefinition.getType().getTypeName().equals("string")) {
             call.setString(3, (String) target.getValue());
-        } else if (target.getValue().getClass().equals(Boolean.class)) {
+        } else if (targetDefinition.getType().getTypeName().equals("boolean")) {
             call.setBoolean(4, (Boolean) target.getValue());
         } else {
             throw new EJBException("Tipo Básico no conocido.");
@@ -280,12 +392,16 @@ public class TargetDAOImpl implements TargetDAO {
         call.setNull(2, TIMESTAMP);
         call.setNull(3, VARCHAR);
         call.setNull(4, BOOLEAN);
-        call.setNull(5, INTEGER);
-        call.setNull(6, INTEGER);
-        call.setNull(7, INTEGER);
-        call.setNull(8, INTEGER);
-        call.setNull(9, INTEGER);
-        call.setNull(10, INTEGER);
+        call.setNull(5, BIGINT);
+        call.setNull(6, BIGINT);
+        call.setNull(7, BIGINT);
+        call.setNull(8, BIGINT);
+        call.setNull(9, BIGINT);
+        call.setNull(10, BIGINT);
+    }
+    private void setDefaultValuesForUpdateTargetFunction(CallableStatement call) throws SQLException {
+        setDefaultValuesForCreateTargetFunction(call);
+        call.setNull(11, BIGINT);
     }
 
 }

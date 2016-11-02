@@ -1,9 +1,12 @@
 package cl.minsal.semantikos.admin_refset;
 
+import cl.minsal.semantikos.designer_modeler.auth.AuthenticationBean;
 import cl.minsal.semantikos.kernel.components.CategoryManager;
 import cl.minsal.semantikos.kernel.components.ConceptManager;
 import cl.minsal.semantikos.kernel.components.RefSetManager;
-import cl.minsal.semantikos.model.*;
+import cl.minsal.semantikos.model.Category;
+import cl.minsal.semantikos.model.ConceptSMTK;
+import cl.minsal.semantikos.model.RefSet;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
 
@@ -18,9 +21,9 @@ import java.util.Map;
 import static java.lang.System.currentTimeMillis;
 
 /**
- * Created by des01c7 on 20-09-16.
+ * @author Gustavo Punucura on 20-09-16.
  */
-@ManagedBean(name="refsetsBean")
+@ManagedBean(name = "refsetsBean")
 @ViewScoped
 public class RefSetsBean {
 
@@ -33,8 +36,6 @@ public class RefSetsBean {
 
     private Category categorySelected;
 
-    private User user;
-
     private LazyDataModel<ConceptSMTK> conceptsToCategory;
 
     private LazyDataModel<ConceptSMTK> conceptsToDescription;
@@ -42,9 +43,6 @@ public class RefSetsBean {
     private String pattern;
 
     private RefSet refSetEdit;
-
-    private Institution institution;
-
 
     @EJB
     private CategoryManager categoryManager;
@@ -55,55 +53,32 @@ public class RefSetsBean {
     @EJB
     private RefSetManager refSetManager;
 
+    @EJB
+    private AuthenticationBean authenticationBean;
 
     @PostConstruct
-    public void init(){
-
-
-        user = new User();
-
-        user.setIdUser(1);
-        user.setUsername("amauro");
-        user.setPassword("amauro");
-        Profile designerProfile = new Profile(4, "Administrador de RefSets", "Usuario administrador de RefSets.");
-        user.getProfiles().add(designerProfile);
-
-        categories= categoryManager.getCategories();
-
-        institution= new Institution();
-        institution.setId(1);
-        institution.setName("MINSAL");
-
-        user.getInstitutions().add(institution);
-
-
-        conceptsToCategory = null;
-
-        conceptsToDescription= null;
-
-        refSetToCreate = new RefSet(null,institution,null);
-
-        refSetList= refSetManager.getAllRefSets();
+    public void init() {
+        categories = categoryManager.getCategories();
+        refSetToCreate = new RefSet(null, authenticationBean.getLoggedUser().getInstitutions().get(0), null);
+        refSetList = refSetManager.getAllRefSets();
 
     }
 
-    public void createRefset(){
-
-        refSetToCreate=refSetManager.createRefSet(refSetToCreate,user);
-        refSetToCreate = new RefSet(null,institution,null);
+    public void createRefset() {
+        refSetToCreate = refSetManager.createRefSet(refSetToCreate, authenticationBean.getLoggedUser());
+        refSetToCreate = new RefSet(null, authenticationBean.getLoggedUser().getInstitutions().get(0), null);
         conceptsToCategory = null;
-        conceptsToDescription= null;
-        refSetList= refSetManager.getAllRefSets();
-
+        conceptsToDescription = null;
+        refSetList = refSetManager.getAllRefSets();
     }
 
-    public void invalidRefset(){
+    public void invalidRefset() {
         refSetEdit.setValidityUntil(new Timestamp(currentTimeMillis()));
-        refSetManager.updateRefSet(refSetEdit,user);
-        refSetList= refSetManager.getAllRefSets();
+        refSetManager.updateRefSet(refSetEdit, authenticationBean.getLoggedUser());
+        refSetList = refSetManager.getAllRefSets();
     }
 
-    public void selectCategoryEvent(){
+    public void selectCategoryEvent() {
 
 
         conceptsToCategory = new LazyDataModel<ConceptSMTK>() {
@@ -111,11 +86,11 @@ public class RefSetsBean {
             public List<ConceptSMTK> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
                 List<ConceptSMTK> conceptSMTKs;
                 Long[] idCategory;
-                if(categorySelected==null){
+                if (categorySelected == null) {
                     idCategory = new Long[0];
-                }else{
+                } else {
                     idCategory = new Long[1];
-                    idCategory[0]= categorySelected.getId();
+                    idCategory[0] = categorySelected.getId();
                 }
 
                 conceptSMTKs = conceptManager.findConceptBy(null, idCategory, first, pageSize);
@@ -129,10 +104,10 @@ public class RefSetsBean {
     }
 
 
-    public void patternEvent(){
+    public void patternEvent() {
 
-        if(pattern!=null){
-            if(pattern.length()>2){
+        if (pattern != null) {
+            if (pattern.length() > 2) {
                 conceptsToDescription = new LazyDataModel<ConceptSMTK>() {
                     @Override
                     public List<ConceptSMTK> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
@@ -145,29 +120,27 @@ public class RefSetsBean {
 
                 };
 
-            }else{
-                conceptsToDescription=null;
+            } else {
+                conceptsToDescription = null;
             }
 
         }
     }
 
 
-    public void addConcept(RefSet refSet, ConceptSMTK conceptSMTK){
+    public void addConcept(RefSet refSet, ConceptSMTK conceptSMTK) {
         refSet.bindConceptTo(conceptSMTK);
-        if(refSet.isPersistent()){
-            refSetManager.bindConceptToRefSet(conceptSMTK,refSet,user);
+        if (refSet.isPersistent()) {
+            refSetManager.bindConceptToRefSet(conceptSMTK, refSet, authenticationBean.getLoggedUser());
         }
     }
 
-    public void removeConcept(RefSet refSet, ConceptSMTK conceptSMTK){
+    public void removeConcept(RefSet refSet, ConceptSMTK conceptSMTK) {
         refSet.unbindConceptTo(conceptSMTK);
-        if(refSet.isPersistent()){
-            refSetManager.unbindConceptToRefSet(conceptSMTK,refSet,user);
+        if (refSet.isPersistent()) {
+            refSetManager.unbindConceptToRefSet(conceptSMTK, refSet, authenticationBean.getLoggedUser());
         }
     }
-
-
 
 
     public RefSet getRefSetToCreate() {

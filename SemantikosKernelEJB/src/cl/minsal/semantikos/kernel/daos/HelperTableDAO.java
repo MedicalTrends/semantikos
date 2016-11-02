@@ -3,6 +3,9 @@ package cl.minsal.semantikos.kernel.daos;
 import cl.minsal.semantikos.model.helpertables.HelperTable;
 import cl.minsal.semantikos.model.helpertables.HelperTableRecord;
 import cl.minsal.semantikos.model.helpertables.HelperTableWhereCondition;
+import cl.minsal.semantikos.model.relationships.Relationship;
+import cl.minsal.semantikos.model.relationships.RelationshipAttribute;
+import cl.minsal.semantikos.model.relationships.RelationshipDefinition;
 
 import javax.ejb.Local;
 import java.util.Collection;
@@ -100,4 +103,17 @@ public interface HelperTableDAO {
      * @param idTableName id del nombre de la tabla
      */
     public long persistAuxilary(long idRecord, long idTableName);
+
+    /**
+     * Este metodo es encargado de actualizar el valor seleccionado de un helper table
+     * @param relationship la relacion
+     */
+    public long updateAuxiliary(Relationship relationship);
+
+    /**
+     * Este metodo es encargado de actualizar el valor seleccionado de un helper table
+     * @param relationshipAttribute la relacion
+     */
+    public long updateAuxiliary(RelationshipAttribute relationshipAttribute);
+
 }
