@@ -137,4 +137,17 @@ public class ConceptsService {
         return res;
     }
 
+    @WebMethod(operationName = "listaCategorias")
+    @WebResult(name = "categoria")
+    public List<CategoryResponse> listaCategorias() {
+        List<CategoryResponse> res = new ArrayList<>();
+        List<Category> categories = this.categoryManager.getCategories();
+        if ( categories != null ) {
+            for ( Category category : categories ) {
+                res.add(CategoryMapper.map(category));
+            }
+        }
+        return res;
+    }
+
 }

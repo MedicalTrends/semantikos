@@ -10,7 +10,6 @@ import java.util.List;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "tipoObjetivo")
-@XmlType(name = "TipoObjetivo")
 public class TargetTypeResponse implements Serializable {
 
     @XmlElement(name="tipo")

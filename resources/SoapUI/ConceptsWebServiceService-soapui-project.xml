@@ -1,33 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<con:soapui-project id="0b57b0a0-6908-43db-9b90-38285a731ee0" activeEnvironment="Default" name="ConceptsServiceService" resourceRoot="" soapui-version="5.2.1" abortOnError="false" runType="SEQUENTIAL" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:interface xsi:type="con:WsdlInterface" id="bd7a751b-2bfc-4b9d-a6c8-814476bdea01" wsaVersion="NONE" name="ConceptsServiceServiceSoapBinding" type="wsdl" bindingName="{http://service.ws.semantikos.minsal.cl/}ConceptsServiceServiceSoapBinding" soapVersion="1_1" anonymous="optional" definition="C:/jboss-eap-6.4/standalone/data/wsdl/SemantikosCentralEAR-0.7.0.ear/SemantikosWS-0.7.0.war/ConceptsServiceService.wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="file:/C:/jboss-eap-6.4/standalone/data/wsdl/SemantikosCentralEAR-0.7.0.ear/SemantikosWS-0.7.0.war/ConceptsServiceService.wsdl"><con:part><con:url>file:/C:/jboss-eap-6.4/standalone/data/wsdl/SemantikosCentralEAR-0.7.0.ear/SemantikosWS-0.7.0.war/ConceptsServiceService.wsdl</con:url><con:content><![CDATA[<wsdl:definitions name="ConceptsServiceService" targetNamespace="http://service.ws.semantikos.minsal.cl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://service.ws.semantikos.minsal.cl/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http">
+<con:soapui-project id="0b57b0a0-6908-43db-9b90-38285a731ee0" activeEnvironment="Default" name="ConceptsServiceService" resourceRoot="" soapui-version="5.2.1" abortOnError="false" runType="SEQUENTIAL" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:interface xsi:type="con:WsdlInterface" id="bd7a751b-2bfc-4b9d-a6c8-814476bdea01" wsaVersion="NONE" name="ConceptsServiceServiceSoapBinding" type="wsdl" bindingName="{http://service.ws.semantikos.minsal.cl/}ConceptsServiceServiceSoapBinding" soapVersion="1_1" anonymous="optional" definition="C:/jboss-eap-6.4/standalone/data/wsdl/SemantikosCentralEAR-1.0.0.ear/SemantikosWS-1.0.0.war/ConceptsServiceService.wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="file:/C:/jboss-eap-6.4/standalone/data/wsdl/SemantikosCentralEAR-1.0.0.ear/SemantikosWS-1.0.0.war/ConceptsServiceService.wsdl"><con:part><con:url>file:/C:/jboss-eap-6.4/standalone/data/wsdl/SemantikosCentralEAR-1.0.0.ear/SemantikosWS-1.0.0.war/ConceptsServiceService.wsdl</con:url><con:content><![CDATA[<wsdl:definitions name="ConceptsServiceService" targetNamespace="http://service.ws.semantikos.minsal.cl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://service.ws.semantikos.minsal.cl/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http">
   <wsdl:types>
     <xs:schema attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://service.ws.semantikos.minsal.cl/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:element name="atributo" type="tns:attributeResponse"/>
       <xs:element name="categoria" type="tns:categoryResponse"/>
+      <xs:element name="columnaTablaAuxiliar" type="tns:helperTableColumnResponse"/>
       <xs:element name="concepto" type="tns:conceptResponse"/>
       <xs:element name="conceptoPorIdDescripcion" type="tns:conceptoPorIdDescripcion"/>
       <xs:element name="conceptoPorIdDescripcionResponse" type="tns:conceptoPorIdDescripcionResponse"/>
       <xs:element name="conceptosPorCategoria" nillable="true" type="xs:anyType"/>
       <xs:element name="conceptosPorCategoriaResponse" type="tns:conceptosPorCategoriaResponse"/>
+      <xs:element name="definicionObjetivo" type="tns:targetDefinitionResponse"/>
+      <xs:element name="definicionRelacion" type="tns:relationshipDefinitionResponse"/>
+      <xs:element name="definicionRelacionAtributo" type="tns:relationshipAttributeDefinitionResponse"/>
+      <xs:element name="definicionTipoBasico" type="tns:basicTypeDefinitionResponse"/>
       <xs:element name="descripcion" type="tns:descriptionResponse"/>
+      <xs:element name="intervalo" type="tns:intervalResponse"/>
+      <xs:element name="listaCategorias" type="tns:listaCategorias"/>
+      <xs:element name="listaCategoriasResponse" type="tns:listaCategoriasResponse"/>
+      <xs:element name="multiplicidad" type="tns:multiplicityResponse"/>
+      <xs:element name="objetivo" type="tns:targetResponse"/>
       <xs:element name="paginacion" type="tns:paginationResponse"/>
+      <xs:element name="refSet" type="tns:refSetResponse"/>
+      <xs:element name="relacion" type="tns:relationshipResponse"/>
+      <xs:element name="relacionAtributo" type="tns:relationshipAttributeResponse"/>
+      <xs:element name="tablaAuxiliar" type="tns:helperTableResponse"/>
       <xs:element name="tagSMTK" type="tns:tagSMTKResponse"/>
-      <xs:element name="tipoDescripcion" type="tns:descriptionTypeResponse"/>
+      <xs:element name="tipoObjetivo" type="tns:targetTypeResponse"/>
+      <xs:element name="tipoTipoBasico" type="tns:basicTypeTypeResponse"/>
       <xs:element name="usuario" type="tns:userResponse"/>
       <xs:complexType name="conceptoPorIdDescripcion">
         <xs:sequence>
-          <xs:element name="idDescripcion" type="xs:long"/>
+          <xs:element name="idDescripcion" type="xs:string"/>
         </xs:sequence>
       </xs:complexType>
       <xs:complexType name="conceptoPorIdDescripcionResponse">
         <xs:sequence>
-          <xs:element minOccurs="0" name="return" type="tns:conceptResponse"/>
+          <xs:element minOccurs="0" ref="tns:concepto"/>
         </xs:sequence>
       </xs:complexType>
       <xs:complexType name="conceptResponse">
         <xs:sequence>
-          <xs:element minOccurs="0" name="id" type="xs:long"/>
-          <xs:element minOccurs="0" ref="tns:categoria"/>
-          <xs:element minOccurs="0" name="idConcepto" type="xs:string"/>
+          <xs:element minOccurs="0" name="id" type="xs:string"/>
           <xs:element minOccurs="0" name="aSerRevisado" type="xs:boolean"/>
           <xs:element minOccurs="0" name="aSerConsultado" type="xs:boolean"/>
           <xs:element minOccurs="0" name="modelado" type="xs:boolean"/>
@@ -36,8 +50,14 @@
           <xs:element minOccurs="0" name="validoHasta" type="xs:dateTime"/>
           <xs:element minOccurs="0" name="observacion" type="xs:string"/>
           <xs:element minOccurs="0" ref="tns:tagSMTK"/>
-          <xs:element minOccurs="0" name="descripcionPreferida" type="tns:descriptionResponse"/>
-          <xs:element minOccurs="0" name="descripcionFSN" type="tns:descriptionResponse"/>
+          <xs:element minOccurs="0" ref="tns:categoria"/>
+          <xs:element minOccurs="0" name="refSets">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element maxOccurs="unbounded" minOccurs="0" ref="tns:refSet"/>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
           <xs:element minOccurs="0" name="descripciones">
             <xs:complexType>
               <xs:sequence>
@@ -45,52 +65,69 @@
               </xs:sequence>
             </xs:complexType>
           </xs:element>
-        </xs:sequence>
-      </xs:complexType>
-      <xs:complexType name="categoryResponse">
-        <xs:sequence>
-          <xs:element minOccurs="0" name="id" type="xs:long"/>
-          <xs:element minOccurs="0" name="nombre" type="xs:string"/>
-          <xs:element minOccurs="0" name="nombreAbreviado" type="xs:string"/>
-          <xs:element minOccurs="0" name="restringido" type="xs:boolean"/>
-          <xs:element minOccurs="0" name="vigente" type="xs:boolean"/>
-          <xs:element minOccurs="0" name="color" type="xs:string"/>
-          <xs:element minOccurs="0" ref="tns:tagSMTK"/>
+          <xs:element minOccurs="0" name="atributos">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element maxOccurs="unbounded" minOccurs="0" ref="tns:atributo"/>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element minOccurs="0" name="relaciones">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element maxOccurs="unbounded" minOccurs="0" ref="tns:relacion"/>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
         </xs:sequence>
       </xs:complexType>
       <xs:complexType name="tagSMTKResponse">
         <xs:sequence>
-          <xs:element minOccurs="0" name="id" type="xs:long"/>
           <xs:element minOccurs="0" name="nombre" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="categoryResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="nombre" type="xs:string"/>
+          <xs:element minOccurs="0" name="nombreAbreviado" type="xs:string"/>
+          <xs:element minOccurs="0" name="restringida" type="xs:boolean"/>
+          <xs:element minOccurs="0" name="vigente" type="xs:boolean"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="refSetResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="nombre" type="xs:string"/>
+          <xs:element minOccurs="0" name="validoHasta" type="xs:dateTime"/>
+          <xs:element minOccurs="0" name="creadoEn" type="xs:dateTime"/>
+          <xs:element minOccurs="0" name="institucion" type="xs:string"/>
+          <xs:element minOccurs="0" name="conceptos">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element maxOccurs="unbounded" minOccurs="0" ref="tns:concepto"/>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
         </xs:sequence>
       </xs:complexType>
       <xs:complexType name="descriptionResponse">
         <xs:sequence>
-          <xs:element minOccurs="0" name="id" type="xs:long"/>
+          <xs:element minOccurs="0" name="id" type="xs:string"/>
+          <xs:element minOccurs="0" name="tipo" type="xs:string"/>
           <xs:element minOccurs="0" name="termino" type="xs:string"/>
-          <xs:element minOccurs="0" name="idDescripcion" type="xs:string"/>
+          <xs:element minOccurs="0" name="valida" type="xs:boolean"/>
           <xs:element minOccurs="0" name="esSensibleMayusculas" type="xs:boolean"/>
           <xs:element minOccurs="0" name="nombreAutgenerado" type="xs:boolean"/>
           <xs:element minOccurs="0" name="publicado" type="xs:boolean"/>
           <xs:element minOccurs="0" name="modelado" type="xs:boolean"/>
-          <xs:element minOccurs="0" name="validoHasta" type="xs:dateTime"/>
+          <xs:element minOccurs="0" name="validaHasta" type="xs:dateTime"/>
           <xs:element minOccurs="0" name="creado" type="xs:dateTime"/>
           <xs:element minOccurs="0" name="usos" type="xs:long"/>
-          <xs:element minOccurs="0" ref="tns:tipoDescripcion"/>
           <xs:element minOccurs="0" name="usuarioCreador" type="tns:userResponse"/>
           <xs:element minOccurs="0" ref="tns:concepto"/>
         </xs:sequence>
       </xs:complexType>
-      <xs:complexType name="descriptionTypeResponse">
-        <xs:sequence>
-          <xs:element minOccurs="0" name="id" type="xs:long"/>
-          <xs:element minOccurs="0" name="nombre" type="xs:string"/>
-          <xs:element minOccurs="0" name="descripcion" type="xs:string"/>
-        </xs:sequence>
-      </xs:complexType>
       <xs:complexType name="userResponse">
         <xs:sequence>
-          <xs:element minOccurs="0" name="id" type="xs:long"/>
           <xs:element minOccurs="0" name="nombreUsuario" type="xs:string"/>
           <xs:element minOccurs="0" name="nombre" type="xs:string"/>
           <xs:element minOccurs="0" name="apellido" type="xs:string"/>
@@ -101,9 +138,180 @@
           <xs:element minOccurs="0" name="ultimoCambioPassword" type="xs:dateTime"/>
         </xs:sequence>
       </xs:complexType>
+      <xs:complexType name="attributeResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="nombre" type="xs:string"/>
+          <xs:element minOccurs="0" name="tipo" type="xs:string"/>
+          <xs:element minOccurs="0" name="valor" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="relationshipResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="definicion" type="tns:relationshipDefinitionResponse"/>
+          <xs:element minOccurs="0" ref="tns:objetivo"/>
+          <xs:element minOccurs="0" ref="tns:concepto"/>
+          <xs:element minOccurs="0" name="atributos">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element maxOccurs="unbounded" minOccurs="0" name="atributo" type="tns:relationshipAttributeResponse"/>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="relationshipDefinitionResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="name" type="xs:string"/>
+          <xs:element minOccurs="0" name="description" type="xs:string"/>
+          <xs:element minOccurs="0" ref="tns:multiplicidad"/>
+          <xs:element minOccurs="0" ref="tns:definicionObjetivo"/>
+          <xs:element minOccurs="0" name="definicionRelacionExcluida" type="tns:relationshipDefinitionResponse"/>
+          <xs:element minOccurs="0" name="definicionesAtributoRelacion">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element maxOccurs="unbounded" minOccurs="0" name="definicionAtributoRelacion" type="tns:relationshipAttributeDefinitionResponse"/>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="multiplicityResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="limiteInferior" type="xs:int"/>
+          <xs:element minOccurs="0" name="limiteSuperior" type="xs:int"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="targetDefinitionResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="esTipoBasico" type="xs:boolean"/>
+          <xs:element minOccurs="0" name="esTipoSMTK" type="xs:boolean"/>
+          <xs:element minOccurs="0" name="esTablaAuxiliar" type="xs:boolean"/>
+          <xs:element minOccurs="0" name="esTipoSnomedCT" type="xs:boolean"/>
+          <xs:element minOccurs="0" name="esTipoCrossMap" type="xs:boolean"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="relationshipAttributeDefinitionResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="name" type="xs:string"/>
+          <xs:element minOccurs="0" ref="tns:multiplicidad"/>
+          <xs:element minOccurs="0" ref="tns:definicionObjetivo"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="targetResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" ref="tns:tipoObjetivo"/>
+          <xs:element minOccurs="0" name="activo" type="xs:boolean"/>
+          <xs:element minOccurs="0" name="idModulo" type="xs:long"/>
+          <xs:element minOccurs="0" name="estadoDefinicionId" type="xs:long"/>
+          <xs:element minOccurs="0" name="valido" type="xs:boolean"/>
+          <xs:element minOccurs="0" name="tiempoEfectivo" type="xs:dateTime"/>
+          <xs:element minOccurs="0" name="valor" type="xs:string"/>
+          <xs:element minOccurs="0" name="conceptoSMTK" type="tns:conceptResponse"/>
+          <xs:element minOccurs="0" ref="tns:relacion"/>
+          <xs:element minOccurs="0" ref="tns:tablaAuxiliar"/>
+          <xs:element name="fields">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element maxOccurs="unbounded" minOccurs="0" name="entry">
+                  <xs:complexType>
+                    <xs:sequence>
+                      <xs:element minOccurs="0" name="key" type="xs:string"/>
+                      <xs:element minOccurs="0" name="value" type="xs:string"/>
+                    </xs:sequence>
+                  </xs:complexType>
+                </xs:element>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="targetTypeResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="tipo" type="xs:string"/>
+          <xs:element minOccurs="0" name="nombre" type="xs:string"/>
+          <xs:element minOccurs="0" name="descripcion" type="xs:string"/>
+          <xs:element minOccurs="0" name="definicionesObjetivo">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element maxOccurs="unbounded" minOccurs="0" ref="tns:definicionObjetivo"/>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element minOccurs="0" name="definicionesTipoBasico">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element maxOccurs="unbounded" minOccurs="0" ref="tns:definicionTipoBasico"/>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="basicTypeDefinitionResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="nombre" type="xs:string"/>
+          <xs:element minOccurs="0" name="descripcion" type="xs:string"/>
+          <xs:element minOccurs="0" ref="tns:intervalo"/>
+          <xs:element minOccurs="0" name="tipo" type="tns:basicTypeTypeResponse"/>
+          <xs:element minOccurs="0" name="dominios">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element maxOccurs="unbounded" minOccurs="0" name="dominio" type="xs:string"/>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="intervalResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="limiteInferior" type="xs:string"/>
+          <xs:element minOccurs="0" name="limiteSuperior" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="basicTypeTypeResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="nombreTipo" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="helperTableResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="nombre" type="xs:string"/>
+          <xs:element minOccurs="0" name="descripcion" type="xs:string"/>
+          <xs:element minOccurs="0" name="nombreTabla" type="xs:string"/>
+          <xs:element minOccurs="0" name="columnaTablaAuxiliar">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element maxOccurs="unbounded" minOccurs="0" name="columna" type="tns:helperTableColumnResponse"/>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="helperTableColumnResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="nombreColumna" type="xs:string"/>
+          <xs:element minOccurs="0" name="esLlavePrimaria" type="xs:boolean"/>
+          <xs:element minOccurs="0" name="esBuscable" type="xs:boolean"/>
+          <xs:element minOccurs="0" name="esMostrable" type="xs:boolean"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="relationshipAttributeResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" ref="tns:objetivo"/>
+          <xs:element minOccurs="0" name="definicionAtributoRelacion" type="tns:relationshipAttributeDefinitionResponse"/>
+          <xs:element minOccurs="0" ref="tns:relacion"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="listaCategorias">
+        <xs:sequence/>
+      </xs:complexType>
+      <xs:complexType name="listaCategoriasResponse">
+        <xs:sequence>
+          <xs:element maxOccurs="unbounded" minOccurs="0" ref="tns:categoria"/>
+        </xs:sequence>
+      </xs:complexType>
       <xs:complexType name="conceptosPorCategoria">
         <xs:sequence>
-          <xs:element name="idCateogria" type="xs:long"/>
+          <xs:element name="nombreCategoria" type="xs:string"/>
           <xs:element name="numeroPagina" type="xs:int"/>
           <xs:element name="tamanoPagina" type="xs:int"/>
         </xs:sequence>
@@ -146,8 +354,14 @@
   <wsdl:message name="conceptosPorCategoria">
     <wsdl:part element="tns:conceptosPorCategoria" name="parameters"></wsdl:part>
   </wsdl:message>
+  <wsdl:message name="listaCategoriasResponse">
+    <wsdl:part element="tns:listaCategoriasResponse" name="parameters"></wsdl:part>
+  </wsdl:message>
   <wsdl:message name="conceptosPorCategoriaResponse">
     <wsdl:part element="tns:conceptosPorCategoriaResponse" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="listaCategorias">
+    <wsdl:part element="tns:listaCategorias" name="parameters"></wsdl:part>
   </wsdl:message>
   <wsdl:message name="conceptoPorIdDescripcionResponse">
     <wsdl:part element="tns:conceptoPorIdDescripcionResponse" name="parameters"></wsdl:part>
@@ -163,6 +377,10 @@
       <wsdl:input message="tns:conceptoPorIdDescripcion" name="conceptoPorIdDescripcion"></wsdl:input>
       <wsdl:output message="tns:conceptoPorIdDescripcionResponse" name="conceptoPorIdDescripcionResponse"></wsdl:output>
       <wsdl:fault message="tns:NotFoundFault" name="NotFoundFault"></wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="listaCategorias">
+      <wsdl:input message="tns:listaCategorias" name="listaCategorias"></wsdl:input>
+      <wsdl:output message="tns:listaCategoriasResponse" name="listaCategoriasResponse"></wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="conceptosPorCategoria">
       <wsdl:input message="tns:conceptosPorCategoria" name="conceptosPorCategoria"></wsdl:input>
@@ -183,6 +401,15 @@
       <wsdl:fault name="NotFoundFault">
         <soap:fault name="NotFoundFault" use="literal"/>
       </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="listaCategorias">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="listaCategorias">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="listaCategoriasResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="conceptosPorCategoria">
       <soap:operation soapAction="" style="document"/>
@@ -298,7 +525,12 @@
          <idDescripcion>620afdfa-cedf-43a7-b314-74de9b05e9bc</idDescripcion>\r
       </ser:conceptoPorIdDescripcion>\r
    </soapenv:Body>\r
-</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://service.ws.semantikos.minsal.cl/ConceptsService/conceptoPorIdDescripcion"/><con:wsrmConfig version="1.2"/></con:call></con:operation></con:interface><con:testSuite id="70e4cebe-2fdd-4b75-9faa-b7d6d1fa8f35" name="ConceptsServiceServiceSoapBinding TestSuite"><con:settings/><con:runType>SEQUENTIAL</con:runType><con:testCase id="4c160a0a-8eed-492e-991d-a051dc9c36d3" failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="conceptosPorCategoria TestCase" searchProperties="true"><con:settings/><con:testStep type="request" id="18f5fbf2-3729-4511-bfa6-908ac3d11f45" name="conceptosPorCategoria - Request 1"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>ConceptsServiceServiceSoapBinding</con:interface><con:operation>conceptosPorCategoria</con:operation><con:request name="conceptosPorCategoria - Request 1" outgoingWss="" incomingWss="" timeout="" sslKeystore="" useWsAddressing="false" useWsReliableMessaging="false" wssPasswordType="" id="62f63c10-6bea-4d3c-8475-d68d4f9dcbd6"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/ws/ConceptsService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.ws.semantikos.minsal.cl/">\r
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://service.ws.semantikos.minsal.cl/ConceptsService/conceptoPorIdDescripcion"/><con:wsrmConfig version="1.2"/></con:call></con:operation><con:operation id="56dde5e9-3d60-4e70-83a0-cb985e63d525" isOneWay="false" action="" name="listaCategorias" bindingOperationName="listaCategorias" type="Request-Response" outputName="listaCategoriasResponse" inputName="listaCategorias" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="08be0dc4-7517-4b9e-ab19-0410ecdb5fe7" name="Request 1"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/ws/ConceptsService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.ws.semantikos.minsal.cl/">\r
+   <soapenv:Header/>\r
+   <soapenv:Body>\r
+      <ser:listaCategorias/>\r
+   </soapenv:Body>\r
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://service.ws.semantikos.minsal.cl/ConceptsService/listaCategorias"/><con:wsrmConfig version="1.2"/></con:call></con:operation></con:interface><con:testSuite id="70e4cebe-2fdd-4b75-9faa-b7d6d1fa8f35" name="ConceptsServiceServiceSoapBinding TestSuite"><con:settings/><con:runType>SEQUENTIAL</con:runType><con:testCase id="4c160a0a-8eed-492e-991d-a051dc9c36d3" failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="conceptosPorCategoria TestCase" searchProperties="true"><con:settings/><con:testStep type="request" id="18f5fbf2-3729-4511-bfa6-908ac3d11f45" name="conceptosPorCategoria - Request 1"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>ConceptsServiceServiceSoapBinding</con:interface><con:operation>conceptosPorCategoria</con:operation><con:request name="conceptosPorCategoria - Request 1" outgoingWss="" incomingWss="" timeout="" sslKeystore="" useWsAddressing="false" useWsReliableMessaging="false" wssPasswordType="" id="62f63c10-6bea-4d3c-8475-d68d4f9dcbd6"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/ws/ConceptsService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.ws.semantikos.minsal.cl/">\r
    <soapenv:Header/>\r
    <soapenv:Body>\r
       <ser:conceptosPorCategoria>
@@ -394,4 +626,9 @@
          <idDescripcion>236b8fed-a07e-4852-9e14-d782616eff64</idDescripcion>\r
       </ser:conceptoPorIdDescripcion>\r
    </soapenv:Body>\r
-</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response" id="6ab627aa-f157-470a-a86a-2dc619aca7c9" name="SOAP Response"/><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://service.ws.semantikos.minsal.cl/ConceptsService/conceptoPorIdDescripcion"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:properties/></con:testCase><con:properties/></con:testSuite><con:properties/><con:wssContainer/><con:oAuth2ProfileContainer/></con:soapui-project>
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response" id="6ab627aa-f157-470a-a86a-2dc619aca7c9" name="SOAP Response"/><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://service.ws.semantikos.minsal.cl/ConceptsService/conceptoPorIdDescripcion"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:properties/></con:testCase><con:testCase id="1a87c955-2762-45b0-9d31-390f406bbace" failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="listaCategorias TestCase" searchProperties="true"><con:settings/><con:testStep type="request" id="b367e8f1-adb4-45a9-95b7-cdb2f1598722" name="listaCategorias - Request 1"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>ConceptsServiceServiceSoapBinding</con:interface><con:operation>listaCategorias</con:operation><con:request name="listaCategorias - Request 1" outgoingWss="" incomingWss="" timeout="" sslKeystore="" useWsAddressing="false" useWsReliableMessaging="false" wssPasswordType="" id="73705678-c20e-4061-9139-79e7cf8d0f9c"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/ws/ConceptsService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.ws.semantikos.minsal.cl/">\r
+   <soapenv:Header/>\r
+   <soapenv:Body>\r
+      <ser:listaCategorias/>\r
+   </soapenv:Body>\r
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response" id="801a1d25-877c-45f5-8e3c-6ebb59485302" name="SOAP Response"/><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://service.ws.semantikos.minsal.cl/ConceptsService/listaCategorias"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:properties/></con:testCase><con:properties/></con:testSuite><con:properties/><con:wssContainer/><con:oAuth2ProfileContainer/></con:soapui-project>
