@@ -118,12 +118,14 @@ public class ConceptBrowserBean implements Serializable {
 
             conceptQuery = conceptQueryManager.getDefaultQueryByCategory(category);
 
+            /*
             for (RelationshipDefinition relationshipDefinition : category.getRelationshipDefinitions()) {
                 ConceptQueryFilter conceptQueryFilter = new ConceptQueryFilter(relationshipDefinition);
                 conceptQueryFilter.setMultiple(false);
 
                 conceptQuery.getFilters().add(conceptQueryFilter);
             }
+            */
         }
 
         /**
@@ -276,8 +278,6 @@ public class ConceptBrowserBean implements Serializable {
     public void deleteConcept(ConceptSMTK concept) throws IOException {
 
         FacesContext context = FacesContext.getCurrentInstance();
-
-        System.out.println(authenticationBean.getLoggedUser().getUsername());
 
         // Si el concepto está persistido, invalidarlo
         if (concept.isPersistent() && !concept.isModeled()) {

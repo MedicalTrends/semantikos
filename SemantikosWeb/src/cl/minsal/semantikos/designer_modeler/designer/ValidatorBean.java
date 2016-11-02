@@ -21,8 +21,6 @@ import java.util.List;
 @ViewScoped
 public class ValidatorBean {
 
-    String uiState = "";
-
     /**
      * Este metodo revisa que las relaciones cumplan el lower_boundary del
      * relationship definition, en caso de no cumplir la condicion se retorna falso.
