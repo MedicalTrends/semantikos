@@ -287,13 +287,10 @@ public class ConceptBrowserBean implements Serializable {
         if (concept.isPersistent() && !concept.isModeled()) {
             conceptManager.delete(concept, authenticationBean.getLoggedUser());
             context.addMessage(null, new FacesMessage("Successful", "Concepto eliminado"));
-            //ExternalContext eContext = FacesContext.getCurrentInstance().getExternalContext();
-            //eContext.redirect(eContext.getRequestContextPath() + "/views/concept/conceptEdit.xhtml");
-            //return "mainMenu.xhtml";
+
         } else {
             conceptManager.invalidate(concept, authenticationBean.getLoggedUser());
             context.addMessage(null, new FacesMessage("Successful", "Concepto invalidado"));
-            //return "mainMenu.xhtml";
         }
 
     }
