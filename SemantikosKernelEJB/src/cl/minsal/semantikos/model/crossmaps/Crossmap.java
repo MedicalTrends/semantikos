@@ -12,13 +12,13 @@ import java.util.ArrayList;
  *
  * @author Andrés Farías
  */
-public class Crossmaps extends Relationship implements Target {
+public class Crossmap extends Relationship implements Target {
 
-    public Crossmaps(ConceptSMTK sourceConcept, Target target, RelationshipDefinition relationshipDefinition) {
+    public Crossmap(ConceptSMTK sourceConcept, Target target, RelationshipDefinition relationshipDefinition) {
         super(sourceConcept, target, relationshipDefinition,new ArrayList<RelationshipAttribute>());
     }
 
-    public Crossmaps(@NotNull long id, @NotNull ConceptSMTK sourceConcept, @NotNull Target target, @NotNull RelationshipDefinition relationshipDefinition, Timestamp validityUntil) {
+    public Crossmap(@NotNull long id, @NotNull ConceptSMTK sourceConcept, @NotNull Target target, @NotNull RelationshipDefinition relationshipDefinition, Timestamp validityUntil) {
         super(id, sourceConcept, target, relationshipDefinition, validityUntil,new ArrayList<RelationshipAttribute>());
     }
 
@@ -34,7 +34,7 @@ public class Crossmaps extends Relationship implements Target {
 
     @Override
     public Target copy() {
-        return new Crossmaps(this.getSourceConcept(), this.getTarget(), this.getRelationshipDefinition());
+        return new Crossmap(this.getSourceConcept(), this.getTarget(), this.getRelationshipDefinition());
     }
 
 
