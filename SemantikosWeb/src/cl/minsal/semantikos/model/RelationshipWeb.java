@@ -1,9 +1,8 @@
 package cl.minsal.semantikos.model;
 
-import cl.minsal.semantikos.model.relationships.Relationship;
-import cl.minsal.semantikos.model.relationships.RelationshipAttribute;
-import cl.minsal.semantikos.model.relationships.RelationshipAttributeDefinition;
-import cl.minsal.semantikos.model.relationships.Target;
+import cl.minsal.semantikos.model.relationships.*;
+import cl.minsal.semantikos.model.snomedct.ConceptSCT;
+import cl.minsal.semantikos.model.snomedct.RelationshipSCT;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,7 +62,6 @@ public class RelationshipWeb extends Relationship implements Comparable<Relation
     public void setModified(boolean hasBeenModified) {
         this.hasBeenModified = hasBeenModified;
     }
-
 
     public RelationshipAttribute getAttributeById(long idRelationshipAttribute){
         for (RelationshipAttribute attribute : getRelationshipAttributes()) {

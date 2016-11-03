@@ -87,7 +87,6 @@ public class ConceptBrowserBean implements Serializable {
     private AuthenticationBean authenticationBean;
 
     @EJB
-
     private CategoryManager categoryManager;
 
     @EJB
@@ -107,7 +106,7 @@ public class ConceptBrowserBean implements Serializable {
 
         /**
          * Si la categoría no está seteada, retornar inmediatamente
-        */
+         */
         if(category == null)
             return;
 

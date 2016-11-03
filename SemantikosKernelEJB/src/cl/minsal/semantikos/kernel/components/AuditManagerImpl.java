@@ -112,11 +112,22 @@ public class AuditManagerImpl implements AuditManager {
 
     @Override
     public void recordRelationshipCreation(Relationship relationship, User user) {
+        ConceptAuditAction auditAction;
+
+        /* Si la relación es atributo */
+        if(relationship.isAttribute()){
+            auditAction = new ConceptAuditAction(relationship.getSourceConcept(), CONCEPT_RELATIONSHIP_ATTRIBUTE_CREATION, now(), user, relationship);
+        }
+
+        /* Si la relación es definitoria */
+        else {
+            auditAction = new ConceptAuditAction(relationship.getSourceConcept(), CONCEPT_RELATIONSHIP_DEFINITION_CREATION, now(), user, relationship);
+        }
 
         /* Se validan las reglas de negocio para realizar el registro */
-        ConceptAuditAction auditAction = new ConceptAuditAction(relationship.getSourceConcept(), CONCEPT_RELATIONSHIP_CREATION, now(), user, relationship);
         new HistoryRecordBL().validate(auditAction);
 
+        /* Si la relación es de tipo Snomed-CT, también se registra, pero de manera separada */
         auditDAO.recordAuditAction(auditAction);
     }
 
@@ -130,18 +141,18 @@ public class AuditManagerImpl implements AuditManager {
     }
 
     @Override
-    public void recordCrossMapCreation(Crossmaps crossmaps, User user) {
+    public void recordCrossMapCreation(Crossmaps crossMap, User user) {
         /* Se validan las reglas de negocio para realizar el registro */
-        ConceptAuditAction auditAction = new ConceptAuditAction(crossmaps.getSourceConcept(), CONCEPT_RELATIONSHIP_CROSSMAP_CREATION, now(), user, crossmaps);
+        ConceptAuditAction auditAction = new ConceptAuditAction(crossMap.getSourceConcept(), CONCEPT_RELATIONSHIP_CROSSMAP_CREATION, now(), user, crossMap);
         new HistoryRecordBL().validate(auditAction);
 
         auditDAO.recordAuditAction(auditAction);
     }
 
     @Override
-    public void recordCrossMapRemoval(Crossmaps crossmaps, User user) {
+    public void recordCrossMapRemoval(Crossmaps crossMap, User user) {
         /* Se validan las reglas de negocio para realizar el registro */
-        ConceptAuditAction auditAction = new ConceptAuditAction(crossmaps.getSourceConcept(), CONCEPT_RELATIONSHIP_CROSSMAP_REMOVAL, now(), user, crossmaps);
+        ConceptAuditAction auditAction = new ConceptAuditAction(crossMap.getSourceConcept(), CONCEPT_RELATIONSHIP_CROSSMAP_REMOVAL, now(), user, crossMap);
         new HistoryRecordBL().validate(auditAction);
 
         auditDAO.recordAuditAction(auditAction);

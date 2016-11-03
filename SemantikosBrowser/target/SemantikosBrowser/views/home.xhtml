@@ -1,0 +1,163 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template/template.xhtml">
+
+    <ui:define name="content">
+        <div class="Container100">
+            <div class="ContainerIndent">
+                <h:form id="form2" onkeypress="return event.keyCode != 13">
+                    <div style="margin-top: 65px" class="Card ShadowEffect TexAlCenter">
+                        <div class="ui-grid-responsive">
+                            <div class="ui-grid-col-5">
+                                <p:inputText value="#{navBrowser.pattern}" style="width: 90%; margin: 10px;"
+                                             placeholder="Buscar...">
+                                    <p:ajax event="keyup" update="conceptTable" />
+                                </p:inputText>
+                            </div>
+
+                            <div class="ui-grid-col-4">
+                                <p:selectCheckboxMenu style="width: 100%; margin: 10px;" id="menu"
+                                                      value="#{navBrowser.selectedCategories}" label="Categorías"
+                                                      filter="true" filterMatchMode="startsWith">
+                                    <f:selectItems value="#{navBrowser.categories}" var="category"
+                                                   itemLabel="#{category.name}" itemValue="#{category.id}"/>
+
+                                    <p:ajax event="toggleSelect" update="conceptTable" />
+                                    <p:ajax update="conceptTable" />
+                                </p:selectCheckboxMenu>
+                            </div>
+                        </div>
+                        <div class="ui-grid-responsive">
+                            <div class="ui-grid-col-12">
+
+                                <p:dataTable id="conceptTable" value="#{navBrowser.concepts}" var="conceptSMTK"
+                                             rows="15"
+                                             paginator="true" lazy="true" dynamic="true"
+                                             paginatorTemplate=" {CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
+                                             emptyMessage="No se han encontrado conceptos con los criterios utilizados">
+                                    <f:facet name="{Exporters}">
+                                        <p:commandButton ajax="false" value="Exportar a Excel"
+                                                         icon="fa fa-file-excel-o">
+                                            <p:dataExporter type="xls" target=":form2:conceptTable"
+                                                            fileName="conceptos"/>
+                                        </p:commandButton>
+                                    </f:facet>
+
+
+                                    <p:column headerText="Concept ID">
+
+                                        <h:outputText value="#{conceptSMTK.id}"/>
+                                    </p:column>
+
+                                    <p:column headerText="Termino">
+                                        <h:outputText value="#{conceptSMTK.descriptionFavorite.term}"/>
+                                    </p:column>
+
+                                    <p:column headerText="Categoría">
+                                        <h:outputText value="#{conceptSMTK.category.name}"/>
+                                    </p:column>
+
+                                    <p:column exportable="false" style="width:32px;text-align: center">
+                                        <p:commandButton update=":form:conceptDetail"
+                                                         oncomplete="PF('conceptDialog').show()"
+                                                         icon="fa fa-bars" title="View">
+                                            <f:setPropertyActionListener value="#{conceptSMTK}"
+                                                                         target="#{navBrowser.conceptSelected}"/>
+                                        </p:commandButton>
+                                    </p:column>
+
+                                </p:dataTable>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </h:form>
+
+                <h:form id="form">
+                    <p:dialog widgetVar="conceptDialog" modal="true" showEffect="fade"
+                              hideEffect="fade" resizable="true" style="margin:40px;">
+                        <p:outputPanel id="conceptDetail" style="text-align:center;">
+
+
+                            <p:dataTable id="detailConcept" var="description"
+                                         value="#{navBrowser.conceptSelected.descriptions}"
+                                         >
+                                <f:facet name="header">
+                                    Detalle del concepto
+                                </f:facet>
+
+                                <p:columnGroup type="header">
+
+                                    <p:row>
+                                        <p:column exportable="true" colspan="2" headerText="Concepto"/>
+                                    </p:row>
+                                    <p:row>
+                                        <p:column headerText="ID"/>
+                                        <p:column headerText="#{navBrowser.conceptSelected.id}"/>
+                                    </p:row>
+                                    <p:row>
+                                        <p:column headerText="Categoria"/>
+                                        <p:column headerText="#{navBrowser.conceptSelected.category.name}"/>
+                                    </p:row>
+                                    <p:row>
+                                        <p:column colspan="2" headerText="Descripciones"/>
+                                    </p:row>
+
+                                </p:columnGroup>
+                                <p:column visible="hidden">
+                                    <f:facet name="header">
+                                        <h:outputText value="ID"/>
+                                    </f:facet>
+                                    <h:outputText value="#{navBrowser.conceptSelected.id}"></h:outputText>
+                                </p:column>
+                                <p:column visible="hidden">
+                                    <f:facet name="header">
+                                        <h:outputText value="Concept ID"/>
+                                    </f:facet>
+                                    <h:outputText value="#{navBrowser.conceptSelected.conceptID}"></h:outputText>
+                                </p:column>
+                                <p:column visible="hidden">
+                                    <f:facet name="header">
+                                        <h:outputText value="Category"/>
+                                    </f:facet>
+                                    <h:outputText value="#{navBrowser.conceptSelected.category.name}"></h:outputText>
+                                </p:column>
+
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Term"/>
+                                    </f:facet>
+                                    <h:outputText value="#{description.term}"></h:outputText>
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Description Type"/>
+                                    </f:facet>
+                                    <h:outputText value="#{description.descriptionType.description}"></h:outputText>
+                                </p:column>
+                            </p:dataTable>
+
+                            <br/>
+
+                            <p:commandButton ajax="false" value="Exportar a Excel" icon="fa fa-file-excel-o">
+                                <p:dataExporter type="xls" target="detailConcept" fileName="detalle_concepto"/>
+                            </p:commandButton>
+
+                        </p:outputPanel>
+                    </p:dialog>
+
+                </h:form>
+
+            </div>
+        </div>
+
+    </ui:define>
+
+</ui:composition>
+

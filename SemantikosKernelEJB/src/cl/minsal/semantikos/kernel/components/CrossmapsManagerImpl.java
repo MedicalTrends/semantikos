@@ -91,4 +91,9 @@ public class CrossmapsManagerImpl implements CrossmapsManager {
     public DirectCrossmaps bindConceptSMTKToCrossmapSetMember(ConceptSMTK conceptSMTK, CrossmapSetMember crossmapSetMember) {
         return crossmapsDAO.bindConceptSMTKToCrossmapSetMember(conceptSMTK, crossmapSetMember);
     }
+
+    @Override
+    public void remove(Crossmaps crossmaps) {
+
+    }
 }

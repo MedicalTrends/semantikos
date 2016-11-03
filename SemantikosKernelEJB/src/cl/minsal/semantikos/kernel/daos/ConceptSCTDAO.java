@@ -1,5 +1,7 @@
 package cl.minsal.semantikos.kernel.daos;
 
+import cl.minsal.semantikos.model.ConceptSMTK;
+import cl.minsal.semantikos.model.User;
 import cl.minsal.semantikos.model.snomedct.ConceptSCT;
 
 import javax.ejb.Local;
@@ -18,4 +20,12 @@ public interface ConceptSCTDAO {
      * @return Una instancia fresca creada a partir de la entidad en la base de datos.
      */
     ConceptSCT getConceptCSTByID(long idConceptCST);
+
+    /**
+     * Este método es responsable persistir la entidad Concepto SMTK en la base de datos.
+     *
+     * @param conceptSCT El concepto que será persistido.
+     * @param user       El usuario que está realizando la operación
+     */
+    public void persist(ConceptSCT conceptSCT, User user);
 }

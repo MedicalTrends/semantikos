@@ -19,7 +19,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by des01c7 on 26-07-16.
+ * @author Gustavo Punucura
+ *         Created by des01c7 on 26-07-16.
  */
 
 @ManagedBean(name = "smtkBean")
@@ -90,7 +91,7 @@ public class SMTKTypeBean implements Serializable {
         if (patron != null) {
             if (patron.length() > 2) {
                 categoryArr[0] = cD.getId();
-                conceptSearchList=conceptManager.findConceptBy(patron, categoryArr, 0, 30);
+                conceptSearchList = conceptManager.findConceptBy(patron, categoryArr, 0, 30);
                 return conceptSearchList;
             }
         }
@@ -124,7 +125,6 @@ public class SMTKTypeBean implements Serializable {
     public void setConceptSelected(ConceptSMTK conceptSelected) {
         this.conceptSelected = conceptSelected;
     }
-
 
 
 }

@@ -4,8 +4,8 @@ import cl.minsal.semantikos.model.audit.AuditableEntity;
 import cl.minsal.semantikos.model.basictypes.BasicTypeValue;
 import cl.minsal.semantikos.model.businessrules.ConceptStateBusinessRulesContainer;
 import cl.minsal.semantikos.model.exceptions.BusinessRuleException;
-import cl.minsal.semantikos.model.helpertables.HelperTableRecord;
 import cl.minsal.semantikos.model.relationships.*;
+import cl.minsal.semantikos.model.helpertables.HelperTableRecord;
 
 import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
@@ -177,6 +177,7 @@ public class ConceptSMTK extends PersistentEntity implements Target, AuditableEn
 
     /**
      * Este método es responsable de recuperar las relaciones del concepto.
+     *
      * @return Una lista con las relaciones del concepto.
      */
     public List<Relationship> getRelationships() {
@@ -208,13 +209,15 @@ public class ConceptSMTK extends PersistentEntity implements Target, AuditableEn
 
     /**
      * Este método es responsable de retornar las relaciones de tipo SNOMED_CT.
+     *
      * @return Una lista de relaciones a SnomedCT
      */
-    public List<Relationship> getRelationshipsSnomedCT() {
-        List<Relationship> snomedRelationships = new ArrayList<>();
+    public List<SnomedCTRelationship> getRelationshipsSnomedCT() {
+
+        List<SnomedCTRelationship> snomedRelationships = new ArrayList<>();
         for (Relationship relationship : relationships) {
             if (relationship.getRelationshipDefinition().getTargetDefinition().isSnomedCTType()) {
-                snomedRelationships.add(relationship);
+                snomedRelationships.add(relationship.toSnomedCT());
             }
         }
 
@@ -300,21 +303,6 @@ public class ConceptSMTK extends PersistentEntity implements Target, AuditableEn
     public void setRelationships(List<Relationship> relationships) {
         this.relationships = relationships;
         this.relationshipsLoaded = true;
-    }
-
-    @Override
-    public TargetType getTargetType() {
-        return TargetType.SMTK;
-    }
-
-    @Override
-    public Target copy() {
-        ConceptSMTK conceptSMTK = new ConceptSMTK(this.getCategory());
-        conceptSMTK.setId(this.getId());
-        conceptSMTK.setConceptID(this.getConceptID());
-        conceptSMTK.setDescriptions(this.getDescriptions());
-        conceptSMTK.setRelationships(this.relationships);
-        return conceptSMTK;
     }
 
     public String getConceptID() {
@@ -652,6 +640,21 @@ public class ConceptSMTK extends PersistentEntity implements Target, AuditableEn
         return (other instanceof ConceptSMTK) && (String.valueOf(conceptID) != null)
                 ? String.valueOf(conceptID).equals(String.valueOf(((ConceptSMTK) other).conceptID))
                 : (other == this);
+    }
+
+    @Override
+    public TargetType getTargetType() {
+        return TargetType.SMTK;
+    }
+
+    @Override
+    public Target copy() {
+        ConceptSMTK conceptSMTK = new ConceptSMTK(this.getCategory());
+        conceptSMTK.setId(this.getId());
+        conceptSMTK.setConceptID(this.getConceptID());
+        conceptSMTK.setDescriptions(this.getDescriptions());
+        conceptSMTK.setRelationships(this.relationships);
+        return conceptSMTK;
     }
 
 }

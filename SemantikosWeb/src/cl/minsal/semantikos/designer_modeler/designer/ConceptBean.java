@@ -8,6 +8,7 @@ import cl.minsal.semantikos.model.basictypes.BasicTypeValue;
 import cl.minsal.semantikos.model.exceptions.BusinessRuleException;
 import cl.minsal.semantikos.model.helpertables.HelperTableRecord;
 import cl.minsal.semantikos.model.relationships.*;
+import cl.minsal.semantikos.model.snomedct.ConceptSCT;
 import cl.minsal.semantikos.util.Pair;
 import cl.minsal.semantikos.view.components.ViewAugmenter;
 import org.primefaces.context.RequestContext;
@@ -128,6 +129,8 @@ public class ConceptBean implements Serializable {
 
     private ConceptSMTK conceptSelected;
 
+    private ConceptSCT conceptSCTSelected;
+
     private Map<Long, ConceptSMTK> targetSelected;
 
     // Placeholders para los atributos de relacion
@@ -226,7 +229,9 @@ public class ConceptBean implements Serializable {
 
         user = authenticationBean.getLoggedUser();
         Profile designerProfile = new Profile(2, "Diseñador", "Usuario Diseñador");
+        Profile modelerProfile = new Profile(3, "Modelador", "Usuario Modelador");
         user.getProfiles().add(designerProfile);
+        user.getProfiles().add(modelerProfile);
         autogenerateMCCE = new AutogenerateMCCE();
         autogenerateMC = new AutogenerateMC();
         autogeneratePCCE = new AutogeneratePCCE();
@@ -462,6 +467,7 @@ public class ConceptBean implements Serializable {
         basicTypeValue = new BasicTypeValue(null);
         selectedHelperTableRecord = new HelperTableRecord();
         conceptSelected = null;
+        conceptSCTSelected = null;
     }
 
     /**
@@ -802,7 +808,7 @@ public class ConceptBean implements Serializable {
         List<RelationshipWeb> relationshipsForPersist = concept.getUnpersistedRelationshipsWeb();
         /* Se persisten las nuevas relaciones */
         for (RelationshipWeb relationshipWeb : relationshipsForPersist) {
-            relationshipManager.bindRelationshipToConcept(concept, relationshipWeb, user);
+            relationshipManager.bindRelationshipToConcept(concept, (Relationship)relationshipWeb, user);
         }
 
         /* Se elimina las relaciones eliminadas */
@@ -1106,6 +1112,14 @@ public class ConceptBean implements Serializable {
         this.conceptSelected = conceptSelected;
     }
 
+    public ConceptSCT getConceptSCTSelected() {
+        return conceptSCTSelected;
+    }
+
+    public void setConceptSCTSelected(ConceptSCT conceptSCTSelected) {
+        this.conceptSCTSelected = conceptSCTSelected;
+    }
+
     public SMTKTypeBean getSmtkTypeBean() {
         return smtkTypeBean;
     }
@@ -1292,6 +1306,14 @@ public class ConceptBean implements Serializable {
 
     public void setConceptSuggestedList(List<ConceptSMTK> conceptSuggestedList) {
         this.conceptSuggestedList = conceptSuggestedList;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     /**

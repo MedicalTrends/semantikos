@@ -1,0 +1,31 @@
+/*** override primefaces style ***/
+
+form.consult input.ui-inputfield[disabled],
+form.consult input.ui-inputfield[disabled].ui-state-focus,
+form.consult textarea.ui-inputfield[disabled],
+form.consult textarea.ui-inputfield[disabled].ui-state-focus,
+form.consult div.ui-selectonemenu.ui-state-disabled .ui-selectonemenu-label {
+    /*border: 1px !important;
+    box-shadow: none !important;
+    outline: 0 !important;*/
+    opacity: 100 !important;
+    background-color: #FFF !important;
+}
+
+form.consult div.ui-selectoneradio .ui-state-disabled {
+    opacity: 100 !important;
+}
+
+form.consult div.ui-selectonemenu.ui-state-disabled {
+    opacity: 100 !important;
+    /*border-bottom: 0px !important;*/
+}
+
+form.consult .ui-selectonemenu.ui-state-disabled .ui-selectonemenu-trigger {
+    display: none !important;
+}
+
+form#mainForm table tbody tr td div.relationshipDefinitionError{
+    border: 1px solid #F03369 !important;
+    color: #F03369;
+}

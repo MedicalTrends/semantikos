@@ -168,13 +168,6 @@ public class RelationshipDefinition {
         return "id: " + id + ". [" + super.toString() + "]";
     }
 
-    /**
-     * Este método es responsable de determinar si esta relación es de tipo definitoria o atributo
-     * @return <code>true</code> si es de atributo y <code>false</code>.
-     */
-    public boolean isAttribute() {
-        return targetDefinition.isBasicType() || targetDefinition.isCrossMapType() || targetDefinition.isHelperTable() || targetDefinition.isSMTKType();
-    }
 
     public RelationshipAttributeDefinition getOrderAttributeDefinition(){
         for (RelationshipAttributeDefinition relationshipAttributeDefinition : getRelationshipAttributeDefinitions()) {

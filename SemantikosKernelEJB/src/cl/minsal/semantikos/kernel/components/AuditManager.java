@@ -80,7 +80,8 @@ public interface AuditManager {
     public void recordAttributeChange(ConceptSMTK conceptSMTK, Relationship originalRelationship, User user);
 
     /**
-     * Este método es responsable de registrar en el historial las creación de una relación.
+     * <p>Este método es responsable de registrar en el historial las creación de una relación.</p>
+     * <p>Las relaciones se dividen en dos tipos: atributos y definitorias (SnomedCT).</p>
      *
      * @param relationship La relación que se ha persistido.
      * @param user         El usuario responsable de la acción.
@@ -98,18 +99,18 @@ public interface AuditManager {
     /**
      * Este método es responsable de registrar en el historial la creación de un CrossMap.
      *
-     * @param crossmaps El CrossMap que se desea crear.
+     * @param crossMap El CrossMap que se desea crear.
      * @param user     El usuario que elimina la relación.
      */
-    public void recordCrossMapCreation(Crossmaps crossmaps, User user);
+    public void recordCrossMapCreation(Crossmaps crossMap, User user);
 
     /**
      * Este método es responsable de registrar en el historial la eliminación de un CrossMap.
      *
-     * @param crossmaps El CrossMap que se desea eliminar.
+     * @param crossMap El CrossMap que se desea eliminar.
      * @param user     El usuario que elimina la relación.
      */
-    public void recordCrossMapRemoval(Crossmaps crossmaps, User user);
+    public void recordCrossMapRemoval(Crossmaps crossMap, User user);
 
     /**
      * Este método es responsable de registrar en el historial la eliminación de un CrossMap.

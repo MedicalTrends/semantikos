@@ -26,7 +26,6 @@ public class ConceptQueryManagerImpl implements ConceptQueryManager{
 
     @Override
     public ConceptQuery getDefaultQueryByCategory(Category category) {
-        //TODO: implementar de veldá
 
         ConceptQuery query = new ConceptQuery();
 
@@ -37,11 +36,14 @@ public class ConceptQueryManagerImpl implements ConceptQueryManager{
         List<ConceptQueryFilter> filters = new ArrayList<ConceptQueryFilter>();
         query.setFilters(filters);
 
-        // Agregar columnas dinámicas
+        // Stablishing custom filtering value
+        query.setCustomFilterable(getCustomFIlteringValue(category));
+
+        // Adding dynamic columns
         for (RelationshipDefinition relationshipDefinition : getShowableAttributesByCategory(category)) {
             query.getColumns().add(new ConceptQueryColumn(relationshipDefinition.getName(), new Sort(null, false)));
         }
-        // Agregar filtros dinámicos
+        // Adding dynamic filters
         for (RelationshipDefinition relationshipDefinition : getSearchableAttributesByCategory(category)) {
             query.getFilters().add(new ConceptQueryFilter(relationshipDefinition));
         }
@@ -65,5 +67,9 @@ public class ConceptQueryManagerImpl implements ConceptQueryManager{
     @Override
     public List<RelationshipDefinition> getSearchableAttributesByCategory(Category category) {
         return conceptQueryDAO.getSearchableAttributesByCategory(category);
+    }
+
+    private boolean getCustomFIlteringValue(Category category){
+        return conceptQueryDAO.getCustomFilteringValue(category);
     }
 }

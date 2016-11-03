@@ -33,12 +33,8 @@ public class AutogenerateMCCE {
     }
 
     public String getCantidad() {
+        return (cantidad==null)?"":cantidad;
 
-        if(cantidad==null){
-            return "";
-        }else{
-            return cantidad;
-        }
     }
 
     public void setCantidad(String cantidad) {
@@ -46,11 +42,7 @@ public class AutogenerateMCCE {
     }
 
     public String getUnidadMedidaCantidad() {
-        if(unidadMedidaCantidad==null){
-            return "";
-        }else{
-            return unidadMedidaCantidad;
-        }
+        return (unidadMedidaCantidad==null)?"":unidadMedidaCantidad;
     }
 
     public void setUnidadMedidaCantidad(String unidadMedidaCantidad) {
@@ -58,12 +50,7 @@ public class AutogenerateMCCE {
     }
 
     public String getVolumen() {
-        if(volumen==null){
-            return "";
-        }else{
-            return volumen;
-        }
-
+        return (volumen==null)? "": volumen;
     }
 
     public void setVolumen(String volumen) {
@@ -71,11 +58,7 @@ public class AutogenerateMCCE {
     }
 
     public String getVolumenUnidad() {
-        if(volumenUnidad==null){
-            return "";
-        }else{
-            return volumenUnidad;
-        }
+        return (volumenUnidad==null)? "": volumenUnidad;
     }
 
     public void setVolumenUnidad(String volumenUnidad) {
@@ -83,12 +66,7 @@ public class AutogenerateMCCE {
     }
 
     public String getPack() {
-
-        if(pack==null){
-            return "";
-        }else{
-            return pack;
-        }
+        return (pack==null)? "":pack;
     }
 
     public void setPack(String pack) {
@@ -96,12 +74,7 @@ public class AutogenerateMCCE {
     }
 
     public String getPackUnidad() {
-        if(packUnidad==null){
-            return "";
-        }else{
-            return packUnidad;
-        }
-
+        return (packUnidad==null)? "": packUnidad;
     }
 
     public void setPackUnidad(String packUnidad) {
