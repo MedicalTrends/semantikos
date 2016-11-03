@@ -1,5 +1,7 @@
 package cl.minsal.semantikos.kernel.components;
 
+import cl.minsal.semantikos.kernel.daos.CrossmapsDAO;
+import cl.minsal.semantikos.model.ConceptSMTK;
 import cl.minsal.semantikos.model.CrossMap;
 import cl.minsal.semantikos.model.User;
 import cl.minsal.semantikos.model.businessrules.CrossMapCreationBR;
@@ -7,6 +9,7 @@ import cl.minsal.semantikos.model.businessrules.CrossMapRemovalBR;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import java.util.List;
 
 /**
  * @author Andrés Farías on 8/30/16.
@@ -16,6 +19,9 @@ public class CrossmapsManagerImpl implements CrossmapsManager {
 
     @EJB
     private AuditManager auditManager;
+
+    @EJB
+    private CrossmapsDAO crossmapsDAO;
 
     @Override
     public CrossMap createCrossMap(CrossMap crossMap, User user) {
@@ -49,5 +55,14 @@ public class CrossmapsManagerImpl implements CrossmapsManager {
 
         /* Se retorna la instancia creada */
         return crossMap;
+    }
+
+    @Override
+    public List<CrossMap> getCrossmaps(ConceptSMTK conceptSMTK) {
+        if (conceptSMTK.isPersistent()){
+        return crossmapsDAO.getCrossmapsByIdConcept(conceptSMTK.getId());
+        } else{
+            return crossmapsDAO.getCrossmapsByConceptID(conceptSMTK.getConceptID());
+        }
     }
 }

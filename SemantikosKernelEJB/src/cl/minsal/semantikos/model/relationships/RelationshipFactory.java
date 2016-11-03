@@ -4,7 +4,6 @@ import cl.minsal.semantikos.kernel.components.ConceptManager;
 import cl.minsal.semantikos.kernel.components.HelperTableManager;
 import cl.minsal.semantikos.kernel.daos.*;
 import cl.minsal.semantikos.model.ConceptSMTK;
-import cl.minsal.semantikos.model.helpertables.HelperTable;
 import cl.minsal.semantikos.model.helpertables.HelperTableRecord;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
@@ -55,7 +54,7 @@ public class RelationshipFactory {
     private HelperTableDAO helperTableDAO;
 
     @EJB
-    private CrossMapDAO crossmapDAO;
+    private CrossmapsDAO crossmapDAO;
 
     @EJB
     private HelperTableManager helperTableManager;
