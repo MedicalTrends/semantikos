@@ -87,6 +87,29 @@
                                                 concept="#{conceptBean.concept}"
                                                 rendered="#{relationshipDefinition.targetDefinition.basicType}"/>
 
+                                    </p:outputPanel>
+
+                                </h:column>
+                            </h:dataTable>
+                        </p:panel>
+                    </p:tab>
+                    <p:tab title="SNOMED-CT" rendered="#{ conceptBean.concept.persistent and not conceptBean.concept.toBeConsulted and not conceptBean.concept.toBeReviewed }">
+                        <!--Relaciones -->
+                        <p:panel id="atributoSCT"
+                                 widgetVar="panelAtributos"
+                                 styleClass="attributes"
+                                 rendered="#{conceptBean.category.hasRelationshipDefinitions}">
+
+                            <h:dataTable style="width: 100%;" value="#{conceptBean.orderedRelationshipDefinitions}"
+                                         var="relationshipDefinition">
+
+                                <h:column>
+
+                                    <p:outputPanel
+                                            id="panelRelationshipDefinitonSCT"
+                                            style="border:0px; margin: 0px; padding: 0px;"
+                                            styleClass="panel_#{relationshipDefinition.id} #{relationshipDefinition.multiplicitySatisfied ? '': 'relationshipDefinitionError'}">
+
                                         <smtk:sctType
                                                 targetDefinition="#{relationshipDefinition.targetDefinition}"
                                                 relationshipDefinition="#{relationshipDefinition}"
