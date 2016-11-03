@@ -7,6 +7,7 @@ import java.util.List;
 /**
  * Created by BluePrints Developer on 07-09-2016.
  */
+
 public class HelperTableSearchCondition extends HelperTableWhereCondition{
 
     private List<HelperTableColumn> searchableColumns;
@@ -24,7 +25,7 @@ public class HelperTableSearchCondition extends HelperTableWhereCondition{
             if(query.length()>0)
                 query =query + " OR ";
 
-                String subquery = column.getColumnName()  + " " + conditionalOperator.toString() + " " + value;
+                String subquery = column.getName()  + " " + conditionalOperator.toString() + " " + value;
 
                 query += "("+subquery+")";
         }

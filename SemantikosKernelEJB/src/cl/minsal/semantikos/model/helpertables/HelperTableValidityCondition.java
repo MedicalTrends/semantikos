@@ -19,6 +19,6 @@ public class HelperTableValidityCondition extends HelperTableWhereCondition{
 
     @Override
     public String toString() {
-        return "( " + helperTableColumn.getColumnName() + " is  NULL  or " + super.toString() + ")";
+        return "( " + helperTableColumn.getName() + " is  NULL  or " + super.toString() + ")";
     }
 }

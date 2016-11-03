@@ -1,6 +1,7 @@
 package cl.minsal.semantikos.kernel.auth;
 
 import cl.minsal.semantikos.kernel.daos.AuthDAO;
+
 import cl.minsal.semantikos.model.Profile;
 import cl.minsal.semantikos.model.User;
 
