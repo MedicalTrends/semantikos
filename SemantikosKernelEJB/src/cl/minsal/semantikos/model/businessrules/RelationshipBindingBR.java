@@ -5,9 +5,12 @@ import cl.minsal.semantikos.model.ConceptSMTK;
 import cl.minsal.semantikos.model.User;
 import cl.minsal.semantikos.model.exceptions.BusinessRuleException;
 import cl.minsal.semantikos.model.relationships.Relationship;
+import cl.minsal.semantikos.model.relationships.RelationshipAttribute;
 import cl.minsal.semantikos.model.relationships.SnomedCTRelationship;
 
 import javax.validation.constraints.NotNull;
+
+import java.util.List;
 
 import static cl.minsal.semantikos.model.ProfileFactory.MODELER_PROFILE;
 
@@ -59,11 +62,15 @@ public class RelationshipBindingBR {
         /* BL-MOD-001: Un término en Borrador pasará a Modelado cuando el usuario con Rol Modelador realice el
          * mapeo del concepto Semantikos a un concepto a SNOMED CT, o al menos realice una relación del tipo “Es un”.
          */
-        if (isSnomedCTType && !sourceConcept.isModeled()) {
-            if (((SnomedCTRelationship) relationship).isDefinitional()) {
-                sourceConcept.setModeled(true);
-                conceptDAO.update(sourceConcept);
-            }
+        if (!isSnomedCTType || sourceConcept.isModeled()) {
+            return;
+        }
+
+        /* Si es una relación definitoria, se hace deja como modelada */
+        SnomedCTRelationship sctRelationship = (SnomedCTRelationship) relationship;
+        if (sctRelationship.isDefinitional()) {
+            sourceConcept.setModeled(true);
+            conceptDAO.update(sourceConcept);
         }
     }
 }

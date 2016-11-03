@@ -6,6 +6,8 @@ import cl.minsal.semantikos.model.PersistentEntity;
 import cl.minsal.semantikos.model.audit.AuditableEntity;
 import cl.minsal.semantikos.model.basictypes.BasicTypeValue;
 import cl.minsal.semantikos.model.helpertables.HelperTableRecord;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
@@ -27,6 +29,8 @@ import java.util.List;
 public class Relationship extends PersistentEntity implements AuditableEntity {
 
     // TODO: Normalizar esta clase
+    private static final Logger logger = LoggerFactory.getLogger(Relationship.class);
+
     /** Identificador único de la base de datos */
     private long id;
 
@@ -45,18 +49,18 @@ public class Relationship extends PersistentEntity implements AuditableEntity {
     /** Indica si ha sufrido modificaciones que requieran un update */
     private boolean toBeUpdated = false;
 
-    /** Lista de Atributos de la relacion **/
+    /** Lista de Atributos de la relacion * */
     private List<RelationshipAttribute> relationshipAttributes;
 
     /**
      * Este es el constructor mínimo con el cual se crean las Relaciones
      *
-     * @param sourceConcept           El concepto origen de la relación.
-     * @param relationshipDefinition  Definición de la relación.
-     * @param  relationshipAttributes Lista de Atributos
+     * @param sourceConcept          El concepto origen de la relación.
+     * @param relationshipDefinition Definición de la relación.
+     * @param relationshipAttributes Lista de Atributos
      */
     @Deprecated
-    public Relationship(ConceptSMTK sourceConcept, RelationshipDefinition relationshipDefinition,List<RelationshipAttribute> relationshipAttributes) {
+    public Relationship(ConceptSMTK sourceConcept, RelationshipDefinition relationshipDefinition, List<RelationshipAttribute> relationshipAttributes) {
 
         /* No está persistido originalmente */
         this.id = NON_PERSISTED_ID;
@@ -69,12 +73,12 @@ public class Relationship extends PersistentEntity implements AuditableEntity {
     /**
      * Este es el constructor mínimo con el cual se crean las Relaciones
      *
-     * @param sourceConcept           El concepto origen de la relación.
-     * @param target                  El valor de la relación (destino)
-     * @param relationshipDefinition  Definición de la relación.
-     * @param  relationshipAttributes Lista de Atributos
+     * @param sourceConcept          El concepto origen de la relación.
+     * @param target                 El valor de la relación (destino)
+     * @param relationshipDefinition Definición de la relación.
+     * @param relationshipAttributes Lista de Atributos
      */
-    public Relationship(ConceptSMTK sourceConcept, Target target, RelationshipDefinition relationshipDefinition,List<RelationshipAttribute> relationshipAttributes) {
+    public Relationship(ConceptSMTK sourceConcept, Target target, RelationshipDefinition relationshipDefinition, List<RelationshipAttribute> relationshipAttributes) {
 
         /* No está persistido originalmente */
         this.id = NON_PERSISTED_ID;
@@ -95,8 +99,8 @@ public class Relationship extends PersistentEntity implements AuditableEntity {
      * @param validityUntil          Fecha de vigencia hasta. Normalmente nulo si está vigente.
      */
     public Relationship(@NotNull long id, @NotNull ConceptSMTK sourceConcept, @NotNull Target target,
-                        @NotNull RelationshipDefinition relationshipDefinition, Timestamp validityUntil,List<RelationshipAttribute> relationshipAttributes) {
-        this(sourceConcept, target, relationshipDefinition,relationshipAttributes);
+                        @NotNull RelationshipDefinition relationshipDefinition, Timestamp validityUntil, List<RelationshipAttribute> relationshipAttributes) {
+        this(sourceConcept, target, relationshipDefinition, relationshipAttributes);
 
         /* Basic ID validation */
         if (id < 0) {
@@ -135,7 +139,7 @@ public class Relationship extends PersistentEntity implements AuditableEntity {
     }
 
     public void setTarget(Target target) {
-        if(target!=null){
+        if (target != null) {
             this.target = target;
         }
     }
@@ -250,22 +254,36 @@ public class Relationship extends PersistentEntity implements AuditableEntity {
 
     /**
      * Este método es responsable de determinar si esta relación es de tipo definitoria o atributo
+     *
      * @return <code>true</code> si es de atributo y <code>false</code>.
      */
     public boolean isAttribute() {
-        return getRelationshipDefinition().isAttribute();
-    }
 
+        /* Todos estos casos hacen la relación de tipo atributo, y por ende NO definitoria */
+        TargetDefinition targetDefinition = this.getRelationshipDefinition().getTargetDefinition();
+        if (targetDefinition.isBasicType() || targetDefinition.isCrossMapType() || targetDefinition.isHelperTable()
+                || targetDefinition.isSMTKType() || !targetDefinition.isSnomedCTType()) {
+            return true;
+        }
+
+        /* Si es de tipo Snomed, hay que ver el valor de su atributo */
+        List<RelationshipAttribute> relationshipAttributes = this.getRelationshipAttributes();
+        if (relationshipAttributes.isEmpty()){
+            logger.error("Se encontró una relación Snomed CT sin atributo!!!");
+            return true;
+        }
+
+        return ((SnomedCTRelationship) this).isDefinitional();
+    }
 
     /**
      * Este método es responsable de determinar si esta relación es válida
+     *
      * @return <code>true</code> si es válida y <code>false</code> si no lo es.
      */
-    public boolean isValid(){
+    public boolean isValid() {
         return (getValidityUntil() == null || getValidityUntil().after(new Timestamp(System.currentTimeMillis())));
     }
-
-
 
     public List<RelationshipAttribute> getRelationshipAttributes() {
         return relationshipAttributes;
@@ -275,29 +293,28 @@ public class Relationship extends PersistentEntity implements AuditableEntity {
         this.relationshipAttributes = relationshipAttributes;
     }
 
-    public RelationshipAttribute getOrderAttribute(){
+    public RelationshipAttribute getOrderAttribute() {
         for (RelationshipAttribute relationshipAttribute : getRelationshipAttributes()) {
-            if(relationshipAttribute.getRelationAttributeDefinition().getName().equalsIgnoreCase("orden")){
+            if (relationshipAttribute.getRelationAttributeDefinition().getName().equalsIgnoreCase("orden")) {
                 return relationshipAttribute;
             }
         }
         return null;
     }
 
-    public Integer getOrder(){
+    public Integer getOrder() {
 
         RelationshipAttribute attribute = getOrderAttribute();
 
-        if(attribute != null){
+        if (attribute != null) {
             BasicTypeValue basicTypeValue = (BasicTypeValue) attribute.getTarget();
             return Integer.parseInt(basicTypeValue.getValue().toString());
-        }
-        else{
+        } else {
             return 0;
         }
     }
 
-    public boolean isMultiplicitySatisfied(RelationshipAttributeDefinition attributeDefinition){
+    public boolean isMultiplicitySatisfied(RelationshipAttributeDefinition attributeDefinition) {
         return this.getAttributesByAttributeDefinition(attributeDefinition).size() >= attributeDefinition.getMultiplicity().getLowerBoundary();
     }
 
