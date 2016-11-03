@@ -18,6 +18,7 @@ public class DescriptionMapper {
             res.setDescriptionID(description.getDescriptionId());
             res.setTerm(description.getTerm());
             res.setValid(description.isValid());
+            res.setCaseSensitive(description.isCaseSensitive());
             if ( description.getDescriptionType() != null ) {
                 res.setType(description.getDescriptionType().getName());
             }

@@ -10,13 +10,11 @@ import cl.minsal.semantikos.kernel.daos.DescriptionDAO;
 import cl.minsal.semantikos.model.Category;
 import cl.minsal.semantikos.model.ConceptSMTK;
 import cl.minsal.semantikos.model.Description;
+import cl.minsal.semantikos.ws.fault.IllegalInputFault;
 import cl.minsal.semantikos.ws.fault.NotFoundFault;
 import cl.minsal.semantikos.ws.mapping.CategoryMapper;
 import cl.minsal.semantikos.ws.mapping.ConceptMapper;
-import cl.minsal.semantikos.ws.response.CategoryResponse;
-import cl.minsal.semantikos.ws.response.ConceptResponse;
-import cl.minsal.semantikos.ws.response.ConceptsByCategoryResponse;
-import cl.minsal.semantikos.ws.response.PaginationResponse;
+import cl.minsal.semantikos.ws.response.*;
 
 import javax.ejb.EJB;
 import javax.jws.WebMethod;
@@ -24,6 +22,7 @@ import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -92,7 +91,6 @@ public class ConceptsService {
                     Integer pageSize
     ) throws NotFoundFault {
         Category category = null;
-
         try {
             category = this.categoryManager.getCategoryByName(categoryName);
         } catch (Exception ignored) {}
@@ -101,12 +99,9 @@ public class ConceptsService {
             throw new NotFoundFault("No se encuentra la categoria");
         }
 
-
         Integer total = this.conceptManager.countModeledConceptBy(category);
         List<ConceptSMTK> concepts = this.conceptManager.findModeledConceptBy(category, pageSize, pageNumber);
-
         ConceptsByCategoryResponse res = new ConceptsByCategoryResponse();
-
         res.setCategoryResponse(CategoryMapper.map(category));
 
         List<ConceptResponse> conceptResponses = new ArrayList<>();
@@ -148,6 +143,98 @@ public class ConceptsService {
             }
         }
         return res;
+    }
+
+    // REQ-WS-001
+    @WebMethod(operationName = "buscarTermino")
+    @WebResult(name = "buscarTermino")
+    public TermSearchResponse buscarTermino(
+            @XmlElement(required = true)
+            @WebParam(name = "termino")
+                    String term,
+            @XmlElement(required = false)
+            @WebParam(name = "nombreCategoria")
+                    List<String> categoryNames,
+            @XmlElement(required = false)
+            @WebParam(name = "nombreRefSet")
+                    List<String> refSetNames,
+            @XmlElement(required = false, defaultValue = "0")
+            @WebParam(name = "numeroPagina")
+                    Integer pageNumber,
+            @XmlElement(required = false, defaultValue = "10")
+            @WebParam(name = "tamanoPagina")
+                    Integer pageSize
+    ) throws IllegalInputFault {
+        if ( (categoryNames == null && refSetNames == null)
+                || (categoryNames.isEmpty() && refSetNames.isEmpty())) {
+            throw new IllegalInputFault("Debe ingresar por lo menos una Categoría o un RefSet");
+        }
+        return null;
+    }
+
+    // REQ-WS-003
+    @WebMethod(operationName = "buscarTermino")
+    @WebResult(name = "buscarTermino")
+    public NewTermResponse codificacionDeNuevoTermino(
+            @XmlElement(required = true)
+            @WebParam(name = "establecimiento")
+                    String institutionName,
+            @XmlElement(required = true)
+            @WebParam(name = "idConcepto")
+                    String conceptId,
+            @XmlElement(required = true)
+            @WebParam(name = "termino")
+                    String term,
+            @XmlElement(required = false, defaultValue = "Preferida")
+            @WebParam(name = "tipoDescripcion")
+                    String descriptionTypeName,
+            @XmlElement(required = false, defaultValue = "false")
+            @WebParam(name = "esSensibleAMayusculas")
+                    Boolean isCaseSensitive,
+            @XmlElement(required = false) // TODO: Necesario? para que se ocupa?
+            @WebParam(name = "email")
+                    String email,
+            @XmlElement(required = false) // TODO: Necesario? para que se ocupa?
+            @WebParam(name = "observacion")
+                    String observation,
+            @XmlElement(required = false) // TODO: Necesario? para que se ocupa?
+            @WebParam(name = "profesional")
+                    String professional,
+            @XmlElement(required = false) // TODO: Necesario? para que se ocupa?
+            @WebParam(name = "profesion")
+                    String profesion,
+            @XmlElement(required = false) // TODO: Necesario? para que se ocupa?
+            @WebParam(name = "especialidad")
+                    String specialty
+    ) {
+        return null;
+    }
+
+    // REQ-WS-004
+    @WebMethod(operationName = "buscarTruncatePerfect")
+    @WebResult(name = "buscarTruncatePerfect")
+    public TermSearchResponse buscarTruncatePerfect(
+            @XmlElement(required = true)
+            @WebParam(name = "termino")
+                    String term,
+            @XmlElement(required = false)
+            @WebParam(name = "nombreCategoria")
+                    List<String> categoryNames,
+            @XmlElement(required = false)
+            @WebParam(name = "nombreRefSet")
+                    List<String> refSetNames,
+            @XmlElement(required = false, defaultValue = "0")
+            @WebParam(name = "numeroPagina")
+                    Integer pageNumber,
+            @XmlElement(required = false, defaultValue = "10")
+            @WebParam(name = "tamanoPagina")
+                    Integer pageSize
+    ) throws IllegalInputFault {
+        if ( (categoryNames == null && refSetNames == null)
+                || (categoryNames.isEmpty() && refSetNames.isEmpty())) {
+            throw new IllegalInputFault("Debe ingresar por lo menos una Categoría o un RefSet");
+        }
+        return null;
     }
 
 }
