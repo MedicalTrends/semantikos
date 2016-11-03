@@ -1,13 +1,14 @@
 package cl.minsal.semantikos.kernel.daos;
 
 import cl.minsal.semantikos.kernel.util.ConnectionBD;
-import cl.minsal.semantikos.model.ConceptSMTK;
-import cl.minsal.semantikos.model.User;
+import cl.minsal.semantikos.model.*;
 import cl.minsal.semantikos.model.snomedct.ConceptSCT;
+import cl.minsal.semantikos.model.snomedct.DescriptionSCT;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.ejb.EJB;
 import javax.ejb.EJBException;
 import javax.ejb.Stateless;
 import java.io.IOException;
@@ -15,6 +16,7 @@ import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 import static cl.minsal.semantikos.kernel.util.StringUtils.underScoreToCamelCaseJSON;
 
@@ -25,6 +27,9 @@ import static cl.minsal.semantikos.kernel.util.StringUtils.underScoreToCamelCase
 public class ConceptSCTDAOImpl implements ConceptSCTDAO {
 
     private static final Logger logger = LoggerFactory.getLogger(ConceptSCTDAOImpl.class);
+
+    @EJB
+    private SnomedCTDAO snomedCTDAO;
 
     @Override
     public ConceptSCT getConceptCSTByID(long idConceptCST) {

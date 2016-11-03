@@ -147,6 +147,8 @@ public class SnomedCTDAOImpl implements SnomedCTDAO {
 
         ConceptSCT conceptSCT = new ConceptSCT(id, effectiveTime, active, moduleID, definitionStatusID);
 
+        conceptSCT.setId(id);
+
         /* Se recuperan las descripciones del concepto */
         List<DescriptionSCT> descriptions = getDescriptionsSCTByConcept(id);
         conceptSCT.setDescriptions(descriptions);

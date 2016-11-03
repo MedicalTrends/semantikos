@@ -6,6 +6,7 @@ import cl.minsal.semantikos.model.PersistentEntity;
 import cl.minsal.semantikos.model.audit.AuditableEntity;
 import cl.minsal.semantikos.model.basictypes.BasicTypeValue;
 import cl.minsal.semantikos.model.helpertables.HelperTableRecord;
+import cl.minsal.semantikos.model.snomedct.ConceptSCT;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -273,7 +274,7 @@ public class Relationship extends PersistentEntity implements AuditableEntity {
             return true;
         }
 
-        return ((SnomedCTRelationship) this).isDefinitional();
+        return this.toSnomedCT().isDefinitional();
     }
 
     /**
@@ -316,6 +317,12 @@ public class Relationship extends PersistentEntity implements AuditableEntity {
 
     public boolean isMultiplicitySatisfied(RelationshipAttributeDefinition attributeDefinition) {
         return this.getAttributesByAttributeDefinition(attributeDefinition).size() >= attributeDefinition.getMultiplicity().getLowerBoundary();
+    }
+
+    public SnomedCTRelationship toSnomedCT(){
+        if(!this.getRelationshipDefinition().getTargetDefinition().isSnomedCTType())
+            return null;
+        return new SnomedCTRelationship(this.getSourceConcept(), (ConceptSCT)this.getTarget(), this.getRelationshipDefinition(), this.getRelationshipAttributes());
     }
 
     @Override

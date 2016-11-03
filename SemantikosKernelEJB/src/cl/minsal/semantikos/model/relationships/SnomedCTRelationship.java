@@ -50,9 +50,9 @@ public class SnomedCTRelationship extends Relationship {
                 /* Sin preguntar si es la tabla correcta, se ve si su campo descripción tienen los valores requeridos */
                 // TODO: Validar que el target es a la tabla correcta.
                 Map<String, String> fields = snomedType.getFields();
-                if (fields.containsKey(SYSTEM_COLUMN_DESCRIPTION)) {
-                    return fields.get(SYSTEM_COLUMN_DESCRIPTION).equalsIgnoreCase(ES_UN)
-                            || fields.get(SYSTEM_COLUMN_DESCRIPTION).equalsIgnoreCase(ES_UN_MAPEO_DE);
+                if (fields.containsKey(SYSTEM_COLUMN_DESCRIPTION.getColumnName())) {
+                    return fields.get(SYSTEM_COLUMN_DESCRIPTION.getColumnName()).equalsIgnoreCase(ES_UN)
+                            || fields.get(SYSTEM_COLUMN_DESCRIPTION.getColumnName()).equalsIgnoreCase(ES_UN_MAPEO_DE);
                 }
             }
         }

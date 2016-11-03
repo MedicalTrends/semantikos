@@ -4,6 +4,7 @@ import cl.minsal.semantikos.kernel.components.HelperTableManager;
 import cl.minsal.semantikos.kernel.daos.ConceptDAO;
 import cl.minsal.semantikos.kernel.daos.ConceptSCTDAO;
 import cl.minsal.semantikos.kernel.daos.HelperTableDAO;
+import cl.minsal.semantikos.kernel.daos.SnomedCTDAO;
 import cl.minsal.semantikos.model.basictypes.BasicTypeDefinition;
 import cl.minsal.semantikos.model.basictypes.BasicTypeValue;
 import cl.minsal.semantikos.model.helpertables.HelperTable;
@@ -37,7 +38,7 @@ public class TargetFactory {
     private HelperTableManager helperTableManager;
 
     @EJB
-    private ConceptSCTDAO conceptSCTDAO;
+    private SnomedCTDAO snomedCTDAO;
 
     @EJB
     private ConceptDAO conceptDAO;
@@ -70,7 +71,7 @@ public class TargetFactory {
         if (idHelperTableRecord > 0) {
             target = helperTableManager.getRecord(idHelperTableRecord);
         } else if (idConceptSct > 0) {
-            target = conceptSCTDAO.getConceptCSTByID(idConceptSct);
+            target = snomedCTDAO.getConceptByID(idConceptSct);
         } else if (idConceptStk > 0) {
             target = conceptDAO.getConceptByID(idConceptStk);
         }

@@ -179,7 +179,8 @@ public class RelationshipFactory {
 
         /* El target puede ser un concepto Snomed CT */
         else if (relationshipDefinition.getTargetDefinition().isSnomedCTType()) {
-            target = conceptSCTDAO.getConceptCSTByID(idTarget);
+            //target = conceptSCTDAO.getConceptCSTByID(idTarget);
+            target = targetDAO.getTargetByID(idTarget);
         }
 
         /* Y sino, puede ser crossmap */

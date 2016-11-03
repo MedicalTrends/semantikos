@@ -229,7 +229,9 @@ public class ConceptBean implements Serializable {
 
         user = authenticationBean.getLoggedUser();
         Profile designerProfile = new Profile(2, "Diseñador", "Usuario Diseñador");
+        Profile modelerProfile = new Profile(3, "Modelador", "Usuario Modelador");
         user.getProfiles().add(designerProfile);
+        user.getProfiles().add(modelerProfile);
         autogenerateMCCE = new AutogenerateMCCE();
         autogenerateMC = new AutogenerateMC();
         autogeneratePCCE = new AutogeneratePCCE();
@@ -806,7 +808,7 @@ public class ConceptBean implements Serializable {
         List<RelationshipWeb> relationshipsForPersist = concept.getUnpersistedRelationshipsWeb();
         /* Se persisten las nuevas relaciones */
         for (RelationshipWeb relationshipWeb : relationshipsForPersist) {
-            relationshipManager.bindRelationshipToConcept(concept, relationshipWeb, user);
+            relationshipManager.bindRelationshipToConcept(concept, (Relationship)relationshipWeb, user);
         }
 
         /* Se elimina las relaciones eliminadas */
@@ -1304,6 +1306,14 @@ public class ConceptBean implements Serializable {
 
     public void setConceptSuggestedList(List<ConceptSMTK> conceptSuggestedList) {
         this.conceptSuggestedList = conceptSuggestedList;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     /**
