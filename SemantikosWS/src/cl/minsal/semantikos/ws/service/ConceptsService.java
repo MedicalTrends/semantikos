@@ -146,9 +146,37 @@ public class ConceptsService {
     }
 
     // REQ-WS-001
+    // REQ-WS-006
     @WebMethod(operationName = "buscarTermino")
     @WebResult(name = "buscarTermino")
     public TermSearchResponse buscarTermino(
+            @XmlElement(required = true)
+            @WebParam(name = "termino")
+                    String term,
+            @XmlElement(required = false)
+            @WebParam(name = "nombreCategoria")
+                    List<String> categoryNames,
+            @XmlElement(required = false)
+            @WebParam(name = "nombreRefSet")
+                    List<String> refSetNames,
+            @XmlElement(required = false, defaultValue = "0")
+            @WebParam(name = "numeroPagina")
+                    Integer pageNumber,
+            @XmlElement(required = false, defaultValue = "10")
+            @WebParam(name = "tamanoPagina")
+                    Integer pageSize
+    ) throws IllegalInputFault {
+        if ( (categoryNames == null && refSetNames == null)
+                || (categoryNames.isEmpty() && refSetNames.isEmpty())) {
+            throw new IllegalInputFault("Debe ingresar por lo menos una Categoría o un RefSet");
+        }
+        return null;
+    }
+
+    // REQ-WS-004
+    @WebMethod(operationName = "buscarTruncatePerfect")
+    @WebResult(name = "buscarTruncatePerfect")
+    public TermSearchResponse buscarTruncatePerfect(
             @XmlElement(required = true)
             @WebParam(name = "termino")
                     String term,
@@ -210,19 +238,19 @@ public class ConceptsService {
         return null;
     }
 
-    // REQ-WS-004
-    @WebMethod(operationName = "buscarTruncatePerfect")
-    @WebResult(name = "buscarTruncatePerfect")
-    public TermSearchResponse buscarTruncatePerfect(
-            @XmlElement(required = true)
-            @WebParam(name = "termino")
-                    String term,
+    // REQ-WS-005
+    @WebMethod(operationName = "obtenerTerminosPedibles")
+    @WebResult(name = "obtenerTerminosPedibles")
+    public TermSearchResponse obtenerTerminosPedibles(
             @XmlElement(required = false)
             @WebParam(name = "nombreCategoria")
                     List<String> categoryNames,
             @XmlElement(required = false)
             @WebParam(name = "nombreRefSet")
                     List<String> refSetNames,
+            @XmlElement(required = true)
+            @WebParam(name = "pedible")
+                    String requestable,
             @XmlElement(required = false, defaultValue = "0")
             @WebParam(name = "numeroPagina")
                     Integer pageNumber,

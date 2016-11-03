@@ -34,7 +34,7 @@ public class RefSetService {
     @EJB
     private ConceptManager conceptManager;
 
-    // REQ-WS-006
+    // REQ-WS-008
     @WebMethod(operationName = "listaRefSet")
     @WebResult(name = "refSet")
     public List<RefSetResponse> listaRefSet() {
