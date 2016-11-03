@@ -87,7 +87,7 @@ public interface CrossmapsManager {
     public DirectCrossmap bindConceptSMTKToCrossmapSetMember(ConceptSMTK conceptSMTK, CrossmapSetMember crossmapSetMember);
 
     /**
-     * Este método es responsable de eliminar un crossmap de un concepto.
+     * Este método es responsable de eliminar un crossmap de un concepto, ya sea directo o indirecto.
      *
      * @param crossmap El crossmap que se desea eliminar.
      */
