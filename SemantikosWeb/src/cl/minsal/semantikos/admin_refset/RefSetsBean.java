@@ -13,6 +13,7 @@ import org.primefaces.model.SortOrder;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import java.sql.Timestamp;
 import java.util.List;
@@ -53,7 +54,15 @@ public class RefSetsBean {
     @EJB
     private RefSetManager refSetManager;
 
-    @EJB
+    public AuthenticationBean getAuthenticationBean() {
+        return authenticationBean;
+    }
+
+    public void setAuthenticationBean(AuthenticationBean authenticationBean) {
+        this.authenticationBean = authenticationBean;
+    }
+
+    @ManagedProperty(value = "#{authenticationBean}")
     private AuthenticationBean authenticationBean;
 
     @PostConstruct
