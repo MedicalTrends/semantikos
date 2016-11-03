@@ -59,10 +59,29 @@ public class CrossmapsManagerImpl implements CrossmapsManager {
 
     @Override
     public List<CrossMap> getCrossmaps(ConceptSMTK conceptSMTK) {
+
+        List<CrossMap> allCrossmaps = this.getDirectCrossmaps(conceptSMTK);
+        allCrossmaps.addAll(this.getIndirectCrossmaps(conceptSMTK));
+
+        return allCrossmaps;
+    }
+
+    @Override
+    public List<CrossMap> getDirectCrossmaps(ConceptSMTK conceptSMTK) {
         if (conceptSMTK.isPersistent()){
-        return crossmapsDAO.getCrossmapsByIdConcept(conceptSMTK.getId());
+            return crossmapsDAO.getDirectCrossmapsByIdConcept(conceptSMTK.getId());
         } else{
-            return crossmapsDAO.getCrossmapsByConceptID(conceptSMTK.getConceptID());
+            return crossmapsDAO.getDirectCrossmapsByConceptID(conceptSMTK.getConceptID());
         }
+    }
+
+    @Override
+    public List<CrossMap> getIndirectCrossmaps(ConceptSMTK conceptSMTK) {
+        if (conceptSMTK.isPersistent()){
+            return crossmapsDAO.getIndirectCrossmapsByIdConcept(conceptSMTK.getId());
+        } else{
+            return crossmapsDAO.getIndirectCrossmapsByConceptID(conceptSMTK.getConceptID());
+        }
+
     }
 }

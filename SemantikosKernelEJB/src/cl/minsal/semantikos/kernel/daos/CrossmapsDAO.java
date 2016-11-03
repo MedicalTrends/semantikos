@@ -19,7 +19,11 @@ public interface CrossmapsDAO {
      */
     public CrossMap getCrossMapByID(long idCrossMap);
 
-    List<CrossMap> getCrossmapsByIdConcept(long id);
+    List<CrossMap> getIndirectCrossmapsByIdConcept(long id);
 
-    List<CrossMap> getCrossmapsByConceptID(String conceptID);
+    List<CrossMap> getIndirectCrossmapsByConceptID(String conceptID);
+
+    List<CrossMap> getDirectCrossmapsByIdConcept(long id);
+
+    List<CrossMap> getDirectCrossmapsByConceptID(String conceptID);
 }
