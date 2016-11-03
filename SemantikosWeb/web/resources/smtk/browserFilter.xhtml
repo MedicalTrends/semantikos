@@ -56,6 +56,37 @@
                     <p:ajax event="itemSelect" update="@(.conceptBrowserTable)" />
                 </p:selectOneMenu>
             </div>
+            <p:outputPanel rendered="#{cc.attrs.conceptQuery.customFilterable}">
+                <div class="ui-g-12 ui-md-6 ui-lg-2">
+                    <p:calendar id="creationDateSince"
+                                value="#{cc.attrs.conceptQuery.creationDateSince}"
+                                var="value"
+                                placeholder="Desde...">
+                        <p:ajax event="dateSelect" update="@(.conceptBrowserTable)"/>
+                    </p:calendar>
+                </div>
+            </p:outputPanel>
+            <p:outputPanel rendered="#{cc.attrs.conceptQuery.customFilterable}">
+                <div class="ui-g-12 ui-md-6 ui-lg-2">
+                    <p:calendar id="creationDateTo"
+                                value="#{cc.attrs.conceptQuery.creationDateTo}"
+                                var="value"
+                                placeholder="Hasta...">
+                        <p:ajax event="dateSelect" update="@(.conceptBrowserTable)"/>
+                    </p:calendar>
+                </div>
+            </p:outputPanel>
+            <p:outputPanel rendered="#{cc.attrs.conceptQuery.customFilterable}">
+                <div class="ui-g-12 ui-md-6 ui-lg-2">
+                    <p:selectOneMenu value="#{cc.attrs.conceptQuery.user}" converter="omnifaces.SelectItemsConverter"
+                                     style="margin-right:10px; width: 60%">
+                        <f:selectItem itemLabel="Etiqueta" itemValue="#{null}"/>
+                        <f:selectItems value="#{conceptBrowserBean.us}" var="tag"
+                                       itemLabel="#{tag.name}" itemValue="#{tag}"/>
+                        <p:ajax event="itemSelect" update="@(.conceptBrowserTable)" />
+                    </p:selectOneMenu>
+                </div>
+            </p:outputPanel>
             <p:repeat
                     offset="0"
                     size="#{cc.attrs.conceptQuery.filters.size()}"

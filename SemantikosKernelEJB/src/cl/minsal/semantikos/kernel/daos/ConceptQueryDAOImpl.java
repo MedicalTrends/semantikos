@@ -166,7 +166,34 @@ public class ConceptQueryDAOImpl implements ConceptQueryDAO {
 
     @Override
     public boolean getCustomFilteringValue(Category category) {
-        return false;
+
+        ConnectionBD connect = new ConnectionBD();
+        String sql = "{call semantikos.get_view_info_by_category(?)}";
+
+        boolean customFilteringValue = false;
+
+        try (Connection connection = connect.getConnection();
+
+            CallableStatement call = connection.prepareCall(sql)) {
+
+            call.setLong(1, category.getId());
+            call.execute();
+
+            ResultSet rs = call.getResultSet();
+
+            if (rs.next()) {
+
+                customFilteringValue = rs.getBoolean("custom_filterable");
+
+            }
+
+        } catch (SQLException e) {
+            String errorMsg = "Error al recuperar información adicional sobre esta definición desde la BDD.";
+            logger.error(errorMsg, e);
+            throw new EJBException(e);
+        }
+
+        return customFilteringValue;
     }
 
     private void bindParameter(int paramNumber, CallableStatement call, Connection connection, ConceptQueryParameter param)
