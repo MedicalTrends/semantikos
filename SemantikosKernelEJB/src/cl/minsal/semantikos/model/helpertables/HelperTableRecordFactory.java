@@ -2,6 +2,7 @@ package cl.minsal.semantikos.model.helpertables;
 
 import cl.minsal.semantikos.kernel.components.HelperTableManager;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import javax.ejb.EJB;
 import javax.ejb.Singleton;
@@ -91,11 +92,15 @@ public class HelperTableRecordFactory {
      */
     public HelperTable createHelperTableFromJSON(String jsonExpression) throws IOException {
         HelperTableJSON jsonHelperTable = mapper.readValue(jsonExpression, HelperTableJSON.class);
+        throw new NotImplementedException();
+        //TODO: impelmentar
 
+        /*
         // Se crean las columnas por defecto que debe especificar esta definición de helperTable
         Collection<HelperTableColumn> columns = Arrays.asList(new HelperTableColumn[]{HelperTable.SYSTEM_COLUMN_ID, HelperTable.SYSTEM_COLUMN_DESCRIPTION});;
 
         return new HelperTable(jsonHelperTable.getTableId(), jsonHelperTable.getName(), jsonHelperTable.getDescription(), jsonHelperTable.getTablaName(), columns);
+        */
     }
 }
 
