@@ -173,8 +173,8 @@ public class ConceptsService {
     }
 
     // REQ-WS-003
-    @WebMethod(operationName = "buscarTermino")
-    @WebResult(name = "buscarTermino")
+    @WebMethod(operationName = "codificacionDeNuevoTermino")
+    @WebResult(name = "codificacionDeNuevoTermino")
     public NewTermResponse codificacionDeNuevoTermino(
             @XmlElement(required = true)
             @WebParam(name = "establecimiento")
