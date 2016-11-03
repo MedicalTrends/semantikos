@@ -42,7 +42,7 @@ public class ConceptQueryDAOImpl implements ConceptQueryDAO {
 
         //TODO: hacer funcion en pg
         try (Connection connection = connect.getConnection();
-             CallableStatement call = connection.prepareCall("{call semantikos.get_concept_by_query(?,?,?,?,?,?,?,?,?,?,?,?,?,?)}" )){
+             CallableStatement call = connection.prepareCall("{call semantikos.get_concept_by_query(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}" )){
 
             /*
                 1. p_id_category integer, --static
@@ -188,7 +188,7 @@ public class ConceptQueryDAOImpl implements ConceptQueryDAO {
             }
 
         } catch (SQLException e) {
-            String errorMsg = "Error al recuperar información adicional sobre esta definición desde la BDD.";
+            String errorMsg = "Error al recuperar información adicional sobre esta categoría desde la BDD.";
             logger.error(errorMsg, e);
             throw new EJBException(e);
         }
@@ -266,7 +266,8 @@ public class ConceptQueryDAOImpl implements ConceptQueryDAO {
                 }
 
                 if(param.getType() == Timestamp.class) {
-                    call.setDate(paramNumber, (Date) param.getValue());
+                    java.util.Date date = (java.util.Date)param.getValue();
+                    call.setTimestamp(paramNumber, new Timestamp(date.getTime()));
                     return;
                 }
 

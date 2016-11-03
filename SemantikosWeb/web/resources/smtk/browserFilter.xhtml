@@ -81,7 +81,8 @@
             <smtk:DateTypeFilter date="#{cc.attrs.conceptQuery.creationDateTo}"
                                  dateSince="#{false}"
                                  rendered="#{cc.attrs.conceptQuery.customFilterable}" />
-            <smtk:UserTypeFilter user="#{cc.attrs.conceptQuery.user}" />
+            <smtk:UserTypeFilter user="#{cc.attrs.conceptQuery.user}"
+                                 rendered="#{cc.attrs.conceptQuery.customFilterable}" />
             <div class="ui-g-12 ui-md-6 ui-lg-2">
                 <p:button outcome="conceptEdit" icon="fa fa-plus" styleClass="ui-priority-primary" value="Crear Nuevo">
                     <f:param name="editMode" value="#{true}" />
