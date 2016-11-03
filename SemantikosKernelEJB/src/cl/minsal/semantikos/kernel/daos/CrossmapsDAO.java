@@ -1,7 +1,9 @@
 package cl.minsal.semantikos.kernel.daos;
 
-import cl.minsal.semantikos.model.CrossMap;
-import cl.minsal.semantikos.model.relationships.Target;
+import cl.minsal.semantikos.model.ConceptSMTK;
+import cl.minsal.semantikos.model.DirectCrossmaps;
+import cl.minsal.semantikos.model.crossmaps.Crossmaps;
+import cl.minsal.semantikos.model.crossmaps.CrossmapSetMember;
 
 import javax.ejb.Local;
 import java.util.List;
@@ -17,13 +19,15 @@ public interface CrossmapsDAO {
      * @param idCrossMap El identificador único en la base de datos.
      * @return Un CrossMap fresco creado a partir de la base de datos.
      */
-    public CrossMap getCrossMapByID(long idCrossMap);
+    public Crossmaps getCrossMapByID(long idCrossMap);
 
-    List<CrossMap> getIndirectCrossmapsByIdConcept(long id);
+    List<Crossmaps> getIndirectCrossmapsByIdConcept(long id);
 
-    List<CrossMap> getIndirectCrossmapsByConceptID(String conceptID);
+    List<Crossmaps> getIndirectCrossmapsByConceptID(String conceptID);
 
-    List<CrossMap> getDirectCrossmapsByIdConcept(long id);
+    List<Crossmaps> getDirectCrossmapsByIdConcept(long id);
 
-    List<CrossMap> getDirectCrossmapsByConceptID(String conceptID);
+    List<Crossmaps> getDirectCrossmapsByConceptID(String conceptID);
+
+    DirectCrossmaps bindConceptSMTKToCrossmapSetMember(ConceptSMTK conceptSMTK, CrossmapSetMember crossmapSetMember);
 }

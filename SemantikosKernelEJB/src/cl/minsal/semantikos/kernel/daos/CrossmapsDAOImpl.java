@@ -1,6 +1,9 @@
 package cl.minsal.semantikos.kernel.daos;
 
-import cl.minsal.semantikos.model.CrossMap;
+import cl.minsal.semantikos.model.ConceptSMTK;
+import cl.minsal.semantikos.model.DirectCrossmaps;
+import cl.minsal.semantikos.model.crossmaps.Crossmaps;
+import cl.minsal.semantikos.model.crossmaps.CrossmapSetMember;
 
 import javax.ejb.Stateless;
 import java.util.List;
@@ -11,27 +14,32 @@ import java.util.List;
 @Stateless
 public class CrossmapsDAOImpl implements CrossmapsDAO {
     @Override
-    public CrossMap getCrossMapByID(long idCrossMap) {
+    public Crossmaps getCrossMapByID(long idCrossMap) {
         return null;
     }
 
     @Override
-    public List<CrossMap> getIndirectCrossmapsByIdConcept(long id) {
+    public List<Crossmaps> getIndirectCrossmapsByIdConcept(long id) {
         return null;
     }
 
     @Override
-    public List<CrossMap> getIndirectCrossmapsByConceptID(String conceptID) {
+    public List<Crossmaps> getIndirectCrossmapsByConceptID(String conceptID) {
         return null;
     }
 
     @Override
-    public List<CrossMap> getDirectCrossmapsByIdConcept(long id) {
+    public List<Crossmaps> getDirectCrossmapsByIdConcept(long id) {
         return null;
     }
 
     @Override
-    public List<CrossMap> getDirectCrossmapsByConceptID(String conceptID) {
+    public List<Crossmaps> getDirectCrossmapsByConceptID(String conceptID) {
+        return null;
+    }
+
+    @Override
+    public DirectCrossmaps bindConceptSMTKToCrossmapSetMember(ConceptSMTK conceptSMTK, CrossmapSetMember crossmapSetMember) {
         return null;
     }
 }

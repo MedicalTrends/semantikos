@@ -6,6 +6,7 @@ import cl.minsal.semantikos.model.audit.AuditActionType;
 import cl.minsal.semantikos.model.audit.ConceptAuditAction;
 import cl.minsal.semantikos.model.audit.RefSetAuditAction;
 import cl.minsal.semantikos.model.businessrules.HistoryRecordBL;
+import cl.minsal.semantikos.model.crossmaps.Crossmaps;
 import cl.minsal.semantikos.model.relationships.Relationship;
 
 import javax.ejb.EJB;
@@ -129,18 +130,18 @@ public class AuditManagerImpl implements AuditManager {
     }
 
     @Override
-    public void recordCrossMapCreation(CrossMap crossMap, User user) {
+    public void recordCrossMapCreation(Crossmaps crossmaps, User user) {
         /* Se validan las reglas de negocio para realizar el registro */
-        ConceptAuditAction auditAction = new ConceptAuditAction(crossMap.getSourceConcept(), CONCEPT_RELATIONSHIP_CROSSMAP_CREATION, now(), user, crossMap);
+        ConceptAuditAction auditAction = new ConceptAuditAction(crossmaps.getSourceConcept(), CONCEPT_RELATIONSHIP_CROSSMAP_CREATION, now(), user, crossmaps);
         new HistoryRecordBL().validate(auditAction);
 
         auditDAO.recordAuditAction(auditAction);
     }
 
     @Override
-    public void recordCrossMapRemoval(CrossMap crossMap, User user) {
+    public void recordCrossMapRemoval(Crossmaps crossmaps, User user) {
         /* Se validan las reglas de negocio para realizar el registro */
-        ConceptAuditAction auditAction = new ConceptAuditAction(crossMap.getSourceConcept(), CONCEPT_RELATIONSHIP_CROSSMAP_REMOVAL, now(), user, crossMap);
+        ConceptAuditAction auditAction = new ConceptAuditAction(crossmaps.getSourceConcept(), CONCEPT_RELATIONSHIP_CROSSMAP_REMOVAL, now(), user, crossmaps);
         new HistoryRecordBL().validate(auditAction);
 
         auditDAO.recordAuditAction(auditAction);

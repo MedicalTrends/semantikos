@@ -2,10 +2,12 @@ package cl.minsal.semantikos.kernel.components;
 
 import cl.minsal.semantikos.kernel.daos.CrossmapsDAO;
 import cl.minsal.semantikos.model.ConceptSMTK;
-import cl.minsal.semantikos.model.CrossMap;
+import cl.minsal.semantikos.model.DirectCrossmaps;
+import cl.minsal.semantikos.model.crossmaps.Crossmaps;
 import cl.minsal.semantikos.model.User;
 import cl.minsal.semantikos.model.businessrules.CrossMapCreationBR;
 import cl.minsal.semantikos.model.businessrules.CrossMapRemovalBR;
+import cl.minsal.semantikos.model.crossmaps.CrossmapSetMember;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -24,50 +26,50 @@ public class CrossmapsManagerImpl implements CrossmapsManager {
     private CrossmapsDAO crossmapsDAO;
 
     @Override
-    public CrossMap createCrossMap(CrossMap crossMap, User user) {
+    public Crossmaps createCrossMap(Crossmaps crossmaps, User user) {
 
         /* Se aplican las reglas de negocio */
-        new CrossMapCreationBR().applyRules(crossMap, user);
+        new CrossMapCreationBR().applyRules(crossmaps, user);
 
         /* TODO: Se realiza la creación */
 
         /* Se registra en el historial */
-        if (crossMap.getSourceConcept().isModeled()) {
-            auditManager.recordCrossMapCreation(crossMap, user);
+        if (crossmaps.getSourceConcept().isModeled()) {
+            auditManager.recordCrossMapCreation(crossmaps, user);
         }
 
         /* Se retorna la instancia creada */
-        return crossMap;
+        return crossmaps;
     }
 
     @Override
-    public CrossMap removeCrossMap(CrossMap crossMap, User user) {
+    public Crossmaps removeCrossMap(Crossmaps crossmaps, User user) {
 
         /* Se aplican las reglas de negocio */
-        new CrossMapRemovalBR().applyRules(crossMap, user);
+        new CrossMapRemovalBR().applyRules(crossmaps, user);
 
         /* TODO: Se realiza la eliminación */
 
         /* Se registra en el historial */
-        if (crossMap.getSourceConcept().isModeled()) {
-            auditManager.recordCrossMapRemoval(crossMap, user);
+        if (crossmaps.getSourceConcept().isModeled()) {
+            auditManager.recordCrossMapRemoval(crossmaps, user);
         }
 
         /* Se retorna la instancia creada */
-        return crossMap;
+        return crossmaps;
     }
 
     @Override
-    public List<CrossMap> getCrossmaps(ConceptSMTK conceptSMTK) {
+    public List<Crossmaps> getCrossmaps(ConceptSMTK conceptSMTK) {
 
-        List<CrossMap> allCrossmaps = this.getDirectCrossmaps(conceptSMTK);
-        allCrossmaps.addAll(this.getIndirectCrossmaps(conceptSMTK));
+        List<Crossmaps> allCrossmapses = this.getDirectCrossmaps(conceptSMTK);
+        allCrossmapses.addAll(this.getIndirectCrossmaps(conceptSMTK));
 
-        return allCrossmaps;
+        return allCrossmapses;
     }
 
     @Override
-    public List<CrossMap> getDirectCrossmaps(ConceptSMTK conceptSMTK) {
+    public List<Crossmaps> getDirectCrossmaps(ConceptSMTK conceptSMTK) {
         if (conceptSMTK.isPersistent()){
             return crossmapsDAO.getDirectCrossmapsByIdConcept(conceptSMTK.getId());
         } else{
@@ -76,12 +78,17 @@ public class CrossmapsManagerImpl implements CrossmapsManager {
     }
 
     @Override
-    public List<CrossMap> getIndirectCrossmaps(ConceptSMTK conceptSMTK) {
+    public List<Crossmaps> getIndirectCrossmaps(ConceptSMTK conceptSMTK) {
         if (conceptSMTK.isPersistent()){
             return crossmapsDAO.getIndirectCrossmapsByIdConcept(conceptSMTK.getId());
         } else{
             return crossmapsDAO.getIndirectCrossmapsByConceptID(conceptSMTK.getConceptID());
         }
 
+    }
+
+    @Override
+    public DirectCrossmaps bindConceptSMTKToCrossmapSetMember(ConceptSMTK conceptSMTK, CrossmapSetMember crossmapSetMember) {
+        return crossmapsDAO.bindConceptSMTKToCrossmapSetMember(conceptSMTK, crossmapSetMember);
     }
 }

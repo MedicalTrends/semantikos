@@ -3,6 +3,7 @@ package cl.minsal.semantikos.kernel.components;
 import cl.minsal.semantikos.model.*;
 import cl.minsal.semantikos.model.audit.AuditActionType;
 import cl.minsal.semantikos.model.audit.ConceptAuditAction;
+import cl.minsal.semantikos.model.crossmaps.Crossmaps;
 import cl.minsal.semantikos.model.relationships.Relationship;
 
 import javax.ejb.Local;
@@ -97,18 +98,18 @@ public interface AuditManager {
     /**
      * Este método es responsable de registrar en el historial la creación de un CrossMap.
      *
-     * @param crossMap El CrossMap que se desea crear.
+     * @param crossmaps El CrossMap que se desea crear.
      * @param user     El usuario que elimina la relación.
      */
-    public void recordCrossMapCreation(CrossMap crossMap, User user);
+    public void recordCrossMapCreation(Crossmaps crossmaps, User user);
 
     /**
      * Este método es responsable de registrar en el historial la eliminación de un CrossMap.
      *
-     * @param crossMap El CrossMap que se desea eliminar.
+     * @param crossmaps El CrossMap que se desea eliminar.
      * @param user     El usuario que elimina la relación.
      */
-    public void recordCrossMapRemoval(CrossMap crossMap, User user);
+    public void recordCrossMapRemoval(Crossmaps crossmaps, User user);
 
     /**
      * Este método es responsable de registrar en el historial la eliminación de un CrossMap.
