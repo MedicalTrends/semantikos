@@ -12,7 +12,7 @@ import javax.ejb.Stateless;
  * @author Andrés Farías on 8/30/16.
  */
 @Stateless
-public class CrossMapManagerImpl implements CrossMapManagerInterface {
+public class CrossmapsManagerImpl implements CrossmapsManager {
 
     @EJB
     private AuditManager auditManager;

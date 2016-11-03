@@ -9,7 +9,7 @@ import javax.ejb.Local;
  * @author Andrés Farías on 8/30/16.
  */
 @Local
-public interface CrossMapManagerInterface {
+public interface CrossmapsManager {
 
 
     /**
