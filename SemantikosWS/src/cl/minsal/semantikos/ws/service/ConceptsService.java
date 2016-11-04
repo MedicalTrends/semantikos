@@ -43,6 +43,7 @@ public class ConceptsService {
     private RefSetManager refSetManager;
 
     // REQ-WS-028
+    // REQ-WS-007
     @WebMethod(operationName = "conceptoPorIdDescripcion")
     @WebResult(name = "concepto")
     public ConceptResponse conceptoPorIdDescripcion(
@@ -83,10 +84,10 @@ public class ConceptsService {
             @XmlElement(required = true)
             @WebParam(name = "nombreCategoria")
                     String categoryName,
-            @XmlElement(required = true)
+            @XmlElement(required = false, defaultValue = "0")
             @WebParam(name = "numeroPagina")
                     Integer pageNumber,
-            @XmlElement(required = true)
+            @XmlElement(required = false, defaultValue = "10")
             @WebParam(name = "tamanoPagina")
                     Integer pageSize
     ) throws NotFoundFault {

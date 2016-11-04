@@ -8,10 +8,7 @@ import cl.minsal.semantikos.model.RefSet;
 import cl.minsal.semantikos.ws.fault.NotFoundFault;
 import cl.minsal.semantikos.ws.mapping.ConceptMapper;
 import cl.minsal.semantikos.ws.mapping.RefSetMapper;
-import cl.minsal.semantikos.ws.response.ConceptResponse;
-import cl.minsal.semantikos.ws.response.ConceptsByRefsetResponse;
-import cl.minsal.semantikos.ws.response.PaginationResponse;
-import cl.minsal.semantikos.ws.response.RefSetResponse;
+import cl.minsal.semantikos.ws.response.*;
 
 import javax.ejb.EJB;
 import javax.jws.WebMethod;
@@ -51,10 +48,10 @@ public class RefSetService {
             @XmlElement(required = true)
             @WebParam(name = "nombreRefSet")
                     String refSetName,
-            @XmlElement(required = true)
+            @XmlElement(required = false, defaultValue = "0")
             @WebParam(name = "numeroPagina")
                     Integer pageNumber,
-            @XmlElement(required = true)
+            @XmlElement(required = false, defaultValue = "10")
             @WebParam(name = "tamanoPagina")
                     Integer pageSize
     ) throws NotFoundFault {
@@ -93,6 +90,17 @@ public class RefSetService {
         res.setPagination(paginationResponse);
 
         return res;
+    }
+
+    // REQ-WS-009
+    @WebMethod(operationName = "refSetsPorIdDescripcion")
+    @WebResult(name = "refSetsPorIdDescripcion")
+    public RefSetsByDescriptionIdResponse refSetsPorIdDescripcion(
+            @XmlElement(required = false)
+            @WebParam(name = "idDescripcion")
+                    List<String> descriptionId
+    ) {
+        return null;
     }
 
     private void mapResults(List<RefSetResponse> res, List<RefSet> refSets) {
