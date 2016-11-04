@@ -3,17 +3,8 @@
   <component name="dataSourceStorageLocal">
     <data-source name="pg Semantikos MT" uuid="01f87ae6-2631-4aa0-b29e-efc062530da6">
       <secret-storage>memory</secret-storage>
-      <user-name>postgres</user-name>
     </data-source>
-    <data-source name="Oracle" uuid="1815898b-c35a-4f5b-93fd-76f0334345d8">
-      <secret-storage>memory</secret-storage>
-      <first-sync>true</first-sync>
-      <user-name>system</user-name>
-    </data-source>
-    <data-source name="Oracle - @192.168.0.237" uuid="998cdb54-f196-4a3f-97fb-3806d33ca774">
-      <secret-storage>master_key</secret-storage>
-      <first-sync>true</first-sync>
-      <user-name>semantikos</user-name>
-    </data-source>
+    <data-source name="Oracle" uuid="1815898b-c35a-4f5b-93fd-76f0334345d8" />
+    <data-source name="Oracle - @192.168.0.237" uuid="998cdb54-f196-4a3f-97fb-3806d33ca774" />
   </component>
 </project>

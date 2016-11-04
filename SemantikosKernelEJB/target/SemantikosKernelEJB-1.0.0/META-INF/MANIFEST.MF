@@ -1,5 +1,5 @@
 Manifest-Version: 1.0
-Built-By: root
+Built-By: des01c7
 Class-Path: slf4j-log4j12-1.7.21.jar slf4j-api-1.7.21.jar log4j-1.2.17
  .jar axis-1.4.jar commons-collections4-4.0.jar cache-api-1.0.0.jar eh
  cache-3.1.2.jar jboss-javaee-7.0-1.0.1.Final.pom activation-1.1.1.jar
