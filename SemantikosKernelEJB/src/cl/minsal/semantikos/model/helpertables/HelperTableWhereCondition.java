@@ -20,6 +20,6 @@ public class HelperTableWhereCondition {
 
     @Override
     public String toString() {
-        return helperTableColumn.getName() + " " + conditionalOperator.toString() + " " + value;
+        return helperTableColumn.getColumnName() + " " + conditionalOperator.toString() + " " + value;
     }
 }

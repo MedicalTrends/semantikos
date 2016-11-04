@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="SqlDialectMappings">
+    <file url="file://$PROJECT_DIR$/SemantikosKernelEJB/src/cl/minsal/semantikos/kernel/TestEJB.java" dialect="PostgreSQL" />
+    <file url="file://$PROJECT_DIR$/SemantikosKernelEJB/src/cl/minsal/semantikos/kernel/daos" dialect="PostgreSQL" />
     <file url="file://$PROJECT_DIR$/resources/bdd" dialect="PostgreSQL" />
   </component>
 </project>

@@ -6,6 +6,7 @@
       <synchronize>true</synchronize>
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
       <jdbc-url>jdbc:postgresql://192.168.0.188:5432/semantikos</jdbc-url>
+      <libraries />
     </data-source>
   </component>
 </project>
