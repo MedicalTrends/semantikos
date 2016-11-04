@@ -262,6 +262,17 @@ public class ConceptsService {
         return null;
     }
 
+    // REQ-WS-030
+    @WebMethod(operationName = "incrementarContadorDescripcionConsumida")
+    @WebResult(name = "incrementarContadorDescripcionConsumida")
+    public DescriptionResponse incrementarContadorDescripcionConsumida(
+            @XmlElement(required = true)
+            @WebParam(name = "idDescripcion")
+                    String descriptionId
+    ) {
+        return null;
+    }
+
     // REQ-WS-010...021
     @WebMethod(operationName = "conceptosRelacionados")
     @WebResult(name = "conceptosRelacionados")
@@ -283,15 +294,146 @@ public class ConceptsService {
         return null;
     }
 
-    // REQ-WS-030
-    @WebMethod(operationName = "incrementarContadorDescripcionConsumida")
-    @WebResult(name = "incrementarContadorDescripcionConsumida")
-    public DescriptionResponse incrementarContadorDescripcionConsumida(
-            @XmlElement(required = true)
+    // REQ-WS-010
+    // REQ-WS-011
+    @WebMethod(operationName = "obtenerMedicamentoClinico")
+    @WebResult(name = "obtenerMedicamentoClinico")
+    public RelatedConceptsResponse obtenerMedicamentoClinico(
+            @XmlElement(required = false)
+            @WebParam(name = "idConcepto")
+                    String conceptId,
+            @XmlElement(required = false)
             @WebParam(name = "idDescripcion")
                     String descriptionId
-    ) {
-        return null;
+    ) throws IllegalInputFault {
+        return this.conceptosRelacionados(conceptId, descriptionId, "");
+    }
+
+    // REQ-WS-012
+    @WebMethod(operationName = "obtenerMedicamentoBasico")
+    @WebResult(name = "obtenerMedicamentoBasico")
+    public RelatedConceptsResponse obtenerMedicamentoBasico(
+            @XmlElement(required = false)
+            @WebParam(name = "idConcepto")
+                    String conceptId,
+            @XmlElement(required = false)
+            @WebParam(name = "idDescripcion")
+                    String descriptionId
+    ) throws IllegalInputFault {
+        return this.conceptosRelacionados(conceptId, descriptionId, "");
+    }
+
+    // REQ-WS-013
+    // REQ-WS-017
+    @WebMethod(operationName = "obtenerProductoComercial")
+    @WebResult(name = "obtenerProductoComercial")
+    public RelatedConceptsResponse obtenerProductoComercial(
+            @XmlElement(required = false)
+            @WebParam(name = "idConcepto")
+                    String conceptId,
+            @XmlElement(required = false)
+            @WebParam(name = "idDescripcion")
+                    String descriptionId
+    ) throws IllegalInputFault {
+        return this.conceptosRelacionados(conceptId, descriptionId, "");
+    }
+
+    // REQ-WS-015
+    @WebMethod(operationName = "obtenerProductoComercialConEnvase")
+    @WebResult(name = "obtenerProductoComercialConEnvase")
+    public RelatedConceptsResponse obtenerProductoComercialConEnvase(
+            @XmlElement(required = false)
+            @WebParam(name = "idConcepto")
+                    String conceptId,
+            @XmlElement(required = false)
+            @WebParam(name = "idDescripcion")
+                    String descriptionId
+    ) throws IllegalInputFault {
+        return this.conceptosRelacionados(conceptId, descriptionId, "");
+    }
+
+    // REQ-WS-014
+    @WebMethod(operationName = "obtenerMedicamentoClinicoConEnvase")
+    @WebResult(name = "obtenerMedicamentoClinicoConEnvase")
+    public RelatedConceptsResponse obtenerMedicamentoClinicoConEnvase(
+            @XmlElement(required = false)
+            @WebParam(name = "idConcepto")
+                    String conceptId,
+            @XmlElement(required = false)
+            @WebParam(name = "idDescripcion")
+                    String descriptionId
+    ) throws IllegalInputFault {
+        return this.conceptosRelacionados(conceptId, descriptionId, "");
+    }
+
+    // REQ-WS-016
+    @WebMethod(operationName = "obtenerFamiliaProducto")
+    @WebResult(name = "obtenerFamiliaProducto")
+    public RelatedConceptsResponse obtenerFamiliaProducto(
+            @XmlElement(required = false)
+            @WebParam(name = "idConcepto")
+                    String conceptId,
+            @XmlElement(required = false)
+            @WebParam(name = "idDescripcion")
+                    String descriptionId
+    ) throws IllegalInputFault {
+        return this.conceptosRelacionados(conceptId, descriptionId, "");
+    }
+
+    // REQ-WS-018
+    @WebMethod(operationName = "obtenerProductoClinicoConEnvase")
+    @WebResult(name = "obtenerProductoClinicoConEnvase")
+    public RelatedConceptsResponse obtenerProductoClinicoConEnvase(
+            @XmlElement(required = false)
+            @WebParam(name = "idConcepto")
+                    String conceptId,
+            @XmlElement(required = false)
+            @WebParam(name = "idDescripcion")
+                    String descriptionId
+    ) throws IllegalInputFault {
+        return this.conceptosRelacionados(conceptId, descriptionId, "");
+    }
+
+    // REQ-WS-019
+    @WebMethod(operationName = "obtenerSustancia")
+    @WebResult(name = "obtenerSustancia")
+    public RelatedConceptsResponse obtenerSustancia(
+            @XmlElement(required = false)
+            @WebParam(name = "idConcepto")
+                    String conceptId,
+            @XmlElement(required = false)
+            @WebParam(name = "idDescripcion")
+                    String descriptionId
+    ) throws IllegalInputFault {
+        return this.conceptosRelacionados(conceptId, descriptionId, "");
+    }
+
+    // REQ-WS-020
+    @WebMethod(operationName = "obtenerRegistroISP")
+    @WebResult(name = "obtenerRegistroISP")
+    public RelatedConceptsResponse obtenerRegistroISP(
+            @XmlElement(required = false)
+            @WebParam(name = "idConcepto")
+                    String conceptId,
+            @XmlElement(required = false)
+            @WebParam(name = "idDescripcion")
+                    String descriptionId
+    ) throws IllegalInputFault {
+        return this.conceptosRelacionados(conceptId, descriptionId, "");
+    }
+
+    // REQ-WS-021
+    @WebMethod(operationName = "obtenerBioequivalentes")
+    @WebResult(name = "obtenerBioequivalentes")
+    public RelatedConceptsResponse obtenerBioequivalentes(
+            @XmlElement(required = false)
+            @WebParam(name = "idConcepto")
+                    String conceptId,
+            @XmlElement(required = false)
+            @WebParam(name = "idDescripcion")
+                    String descriptionId
+    ) throws IllegalInputFault {
+        return this.conceptosRelacionados(conceptId, descriptionId, "");
     }
 
 }
