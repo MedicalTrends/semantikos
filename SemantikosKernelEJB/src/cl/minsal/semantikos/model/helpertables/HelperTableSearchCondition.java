@@ -25,7 +25,7 @@ public class HelperTableSearchCondition extends HelperTableWhereCondition{
             if(query.length()>0)
                 query =query + " OR ";
 
-                String subquery = column.getName()  + " " + conditionalOperator.toString() + " " + value;
+                String subquery = column.getColumnName()  + " " + conditionalOperator.toString() + " " + value;
 
                 query += "("+subquery+")";
         }

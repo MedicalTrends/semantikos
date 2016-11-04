@@ -52,7 +52,7 @@ public class HelperTableDAOImpl implements HelperTableDAO {
 
             /* Se recuperan los valores de las columnas de la tabla auxiliar */
             for (HelperTableColumn helperTableColumn : helperTable.getColumns()) {
-                String columnName = helperTableColumn.getName();
+                String columnName = helperTableColumn.getColumnName();
                 String columnValue = resultSet.getString(columnName);
 
                 record.put(columnName, columnValue);
@@ -87,7 +87,7 @@ public class HelperTableDAOImpl implements HelperTableDAO {
                 Map<String, String> record = new HashMap<>();
                 /* Se recuperan los valores de las columnas de la tabla auxiliar */
                 for (HelperTableColumn helperTableColumn : helperTable.getColumns()) {
-                    String columnName = helperTableColumn.getName();
+                    String columnName = helperTableColumn.getColumnName();
                     String columnValue = resultSet.getString(columnName);
 
                     record.put(columnName, columnValue);
@@ -129,8 +129,9 @@ public class HelperTableDAOImpl implements HelperTableDAO {
                     /**
                      * Se setea el id desde el fields para ser utilizado por el custom converter
                      */
-                    for (HelperTableRecord helperTableRecord : helperTableRecords)
+                    for (HelperTableRecord helperTableRecord : helperTableRecords) {
                         helperTableRecord.setId(new Long(helperTableRecord.getFields().get("id")));
+                    }
                 } else {
                     helperTableRecords = emptyList();
                 }
