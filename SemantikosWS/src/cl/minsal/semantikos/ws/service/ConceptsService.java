@@ -2,10 +2,7 @@ package cl.minsal.semantikos.ws.service;
 
 import cl.minsal.semantikos.kernel.components.CategoryManager;
 import cl.minsal.semantikos.kernel.components.ConceptManager;
-import cl.minsal.semantikos.kernel.components.DescriptionManager;
 import cl.minsal.semantikos.kernel.components.RefSetManager;
-import cl.minsal.semantikos.kernel.daos.CategoryDAO;
-import cl.minsal.semantikos.kernel.daos.ConceptDAO;
 import cl.minsal.semantikos.kernel.daos.DescriptionDAO;
 import cl.minsal.semantikos.model.Category;
 import cl.minsal.semantikos.model.ConceptSMTK;
@@ -22,7 +19,6 @@ import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,8 +38,8 @@ public class ConceptsService {
     @EJB
     private RefSetManager refSetManager;
 
-    // REQ-WS-028
     // REQ-WS-007
+    // REQ-WS-028
     @WebMethod(operationName = "conceptoPorIdDescripcion")
     @WebResult(name = "concepto")
     public ConceptResponse conceptoPorIdDescripcion(
@@ -263,6 +259,38 @@ public class ConceptsService {
                 || (categoryNames.isEmpty() && refSetNames.isEmpty())) {
             throw new IllegalInputFault("Debe ingresar por lo menos una Categoría o un RefSet");
         }
+        return null;
+    }
+
+    // REQ-WS-010...021
+    @WebMethod(operationName = "conceptosRelacionados")
+    @WebResult(name = "conceptosRelacionados")
+    public RelatedConceptsResponse conceptosRelacionados(
+            @XmlElement(required = false)
+            @WebParam(name = "idConcepto")
+                String conceptId,
+            @XmlElement(required = false)
+            @WebParam(name = "idDescripcion")
+                String descriptionId,
+            @XmlElement(required = true)
+            @WebParam(name = "categoriaRelacion")
+                    String relatedCategoryName
+    ) throws IllegalInputFault {
+        if ( (conceptId == null || "".equals(conceptId) )
+                && (descriptionId == null || "".equals(descriptionId)) ) {
+            throw new IllegalInputFault("Debe ingresar un idConcepto o idDescripcion");
+        }
+        return null;
+    }
+
+    // REQ-WS-030
+    @WebMethod(operationName = "incrementarContadorDescripcionConsumida")
+    @WebResult(name = "incrementarContadorDescripcionConsumida")
+    public DescriptionResponse incrementarContadorDescripcionConsumida(
+            @XmlElement(required = true)
+            @WebParam(name = "idDescripcion")
+                    String descriptionId
+    ) {
         return null;
     }
 

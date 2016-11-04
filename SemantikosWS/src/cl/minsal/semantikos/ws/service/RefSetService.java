@@ -41,6 +41,7 @@ public class RefSetService {
         return res;
     }
 
+    // REQ-WS-022
     // REQ-WS-023
     @WebMethod(operationName = "conceptosPorRefSet")
     @WebResult(name = "conceptosPorRefSet")
@@ -96,7 +97,7 @@ public class RefSetService {
     @WebMethod(operationName = "refSetsPorIdDescripcion")
     @WebResult(name = "refSetsPorIdDescripcion")
     public RefSetsByDescriptionIdResponse refSetsPorIdDescripcion(
-            @XmlElement(required = false)
+            @XmlElement(required = true)
             @WebParam(name = "idDescripcion")
                     List<String> descriptionId
     ) {
