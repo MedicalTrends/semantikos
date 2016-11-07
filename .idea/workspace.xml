@@ -11,8 +11,6 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SemantikosKernelEJB/target/SemantikosKernelEJB-1.0.0/cl/minsal/semantikos/model/helpertables/JSONHelperTableRecord.class" afterPath="$PROJECT_DIR$/SemantikosKernelEJB/target/SemantikosKernelEJB-1.0.0/cl/minsal/semantikos/model/helpertables/JSONHelperTableRecord.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SemantikosKernelEJB/target/SemantikosKernelEJB-1.0.0/cl/minsal/semantikos/model/helpertables/JSONHelperTableRecords.class" afterPath="$PROJECT_DIR$/SemantikosKernelEJB/target/SemantikosKernelEJB-1.0.0/cl/minsal/semantikos/model/helpertables/JSONHelperTableRecords.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SemantikosKernelEJB/src/cl/minsal/semantikos/kernel/daos/AuthDAOImpl.java" afterPath="$PROJECT_DIR$/SemantikosKernelEJB/src/cl/minsal/semantikos/kernel/daos/AuthDAOImpl.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/bdd/operaciones usuarios.sql" afterPath="$PROJECT_DIR$/resources/bdd/operaciones usuarios.sql" />
     </list>
     <ignored path="semantikos.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -795,7 +793,7 @@
       <updated>1478285731412</updated>
       <workItem from="1478285734410" duration="1243000" />
       <workItem from="1478287862307" duration="3176000" />
-      <workItem from="1478521718867" duration="2109000" />
+      <workItem from="1478521718867" duration="2255000" />
     </task>
     <task id="LOCAL-00001" summary="Commit cambio de branch">
       <created>1478286919567</created>
@@ -811,11 +809,18 @@
       <option name="project" value="LOCAL" />
       <updated>1478292294729</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Commit FIX">
+      <created>1478524023256</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1478524023256</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="6528000" />
+    <option name="totallyTimeSpent" value="6674000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-1" y="28" width="1602" height="839" extended-state="6" />
@@ -870,7 +875,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Commit cambio de branch" />
-    <option name="LAST_COMMIT_MESSAGE" value="Commit cambio de branch" />
+    <MESSAGE value="Commit FIX" />
+    <option name="LAST_COMMIT_MESSAGE" value="Commit FIX" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
