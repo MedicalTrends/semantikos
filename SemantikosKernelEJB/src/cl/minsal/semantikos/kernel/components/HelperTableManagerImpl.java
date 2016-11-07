@@ -4,6 +4,7 @@ import cl.minsal.semantikos.kernel.daos.HelperTableDAO;
 import cl.minsal.semantikos.model.helpertables.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -13,7 +14,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import static cl.minsal.semantikos.model.helpertables.HelperTable.SYSTEM_COLUMN_VALIDITY_UNTIL;
+
 
 /**
  * Este manager es responsable de proveer acceso a las distintas tablas auxiliares.
@@ -50,10 +51,7 @@ public class HelperTableManagerImpl implements HelperTableManager {
 
         logger.debug("Se solicitan los registros de la tabla " + helperTable);
 
-        /* A las columnas solicitadas se deben agregar las columnas de sistema: ID, DESCRIPTION, CREATION_DATE, VALID_UNTIL, y USER */
-        List<String> allColumns = joinColumnsWithSystemColumns(columnNames);
-
-        List<HelperTableRecord> allRecords = helperTableDAO.getAllRecords(helperTable, allColumns);
+        List<HelperTableRecord> allRecords = helperTableDAO.getAllRecords(helperTable);
         Collections.sort(allRecords);
         logger.debug("Se recuperan " + allRecords.size() + " registros de la tabla " + helperTable);
 
@@ -64,55 +62,19 @@ public class HelperTableManagerImpl implements HelperTableManager {
     public List<HelperTableRecord> getValidRecords(@NotNull HelperTable helperTable, List<String> columnNames) {
         logger.debug("Se solicitan los registros vigentes de la tabla " + helperTable);
 
-        /* A las columnas solicitadas se deben agregar las columnas de sistema: ID, DESCRIPTION, CREATION_DATE, VALID_UNTIL, y USER */
-        List<String> allColumns = joinColumnsWithSystemColumns(columnNames);
-
-        List<HelperTableWhereCondition> isValid = new ArrayList<>();
-        isValid.add(new HelperTableValidityCondition(SYSTEM_COLUMN_VALIDITY_UNTIL, new java.util.Date()));
-        List<HelperTableRecord> allRecords = helperTableDAO.getRecords(helperTable, allColumns, isValid);
-
-        logger.debug("Se recuperan " + allRecords.size() + " registros vigentes de la tabla " + helperTable);
-
-        return allRecords;
+        throw new NotImplementedException();
     }
 
     @Override
     public List<HelperTableRecord> searchValidRecords(@NotNull HelperTable helperTable, List<String> columnNames, String query) {
         logger.debug("Se solicitan los registros vigentes de la tabla " + helperTable);
 
-        /* A las columnas solicitadas se deben agregar las columnas de sistema: ID, DESCRIPTION, CREATION_DATE, VALID_UNTIL, y USER */
-        List<String> allColumns = joinColumnsWithSystemColumns(columnNames);
+        throw new NotImplementedException();
 
-        List<HelperTableWhereCondition> isValid = new ArrayList<>();
-        isValid.add(new HelperTableValidityCondition(SYSTEM_COLUMN_VALIDITY_UNTIL, new java.util.Date()));
-        List<HelperTableRecord> allRecords = helperTableDAO.getRecords(helperTable, allColumns, isValid);
 
-        List<HelperTableColumn> searchableColumns = new ArrayList<HelperTableColumn>();
-
-        for ( HelperTableColumn column : helperTable.getColumns()) {
-
-            if(column.isSearchable()){
-                searchableColumns.add(column);
-            }
-
-        }
-        isValid.add(new HelperTableSearchCondition(searchableColumns,query));
-
-        logger.debug("Se recuperan " + allRecords.size() + " registros vigentes de la tabla " + helperTable);
-
-        return allRecords;
     }
 
-    private List<String> joinColumnsWithSystemColumns(List<String> columnNames ) {
 
-        Collection<HelperTableColumn> systemColumns = HelperTable.getSystemColumns();
-        List<String> allColumns = new ArrayList<>();
-        allColumns.addAll(columnNames);
-        for (HelperTableColumn systemColumn : systemColumns) {
-            allColumns.add(systemColumn.getColumnName());
-        }
-        return allColumns;
-    }
 
     @Override
     public HelperTableRecord getRecord( long recordId) {

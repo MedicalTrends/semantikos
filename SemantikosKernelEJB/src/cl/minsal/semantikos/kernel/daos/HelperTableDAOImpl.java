@@ -11,6 +11,7 @@ import javax.ejb.EJB;
 import javax.ejb.EJBException;
 import javax.ejb.Stateless;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.sql.*;
 import java.util.*;
 
@@ -76,7 +77,7 @@ public class HelperTableDAOImpl implements HelperTableDAO {
              CallableStatement preparedStatement = connection.prepareCall(selectRecord)) {
 
             /* Se prepara y realiza la consulta */
-            preparedStatement.setString(1, helperTable.getTablaName());
+            preparedStatement.setString(1, helperTable.getName());
             preparedStatement.setString(2, pattern);
             ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -116,7 +117,7 @@ public class HelperTableDAOImpl implements HelperTableDAO {
             Array columnsNamesArray = connection.createArrayOf("text", columnsNames);
 
             /* Se prepara y realiza la consulta */
-            call.setString(1, helperTable.getTablaName());
+            call.setString(1, helperTable.getName());
             call.setArray(2, columnsNamesArray);
             call.execute();
 
@@ -128,8 +129,9 @@ public class HelperTableDAOImpl implements HelperTableDAO {
                     /**
                      * Se setea el id desde el fields para ser utilizado por el custom converter
                      */
-                    for (HelperTableRecord helperTableRecord : helperTableRecords)
+                    for (HelperTableRecord helperTableRecord : helperTableRecords) {
                         helperTableRecord.setId(new Long(helperTableRecord.getFields().get("id")));
+                    }
                 } else {
                     helperTableRecords = emptyList();
                 }
@@ -172,7 +174,7 @@ public class HelperTableDAOImpl implements HelperTableDAO {
 
 
             /* Se prepara y realiza la consulta */
-            call.setString(1, helperTable.getTablaName());
+            call.setString(1, helperTable.getName());
             call.setArray(2, columnsNamesArray);
             call.setArray(3, whereConditionsArray);
             call.execute();
@@ -201,13 +203,8 @@ public class HelperTableDAOImpl implements HelperTableDAO {
     @Override
     public List<HelperTableRecord> getAllRecords(HelperTable helperTable) {
 
-        List<String> showableColumnsNames = helperTable.getShowableColumnsNames();
-        Collection<HelperTableColumn> systemColumns = HelperTable.getSystemColumns();
-        for (HelperTableColumn systemColumn : systemColumns) {
-            showableColumnsNames.add(systemColumn.getColumnName());
-        }
 
-        return this.getAllRecords(helperTable, showableColumnsNames);
+        return this.getAllRecords(helperTable);
     }
 
     @Override
