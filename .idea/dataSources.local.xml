@@ -4,5 +4,7 @@
     <data-source name="pg Semantikos MT" uuid="01f87ae6-2631-4aa0-b29e-efc062530da6">
       <secret-storage>memory</secret-storage>
     </data-source>
+    <data-source name="Oracle" uuid="1815898b-c35a-4f5b-93fd-76f0334345d8" />
+    <data-source name="Oracle - @192.168.0.237" uuid="998cdb54-f196-4a3f-97fb-3806d33ca774" />
   </component>
 </project>
