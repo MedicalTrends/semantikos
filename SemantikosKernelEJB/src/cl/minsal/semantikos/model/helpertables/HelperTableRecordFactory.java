@@ -93,7 +93,7 @@ public class HelperTableRecordFactory {
         HelperTableJSON jsonHelperTable = mapper.readValue(jsonExpression, HelperTableJSON.class);
 
         // Se crean las columnas por defecto que debe especificar esta definición de helperTable
-        Collection<HelperTableColumn> columns = Arrays.asList(new HelperTableColumn[]{HelperTable.SYSTEM_COLUMN_ID, HelperTable.SYSTEM_COLUMN_DESCRIPTION});;
+        Collection<HelperTableColumn> columns = Arrays.asList(new HelperTableColumn[]{new HelperTableColumn("id", false, true, true),new HelperTableColumn("description", false, true, true)});;
 
         return new HelperTable(jsonHelperTable.getTableId(), jsonHelperTable.getName(), jsonHelperTable.getDescription(), jsonHelperTable.getTablaName(), columns);
     }

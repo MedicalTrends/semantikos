@@ -1,38 +1,38 @@
 package cl.minsal.semantikos.kernel.util;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.naming.NamingException;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 
 /**
- * Created by des01c7 on 29-06-16.
+ * @author Francisco Mendez on 29-06-16.
  */
 public class ConnectionBD {
-    private String driver = "org.postgresql.Driver";
-    private String ruta = "jdbc:postgresql://192.168.0.221:5432/semantikos";
-    private String user = "postgres";
-    private String password = "postgres";
+
+    static private final Logger logger = LoggerFactory.getLogger(ConnectionBD.class);
+
     private Connection connection;
 
-    public ConnectionBD() {
-        try{
-            Class.forName(driver);
-            connection = (Connection) DriverManager.getConnection(ruta, user, password);
 
-        } catch (SQLException | ClassNotFoundException e) {
-            System.out.println(e.toString());
+    public ConnectionBD() {
+        javax.naming.InitialContext ctx;
+        javax.sql.DataSource ds;
+
+        try {
+            ctx = new javax.naming.InitialContext();
+            ds = (javax.sql.DataSource) ctx.lookup("java:jboss/PostgresDS");
+            connection = ds.getConnection();
+        } catch (NamingException e) {
+            logger.error("Error al buscar Datasource en Jboss", e);
+        } catch (SQLException e) {
+            logger.error("Error al conectarse a BD", e);
         }
     }
 
     public Connection getConnection() {
         return connection;
-    }
-
-    public void closeConnection() {
-        try {
-            connection.close();
-        } catch (SQLException e) {
-            System.out.println(e.toString());
-        }
     }
 }

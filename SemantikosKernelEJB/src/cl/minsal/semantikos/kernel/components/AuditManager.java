@@ -3,7 +3,7 @@ package cl.minsal.semantikos.kernel.components;
 import cl.minsal.semantikos.model.*;
 import cl.minsal.semantikos.model.audit.AuditActionType;
 import cl.minsal.semantikos.model.audit.ConceptAuditAction;
-import cl.minsal.semantikos.model.relationships.CrossMap;
+import cl.minsal.semantikos.model.crossmaps.Crossmap;
 import cl.minsal.semantikos.model.relationships.Relationship;
 
 import javax.ejb.Local;
@@ -80,8 +80,7 @@ public interface AuditManager {
     public void recordAttributeChange(ConceptSMTK conceptSMTK, Relationship originalRelationship, User user);
 
     /**
-     * <p>Este método es responsable de registrar en el historial las creación de una relación.</p>
-     * <p>Las relaciones se dividen en dos tipos: atributos y definitorias (SnomedCT).</p>
+     * Este método es responsable de registrar en el historial las creación de una relación.
      *
      * @param relationship La relación que se ha persistido.
      * @param user         El usuario responsable de la acción.
@@ -99,18 +98,18 @@ public interface AuditManager {
     /**
      * Este método es responsable de registrar en el historial la creación de un CrossMap.
      *
-     * @param crossMap El CrossMap que se desea crear.
+     * @param crossmap El CrossMap que se desea crear.
      * @param user     El usuario que elimina la relación.
      */
-    public void recordCrossMapCreation(CrossMap crossMap, User user);
+    public void recordCrossMapCreation(Crossmap crossmap, User user);
 
     /**
      * Este método es responsable de registrar en el historial la eliminación de un CrossMap.
      *
-     * @param crossMap El CrossMap que se desea eliminar.
+     * @param crossmap El CrossMap que se desea eliminar.
      * @param user     El usuario que elimina la relación.
      */
-    public void recordCrossMapRemoval(CrossMap crossMap, User user);
+    public void recordCrossMapRemoval(Crossmap crossmap, User user);
 
     /**
      * Este método es responsable de registrar en el historial la eliminación de un CrossMap.

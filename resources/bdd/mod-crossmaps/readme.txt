@@ -1,0 +1,1 @@
+Estos scripts deben ejecutarse al hacer merge desde la rama al trunk.

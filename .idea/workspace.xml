@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0c46f1c8-03f8-4a1c-871b-0daa94dc1f10" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="semantikos.iws" />
@@ -30,14 +31,39 @@
     <favorites_list name="semantikos" />
   </component>
   <component name="FileEditorManager">
-    <leaf />
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file leaf-file-name="operaciones usuarios.sql" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/resources/bdd/operaciones usuarios.sql">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="584">
+              <caret line="371" column="6" selection-start-line="371" selection-start-column="6" selection-end-line="371" selection-end-column="6" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="mod-crossmaps" />
+      </map>
+    </option>
   </component>
   <component name="GradleLocalSettings">
     <option name="externalProjectsViewState">
       <projects_view />
+    </option>
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/SemantikosKernelEJB/src/cl/minsal/semantikos/model/helpertables/HelperTableRecordFactory.java" />
+        <option value="$PROJECT_DIR$/resources/bdd/operaciones usuarios.sql" />
+        <option value="$PROJECT_DIR$/SemantikosKernelEJB/src/cl/minsal/semantikos/kernel/daos/AuthDAOImpl.java" />
+      </list>
     </option>
   </component>
   <component name="JsBuildToolGruntFileManager" detection-done="true" sorting="DEFINITION_ORDER" />
@@ -51,6 +77,11 @@
       <MavenGeneralSettings>
         <option name="mavenHome" value="Bundled (Maven 3)" />
       </MavenGeneralSettings>
+    </option>
+    <option name="importingSettings">
+      <MavenImportingSettings>
+        <option name="importAutomatically" value="true" />
+      </MavenImportingSettings>
     </option>
   </component>
   <component name="MavenProjectNavigator">
@@ -139,19 +170,72 @@
         </subPane>
       </pane>
       <pane id="Scope" />
-      <pane id="PackagesPane" />
       <pane id="Scratches" />
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="aspect.path.notification.shown" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth0" value="137" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder0" value="0" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth1" value="151" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder1" value="1" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth2" value="158" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder2" value="2" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth3" value="1061" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder3" value="3" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth0" value="137" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder0" value="0" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth1" value="151" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder1" value="1" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth2" value="158" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder2" value="2" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth3" value="1061" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder3" value="3" />
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="JBoss Server.Jboss">
     <configuration default="true" type="#org.jetbrains.idea.devkit.run.PluginConfigurationType" factoryName="Plugin">
       <module name="" />
       <option name="VM_PARAMETERS" value="-Xmx512m -Xms256m -XX:MaxPermSize=250m -ea" />
       <option name="PROGRAM_PARAMETERS" />
+      <method />
+    </configuration>
+    <configuration default="true" type="AndroidRunConfigurationType" factoryName="Android Application">
+      <module name="" />
+      <option name="DEPLOY" value="true" />
+      <option name="ARTIFACT_NAME" value="" />
+      <option name="PM_INSTALL_OPTIONS" value="" />
+      <option name="ACTIVITY_EXTRA_FLAGS" value="" />
+      <option name="MODE" value="default_activity" />
+      <option name="TARGET_SELECTION_MODE" value="SHOW_DIALOG" />
+      <option name="PREFERRED_AVD" value="" />
+      <option name="CLEAR_LOGCAT" value="false" />
+      <option name="SHOW_LOGCAT_AUTOMATICALLY" value="true" />
+      <option name="SKIP_NOOP_APK_INSTALLATIONS" value="true" />
+      <option name="FORCE_STOP_RUNNING_APP" value="true" />
+      <option name="USE_LAST_SELECTED_DEVICE" value="false" />
+      <option name="PREFERRED_AVD" value="" />
+      <option name="DEEP_LINK" value="" />
+      <option name="ACTIVITY_CLASS" value="" />
+      <method />
+    </configuration>
+    <configuration default="true" type="AndroidTestRunConfigurationType" factoryName="Android Tests">
+      <module name="" />
+      <option name="TESTING_TYPE" value="0" />
+      <option name="INSTRUMENTATION_RUNNER_CLASS" value="" />
+      <option name="METHOD_NAME" value="" />
+      <option name="CLASS_NAME" value="" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="EXTRA_OPTIONS" value="" />
+      <option name="TARGET_SELECTION_MODE" value="SHOW_DIALOG" />
+      <option name="PREFERRED_AVD" value="" />
+      <option name="CLEAR_LOGCAT" value="false" />
+      <option name="SHOW_LOGCAT_AUTOMATICALLY" value="true" />
+      <option name="SKIP_NOOP_APK_INSTALLATIONS" value="true" />
+      <option name="FORCE_STOP_RUNNING_APP" value="true" />
+      <option name="USE_LAST_SELECTED_DEVICE" value="false" />
+      <option name="PREFERRED_AVD" value="" />
       <method />
     </configuration>
     <configuration default="true" type="Applet" factoryName="Applet">
@@ -177,6 +261,172 @@
       <envs />
       <method />
     </configuration>
+    <configuration default="true" type="ArquillianJUnit" factoryName="">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <module name="" />
+      <option name="arquillianRunConfiguration">
+        <value>
+          <option name="containerStateName" value="" />
+        </value>
+      </option>
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="METHOD_NAME" />
+      <option name="TEST_OBJECT" value="class" />
+      <option name="VM_PARAMETERS" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="singleModule" />
+      </option>
+      <envs />
+      <patterns />
+      <method />
+    </configuration>
+    <configuration default="true" type="ArquillianTestNG" factoryName="">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <module name="" />
+      <option name="arquillianRunConfiguration">
+        <value>
+          <option name="containerStateName" value="" />
+        </value>
+      </option>
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="SUITE_NAME" />
+      <option name="PACKAGE_NAME" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="METHOD_NAME" />
+      <option name="GROUP_NAME" />
+      <option name="TEST_OBJECT" value="CLASS" />
+      <option name="VM_PARAMETERS" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" />
+      <option name="OUTPUT_DIRECTORY" />
+      <option name="ANNOTATION_TYPE" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="singleModule" />
+      </option>
+      <option name="USE_DEFAULT_REPORTERS" value="false" />
+      <option name="PROPERTIES_FILE" />
+      <envs />
+      <properties />
+      <listeners />
+      <method />
+    </configuration>
+    <configuration default="true" type="CucumberJavaRunConfigurationType" factoryName="Cucumber java">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <option name="myFilePath" />
+      <option name="GLUE" />
+      <option name="myNameFilter" />
+      <option name="myGeneratedName" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="WORKING_DIRECTORY" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="ENABLE_SWING_INSPECTOR" value="false" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <module name="" />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="FlashRunConfigurationType" factoryName="Flash App">
+      <option name="BCName" value="" />
+      <option name="IOSSimulatorSdkPath" value="" />
+      <option name="adlOptions" value="" />
+      <option name="airProgramParameters" value="" />
+      <option name="appDescriptorForEmulator" value="Android" />
+      <option name="debugTransport" value="USB" />
+      <option name="debuggerSdkRaw" value="BC SDK" />
+      <option name="emulator" value="NexusOne" />
+      <option name="emulatorAdlOptions" value="" />
+      <option name="fastPackaging" value="true" />
+      <option name="fullScreenHeight" value="0" />
+      <option name="fullScreenWidth" value="0" />
+      <option name="launchUrl" value="false" />
+      <option name="launcherParameters">
+        <LauncherParameters>
+          <option name="browser" value="a7bb68e0-33c0-4d6f-a81a-aac1fdb870c8" />
+          <option name="launcherType" value="OSDefault" />
+          <option name="newPlayerInstance" value="false" />
+          <option name="playerPath" value="/usr/bin/flashplayerdebugger" />
+        </LauncherParameters>
+      </option>
+      <option name="mobileRunTarget" value="Emulator" />
+      <option name="moduleName" value="" />
+      <option name="overriddenMainClass" value="" />
+      <option name="overriddenOutputFileName" value="" />
+      <option name="overrideMainClass" value="false" />
+      <option name="runTrusted" value="true" />
+      <option name="screenDpi" value="0" />
+      <option name="screenHeight" value="0" />
+      <option name="screenWidth" value="0" />
+      <option name="url" value="http://" />
+      <option name="usbDebugPort" value="7936" />
+      <method />
+    </configuration>
+    <configuration default="true" type="FlexUnitRunConfigurationType" factoryName="FlexUnit" appDescriptorForEmulator="Android" class_name="" emulatorAdlOptions="" method_name="" package_name="" scope="Class">
+      <option name="BCName" value="" />
+      <option name="launcherParameters">
+        <LauncherParameters>
+          <option name="browser" value="a7bb68e0-33c0-4d6f-a81a-aac1fdb870c8" />
+          <option name="launcherType" value="OSDefault" />
+          <option name="newPlayerInstance" value="false" />
+          <option name="playerPath" value="/usr/bin/flashplayerdebugger" />
+        </LauncherParameters>
+      </option>
+      <option name="moduleName" value="" />
+      <option name="trusted" value="true" />
+      <method />
+    </configuration>
+    <configuration default="true" type="GradleRunConfiguration" factoryName="Gradle">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list />
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <method />
+    </configuration>
+    <configuration default="true" type="GrailsRunConfigurationType" factoryName="Grails">
+      <setting name="vmparams" value="" />
+      <setting name="cmdLine" value="run-app" />
+      <setting name="passParentEnv" value="true" />
+      <setting name="launchBrowser" value="true" />
+      <setting name="depsClasspath" value="false" />
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <method />
+    </configuration>
+    <configuration default="true" type="JBossConfiguration" factoryName="Local" ALTERNATIVE_JRE_ENABLED="false">
+      <deployment />
+      <server-settings>
+        <option name="SERVER" value="" />
+        <option name="BINDING_SET_NAME" value="" />
+        <option name="DOMAIN" value="false" />
+        <option name="SERVER_GROUP" value="" />
+        <option name="USERNAME" value="" />
+        <option name="PASSWORD" value="" />
+      </server-settings>
+      <predefined_log_file id="JBoss" enabled="true" />
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <method />
+    </configuration>
     <configuration default="true" type="JUnit" factoryName="JUnit">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
       <module name="" />
@@ -198,12 +448,110 @@
       <patterns />
       <method />
     </configuration>
+    <configuration default="true" type="JUnitTestDiscovery" factoryName="JUnit Test Discovery" changeList="All">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <module name="" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="METHOD_NAME" />
+      <option name="TEST_OBJECT" value="class" />
+      <option name="VM_PARAMETERS" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="singleModule" />
+      </option>
+      <envs />
+      <patterns />
+      <method />
+    </configuration>
+    <configuration default="true" type="JarApplication" factoryName="JAR Application">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="Java Scratch" factoryName="Java Scratch">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <option name="SCRATCH_FILE_ID" value="0" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="WORKING_DIRECTORY" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="ENABLE_SWING_INSPECTOR" value="false" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <module name="" />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug">
+      <method />
+    </configuration>
+    <configuration default="true" type="JetRunConfigurationType" factoryName="Kotlin">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="WORKING_DIRECTORY" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <module name="SemantikosBrowser" />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType" factoryName="Kotlin script">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <option name="filePath" />
+      <option name="vmParameters" />
+      <option name="alternativeJrePath" />
+      <option name="programParameters" />
+      <option name="passParentEnvs" value="true" />
+      <option name="workingDirectory" />
+      <option name="isAlternativeJrePathEnabled" value="false" />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="MavenRunConfiguration" factoryName="Maven">
+      <MavenSettings>
+        <option name="myGeneralSettings" />
+        <option name="myRunnerSettings" />
+        <option name="myRunnerParameters">
+          <MavenRunnerParameters>
+            <option name="profiles">
+              <set />
+            </option>
+            <option name="goals">
+              <list />
+            </option>
+            <option name="profilesMap">
+              <map />
+            </option>
+            <option name="resolveToWorkspace" value="false" />
+            <option name="workingDirPath" value="" />
+          </MavenRunnerParameters>
+        </option>
+      </MavenSettings>
+      <method />
+    </configuration>
     <configuration default="true" type="Remote" factoryName="Remote">
       <option name="USE_SOCKET_TRANSPORT" value="true" />
       <option name="SERVER_MODE" value="false" />
       <option name="SHMEM_ADDRESS" value="javadebug" />
       <option name="HOST" value="localhost" />
       <option name="PORT" value="5005" />
+      <method />
+    </configuration>
+    <configuration default="true" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <module name="" />
+      <envs />
       <method />
     </configuration>
     <configuration default="true" type="TestNG" factoryName="TestNG">
@@ -234,6 +582,135 @@
       <listeners />
       <method />
     </configuration>
+    <configuration default="true" type="TestNGTestDiscovery" factoryName="TestNG Test Discovery" changeList="All">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <module name="" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="SUITE_NAME" />
+      <option name="PACKAGE_NAME" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="METHOD_NAME" />
+      <option name="GROUP_NAME" />
+      <option name="TEST_OBJECT" value="CLASS" />
+      <option name="VM_PARAMETERS" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" />
+      <option name="OUTPUT_DIRECTORY" />
+      <option name="ANNOTATION_TYPE" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="singleModule" />
+      </option>
+      <option name="USE_DEFAULT_REPORTERS" value="false" />
+      <option name="PROPERTIES_FILE" />
+      <envs />
+      <properties />
+      <listeners />
+      <method />
+    </configuration>
+    <configuration default="true" type="js.build_tools.gulp" factoryName="Gulp.js">
+      <node-interpreter>project</node-interpreter>
+      <node-options />
+      <gulpfile />
+      <tasks />
+      <arguments />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="js.build_tools.npm" factoryName="npm">
+      <command value="run-script" />
+      <scripts />
+      <node-interpreter value="project" />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="osgi.bnd.run" factoryName="Run Launcher">
+      <method />
+    </configuration>
+    <configuration default="true" type="osgi.bnd.run" factoryName="Test Launcher (JUnit)">
+      <method />
+    </configuration>
+    <configuration default="false" name="Jboss" type="JBossConfiguration" factoryName="Local" APPLICATION_SERVER_NAME="JBoss 7.5" ALTERNATIVE_JRE_ENABLED="false">
+      <option name="UPDATING_POLICY" value="restart-server" />
+      <deployment>
+        <artifact name="SemantikosCentralEAR:ear">
+          <settings />
+        </artifact>
+      </deployment>
+      <server-settings>
+        <option name="SERVER" />
+        <option name="BINDING_SET_NAME" value="" />
+        <option name="DOMAIN" value="false" />
+        <option name="SERVER_GROUP" value="main-server-group" />
+        <option name="USERNAME" value="" />
+        <option name="PASSWORD" value="" />
+      </server-settings>
+      <predefined_log_file id="JBoss" enabled="true" />
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <RunnerSettings RunnerId="Debug">
+        <option name="DEBUG_PORT" value="60457" />
+      </RunnerSettings>
+      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Cover">
+        <option name="USE_ENV_VARIABLES" value="true" />
+        <STARTUP>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </STARTUP>
+        <SHUTDOWN>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </SHUTDOWN>
+      </ConfigurationWrapper>
+      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Debug">
+        <option name="USE_ENV_VARIABLES" value="true" />
+        <STARTUP>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </STARTUP>
+        <SHUTDOWN>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </SHUTDOWN>
+        <EnvironmentVariables>
+          <option name="NAME" value="JAVA_OPTS" />
+          <option name="VALUE" value="-Dprogram.name=standalone.bat -agentlib:jdwp=transport=dt_socket,address=127.0.0.1:8080-Dprogram.name=standalone.bat -agentlib:jdwp=transport=dt_socket,address=127.0.0.1:8080,suspend=y,server=n -Xms1G -Xmx2G -XX:MaxPermSize=512M,suspend=y,server=n -Xms1G -Xmx2G -XX:MaxPermSize=512M" />
+          <option name="IS_PREDEFINED" value="false" />
+        </EnvironmentVariables>
+      </ConfigurationWrapper>
+      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Run">
+        <option name="USE_ENV_VARIABLES" value="true" />
+        <STARTUP>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </STARTUP>
+        <SHUTDOWN>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </SHUTDOWN>
+      </ConfigurationWrapper>
+      <method>
+        <option name="BuildArtifacts" enabled="true">
+          <artifact name="SemantikosCentralEAR:ear" />
+        </option>
+      </method>
+    </configuration>
+    <list size="1">
+      <item index="0" class="java.lang.String" itemvalue="JBoss Server.Jboss" />
+    </list>
   </component>
   <component name="ShelveChangesManager" show_recycled="false">
     <option name="remove_strategy" value="false" />
@@ -242,47 +719,65 @@
     <configuration />
   </component>
   <component name="TaskManager">
-    <task id="LOCAL-00001" summary="commit fix">
-      <created>1478532041696</created>
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="0c46f1c8-03f8-4a1c-871b-0daa94dc1f10" name="Default" comment="" />
+      <created>1478285731412</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1478285731412</updated>
+      <workItem from="1478285734410" duration="1243000" />
+      <workItem from="1478287862307" duration="3176000" />
+      <workItem from="1478521718867" duration="2255000" />
+      <workItem from="1478528720812" duration="2460000" />
+    </task>
+    <task id="LOCAL-00001" summary="Commit cambio de branch">
+      <created>1478286919567</created>
       <option name="number" value="00001" />
       <option name="presentableId" value="LOCAL-00001" />
       <option name="project" value="LOCAL" />
-      <updated>1478532041696</updated>
+      <updated>1478286919567</updated>
     </task>
-    <task id="LOCAL-00002" summary="commit fix">
-      <created>1478532186811</created>
+    <task id="LOCAL-00002" summary="Commit cambio de branch">
+      <created>1478292294729</created>
       <option name="number" value="00002" />
       <option name="presentableId" value="LOCAL-00002" />
       <option name="project" value="LOCAL" />
-      <updated>1478532186811</updated>
+      <updated>1478292294729</updated>
     </task>
-    <task active="true" id="Default" summary="Default task">
-      <changelist id="0c46f1c8-03f8-4a1c-871b-0daa94dc1f10" name="Default" comment="" />
-      <created>1478532351835</created>
-      <option name="number" value="Default" />
-      <option name="presentableId" value="Default" />
-      <updated>1478532351835</updated>
-      <workItem from="1478532354887" duration="176000" />
-    </task>
-    <task id="LOCAL-00003" summary="commit fix">
-      <created>1478532444252</created>
+    <task id="LOCAL-00003" summary="Commit FIX">
+      <created>1478524023256</created>
       <option name="number" value="00003" />
       <option name="presentableId" value="LOCAL-00003" />
       <option name="project" value="LOCAL" />
-      <updated>1478532444252</updated>
+      <updated>1478524023256</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Merge remote-tracking branch 'remotes/origin/master' into mod-crossmaps&#10;&#10;Conflicts:&#10;&#9;.idea/dataSources.ids&#10;&#9;.idea/dataSources.local.xml&#10;&#9;.idea/workspace.xml&#10;&#9;SemantikosBrowser/target/SemantikosBrowser.war&#10;&#9;SemantikosBrowser/target/SemantikosBrowser/META-INF/MANIFEST.MF&#10;&#9;SemantikosBrowser/target/SemantikosBrowser/WEB-INF/classes/cl/minsal/semantikos/version.properties&#10;&#9;SemantikosBrowser/target/classes/cl/minsal/semantikos/version.properties&#10;&#9;SemantikosBrowser/target/maven-archiver/pom.properties&#10;&#9;SemantikosCentralEAR/target/SemantikosCentralEAR-1.0.0.ear&#10;&#9;SemantikosCentralEAR/target/SemantikosCentralEAR-1.0.0/META-INF/MANIFEST.MF&#10;&#9;SemantikosCentralEAR/target/SemantikosCentralEAR-1.0.0/SemantikosBrowser-1.0.0.war&#10;&#9;SemantikosCentralEAR/target/SemantikosCentralEAR-1.0.0/SemantikosKernelEJB-1.0.0.jar&#10;&#9;SemantikosCentralEAR/target/SemantikosCentralEAR-1.0.0/SemantikosWeb-1.0.0.war&#10;&#9;SemantikosCentralEAR/target/maven-archiver/pom.properties&#10;&#9;SemantikosKernelEJB/target/SemantikosKernelEJB-1.0.0.jar&#10;&#9;SemantikosKernelEJB/target/SemantikosKernelEJB-1.0.0/META-INF/MANIFEST.MF&#10;&#9;SemantikosKernelEJB/target/SemantikosKernelEJB-1.0.0/cl/minsal/semantikos/kernel/auth/JbossSecurityDomainAuthenticationBean.class&#10;&#9;SemantikosKernelEJB/target/SemantikosKernelEJB-1.0.0/cl/minsal/semantikos/kernel/auth/UserManager.class&#10;&#9;SemantikosKernelEJB/target/SemantikosKernelEJB-1.0.0/cl/minsal/semantikos/kernel/components/AuditManager.class&#10;&#9;SemantikosKernelEJB/target/SemantikosKernelEJB-1.0.0/cl/minsal/semantikos/kernel/components/AuditManagerImpl.class&#10;&#9;SemantikosKernelEJB/target/SemantikosKernelEJB-1.0.0/cl/minsal/semantikos/kernel/components/HelperTableManagerImpl.class&#10;&#9;SemantikosKernelEJB/target/SemantikosKernelEJB-1.0.0/cl/minsal/semantikos/kernel/daos/AuthDAO$UserExistsException.class&#10;&#9;SemantikosKernelEJB/target/SemantikosKernelEJB-1.0.0/cl/minsal/semantikos/kernel/daos/AuthDAO.class&#10;&#9;SemantikosKernelEJB/target/SemantikosKernelEJB-1.0.0/cl/minsal/semantikos/kernel/daos/ConceptQueryDAOImpl.class&#10;&#9;SemantikosKernelEJB/target/SemantikosKernelEJB-1.0.0/cl/minsal/semantikos/kernel/daos/DescriptionDAOImpl.class&#10;&#9;SemantikosKernelEJB/target/SemantikosKernelEJB-1.0.0/cl/minsal/semantikos/kernel/daos/HelperTableDAOImpl.class&#10;&#9;SemantikosKernelEJB/target/SemantikosKernelEJB-1.0.0/cl/minsal/semantikos/kernel/util/ConnectionBD.class&#10;&#9;SemantikosKernelEJB/target/SemantikosKernelEJB-1.0.0/cl/minsal/semantikos/model/audit/AuditableEntityType.class&#10;&#9;SemantikosKernelEJB/target/SemantikosKernelEJB-1.0.0/cl/minsal/semantikos/model/audit/ConceptAuditActionDTO.class&#10;&#9;SemantikosKernelEJB/target/SemantikosKernelEJB-1.0.0/cl/minsal/semantikos/model/audit/ConceptAuditActionFactory.class&#10;&#9;SemantikosKernelEJB/target/SemantikosKernelEJB-1.0.0/cl/minsal/semantikos/model/browser/ConceptQuery.class&#10;&#9;SemantikosKernelEJB/target/SemantikosKernelEJB-1.0.0/cl/minsal/semantikos/model/businessrules/ConceptEditionBusinessRuleContainer.class&#10;&#9;SemantikosKernelEJB/target/SemantikosKernelEJB-1.0.0/cl/minsal/semantikos/model/businessrules/CrossMapCreationBR.class&#10;&#9;SemantikosKernelEJB/target/SemantikosKernelEJB-1.0.0/cl/minsal/semantikos/model/businessrules/CrossMapRemovalBR.class&#10;&#9;SemantikosKernelEJB/target/SemantikosKernelEJB-1.0.0/cl/minsal/semantikos/model/helpertables/HelperTableRecord.class&#10;&#9;SemantikosKernelEJB/target/SemantikosKernelEJB-1.0.0/cl/minsal/semantikos/model/helpertables/HelperTableRecordFactory.class&#10;&#9;SemantikosKernelEJB/target/SemantikosKernelEJB-1.0.0/cl/minsal/semantikos/model/helpertables/HelperTableSearchCondition.class&#10;&#9;SemantikosKernelEJB/target/SemantikosKernelEJB-1.0.0/cl/minsal/semantikos/model/relationships/Relationship.class&#10;&#9;SemantikosKernelEJB/target/SemantikosKernelEJB-1.0.0/cl/minsal/semantikos/model/relationships/RelationshipDTO.class&#10;&#9;SemantikosKernelEJB/target/SemantikosKernelEJB-1.0.0/cl/minsal/semantikos/model/relationships/RelationshipFactory.class&#10;&#9;SemantikosKernelEJB/target/classes/cl/minsal/semantikos/kernel/auth/JbossSecurityDomainAuthenticationBean.class&#10;&#9;SemantikosKernelEJB/target/classes/cl/minsal/semantikos/kernel/auth/UserManager.class&#10;&#9;SemantikosKernelEJB/target/classes/cl/minsal/semantikos/kernel/components/AuditManager.class&#10;&#9;SemantikosKernelEJB/target/classes/cl/minsal/semantikos/kernel/components/AuditManagerImpl.class&#10;&#9;SemantikosKernelEJB/target/classes/cl/minsal/semantikos/kernel/components/HelperTableManagerImpl.class&#10;&#9;SemantikosKernelEJB/target/classes/cl/minsal/semantikos/kernel/daos/AuthDAO$UserExistsException.class&#10;&#9;SemantikosKernelEJB/target/classes/cl/minsal/semantikos/kernel/daos/AuthDAO.class&#10;&#9;SemantikosKernelEJB/target/classes/cl/minsal/semantikos/kernel/daos/ConceptQueryDAOImpl.class&#10;&#9;SemantikosKernelEJB/target/classes/cl/minsal/semantikos/kernel/daos/DescriptionDAOImpl.class&#10;&#9;SemantikosKernelEJB/target/classes/cl/minsal/semantikos/kernel/daos/HelperTableDAOImpl.class&#10;&#9;SemantikosKernelEJB/target/classes/cl/minsal/semantikos/kernel/util/ConnectionBD.class&#10;&#9;SemantikosKernelEJB/target/classes/cl/minsal/semantikos/model/audit/AuditableEntityType.class&#10;&#9;SemantikosKernelEJB/target/classes/cl/minsal/semantikos/model/audit/ConceptAuditActionDTO.class&#10;&#9;SemantikosKernelEJB/target/classes/cl/minsal/semantikos/model/audit/ConceptAuditActionFactory.class&#10;&#9;SemantikosKernelEJB/target/classes/cl/minsal/semantikos/model/browser/ConceptQuery.class&#10;&#9;SemantikosKernelEJB/target/classes/cl/minsal/semantikos/model/businessrules/ConceptEditionBusinessRuleContainer.class&#10;&#9;SemantikosKernelEJB/target/classes/cl/minsal/semantikos/model/businessrules/CrossMapCreationBR.class&#10;&#9;SemantikosKernelEJB/target/classes/cl/minsal/semantikos/model/businessrules/CrossMapRemovalBR.class&#10;&#9;SemantikosKernelEJB/target/classes/cl/minsal/semantikos/model/helpertables/HelperTableRecord.class&#10;&#9;SemantikosKernelEJB/target/classes/cl/minsal/semantikos/model/helpertables/HelperTableRecordFactory.class&#10;&#9;SemantikosKernelEJB/target/classes/cl/minsal/semantikos/model/helpertables/HelperTableSearchCondition.class&#10;&#9;SemantikosKernelEJB/target/classes/cl/minsal/semantikos/model/relationships/Relationship.class&#10;&#9;SemantikosKernelEJB/target/classes/cl/minsal/semantikos/model/relationships/RelationshipDTO.class&#10;&#9;SemantikosKernelEJB/target/classes/cl/minsal/semantikos/model/relationships/RelationshipFactory.class&#10;&#9;SemantikosKernelEJB/target/maven-archiver/pom.properties&#10;&#9;SemantikosWS/target/SemantikosWS.war&#10;&#9;SemantikosWS/target/maven-archiver/pom.properties&#10;&#9;SemantikosWSEJB/target/SemantikosWSEJB-1.0.0.jar&#10;&#9;SemantikosWSEJB/target/maven-archiver/pom.properties&#10;&#9;SemantikosWeb/target/SemantikosWeb.war&#10;&#9;SemantikosWeb/target/SemantikosWeb/META-INF/MANIFEST.MF&#10;&#9;SemantikosWeb/target/SemantikosWeb/WEB-INF/classes/cl/minsal/semantikos/designer_modeler/browser/ConceptBrowserBean$1.class&#10;&#9;SemantikosWeb/target/SemantikosWeb/WEB-INF/classes/cl/minsal/semantikos/designer_modeler/browser/ConceptBrowserBean.class&#10;&#9;SemantikosWeb/target/SemantikosWeb/WEB-INF/classes/cl/minsal/semantikos/version.properties&#10;&#9;SemantikosWeb/target/SemantikosWeb/resources/smtk/browserFilter.xhtml&#10;&#9;SemantikosWeb/target/SemantikosWeb/views/concept/conceptEdit.xhtml&#10;&#9;SemantikosWeb/target/classes/cl/minsal/semantikos/designer_modeler/browser/ConceptBrowserBean$1.class&#10;&#9;SemantikosWeb/target/classes/cl/minsal/semantikos/designer_modeler/browser/ConceptBrowserBean.class&#10;&#9;SemantikosWeb/target/classes/cl/minsal/semantikos/version.properties&#10;&#9;SemantikosWeb/target/maven-archiver/pom.properties&#10;">
+      <created>1478528821801</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1478528821801</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Merge remote-tracking branch 'remotes/origin/master' into mod-crossmaps&#10;&#10;Conflicts:&#10;&#9;.idea/dataSources.ids&#10;&#9;.idea/dataSources.local.xml&#10;&#9;.idea/workspace.xml&#10;&#9;SemantikosBrowser/target/SemantikosBrowser.war&#10;&#9;SemantikosBrowser/target/SemantikosBrowser/META-INF/MANIFEST.MF&#10;&#9;SemantikosBrowser/target/SemantikosBrowser/WEB-INF/classes/cl/minsal/semantikos/version.properties&#10;&#9;SemantikosBrowser/target/classes/cl/minsal/semantikos/version.properties&#10;&#9;SemantikosBrowser/target/maven-archiver/pom.properties&#10;&#9;SemantikosCentralEAR/target/SemantikosCentralEAR-1.0.0.ear&#10;&#9;SemantikosCentralEAR/target/SemantikosCentralEAR-1.0.0/META-INF/MANIFEST.MF&#10;&#9;SemantikosCentralEAR/target/SemantikosCentralEAR-1.0.0/SemantikosBrowser-1.0.0.war&#10;&#9;SemantikosCentralEAR/target/SemantikosCentralEAR-1.0.0/SemantikosKernelEJB-1.0.0.jar&#10;&#9;SemantikosCentralEAR/target/SemantikosCentralEAR-1.0.0/SemantikosWeb-1.0.0.war&#10;&#9;SemantikosCentralEAR/target/maven-archiver/pom.properties&#10;&#9;SemantikosKernelEJB/target/SemantikosKernelEJB-1.0.0.jar&#10;&#9;SemantikosKernelEJB/target/SemantikosKernelEJB-1.0.0/META-INF/MANIFEST.MF&#10;&#9;SemantikosKernelEJB/target/SemantikosKernelEJB-1.0.0/cl/minsal/semantikos/kernel/auth/JbossSecurityDomainAuthenticationBean.class&#10;&#9;SemantikosKernelEJB/target/SemantikosKernelEJB-1.0.0/cl/minsal/semantikos/kernel/auth/UserManager.class&#10;&#9;SemantikosKernelEJB/target/SemantikosKernelEJB-1.0.0/cl/minsal/semantikos/kernel/components/AuditManager.class&#10;&#9;SemantikosKernelEJB/target/SemantikosKernelEJB-1.0.0/cl/minsal/semantikos/kernel/components/AuditManagerImpl.class&#10;&#9;SemantikosKernelEJB/target/SemantikosKernelEJB-1.0.0/cl/minsal/semantikos/kernel/components/HelperTableManagerImpl.class&#10;&#9;SemantikosKernelEJB/target/SemantikosKernelEJB-1.0.0/cl/minsal/semantikos/kernel/daos/AuthDAO$UserExistsException.class&#10;&#9;SemantikosKernelEJB/target/SemantikosKernelEJB-1.0.0/cl/minsal/semantikos/kernel/daos/AuthDAO.class&#10;&#9;SemantikosKernelEJB/target/SemantikosKernelEJB-1.0.0/cl/minsal/semantikos/kernel/daos/ConceptQueryDAOImpl.class&#10;&#9;SemantikosKernelEJB/target/SemantikosKernelEJB-1.0.0/cl/minsal/semantikos/kernel/daos/DescriptionDAOImpl.class&#10;&#9;SemantikosKernelEJB/target/SemantikosKernelEJB-1.0.0/cl/minsal/semantikos/kernel/daos/HelperTableDAOImpl.class&#10;&#9;SemantikosKernelEJB/target/SemantikosKernelEJB-1.0.0/cl/minsal/semantikos/kernel/util/ConnectionBD.class&#10;&#9;SemantikosKernelEJB/target/SemantikosKernelEJB-1.0.0/cl/minsal/semantikos/model/audit/AuditableEntityType.class&#10;&#9;SemantikosKernelEJB/target/SemantikosKernelEJB-1.0.0/cl/minsal/semantikos/model/audit/ConceptAuditActionDTO.class&#10;&#9;SemantikosKernelEJB/target/SemantikosKernelEJB-1.0.0/cl/minsal/semantikos/model/audit/ConceptAuditActionFactory.class&#10;&#9;SemantikosKernelEJB/target/SemantikosKernelEJB-1.0.0/cl/minsal/semantikos/model/browser/ConceptQuery.class&#10;&#9;SemantikosKernelEJB/target/SemantikosKernelEJB-1.0.0/cl/minsal/semantikos/model/businessrules/ConceptEditionBusinessRuleContainer.class&#10;&#9;SemantikosKernelEJB/target/SemantikosKernelEJB-1.0.0/cl/minsal/semantikos/model/businessrules/CrossMapCreationBR.class&#10;&#9;SemantikosKernelEJB/target/SemantikosKernelEJB-1.0.0/cl/minsal/semantikos/model/businessrules/CrossMapRemovalBR.class&#10;&#9;SemantikosKernelEJB/target/SemantikosKernelEJB-1.0.0/cl/minsal/semantikos/model/helpertables/HelperTableRecord.class&#10;&#9;SemantikosKernelEJB/target/SemantikosKernelEJB-1.0.0/cl/minsal/semantikos/model/helpertables/HelperTableRecordFactory.class&#10;&#9;SemantikosKernelEJB/target/SemantikosKernelEJB-1.0.0/cl/minsal/semantikos/model/helpertables/HelperTableSearchCondition.class&#10;&#9;SemantikosKernelEJB/target/SemantikosKernelEJB-1.0.0/cl/minsal/semantikos/model/relationships/Relationship.class&#10;&#9;SemantikosKernelEJB/target/SemantikosKernelEJB-1.0.0/cl/minsal/semantikos/model/relationships/RelationshipDTO.class&#10;&#9;SemantikosKernelEJB/target/SemantikosKernelEJB-1.0.0/cl/minsal/semantikos/model/relationships/RelationshipFactory.class&#10;&#9;SemantikosKernelEJB/target/classes/cl/minsal/semantikos/kernel/auth/JbossSecurityDomainAuthenticationBean.class&#10;&#9;SemantikosKernelEJB/target/classes/cl/minsal/semantikos/kernel/auth/UserManager.class&#10;&#9;SemantikosKernelEJB/target/classes/cl/minsal/semantikos/kernel/components/AuditManager.class&#10;&#9;SemantikosKernelEJB/target/classes/cl/minsal/semantikos/kernel/components/AuditManagerImpl.class&#10;&#9;SemantikosKernelEJB/target/classes/cl/minsal/semantikos/kernel/components/HelperTableManagerImpl.class&#10;&#9;SemantikosKernelEJB/target/classes/cl/minsal/semantikos/kernel/daos/AuthDAO$UserExistsException.class&#10;&#9;SemantikosKernelEJB/target/classes/cl/minsal/semantikos/kernel/daos/AuthDAO.class&#10;&#9;SemantikosKernelEJB/target/classes/cl/minsal/semantikos/kernel/daos/ConceptQueryDAOImpl.class&#10;&#9;SemantikosKernelEJB/target/classes/cl/minsal/semantikos/kernel/daos/DescriptionDAOImpl.class&#10;&#9;SemantikosKernelEJB/target/classes/cl/minsal/semantikos/kernel/daos/HelperTableDAOImpl.class&#10;&#9;SemantikosKernelEJB/target/classes/cl/minsal/semantikos/kernel/util/ConnectionBD.class&#10;&#9;SemantikosKernelEJB/target/classes/cl/minsal/semantikos/model/audit/AuditableEntityType.class&#10;&#9;SemantikosKernelEJB/target/classes/cl/minsal/semantikos/model/audit/ConceptAuditActionDTO.class&#10;&#9;SemantikosKernelEJB/target/classes/cl/minsal/semantikos/model/audit/ConceptAuditActionFactory.class&#10;&#9;SemantikosKernelEJB/target/classes/cl/minsal/semantikos/model/browser/ConceptQuery.class&#10;&#9;SemantikosKernelEJB/target/classes/cl/minsal/semantikos/model/businessrules/ConceptEditionBusinessRuleContainer.class&#10;&#9;SemantikosKernelEJB/target/classes/cl/minsal/semantikos/model/businessrules/CrossMapCreationBR.class&#10;&#9;SemantikosKernelEJB/target/classes/cl/minsal/semantikos/model/businessrules/CrossMapRemovalBR.class&#10;&#9;SemantikosKernelEJB/target/classes/cl/minsal/semantikos/model/helpertables/HelperTableRecord.class&#10;&#9;SemantikosKernelEJB/target/classes/cl/minsal/semantikos/model/helpertables/HelperTableRecordFactory.class&#10;&#9;SemantikosKernelEJB/target/classes/cl/minsal/semantikos/model/helpertables/HelperTableSearchCondition.class&#10;&#9;SemantikosKernelEJB/target/classes/cl/minsal/semantikos/model/relationships/Relationship.class&#10;&#9;SemantikosKernelEJB/target/classes/cl/minsal/semantikos/model/relationships/RelationshipDTO.class&#10;&#9;SemantikosKernelEJB/target/classes/cl/minsal/semantikos/model/relationships/RelationshipFactory.class&#10;&#9;SemantikosKernelEJB/target/maven-archiver/pom.properties&#10;&#9;SemantikosWS/target/SemantikosWS.war&#10;&#9;SemantikosWS/target/maven-archiver/pom.properties&#10;&#9;SemantikosWSEJB/target/SemantikosWSEJB-1.0.0.jar&#10;&#9;SemantikosWSEJB/target/maven-archiver/pom.properties&#10;&#9;SemantikosWeb/target/SemantikosWeb.war&#10;&#9;SemantikosWeb/target/SemantikosWeb/META-INF/MANIFEST.MF&#10;&#9;SemantikosWeb/target/SemantikosWeb/WEB-INF/classes/cl/minsal/semantikos/designer_modeler/browser/ConceptBrowserBean$1.class&#10;&#9;SemantikosWeb/target/SemantikosWeb/WEB-INF/classes/cl/minsal/semantikos/designer_modeler/browser/ConceptBrowserBean.class&#10;&#9;SemantikosWeb/target/SemantikosWeb/WEB-INF/classes/cl/minsal/semantikos/version.properties&#10;&#9;SemantikosWeb/target/SemantikosWeb/resources/smtk/browserFilter.xhtml&#10;&#9;SemantikosWeb/target/SemantikosWeb/views/concept/conceptEdit.xhtml&#10;&#9;SemantikosWeb/target/classes/cl/minsal/semantikos/designer_modeler/browser/ConceptBrowserBean$1.class&#10;&#9;SemantikosWeb/target/classes/cl/minsal/semantikos/designer_modeler/browser/ConceptBrowserBean.class&#10;&#9;SemantikosWeb/target/classes/cl/minsal/semantikos/version.properties&#10;&#9;SemantikosWeb/target/maven-archiver/pom.properties&#10;">
+      <created>1478530582043</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1478530582043</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="500000" />
+    <option name="totallyTimeSpent" value="9134000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-1" y="28" width="1602" height="839" extended-state="6" />
     <editor active="false" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.28879312" sideWeight="0.5077419" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25" sideWeight="0.50258064" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2341954" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1948387" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="CDI" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -292,14 +787,12 @@
       <window_info id="JSF" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.47126436" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Java Enterprise" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.35344827" sideWeight="0.49741936" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.43390805" sideWeight="0.49741936" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.28879312" sideWeight="0.49225807" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25" sideWeight="0.49741936" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.28879312" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Persistence" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24967742" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Bean Validation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
@@ -310,10 +803,11 @@
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2341954" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.47126436" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32902297" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.43390805" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
@@ -329,8 +823,10 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="commit fix" />
-    <option name="LAST_COMMIT_MESSAGE" value="commit fix" />
+    <MESSAGE value="Commit cambio de branch" />
+    <MESSAGE value="Commit FIX" />
+    <MESSAGE value="Merge remote-tracking branch 'remotes/origin/master' into mod-crossmaps&#10;&#10;Conflicts:&#10;&#9;.idea/dataSources.ids&#10;&#9;.idea/dataSources.local.xml&#10;&#9;.idea/workspace.xml&#10;&#9;SemantikosBrowser/target/SemantikosBrowser.war&#10;&#9;SemantikosBrowser/target/SemantikosBrowser/META-INF/MANIFEST.MF&#10;&#9;SemantikosBrowser/target/SemantikosBrowser/WEB-INF/classes/cl/minsal/semantikos/version.properties&#10;&#9;SemantikosBrowser/target/classes/cl/minsal/semantikos/version.properties&#10;&#9;SemantikosBrowser/target/maven-archiver/pom.properties&#10;&#9;SemantikosCentralEAR/target/SemantikosCentralEAR-1.0.0.ear&#10;&#9;SemantikosCentralEAR/target/SemantikosCentralEAR-1.0.0/META-INF/MANIFEST.MF&#10;&#9;SemantikosCentralEAR/target/SemantikosCentralEAR-1.0.0/SemantikosBrowser-1.0.0.war&#10;&#9;SemantikosCentralEAR/target/SemantikosCentralEAR-1.0.0/SemantikosKernelEJB-1.0.0.jar&#10;&#9;SemantikosCentralEAR/target/SemantikosCentralEAR-1.0.0/SemantikosWeb-1.0.0.war&#10;&#9;SemantikosCentralEAR/target/maven-archiver/pom.properties&#10;&#9;SemantikosKernelEJB/target/SemantikosKernelEJB-1.0.0.jar&#10;&#9;SemantikosKernelEJB/target/SemantikosKernelEJB-1.0.0/META-INF/MANIFEST.MF&#10;&#9;SemantikosKernelEJB/target/SemantikosKernelEJB-1.0.0/cl/minsal/semantikos/kernel/auth/JbossSecurityDomainAuthenticationBean.class&#10;&#9;SemantikosKernelEJB/target/SemantikosKernelEJB-1.0.0/cl/minsal/semantikos/kernel/auth/UserManager.class&#10;&#9;SemantikosKernelEJB/target/SemantikosKernelEJB-1.0.0/cl/minsal/semantikos/kernel/components/AuditManager.class&#10;&#9;SemantikosKernelEJB/target/SemantikosKernelEJB-1.0.0/cl/minsal/semantikos/kernel/components/AuditManagerImpl.class&#10;&#9;SemantikosKernelEJB/target/SemantikosKernelEJB-1.0.0/cl/minsal/semantikos/kernel/components/HelperTableManagerImpl.class&#10;&#9;SemantikosKernelEJB/target/SemantikosKernelEJB-1.0.0/cl/minsal/semantikos/kernel/daos/AuthDAO$UserExistsException.class&#10;&#9;SemantikosKernelEJB/target/SemantikosKernelEJB-1.0.0/cl/minsal/semantikos/kernel/daos/AuthDAO.class&#10;&#9;SemantikosKernelEJB/target/SemantikosKernelEJB-1.0.0/cl/minsal/semantikos/kernel/daos/ConceptQueryDAOImpl.class&#10;&#9;SemantikosKernelEJB/target/SemantikosKernelEJB-1.0.0/cl/minsal/semantikos/kernel/daos/DescriptionDAOImpl.class&#10;&#9;SemantikosKernelEJB/target/SemantikosKernelEJB-1.0.0/cl/minsal/semantikos/kernel/daos/HelperTableDAOImpl.class&#10;&#9;SemantikosKernelEJB/target/SemantikosKernelEJB-1.0.0/cl/minsal/semantikos/kernel/util/ConnectionBD.class&#10;&#9;SemantikosKernelEJB/target/SemantikosKernelEJB-1.0.0/cl/minsal/semantikos/model/audit/AuditableEntityType.class&#10;&#9;SemantikosKernelEJB/target/SemantikosKernelEJB-1.0.0/cl/minsal/semantikos/model/audit/ConceptAuditActionDTO.class&#10;&#9;SemantikosKernelEJB/target/SemantikosKernelEJB-1.0.0/cl/minsal/semantikos/model/audit/ConceptAuditActionFactory.class&#10;&#9;SemantikosKernelEJB/target/SemantikosKernelEJB-1.0.0/cl/minsal/semantikos/model/browser/ConceptQuery.class&#10;&#9;SemantikosKernelEJB/target/SemantikosKernelEJB-1.0.0/cl/minsal/semantikos/model/businessrules/ConceptEditionBusinessRuleContainer.class&#10;&#9;SemantikosKernelEJB/target/SemantikosKernelEJB-1.0.0/cl/minsal/semantikos/model/businessrules/CrossMapCreationBR.class&#10;&#9;SemantikosKernelEJB/target/SemantikosKernelEJB-1.0.0/cl/minsal/semantikos/model/businessrules/CrossMapRemovalBR.class&#10;&#9;SemantikosKernelEJB/target/SemantikosKernelEJB-1.0.0/cl/minsal/semantikos/model/helpertables/HelperTableRecord.class&#10;&#9;SemantikosKernelEJB/target/SemantikosKernelEJB-1.0.0/cl/minsal/semantikos/model/helpertables/HelperTableRecordFactory.class&#10;&#9;SemantikosKernelEJB/target/SemantikosKernelEJB-1.0.0/cl/minsal/semantikos/model/helpertables/HelperTableSearchCondition.class&#10;&#9;SemantikosKernelEJB/target/SemantikosKernelEJB-1.0.0/cl/minsal/semantikos/model/relationships/Relationship.class&#10;&#9;SemantikosKernelEJB/target/SemantikosKernelEJB-1.0.0/cl/minsal/semantikos/model/relationships/RelationshipDTO.class&#10;&#9;SemantikosKernelEJB/target/SemantikosKernelEJB-1.0.0/cl/minsal/semantikos/model/relationships/RelationshipFactory.class&#10;&#9;SemantikosKernelEJB/target/classes/cl/minsal/semantikos/kernel/auth/JbossSecurityDomainAuthenticationBean.class&#10;&#9;SemantikosKernelEJB/target/classes/cl/minsal/semantikos/kernel/auth/UserManager.class&#10;&#9;SemantikosKernelEJB/target/classes/cl/minsal/semantikos/kernel/components/AuditManager.class&#10;&#9;SemantikosKernelEJB/target/classes/cl/minsal/semantikos/kernel/components/AuditManagerImpl.class&#10;&#9;SemantikosKernelEJB/target/classes/cl/minsal/semantikos/kernel/components/HelperTableManagerImpl.class&#10;&#9;SemantikosKernelEJB/target/classes/cl/minsal/semantikos/kernel/daos/AuthDAO$UserExistsException.class&#10;&#9;SemantikosKernelEJB/target/classes/cl/minsal/semantikos/kernel/daos/AuthDAO.class&#10;&#9;SemantikosKernelEJB/target/classes/cl/minsal/semantikos/kernel/daos/ConceptQueryDAOImpl.class&#10;&#9;SemantikosKernelEJB/target/classes/cl/minsal/semantikos/kernel/daos/DescriptionDAOImpl.class&#10;&#9;SemantikosKernelEJB/target/classes/cl/minsal/semantikos/kernel/daos/HelperTableDAOImpl.class&#10;&#9;SemantikosKernelEJB/target/classes/cl/minsal/semantikos/kernel/util/ConnectionBD.class&#10;&#9;SemantikosKernelEJB/target/classes/cl/minsal/semantikos/model/audit/AuditableEntityType.class&#10;&#9;SemantikosKernelEJB/target/classes/cl/minsal/semantikos/model/audit/ConceptAuditActionDTO.class&#10;&#9;SemantikosKernelEJB/target/classes/cl/minsal/semantikos/model/audit/ConceptAuditActionFactory.class&#10;&#9;SemantikosKernelEJB/target/classes/cl/minsal/semantikos/model/browser/ConceptQuery.class&#10;&#9;SemantikosKernelEJB/target/classes/cl/minsal/semantikos/model/businessrules/ConceptEditionBusinessRuleContainer.class&#10;&#9;SemantikosKernelEJB/target/classes/cl/minsal/semantikos/model/businessrules/CrossMapCreationBR.class&#10;&#9;SemantikosKernelEJB/target/classes/cl/minsal/semantikos/model/businessrules/CrossMapRemovalBR.class&#10;&#9;SemantikosKernelEJB/target/classes/cl/minsal/semantikos/model/helpertables/HelperTableRecord.class&#10;&#9;SemantikosKernelEJB/target/classes/cl/minsal/semantikos/model/helpertables/HelperTableRecordFactory.class&#10;&#9;SemantikosKernelEJB/target/classes/cl/minsal/semantikos/model/helpertables/HelperTableSearchCondition.class&#10;&#9;SemantikosKernelEJB/target/classes/cl/minsal/semantikos/model/relationships/Relationship.class&#10;&#9;SemantikosKernelEJB/target/classes/cl/minsal/semantikos/model/relationships/RelationshipDTO.class&#10;&#9;SemantikosKernelEJB/target/classes/cl/minsal/semantikos/model/relationships/RelationshipFactory.class&#10;&#9;SemantikosKernelEJB/target/maven-archiver/pom.properties&#10;&#9;SemantikosWS/target/SemantikosWS.war&#10;&#9;SemantikosWS/target/maven-archiver/pom.properties&#10;&#9;SemantikosWSEJB/target/SemantikosWSEJB-1.0.0.jar&#10;&#9;SemantikosWSEJB/target/maven-archiver/pom.properties&#10;&#9;SemantikosWeb/target/SemantikosWeb.war&#10;&#9;SemantikosWeb/target/SemantikosWeb/META-INF/MANIFEST.MF&#10;&#9;SemantikosWeb/target/SemantikosWeb/WEB-INF/classes/cl/minsal/semantikos/designer_modeler/browser/ConceptBrowserBean$1.class&#10;&#9;SemantikosWeb/target/SemantikosWeb/WEB-INF/classes/cl/minsal/semantikos/designer_modeler/browser/ConceptBrowserBean.class&#10;&#9;SemantikosWeb/target/SemantikosWeb/WEB-INF/classes/cl/minsal/semantikos/version.properties&#10;&#9;SemantikosWeb/target/SemantikosWeb/resources/smtk/browserFilter.xhtml&#10;&#9;SemantikosWeb/target/SemantikosWeb/views/concept/conceptEdit.xhtml&#10;&#9;SemantikosWeb/target/classes/cl/minsal/semantikos/designer_modeler/browser/ConceptBrowserBean$1.class&#10;&#9;SemantikosWeb/target/classes/cl/minsal/semantikos/designer_modeler/browser/ConceptBrowserBean.class&#10;&#9;SemantikosWeb/target/classes/cl/minsal/semantikos/version.properties&#10;&#9;SemantikosWeb/target/maven-archiver/pom.properties&#10;" />
+    <option name="LAST_COMMIT_MESSAGE" value="Merge remote-tracking branch 'remotes/origin/master' into mod-crossmaps&#10;&#10;Conflicts:&#10;&#9;.idea/dataSources.ids&#10;&#9;.idea/dataSources.local.xml&#10;&#9;.idea/workspace.xml&#10;&#9;SemantikosBrowser/target/SemantikosBrowser.war&#10;&#9;SemantikosBrowser/target/SemantikosBrowser/META-INF/MANIFEST.MF&#10;&#9;SemantikosBrowser/target/SemantikosBrowser/WEB-INF/classes/cl/minsal/semantikos/version.properties&#10;&#9;SemantikosBrowser/target/classes/cl/minsal/semantikos/version.properties&#10;&#9;SemantikosBrowser/target/maven-archiver/pom.properties&#10;&#9;SemantikosCentralEAR/target/SemantikosCentralEAR-1.0.0.ear&#10;&#9;SemantikosCentralEAR/target/SemantikosCentralEAR-1.0.0/META-INF/MANIFEST.MF&#10;&#9;SemantikosCentralEAR/target/SemantikosCentralEAR-1.0.0/SemantikosBrowser-1.0.0.war&#10;&#9;SemantikosCentralEAR/target/SemantikosCentralEAR-1.0.0/SemantikosKernelEJB-1.0.0.jar&#10;&#9;SemantikosCentralEAR/target/SemantikosCentralEAR-1.0.0/SemantikosWeb-1.0.0.war&#10;&#9;SemantikosCentralEAR/target/maven-archiver/pom.properties&#10;&#9;SemantikosKernelEJB/target/SemantikosKernelEJB-1.0.0.jar&#10;&#9;SemantikosKernelEJB/target/SemantikosKernelEJB-1.0.0/META-INF/MANIFEST.MF&#10;&#9;SemantikosKernelEJB/target/SemantikosKernelEJB-1.0.0/cl/minsal/semantikos/kernel/auth/JbossSecurityDomainAuthenticationBean.class&#10;&#9;SemantikosKernelEJB/target/SemantikosKernelEJB-1.0.0/cl/minsal/semantikos/kernel/auth/UserManager.class&#10;&#9;SemantikosKernelEJB/target/SemantikosKernelEJB-1.0.0/cl/minsal/semantikos/kernel/components/AuditManager.class&#10;&#9;SemantikosKernelEJB/target/SemantikosKernelEJB-1.0.0/cl/minsal/semantikos/kernel/components/AuditManagerImpl.class&#10;&#9;SemantikosKernelEJB/target/SemantikosKernelEJB-1.0.0/cl/minsal/semantikos/kernel/components/HelperTableManagerImpl.class&#10;&#9;SemantikosKernelEJB/target/SemantikosKernelEJB-1.0.0/cl/minsal/semantikos/kernel/daos/AuthDAO$UserExistsException.class&#10;&#9;SemantikosKernelEJB/target/SemantikosKernelEJB-1.0.0/cl/minsal/semantikos/kernel/daos/AuthDAO.class&#10;&#9;SemantikosKernelEJB/target/SemantikosKernelEJB-1.0.0/cl/minsal/semantikos/kernel/daos/ConceptQueryDAOImpl.class&#10;&#9;SemantikosKernelEJB/target/SemantikosKernelEJB-1.0.0/cl/minsal/semantikos/kernel/daos/DescriptionDAOImpl.class&#10;&#9;SemantikosKernelEJB/target/SemantikosKernelEJB-1.0.0/cl/minsal/semantikos/kernel/daos/HelperTableDAOImpl.class&#10;&#9;SemantikosKernelEJB/target/SemantikosKernelEJB-1.0.0/cl/minsal/semantikos/kernel/util/ConnectionBD.class&#10;&#9;SemantikosKernelEJB/target/SemantikosKernelEJB-1.0.0/cl/minsal/semantikos/model/audit/AuditableEntityType.class&#10;&#9;SemantikosKernelEJB/target/SemantikosKernelEJB-1.0.0/cl/minsal/semantikos/model/audit/ConceptAuditActionDTO.class&#10;&#9;SemantikosKernelEJB/target/SemantikosKernelEJB-1.0.0/cl/minsal/semantikos/model/audit/ConceptAuditActionFactory.class&#10;&#9;SemantikosKernelEJB/target/SemantikosKernelEJB-1.0.0/cl/minsal/semantikos/model/browser/ConceptQuery.class&#10;&#9;SemantikosKernelEJB/target/SemantikosKernelEJB-1.0.0/cl/minsal/semantikos/model/businessrules/ConceptEditionBusinessRuleContainer.class&#10;&#9;SemantikosKernelEJB/target/SemantikosKernelEJB-1.0.0/cl/minsal/semantikos/model/businessrules/CrossMapCreationBR.class&#10;&#9;SemantikosKernelEJB/target/SemantikosKernelEJB-1.0.0/cl/minsal/semantikos/model/businessrules/CrossMapRemovalBR.class&#10;&#9;SemantikosKernelEJB/target/SemantikosKernelEJB-1.0.0/cl/minsal/semantikos/model/helpertables/HelperTableRecord.class&#10;&#9;SemantikosKernelEJB/target/SemantikosKernelEJB-1.0.0/cl/minsal/semantikos/model/helpertables/HelperTableRecordFactory.class&#10;&#9;SemantikosKernelEJB/target/SemantikosKernelEJB-1.0.0/cl/minsal/semantikos/model/helpertables/HelperTableSearchCondition.class&#10;&#9;SemantikosKernelEJB/target/SemantikosKernelEJB-1.0.0/cl/minsal/semantikos/model/relationships/Relationship.class&#10;&#9;SemantikosKernelEJB/target/SemantikosKernelEJB-1.0.0/cl/minsal/semantikos/model/relationships/RelationshipDTO.class&#10;&#9;SemantikosKernelEJB/target/SemantikosKernelEJB-1.0.0/cl/minsal/semantikos/model/relationships/RelationshipFactory.class&#10;&#9;SemantikosKernelEJB/target/classes/cl/minsal/semantikos/kernel/auth/JbossSecurityDomainAuthenticationBean.class&#10;&#9;SemantikosKernelEJB/target/classes/cl/minsal/semantikos/kernel/auth/UserManager.class&#10;&#9;SemantikosKernelEJB/target/classes/cl/minsal/semantikos/kernel/components/AuditManager.class&#10;&#9;SemantikosKernelEJB/target/classes/cl/minsal/semantikos/kernel/components/AuditManagerImpl.class&#10;&#9;SemantikosKernelEJB/target/classes/cl/minsal/semantikos/kernel/components/HelperTableManagerImpl.class&#10;&#9;SemantikosKernelEJB/target/classes/cl/minsal/semantikos/kernel/daos/AuthDAO$UserExistsException.class&#10;&#9;SemantikosKernelEJB/target/classes/cl/minsal/semantikos/kernel/daos/AuthDAO.class&#10;&#9;SemantikosKernelEJB/target/classes/cl/minsal/semantikos/kernel/daos/ConceptQueryDAOImpl.class&#10;&#9;SemantikosKernelEJB/target/classes/cl/minsal/semantikos/kernel/daos/DescriptionDAOImpl.class&#10;&#9;SemantikosKernelEJB/target/classes/cl/minsal/semantikos/kernel/daos/HelperTableDAOImpl.class&#10;&#9;SemantikosKernelEJB/target/classes/cl/minsal/semantikos/kernel/util/ConnectionBD.class&#10;&#9;SemantikosKernelEJB/target/classes/cl/minsal/semantikos/model/audit/AuditableEntityType.class&#10;&#9;SemantikosKernelEJB/target/classes/cl/minsal/semantikos/model/audit/ConceptAuditActionDTO.class&#10;&#9;SemantikosKernelEJB/target/classes/cl/minsal/semantikos/model/audit/ConceptAuditActionFactory.class&#10;&#9;SemantikosKernelEJB/target/classes/cl/minsal/semantikos/model/browser/ConceptQuery.class&#10;&#9;SemantikosKernelEJB/target/classes/cl/minsal/semantikos/model/businessrules/ConceptEditionBusinessRuleContainer.class&#10;&#9;SemantikosKernelEJB/target/classes/cl/minsal/semantikos/model/businessrules/CrossMapCreationBR.class&#10;&#9;SemantikosKernelEJB/target/classes/cl/minsal/semantikos/model/businessrules/CrossMapRemovalBR.class&#10;&#9;SemantikosKernelEJB/target/classes/cl/minsal/semantikos/model/helpertables/HelperTableRecord.class&#10;&#9;SemantikosKernelEJB/target/classes/cl/minsal/semantikos/model/helpertables/HelperTableRecordFactory.class&#10;&#9;SemantikosKernelEJB/target/classes/cl/minsal/semantikos/model/helpertables/HelperTableSearchCondition.class&#10;&#9;SemantikosKernelEJB/target/classes/cl/minsal/semantikos/model/relationships/Relationship.class&#10;&#9;SemantikosKernelEJB/target/classes/cl/minsal/semantikos/model/relationships/RelationshipDTO.class&#10;&#9;SemantikosKernelEJB/target/classes/cl/minsal/semantikos/model/relationships/RelationshipFactory.class&#10;&#9;SemantikosKernelEJB/target/maven-archiver/pom.properties&#10;&#9;SemantikosWS/target/SemantikosWS.war&#10;&#9;SemantikosWS/target/maven-archiver/pom.properties&#10;&#9;SemantikosWSEJB/target/SemantikosWSEJB-1.0.0.jar&#10;&#9;SemantikosWSEJB/target/maven-archiver/pom.properties&#10;&#9;SemantikosWeb/target/SemantikosWeb.war&#10;&#9;SemantikosWeb/target/SemantikosWeb/META-INF/MANIFEST.MF&#10;&#9;SemantikosWeb/target/SemantikosWeb/WEB-INF/classes/cl/minsal/semantikos/designer_modeler/browser/ConceptBrowserBean$1.class&#10;&#9;SemantikosWeb/target/SemantikosWeb/WEB-INF/classes/cl/minsal/semantikos/designer_modeler/browser/ConceptBrowserBean.class&#10;&#9;SemantikosWeb/target/SemantikosWeb/WEB-INF/classes/cl/minsal/semantikos/version.properties&#10;&#9;SemantikosWeb/target/SemantikosWeb/resources/smtk/browserFilter.xhtml&#10;&#9;SemantikosWeb/target/SemantikosWeb/views/concept/conceptEdit.xhtml&#10;&#9;SemantikosWeb/target/classes/cl/minsal/semantikos/designer_modeler/browser/ConceptBrowserBean$1.class&#10;&#9;SemantikosWeb/target/classes/cl/minsal/semantikos/designer_modeler/browser/ConceptBrowserBean.class&#10;&#9;SemantikosWeb/target/classes/cl/minsal/semantikos/version.properties&#10;&#9;SemantikosWeb/target/maven-archiver/pom.properties&#10;" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -341,11 +837,69 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/resources/bdd/operaciones usuarios.sql" />
+    <entry file="file://$PROJECT_DIR$/resources/bdd/operaciones usuarios.sql">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/SemantikosKernelEJB/src/cl/minsal/semantikos/model/helpertables/HelperTableRecordFactory.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1320">
           <caret line="94" column="0" selection-start-line="94" selection-start-column="0" selection-end-line="94" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="false" />
+            <element signature="e#4685#4686#0" expanded="false" />
+            <element signature="e#4730#4731#0" expanded="false" />
+            <element signature="e#4762#4763#0" expanded="false" />
+            <element signature="e#4792#4793#0" expanded="false" />
+            <element signature="e#4836#4837#0" expanded="false" />
+            <element signature="e#4874#4875#0" expanded="false" />
+            <element signature="e#4901#4902#0" expanded="false" />
+            <element signature="e#4926#4927#0" expanded="false" />
+            <element signature="e#4960#4961#0" expanded="false" />
+            <element signature="e#4988#4989#0" expanded="false" />
+            <element signature="e#5034#5035#0" expanded="false" />
+            <element signature="e#5063#5064#0" expanded="false" />
+            <element signature="e#5120#5121#0" expanded="false" />
+            <element signature="e#5156#5157#0" expanded="false" />
+            <element signature="e#5556#5557#0" expanded="false" />
+            <element signature="e#5604#5605#0" expanded="false" />
+            <element signature="e#5636#5637#0" expanded="false" />
+            <element signature="e#5666#5667#0" expanded="false" />
+            <element signature="e#5710#5711#0" expanded="false" />
+            <element signature="e#5748#5749#0" expanded="false" />
+            <element signature="e#5775#5776#0" expanded="false" />
+            <element signature="e#5800#5801#0" expanded="false" />
+            <element signature="e#5834#5835#0" expanded="false" />
+            <element signature="e#5862#5863#0" expanded="false" />
+            <element signature="e#5915#5916#0" expanded="false" />
+            <element signature="e#5945#5946#0" expanded="false" />
+            <element signature="e#6010#6011#0" expanded="false" />
+            <element signature="e#6048#6049#0" expanded="false" />
+            <element signature="e#6684#6685#0" expanded="false" />
+            <element signature="e#6732#6733#0" expanded="false" />
+            <element signature="e#6764#6765#0" expanded="false" />
+            <element signature="e#6794#6795#0" expanded="false" />
+            <element signature="e#6838#6839#0" expanded="false" />
+            <element signature="e#6876#6877#0" expanded="false" />
+            <element signature="e#6907#6908#0" expanded="false" />
+            <element signature="e#6934#6935#0" expanded="false" />
+            <element signature="e#6974#6975#0" expanded="false" />
+            <element signature="e#7006#7007#0" expanded="false" />
+            <element signature="e#7044#7045#0" expanded="false" />
+            <element signature="e#7078#7079#0" expanded="false" />
+            <element signature="e#7132#7133#0" expanded="false" />
+            <element signature="e#7178#7179#0" expanded="false" />
+            <element signature="e#7214#7215#0" expanded="false" />
+            <element signature="e#7246#7247#0" expanded="false" />
+            <element signature="e#7296#7297#0" expanded="false" />
+            <element signature="e#7338#7339#0" expanded="false" />
+            <element signature="e#7395#7396#0" expanded="false" />
+            <element signature="e#7425#7426#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -360,6 +914,57 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="false" />
+            <element signature="e#4685#4686#0" expanded="false" />
+            <element signature="e#4730#4731#0" expanded="false" />
+            <element signature="e#4762#4763#0" expanded="false" />
+            <element signature="e#4792#4793#0" expanded="false" />
+            <element signature="e#4836#4837#0" expanded="false" />
+            <element signature="e#4874#4875#0" expanded="false" />
+            <element signature="e#4901#4902#0" expanded="false" />
+            <element signature="e#4926#4927#0" expanded="false" />
+            <element signature="e#4960#4961#0" expanded="false" />
+            <element signature="e#4988#4989#0" expanded="false" />
+            <element signature="e#5034#5035#0" expanded="false" />
+            <element signature="e#5063#5064#0" expanded="false" />
+            <element signature="e#5120#5121#0" expanded="false" />
+            <element signature="e#5156#5157#0" expanded="false" />
+            <element signature="e#5556#5557#0" expanded="false" />
+            <element signature="e#5604#5605#0" expanded="false" />
+            <element signature="e#5636#5637#0" expanded="false" />
+            <element signature="e#5666#5667#0" expanded="false" />
+            <element signature="e#5710#5711#0" expanded="false" />
+            <element signature="e#5748#5749#0" expanded="false" />
+            <element signature="e#5775#5776#0" expanded="false" />
+            <element signature="e#5800#5801#0" expanded="false" />
+            <element signature="e#5834#5835#0" expanded="false" />
+            <element signature="e#5862#5863#0" expanded="false" />
+            <element signature="e#5915#5916#0" expanded="false" />
+            <element signature="e#5945#5946#0" expanded="false" />
+            <element signature="e#6010#6011#0" expanded="false" />
+            <element signature="e#6048#6049#0" expanded="false" />
+            <element signature="e#6684#6685#0" expanded="false" />
+            <element signature="e#6732#6733#0" expanded="false" />
+            <element signature="e#6764#6765#0" expanded="false" />
+            <element signature="e#6794#6795#0" expanded="false" />
+            <element signature="e#6838#6839#0" expanded="false" />
+            <element signature="e#6876#6877#0" expanded="false" />
+            <element signature="e#6907#6908#0" expanded="false" />
+            <element signature="e#6934#6935#0" expanded="false" />
+            <element signature="e#6974#6975#0" expanded="false" />
+            <element signature="e#7006#7007#0" expanded="false" />
+            <element signature="e#7044#7045#0" expanded="false" />
+            <element signature="e#7078#7079#0" expanded="false" />
+            <element signature="e#7132#7133#0" expanded="false" />
+            <element signature="e#7178#7179#0" expanded="false" />
+            <element signature="e#7214#7215#0" expanded="false" />
+            <element signature="e#7246#7247#0" expanded="false" />
+            <element signature="e#7296#7297#0" expanded="false" />
+            <element signature="e#7338#7339#0" expanded="false" />
+            <element signature="e#7395#7396#0" expanded="false" />
+            <element signature="e#7425#7426#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -367,6 +972,57 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1320">
           <caret line="94" column="0" selection-start-line="94" selection-start-column="0" selection-end-line="94" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="false" />
+            <element signature="e#4685#4686#0" expanded="false" />
+            <element signature="e#4730#4731#0" expanded="false" />
+            <element signature="e#4762#4763#0" expanded="false" />
+            <element signature="e#4792#4793#0" expanded="false" />
+            <element signature="e#4836#4837#0" expanded="false" />
+            <element signature="e#4874#4875#0" expanded="false" />
+            <element signature="e#4901#4902#0" expanded="false" />
+            <element signature="e#4926#4927#0" expanded="false" />
+            <element signature="e#4960#4961#0" expanded="false" />
+            <element signature="e#4988#4989#0" expanded="false" />
+            <element signature="e#5034#5035#0" expanded="false" />
+            <element signature="e#5063#5064#0" expanded="false" />
+            <element signature="e#5120#5121#0" expanded="false" />
+            <element signature="e#5156#5157#0" expanded="false" />
+            <element signature="e#5556#5557#0" expanded="false" />
+            <element signature="e#5604#5605#0" expanded="false" />
+            <element signature="e#5636#5637#0" expanded="false" />
+            <element signature="e#5666#5667#0" expanded="false" />
+            <element signature="e#5710#5711#0" expanded="false" />
+            <element signature="e#5748#5749#0" expanded="false" />
+            <element signature="e#5775#5776#0" expanded="false" />
+            <element signature="e#5800#5801#0" expanded="false" />
+            <element signature="e#5834#5835#0" expanded="false" />
+            <element signature="e#5862#5863#0" expanded="false" />
+            <element signature="e#5915#5916#0" expanded="false" />
+            <element signature="e#5945#5946#0" expanded="false" />
+            <element signature="e#6010#6011#0" expanded="false" />
+            <element signature="e#6048#6049#0" expanded="false" />
+            <element signature="e#6684#6685#0" expanded="false" />
+            <element signature="e#6732#6733#0" expanded="false" />
+            <element signature="e#6764#6765#0" expanded="false" />
+            <element signature="e#6794#6795#0" expanded="false" />
+            <element signature="e#6838#6839#0" expanded="false" />
+            <element signature="e#6876#6877#0" expanded="false" />
+            <element signature="e#6907#6908#0" expanded="false" />
+            <element signature="e#6934#6935#0" expanded="false" />
+            <element signature="e#6974#6975#0" expanded="false" />
+            <element signature="e#7006#7007#0" expanded="false" />
+            <element signature="e#7044#7045#0" expanded="false" />
+            <element signature="e#7078#7079#0" expanded="false" />
+            <element signature="e#7132#7133#0" expanded="false" />
+            <element signature="e#7178#7179#0" expanded="false" />
+            <element signature="e#7214#7215#0" expanded="false" />
+            <element signature="e#7246#7247#0" expanded="false" />
+            <element signature="e#7296#7297#0" expanded="false" />
+            <element signature="e#7338#7339#0" expanded="false" />
+            <element signature="e#7395#7396#0" expanded="false" />
+            <element signature="e#7425#7426#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -384,7 +1040,21 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/SemantikosKernelEJB/src/cl/minsal/semantikos/kernel/daos/AuthDAOImpl.java" />
-    <entry file="file://$PROJECT_DIR$/resources/bdd/operaciones usuarios.sql" />
+    <entry file="file://$PROJECT_DIR$/SemantikosKernelEJB/src/cl/minsal/semantikos/kernel/daos/AuthDAOImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="185" column="53" selection-start-line="185" selection-start-column="53" selection-end-line="185" selection-end-column="53" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/bdd/operaciones usuarios.sql">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="584">
+          <caret line="371" column="6" selection-start-line="371" selection-start-column="6" selection-end-line="371" selection-end-column="6" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
   </component>
 </project>

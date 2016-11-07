@@ -7,6 +7,7 @@ import java.util.List;
 /**
  * Created by BluePrints Developer on 07-09-2016.
  */
+
 public class HelperTableSearchCondition extends HelperTableWhereCondition{
 
     private List<HelperTableColumn> searchableColumns;

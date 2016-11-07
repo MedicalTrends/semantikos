@@ -41,23 +41,23 @@ public class ConceptQuery {
     private User user;
 
     /**
-     * Filtros dinámicos
+     * Dynamic filters
      */
     private List<ConceptQueryFilter> filters = new ArrayList<>();
 
     /**
-     * Columnas dinámicas
+     * Dynamic columns
      */
     private List<ConceptQueryColumn> columns = new ArrayList<>();
 
     /**
-     * Orden
+     * Order
      */
     private int order;
     private String asc;
 
     /**
-     * Paginación
+     * Pagination
      */
     private int pageSize;
     private int pageNumber;
@@ -238,6 +238,13 @@ public class ConceptQuery {
         }
     }
 
+    public Long getUserValue(){
+        if(getUser()==null)
+            return null;
+        else
+            return getUser().getIdUser();
+    }
+
     public List<ConceptQueryParameter> getConceptQueryParameters(){
 
         List<ConceptQueryParameter> conceptQueryParameters = new ArrayList<>();
@@ -252,6 +259,7 @@ public class ConceptQuery {
         conceptQueryParameters.add(new ConceptQueryParameter(Long.class, getHelperTableValues(), true));
         conceptQueryParameters.add(new ConceptQueryParameter(Timestamp.class, getCreationDateSince(), false));
         conceptQueryParameters.add(new ConceptQueryParameter(Timestamp.class, getCreationDateTo(), false));
+        conceptQueryParameters.add(new ConceptQueryParameter(Long.class, getUserValue(), false));
         conceptQueryParameters.add(new ConceptQueryParameter(Integer.class, getOrder(), false));
         conceptQueryParameters.add(new ConceptQueryParameter(String.class, getAsc(), false));
         conceptQueryParameters.add(new ConceptQueryParameter(Integer.class, getPageNumber(), false));

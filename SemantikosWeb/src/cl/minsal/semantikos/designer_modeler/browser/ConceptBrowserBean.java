@@ -1,6 +1,7 @@
 package cl.minsal.semantikos.designer_modeler.browser;
 
 import cl.minsal.semantikos.designer_modeler.auth.AuthenticationBean;
+import cl.minsal.semantikos.kernel.auth.UserManager;
 import cl.minsal.semantikos.kernel.components.*;
 import cl.minsal.semantikos.model.*;
 import cl.minsal.semantikos.model.basictypes.BasicTypeValue;
@@ -51,8 +52,11 @@ public class ConceptBrowserBean implements Serializable {
     @EJB
     HelperTableManager helperTableManager;
 
+    @EJB
+    UserManager userManager;
+
     /**
-     * Objeto de consulta: contiene todos los filtros necesarios para el despliegue de los resultados en el navegador
+     * Objeto de consulta: contiene todos los filtros y columnas necesarios para el despliegue de los resultados en el navegador
      */
     private ConceptQuery conceptQuery;
 
@@ -60,6 +64,11 @@ public class ConceptBrowserBean implements Serializable {
      * Lista de tags para el despliegue del filtro por tags
      */
     private List<Tag> tags = new ArrayList<Tag>();
+
+    /**
+     * Lista de usuarios para el despliegue del filtro por usuarios
+     */
+    private List<User> users = new ArrayList<User>();
 
     /**
      * Lista de conceptos para el despliegue del resultado de la consulta
@@ -92,11 +101,10 @@ public class ConceptBrowserBean implements Serializable {
     @EJB
     private ConceptManager conceptManager;
 
-
-
     @PostConstruct
     public void init(){
         tags = tagManager.getAllTags();
+        users = userManager.getAllUsers();
     }
 
     /**
@@ -113,19 +121,8 @@ public class ConceptBrowserBean implements Serializable {
         /**
          * Si el objeto de consulta no está inicializado, inicializarlo
          */
-        if(conceptQuery == null) {
-
+        if(conceptQuery == null)
             conceptQuery = conceptQueryManager.getDefaultQueryByCategory(category);
-
-            /*
-            for (RelationshipDefinition relationshipDefinition : category.getRelationshipDefinitions()) {
-                ConceptQueryFilter conceptQueryFilter = new ConceptQueryFilter(relationshipDefinition);
-                conceptQueryFilter.setMultiple(false);
-
-                conceptQuery.getFilters().add(conceptQueryFilter);
-            }
-            */
-        }
 
         /**
          * Ejecutar la consulta
@@ -217,6 +214,14 @@ public class ConceptBrowserBean implements Serializable {
         this.tags = tags;
     }
 
+    public List<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<User> users) {
+        this.users = users;
+    }
+
     public HelperTableManager getHelperTableManager() {
         return helperTableManager;
     }
@@ -282,17 +287,13 @@ public class ConceptBrowserBean implements Serializable {
         if (concept.isPersistent() && !concept.isModeled()) {
             conceptManager.delete(concept, authenticationBean.getLoggedUser());
             context.addMessage(null, new FacesMessage("Successful", "Concepto eliminado"));
-            //ExternalContext eContext = FacesContext.getCurrentInstance().getExternalContext();
-            //eContext.redirect(eContext.getRequestContextPath() + "/views/concept/conceptEdit.xhtml");
-            //return "mainMenu.xhtml";
+
         } else {
             conceptManager.invalidate(concept, authenticationBean.getLoggedUser());
             context.addMessage(null, new FacesMessage("Successful", "Concepto invalidado"));
-            //return "mainMenu.xhtml";
         }
 
     }
-
 
 
 

@@ -96,7 +96,7 @@
                     <p:tab title="SNOMED-CT" rendered="#{ conceptBean.concept.persistent and not conceptBean.concept.toBeConsulted and not conceptBean.concept.toBeReviewed }">
                         <!--Relaciones -->
                         <p:panel id="atributoSCT"
-                                 widgetVar="panelAtributos"
+                                 widgetVar="panelAtributoSCT"
                                  styleClass="attributes"
                                  rendered="#{conceptBean.category.hasRelationshipDefinitions}">
 
@@ -115,7 +115,36 @@
                                                 relationshipDefinition="#{relationshipDefinition}"
                                                 concept="#{conceptBean.concept}"
                                                 rendered="#{relationshipDefinition.targetDefinition.snomedCTType and conceptBean.concept.persistent and not conceptBean.concept.toBeConsulted
-                                                            and not conceptBean.concept.toBeReviewed }"/>
+                                                            and not conceptBean.concept.toBeReviewed }" />
+
+                                    </p:outputPanel>
+
+                                </h:column>
+                            </h:dataTable>
+                        </p:panel>
+                    </p:tab>
+                    <p:tab title="Crossmaps" rendered="#{ conceptBean.concept.persistent and conceptBean.concept.modeled }">
+                        <!--Relaciones -->
+                        <p:panel id="atributoCrossmap"
+                                 widgetVar="panelAtributoCrossmap"
+                                 styleClass="attributes"
+                                 rendered="#{conceptBean.category.hasRelationshipDefinitions}">
+
+                            <h:dataTable style="width: 100%;" value="#{conceptBean.orderedRelationshipDefinitions}"
+                                         var="relationshipDefinition">
+
+                                <h:column>
+
+                                    <p:outputPanel
+                                            id="panelRelationshipDefinitonCrossmap"
+                                            style="border:0px; margin: 0px; padding: 0px;"
+                                            styleClass="panel_#{relationshipDefinition.id} #{relationshipDefinition.multiplicitySatisfied ? '': 'relationshipDefinitionError'}">
+
+                                        <smtk:sctType
+                                                targetDefinition="#{relationshipDefinition.targetDefinition}"
+                                                relationshipDefinition="#{relationshipDefinition}"
+                                                concept="#{conceptBean.concept}"
+                                                rendered="#{relationshipDefinition.targetDefinition.crossMapType and conceptBean.concept.persistent and not conceptBean.concept.modeled }"/>
 
                                     </p:outputPanel>
 

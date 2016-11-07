@@ -15,9 +15,7 @@ import javax.ejb.Singleton;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
-import java.util.TimeZone;
 
 import static cl.minsal.semantikos.kernel.util.StringUtils.underScoreToCamelCaseJSON;
 
