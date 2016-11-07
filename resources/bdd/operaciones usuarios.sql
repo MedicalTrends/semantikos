@@ -385,3 +385,15 @@ begin
 END;
 $BODY$
 LANGUAGE plpgsql VOLATILE;
+
+CREATE OR REPLACE FUNCTION semantikos.get_all_user()
+  RETURNS TABLE(id_user bigint, username character varying, password_hash character varying, password_salt character varying, name character varying, last_name character varying, second_last_name character varying, email character varying, locked boolean, failed_login_attempts integer, last_login timestamp without time zone, last_password_change timestamp without time zone, last_password_hash1 character varying, last_password_hash2 character varying, last_password_hash3 character varying, last_password_hash4 character varying, last_password_salt1 character varying, last_password_salt2 character varying, last_password_salt3 character varying, last_password_salt4 character varying, rut character varying) AS
+$BODY$
+begin
+  RETURN QUERY select u.id, u.username, u.password_hash, u.password_salt, u.name, u.last_name, u.second_last_name, u.email, u.locked, u.failed_login_attempts, u.last_login, u.last_password_change,
+                 u.last_password_hash1, u.last_password_hash2, u.last_password_hash3, u.last_password_hash4, u.last_password_salt1, u.last_password_salt2, u.last_password_salt3, u.last_password_salt4,
+                 u.rut
+               from semantikos.smtk_user as u;
+END;
+$BODY$
+LANGUAGE plpgsql VOLATILE;

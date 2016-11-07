@@ -183,10 +183,12 @@ public class AuthDAOImpl implements AuthDAO {
         ConnectionBD connect = new ConnectionBD();
         User user = null;
 
-        String sql = "{call semantikos.get_user_by_username(?)}";
+        String sql = "{call semantikos.get_all_users()}";
         try (Connection connection = connect.getConnection();
              CallableStatement call = connection.prepareCall(sql)) {
+
             call.execute();
+
 
             ResultSet rs = call.getResultSet();
             while (rs.next()) {
