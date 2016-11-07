@@ -718,7 +718,7 @@
       <workItem from="1478521718867" duration="2255000" />
       <workItem from="1478528720812" duration="2460000" />
       <workItem from="1478532565236" duration="148000" />
-      <workItem from="1478532935461" duration="48000" />
+      <workItem from="1478532935461" duration="96000" />
     </task>
     <task id="LOCAL-00001" summary="Commit cambio de branch">
       <created>1478286919567</created>
@@ -762,11 +762,18 @@
       <option name="project" value="LOCAL" />
       <updated>1478532626268</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Merge remote-tracking branch 'remotes/origin/master' into sct-basis&#10;&#10;Conflicts:&#10;&#9;.idea/dataSources.ids&#10;&#9;.idea/dataSources.local.xml&#10;&#9;.idea/workspace.xml&#10;">
+      <created>1478532985815</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1478532985815</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="9330000" />
+    <option name="totallyTimeSpent" value="9378000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-1" y="28" width="1602" height="839" extended-state="6" />
